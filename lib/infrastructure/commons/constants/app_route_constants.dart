@@ -1,5 +1,5 @@
 import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
-import 'package:flutter_boilerplate_may_2023/ui/screens/text_widget_screen.dart';
+import 'package:flutter_boilerplate_may_2023/ui/screens/screen.dart';
 
 ///use this service for provide global context to widgets
 class NavigationService {
@@ -14,7 +14,7 @@ class RouterConstant {
     switch (settings.name) {
       /// normal page routing
       case RoutesConstants.splashScreen:
-        return MaterialPageRoute(builder: (_) => const TextWidgetScreen());
+        return MaterialPageRoute(builder: (_) => const Screen());
 
       ///page routing with page transition
       case RoutesConstants.loginScreen:

@@ -6,6 +6,7 @@ class DropdownMenuWidget extends StatelessWidget {
   final double? menuWidth;
   final bool? enableSearch;
   final bool? enableFilter;
+  final bool? requestFocusOnTap;
   final bool? enableDropdown;
   final String? errorText;
   final String? labelText;
@@ -22,7 +23,9 @@ class DropdownMenuWidget extends StatelessWidget {
       this.menuWidth,
       this.controller,
       this.errorText,
-      this.labelText, required this.onSelect})
+      this.labelText,
+      required this.onSelect,
+      this.requestFocusOnTap})
       : super(key: key);
 
   @override
@@ -44,7 +47,7 @@ class DropdownMenuWidget extends StatelessWidget {
           menuHeight: menuHeight ?? 300,
           enableSearch: enableSearch ?? false,
           enableFilter: enableFilter ?? false,
-          requestFocusOnTap: false,
+          requestFocusOnTap: requestFocusOnTap ?? false,
           enabled: enableDropdown ?? true,
           trailingIcon: Icon(
             Icons.keyboard_arrow_down_rounded,
@@ -121,7 +124,7 @@ class DropdownMenuWidget extends StatelessWidget {
   BoxShadow buildBoxShadow() => BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.1), blurRadius: 6, offset: const Offset(0, 0));
 }
 
-DropdownMenuEntry<String> dropdownMenuEntry({required BuildContext context,required String value, required String label}) {
+DropdownMenuEntry<String> dropdownMenuEntry({required BuildContext context, required String value, required String label}) {
   return DropdownMenuEntry(
     value: value,
     label: label,
@@ -129,10 +132,10 @@ DropdownMenuEntry<String> dropdownMenuEntry({required BuildContext context,requi
       elevation: MaterialStateProperty.all(0),
       textStyle: MaterialStateProperty.all(
         Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: ColorConstants.primaryColor,
-          fontWeight: FontWeight.w600,
-          overflow: TextOverflow.ellipsis,
-        ),
+              color: ColorConstants.primaryColor,
+              fontWeight: FontWeight.w600,
+              overflow: TextOverflow.ellipsis,
+            ),
       ),
     ),
   );
