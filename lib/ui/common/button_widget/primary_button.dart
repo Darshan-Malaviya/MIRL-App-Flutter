@@ -33,8 +33,8 @@ class PrimaryButton extends StatelessWidget {
       height: height ?? 44,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          surfaceTintColor: buttonColor ?? ColorConstants.secondaryColor,
-          backgroundColor: buttonColor ?? ColorConstants.secondaryColor,
+          surfaceTintColor: buttonColor ?? ColorConstants.primaryColor,
+          backgroundColor: buttonColor ?? ColorConstants.primaryColor,
           foregroundColor: ColorConstants.whiteColor,
           splashFactory: NoSplash.splashFactory,
           enableFeedback: false,

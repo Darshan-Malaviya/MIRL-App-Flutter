@@ -14,7 +14,7 @@ class CommonAlertDialog {
     return showDialog(
         context: context,
         barrierColor: ColorConstants.blackColor.withOpacity(0.2),
-        barrierDismissible: barrierDismissible ?? false,
+        barrierDismissible: barrierDismissible ?? true,
         builder: (BuildContext context) {
           final maxWidth = MediaQuery.of(context).size.width;
           return BackdropFilter(
@@ -62,7 +62,7 @@ class CommonAlertDialog {
               child: Dialog(
                 insetPadding: PaddingConstant.scaffoldPadding,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 48),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.alertdialogRadius),
                       color: ColorConstants.scaffoldColor),
@@ -139,8 +139,6 @@ class CommonAlertDialog {
                           ),
                           16.0.spaceX,
                           Expanded(child: PrimaryButton(title: acceptButtonTitle, onPressed: onAcceptTap)),
-
-
                         ],
                       ),
                     ],
@@ -152,25 +150,25 @@ class CommonAlertDialog {
         });
   }
 
-// static fullScreenDialog({
-//   required BuildContext context,
-//   required Widget child,
-//   Color? backgroundColor,
-//   Color? barrierColor,
-//   double? height,
-//   double? width,
-//   bool? barrierDismissible,
-//   double? borderRadius,
-// }) {
-//   return showDialog(
-//       context: context,
-//       barrierColor: barrierColor ?? ColorConstants.primaryColor.withOpacity(0.5),
-//       barrierDismissible: barrierDismissible ?? false,
-//       builder: (BuildContext context) {
-//         return Dialog.fullscreen(
-//           backgroundColor: backgroundColor,
-//           child: child,
-//         );
-//       });
-// }
+static fullScreenDialog({
+  required BuildContext context,
+  required Widget child,
+  Color? backgroundColor,
+  Color? barrierColor,
+  double? height,
+  double? width,
+  bool? barrierDismissible,
+  double? borderRadius,
+}) {
+  return showDialog(
+      context: context,
+      barrierColor: barrierColor ?? ColorConstants.primaryColor.withOpacity(0.5),
+      barrierDismissible: barrierDismissible ?? false,
+      builder: (BuildContext context) {
+        return Dialog.fullscreen(
+          backgroundColor: backgroundColor,
+          child: child,
+        );
+      });
+}
 }

@@ -1,9 +1,15 @@
 import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
 import 'package:flutter_boilerplate_may_2023/ui/common/dropdown_widget/dropdown_widget.dart';
+import 'package:flutter_boilerplate_may_2023/ui/common/searchbar_widget/searchbar_widget.dart';
 
-class Screen extends StatelessWidget {
+class Screen extends StatefulWidget {
   const Screen({Key? key}) : super(key: key);
 
+  @override
+  State<Screen> createState() => _ScreenState();
+}
+
+class _ScreenState extends State<Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +34,17 @@ class Screen extends StatelessWidget {
                 DropdownMenuEntry(value: "Value", label: "Item four"),
                 DropdownMenuEntry(value: "Value", label: "Item five"),
                 DropdownMenuEntry(value: "Value", label: "Item six"),
-              ], onSelect: (value){}),
+              ], onSelect: (value) {}),
+              16.0.spaceY,
+              PrimaryButton(
+                  title: "Open Alert",
+                  onPressed: () {
+                    CommonAlertDialog.dialog(
+                        context: context,
+                        child: const SizedBox(
+                          height: 300,
+                        ));
+                  }),
             ],
           ),
         ),
