@@ -19,7 +19,7 @@ export 'package:flutter_boilerplate_may_2023/infrastructure/commons/constants/la
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/country_code_widgets/functions.dart';
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/constants/regex_constants.dart';
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/country_code_widgets/country_code_picker.dart';
-export 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/size_extension.dart';
+export 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/constants/app_constants.dart';
 export 'package:flutter_boilerplate_may_2023/infrastructure/configs/flavour_config.dart';
 export 'package:flutter_boilerplate_may_2023/ui/common/text_widgets/textfield/decorated_input_border.dart';
