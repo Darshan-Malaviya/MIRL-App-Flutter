@@ -1,5 +1,5 @@
 import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/datetime_extension.dart';
+import 'package:flutter_boilerplate_may_2023/ui/animations/shake_animation.dart';
 
 class Screen extends StatefulWidget {
   const Screen({Key? key}) : super(key: key);
@@ -10,10 +10,18 @@ class Screen extends StatefulWidget {
 
 class _ScreenState extends State<Screen> with TickerProviderStateMixin {
   late AnimationController animationController;
+  late GlobalKey<CustomShakeWidgetState> buttonShakeKey;
   late final Animatable<Offset> _slideTransition = Tween<Offset>(
     begin: const Offset(0.5, 0),
     end: Offset.zero,
   );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    buttonShakeKey = GlobalKey();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,13 @@ class _ScreenState extends State<Screen> with TickerProviderStateMixin {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Center(
-          child: BodyLargeText(title: DateTime.now().toIso8601String().toLocalDateTimeFormat(),),
+          child: CustomShakeWidget(
+            key: buttonShakeKey,
+            duration: const Duration(milliseconds: 800),
+            shakeCount: 4,
+            shakeOffset: 4,
+            child: PrimaryButton(title: "Button", onPressed: () => buttonShakeKey.currentState?.shake()),
+          ),
         ),
       ),
     );
