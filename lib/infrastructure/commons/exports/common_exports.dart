@@ -32,7 +32,7 @@ export 'package:flutter_boilerplate_may_2023/ui/common/text_widgets/textfield/te
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/constants/image_constants.dart';
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/navigator_extension.dart';
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/methods/common_method.dart';
-export 'package:flutter_boilerplate_may_2023/ui/common/animations_widget/zoomin_animation.dart';
+export 'package:flutter_boilerplate_may_2023/ui/animations/zoomin_animation.dart';
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/validations/validation.dart';
 export 'package:flutter_boilerplate_may_2023/ui/common/container_widgets/shadow_container.dart';
 export 'package:flutter_boilerplate_may_2023/ui/common/alert_widgets/alert_dialog_widget.dart';
