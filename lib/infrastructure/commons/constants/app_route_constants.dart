@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+import 'package:flutter_boilerplate_may_2023/ui/screens/animated_button.dart';
 import 'package:flutter_boilerplate_may_2023/ui/screens/screen.dart';
 
 ///use this service for provide global context to widgets
@@ -14,7 +15,7 @@ class RouterConstant {
     switch (settings.name) {
       /// normal page routing
       case RoutesConstants.splashScreen:
-        return MaterialPageRoute(builder: (_) => const Screen());
+        return MaterialPageRoute(builder: (_) => AnimatedButton());
 
       ///page routing with page transition
       case RoutesConstants.loginScreen:
