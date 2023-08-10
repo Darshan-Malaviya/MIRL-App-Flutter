@@ -18,3 +18,5 @@ extension CustomPadding on Widget {
 
   addPaddingRight(double padding) => Padding(padding: EdgeInsets.only(right: padding), child: this);
 }
+
+

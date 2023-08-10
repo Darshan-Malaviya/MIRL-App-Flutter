@@ -40,6 +40,7 @@ export 'package:flutter_boilerplate_may_2023/ui/common/bottom_sheet/bottom_sheet
 export 'package:flutter_boilerplate_may_2023/ui/common/alert_widgets/toast_message.dart';
 export 'package:flutter_boilerplate_may_2023/ui/common/appbar/appbar_widget.dart';
 export 'package:flutter_boilerplate_may_2023/ui/common/text_widgets/base/text_widgets.dart';
+export 'package:flutter_boilerplate_may_2023/ui/common/onpressed_widget/on_scale_tap.dart';
 
 
 

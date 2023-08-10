@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+import 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 import 'package:flutter_boilerplate_may_2023/ui/animations/shake_animation.dart';
 
 class Screen extends StatefulWidget {
@@ -33,18 +34,15 @@ class _ScreenState extends State<Screen> with TickerProviderStateMixin {
           titleColor: ColorConstants.whiteColor,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Center(
-          child: CustomShakeWidget(
-            key: buttonShakeKey,
-            duration: const Duration(milliseconds: 800),
-            shakeCount: 4,
-            shakeOffset: 4,
-            child: PrimaryButton(title: "Button", onPressed: () => buttonShakeKey.currentState?.shake()),
-          ),
+      body: Center(
+        child: CustomShakeWidget(
+          key: buttonShakeKey,
+          duration: const Duration(milliseconds: 800),
+          shakeCount: 4,
+          shakeOffset: 4,
+          child: PrimaryButton(title: "Button", onPressed: () => buttonShakeKey.currentState?.shake()),
         ),
-      ),
+      )
     );
   }
 }
