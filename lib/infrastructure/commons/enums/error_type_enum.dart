@@ -59,5 +59,3 @@ abstract class NetworkErrorType {
   static const hostUnreachable = 113; //EHOSTUNREACH
   static const unAuthorized = 401; //EHOSTUNREACH
 }
-
-enum SocialLoginType {google, apple, facebook, normalLogin}

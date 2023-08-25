@@ -1,0 +1,1 @@
+enum APIType{get, post, put, delete}
