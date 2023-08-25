@@ -1,40 +1,23 @@
-
 import 'package:flutter_boilerplate_may_2023/infrastructure/commons/enums/error_type_enum.dart';
 
 extension ErrorTypeExtension on ErrorType {
   String get messageString {
-    switch (this) {
-      case ErrorType.networkError:
-        return 'Network Error';
-      case ErrorType.serverError:
-        return 'Server Error';
-      case ErrorType.appError:
-        return 'Application Error';
-      case ErrorType.serializationError:
-        return 'Serialization Error';
-      case ErrorType.genericError:
-        return 'Generic Error';
-      case ErrorType.networkForbiddenError:
-        return 'Network Forbidden Error';
-      case ErrorType.networkUnAuthorizedError:
-        return 'Network UnAuthorized Error';
-      case ErrorType.decodingError:
-        return 'Decoding Error';
-      case ErrorType.encodingError:
-        return 'Encoding Error';
-      case ErrorType.noResponse:
-        return 'No Response';
-      case ErrorType.dataError:
-        return 'Data Error';
-      case ErrorType.databaseError:
-        return 'Database Error';
-      case ErrorType.userError:
-        return 'User Error';
-      case ErrorType.unAuthorize:
-        return 'Your account is logged in with another device.';
-      default:
-        return '';
-    }
+    return switch (this) {
+      ErrorType.networkError => 'Network Error',
+      ErrorType.serverError => 'Server Error',
+      ErrorType.appError => 'Application Error',
+      ErrorType.serializationError => 'Serialization Error',
+      ErrorType.genericError => 'Generic Error',
+      ErrorType.networkForbiddenError => 'Network Forbidden Error',
+      ErrorType.networkUnAuthorizedError => 'Network UnAuthorized Error',
+      ErrorType.decodingError => 'Decoding Error',
+      ErrorType.encodingError => 'Encoding Error',
+      ErrorType.noResponse => 'No Response',
+      ErrorType.dataError => 'Data Error',
+      ErrorType.databaseError => 'Database Error',
+      ErrorType.userError => 'User Error',
+      ErrorType.unAuthorize => 'Your account is logged in with another device.',
+    };
   }
 }
 

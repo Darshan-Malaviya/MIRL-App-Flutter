@@ -2,7 +2,6 @@ import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/comm
 import 'package:flutter_boilerplate_may_2023/ui/common/button_widget/animated_primary_button.dart';
 import 'package:flutter_boilerplate_may_2023/ui/common/button_widget/animated_small_button.dart';
 
-
 class AnimatedButton extends StatefulWidget {
   const AnimatedButton({super.key});
 
@@ -34,8 +33,7 @@ class _AnimatedButtonState extends State<AnimatedButton> {
           ),
           AnimatedSmallButton(
             text: 'Press',
-            onTap: () {
-            },
+            onTap: () {},
           ),
           const SizedBox(
             height: 50,
@@ -54,7 +52,6 @@ class _AnimatedButtonState extends State<AnimatedButton> {
                   margin: const EdgeInsets.all(10),
                   height: 100,
                   width: 100,
-
                 ),
               );
             })),

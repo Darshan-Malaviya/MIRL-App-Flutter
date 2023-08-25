@@ -1,5 +1,3 @@
-
-
 // ValueNotifier<bool> isUnAuthorized = ValueNotifier<bool>(false);
 
 import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
@@ -33,18 +31,6 @@ class ApiConstants {
         queryParameters: queryParameters,
       );
 
-  // //header
-  // static Map<String, String> header({required String accessToken}) {
-  //   Map<String, String> headerData = {
-  //     'access-token': accessToken,
-  //     'Content-Type': 'application/json',
-  //     'Accept': '*/*',
-  //     'eeauToke':
-  //         'Bearer lC3polLeaSwXJIaJUUxBXbuseHXDjKuCmep8lCeEYS2KJzCBVum5vNV34LVP03vtoRi25rFiSVthDbbXPR5XdAFEJwcpPQVNBqkeetwJ2E3ZB8d2R2aBtphZag1J0sWhO9cP18Ku6UM9'
-  //   };
-  //   return headerData;
-  // }
-
   static Map<String, String> headerWithoutAccessToken() {
     Map<String, String> headerData = {
       'Content-Type': 'application/json',
@@ -66,5 +52,5 @@ class ApiConstants {
 
   static const String commonPath = '/api/v1';
 
-  static const String brands = '$commonPath/brands';
+  static const String login = '$commonPath/brands';
 }
