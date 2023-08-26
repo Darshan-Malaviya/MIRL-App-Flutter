@@ -8,14 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
  mixin class PermissionHandler {
   Future<PermissionStatus> permissionRequest(
       {required BuildContext context, required Permission permission, required String alertMessage}) async {
-    if (Platform.isAndroid) {
-      /// Require photos permission after Android 13
-      /// Require Storage permission before Android 12 version
-      int? androidVersion = await getDeviceOSVersion();
-      permission = ((androidVersion ?? 0) > 12) ? Permission.photos : Permission.storage;
-    } else {
-      permission = Permission.photos;
-    }
+
     PermissionStatus status = await permission.status;
     if (Platform.isAndroid) {
       if (status.isGranted) {
@@ -65,11 +58,5 @@ import 'package:permission_handler/permission_handler.dart';
         context.toPop();
       },
     );
-  }
-
-  Future<int?> getDeviceOSVersion() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    return int.parse(androidInfo.version.release);
   }
 }
