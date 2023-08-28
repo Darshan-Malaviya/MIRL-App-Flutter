@@ -14,16 +14,10 @@
   "passwordDoesNotMatch": "Password does not match.",
   "fieldLengthIsInvalid": "The field length is invalid",
   "requiredPasswordInPattern": "Password must be contain atleast one uppercase and lowercase letters, one special character and number and at least 8 to 25 characters",
-  "requiredBusinessName": "The business name field is required",
-  "requiredBusinessLocation": "The business location field is required",
-  "requiredMachineModel": "The machine model or s/n field is required",
-  "requiredPostcode": "The postcode field is required",
-  "requiredDateOfService": "The date of service field is required",
-  "requiredTimeOfService": "The time of service field is required",
-  "requiredBrandName": "The brand name field is required",
-  "requiredMessage": "The message field is required",
-  "selectService": "Please select the service",
-  "selectBrandName": "Please select the brand name",
-  "selectBusinessLocation": "Please select the business location",
-  "selectBusinessName": "Please select the business name"
+  "settings": "Settings",
+  "cancel": "Cancel",
+  "yes": "Yes",
+  "no": "No",
+  "submit": "Submit",
+  "notNow": "Not now"
 }
