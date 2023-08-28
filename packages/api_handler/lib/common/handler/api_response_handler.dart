@@ -1,4 +1,5 @@
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+
+import 'package:api_handler/common/exports.dart';
 
 mixin class ApiResponseHandler {
   Future<ApiHttpResult> responseHandler({required APIResponse result, required ComputeCallback<Map<String, dynamic>?, dynamic> json}) {

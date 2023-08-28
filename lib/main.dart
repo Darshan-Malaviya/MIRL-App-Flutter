@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
+  await AppPathProvider.initPath();
   await EasyLocalization.ensureInitialized();
   // await Firebase.initializeApp(
   //     options: DefaultFirebaseOptions.firebaseOptionConfig(appId: flavorConfig.appId, iosBundleId: flavorConfig.iosBundleId));

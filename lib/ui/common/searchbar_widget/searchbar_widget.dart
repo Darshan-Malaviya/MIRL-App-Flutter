@@ -1,3 +1,4 @@
+import 'package:api_handler/common/services/shared_pref_helper.dart';
 import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
 
 class SearchBarWidget extends StatelessWidget {
