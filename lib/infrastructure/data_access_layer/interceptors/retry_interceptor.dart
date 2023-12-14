@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:api_handler/data_access_layer/interceptors/dio_connectivity_request_retrier.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/interceptors/dio_connectivity_request_retrier.dart';
 import 'package:logger/logger.dart';
 
 class RetryOnConnectionChangeInterceptor extends Interceptor {

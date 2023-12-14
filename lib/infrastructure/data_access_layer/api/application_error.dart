@@ -1,4 +1,7 @@
-import 'package:api_handler/common/exports.dart';
+
+import 'package:flutter_boilerplate_may_2023/infrastructure/commons/enums/error_type_enum.dart';
+import 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/error_type_extension.dart';
+import 'package:flutter_boilerplate_may_2023/infrastructure/models/common/api_error.dart';
 
 class ApplicationError {
   List<ApiError> errors;

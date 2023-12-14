@@ -42,11 +42,15 @@ export 'package:flutter_boilerplate_may_2023/ui/common/onpressed_widget/on_scale
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/constants/api_constants.dart';
 export 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
 
+
+export 'package:shared_preferences/shared_preferences.dart';
+
+
 ///packages exports
 
 ///api_handler
-export 'package:api_handler/common/services/shared_pref_helper.dart';
-export 'package:api_handler/common/services/app_path_provider.dart';
+// export 'package:api_handler/common/services/shared_pref_helper.dart';
+// export 'package:api_handler/common/services/app_path_provider.dart';
 
 
 

@@ -1,5 +1,10 @@
 
-import 'package:api_handler/common/exports.dart';
+
+import 'package:flutter_boilerplate_may_2023/infrastructure/commons/enums/error_type_enum.dart';
+import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+import 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/error_type_extension.dart';
+import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/api/api_response.dart';
+import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/api/application_error.dart';
 
 mixin class ApiResponseHandler {
   Future<ApiHttpResult> responseHandler({required APIResponse result, required ComputeCallback<Map<String, dynamic>?, dynamic> json}) {
