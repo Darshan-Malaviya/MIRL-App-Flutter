@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/constants/color_constants.dart';
-import 'package:flutter_boilerplate_may_2023/ui/common/animations/scale_tap_animation.dart';
-import 'package:flutter_boilerplate_may_2023/ui/common/loader/three_bounce.dart';
-import 'package:flutter_boilerplate_may_2023/ui/common/text_widgets/base/text_widgets.dart';
+import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
+import 'package:mirl/ui/common/animations/scale_tap_animation.dart';
+import 'package:mirl/ui/common/loader/three_bounce.dart';
+import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
 class AnimatedPrimaryButton extends StatelessWidget {
   final double? height;

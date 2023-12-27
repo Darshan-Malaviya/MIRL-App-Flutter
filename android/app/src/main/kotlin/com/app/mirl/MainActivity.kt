@@ -1,4 +1,4 @@
-package com.app.flutter_boilerplate_may_2023
+package com.app.mirl
 
 import io.flutter.embedding.android.FlutterActivity
 

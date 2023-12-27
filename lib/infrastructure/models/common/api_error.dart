@@ -1,7 +1,7 @@
 
 
 
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/enums/error_type_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/error_type_enum.dart';
 
 class ApiError {
   int? code;

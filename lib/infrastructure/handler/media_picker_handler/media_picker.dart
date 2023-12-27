@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/handler/permission_handler/permission_handler.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/handler/permission_handler/permission_handler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -39,15 +39,15 @@ class ImagePickerHandler extends PermissionHandler {
   ///pick VIDEO from library
   Future<XFile?> pickVideoFromGallery({required BuildContext context}) async {
     //get Storage permission
-    PermissionStatus storagePermissionStatus =
-        await getStoragePermission(context: context, alertMessage: "Open Setting and\nallow {APP_NAME} app to select video form library.");
+    PermissionStatus storagePermissionStatus = await getStoragePermission(
+        context: context, alertMessage: "Open Setting and\nallow {APP_NAME} app to select video form library.");
 
     //pick video from library
     if (storagePermissionStatus == PermissionStatus.granted || storagePermissionStatus == PermissionStatus.limited) {
       final pickedFile = await picker.pickVideo(source: ImageSource.gallery);
 
       if (pickedFile != null) {
-        final fileBytes = await File(pickedFile.path ?? '').readAsBytes();
+        final fileBytes = await File(pickedFile.path).readAsBytes();
         int fileSizedInBytes = fileBytes.lengthInBytes;
         final fileSizeInKB = fileSizedInBytes / 1000;
         final fileSizeInMB = fileSizeInKB / 1000;
@@ -57,12 +57,12 @@ class ImagePickerHandler extends PermissionHandler {
             if (element == mediaType) {
               return pickedFile;
             } else {
-              FlutterToast().showToast(context: context, msg: "Please upload video in mp4, mkv, hevc, mov or webm format.");
+              FlutterToast().showToast(msg: "Please upload video in mp4, mkv, hevc, mov or webm format.");
               return null;
             }
           }
         } else {
-          FlutterToast().showToast(context: context, msg: "Video size should be less than 100 MB.");
+          FlutterToast().showToast(msg: "Video size should be less than 100 MB.");
           return null;
         }
       } else {

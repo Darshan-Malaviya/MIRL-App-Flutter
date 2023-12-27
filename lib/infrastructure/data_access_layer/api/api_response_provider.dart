@@ -5,29 +5,25 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/constants/api_constants.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/enums/enum.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/enums/error_type_enum.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/error_type_extension.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/api/api_response.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/api/application_error.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/api/dio_exceptions.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/api/dio_intersepter.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/interceptors/dio_connectivity_request_retrier.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/data_access_layer/interceptors/retry_interceptor.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/models/common/api_error.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/services/app_path_provider.dart';
+import 'package:mirl/infrastructure/commons/enums/enum.dart';
+import 'package:mirl/infrastructure/commons/enums/error_type_enum.dart';
+import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
+import 'package:mirl/infrastructure/data_access_layer/api/application_error.dart';
+import 'package:mirl/infrastructure/data_access_layer/api/dio_intersepter.dart';
+import 'package:mirl/infrastructure/data_access_layer/interceptors/dio_connectivity_request_retrier.dart';
+import 'package:mirl/infrastructure/data_access_layer/interceptors/retry_interceptor.dart';
+import 'package:mirl/infrastructure/models/response/error_model.dart';
+import 'package:mirl/infrastructure/services/app_path_provider.dart';
 
 import '../../commons/exports/common_exports.dart';
-
 
 class ApiResponseProvider {
   late Dio _dio;
 
   ApiResponseProvider({Map<String, dynamic>? header}) {
-    Map<String, dynamic> authHeader = ApiConstants.headerWithoutAccessToken();
+    Map<String, dynamic> authHeader = ApiConstants.headerWithOutToken();
 
-    _dio = Dio(BaseOptions(baseUrl: 'https://dev-api.trymindscape.com/', headers: header ?? authHeader));
+    _dio = Dio(BaseOptions(baseUrl: 'https://dev-api.mirl.com/', headers: header ?? authHeader));
 
     _dio.interceptors.add(
       DioCacheInterceptor(
@@ -59,19 +55,19 @@ class ApiResponseProvider {
   /// This can also send get requests, or use captcha. Background requests
   /// should not use captcha, and requests for data should use GET.
   /// default apiType is POST
-  Future<APIResponse> requestAPI(
-    Uri url, {
+  Future<APIResponse> requestAPI(Uri url, {
     Map<String, String?>? headers = const {},
     body,
     int timeout = ApiConstants.defaultTimeout,
     APIType apiType = APIType.post,
   }) async {
     APIResponse responseJson;
-    try {
-      Response response;
-      String newURL = url.path;
 
-      getRequest() async {
+    Response response;
+    String newURL = url.path;
+
+    getRequest() async {
+      try {
         _dio.interceptors.add(
           RetryOnConnectionChangeInterceptor(
             requestRetriever: DioConnectivityRequestRetriever(
@@ -83,78 +79,92 @@ class ApiResponseProvider {
         response = await _dio.get(newURL, queryParameters: url.queryParameters);
         responseJson = await _processResponse(response);
         return responseJson;
+      } on DioException catch (e) {
+        return await onDioExceptionHandler(e);
       }
-
-      postRequest() async {
-        response = await _dio.post(newURL,
-            data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
-        responseJson = await _processResponse(response);
-        return responseJson;
-      }
-
-      deleteRequest() async {
-        response = await _dio.delete(newURL,
-            data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
-        responseJson = await _processResponse(response);
-        return responseJson;
-      }
-
-      putRequest() async {
-        response = await _dio.put(newURL,
-            data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
-        responseJson = await _processResponse(response);
-        return responseJson;
-      }
-
-      return switch (apiType) {
-        APIType.get => getRequest(),
-        APIType.post => postRequest(),
-        APIType.put => putRequest(),
-        APIType.delete => deleteRequest(),
-      };
-    } on DioException catch (e) {
-      final errorMessage = DioExceptions.fromDioError(e).toString();
-      ApplicationError applicationError;
-      if (e.error is SocketException) {
-        applicationError = NetworkError.getAppError(NetworkErrorType.netUnreachable);
-      } else {
-        Response? data = e.response;
-        if (data != null) {
-          responseJson = await _processResponse(data);
-          return responseJson;
-        }
-        applicationError = ApplicationError(
-          errorType: ErrorType.genericError.messageString,
-          errors: [
-            ApiError(code: e.response?.statusCode, message: errorMessage),
-          ],
-        );
-      }
-      return APIResponse.error(applicationError);
-    } catch (e) {
-      ApplicationError applicationError = ApplicationError(errorType: ErrorType.genericError.messageString);
-      return APIResponse.error(applicationError);
     }
+
+    postRequest() async {
+      try {
+        response = await _dio.post(newURL,
+            data: json.encode(body),
+            queryParameters: url.queryParameters,
+            options: Options(headers: headers ?? _dio.options.headers));
+        responseJson = await _processResponse(response);
+        return responseJson;
+      } on DioException catch (e) {
+        return await onDioExceptionHandler(e);
+      }
+    }
+
+    deleteRequest() async {
+      try {
+        response = await _dio.delete(newURL,
+            data: json.encode(body),
+            queryParameters: url.queryParameters,
+            options: Options(headers: headers ?? _dio.options.headers));
+        responseJson = await _processResponse(response);
+        return responseJson;
+      } on DioException catch (e) {
+        return await onDioExceptionHandler(e);
+      }
+    }
+
+    putRequest() async {
+      try {
+        response = await _dio.put(newURL,
+            data: json.encode(body),
+            queryParameters: url.queryParameters,
+            options: Options(headers: headers ?? _dio.options.headers));
+        responseJson = await _processResponse(response);
+        return responseJson;
+      } on DioException catch (e) {
+        return await onDioExceptionHandler(e);
+      }
+    }
+
+    return switch (apiType) {
+      APIType.get => getRequest(),
+      APIType.post => postRequest(),
+      APIType.put => putRequest(),
+      APIType.delete => deleteRequest(),
+    };
   }
 
   Future<APIResponse> _processResponse(Response response) async {
-    if (((response.statusCode ?? 0) >= 200 && (response.statusCode ?? 0) <= 299) || (response.statusCode ?? 0) == 304) {
+    if (((response.statusCode ?? 0) >= 200 && (response.statusCode ?? 0) <= 299)) {
       //TODO: for future optimization move decoding to a separate isolate.
       return APIResponse.success(response.data);
-    } else if (response.statusCode == 401) {
-      ApplicationError? applicationError = ErrorResponse.getAppError(response.statusCode ?? 0);
-      return APIResponse.error(applicationError);
     } else {
-      ApplicationError? applicationError;
+      ErrorModel? errorResponse;
       try {
-        applicationError = ErrorResponse.getAppError(response.statusCode ?? 0);
-        return APIResponse.failure(applicationError);
+        errorResponse = await compute(ErrorModel.parseInfo, response.data as Map<String, dynamic>);
       } catch (e) {
-        if (kDebugMode) {
-          print('ErrorResponse.getAppError');
-        }
+        print(e);
       }
-      return APIResponse.failure(applicationError);
+      return APIResponse.failure(errorResponse);
     }
+  }
+
+
+  ///API exception handling
+  Future<APIResponse> onDioExceptionHandler(DioException e) async {
+    // APIResponse responseJson;
+    // final errorMessage = DioExceptions.fromDioError(e).toString();
+    ApplicationError applicationError;
+    if ((e.response?.statusCode ?? 400) >= 400 || (e.response?.statusCode ?? 400) <= 499) {
+      ErrorModel? errorResponse = await compute(ErrorModel.parseInfo, e.response?.data as Map<String, dynamic>);
+      return APIResponse.failure(errorResponse);
+    } else if ((e.response?.statusCode ?? 400) >= 400 || (e.response?.statusCode ?? 400) <= 499) {
+      // ErrorModel? errorResponse = await compute(ErrorModel.parseInfo, e.response?.data as Map<String, dynamic>);
+      return APIResponse.failure(ErrorModel(message: 'Service temporarily unavailable. Please check back soon.'));
+    }
+    if (e.error is SocketException) {
+      applicationError = NetworkError.getAppError(NetworkErrorType.netUnreachable);
+    } else {
+      applicationError = ErrorResponse.getAppError(e.response?.statusCode ?? 0);
+    }
+
+    return APIResponse.failure(ErrorModel(message: applicationError.errors.first.message));
   }
 }

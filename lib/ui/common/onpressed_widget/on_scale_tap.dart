@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_may_2023/ui/common/animations/scale_tap_animation.dart';
+import 'package:mirl/ui/common/animations/scale_tap_animation.dart';
 
 class OnScaleTap extends StatelessWidget {
   final Widget child;

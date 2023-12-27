@@ -1,9 +1,228 @@
-import 'package:flutter_boilerplate_may_2023/infrastructure/handler/media_picker_handler/media_picker.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/handler/permission_handler/permission_handler.dart';
+import 'dart:async';
+import 'dart:developer';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
+import 'package:mirl/infrastructure/commons/enums/device_type_enum.dart';
+import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/request/login_request_model.dart';
+import 'package:mirl/infrastructure/models/request/otp_verify_request_model.dart';
+import 'package:mirl/infrastructure/models/response/login_response_model.dart';
+import 'package:mirl/infrastructure/repository/auth_repo.dart';
+import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
+import 'package:mirl/main.dart';
+import 'package:mirl/ui/common/alert_widgets/loader_widget.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../commons/exports/common_exports.dart';
+class AuthProvider with ChangeNotifier {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
+  final _authRepository = AuthRepository();
 
-class AuthProvider with ChangeNotifier{
+  int get secondsRemaining => _secondsRemaining;
+  int _secondsRemaining = 120;
 
+  bool get enableResend => _enableResend;
+  bool _enableResend = false;
+  Timer? timer;
 
+  String _socialId = '';
+
+  LoginResponseModel? loginResponseModel;
+
+  bool isResend = false;
+  int start = 60;
+
+  GoogleSignInAccount? _currentUser;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: Platform.isIOS ? flavorConfig?.iosClientId : "",
+    // scopes: <String>['email', 'profile'],
+  );
+
+  startTimer() {
+    _secondsRemaining = 120;
+    timer?.cancel();
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (secondsRemaining != 0) {
+        _secondsRemaining--;
+        notifyListeners();
+      } else {
+        _enableResend = true;
+        notifyListeners();
+      }
+    });
+  }
+
+  // void startTimer() {
+  //   timer?.cancel();
+  //   const oneSec = Duration(seconds: 1);
+  //   timer = Timer.periodic(
+  //     oneSec,
+  //         (Timer timer) {
+  //       if (start == 0) {
+  //         timer.cancel();
+  //         isResend = true;
+  //       } else {
+  //         start--;
+  //         isResend = false;
+  //       }
+  //       notifyListeners();
+  //     },
+  //   );
+  // }
+
+  void loginRequestCall({required int loginType}) {
+    LoginRequestModel loginRequestModel = LoginRequestModel(
+      deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
+      email: emailController.text.trim().toString(),
+      socialId: _socialId,
+      loginType: loginType.toString(),
+    );
+    loginApiCall(requestModel: loginRequestModel.toJson(), loginType: loginType);
+  }
+
+  Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
+    CustomLoading.progressDialog(isLoading: true);
+    ApiHttpResult response = await _authRepository.loginCallApi(requestModel: requestModel);
+    CustomLoading.progressDialog(isLoading: false);
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is LoginResponseModel) {
+          LoginResponseModel loginResponseModel = response.data;
+
+          Logger().d("Successfully login");
+
+          CustomLoading.progressDialog(isLoading: false);
+          // ignore: use_build_context_synchronously
+          if (loginType == 0) {
+            // ignore: use_build_context_synchronously
+            FlutterToast().showToast(msg: loginResponseModel.message ?? '');
+            // ignore: use_build_context_synchronously
+            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
+          } else {
+            // ignore: use_build_context_synchronously
+            SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+            FlutterToast().showToast(msg: loginResponseModel.message ?? '');
+            // ignore: use_build_context_synchronously
+            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen);
+          }
+        }
+
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: loginResponseModel?.err?.message ?? '');
+        CustomLoading.progressDialog(isLoading: false);
+        Logger().d("API fail on login callApi ${response.data}");
+        break;
+    }
+    notifyListeners();
+  }
+
+  /// google login
+  void signInGoogle() async {
+    try {
+      _currentUser = await _googleSignIn.signIn();
+      if (_currentUser?.id != null) {
+        _socialId = _currentUser?.id ?? '';
+        // userName = _currentUser?.displayName ?? '';
+        emailController.text = _currentUser?.email ?? '';
+        // profilePic = _currentUser?.photoUrl;
+        // isNetwork = false;
+        loginRequestCall(loginType: 1);
+        log(_currentUser.toString());
+      }
+    } catch (error) {
+      log(error.toString());
+    }
+  }
+
+  void signInApple() async {
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      if (credential.userIdentifier != null) {
+        _socialId = credential.userIdentifier ?? '';
+        //  userName = (credential.givenName ?? '') + " " + (credential.familyName ?? '');
+        if (credential.email != null) {
+          emailController.text = credential.email ?? '';
+          if (emailController.text.split('@').last == 'privatelay.appleid.com') {
+            emailController.text = '';
+          }
+        }
+        loginRequestCall(loginType: 2);
+      }
+    } catch (error) {
+      // CustomLoading.loadingDialog(false, NavigationService.context);
+      log(error.toString());
+    }
+  }
+
+  ///  FB login
+  void fbLogin() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login(); // by default we request the email and the public profile
+      if (result.status == LoginStatus.success) {
+        final userData = await FacebookAuth.instance.getUserData();
+        Map<String, dynamic>? _fbData = userData;
+        _socialId = _fbData['id'];
+        //userName = _fbData['name'];
+        emailController.text = _fbData['email'];
+        loginRequestCall(loginType: 3);
+      } else {
+        // CustomLoading.loadingDialog(false, NavigationService.context);
+      }
+    } catch (error) {
+      log(error.toString());
+    }
+  }
+
+  // String getSocialId() {
+  //   if (loginType == 1) {
+  //     return googleId;
+  //   } else if (loginType == 2) {
+  //     return fbId;
+  //   } else if (loginType == 3) {
+  //     return appleId;
+  //   } else {
+  //     return '';
+  //   }
+  // }
+
+  /// OTP verify
+
+  void otpVerifyRequestCall() {
+    OTPVerifyRequestModel otpVerifyRequestModel = OTPVerifyRequestModel(
+      email: emailController.text.trim().toString(),
+      otp: otpController.text.trim().toString(),
+    );
+    otpVerifyApiCall(requestModel: otpVerifyRequestModel.toJson());
+  }
+
+  Future<void> otpVerifyApiCall({required Object requestModel}) async {
+    CustomLoading.progressDialog(isLoading: true);
+    ApiHttpResult response = await _authRepository.otpVerifyCallApi(requestModel: requestModel);
+    CustomLoading.progressDialog(isLoading: false);
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is LoginResponseModel) {
+          LoginResponseModel loginResponseModel = response.data;
+          Logger().d("Successfully login");
+          SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+          // ignore: use_build_context_synchronously
+          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen);
+          FlutterToast().showToast(msg: loginResponseModel.message ?? '');
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on otp verify call Api ${response.data}");
+        break;
+    }
+    notifyListeners();
+  }
 }

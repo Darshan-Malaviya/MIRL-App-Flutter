@@ -1,8 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_boilerplate_may_2023/generated/locale_keys.g.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:permission_handler/permission_handler.dart';
 
  mixin class PermissionHandler {

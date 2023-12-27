@@ -1,6 +1,5 @@
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:flutter_boilerplate_may_2023/ui/common/animations/shake_animation.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/animations/shake_animation.dart';
 
 class Screen extends StatefulWidget {
   const Screen({Key? key}) : super(key: key);
@@ -12,10 +11,10 @@ class Screen extends StatefulWidget {
 class _ScreenState extends State<Screen> with TickerProviderStateMixin {
   late AnimationController animationController;
   late GlobalKey<CustomShakeWidgetState> buttonShakeKey;
-  late final Animatable<Offset> _slideTransition = Tween<Offset>(
-    begin: const Offset(0.5, 0),
-    end: Offset.zero,
-  );
+  // late final Animatable<Offset> _slideTransition = Tween<Offset>(
+  //   begin: const Offset(0.5, 0),
+  //   end: Offset.zero,
+  // );
 
   @override
   void initState() {

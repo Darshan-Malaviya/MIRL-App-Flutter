@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mirl Dev</string>
+    <string name="facebook_app_id">874418780883397</string>
+    <string name="fb_login_protocol_scheme">fb874418780883397</string>
+    <string name="facebook_client_token">a770d5cda8b1d3a3827fba74ae3057ee</string>
+</resources>

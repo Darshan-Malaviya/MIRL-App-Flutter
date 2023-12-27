@@ -1,6 +1,8 @@
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
-import 'package:flutter_boilerplate_may_2023/ui/screens/animated_button.dart';
-import 'package:flutter_boilerplate_may_2023/ui/screens/screen.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/auth_screen/login_screen.dart';
+import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
+import 'package:mirl/ui/screens/home_screen/home_screen.dart';
+import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 
 ///use this service for provide global context to widgets
 class NavigationService {
@@ -15,11 +17,15 @@ class RouterConstant {
     switch (settings.name) {
       /// normal page routing
       case RoutesConstants.splashScreen:
-        return MaterialPageRoute(builder: (_) => AnimatedButton());
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
 
       ///page routing with page transition
       case RoutesConstants.loginScreen:
-        return MaterialPageRoute(builder: (_) => Container());
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        case RoutesConstants.otpScreen:
+        return MaterialPageRoute(builder: (_) => const OTPScreen());
+        case RoutesConstants.homeScreen:
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

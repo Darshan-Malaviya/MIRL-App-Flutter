@@ -2,8 +2,8 @@
 
 
 
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/constants/storage_constants.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/constants/storage_constants.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class SharedPrefHelper {
   static SharedPreferences? _prefsInstance;
@@ -29,8 +29,18 @@ class SharedPrefHelper {
     return _prefsInstance?.getStringList(StorageConstants.searchHistory) ?? [];
   }
 
+
+  static Future<bool> saveUserData(String? userData) async {
+    return await _prefsInstance?.setString(StorageConstants.userData, userData ?? '') ?? false;
+  }
+
+  static String get getUserData {
+    return _prefsInstance?.getString(StorageConstants.userData) ?? '';
+  }
+
   static clearPrefs() async {
     await _prefsInstance?.remove(StorageConstants.authToken);
     await _prefsInstance?.remove(StorageConstants.authToken);
+    await _prefsInstance?.remove(StorageConstants.userData);
   }
 }

@@ -1,5 +1,5 @@
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/services/shared_pref_helper.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final Function(SearchController controller, String value)? onSuggestionTap;

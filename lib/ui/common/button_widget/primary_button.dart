@@ -1,4 +1,6 @@
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String title;
@@ -29,41 +31,44 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? MediaQuery.of(context).size.width,
-      height: height ?? 44,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          surfaceTintColor: buttonColor ?? ColorConstants.primaryColor,
-          backgroundColor: buttonColor ?? ColorConstants.primaryColor,
-          foregroundColor: ColorConstants.whiteColor,
-          splashFactory: NoSplash.splashFactory,
-          enableFeedback: false,
-          elevation: 0,
-          padding: padding ?? const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(RadiusConstant.commonRadius),
+        width: width ?? MediaQuery.of(context).size.width,
+        height: height ?? 45,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            surfaceTintColor: buttonColor ?? ColorConstants.primaryColor,
+            backgroundColor: buttonColor ?? ColorConstants.primaryColor,
+            foregroundColor: ColorConstants.whiteColor,
+            splashFactory: NoSplash.splashFactory,
+            enableFeedback: false,
+            elevation: 0,
+            padding: padding ?? const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(RadiusConstant.commonRadius),
+              ),
             ),
           ),
-        ),
-        onPressed: onPressed,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
-                ? Padding(
-                    padding: EdgeInsets.only(right: prefixIconPadding ?? 8.0),
-                    child: Image.asset(prefixIcon ?? ''),
-                  )
-                : const SizedBox.shrink(),
-            BodyMediumText(
-              title: title,
-              fontWeight: FontWeight.w600,
-              titleColor: titleColor ?? ColorConstants.whiteColor,
-            ),
-          ],
-        ),
-      ),
-    );
+          onPressed: onPressed,
+          child: Row(
+            //mainAxisSize: MainAxisSize.min,
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
+                  ? Padding(
+                      padding: EdgeInsets.only(right: prefixIconPadding ?? 0.0),
+                      child: Image.asset(prefixIcon ?? ''),
+                    )
+                  : const SizedBox.shrink(),
+              Expanded(
+                child: BodySmallText(
+                  title: title,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                  titleColor: titleColor ?? ColorConstants.textColor,
+                  titleTextAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ).addMarginX(20));
   }
 }

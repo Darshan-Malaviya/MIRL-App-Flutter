@@ -167,7 +167,7 @@ class LabelLargeText extends StatelessWidget {
 }
 
 /// bodySmall - Font Size - 12
-class BodySmallText extends StatelessWidget {
+  class BodySmallText extends StatelessWidget {
   const BodySmallText(
       {Key? key,
       required this.title,
@@ -180,6 +180,7 @@ class BodySmallText extends StatelessWidget {
       this.textScaleFactor,
       this.fontSize,
       this.fontHeight,
+      this.fontFamily,
       this.lineHeight,
       this.isUnderline = false})
       : super(key: key);
@@ -195,6 +196,7 @@ class BodySmallText extends StatelessWidget {
   final double? textScaleFactor;
   final double? fontHeight;
   final bool? isUnderline;
+  final String? fontFamily;
   final double? lineHeight;
 
   @override
@@ -207,6 +209,7 @@ class BodySmallText extends StatelessWidget {
             fontWeight: fontWeight,
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
+            fontFamily: fontFamily,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,
@@ -231,6 +234,7 @@ class BodyMediumText extends StatelessWidget {
       this.fontSize,
       this.fontHeight,
       this.lineHeight,
+        this.fontFamily,
       this.isUnderline = false})
       : super(key: key);
 
@@ -246,6 +250,7 @@ class BodyMediumText extends StatelessWidget {
   final double? fontHeight;
   final bool? isUnderline;
   final double? lineHeight;
+  final String? fontFamily;
 
   @override
   Widget build(BuildContext context) {
@@ -257,6 +262,7 @@ class BodyMediumText extends StatelessWidget {
             fontWeight: fontWeight,
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
+        fontFamily: fontFamily,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,
@@ -281,6 +287,7 @@ class BodyLargeText extends StatelessWidget {
       this.fontSize,
       this.fontHeight,
       this.lineHeight,
+      this.fontFamily,
       this.isUnderline = false})
       : super(key: key);
 
@@ -296,6 +303,7 @@ class BodyLargeText extends StatelessWidget {
   final double? fontHeight;
   final bool? isUnderline;
   final double? lineHeight;
+  final String? fontFamily;
 
   @override
   Widget build(BuildContext context) {
@@ -307,6 +315,7 @@ class BodyLargeText extends StatelessWidget {
             fontWeight: fontWeight,
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
+            fontFamily: fontFamily,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,
@@ -431,6 +440,7 @@ class TitleLargeText extends StatelessWidget {
       this.fontSize,
       this.fontHeight,
       this.lineHeight,
+      this.fontFamily,
       this.isUnderline = false})
       : super(key: key);
 
@@ -445,6 +455,7 @@ class TitleLargeText extends StatelessWidget {
   final double? textScaleFactor;
   final double? fontHeight;
   final bool? isUnderline;
+  final String? fontFamily;
   final double? lineHeight;
 
   @override
@@ -457,6 +468,7 @@ class TitleLargeText extends StatelessWidget {
             fontWeight: fontWeight,
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
+            fontFamily: fontFamily,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,
