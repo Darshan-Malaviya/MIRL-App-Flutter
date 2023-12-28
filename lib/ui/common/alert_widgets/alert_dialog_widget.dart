@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class CommonAlertDialog {
   static dialog({

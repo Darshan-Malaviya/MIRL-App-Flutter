@@ -1,4 +1,4 @@
-name: flutter_boilerplate_may_2023
+name: mirl
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -37,8 +37,15 @@ dependencies:
   cupertino_icons: ^1.0.5
 
   # firebase
-  firebase_messaging: ^14.6.7
-  firebase_core: ^2.15.1
+  firebase_messaging: ^14.7.9
+  firebase_core: ^2.24.2
+
+  #  authentication
+  sign_in_with_apple: ^5.0.0
+  google_sign_in: ^6.2.1
+  flutter_facebook_auth: ^6.0.3
+  firebase_auth: ^4.6.3
+  flutter_local_notifications: ^15.1.0+1
 
   # state management
   flutter_riverpod: ^2.3.7
@@ -51,6 +58,7 @@ dependencies:
   url_launcher: ^6.1.12
   fluttertoast: ^8.2.2
   image_picker: ^1.0.2
+  pinput: ^3.0.1
   #  flutter_sim_country_code: ^0.1.2
 
   #permission
@@ -73,6 +81,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -108,14 +122,6 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: MuseoSans
-      fonts:
-        - asset: assets/fonts/MuseoSans.otf
-          weight: 400
-    - family: Abel-Regular
-      fonts:
-        - asset: assets/fonts/Abel-Regular.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
@@ -127,6 +133,45 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+
+  fonts:
+
+    #100
+    - family: Inter-Thin
+      fonts:
+        - asset: assets/fonts/Inter-Thin.ttf
+      #200
+    - family: Inter-ExtraLight
+      fonts:
+        - asset: assets/fonts/Inter-ExtraLight.ttf
+      #300
+    - family: Inter-Light
+      fonts:
+        - asset: assets/fonts/Inter-Light.ttf
+      #400
+    - family: Inter-Regular
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+      #500
+    - family: Inter-Medium
+      fonts:
+        - asset: assets/fonts/Inter-Medium.ttf
+      #600
+    - family: Inter-SemiBold
+      fonts:
+        - asset: assets/fonts/Inter-SemiBold.ttf
+      #700
+    - family: Inter-Bold
+      fonts:
+        - asset: assets/fonts/Inter-Bold.ttf
+      #800
+    - family: Inter-ExtraBold
+      fonts:
+        - asset: assets/fonts/Inter-ExtraBold.ttf
+      #900
+    - family: Inter-Black
+      fonts:
+        - asset: assets/fonts/Inter-Black.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

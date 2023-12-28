@@ -1,16 +1,26 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/services/app_path_provider.dart';
-import 'package:flutter_boilerplate_may_2023/infrastructure/services/shared_pref_helper.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/services/app_path_provider.dart';
+import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Future<void> main() async {
+late StateProvider<FlavorConfig> flavorConfigProvider;
+
+FlavorConfig? flavorConfig;
+
+Future<void> mainCommon(FlavorConfig flavorConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
   await AppPathProvider.initPath();
   await EasyLocalization.ensureInitialized();
-  // await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.firebaseOptionConfig(appId: flavorConfig.appId, iosBundleId: flavorConfig.iosBundleId));
+  flavorConfigProvider = StateProvider<FlavorConfig>((ref) => flavorConfig);
+
+  await Firebase.initializeApp(
+      options:
+          DefaultFirebaseOptions.firebaseOptionConfig(appId: flavorConfig.appIdForIOS, iosBundleId: flavorConfig.iosBundleId));
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
@@ -41,9 +51,10 @@ class MyApp extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: MaterialApp(
-        title: "Flutter Boilerplate 2023",
+        builder: FToastBuilder(),
+        title: "Mirl",
         theme: ThemeData(
-          fontFamily: 'MuseoSans',
+          fontFamily: AppConstants.fontFamily,
           useMaterial3: true,
           colorSchemeSeed: ColorConstants.primaryColor,
           scaffoldBackgroundColor: ColorConstants.whiteColor,
@@ -61,6 +72,7 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
         initialRoute: '/',
         onGenerateRoute: RouterConstant.generateRoute,
+        navigatorKey: NavigationService.navigatorKey,
         // home: SplashScreen(),
       ),
     );

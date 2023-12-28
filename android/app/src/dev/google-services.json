@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "123033805966",
+    "project_id": "mirlcom",
+    "storage_bucket": "mirlcom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123033805966:android:51f1eedb6fc9d9873215df",
+        "android_client_info": {
+          "package_name": "com.app.mirl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123033805966-6bq639r0s264hlou2d8j12gafp6hesp4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.mirl",
+            "certificate_hash": "d4a34f5b5b60c6988a12639f00137b34f50df736"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2FIgsSBYlfSRexuwpZ0-q8zvPDTbCdN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123033805966-32ie9m2baveh8f0me1v09gn0uf127m56.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.mirl"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123033805966:android:d8ee5e073b0a2ec33215df",
+        "android_client_info": {
+          "package_name": "com.app.mirl.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123033805966-s3l2ks73iaugho4lq4rc6crdomtq37fo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.mirl.dev",
+            "certificate_hash": "d4a34f5b5b60c6988a12639f00137b34f50df736"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2FIgsSBYlfSRexuwpZ0-q8zvPDTbCdN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123033805966-32ie9m2baveh8f0me1v09gn0uf127m56.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.mirl"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

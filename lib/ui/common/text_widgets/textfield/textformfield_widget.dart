@@ -1,4 +1,4 @@
-import 'package:flutter_boilerplate_may_2023/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   final Key? textFormFieldKey;
@@ -241,7 +241,7 @@ class TextFormFieldWidget extends StatelessWidget {
         (labelText?.isNotEmpty ?? false) && labelText != null
             ? BodyMediumText(
                 title: labelText ?? '',
-                titleColor: ColorConstants.primaryColor,
+                titleColor: ColorConstants.greyColor,
                 fontWeight: FontWeight.w600,
               )
             : const SizedBox.shrink(),
@@ -261,7 +261,7 @@ class TextFormFieldWidget extends StatelessWidget {
             maxLength: maxLength,
             textInputAction: textInputAction ?? TextInputAction.next,
             readOnly: isReadOnly ?? false,
-            style: textStyle ?? TextStyle(color: ColorConstants.primaryColor, fontSize: 14 / scaleFactor, fontWeight: FontWeight.w600),
+            style: textStyle ?? TextStyle(color: ColorConstants.blackColor, fontSize: 14 / scaleFactor, fontWeight: FontWeight.w600),
             keyboardType: textInputType ?? TextInputType.text,
             controller: controller,
             decoration: decoration ??
@@ -291,14 +291,14 @@ class TextFormFieldWidget extends StatelessWidget {
                   ///text field with shadow
                   enabledBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderSide: const BorderSide(color: ColorConstants.greyColor),
                       borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                     ),
                     shadow: buildBoxShadow(),
                   ),
                   focusedBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorConstants.primaryColor),
+                      borderSide: const BorderSide(color: ColorConstants.borderColor),
                       borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                     ),
                     shadow: buildBoxShadow(),
@@ -326,7 +326,7 @@ class TextFormFieldWidget extends StatelessWidget {
             autocorrect: false,
             autofocus: autofocus ?? false,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            cursorColor: ColorConstants.primaryColor,
+            cursorColor: ColorConstants.greyColor,
             cursorRadius: const Radius.circular(100),
             cursorHeight: 24,
             enabled: enable ?? true,

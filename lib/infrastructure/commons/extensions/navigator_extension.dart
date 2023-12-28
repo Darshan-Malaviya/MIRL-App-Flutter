@@ -6,7 +6,8 @@ extension RouterContext on BuildContext {
   toPushNamedAndRemoveUntil(String routeName, {Object? args}) =>
       Navigator.of(this).pushNamedAndRemoveUntil(routeName, (route) => false, arguments: args);
 
-  toPushReplacementNamed(String routeName, {Object? args}) => Navigator.of(this).pushReplacementNamed(routeName, arguments: args);
+  toPushReplacementNamed(String routeName, {Object? args}) =>
+      Navigator.of(this).pushReplacementNamed(routeName, arguments: args);
 
   toPop() => Navigator.pop(this);
 }

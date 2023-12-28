@@ -1,5 +1,5 @@
 class AppConstants {
-  static const devFlavorName = 'EEAU Service App Dev';
-  static const prodFlavorName = 'EEAU Service App Prod';
-  static const fontFamily = 'MuseoSans';
+  static const devFlavorName = 'Mirl Dev';
+  static const prodFlavorName = 'Mirl Prod';
+  static const fontFamily = 'Inter';
 }
