@@ -24,8 +24,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    	<string>$(PRODUCT_NAME) requires photo library permission to use photos for profile picture.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -67,6 +71,7 @@
       		<key>CFBundleURLSchemes</key>
       		<array>
       			<string>com.googleusercontent.apps.123033805966-6vc88aip1vmemr5v24obppu6q7003vkg</string>
+      			<string>com.googleusercontent.apps.123033805966-32ie9m2baveh8f0me1v09gn0uf127m56</string>
       		</array>
       	</dict>
     </array>
@@ -82,7 +87,8 @@
       <string>fb-messenger-share-api</string>
     </array>
     <key>GIDClientID</key>
-    <string>123033805966-6vc88aip1vmemr5v24obppu6q7003vkg.apps.googleusercontent.com</string>
-
+     <string>123033805966-6vc88aip1vmemr5v24obppu6q7003vkg.apps.googleusercontent.com</string>
+    <key>GIDClientID</key>
+     <string>123033805966-32ie9m2baveh8f0me1v09gn0uf127m56.apps.googleusercontent.com</string>
 </dict>
 </plist>

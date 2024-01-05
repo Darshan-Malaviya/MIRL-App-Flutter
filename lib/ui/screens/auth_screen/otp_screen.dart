@@ -117,7 +117,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       ],
                     ),
                   ),
-                ),
+                ).addPaddingX(20),
                 60.0.spaceY,
                 //  Image.asset(ImageConstants.line),
                 PrimaryButton(
@@ -129,7 +129,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       FlutterToast().showToast(msg: "The OTP Field is required ");
                     }
                   },
-                ),
+                ).addPaddingX(55),
                 20.0.spaceY,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +173,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   ],
                 ),
               ],
-            ).addAllPadding(20),
+            ),
           ),
         ),
       ),

@@ -23,7 +23,7 @@ class ApiResponseProvider {
   ApiResponseProvider({Map<String, dynamic>? header}) {
     Map<String, dynamic> authHeader = ApiConstants.headerWithOutToken();
 
-    _dio = Dio(BaseOptions(baseUrl: 'https://dev-api.mirl.com/', headers: header ?? authHeader));
+    _dio = Dio(BaseOptions(baseUrl: '${ApiConstants.scheme}://${ApiConstants.host}', headers: header ?? authHeader));
 
     _dio.interceptors.add(
       DioCacheInterceptor(
@@ -55,7 +55,8 @@ class ApiResponseProvider {
   /// This can also send get requests, or use captcha. Background requests
   /// should not use captcha, and requests for data should use GET.
   /// default apiType is POST
-  Future<APIResponse> requestAPI(Uri url, {
+  Future<APIResponse> requestAPI(
+    Uri url, {
     Map<String, String?>? headers = const {},
     body,
     int timeout = ApiConstants.defaultTimeout,
@@ -146,7 +147,6 @@ class ApiResponseProvider {
     }
   }
 
-
   ///API exception handling
   Future<APIResponse> onDioExceptionHandler(DioException e) async {
     // APIResponse responseJson;
@@ -157,7 +157,7 @@ class ApiResponseProvider {
       return APIResponse.failure(errorResponse);
     } else if ((e.response?.statusCode ?? 400) >= 400 || (e.response?.statusCode ?? 400) <= 499) {
       // ErrorModel? errorResponse = await compute(ErrorModel.parseInfo, e.response?.data as Map<String, dynamic>);
-      return APIResponse.failure(ErrorModel(message: 'Service temporarily unavailable. Please check back soon.'));
+      return APIResponse.failure(ErrorModel(message: ['Service temporarily unavailable. Please check back soon.']));
     }
     if (e.error is SocketException) {
       applicationError = NetworkError.getAppError(NetworkErrorType.netUnreachable);
@@ -165,6 +165,6 @@ class ApiResponseProvider {
       applicationError = ErrorResponse.getAppError(e.response?.statusCode ?? 0);
     }
 
-    return APIResponse.failure(ErrorModel(message: applicationError.errors.first.message));
+    return APIResponse.failure(ErrorModel(message: [applicationError.errors.first.message ?? '']));
   }
 }

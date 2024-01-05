@@ -22,40 +22,56 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       body: Form(
         key: _loginPassKey,
-        child: Column(
-          children: [
-            Image.asset(
-              ImageConstants.backgroundLogo,
-              height: 270,
-              width: 270,
-            ),
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: ColorConstants.greyColor,
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 2),
-                      )
-                    ],
-                    color: ColorConstants.whiteColor,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
-                child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Image.asset(
+                ImageConstants.backgroundLogo,
+              ).addPaddingTop(100),
+              40.0.spaceY,
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Container(
+                  // decoration: ShapeDecoration(
+                  //   color: Colors.white,
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.only(
+                  //       topLeft: Radius.circular(40),
+                  //       topRight: Radius.circular(40),
+                  //     ),
+                  //   ),
+                  //   shadows: [
+                  //     BoxShadow(
+                  //       color: Color(0x4C000000),
+                  //       blurRadius: 5,
+                  //     )
+                  //   ]
+                  // ),
+                  decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorConstants.borderColor,
+                          //spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, -3),
+                        )
+                      ],
+                      color: ColorConstants.whiteColor,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
+                      25.0.spaceY,
                       TitleLargeText(
                         title: StringConstants.letsMirl,
-                        fontFamily: FontWeightEnum.w700.toInter,
+                        fontFamily: FontWeightEnum.w800.toInter,
                         fontSize: 20,
                       ),
-
                       8.0.spaceY,
                       BodySmallText(
                         title: StringConstants.discoverExperts,
-                        fontFamily: FontWeightEnum.w500.toInter,
+                        fontFamily: FontWeightEnum.w600.toInter,
+                        titleColor: ColorConstants.blackColor,
                       ),
                       40.0.spaceY,
                       TextFormFieldWidget(
@@ -75,26 +91,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           }
                           return null;
                         },
-                      ).addPaddingX(10),
+                      ).addPaddingX(42),
                       14.0.spaceY,
                       PrimaryButton(
                           title: StringConstants.selectLoginCode,
+                          width: 235,
                           onPressed: () {
                             if (_loginPassKey.currentState?.validate() ?? false) {
                               loginScreenProviderRead.loginRequestCall(loginType: 0);
                             }
-                          }).addMarginX(20),
-                      30.0.spaceY,
+                          }),
+                      40.0.spaceY,
                       Image.asset(ImageConstants.line),
                       // const HorizontalLine(),
-                      30.0.spaceY,
+                      40.0.spaceY,
                       PrimaryButton(
                         title: StringConstants.continueWithGoogle,
                         onPressed: () {
                           loginScreenProviderRead.signInGoogle();
                         },
                         prefixIcon: ImageConstants.google,
-                      ),
+                      ).addMarginX(55),
                       // 30.0.spaceY,
                       Visibility(
                           visible: Platform.isIOS,
@@ -106,7 +123,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 prefixIcon: ImageConstants.apple,
                                 onPressed: () {
                                   loginScreenProviderRead.signInApple();
-                                }),
+                                }).addMarginX(55),
                           )),
                       30.0.spaceY,
                       PrimaryButton(
@@ -115,7 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: () {
                           loginScreenProviderRead.fbLogin();
                         },
-                      ),
+                      ).addMarginX(55),
                       30.0.spaceY,
                       RichText(
                         softWrap: true,
@@ -130,7 +147,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               //   privacyPolicy();
                               // },
                               ),
-                          TextSpan(text: " ${StringConstants.acknowledge} ", style: textStyle(context: context)),
+                          TextSpan(
+                            text: " ${StringConstants.acknowledge} ",
+                            style: textStyle(context: context),
+                          ),
                           TextSpan(
                               text: StringConstants.privacyPolicy,
                               style: textStyle(context: context, textColor: ColorConstants.primaryColor),
@@ -140,18 +160,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               // },
                               ),
                         ]),
-                      )
+                      ).addPaddingX(16),
+                      30.0.spaceY,
                       // const LabelSmallText(
                       //   title: StringConstants.terms,
                       //   fontWeight: FontWeight.w400,
                       //   fontSize: 10,
                       // ),
                     ],
-                  ).addAllPadding(20),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -160,7 +181,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   TextStyle? textStyle({required BuildContext context, Color? textColor, bool? isUnderline}) {
     return Theme.of(context).textTheme.bodySmall?.copyWith(
           color: textColor ?? Theme.of(context).textTheme.bodySmall?.color,
-          fontFamily: FontWeightEnum.w400.toInter,
+          fontFamily: FontWeightEnum.w500.toInter,
           fontSize: 10,
           //decoration: (isUnderline ?? false) ? TextDecoration.underline : null,
           decorationColor: ColorConstants.primaryColor,
