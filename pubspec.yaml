@@ -59,6 +59,7 @@ dependencies:
   fluttertoast: ^8.2.2
   image_picker: ^1.0.2
   pinput: ^3.0.1
+  dropdown_button2: ^2.3.9
   #  flutter_sim_country_code: ^0.1.2
 
   #permission
@@ -110,6 +111,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/images/
+    - assets/gif/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

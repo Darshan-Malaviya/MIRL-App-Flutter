@@ -33,12 +33,12 @@ class ShadowContainer extends StatelessWidget {
       margin: margin,
       height: height,
       width: width,
-      padding: padding ?? const EdgeInsets.all(16),
+      padding: padding ?? const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(border ?? 16),
         color: backgroundColor ?? ColorConstants.whiteColor,
         boxShadow: (isShadow ?? false)
-            ? [BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.1), blurRadius: 6, offset: const Offset(0, 0))]
+            ? [BoxShadow(color: ColorConstants.categoryListBorder, blurRadius: 8, spreadRadius: 1, offset: const Offset(0, 0))]
             : [],
       ),
       child: child,

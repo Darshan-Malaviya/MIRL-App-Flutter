@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class FlutterToast {
   FToast fToast = FToast();
 
-  Future showToast({required String msg}) async {
+  Future showToast({required dynamic msg}) async {
     fToast.init(NavigationService.context);
     Widget toast = Container(
       padding: const EdgeInsets.all(5),
@@ -35,7 +35,7 @@ class FlutterToast {
       ),
     );
 
-    fToast.showToast(child: toast, toastDuration: const Duration(seconds: 2), gravity: ToastGravity.BOTTOM);
+    fToast.showToast(child: toast, toastDuration: const Duration(seconds: 2), gravity: ToastGravity.TOP);
   }
 
   cancelToast() {

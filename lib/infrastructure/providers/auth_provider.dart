@@ -77,6 +77,8 @@ class AuthProvider with ChangeNotifier {
       deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
       email: emailController.text.trim().toString(),
       socialId: _socialId,
+      deviceToken: "yfuyjuyhg",
+      timezone: "cgnhfgj",
       loginType: loginType.toString(),
     );
     loginApiCall(requestModel: loginRequestModel.toJson(), loginType: loginType);
@@ -94,18 +96,13 @@ class AuthProvider with ChangeNotifier {
           Logger().d("Successfully login");
 
           CustomLoading.progressDialog(isLoading: false);
-          // ignore: use_build_context_synchronously
           if (loginType == 0) {
-            // ignore: use_build_context_synchronously
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
-            // ignore: use_build_context_synchronously
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
-            // ignore: use_build_context_synchronously
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
-            // ignore: use_build_context_synchronously
-            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen);
+            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           }
         }
 
@@ -213,8 +210,7 @@ class AuthProvider with ChangeNotifier {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
-          // ignore: use_build_context_synchronously
-          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen);
+          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }
         break;

@@ -11,7 +11,7 @@ late StateProvider<FlavorConfig> flavorConfigProvider;
 FlavorConfig? flavorConfig;
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
-  WidgetsFlutterBinding.ensureInitialized();
+  await WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
   await AppPathProvider.initPath();
   await EasyLocalization.ensureInitialized();
@@ -50,30 +50,35 @@ class MyApp extends StatelessWidget {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: MaterialApp(
-        builder: FToastBuilder(),
-        title: "Mirl",
-        theme: ThemeData(
-          fontFamily: AppConstants.fontFamily,
-          useMaterial3: true,
-          colorSchemeSeed: ColorConstants.primaryColor,
-          scaffoldBackgroundColor: ColorConstants.whiteColor,
-          appBarTheme: AppBarTheme(color: ColorConstants.primaryColor, elevation: 0, scrolledUnderElevation: 0),
-          dividerColor: ColorConstants.greyLightColor,
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: ColorConstants.primaryColor,
-            selectionColor: ColorConstants.primaryColor.withOpacity(0.4),
-            selectionHandleColor: ColorConstants.primaryColor,
-          ),
-        ),
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        initialRoute: '/',
-        onGenerateRoute: RouterConstant.generateRoute,
-        navigatorKey: NavigationService.navigatorKey,
-        // home: SplashScreen(),
+      child: Consumer(
+        builder: (BuildContext context, WidgetRef ref, Widget? child) {
+          flavorConfig = ref.read(flavorConfigProvider);
+          return MaterialApp(
+            builder: FToastBuilder(),
+            title: flavorConfig?.appTitle ?? 'Mirl',
+            theme: ThemeData(
+              fontFamily: AppConstants.fontFamily,
+              useMaterial3: true,
+              colorSchemeSeed: ColorConstants.primaryColor,
+              scaffoldBackgroundColor: ColorConstants.whiteColor,
+              appBarTheme: AppBarTheme(color: ColorConstants.primaryColor, elevation: 0, scrolledUnderElevation: 0),
+              dividerColor: ColorConstants.greyLightColor,
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: ColorConstants.primaryColor,
+                selectionColor: ColorConstants.primaryColor.withOpacity(0.4),
+                selectionHandleColor: ColorConstants.primaryColor,
+              ),
+            ),
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            initialRoute: '/',
+            onGenerateRoute: RouterConstant.generateRoute,
+            navigatorKey: NavigationService.navigatorKey,
+            // home: SplashScreen(),
+          );
+        },
       ),
     );
   }

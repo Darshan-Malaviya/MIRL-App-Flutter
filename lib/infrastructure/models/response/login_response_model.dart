@@ -3,7 +3,7 @@ import 'package:mirl/infrastructure/models/response/error_model.dart';
 
 class LoginResponseModel {
   int? status;
-  Data? data;
+  UserData? data;
   String? message;
   String? token;
   ErrorModel? err;
@@ -12,7 +12,7 @@ class LoginResponseModel {
 
   LoginResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? UserData.fromJson(json['data']) : null;
     message = json['message'];
     token = json['token'];
     err = json['err'] != null ? ErrorModel.fromJson(json['err']) : null;
@@ -22,7 +22,7 @@ class LoginResponseModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data?.toJson();
     }
     data['message'] = message;
     data['token'] = token;
@@ -42,7 +42,7 @@ class LoginResponseModel {
   }
 }
 
-class Data {
+class UserData {
   int? id;
   String? userName;
   String? expertName;
@@ -78,7 +78,7 @@ class Data {
   String? firstCreated;
   String? lastModified;
 
-  Data(
+  UserData(
       {this.id,
       this.userName,
       this.expertName,
@@ -114,7 +114,7 @@ class Data {
       this.firstCreated,
       this.lastModified});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
     expertName = json['expertName'];
