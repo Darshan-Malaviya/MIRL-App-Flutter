@@ -85,6 +85,7 @@ class CategoryList {
   String? firstCreated;
   String? lastModified;
   String? parentCategory;
+  bool expanded = false;
 
   CategoryList(
       {this.id,
@@ -94,7 +95,8 @@ class CategoryList {
       this.skillId,
       this.firstCreated,
       this.lastModified,
-      this.parentCategory});
+      this.parentCategory,
+      this.expanded = false});
 
   CategoryList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
