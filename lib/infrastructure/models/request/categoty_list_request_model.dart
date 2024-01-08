@@ -3,7 +3,7 @@ class CategoryListRequestModel {
   String? limit;
   String? search;
   int? skillId;
-  bool? isChild;
+  String? isChild;
 
   CategoryListRequestModel({this.page, this.limit, this.search, this.skillId, this.isChild});
 
