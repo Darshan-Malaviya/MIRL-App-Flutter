@@ -1,7 +1,4 @@
-
-
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
 
 mixin class ApiResponseHandler {
   Future<ApiHttpResult> responseHandler({required APIResponse result, required ComputeCallback<Map<String, dynamic>?, dynamic> json}) {

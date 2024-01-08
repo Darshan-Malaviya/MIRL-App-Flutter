@@ -1,21 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
-import 'package:mirl/infrastructure/commons/enums/enum.dart';
-import 'package:mirl/infrastructure/commons/enums/error_type_enum.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/application_error.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/dio_intersepter.dart';
-import 'package:mirl/infrastructure/data_access_layer/interceptors/dio_connectivity_request_retrier.dart';
-import 'package:mirl/infrastructure/data_access_layer/interceptors/retry_interceptor.dart';
-import 'package:mirl/infrastructure/models/response/error_model.dart';
-import 'package:mirl/infrastructure/services/app_path_provider.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-import '../../commons/exports/common_exports.dart';
 
 class ApiResponseProvider {
   late Dio _dio;
@@ -23,7 +11,7 @@ class ApiResponseProvider {
   ApiResponseProvider({Map<String, dynamic>? header}) {
     Map<String, dynamic> authHeader = ApiConstants.headerWithOutToken();
 
-    _dio = Dio(BaseOptions(baseUrl: 'https://dev-api.mirl.com/', headers: header ?? authHeader));
+    _dio = Dio(BaseOptions(baseUrl: '${ApiConstants.scheme}://${ApiConstants.host}', headers: header ?? authHeader));
 
     _dio.interceptors.add(
       DioCacheInterceptor(
@@ -55,7 +43,8 @@ class ApiResponseProvider {
   /// This can also send get requests, or use captcha. Background requests
   /// should not use captcha, and requests for data should use GET.
   /// default apiType is POST
-  Future<APIResponse> requestAPI(Uri url, {
+  Future<APIResponse> requestAPI(
+    Uri url, {
     Map<String, String?>? headers = const {},
     body,
     int timeout = ApiConstants.defaultTimeout,
@@ -146,7 +135,6 @@ class ApiResponseProvider {
     }
   }
 
-
   ///API exception handling
   Future<APIResponse> onDioExceptionHandler(DioException e) async {
     // APIResponse responseJson;
@@ -157,7 +145,7 @@ class ApiResponseProvider {
       return APIResponse.failure(errorResponse);
     } else if ((e.response?.statusCode ?? 400) >= 400 || (e.response?.statusCode ?? 400) <= 499) {
       // ErrorModel? errorResponse = await compute(ErrorModel.parseInfo, e.response?.data as Map<String, dynamic>);
-      return APIResponse.failure(ErrorModel(message: 'Service temporarily unavailable. Please check back soon.'));
+      return APIResponse.failure(ErrorModel(message: ['Service temporarily unavailable. Please check back soon.']));
     }
     if (e.error is SocketException) {
       applicationError = NetworkError.getAppError(NetworkErrorType.netUnreachable);
@@ -165,6 +153,6 @@ class ApiResponseProvider {
       applicationError = ErrorResponse.getAppError(e.response?.statusCode ?? 0);
     }
 
-    return APIResponse.failure(ErrorModel(message: applicationError.errors.first.message));
+    return APIResponse.failure(ErrorModel(message: [applicationError.errors.first.message ?? '']));
   }
 }

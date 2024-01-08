@@ -3,16 +3,13 @@ import 'dart:developer';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/commons/enums/device_type_enum.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
+import 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/login_request_model.dart';
 import 'package:mirl/infrastructure/models/request/otp_verify_request_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/repository/auth_repo.dart';
-import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
-import 'package:mirl/main.dart';
-import 'package:mirl/ui/common/alert_widgets/loader_widget.dart';
+import 'package:mirl/mirl_app.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -72,11 +69,14 @@ class AuthProvider with ChangeNotifier {
   //   );
   // }
 
-  void loginRequestCall({required int loginType}) {
+  Future<void> loginRequestCall({required int loginType}) async {
+    debugPrint('Token=================${SharedPrefHelper.getAuthToken}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
       deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
       email: emailController.text.trim().toString(),
       socialId: _socialId,
+      deviceToken: SharedPrefHelper.getAuthToken,
+      timezone:  await CommonMethods.getCurrentTimeZone(),
       loginType: loginType.toString(),
     );
     loginApiCall(requestModel: loginRequestModel.toJson(), loginType: loginType);
@@ -94,18 +94,13 @@ class AuthProvider with ChangeNotifier {
           Logger().d("Successfully login");
 
           CustomLoading.progressDialog(isLoading: false);
-          // ignore: use_build_context_synchronously
           if (loginType == 0) {
-            // ignore: use_build_context_synchronously
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
-            // ignore: use_build_context_synchronously
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
-            // ignore: use_build_context_synchronously
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
-            // ignore: use_build_context_synchronously
-            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen);
+            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           }
         }
 
@@ -129,7 +124,7 @@ class AuthProvider with ChangeNotifier {
         emailController.text = _currentUser?.email ?? '';
         // profilePic = _currentUser?.photoUrl;
         // isNetwork = false;
-        loginRequestCall(loginType: 1);
+        loginRequestCall(loginType: LoginType.google);
         log(_currentUser.toString());
       }
     } catch (error) {
@@ -154,7 +149,7 @@ class AuthProvider with ChangeNotifier {
             emailController.text = '';
           }
         }
-        loginRequestCall(loginType: 2);
+        loginRequestCall(loginType: LoginType.apple);
       }
     } catch (error) {
       // CustomLoading.loadingDialog(false, NavigationService.context);
@@ -172,7 +167,7 @@ class AuthProvider with ChangeNotifier {
         _socialId = _fbData['id'];
         //userName = _fbData['name'];
         emailController.text = _fbData['email'];
-        loginRequestCall(loginType: 3);
+        loginRequestCall(loginType: LoginType.facebook);
       } else {
         // CustomLoading.loadingDialog(false, NavigationService.context);
       }
@@ -213,8 +208,7 @@ class AuthProvider with ChangeNotifier {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
-          // ignore: use_build_context_synchronously
-          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen);
+          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }
         break;

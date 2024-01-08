@@ -1,9 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPScreen extends ConsumerStatefulWidget {
@@ -117,7 +113,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       ],
                     ),
                   ),
-                ),
+                ).addPaddingX(20),
                 60.0.spaceY,
                 //  Image.asset(ImageConstants.line),
                 PrimaryButton(
@@ -129,7 +125,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       FlutterToast().showToast(msg: "The OTP Field is required ");
                     }
                   },
-                ),
+                ).addPaddingX(55),
                 20.0.spaceY,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +169,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   ],
                 ),
               ],
-            ).addAllPadding(20),
+            ),
           ),
         ),
       ),

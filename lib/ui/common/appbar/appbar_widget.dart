@@ -5,6 +5,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       {Key? key,
       this.leadingIcon,
       this.appTitle,
+        this.leading,
       this.trailingIcon,
       this.onLeadingIconTap,
       this.onTrailingIconTap,
@@ -18,6 +19,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       : super(key: key);
 
   final Widget? appTitle;
+  final Widget? leading;
   final String? leadingIcon;
   final Widget? trailingIcon;
   final VoidCallback? onLeadingIconTap;
@@ -34,27 +36,34 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: ColorConstants.primaryColor,
+      backgroundColor: ColorConstants.whiteColor,
       automaticallyImplyLeading: false,
       centerTitle: centerTitle ?? true,
       title: appTitle,
-      leading: (isShowLeading ?? false)
-          ? leadingIcon != null && (leadingIcon?.isNotEmpty ?? false)
-              ? InkWell(
-                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                  onTap: onLeadingIconTap,
-                  child: Image.asset(leadingIcon ?? ''),
-                )
-              : InkWell(
-                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                  onTap: onLeadingIconTap ?? () => Navigator.pop(context),
-                  child: const Icon(
-                    Icons.arrow_back_rounded,
-                    size: 24,
-                    color: ColorConstants.whiteColor,
-                  ),
-                )
-          : null,
+      leading: leading,
+      // leading: InkWell(
+      //   child: Image.asset(ImageConstants.backIcon),
+      //   onTap: () {
+      //     Navigator.pop(context);
+      //   },
+      // ),
+      // (isShowLeading ?? false)
+      //     ? leadingIcon != null && (leadingIcon?.isNotEmpty ?? false)
+      //         ? InkWell(
+      //             overlayColor: MaterialStateProperty.all(Colors.transparent),
+      //             onTap: onLeadingIconTap,
+      //             child: Image.asset(leadingIcon ?? ''),
+      //           )
+      //         : InkWell(
+      //             overlayColor: MaterialStateProperty.all(Colors.transparent),
+      //             onTap: onLeadingIconTap ?? () => Navigator.pop(context),
+      //             child: const Icon(
+      //               Icons.arrow_back_rounded,
+      //               size: 24,
+      //               color: ColorConstants.whiteColor,
+      //             ),
+      //           )
+      //     : null,
       actions: [
         trailingIcon != null
             ? InkWell(

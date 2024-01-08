@@ -1,6 +1,4 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String title;
@@ -30,7 +28,15 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+        decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)), shadows: [
+          BoxShadow(
+            color: Color(0x33000000),
+            blurRadius: 2,
+            offset: Offset(0, 2),
+            spreadRadius: 0,
+          )
+        ]),
         width: width ?? MediaQuery.of(context).size.width,
         height: height ?? 45,
         child: ElevatedButton(
@@ -41,7 +47,7 @@ class PrimaryButton extends StatelessWidget {
             splashFactory: NoSplash.splashFactory,
             enableFeedback: false,
             elevation: 0,
-            padding: padding ?? const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            padding: padding ?? const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(RadiusConstant.commonRadius),
@@ -60,15 +66,16 @@ class PrimaryButton extends StatelessWidget {
                     )
                   : const SizedBox.shrink(),
               Expanded(
-                child: BodySmallText(
+                child: BodyMediumText(
                   title: title,
                   fontFamily: FontWeightEnum.w700.toInter,
                   titleColor: titleColor ?? ColorConstants.textColor,
                   titleTextAlign: TextAlign.center,
+                  fontSize: 13,
                 ),
               ),
             ],
           ),
-        ).addMarginX(20));
+        ));
   }
 }

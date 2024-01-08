@@ -1,6 +1,6 @@
 class StringConstants {
   static const String letsMirl = "LET'S MIRL!";
-  static const String discoverExperts = "Discover Experts, and Share Your Expertise \n MIRL is where Knowledge meets Exchange!";
+  static const String discoverExperts = "Discover Experts, and Share Your Expertise. \n MIRL is where Knowledge meets Exchange!";
   static const String selectLoginCode = "GET YOUR SECRET LOGIN CODE";
   static const String continueWithGoogle = "CONTINUE WITH GOOGLE";
   static const String continueWithApple = "CONTINUE WITH APPLE";
@@ -18,4 +18,88 @@ class StringConstants {
   static const String requiredEmail = "The email field is required";
   static const String logOut = "Log Out";
   static const String emailIsNotInProperFormat = "Email address is not in valid format";
+  static const String home = "HOME";
+  static const String explore = "EXPLORE";
+  static const String notification = "NOTIFICATIONS";
+  static const String expertProfile = "EXPERT PROFILE";
+  static const String userSetting = "USER SETTINGS";
+  static const String yourExpertName = "Your Expert Name";
+  static const String overallRatting = "OVERALL \n  RATING";
+  static const String feePer = "    FEE PER \n10 MINUTES";
+  static const String editProfile = "EDIT PROFILE";
+  static const String shareProfile = "SHARE PROFILE";
+  static const String moreAboutMe = "MORE ABOUT ME";
+  static const String done = "Done";
+  static const String editYourExpertProfile = "EDIT YOUR EXPERT PROFILE";
+  static const String editExpertProfile = "EDIT EXPERT PICTURE";
+  static const String editYourDetails = "EDIT YOUR DETAILS";
+  static const String expertName = "EXPERT NAME";
+  static const String yourMirlId = "YOUR MIRL ID";
+  static const String setYourFee = "SET YOUR FEE";
+  static const String areasOfExpertise = "TAG YOUR AREAS OF EXPERTISE";
+  static const String weeklyAvailability = "SET YOUR WEEKLY AVAILABILITY";
+  static const String callsAvailability = "INSTANT CALLS AVAILABILITY";
+  static const String setYourLocation = "SET YOUR LOCATION";
+  static const String setYourGender = "SET YOUR GENDER";
+  static const String addCertifications = "ADD CERTIFICATIONS AND EXPERIENCE";
+  static const String bankAccountDetails = "YOUR BANK ACCOUNT DETAILS";
+  static const String calendar = "CALENDAR & APPOINTMENTS";
+  static const String reviews = "YOUR REVIEWS AND RATINGS";
+  static const String earningReports = "EARNING REPORTS";
+  static const String callHistory = "CALL HISTORY";
+  static const String blockedUsersList = "BLOCKED USERS LIST";
+  static const String yourExpertProfileName = "YOUR EXPERT PROFILE NAME";
+  static const String currency = "CURRENCY: USD";
+  static const String appFees = "+ 20% App Fees";
+  static const String ourAppFees = "Read about our App Fees here";
+  static const String userFees = "USER FEE PER 10 MINUTES";
+  static const String officialNameHere = "Type your official name here";
+  static const String leastCharactersLong = "Your MIRL ID should be at least 5 characters long";
+  static const String instantCallsAvailability = "INSTANT CALLS AVAILABILITY";
+  static const String availabilitySchedule = "ALLOW USERS TO REQUEST CALLS \n WITHIN YOUR WEEKLY AVAILABILITY SCHEDULE?";
+  static const String theDropDown = "SELECT YES OR NO FROM THE DROPDOWN";
+  static const String visibleOnYourProfile = "DO YOU WANT YOUR LOCATION \n TO BE VISIBLE ON YOUR PROFILE?";
+  static const String certificationsAndExperience = "CERTIFICATIONS AND EXPERIENCE";
+  static const String nearestLandmark = "TYPE YOUR ADDRESS OR NEAREST LANDMARK HERE";
+  static const String instantCalls =
+      "Instant calls are direct call requests by users only \n within the weekly availability schedule set by you.";
+  static const String declineAnyCall =
+      "If this is turned on, users can reach out to you, and \n you still have a choice to accept or decline any call.";
+  static const String highlyRecommend = "(we highly recommend keeping this active)";
+  static const String filterExperts =
+      "Your exact location will NEVER be displayed to \n anyone. It will only be used internally by our \n algorithms to filter experts.";
+  static const String specificCityOrCountry =
+      "Some users may request for Experts within a specific \n city or country. Sharing the name of your city can \n help you connect with more users around you.";
+  static const String officialName =
+      "Your Expert Name is the official name you’ll be using to connect with users from around the world in MIRL.";
+  static const String yourExpertNameOnly = "You can change your Expert Name only once in two weeks.";
+  static const String expertProfilePhoto = "EXPERT PROFILE PHOTO TIP";
+  static const String highQualityProfile =
+      "Get picked more often! A relevant and high- \n quality profile photo can make all the difference.";
+  static const String yourFavoriteOne = "Tap here to add your favorite one!";
+  static const String trustYourAbilities =
+      "Showcase your expertise and experience prominently \n – it's key for users to see and trust your abilities.";
+  static const String mediaAccount =
+      " This could include links to your professional website \n or accounts, your social media accounts, any \n certifications, etc.";
+  static const String writeYourTitle = "WRITE YOUR TITLE HERE (role, designation, etc.)";
+  static const String sourceUrl = "PASTE A SOURCE URL/LINK (optional, but preferable!)";
+  static const String description = "DESCRIPTION (optional)";
+  static const String addMoreCredentials = "ADD MORE CREDENTIALS ";
+  static const String shareBankAccountDetails =
+      "Please share your bank account details. Your weekly \n  Expert fees and payments will be transferred to the \n account details you share here.";
+  static const String updateBankAccountDetails =
+      "NOTE: Failure to update bank account details could \n lead to a delay in your payments";
+  static const String informationRequired = "(DEV NOTE: information required here can be \n changed later)";
+  static const String nameBankAccount = "NAME AS PER BANK ACCOUNT";
+  static const String bankName = "BANK NAME";
+  static const String accountNumber = "ACCOUNT NUMBER";
+  static const String welcomeExpertProfile = "Welcome! :-) This is your Expert profile\npage!";
+  static const String soWhatNext =
+      "So what next? It’s time to tag your expertise,\nset your fees, update your availability,\nand sit back. You’ll start\nreceiving notifications in no time from other\nseekers who want to learn from your\nexpertise! ";
+  static const String clickEditProfile =
+      "Click on the “Edit Profile” button just above\nthis section, and follow the steps to\ncomplete and activate your Expert Profile!";
+  static const String goodLuck = "Good luck, and we hope you enjoy sharing\nyour expertise with other seekers on MIRL!";
+  static const String addYourAreas = "ADD YOUR AREAS OF EXPERTISE";
+  static const String categoryView =
+      "Click on any category to view the topics under it.\nYou can select multiple topics in multiple categories.";
 }

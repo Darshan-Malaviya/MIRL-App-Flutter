@@ -1,6 +1,7 @@
 // ValueNotifier<bool> isUnAuthorized = ValueNotifier<bool>(false);
 
-import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/mirl_app.dart';
 
 class ApiConstants {
   static const String sampleExample = '';
@@ -10,23 +11,22 @@ class ApiConstants {
   static const int cachedDays = 7;
 
   static String get host {
-    // if (flavorConfig.appTitle == AppConstants.prodFlavorName) {
-    //   return prodHost;
-    // } else {
-    //   return devHost;
-    // }
-    return host;
+    if (flavorConfig?.appTitle == AppConstants.prodFlavorName) {
+      return prodHost;
+    } else {
+      return devHost;
+    }
   }
 
   static const String scheme = 'https';
   static const String devHost = 'dev-api.mirl.com';
-  static const String prodHost = 'prod-api.mobile-eeaustralia.com';
+  static const String prodHost = 'api.mirl.com';
 
   ///development url
 
   static Uri endpointUri({String? path, Map<String, dynamic>? queryParameters}) => Uri(
         scheme: scheme,
-        host: devHost,
+        host: host,
         path: path,
         queryParameters: queryParameters,
       );
@@ -50,7 +50,7 @@ class ApiConstants {
   //   return headerData;
   // }
 
-  static Map<String, String> headerWithToken(String authToken) {
+  static Map<String, String> headerWithToken(/*String authToken*/) {
     Map<String, String> headerData = {
       'Authorization': SharedPrefHelper.getAuthToken,
       'Content-Type': 'application/json',
@@ -69,8 +69,9 @@ class ApiConstants {
     return headerData;
   }
 
-  static const String commonPath = '/api/v1';
+  // static const String commonPath = '/api/v1';
 
   static const String login = '/user/login';
   static const String otpVerify = '/user/verify-otp';
+  static const String category = '/category';
 }

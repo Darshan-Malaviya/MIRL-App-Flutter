@@ -9,6 +9,7 @@
         tools:node="remove" />
 
     <application
+
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:label="@string/app_name">
@@ -49,6 +50,11 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- This is for local notification-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
 
     </application>
     <queries>

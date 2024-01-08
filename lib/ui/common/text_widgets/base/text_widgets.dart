@@ -31,6 +31,7 @@ class LabelSmallText extends StatelessWidget {
       this.fontSize,
       this.fontHeight,
       this.lineHeight,
+      this.fontFamily,
       this.isUnderline = false})
       : super(key: key);
 
@@ -46,18 +47,20 @@ class LabelSmallText extends StatelessWidget {
   final double? fontHeight;
   final bool? isUnderline;
   final double? lineHeight;
+  final String? fontFamily;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: titleColor ?? Theme.of(context).textTheme.labelSmall?.color,
-            fontWeight: fontWeight,
-            decoration: isUnderline == true ? TextDecoration.underline : null,
-            height: lineHeight,
-          ),
+          color: titleColor ?? Theme.of(context).textTheme.labelSmall?.color,
+          fontWeight: fontWeight,
+          decoration: isUnderline == true ? TextDecoration.underline : null,
+          height: lineHeight,
+          fontSize: fontSize,
+          fontFamily: fontFamily),
       textAlign: titleTextAlign,
       maxLines: maxLine,
       overflow: TextOverflow.ellipsis,
@@ -101,7 +104,7 @@ class LabelMediumText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.labelMedium?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.labelMedium?.color,
             fontWeight: fontWeight,
@@ -151,7 +154,7 @@ class LabelLargeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.labelLarge?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.labelLarge?.color,
             fontWeight: fontWeight,
@@ -167,7 +170,7 @@ class LabelLargeText extends StatelessWidget {
 }
 
 /// bodySmall - Font Size - 12
-  class BodySmallText extends StatelessWidget {
+class BodySmallText extends StatelessWidget {
   const BodySmallText(
       {Key? key,
       required this.title,
@@ -203,7 +206,7 @@ class LabelLargeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.bodySmall?.color,
             fontWeight: fontWeight,
@@ -234,7 +237,7 @@ class BodyMediumText extends StatelessWidget {
       this.fontSize,
       this.fontHeight,
       this.lineHeight,
-        this.fontFamily,
+      this.fontFamily,
       this.isUnderline = false})
       : super(key: key);
 
@@ -256,13 +259,14 @@ class BodyMediumText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.bodyMedium?.color,
             fontWeight: fontWeight,
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
-        fontFamily: fontFamily,
+            fontSize: fontSize,
+            fontFamily: fontFamily,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,
@@ -309,7 +313,7 @@ class BodyLargeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.bodyLarge?.color,
             fontWeight: fontWeight,
@@ -339,6 +343,7 @@ class TitleSmallText extends StatelessWidget {
       this.textScaleFactor,
       this.fontSize,
       this.fontHeight,
+      this.fontFamily,
       this.lineHeight,
       this.isUnderline = false})
       : super(key: key);
@@ -354,19 +359,21 @@ class TitleSmallText extends StatelessWidget {
   final double? textScaleFactor;
   final double? fontHeight;
   final bool? isUnderline;
+  final String? fontFamily;
   final double? lineHeight;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: titleColor ?? Theme.of(context).textTheme.titleSmall?.color,
-            fontWeight: fontWeight,
-            decoration: isUnderline == true ? TextDecoration.underline : null,
-            height: lineHeight,
-          ),
+          color: titleColor ?? Theme.of(context).textTheme.titleSmall?.color,
+          fontWeight: fontWeight,
+          decoration: isUnderline == true ? TextDecoration.underline : null,
+          height: lineHeight,
+          fontFamily: fontFamily,
+          fontSize: fontSize),
       textAlign: titleTextAlign,
       maxLines: maxLine,
       overflow: TextOverflow.ellipsis,
@@ -390,6 +397,7 @@ class TitleMediumText extends StatelessWidget {
       this.fontSize,
       this.fontHeight,
       this.lineHeight,
+      this.fontFamily,
       this.isUnderline = false})
       : super(key: key);
 
@@ -405,18 +413,20 @@ class TitleMediumText extends StatelessWidget {
   final double? fontHeight;
   final bool? isUnderline;
   final double? lineHeight;
+  final String? fontFamily;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: titleColor ?? Theme.of(context).textTheme.titleMedium?.color,
-            fontWeight: fontWeight,
-            decoration: isUnderline == true ? TextDecoration.underline : null,
-            height: lineHeight,
-          ),
+          color: titleColor ?? Theme.of(context).textTheme.titleMedium?.color,
+          fontWeight: fontWeight,
+          decoration: isUnderline == true ? TextDecoration.underline : null,
+          height: lineHeight,
+          fontFamily: fontFamily,
+          fontSize: fontSize),
       textAlign: titleTextAlign,
       maxLines: maxLine,
       overflow: TextOverflow.ellipsis,
@@ -462,7 +472,7 @@ class TitleLargeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.titleLarge?.color,
             fontWeight: fontWeight,
@@ -513,7 +523,7 @@ class HeadlineSmallText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.headlineSmall?.color,
             fontWeight: fontWeight,
@@ -563,7 +573,7 @@ class HeadlineMediumText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.headlineMedium?.color,
             fontWeight: fontWeight,
@@ -613,7 +623,7 @@ class HeadlineLargeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.headlineLarge?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.headlineLarge?.color,
             fontWeight: fontWeight,
@@ -663,7 +673,7 @@ class DisplaySmallText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.displaySmall?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.displaySmall?.color,
             fontWeight: fontWeight,
@@ -713,7 +723,7 @@ class DisplayMediumText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.displayMedium?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.displayMedium?.color,
             fontWeight: fontWeight,
@@ -763,7 +773,7 @@ class DisplayLargeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      textScaleFactor: 1,
+      textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.displayLarge?.copyWith(
             color: titleColor ?? Theme.of(context).textTheme.displayLarge?.color,
             fontWeight: fontWeight,

@@ -1,5 +1,4 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,10 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
     //   }
     // });
 
-    Future.delayed(const Duration(seconds: 3)).then((value) {
+    Future.delayed(const Duration(milliseconds: 5000)).then((value) {
       var isLoginIn = SharedPrefHelper.getUserData;
       if (isLoginIn.isNotEmpty) {
-        context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen);
+        context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
       } else {
         context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
       }
@@ -37,7 +36,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.whiteColor,
-      body: Center(child: Image.asset(ImageConstants.mirlImage)),
+      body: Center(
+          child: Image.asset(
+        ImageConstants.splashImages,
+      )),
     );
   }
 }
