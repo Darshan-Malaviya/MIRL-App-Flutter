@@ -33,16 +33,17 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
           title: StringConstants.done,
           fontFamily: FontWeightEnum.w700.toInter,
         ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.setYourGender,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ),
       ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
+
             children: [
+              TitleLargeText(
+                title: StringConstants.setYourGender,
+                titleColor: ColorConstants.bottomTextColor,
+                fontFamily: FontWeightEnum.w700.toInter,
+              ),
               150.0.spaceY,
               DropdownMenuWidget(
                 hintText: StringConstants.theDropDown,

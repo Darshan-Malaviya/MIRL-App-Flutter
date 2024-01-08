@@ -55,7 +55,6 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               child: BodySmallText(
                                 title: StringConstants.overallRatting,
                                 fontFamily: FontWeightEnum.w700.toInter,
-                                titleColor: ColorConstants.blackColor,
                               ),
                             ),
                             18.0.spaceY,
@@ -63,7 +62,6 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               child: BodySmallText(
                                 title: StringConstants.feePer,
                                 fontFamily: FontWeightEnum.w700.toInter,
-                                titleColor: ColorConstants.blackColor,
                               ),
                             ),
                           ],
@@ -94,35 +92,28 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                           child: TitleMediumText(
                             title: StringConstants.moreAboutMe,
                             fontFamily: FontWeightEnum.w700.toInter,
-                            titleColor: ColorConstants.blackColor,
                           ),
                         ),
                         12.0.spaceY,
                         TitleMediumText(
                           title: StringConstants.welcomeExpertProfile,
-                          titleColor: ColorConstants.blackColor,
-                          fontFamily: FontWeightEnum.w400.toInter,
                           titleTextAlign: TextAlign.start,
-                        ),                        20.0.spaceY,
+                        ),
+                        20.0.spaceY,
                         TitleMediumText(
                           title: StringConstants.soWhatNext,
-                          titleColor: ColorConstants.blackColor,
-                          fontFamily: FontWeightEnum.w400.toInter,
-                          titleTextAlign: TextAlign.start,
+                          maxLine: 5,
+
                         ),
                         20.0.spaceY,
                         TitleMediumText(
                           title: StringConstants.clickEditProfile,
-                          titleColor: ColorConstants.blackColor,
-                          fontFamily: FontWeightEnum.w400.toInter,
-                          titleTextAlign: TextAlign.start,
+                          maxLine: 3,
                         ),
                         20.0.spaceY,
                         TitleMediumText(
                           title: StringConstants.goodLuck,
-                          titleColor: ColorConstants.blackColor,
-                          fontFamily: FontWeightEnum.w400.toInter,
-                          titleTextAlign: TextAlign.start,
+                          maxLine: 2,
                         ),
                       ],
                     ).addAllPadding(32),

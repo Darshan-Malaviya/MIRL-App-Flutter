@@ -27,41 +27,32 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
           title: StringConstants.done,
           fontFamily: FontWeightEnum.w700.toInter,
         ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.editYourExpertProfile,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            TitleLargeText(
+              title: StringConstants.editYourExpertProfile,
+              titleColor: ColorConstants.bottomTextColor,
+              fontFamily: FontWeightEnum.w700.toInter,
+            ),
+            20.0.spaceY,
             Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BodySmallText(
                     title: StringConstants.expertProfilePhoto,
-                    titleColor: ColorConstants.blackColor,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                    titleTextAlign: TextAlign.center,
-                    fontSize: 15,
                   ),
                   20.0.spaceY,
                   BodySmallText(
                     title: StringConstants.highQualityProfile,
-                    titleColor: ColorConstants.blackColor,
-                    fontFamily: FontWeightEnum.w400.toInter,
                     titleTextAlign: TextAlign.center,
-                    fontSize: 15,
+                    maxLine: 2,
                   ),
                   20.0.spaceY,
                   BodySmallText(
                     title: StringConstants.yourFavoriteOne,
-                    titleColor: ColorConstants.blackColor,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                    titleTextAlign: TextAlign.center,
-                    fontSize: 15,
                   ),
                 ],
               ),
@@ -76,7 +67,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
               ),
             ).addMarginX(45),
             5.0.spaceY,
-            TitleMediumText(
+            BodySmallText(
               title: StringConstants.editExpertProfile,
               fontFamily: FontWeightEnum.w700.toInter,
             ),
@@ -91,29 +82,18 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 18.0.spaceY,
                 TextFormFieldWidget(
                   height: 40,
-                  fontFamily: FontWeightEnum.w400.toInter,
                   labelText: StringConstants.expertName,
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.done,
-                  textInputType: TextInputType.emailAddress,
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
                   height: 40,
-                  fontFamily: FontWeightEnum.w400.toInter,
                   labelText: StringConstants.yourMirlId,
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.done,
-                  textInputType: TextInputType.emailAddress,
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
-                  contentPadding: EdgeInsets.symmetric(vertical: 110, horizontal: 2),
-                  fontFamily: FontWeightEnum.w400.toInter,
+                  maxLines: 10,
+                  minLines: 10,
                   labelText: StringConstants.moreAboutMe,
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.done,
-                  textInputType: TextInputType.emailAddress,
                 ),
                 50.0.spaceY,
                 PrimaryButton(
@@ -134,7 +114,9 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 PrimaryButton(
                   buttonColor: ColorConstants.buttonColor,
                   title: StringConstants.weeklyAvailability,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.toPushNamed(RoutesConstants.setYourWeeklyAvailabilityScreen);
+                  },
                 ),
                 50.0.spaceY,
                 PrimaryButton(
@@ -180,9 +162,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.demoListScreen);
-                  },
+                  onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(

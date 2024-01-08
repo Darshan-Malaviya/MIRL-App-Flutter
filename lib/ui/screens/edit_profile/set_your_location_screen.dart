@@ -35,23 +35,26 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
           title: StringConstants.done,
           fontFamily: FontWeightEnum.w700.toInter,
         ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.setYourLocation,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ),
       ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
+              TitleLargeText(
+                title: StringConstants.setYourLocation,
+                titleColor: ColorConstants.bottomTextColor,
+                fontFamily: FontWeightEnum.w700.toInter,
+              ),
+              20.0.spaceY,
               TitleMediumText(
                 title: StringConstants.visibleOnYourProfile,
                 titleColor: ColorConstants.blackColor,
                 fontFamily: FontWeightEnum.w700.toInter,
                 titleTextAlign: TextAlign.center,
                 fontSize: 15,
-              ).addAllPadding(14),
+              ),
+              20.0.spaceY,
+
               DropdownMenuWidget(
                 hintText: StringConstants.theDropDown,
                 dropdownList: _locations
@@ -62,26 +65,18 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               20.0.spaceY,
               TitleSmallText(
                 title: StringConstants.specificCityOrCountry,
-                titleColor: ColorConstants.blackColor,
-                fontFamily: FontWeightEnum.w400.toInter,
                 titleTextAlign: TextAlign.center,
-                fontSize: 15,
+                maxLine: 4,
               ),
               40.0.spaceY,
               TextFormFieldWidget(
-                fontFamily: FontWeightEnum.w400.toInter,
                 hintText: StringConstants.nearestLandmark,
-                textAlign: TextAlign.start,
-                textInputAction: TextInputAction.done,
-                textInputType: TextInputType.emailAddress,
-              ).addPaddingX(24),
+              ),
               20.0.spaceY,
               TitleSmallText(
                 title: StringConstants.filterExperts,
-                titleColor: ColorConstants.blackColor,
-                fontFamily: FontWeightEnum.w400.toInter,
                 titleTextAlign: TextAlign.center,
-                fontSize: 15,
+                maxLine: 3,
               ),
               // DropdownButtonFormField(
               //   icon: Icon(Icons.keyboard_arrow_down_sharp),
@@ -138,7 +133,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               //   },
               // )
             ],
-          ),
+          ).addAllPadding(20),
         ),
       ),
     );

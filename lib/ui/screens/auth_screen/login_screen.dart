@@ -5,7 +5,7 @@ import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
+  class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override

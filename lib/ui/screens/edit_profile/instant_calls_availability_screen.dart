@@ -34,22 +34,26 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
           title: StringConstants.done,
           fontFamily: FontWeightEnum.w700.toInter,
         ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.instantCallsAvailability,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ),
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            TitleLargeText(
+              title: StringConstants.instantCallsAvailability,
+              titleColor: ColorConstants.bottomTextColor,
+              fontFamily: FontWeightEnum.w700.toInter,
+
+            ),
+            20.0.spaceY,
             TitleMediumText(
               title: StringConstants.availabilitySchedule,
-              titleColor: ColorConstants.blackColor,
               fontFamily: FontWeightEnum.w700.toInter,
               titleTextAlign: TextAlign.center,
+              maxLine: 3,
               fontSize: 15,
-            ).addAllPadding(14),
+            ),
+            20.0.spaceY,
             DropdownMenuWidget(
               hintText: StringConstants.theDropDown,
               dropdownList: _locations
@@ -60,26 +64,16 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             40.0.spaceY,
             TitleSmallText(
               title: StringConstants.instantCalls,
-              titleColor: ColorConstants.blackColor,
-              fontFamily: FontWeightEnum.w400.toInter,
-              titleTextAlign: TextAlign.center,
-              fontSize: 15,
+              maxLine: 2,
             ),
             20.0.spaceY,
             TitleSmallText(
               title: StringConstants.declineAnyCall,
-              titleColor: ColorConstants.blackColor,
-              fontFamily: FontWeightEnum.w400.toInter,
-              titleTextAlign: TextAlign.center,
-              fontSize: 15,
+              maxLine: 2,
             ),
             20.0.spaceY,
             TitleSmallText(
               title: StringConstants.highlyRecommend,
-              titleColor: ColorConstants.blackColor,
-              fontFamily: FontWeightEnum.w400.toInter,
-              titleTextAlign: TextAlign.center,
-              fontSize: 15,
             )
 
             // DropdownButtonFormField(
@@ -137,7 +131,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             //   },
             // )
           ],
-        ),
+        ).addAllPadding(20),
       ),
     );
   }
