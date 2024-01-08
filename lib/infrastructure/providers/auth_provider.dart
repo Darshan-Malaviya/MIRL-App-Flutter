@@ -69,14 +69,14 @@ class AuthProvider with ChangeNotifier {
   //   );
   // }
 
-  void loginRequestCall({required int loginType}) {
+  Future<void> loginRequestCall({required int loginType}) async {
     debugPrint('Token=================${SharedPrefHelper.getAuthToken}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
       deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
       email: emailController.text.trim().toString(),
       socialId: _socialId,
       deviceToken: SharedPrefHelper.getAuthToken,
-      timezone: CommonMethods.getCurrentTimeZone(),
+      timezone:  await CommonMethods.getCurrentTimeZone(),
       loginType: loginType.toString(),
     );
     loginApiCall(requestModel: loginRequestModel.toJson(), loginType: loginType);

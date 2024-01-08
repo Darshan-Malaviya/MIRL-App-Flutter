@@ -75,6 +75,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         controller: loginScreenProviderWatch.emailController,
                         textInputAction: TextInputAction.done,
                         textInputType: TextInputType.emailAddress,
+                        onFieldSubmitted: (value) {
+                          context.unFocusKeyboard();
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return StringConstants.requiredEmail;
@@ -97,28 +100,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           }),
                       40.0.spaceY,
                       Image.asset(ImageConstants.line),
-                      // const HorizontalLine(),
                       40.0.spaceY,
-                      PrimaryButton(
-                        title: StringConstants.continueWithGoogle,
-                        onPressed: () {
-                          loginScreenProviderRead.signInGoogle();
-                        },
-                        prefixIcon: ImageConstants.google,
-                      ).addMarginX(55),
-                      // 30.0.spaceY,
                       Visibility(
-                          visible: Platform.isIOS,
-                          replacement: const SizedBox.shrink(),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 30),
-                            child: PrimaryButton(
-                                title: StringConstants.continueWithApple,
-                                prefixIcon: ImageConstants.apple,
-                                onPressed: () {
-                                  loginScreenProviderRead.signInApple();
-                                }).addMarginX(55),
-                          )),
+                        visible: Platform.isIOS,
+                        replacement: PrimaryButton(
+                          title: StringConstants.continueWithGoogle,
+                          onPressed: () {
+                            loginScreenProviderRead.signInGoogle();
+                          },
+                          prefixIcon: ImageConstants.google,
+                        ),
+                        child: PrimaryButton(
+                          title: StringConstants.continueWithApple,
+                          prefixIcon: ImageConstants.apple,
+                          onPressed: () {
+                            loginScreenProviderRead.signInApple();
+                          },
+                        ),
+                      ).addPaddingX(50),
                       30.0.spaceY,
                       PrimaryButton(
                         title: StringConstants.continueWithFacebook,
@@ -126,7 +125,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: () {
                           loginScreenProviderRead.fbLogin();
                         },
-                      ).addMarginX(55),
+                      ).addPaddingX(50),
                       30.0.spaceY,
                       RichText(
                         softWrap: true,

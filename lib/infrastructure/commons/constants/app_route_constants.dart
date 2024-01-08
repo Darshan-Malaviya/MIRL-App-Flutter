@@ -4,7 +4,6 @@ import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/add_your_areas_of_expertise_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/certifications_and_experience_screen.dart';
-import 'package:mirl/ui/screens/edit_profile/demo_list.dart';
 import 'package:mirl/ui/screens/edit_profile/edit_your_expert_profile_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/instant_calls_availability_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/set_your_fee_screen.dart';
@@ -66,8 +65,6 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const YourBankAccountDetailsScreen());
       case RoutesConstants.addYourAreasOfExpertiseScreen:
         return MaterialPageRoute(builder: (_) => const AddYourAreasOfExpertiseScreen());
-      case RoutesConstants.demoListScreen:
-        return MaterialPageRoute(builder: (_) => ExpansionPanelDemo());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

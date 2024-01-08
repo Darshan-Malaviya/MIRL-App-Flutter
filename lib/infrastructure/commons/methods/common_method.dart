@@ -12,7 +12,7 @@ class CommonMethods {
     }
   }
 
-  static getCurrentTimeZone() async {
+  static Future<String> getCurrentTimeZone() async {
     return await FlutterTimezone.getLocalTimezone();
   }
 }
