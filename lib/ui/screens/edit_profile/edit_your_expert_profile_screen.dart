@@ -176,7 +176,9 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.toPushNamed(RoutesConstants.demoListScreen);
+                  },
                 ),
                 50.0.spaceY,
                 PrimaryButton(

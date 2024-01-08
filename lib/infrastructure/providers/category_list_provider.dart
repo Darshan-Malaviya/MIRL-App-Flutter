@@ -15,9 +15,9 @@ class CategoryListProvider extends ChangeNotifier {
   //   AddAreaCategoryListApiCall(requestModel: categoryListResponseModel.toJson());
   // }
 
-  Future<void> AddAreaCategoryListApiCall() async {
+  Future<void> AddAreaCategoryListApiCall({required String isChildId}) async {
     CustomLoading.progressDialog(isLoading: true);
-    ApiHttpResult response = await _categoryListRepository.categoryListApiCall(limit: 10, page: 10, isChild: 0);
+    ApiHttpResult response = await _categoryListRepository.categoryListApiCall(limit: 10, page: 1, isChild: "1");
     CustomLoading.progressDialog(isLoading: false);
     switch (response.status) {
       case APIStatus.success:
