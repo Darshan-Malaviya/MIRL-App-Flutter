@@ -25,44 +25,37 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
           title: StringConstants.done,
           fontFamily: FontWeightEnum.w700.toInter,
         ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.setYourFee,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ),
       ),
       body: Column(
         children: [
+          TitleLargeText(
+            title: StringConstants.setYourFee,
+            titleColor: ColorConstants.bottomTextColor,
+            fontFamily: FontWeightEnum.w700.toInter,
+          ),
+          30.0.spaceY,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               PlusButtonWidget(),
               TextFormFieldWidget(
                 width: 150,
-                fontFamily: FontWeightEnum.w400.toInter,
-                textAlign: TextAlign.center,
-                textInputAction: TextInputAction.done,
-                textInputType: TextInputType.emailAddress,
+                textInputType: TextInputType.number,
+
               ).addAllPadding(16),
               MinusButtonWidget(),
             ],
           ),
           TitleSmallText(
             title: StringConstants.currency,
-            fontFamily: FontWeightEnum.w400.toInter,
-            titleTextAlign: TextAlign.center,
           ),
           10.0.spaceY,
           TitleSmallText(
             title: StringConstants.appFees,
-            fontFamily: FontWeightEnum.w400.toInter,
-            titleTextAlign: TextAlign.center,
           ),
           4.0.spaceY,
           TitleSmallText(
               title: StringConstants.ourAppFees,
-              fontFamily: FontWeightEnum.w400.toInter,
-              titleTextAlign: TextAlign.center,
               titleColor: ColorConstants.bottomTextColor),
           PrimaryButton(title: StringConstants.userFees, onPressed: () {}).addAllPadding(50),
         ],

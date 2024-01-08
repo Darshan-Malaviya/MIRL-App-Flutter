@@ -284,8 +284,7 @@ class TextFormFieldWidget extends StatelessWidget {
                       TextStyle(
                           color: ColorConstants.greyColor,
                           fontSize: 12 / scaleFactor,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: fontFamily),
+                          fontFamily: fontFamily ?? FontWeightEnum.w400.toInter),
                   hintText: hintText ?? '',
                   border: border ?? InputBorder.none,
                   contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 16),

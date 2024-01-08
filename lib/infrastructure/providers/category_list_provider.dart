@@ -37,4 +37,7 @@ class CategoryListProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+
+
 }

@@ -43,19 +43,21 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           title: StringConstants.done,
           fontFamily: FontWeightEnum.w700.toInter,
         ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.addYourAreas,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ),
       ),
       body: Column(
         children: [
+          TitleLargeText(
+            title: StringConstants.addYourAreas,
+            titleColor: ColorConstants.bottomTextColor,
+            fontFamily: FontWeightEnum.w700.toInter,
+            maxLine: 2,
+            titleTextAlign: TextAlign.center,
+          ),
+          20.0.spaceY,
           TitleSmallText(
             title: StringConstants.categoryView,
-            titleColor: ColorConstants.blackColor,
-            fontFamily: FontWeightEnum.w400.toInter,
             titleTextAlign: TextAlign.center,
+            maxLine: 2,
           ),
           30.0.spaceY,
           categoryListProviderWatch.categoryList?.isNotEmpty ?? false

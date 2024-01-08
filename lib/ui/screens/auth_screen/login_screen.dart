@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
+  class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
