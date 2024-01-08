@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/mirl_app.dart';
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
@@ -36,19 +37,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             builder: FToastBuilder(),
             title: flavorConfig?.appTitle ?? 'Mirl',
-            theme: ThemeData(
-              fontFamily: AppConstants.fontFamily,
-              useMaterial3: true,
-              colorSchemeSeed: ColorConstants.primaryColor,
-              scaffoldBackgroundColor: ColorConstants.whiteColor,
-              appBarTheme: AppBarTheme(color: ColorConstants.primaryColor, elevation: 0, scrolledUnderElevation: 0),
-              dividerColor: ColorConstants.greyLightColor,
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: ColorConstants.primaryColor,
-                selectionColor: ColorConstants.primaryColor.withOpacity(0.4),
-                selectionHandleColor: ColorConstants.primaryColor,
-              ),
-            ),
+            theme: AppTheme.setTheme(context),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,

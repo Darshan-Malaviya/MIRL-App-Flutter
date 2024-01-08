@@ -61,6 +61,8 @@ export 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_ext
 export 'package:mirl/infrastructure/commons/constants/string_constants.dart';
 export 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 export 'package:mirl/infrastructure/commons/extensions/build_context_extension.dart';
+export 'package:mirl/infrastructure/commons/extensions/field_focus_extension.dart';
+export 'package:mirl/infrastructure/models/common/certificate_and_experience_model.dart';
 
 ///packages exports
 
