@@ -102,4 +102,5 @@ class StringConstants {
   static const String addYourAreas = "ADD YOUR AREAS OF EXPERTISE";
   static const String categoryView =
       "Click on any category to view the topics under it.\nYou can select multiple topics in multiple categories.";
+  static const String delete = "Delete";
 }
