@@ -39,8 +39,6 @@ class SharedPrefHelper {
   }
 
   static clearPrefs() async {
-    await _prefsInstance?.remove(StorageConstants.authToken);
-    await _prefsInstance?.remove(StorageConstants.authToken);
     await _prefsInstance?.remove(StorageConstants.userData);
   }
 }

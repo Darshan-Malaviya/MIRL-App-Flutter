@@ -1,21 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
-import 'package:mirl/infrastructure/commons/enums/enum.dart';
-import 'package:mirl/infrastructure/commons/enums/error_type_enum.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/application_error.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/dio_intersepter.dart';
-import 'package:mirl/infrastructure/data_access_layer/interceptors/dio_connectivity_request_retrier.dart';
-import 'package:mirl/infrastructure/data_access_layer/interceptors/retry_interceptor.dart';
-import 'package:mirl/infrastructure/models/response/error_model.dart';
-import 'package:mirl/infrastructure/services/app_path_provider.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-import '../../commons/exports/common_exports.dart';
 
 class ApiResponseProvider {
   late Dio _dio;

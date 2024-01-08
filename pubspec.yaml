@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.5
 
   # firebase
-  firebase_messaging: ^14.7.9
+  firebase_messaging: ^14.7.10
   firebase_core: ^2.24.2
 
   #  authentication
@@ -45,7 +45,7 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.0.3
   firebase_auth: ^4.6.3
-  flutter_local_notifications: ^15.1.0+1
+  flutter_local_notifications: ^16.3.0
 
   # state management
   flutter_riverpod: ^2.3.7
@@ -67,6 +67,7 @@ dependencies:
 
   #  device_info
   device_info_plus: ^9.0.3
+  flutter_timezone: ^1.0.8
 
   #  network
   dio: ^5.3.2
@@ -76,7 +77,6 @@ dependencies:
 
   # storage
   shared_preferences: ^2.2.0
-
   path_provider: ^2.1.0
 
 dev_dependencies:
