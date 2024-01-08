@@ -1,9 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
+import 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -47,17 +44,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   //     )
                   //   ]
                   // ),
-                  decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: ColorConstants.borderColor,
-                          //spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, -3),
-                        )
-                      ],
-                      color: ColorConstants.whiteColor,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+                  decoration: const BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: ColorConstants.borderColor,
+                      //spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, -3),
+                    )
+                  ], color: ColorConstants.whiteColor, borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -98,7 +92,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           width: 235,
                           onPressed: () {
                             if (_loginPassKey.currentState?.validate() ?? false) {
-                              loginScreenProviderRead.loginRequestCall(loginType: 0);
+                              loginScreenProviderRead.loginRequestCall(loginType: LoginType.normal);
                             }
                           }),
                       40.0.spaceY,
@@ -152,9 +146,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             style: textStyle(context: context),
                           ),
                           TextSpan(
-                              text: StringConstants.privacyPolicy,
-                              style: textStyle(context: context, textColor: ColorConstants.primaryColor),
-                              recognizer: TapGestureRecognizer()
+                              text: StringConstants.privacyPolicy, style: textStyle(context: context, textColor: ColorConstants.primaryColor), recognizer: TapGestureRecognizer()
                               // ..onTap = () {
                               //   termsOfUse();
                               // },

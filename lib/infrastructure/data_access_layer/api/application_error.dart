@@ -131,10 +131,6 @@ abstract class UserError {
           code: UserErrorType.applicationSchemaError,
           message: 'Oops! Something went wrong.',
         ),
-      Reason.applicationSchemaError => ErrorHandlerModel(
-          code: UserErrorType.captchaChallenge,
-          message: 'Our systems have detected unusual traffic from your network. Please try again later.',
-        ),
       Reason.noLoginCredentials => ErrorHandlerModel(
           code: UserErrorType.captchaChallenge,
           message: 'Our systems have detected unusual traffic from your network. Please try again later.',

@@ -1,3 +1,4 @@
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class CommonMethods {
@@ -9,5 +10,9 @@ class CommonMethods {
     } else {
       nexFocusNode?.requestFocus();
     }
+  }
+
+  static getCurrentTimeZone() async {
+    return await FlutterTimezone.getLocalTimezone();
   }
 }

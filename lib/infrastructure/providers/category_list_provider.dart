@@ -1,10 +1,7 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
 import 'package:mirl/infrastructure/models/response/category_list_response_model.dart';
 import 'package:mirl/infrastructure/repository/category_list_repo.dart';
-import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
-import 'package:mirl/ui/common/alert_widgets/loader_widget.dart';
 
 class CategoryListProvider extends ChangeNotifier {
   final _categoryListRepository = CategoryListRepository();

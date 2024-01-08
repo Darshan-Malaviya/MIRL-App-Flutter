@@ -1,5 +1,4 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String title;

@@ -19,7 +19,7 @@ final dioLoggerInterceptor = InterceptorsWrapper(onRequest: (RequestOptions opti
   log("└------------------------------------------------------------------------------");
   handler.next(response);
   // return response; // continue
-}, onError: (DioError error, handler) async {
+}, onError: (DioException error, handler) async {
   log("| [DIO] Error: ${error.error}: ${error.response.toString()}");
   log("└------------------------------------------------------------------------------");
   handler.next(error); //continue
