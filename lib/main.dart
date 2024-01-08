@@ -1,31 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/services/app_path_provider.dart';
-import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-late StateProvider<FlavorConfig> flavorConfigProvider;
-
-FlavorConfig? flavorConfig;
+import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
+import 'package:mirl/mirl_app.dart';
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
-  await WidgetsFlutterBinding.ensureInitialized();
-  await SharedPrefHelper.init();
-  await AppPathProvider.initPath();
-  await EasyLocalization.ensureInitialized();
-  flavorConfigProvider = StateProvider<FlavorConfig>((ref) => flavorConfig);
-
-  await Firebase.initializeApp(
-      options:
-          DefaultFirebaseOptions.firebaseOptionConfig(appId: flavorConfig.appIdForIOS, iosBundleId: flavorConfig.iosBundleId));
-
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
-    systemNavigationBarIconBrightness: Brightness.light,
-  ));
+  await MirlApp.initializeApp(flavorConfig);
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -56,19 +37,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             builder: FToastBuilder(),
             title: flavorConfig?.appTitle ?? 'Mirl',
-            theme: ThemeData(
-              fontFamily: AppConstants.fontFamily,
-              useMaterial3: true,
-              colorSchemeSeed: ColorConstants.primaryColor,
-              scaffoldBackgroundColor: ColorConstants.whiteColor,
-              appBarTheme: AppBarTheme(color: ColorConstants.primaryColor, elevation: 0, scrolledUnderElevation: 0),
-              dividerColor: ColorConstants.greyLightColor,
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: ColorConstants.primaryColor,
-                selectionColor: ColorConstants.primaryColor.withOpacity(0.4),
-                selectionHandleColor: ColorConstants.primaryColor,
-              ),
-            ),
+            theme: AppTheme.setTheme(context),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,

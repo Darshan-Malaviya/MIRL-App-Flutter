@@ -1,5 +1,4 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 
 class HorizontalLine extends StatelessWidget {
   const HorizontalLine({super.key});

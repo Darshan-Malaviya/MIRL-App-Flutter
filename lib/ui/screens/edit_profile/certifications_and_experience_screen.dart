@@ -1,15 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/ui/common/appbar/appbar_widget.dart';
-import 'package:mirl/ui/common/button_widget/primary_button.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
-import 'package:mirl/ui/common/text_widgets/textfield/textformfield_widget.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 
 class CertificationsAndExperienceScreen extends ConsumerStatefulWidget {
   const CertificationsAndExperienceScreen({super.key});
@@ -20,7 +11,18 @@ class CertificationsAndExperienceScreen extends ConsumerStatefulWidget {
 
 class _CertificationsAndExperienceScreenState extends ConsumerState<CertificationsAndExperienceScreen> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).generateExperienceList();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
+
     return Scaffold(
         appBar: AppBarWidget(
           leading: InkWell(
@@ -44,93 +46,86 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
             children: [
               TitleSmallText(
                 title: StringConstants.trustYourAbilities,
-                titleColor: ColorConstants.blackColor,
-                fontFamily: FontWeightEnum.w400.toInter,
                 titleTextAlign: TextAlign.center,
-                fontSize: 15,
+                maxLine: 5,
               ),
               20.0.spaceY,
               TitleSmallText(
                 title: StringConstants.mediaAccount,
-                titleColor: ColorConstants.blackColor,
-                fontFamily: FontWeightEnum.w400.toInter,
                 titleTextAlign: TextAlign.center,
-                fontSize: 15,
+                maxLine: 5,
               ),
               50.0.spaceY,
-              Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: TitleSmallText(
-                  title: "1.",
-                  titleColor: ColorConstants.blackColor,
-                  fontFamily: FontWeightEnum.w700.toInter,
-                  titleTextAlign: TextAlign.start,
-                  fontSize: 15,
+              Column(
+                children: List.generate(
+                  expertWatch.certiAndExpModel.length,
+                  (index) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      20.0.spaceY,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TitleSmallText(
+                            title: '${index + 1}.',
+                            fontFamily: FontWeightEnum.w700.toInter,
+                            fontSize: 15,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              expertRead.deleteExperience(index);
+                            },
+                            child: TitleSmallText(
+                              title: StringConstants.delete,
+                              titleColor: ColorConstants.errorColor,
+                              fontFamily: FontWeightEnum.w700.toInter,
+                            ),
+                          ).addVisibility(index != 0),
+                        ],
+                      ),
+                      20.0.spaceY,
+                      TextFormFieldWidget(
+                        controller: expertWatch.certiAndExpModel[index].titleController,
+                        focusNode: expertWatch.certiAndExpModel[index].titleFocus,
+                        hintText: StringConstants.writeYourTitle,
+                        textInputType: TextInputType.emailAddress,
+                        onFieldSubmitted: (value) {
+                          expertWatch.certiAndExpModel[index].titleFocus
+                              .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus, nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
+                        },
+                      ),
+                      20.0.spaceY,
+                      TextFormFieldWidget(
+                        controller: expertWatch.certiAndExpModel[index].urlController,
+                        focusNode: expertWatch.certiAndExpModel[index].urlFocus,
+                        hintText: StringConstants.sourceUrl,
+                        onFieldSubmitted: (value) {
+                          expertWatch.certiAndExpModel[index].urlFocus
+                              .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus, nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
+                        },
+                      ),
+                      20.0.spaceY,
+                      TextFormFieldWidget(
+                        controller: expertWatch.certiAndExpModel[index].descriptionController,
+                        focusNode: expertWatch.certiAndExpModel[index].descriptionFocus,
+                        maxLines: 5,
+                        minLines: 5,
+                        hintText: StringConstants.description,
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (value) {
+                          context.unFocusKeyboard();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              24.0.spaceY,
-              TextFormFieldWidget(
-                fontFamily: FontWeightEnum.w400.toInter,
-                hintText: StringConstants.writeYourTitle,
-                textAlign: TextAlign.start,
-                textInputAction: TextInputAction.done,
-                textInputType: TextInputType.emailAddress,
-              ),
-              20.0.spaceY,
-              TextFormFieldWidget(
-                fontFamily: FontWeightEnum.w400.toInter,
-                hintText: StringConstants.sourceUrl,
-                textAlign: TextAlign.start,
-                textInputAction: TextInputAction.done,
-                textInputType: TextInputType.emailAddress,
-              ),
-              20.0.spaceY,
-              TextFormFieldWidget(
-                height: 100,
-                fontFamily: FontWeightEnum.w400.toInter,
-                hintText: StringConstants.description,
-                textAlign: TextAlign.start,
-                textInputAction: TextInputAction.done,
-                textInputType: TextInputType.emailAddress,
-              ),
-              Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: TitleSmallText(
-                  title: "2.",
-                  titleColor: ColorConstants.blackColor,
-                  fontFamily: FontWeightEnum.w700.toInter,
-                  titleTextAlign: TextAlign.start,
-                  fontSize: 15,
-                ),
-              ),
-              24.0.spaceY,
-              TextFormFieldWidget(
-                fontFamily: FontWeightEnum.w400.toInter,
-                hintText: StringConstants.writeYourTitle,
-                textAlign: TextAlign.start,
-                textInputAction: TextInputAction.done,
-                textInputType: TextInputType.emailAddress,
-              ),
-              20.0.spaceY,
-              TextFormFieldWidget(
-                fontFamily: FontWeightEnum.w400.toInter,
-                hintText: StringConstants.sourceUrl,
-                textAlign: TextAlign.start,
-                textInputAction: TextInputAction.done,
-                textInputType: TextInputType.emailAddress,
-              ),
-              20.0.spaceY,
-              TextFormFieldWidget(
-                height: 100,
-                fontFamily: FontWeightEnum.w400.toInter,
-                hintText: StringConstants.description,
-                textAlign: TextAlign.start,
-                textInputAction: TextInputAction.done,
-                textInputType: TextInputType.emailAddress,
-              ),
+              40.0.spaceY,
               PrimaryButton(
                 title: StringConstants.addMoreCredentials,
-                onPressed: () {},
+                onPressed: () {
+                  expertRead.generateExperienceList();
+                },
               ),
               20.0.spaceY,
             ],

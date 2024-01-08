@@ -1,5 +1,4 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   final Key? textFormFieldKey;
@@ -139,7 +138,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final TextDirection? textDirection;
 
   /// Configuration of toolbar options.
-  final ToolbarOptions? toolbarOptions;
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
 
   /// ./// Defines the appearance of an [InputDecorator]'s border.
   final InputBorder? border;
@@ -214,7 +213,7 @@ class TextFormFieldWidget extends StatelessWidget {
       this.textAlignVertical,
       this.textCapitalization,
       this.textDirection,
-      this.toolbarOptions,
+      this.contextMenuBuilder,
       this.autofocus,
       this.buildCounter,
       this.border,

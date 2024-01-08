@@ -1,5 +1,4 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final Function(SearchController controller, String value)? onSuggestionTap;

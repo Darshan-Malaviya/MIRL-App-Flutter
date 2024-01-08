@@ -1,8 +1,7 @@
 // ValueNotifier<bool> isUnAuthorized = ValueNotifier<bool>(false);
 
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
-import 'package:mirl/main.dart';
+import 'package:mirl/mirl_app.dart';
 
 class ApiConstants {
   static const String sampleExample = '';
