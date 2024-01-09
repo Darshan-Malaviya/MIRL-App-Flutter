@@ -41,7 +41,6 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
               TextFormFieldWidget(
                 width: 150,
                 textInputType: TextInputType.number,
-
               ).addAllPadding(16),
               MinusButtonWidget(),
             ],

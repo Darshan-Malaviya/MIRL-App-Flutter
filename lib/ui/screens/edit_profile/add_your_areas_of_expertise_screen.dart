@@ -4,12 +4,16 @@ import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
 import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
 import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
+import 'package:mirl/infrastructure/models/response/category_list_response_model.dart';
 import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/ui/common/appbar/appbar_widget.dart';
 import 'package:mirl/ui/common/container_widgets/shadow_container.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
+import 'package:mirl/ui/screens/conponnet/area_model.dart';
+import 'package:pinput/pinput.dart';
 
 class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
   const AddYourAreasOfExpertiseScreen({super.key});
@@ -27,10 +31,21 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
     super.initState();
   }
 
+  bool selected = false;
+  List<Tech> _chipsList = [
+    Tech("India", false),
+    Tech("Canada", false),
+    Tech("London", false),
+    Tech("Paris", false),
+    Tech("Japan", false),
+    Tech("Maldives", false),
+    Tech("Switzerland", false)
+  ];
+
   @override
   Widget build(BuildContext context) {
     final categoryListProviderWatch = ref.watch(categoryListProvider);
-    // final categoryListProviderRead = ref.read(categoryListProvider);
+    final categoryListProviderRead = ref.read(categoryListProvider);
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
@@ -59,53 +74,156 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
             titleTextAlign: TextAlign.center,
             maxLine: 2,
           ),
-          30.0.spaceY,
-          categoryListProviderWatch.categoryList?.isNotEmpty ?? false
-              ? Expanded(
-                  child: GridView.builder(
-                      // scrollDirection: Axis.vertical,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, crossAxisSpacing: 38, mainAxisSpacing: 30),
-                      itemCount: categoryListProviderWatch.categoryList?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return ShadowContainer(
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image.network(
-                                  categoryListProviderWatch.categoryList?[index].categoryImage ?? '',
-                                  height: 60,
-                                  width: 50,
+          20.0.spaceY,
+
+          Expanded(
+            child: ListView.builder(
+               padding: EdgeInsets.zero,
+                itemCount: categoryListProviderWatch.areaListModel.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  AreaListModel? element = categoryListProviderWatch.areaListModel[index];
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      10.0.spaceY,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          element.categoryList?.length ?? 0,
+                          (position) {
+                            return InkWell(
+                              onTap: () {
+                                categoryListProviderRead.onSelected(index);
+                              },
+                              child: ShadowContainer(
+                                child: Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Image.network(
+                                        element.categoryList?[position].categoryImage ?? '',
+                                        height: 60,
+                                        width: 50,
+                                      ),
+                                    ),
+                                    LabelSmallText(
+                                      fontSize: 9,
+                                      title: element.categoryList?[position].categoryName ?? '',
+                                      titleColor: ColorConstants.blackColor,
+                                      fontFamily: FontWeightEnum.w700.toInter,
+                                      titleTextAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
+                                height: 90,
+                                width: 90,
+                                isShadow: true,
                               ),
-                              LabelSmallText(
-                                fontSize: 9,
-                                title: categoryListProviderWatch.categoryList?[index].categoryName ?? '',
-                                titleColor: ColorConstants.blackColor,
-                                fontFamily: FontWeightEnum.w700.toInter,
-                                titleTextAlign: TextAlign.center,
-                              ),
-                            ],
+                            );
+                          },
+                        ),
+                      ),
+                      10.0.spaceY,
+                      Visibility(
+                        visible: element.isSelected ?? false,
+                        child: Container(
+                          width: double.infinity,
+                          color: ColorConstants.categoryList,
+                          child: Wrap(
+                            children: techChips(),
+                            spacing: 8,
                           ),
-                          height: 90,
-                          width: 90,
-                          isShadow: true,
-                        );
-                      }),
-                )
-              : Center(
-                  child: Text(
-                    "No Data Found",
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: ColorConstants.primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                        ).addMarginY(20),
+                      ),
+                      10.0.spaceY,
+                    ],
+                  );
+                }),
+          )
+          // categoryListProviderWatch.categoryList?.isNotEmpty ?? false
+          //     ? Expanded(
+          //         child: GridView.builder(
+          //             // scrollDirection: Axis.vertical,
+          //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          //                 crossAxisCount: 3, crossAxisSpacing: 38, mainAxisSpacing: 30),
+          //             itemCount: categoryListProviderWatch.categoryList?.length ?? 0,
+          //             itemBuilder: (context, index) {
+          //               return ShadowContainer(
+          //                 child: Column(
+          //                   children: [
+          //                     ClipRRect(
+          //                       borderRadius: BorderRadius.circular(20.0),
+          //                       child: Image.network(
+          //                         categoryListProviderWatch.categoryList?[index].categoryImage ?? '',
+          //                         height: 60,
+          //                         width: 50,
+          //                       ),
+          //                     ),
+          //                     LabelSmallText(
+          //                       fontSize: 9,
+          //                       title: categoryListProviderWatch.categoryList?[index].categoryName ?? '',
+          //                       titleColor: ColorConstants.blackColor,
+          //                       fontFamily: FontWeightEnum.w700.toInter,
+          //                       titleTextAlign: TextAlign.center,
+          //                     ),
+          //                   ],
+          //                 ),
+          //                 height: 90,
+          //                 width: 90,
+          //                 isShadow: true,
+          //               );
+          //             }),
+          //       )
+          //     : Center(
+          //         child: Text(
+          //           "No Data Found",
+          //           style: TextStyle(
+          //             fontSize: 25,
+          //             color: ColorConstants.primaryColor,
+          //             fontWeight: FontWeight.bold,
+          //           ),
+          //         ),
+          //       ),
         ],
-      ).addAllPadding(20),
+      ).addAllPadding(0),
     );
   }
+
+  List<Widget> techChips() {
+    List<Widget> chips = [];
+    for (int i = 0; i < _chipsList.length; i++) {
+      Widget item = FilterChip(
+        showCheckmark: false,
+        padding: EdgeInsets.symmetric(horizontal: 5),
+        selectedColor: ColorConstants.primaryColor,
+        label: Text(_chipsList[i].label),
+        labelStyle: TextStyle(color: Colors.black),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: ColorConstants.transparentColor),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        //shape: StadiumBorder(side: BorderSide(color: ColorConstants.transparentColor)),
+        shadowColor: Color(0x19000000),
+        backgroundColor: Colors.transparent,
+        // backgroundColor: _chipsList[i].color,
+        selected: _chipsList[i].isSelected,
+        onSelected: (bool value) {
+          setState(() {
+            _chipsList[i].isSelected = value;
+          });
+        },
+      );
+      chips.add(item);
+    }
+    return chips;
+  }
+}
+
+class Tech {
+  String label;
+  bool isSelected;
+
+  Tech(this.label, this.isSelected);
 }
