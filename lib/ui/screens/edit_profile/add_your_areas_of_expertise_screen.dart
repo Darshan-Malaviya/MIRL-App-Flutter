@@ -11,6 +11,7 @@ import 'package:mirl/infrastructure/models/response/category_list_response_model
 import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/ui/common/appbar/appbar_widget.dart';
 import 'package:mirl/ui/common/container_widgets/shadow_container.dart';
+import 'package:mirl/ui/common/network_image/network_image.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 import 'package:mirl/ui/screens/conponnet/area_model.dart';
 import 'package:pinput/pinput.dart';
@@ -26,7 +27,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(categoryListProvider).AddAreaCategoryListApiCall(isChildId: "1");
+      ref.read(categoryListProvider).AreaCategoryListApiCall(isChildId: '1');
     });
     super.initState();
   }
@@ -74,120 +75,44 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
             titleTextAlign: TextAlign.center,
             maxLine: 2,
           ),
-          20.0.spaceY,
-
+          30.0.spaceY,
           Expanded(
-            child: ListView.builder(
-               padding: EdgeInsets.zero,
-                itemCount: categoryListProviderWatch.areaListModel.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  AreaListModel? element = categoryListProviderWatch.areaListModel[index];
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      10.0.spaceY,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(
-                          element.categoryList?.length ?? 0,
-                          (position) {
-                            return InkWell(
-                              onTap: () {
-                                categoryListProviderRead.onSelected(index);
-                              },
-                              child: ShadowContainer(
-                                child: Column(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Image.network(
-                                        element.categoryList?[position].categoryImage ?? '',
-                                        height: 60,
-                                        width: 50,
-                                      ),
-                                    ),
-                                    LabelSmallText(
-                                      fontSize: 9,
-                                      title: element.categoryList?[position].categoryName ?? '',
-                                      titleColor: ColorConstants.blackColor,
-                                      fontFamily: FontWeightEnum.w700.toInter,
-                                      titleTextAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                                height: 90,
-                                width: 90,
-                                isShadow: true,
-                              ),
-                            );
-                          },
+            child: categoryListProviderWatch.categoryList?.isNotEmpty ?? false
+                ? GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 38, mainAxisSpacing: 30),
+                    itemCount: categoryListProviderWatch.categoryList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return ShadowContainer(
+                        child: Column(
+                          children: [
+                            NetworkImageWidget(
+                              imageURL: categoryListProviderWatch.categoryList?[index].categoryImage ?? '',
+                              isNetworkImage: true,
+                              height: 50,
+                              width: 50,
+                            ),
+                            LabelSmallText(
+                              fontSize: 9,
+                              title: categoryListProviderWatch.categoryList?[index].categoryName ?? '',
+                              fontFamily: FontWeightEnum.w700.toInter,
+                            ),
+                          ],
                         ),
-                      ),
-                      10.0.spaceY,
-                      Visibility(
-                        visible: element.isSelected ?? false,
-                        child: Container(
-                          width: double.infinity,
-                          color: ColorConstants.categoryList,
-                          child: Wrap(
-                            children: techChips(),
-                            spacing: 8,
-                          ),
-                        ).addMarginY(20),
-                      ),
-                      10.0.spaceY,
-                    ],
-                  );
-                }),
+                        height: 90,
+                        width: 90,
+                        isShadow: true,
+                        shadowColor: ColorConstants.borderColor.withOpacity(0.5),
+                      );
+                    })
+                : Center(
+                    child: BodyLargeText(
+                      title: StringConstants.noDataFound,
+                      fontFamily: FontWeightEnum.w600.toInter,
+                    ),
+                  ),
           )
-          // categoryListProviderWatch.categoryList?.isNotEmpty ?? false
-          //     ? Expanded(
-          //         child: GridView.builder(
-          //             // scrollDirection: Axis.vertical,
-          //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          //                 crossAxisCount: 3, crossAxisSpacing: 38, mainAxisSpacing: 30),
-          //             itemCount: categoryListProviderWatch.categoryList?.length ?? 0,
-          //             itemBuilder: (context, index) {
-          //               return ShadowContainer(
-          //                 child: Column(
-          //                   children: [
-          //                     ClipRRect(
-          //                       borderRadius: BorderRadius.circular(20.0),
-          //                       child: Image.network(
-          //                         categoryListProviderWatch.categoryList?[index].categoryImage ?? '',
-          //                         height: 60,
-          //                         width: 50,
-          //                       ),
-          //                     ),
-          //                     LabelSmallText(
-          //                       fontSize: 9,
-          //                       title: categoryListProviderWatch.categoryList?[index].categoryName ?? '',
-          //                       titleColor: ColorConstants.blackColor,
-          //                       fontFamily: FontWeightEnum.w700.toInter,
-          //                       titleTextAlign: TextAlign.center,
-          //                     ),
-          //                   ],
-          //                 ),
-          //                 height: 90,
-          //                 width: 90,
-          //                 isShadow: true,
-          //               );
-          //             }),
-          //       )
-          //     : Center(
-          //         child: Text(
-          //           "No Data Found",
-          //           style: TextStyle(
-          //             fontSize: 25,
-          //             color: ColorConstants.primaryColor,
-          //             fontWeight: FontWeight.bold,
-          //           ),
-          //         ),
-          //       ),
         ],
-      ).addAllPadding(0),
+      ).addAllPadding(20),
     );
   }
 

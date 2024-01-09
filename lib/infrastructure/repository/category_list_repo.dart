@@ -9,9 +9,7 @@ class CategoryListRepository extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
   Future<ApiHttpResult> categoryListApiCall({required int page, required int limit, required String isChild}) async {
-    final uri = ApiConstants.endpointUri(
-        path: ApiConstants.category,
-        queryParameters: {"page": page.toString(), "limit": limit.toString(), "isChild": isChild.toString()});
+    final uri = ApiConstants.endpointUri(path: ApiConstants.category, queryParameters: {"page": page.toString(), "limit": limit.toString(), "isChild": isChild});
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,

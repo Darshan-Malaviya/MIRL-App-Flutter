@@ -17,10 +17,8 @@ class CommonBottomSheet {
       backgroundColor: Colors.transparent,
       enableDrag: true,
       isDismissible: isDismissible,
-      transitionAnimationController: vsync != null
-          ? AnimationController(
-              vsync: vsync, duration: const Duration(milliseconds: 500), reverseDuration: const Duration(milliseconds: 300))
-          : null,
+      transitionAnimationController:
+          vsync != null ? AnimationController(vsync: vsync, duration: const Duration(milliseconds: 500), reverseDuration: const Duration(milliseconds: 300)) : null,
       isScrollControlled: true,
       builder: (BuildContext context) {
         return AnimatedContainer(

@@ -1,6 +1,6 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class ShadowContainer extends StatefulWidget {
+class ShadowContainer extends StatelessWidget {
   final double? height;
   final double? width;
   final double? border;
@@ -11,6 +11,7 @@ class ShadowContainer extends StatefulWidget {
   final Alignment? alignment;
   final bool? isShadow;
   final Color? borderColor;
+  final Color? shadowColor;
 
   const ShadowContainer({
     Key? key,
@@ -24,30 +25,25 @@ class ShadowContainer extends StatefulWidget {
     this.margin,
     this.isShadow = true,
     this.borderColor,
+    this.shadowColor,
   }) : super(key: key);
 
-  @override
-  State<ShadowContainer> createState() => _ShadowContainerState();
-}
-
-class _ShadowContainerState extends State<ShadowContainer> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        alignment: widget.alignment,
-        margin: widget.margin,
-        height: widget.height,
-        width: widget.width,
-        padding: widget.padding ?? const EdgeInsets.all(8),
+        alignment: alignment,
+        margin: margin,
+        height: height,
+        width: width,
+        padding: padding ?? const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(widget.border ?? 20),
-          color: widget.backgroundColor ?? ColorConstants.whiteColor,
-          boxShadow: (widget.isShadow ?? false)
-              ? [BoxShadow(color: ColorConstants.categoryListBorder, blurRadius: 8, spreadRadius: 1, offset: const Offset(0, 0))]
-              : [],
+          borderRadius: BorderRadius.circular(border ?? 20),
+          border: Border.all(color: borderColor ?? ColorConstants.transparentColor),
+          color: backgroundColor ?? ColorConstants.whiteColor,
+          boxShadow: (isShadow ?? false) ? [BoxShadow(color: shadowColor ?? ColorConstants.categoryListBorder, blurRadius: 5, offset: const Offset(0, 0))] : [],
         ),
-        child: widget.child,
+        child: child,
       )
     ]);
   }
