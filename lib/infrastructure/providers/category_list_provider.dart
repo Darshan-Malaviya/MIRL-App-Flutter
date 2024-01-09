@@ -15,10 +15,13 @@ class CategoryListProvider extends ChangeNotifier {
   //   AddAreaCategoryListApiCall(requestModel: categoryListResponseModel.toJson());
   // }
 
-  Future<void> AddAreaCategoryListApiCall({required String isChildId}) async {
+  Future<void> AreaCategoryListApiCall({required String isChildId}) async {
     CustomLoading.progressDialog(isLoading: true);
-    ApiHttpResult response = await _categoryListRepository.categoryListApiCall(limit: 10, page: 1, isChild: "1");
+
+    ApiHttpResult response = await _categoryListRepository.categoryListApiCall(limit: 10, page: 1, isChild: isChildId);
+
     CustomLoading.progressDialog(isLoading: false);
+
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is CategoryListResponseModel) {
@@ -26,13 +29,11 @@ class CategoryListProvider extends ChangeNotifier {
           Logger().d("Successfully login");
           _categoryList.addAll(categoryListResponseModel.data ?? []);
           SharedPrefHelper.saveUserData(jsonEncode(categoryListResponseModel.data));
-          //   NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
-          FlutterToast().showToast(msg: categoryListResponseModel.message ?? '');
         }
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on otp verify call Api ${response.data}");
+        Logger().d("API fail on area category call Api ${response.data}");
         break;
     }
     notifyListeners();

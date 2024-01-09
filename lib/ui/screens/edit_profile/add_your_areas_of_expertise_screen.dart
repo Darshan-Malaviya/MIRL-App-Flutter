@@ -9,6 +9,7 @@ import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extens
 import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/ui/common/appbar/appbar_widget.dart';
 import 'package:mirl/ui/common/container_widgets/shadow_container.dart';
+import 'package:mirl/ui/common/network_image/network_image.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
 class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
@@ -22,7 +23,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(categoryListProvider).AddAreaCategoryListApiCall(isChildId: "1");
+      ref.read(categoryListProvider).AreaCategoryListApiCall(isChildId: '1');
     });
     super.initState();
   }
@@ -60,50 +61,41 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
             maxLine: 2,
           ),
           30.0.spaceY,
-          categoryListProviderWatch.categoryList?.isNotEmpty ?? false
-              ? Expanded(
-                  child: GridView.builder(
-                      // scrollDirection: Axis.vertical,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, crossAxisSpacing: 38, mainAxisSpacing: 30),
-                      itemCount: categoryListProviderWatch.categoryList?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return ShadowContainer(
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image.network(
-                                  categoryListProviderWatch.categoryList?[index].categoryImage ?? '',
-                                  height: 60,
-                                  width: 50,
-                                ),
-                              ),
-                              LabelSmallText(
-                                fontSize: 9,
-                                title: categoryListProviderWatch.categoryList?[index].categoryName ?? '',
-                                titleColor: ColorConstants.blackColor,
-                                fontFamily: FontWeightEnum.w700.toInter,
-                                titleTextAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          height: 90,
-                          width: 90,
-                          isShadow: true,
-                        );
-                      }),
-                )
-              : Center(
-                  child: Text(
-                    "No Data Found",
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: ColorConstants.primaryColor,
-                      fontWeight: FontWeight.bold,
+          Expanded(
+            child: categoryListProviderWatch.categoryList?.isNotEmpty ?? false
+                ? GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 38, mainAxisSpacing: 30),
+                    itemCount: categoryListProviderWatch.categoryList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return ShadowContainer(
+                        child: Column(
+                          children: [
+                            NetworkImageWidget(
+                              imageURL: categoryListProviderWatch.categoryList?[index].categoryImage ?? '',
+                              isNetworkImage: true,
+                              height: 50,
+                              width: 50,
+                            ),
+                            LabelSmallText(
+                              fontSize: 9,
+                              title: categoryListProviderWatch.categoryList?[index].categoryName ?? '',
+                              fontFamily: FontWeightEnum.w700.toInter,
+                            ),
+                          ],
+                        ),
+                        height: 90,
+                        width: 90,
+                        isShadow: true,
+                        shadowColor: ColorConstants.borderColor.withOpacity(0.5),
+                      );
+                    })
+                : Center(
+                    child: BodyLargeText(
+                      title: StringConstants.noDataFound,
+                      fontFamily: FontWeightEnum.w600.toInter,
                     ),
                   ),
-                ),
+          )
         ],
       ).addAllPadding(20),
     );

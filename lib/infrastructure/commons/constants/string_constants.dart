@@ -103,4 +103,8 @@ class StringConstants {
   static const String categoryView =
       "Click on any category to view the topics under it. You can select multiple topics in multiple categories.";
   static const String delete = "Delete";
+  static const String requiredAccountNumber = "Account Number is required";
+  static const String requiredUrl = "Url is required";
+  static const String requiredTitle = "Title is required";
+  static const String noDataFound = "No Data found yet!";
 }

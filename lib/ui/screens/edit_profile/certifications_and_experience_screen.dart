@@ -10,6 +10,8 @@ class CertificationsAndExperienceScreen extends ConsumerStatefulWidget {
 }
 
 class _CertificationsAndExperienceScreenState extends ConsumerState<CertificationsAndExperienceScreen> {
+  final _loginPassKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -31,10 +33,15 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
               Navigator.pop(context);
             },
           ),
-          trailingIcon: TitleMediumText(
-            title: StringConstants.done,
-            fontFamily: FontWeightEnum.w700.toInter,
-          ).addPaddingRight(14),
+          trailingIcon: OnScaleTap(
+            onPress: () {
+              if (_loginPassKey.currentState?.validate() ?? false) {}
+            },
+            child: TitleMediumText(
+              title: StringConstants.done,
+              fontFamily: FontWeightEnum.w700.toInter,
+            ).addPaddingRight(14),
+          ),
           appTitle: TitleLargeText(
             title: StringConstants.certificationsAndExperience,
             titleColor: ColorConstants.bottomTextColor,
@@ -42,94 +49,99 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
           ),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              TitleSmallText(
-                title: StringConstants.trustYourAbilities,
-                titleTextAlign: TextAlign.center,
-                maxLine: 5,
-              ),
-              20.0.spaceY,
-              TitleSmallText(
-                title: StringConstants.mediaAccount,
-                titleTextAlign: TextAlign.center,
-                maxLine: 5,
-              ),
-              50.0.spaceY,
-              Column(
-                children: List.generate(
-                  expertWatch.certiAndExpModel.length,
-                  (index) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      20.0.spaceY,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TitleSmallText(
-                            title: '${index + 1}.',
-                            fontFamily: FontWeightEnum.w700.toInter,
-                            fontSize: 15,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              expertRead.deleteExperience(index);
-                            },
-                            child: TitleSmallText(
-                              title: StringConstants.delete,
-                              titleColor: ColorConstants.errorColor,
+          child: Form(
+            key: _loginPassKey,
+            child: Column(
+              children: [
+                TitleSmallText(
+                  title: StringConstants.trustYourAbilities,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 5,
+                ),
+                20.0.spaceY,
+                TitleSmallText(
+                  title: StringConstants.mediaAccount,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 5,
+                ),
+                50.0.spaceY,
+                Column(
+                  children: List.generate(
+                    expertWatch.certiAndExpModel.length,
+                    (index) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        20.0.spaceY,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TitleSmallText(
+                              title: '${index + 1}.',
                               fontFamily: FontWeightEnum.w700.toInter,
+                              fontSize: 15,
                             ),
-                          ).addVisibility(index != 0),
-                        ],
-                      ),
-                      20.0.spaceY,
-                      TextFormFieldWidget(
-                        controller: expertWatch.certiAndExpModel[index].titleController,
-                        focusNode: expertWatch.certiAndExpModel[index].titleFocus,
-                        hintText: StringConstants.writeYourTitle,
-                        textInputType: TextInputType.emailAddress,
-                        onFieldSubmitted: (value) {
-                          expertWatch.certiAndExpModel[index].titleFocus
-                              .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus, nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
-                        },
-                      ),
-                      20.0.spaceY,
-                      TextFormFieldWidget(
-                        controller: expertWatch.certiAndExpModel[index].urlController,
-                        focusNode: expertWatch.certiAndExpModel[index].urlFocus,
-                        hintText: StringConstants.sourceUrl,
-                        onFieldSubmitted: (value) {
-                          expertWatch.certiAndExpModel[index].urlFocus
-                              .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus, nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
-                        },
-                      ),
-                      20.0.spaceY,
-                      TextFormFieldWidget(
-                        controller: expertWatch.certiAndExpModel[index].descriptionController,
-                        focusNode: expertWatch.certiAndExpModel[index].descriptionFocus,
-                        maxLines: 5,
-                        minLines: 5,
-                        hintText: StringConstants.description,
-                        textInputAction: TextInputAction.done,
-                        onFieldSubmitted: (value) {
-                          context.unFocusKeyboard();
-                        },
-                      ),
-                    ],
+                            InkWell(
+                              onTap: () {
+                                expertRead.deleteExperience(index);
+                              },
+                              child: TitleSmallText(
+                                title: StringConstants.delete,
+                                titleColor: ColorConstants.errorColor,
+                                fontFamily: FontWeightEnum.w700.toInter,
+                              ),
+                            ).addVisibility(index != 0),
+                          ],
+                        ),
+                        20.0.spaceY,
+                        TextFormFieldWidget(
+                          controller: expertWatch.certiAndExpModel[index].titleController,
+                          focusNode: expertWatch.certiAndExpModel[index].titleFocus,
+                          hintText: StringConstants.writeYourTitle,
+                          textInputType: TextInputType.emailAddress,
+                          onFieldSubmitted: (value) {
+                            expertWatch.certiAndExpModel[index].titleFocus
+                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus, nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
+                          },
+                          validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredTitle),
+                        ),
+                        20.0.spaceY,
+                        TextFormFieldWidget(
+                          controller: expertWatch.certiAndExpModel[index].urlController,
+                          focusNode: expertWatch.certiAndExpModel[index].urlFocus,
+                          hintText: StringConstants.sourceUrl,
+                          onFieldSubmitted: (value) {
+                            expertWatch.certiAndExpModel[index].urlFocus
+                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus, nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
+                          },
+                          validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredUrl),
+                        ),
+                        20.0.spaceY,
+                        TextFormFieldWidget(
+                          controller: expertWatch.certiAndExpModel[index].descriptionController,
+                          focusNode: expertWatch.certiAndExpModel[index].descriptionFocus,
+                          maxLines: 5,
+                          minLines: 5,
+                          hintText: StringConstants.description,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (value) {
+                            context.unFocusKeyboard();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              40.0.spaceY,
-              PrimaryButton(
-                title: StringConstants.addMoreCredentials,
-                onPressed: () {
-                  expertRead.generateExperienceList();
-                },
-              ),
-              20.0.spaceY,
-            ],
-          ).addAllPadding(24),
+                40.0.spaceY,
+                PrimaryButton(
+                  title: StringConstants.addMoreCredentials,
+                  onPressed: () {
+                    expertRead.generateExperienceList();
+                  },
+                ),
+                20.0.spaceY,
+              ],
+            ).addAllPadding(24),
+          ),
         ));
   }
 }
