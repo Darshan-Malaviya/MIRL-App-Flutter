@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
   class LoginScreen extends ConsumerStatefulWidget {
@@ -79,14 +78,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           context.unFocusKeyboard();
                         },
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return StringConstants.requiredEmail;
-                          } else {
-                            if (!EmailValidator.validate(value)) {
-                              return StringConstants.emailIsNotInProperFormat;
-                            }
-                          }
-                          return null;
+                          return value?.toEmailValidation();
                         },
                       ).addPaddingX(42),
                       14.0.spaceY,

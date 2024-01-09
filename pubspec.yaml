@@ -60,6 +60,7 @@ dependencies:
   image_picker: ^1.0.2
   pinput: ^3.0.1
   dropdown_button2: ^2.3.9
+  extended_image: ^8.2.0
   #  flutter_sim_country_code: ^0.1.2
 
   #permission

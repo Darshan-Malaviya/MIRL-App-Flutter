@@ -24,7 +24,7 @@ class CustomLoading {
               child: Center(
                   child: CupertinoActivityIndicator(
                 animating: true,
-                color: ColorConstants.secondaryColor,
+                color: ColorConstants.primaryColor,
                 radius: 16,
               )),
             ),

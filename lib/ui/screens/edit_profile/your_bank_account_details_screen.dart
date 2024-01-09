@@ -1,14 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/ui/common/appbar/appbar_widget.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
-import 'package:mirl/ui/common/text_widgets/textfield/textformfield_widget.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class YourBankAccountDetailsScreen extends ConsumerStatefulWidget {
   const YourBankAccountDetailsScreen({super.key});
@@ -18,8 +9,17 @@ class YourBankAccountDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDetailsScreen> {
+  FocusNode bankNameFocus = FocusNode();
+  FocusNode nameFocus = FocusNode();
+  FocusNode accountFocus = FocusNode();
+
+  final _loginPassKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
+
     return Scaffold(
         appBar: AppBarWidget(
           leading: InkWell(
@@ -28,57 +28,80 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
               Navigator.pop(context);
             },
           ),
-          trailingIcon: TitleMediumText(
-            title: StringConstants.done,
-            fontFamily: FontWeightEnum.w700.toInter,
-          ).addPaddingRight(14),
+          trailingIcon: OnScaleTap(
+            onPress: () {
+              if (_loginPassKey.currentState?.validate() ?? false) {}
+            },
+            child: TitleMediumText(
+              title: StringConstants.done,
+              fontFamily: FontWeightEnum.w700.toInter,
+            ).addPaddingRight(14),
+          ),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TitleLargeText(
-                title: StringConstants.bankAccountDetails,
-                titleColor: ColorConstants.bottomTextColor,
-                fontFamily: FontWeightEnum.w700.toInter,
-                maxLine: 2,
-                titleTextAlign: TextAlign.center,
-              ),
-              20.0.spaceY,
-              TitleSmallText(
-                title: StringConstants.shareBankAccountDetails,
-                titleTextAlign: TextAlign.center,
-                maxLine: 3,
-              ),
-              20.0.spaceY,
-              TitleSmallText(
-                title: StringConstants.updateBankAccountDetails,
-                titleTextAlign: TextAlign.center,
-                maxLine: 2,
-              ),
-              20.0.spaceY,
-              TitleSmallText(
-                title: StringConstants.informationRequired,
-                titleTextAlign: TextAlign.center,
-                maxLine: 2,
-              ),
-              12.0.spaceY,
-              TextFormFieldWidget(
-                hintText: StringConstants.nameBankAccount,
-                textAlign: TextAlign.start,
-              ),
-              20.0.spaceY,
-              TextFormFieldWidget(
-                hintText: StringConstants.bankName,
-                textAlign: TextAlign.start,
-              ),
-              20.0.spaceY,
-              TextFormFieldWidget(
-                hintText: StringConstants.accountNumber,
-                textInputAction: TextInputAction.done,
-              ),
-            ],
-          ).addAllPadding(24),
+          child: Form(
+            key: _loginPassKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TitleLargeText(
+                  title: StringConstants.bankAccountDetails,
+                  titleColor: ColorConstants.bottomTextColor,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                  maxLine: 2,
+                  titleTextAlign: TextAlign.center,
+                ),
+                20.0.spaceY,
+                TitleSmallText(
+                  title: StringConstants.shareBankAccountDetails,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 3,
+                ),
+                20.0.spaceY,
+                TitleSmallText(
+                  title: StringConstants.updateBankAccountDetails,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 2,
+                ),
+                20.0.spaceY,
+                TitleSmallText(
+                  title: StringConstants.informationRequired,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 2,
+                ),
+                12.0.spaceY,
+                TextFormFieldWidget(
+                  focusNode: nameFocus,
+                  hintText: StringConstants.nameBankAccount,
+                  onFieldSubmitted: (value) {
+                    nameFocus.toChangeFocus(currentFocusNode: nameFocus, nexFocusNode: bankNameFocus);
+                  },
+                ),
+                20.0.spaceY,
+                TextFormFieldWidget(
+                  focusNode: bankNameFocus,
+                  hintText: StringConstants.bankName,
+                  onFieldSubmitted: (value) {
+                    bankNameFocus.toChangeFocus(currentFocusNode: bankNameFocus, nexFocusNode: accountFocus);
+                  },
+                ),
+                20.0.spaceY,
+                TextFormFieldWidget(
+                  focusNode: accountFocus,
+                  hintText: StringConstants.accountNumber,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (value) {
+                    accountFocus.unfocus();
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(18),
+                  ],
+                  validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredAccountNumber),
+                ),
+              ],
+            ).addAllPadding(24),
+          ),
         ));
   }
 }
