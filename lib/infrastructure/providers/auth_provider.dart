@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/login_request_model.dart';
 import 'package:mirl/infrastructure/models/request/otp_verify_request_model.dart';
@@ -70,12 +69,12 @@ class AuthProvider with ChangeNotifier {
   // }
 
   Future<void> loginRequestCall({required int loginType}) async {
-    debugPrint('Token=================${SharedPrefHelper.getAuthToken}');
+    debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
       deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
       email: emailController.text.trim().toString(),
       socialId: _socialId,
-      deviceToken: SharedPrefHelper.getAuthToken,
+      deviceToken: SharedPrefHelper.getFirebaseToken,
       timezone:  await CommonMethods.getCurrentTimeZone(),
       loginType: loginType.toString(),
     );
@@ -207,7 +206,9 @@ class AuthProvider with ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
+          timer?.cancel();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+          SharedPrefHelper.saveAuthToken(loginResponseModel.token);
           NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }
