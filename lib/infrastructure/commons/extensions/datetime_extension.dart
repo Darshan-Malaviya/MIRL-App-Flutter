@@ -3,7 +3,6 @@ import 'package:logger/logger.dart';
 
 /// convert date and time form timestamp
 extension DateTimeFormatter on String {
-
   /// 01/06/2023
   String toDateFormat() {
     try {
@@ -39,6 +38,7 @@ extension DateTimeFormatter on String {
     }
     return '';
   }
+
   /// 10:10 AM
   String to12HourTimeFormat() {
     try {
@@ -51,12 +51,12 @@ extension DateTimeFormatter on String {
     return '';
   }
 
-  /// UTC time format -  01/06/2023 12:15 PM
+  /// UTC time format
   String toUTCDateTimeFormat() {
     try {
-      DateTime dateTime = DateTime.parse(this);
-      DateTime timeStamp = dateTime.toUtc();
-      var output = DateFormat('dd/MM/yyyy hh:mm a').format(timeStamp);
+      int intValue = int.parse(this);
+      DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue,isUtc: true);
+      var output = dateTime.toString();
       return output;
     } catch (e) {
       Logger().d("Exception occurred on toUTCDateTimeFormat : $e");

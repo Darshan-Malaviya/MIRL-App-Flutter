@@ -50,7 +50,7 @@ class ApiConstants {
   //   return headerData;
   // }
 
-  static Map<String, String> headerWithToken(/*String authToken*/) {
+  static Map<String, String> headerWithToken() {
     Map<String, String> headerData = {
       'Authorization': SharedPrefHelper.getAuthToken,
       'Content-Type': 'application/json',
@@ -74,4 +74,7 @@ class ApiConstants {
   static const String login = '/user/login';
   static const String otpVerify = '/user/verify-otp';
   static const String category = '/category';
+  static const String expertAvailability = '/expertAvailability';
+  static const String certification = '/certification';
+  static const String deleteCertification = '/certification';
 }

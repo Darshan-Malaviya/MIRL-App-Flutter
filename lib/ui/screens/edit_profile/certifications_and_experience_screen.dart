@@ -30,22 +30,19 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
             onTap: () {
-              Navigator.pop(context);
+              context.toPop();
             },
           ),
           trailingIcon: OnScaleTap(
             onPress: () {
-              if (_loginPassKey.currentState?.validate() ?? false) {}
+              if (_loginPassKey.currentState?.validate() ?? false) {
+                expertRead.expertCertificateApi(context);
+              }
             },
             child: TitleMediumText(
               title: StringConstants.done,
               fontFamily: FontWeightEnum.w700.toInter,
             ).addPaddingRight(14),
-          ),
-          appTitle: TitleLargeText(
-            title: StringConstants.certificationsAndExperience,
-            titleColor: ColorConstants.bottomTextColor,
-            fontFamily: FontWeightEnum.w700.toInter,
           ),
         ),
         body: SingleChildScrollView(
@@ -53,6 +50,14 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
             key: _loginPassKey,
             child: Column(
               children: [
+                TitleLargeText(
+                  title: StringConstants.certificationsAndExperience,
+                  titleColor: ColorConstants.bottomTextColor,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 2,
+                ),
+                20.0.spaceY,
                 TitleSmallText(
                   title: StringConstants.trustYourAbilities,
                   titleTextAlign: TextAlign.center,
@@ -82,7 +87,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                             ),
                             InkWell(
                               onTap: () {
-                                expertRead.deleteExperience(index);
+                                expertRead.expertCertificateDeleteApi(context: context, certiId: '', index: index);
                               },
                               child: TitleSmallText(
                                 title: StringConstants.delete,
@@ -97,7 +102,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           controller: expertWatch.certiAndExpModel[index].titleController,
                           focusNode: expertWatch.certiAndExpModel[index].titleFocus,
                           hintText: StringConstants.writeYourTitle,
-                          textInputType: TextInputType.emailAddress,
+                          textInputType: TextInputType.text,
                           onFieldSubmitted: (value) {
                             expertWatch.certiAndExpModel[index].titleFocus
                                 .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus, nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);

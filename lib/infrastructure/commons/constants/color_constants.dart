@@ -20,6 +20,7 @@ class ColorConstants {
   static Color bottomTextColor = const Color(0xFF6F50EA);
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
+  static Color sliderColor = const Color(0xFF85C7F2);
 
   static Color successColor = const Color(0xff12805C);
   static Color warningColor = const Color(0xffCB6F10);

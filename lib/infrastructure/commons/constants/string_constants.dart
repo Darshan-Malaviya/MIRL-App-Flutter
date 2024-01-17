@@ -107,4 +107,14 @@ class StringConstants {
   static const String requiredUrl = "Url is required";
   static const String requiredTitle = "Title is required";
   static const String noDataFound = "No Data found yet!";
+  static const String recurring = "Recurring";
+  static const String nonRecurring = "Non-Recurring";
+  static const String sunday = "Sunday";
+  static const String monday = "Monday";
+  static const String tuesday = "Tuesday";
+  static const String wednesday = "Wednesday";
+  static const String thursday = "Thursday";
+  static const String friday = "Friday";
+  static const String saturday = "Saturday";
+  static const String noTimeSchedule = "no time scheduled";
 }

@@ -104,6 +104,6 @@ class PushNotificationService {
 
   Future getFirebaseToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
-    SharedPrefHelper.saveAuthToken(token);
+    SharedPrefHelper.saveFirebaseToken(token);
   }
 }
