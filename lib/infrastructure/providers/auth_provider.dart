@@ -76,10 +76,10 @@ class AuthProvider with ChangeNotifier {
       email: emailController.text.trim().toString(),
       socialId: _socialId,
       deviceToken: SharedPrefHelper.getAuthToken,
-      timezone:  await CommonMethods.getCurrentTimeZone(),
+      timezone: await CommonMethods.getCurrentTimeZone(),
       loginType: loginType.toString(),
     );
-    loginApiCall(requestModel: loginRequestModel.toJson(), loginType: loginType);
+    loginApiCall(requestModel: loginRequestModel.prepareRequest(), loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -99,6 +99,8 @@ class AuthProvider with ChangeNotifier {
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+            SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
+            SharedPrefHelper.saveAuthToken(jsonEncode(loginResponseModel.token));
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           }
@@ -195,7 +197,7 @@ class AuthProvider with ChangeNotifier {
       email: emailController.text.trim().toString(),
       otp: otpController.text.trim().toString(),
     );
-    otpVerifyApiCall(requestModel: otpVerifyRequestModel.toJson());
+    otpVerifyApiCall(requestModel: otpVerifyRequestModel.prepareRequest());
   }
 
   Future<void> otpVerifyApiCall({required Object requestModel}) async {
@@ -208,6 +210,7 @@ class AuthProvider with ChangeNotifier {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+          SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
           NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }

@@ -1,15 +1,19 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
 import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
 import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
+import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/ui/common/appbar/appbar_widget.dart';
 import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 import 'package:mirl/ui/common/text_widgets/textfield/textformfield_widget.dart';
+import 'package:mirl/ui/widget/expandble.dart';
 
 class SetYourLocationScreen extends ConsumerStatefulWidget {
   const SetYourLocationScreen({super.key});
@@ -19,23 +23,36 @@ class SetYourLocationScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
-  List<String> _locations = ["Yes", "No"];
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(cityCountryProvider).AreaCategoryListApiCall();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
+    final cityCountryWatch = ref.read(cityCountryProvider);
     return Scaffold(
       appBar: AppBarWidget(
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ).addPaddingRight(14),
-      ),
+          leading: InkWell(
+            child: Image.asset(ImageConstants.backIcon),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          trailingIcon: InkWell(
+            onTap: () {
+              expertRead.UpdateUserDetailsApiCall();
+            },
+            child: TitleMediumText(
+              title: StringConstants.done,
+              fontFamily: FontWeightEnum.w700.toInter,
+            ).addPaddingRight(14),
+          )),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -57,10 +74,12 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
 
               DropdownMenuWidget(
                 hintText: StringConstants.theDropDown,
-                dropdownList: _locations
-                    .map((String item) => dropdownMenuEntry(context: context, value: StringConstants.theDropDown, label: item))
+                dropdownList: expertWatch.locations
+                    .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                     .toList(),
-                onSelect: (String value) {},
+                onSelect: (String value) {
+                  expertWatch.setYesNo(value);
+                },
               ),
               20.0.spaceY,
               TitleSmallText(
@@ -70,13 +89,66 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               ),
               40.0.spaceY,
               TextFormFieldWidget(
+                isReadOnly: true,
                 hintText: StringConstants.nearestLandmark,
+                onTap: () {
+                 // CommonBottomSheet.bottomSheet(context: context, child: );
+                },
               ),
               20.0.spaceY,
               TitleSmallText(
                 title: StringConstants.filterExperts,
                 titleTextAlign: TextAlign.center,
                 maxLine: 3,
+              ),
+              20.0.spaceY,
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: ColorConstants.whiteColor,
+                    border: Border.all(color: ColorConstants.borderColor)),
+                child: Column(
+                  children: [
+                    ExpandablePanel(
+                        header: Padding(
+                          padding: const EdgeInsets.only(left: 10, top: 10),
+                          child: Text(
+                            StringConstants.theDropDown,
+                            style: TextStyle(fontSize: 12, color: ColorConstants.blackColor),
+                          ),
+                        ),
+                        collapsed: const SizedBox.shrink(),
+                        expanded: SizedBox(
+                          height: 130,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: List.generate(
+                                cityCountryWatch.country.length,
+                                (index) => SizedBox(
+                                  height: 40,
+                                  child: ListTile(
+                                    title: Text(cityCountryWatch.country[index].country ?? '',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: ColorConstants.blackColor,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                        //tapHeaderToExpand: true,
+                        //hasIcon: true,
+                        ),
+                    /* Theme(
+                              data: Theme.of(context)
+                                  .copyWith(dividerColor: Colors.transparent),
+
+                            )*/
+                  ],
+                ),
               ),
               // DropdownButtonFormField(
               //   icon: Icon(Icons.keyboard_arrow_down_sharp),

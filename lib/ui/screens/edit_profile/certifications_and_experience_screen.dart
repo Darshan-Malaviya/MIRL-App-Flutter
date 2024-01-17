@@ -42,17 +42,20 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
               fontFamily: FontWeightEnum.w700.toInter,
             ).addPaddingRight(14),
           ),
-          appTitle: TitleLargeText(
-            title: StringConstants.certificationsAndExperience,
-            titleColor: ColorConstants.bottomTextColor,
-            fontFamily: FontWeightEnum.w700.toInter,
-          ),
         ),
         body: SingleChildScrollView(
           child: Form(
             key: _loginPassKey,
             child: Column(
               children: [
+                TitleLargeText(
+                  title: StringConstants.certificationsAndExperience,
+                  titleColor: ColorConstants.bottomTextColor,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 2,
+                ),
+                20.0.spaceY,
                 TitleSmallText(
                   title: StringConstants.trustYourAbilities,
                   titleTextAlign: TextAlign.center,
@@ -99,8 +102,9 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           hintText: StringConstants.writeYourTitle,
                           textInputType: TextInputType.emailAddress,
                           onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].titleFocus
-                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus, nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
+                            expertWatch.certiAndExpModel[index].titleFocus.toChangeFocus(
+                                currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus,
+                                nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
                           },
                           validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredTitle),
                         ),
@@ -110,8 +114,9 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           focusNode: expertWatch.certiAndExpModel[index].urlFocus,
                           hintText: StringConstants.sourceUrl,
                           onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].urlFocus
-                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus, nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
+                            expertWatch.certiAndExpModel[index].urlFocus.toChangeFocus(
+                                currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus,
+                                nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
                           },
                           validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredUrl),
                         ),

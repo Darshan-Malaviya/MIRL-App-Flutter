@@ -50,9 +50,11 @@ class ApiConstants {
   //   return headerData;
   // }
 
-  static Map<String, String> headerWithToken(/*String authToken*/) {
+  static Map<String, String> headerWithToken() {
     Map<String, String> headerData = {
-      'Authorization': SharedPrefHelper.getAuthToken,
+      // 'Authorization': SharedPrefHelper.getAuthToken,
+      'Authorization':
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ2YWlkZWhpQGViaXp6aW5mb3RlY2guY29tIiwiaWF0IjoxNzA1NDcxOTA2fQ.h_3VFG6Kzwj9kafUFjlYgQHWJ5fmz-KvrIaAKT0wFlM',
       'Content-Type': 'application/json',
       'mirlAppToken':
           'Bearer 9e03fddc477f8dddf89ca6b608d1c6cccdc882ccd104dbafcdb02ff8edd419296937b1b6562db403c0be150a0a432f70c5e13csdsj232sdbb3438cbdf'
@@ -73,5 +75,7 @@ class ApiConstants {
 
   static const String login = '/user/login';
   static const String otpVerify = '/user/verify-otp';
+  static String updateUser = '/user/${SharedPrefHelper.getUserId}';
   static const String category = '/category';
+  static const String country = '/country';
 }

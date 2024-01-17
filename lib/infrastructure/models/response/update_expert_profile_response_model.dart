@@ -1,13 +1,15 @@
-class UpdateExpertProfileResponseModel {
+import 'package:logger/logger.dart';
+
+class UpdateUserDetailsResponseModel {
   int? status;
-  Data? data;
+  UpdateUserDetails? data;
   String? message;
 
-  UpdateExpertProfileResponseModel({this.status, this.data, this.message});
+  UpdateUserDetailsResponseModel({this.status, this.data, this.message});
 
-  UpdateExpertProfileResponseModel.fromJson(Map<String, dynamic> json) {
+  UpdateUserDetailsResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new UpdateUserDetails.fromJson(json['data']) : null;
     message = json['message'];
   }
 
@@ -20,27 +22,36 @@ class UpdateExpertProfileResponseModel {
     data['message'] = this.message;
     return data;
   }
+
+  static Future<UpdateUserDetailsResponseModel?> parseInfo(Map<String, dynamic>? json) async {
+    try {
+      return UpdateUserDetailsResponseModel.fromJson(json ?? {});
+    } catch (e) {
+      Logger().e("LoginResponseModel exception : $e");
+      return null;
+    }
+  }
 }
 
-class Data {
+class UpdateUserDetails {
   int? id;
   String? userName;
   String? expertName;
   String? mirlId;
   String? email;
-  Null phone;
-  Null location;
+  String? phone;
+  String? city;
   String? about;
   String? otp;
-  Null gender;
+  String? gender;
   String? loginType;
-  Null googleId;
-  Null appleId;
-  Null facebookId;
-  Null country;
-  Null userProfile;
+  String? googleId;
+  String? appleId;
+  String? facebookId;
+  String? country;
+  String? userProfile;
   String? expertProfile;
-  Null deviceToken;
+  String? deviceToken;
   String? deviceType;
   int? expirationTime;
   String? fee;
@@ -59,61 +70,63 @@ class Data {
   String? bankAccountHolderName;
   String? bankName;
   String? accountNumber;
+  String? timezone;
   bool? isDeleted;
   String? firstCreated;
   String? lastModified;
   String? activeAt;
 
-  Data(
+  UpdateUserDetails(
       {this.id,
-        this.userName,
-        this.expertName,
-        this.mirlId,
-        this.email,
-        this.phone,
-        this.location,
-        this.about,
-        this.otp,
-        this.gender,
-        this.loginType,
-        this.googleId,
-        this.appleId,
-        this.facebookId,
-        this.country,
-        this.userProfile,
-        this.expertProfile,
-        this.deviceToken,
-        this.deviceType,
-        this.expirationTime,
-        this.fee,
-        this.userProfileFlag,
-        this.expertProfileFlag,
-        this.aboutFlag,
-        this.feeFlag,
-        this.areaOfExpertiseFlag,
-        this.weeklyAvailableFlag,
-        this.instantCallAvailableFlag,
-        this.locationFlag,
-        this.isLocationVisible,
-        this.genderFlag,
-        this.certificateFlag,
-        this.bankDetailsFlag,
-        this.bankAccountHolderName,
-        this.bankName,
-        this.accountNumber,
-        this.isDeleted,
-        this.firstCreated,
-        this.lastModified,
-        this.activeAt});
+      this.userName,
+      this.expertName,
+      this.mirlId,
+      this.email,
+      this.phone,
+      this.city,
+      this.about,
+      this.otp,
+      this.gender,
+      this.loginType,
+      this.googleId,
+      this.appleId,
+      this.facebookId,
+      this.country,
+      this.userProfile,
+      this.expertProfile,
+      this.deviceToken,
+      this.deviceType,
+      this.expirationTime,
+      this.fee,
+      this.userProfileFlag,
+      this.expertProfileFlag,
+      this.aboutFlag,
+      this.feeFlag,
+      this.areaOfExpertiseFlag,
+      this.weeklyAvailableFlag,
+      this.instantCallAvailableFlag,
+      this.locationFlag,
+      this.isLocationVisible,
+      this.genderFlag,
+      this.certificateFlag,
+      this.bankDetailsFlag,
+      this.bankAccountHolderName,
+      this.bankName,
+      this.accountNumber,
+      this.timezone,
+      this.isDeleted,
+      this.firstCreated,
+      this.lastModified,
+      this.activeAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UpdateUserDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
     expertName = json['expertName'];
     mirlId = json['mirlId'];
     email = json['email'];
     phone = json['phone'];
-    location = json['location'];
+    city = json['city'];
     about = json['about'];
     otp = json['otp'];
     gender = json['gender'];
@@ -143,6 +156,7 @@ class Data {
     bankAccountHolderName = json['bankAccountHolderName'];
     bankName = json['bankName'];
     accountNumber = json['accountNumber'];
+    timezone = json['timezone'];
     isDeleted = json['isDeleted'];
     firstCreated = json['firstCreated'];
     lastModified = json['lastModified'];
@@ -157,7 +171,7 @@ class Data {
     data['mirlId'] = this.mirlId;
     data['email'] = this.email;
     data['phone'] = this.phone;
-    data['location'] = this.location;
+    data['city'] = this.city;
     data['about'] = this.about;
     data['otp'] = this.otp;
     data['gender'] = this.gender;
@@ -187,10 +201,12 @@ class Data {
     data['bankAccountHolderName'] = this.bankAccountHolderName;
     data['bankName'] = this.bankName;
     data['accountNumber'] = this.accountNumber;
+    data['timezone'] = this.timezone;
     data['isDeleted'] = this.isDeleted;
     data['firstCreated'] = this.firstCreated;
     data['lastModified'] = this.lastModified;
     data['activeAt'] = this.activeAt;
     return data;
   }
+
 }

@@ -10,7 +10,17 @@ class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
 
 class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProfileScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getData();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.watch(editExpertProvider);
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
@@ -77,19 +87,34 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 ),
                 18.0.spaceY,
                 TextFormFieldWidget(
+                  isReadOnly: true,
+                  onTap: () {
+                    context.toPushNamed(RoutesConstants.yourExpertProfileName);
+                  },
                   height: 40,
                   labelText: StringConstants.expertName,
+                  controller: expertWatch.expertNameController,
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
+                  isReadOnly: true,
+                  onTap: () {
+                    context.toPushNamed(RoutesConstants.yourMirlId);
+                  },
                   height: 40,
                   labelText: StringConstants.yourMirlId,
+                  controller: expertWatch.mirlIdController,
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
+                  isReadOnly: true,
+                  onTap: () {
+                    context.toPushNamed(RoutesConstants.moreAboutMeScreen);
+                  },
                   maxLines: 10,
                   minLines: 10,
                   labelText: StringConstants.moreAboutMe,
+                  controller: expertWatch.aboutMeController,
                 ),
                 50.0.spaceY,
                 PrimaryButton(
@@ -110,9 +135,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 PrimaryButton(
                   buttonColor: ColorConstants.buttonColor,
                   title: StringConstants.weeklyAvailability,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setYourWeeklyAvailabilityScreen);
-                  },
+                  onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(

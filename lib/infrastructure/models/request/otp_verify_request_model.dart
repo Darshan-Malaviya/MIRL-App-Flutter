@@ -1,3 +1,5 @@
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+
 class OTPVerifyRequestModel {
   String? email;
   String? otp;
@@ -14,5 +16,8 @@ class OTPVerifyRequestModel {
     data['email'] = email;
     data['otp'] = otp;
     return data;
+  }
+  String prepareRequest() {
+    return jsonEncode(toJson());
   }
 }

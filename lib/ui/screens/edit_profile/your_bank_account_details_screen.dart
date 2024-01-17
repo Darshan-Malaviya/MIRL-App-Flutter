@@ -30,7 +30,9 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
           ),
           trailingIcon: OnScaleTap(
             onPress: () {
-              if (_loginPassKey.currentState?.validate() ?? false) {}
+              if (_loginPassKey.currentState?.validate() ?? false) {
+                expertRead.UpdateUserDetailsApiCall();
+              }
             },
             child: TitleMediumText(
               title: StringConstants.done,
@@ -73,6 +75,7 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
                 TextFormFieldWidget(
                   focusNode: nameFocus,
                   hintText: StringConstants.nameBankAccount,
+                  controller: expertWatch.bankHolderNameController,
                   onFieldSubmitted: (value) {
                     nameFocus.toChangeFocus(currentFocusNode: nameFocus, nexFocusNode: bankNameFocus);
                   },
@@ -81,6 +84,7 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
                 TextFormFieldWidget(
                   focusNode: bankNameFocus,
                   hintText: StringConstants.bankName,
+                  controller: expertWatch.bankNameController,
                   onFieldSubmitted: (value) {
                     bankNameFocus.toChangeFocus(currentFocusNode: bankNameFocus, nexFocusNode: accountFocus);
                   },
@@ -90,6 +94,7 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
                   focusNode: accountFocus,
                   hintText: StringConstants.accountNumber,
                   textInputAction: TextInputAction.done,
+                  controller: expertWatch.accountNumberController,
                   onFieldSubmitted: (value) {
                     accountFocus.unfocus();
                   },
