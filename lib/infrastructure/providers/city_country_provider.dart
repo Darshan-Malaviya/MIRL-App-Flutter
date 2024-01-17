@@ -9,12 +9,18 @@ class CityCountryProvider extends ChangeNotifier {
   List<countryList> get country => _country;
   List<countryList> _country = [];
 
+  bool get reachedLastPage => _reachedLastPage;
+  bool _reachedLastPage = false;
+
+  int get pageNo => _pageNo;
+  int _pageNo = 1;
+
   Future<void> AreaCategoryListApiCall() async {
     CustomLoading.progressDialog(isLoading: true);
 
     ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(
       limit: 10,
-      page: 1,
+      page: _pageNo,
     );
     CustomLoading.progressDialog(isLoading: false);
 
@@ -24,6 +30,12 @@ class CityCountryProvider extends ChangeNotifier {
           CountryResponseModel countryResponseModel = response.data;
           Logger().d("Successfully");
           _country.addAll(countryResponseModel.data ?? []);
+          if (_pageNo == countryResponseModel.pagination?.itemCount) {
+            _reachedLastPage = true;
+          } else {
+            _pageNo = _pageNo + 1;
+            _reachedLastPage = false;
+          }
           SharedPrefHelper.saveUserData(jsonEncode(countryResponseModel.data));
         }
         break;

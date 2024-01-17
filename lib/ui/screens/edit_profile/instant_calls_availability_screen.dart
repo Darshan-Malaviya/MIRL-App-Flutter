@@ -20,6 +20,14 @@ class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
 
 class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAvailabilityScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.watch(editExpertProvider).isSelect;
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);
@@ -48,6 +56,8 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
               title: StringConstants.instantCallsAvailability,
               titleColor: ColorConstants.bottomTextColor,
               fontFamily: FontWeightEnum.w700.toInter,
+              maxLine: 2,
+              titleTextAlign: TextAlign.center,
             ),
             20.0.spaceY,
             TitleMediumText(

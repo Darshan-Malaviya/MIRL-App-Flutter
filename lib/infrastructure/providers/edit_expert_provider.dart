@@ -20,6 +20,7 @@ class EditExpertProvider extends ChangeNotifier {
   TextEditingController bankNameController = TextEditingController();
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController bankHolderNameController = TextEditingController();
+  TextEditingController countryNameController = TextEditingController();
   TextEditingController countController = TextEditingController(text: "0");
 
   final _expertProfileRepo = ExpertProfileRepo();
@@ -31,12 +32,6 @@ class EditExpertProvider extends ChangeNotifier {
   UserData? get userData => _userData;
   UserData? _userData;
 
-  @override
-  // TODO: implement hashCode
-  // int _count = 0;
-  //
-  // int get count => _count;
-
   String? _selectedGender;
 
   String? get selectedGender => _selectedGender;
@@ -45,6 +40,10 @@ class EditExpertProvider extends ChangeNotifier {
   bool _isSelect = false;
 
   bool get isSelect => _isSelect;
+
+  // bool _isSelect = false;
+  // bool get isSelect => _isSelect;
+
   int _isSelectGender = 1;
 
   int get isSelectGender => _isSelectGender;
@@ -67,11 +66,8 @@ class EditExpertProvider extends ChangeNotifier {
 
   String? get selectedGenderTitle => _selectedGenderTitle;
   String? _selectedGenderTitle;
+
   int _count = 0;
-
-
-
-  //int get count => model.count;
 
   List<WeekScheduleModel> _weekScheduleModel = [];
 
@@ -80,6 +76,9 @@ class EditExpertProvider extends ChangeNotifier {
   List<WorkDays> workDaysList = [];
 
   List<CertificationData> certificationList = [];
+
+  List<countryList> get getByIdList => _getByIdList;
+  final List<countryList> _getByIdList = [];
 
   late DateTime plusDay;
   late DateTime hourOnly;
@@ -105,13 +104,41 @@ class EditExpertProvider extends ChangeNotifier {
     DateTime upperValue = lowerValue.add(Duration(hours: 2, minutes: 30));
 
     _weekScheduleModel.addAll([
-      WeekScheduleModel(dayName: 'MON', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-      WeekScheduleModel(dayName: 'TUE', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-      WeekScheduleModel(dayName: 'WED', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-      WeekScheduleModel(dayName: 'THU', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
-      WeekScheduleModel(dayName: 'FRI', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-      WeekScheduleModel(dayName: 'SAT', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-      WeekScheduleModel(dayName: 'SUN', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
+      WeekScheduleModel(
+          dayName: 'MON',
+          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+          isAvailable: true),
+      WeekScheduleModel(
+          dayName: 'TUE',
+          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+          isAvailable: true),
+      WeekScheduleModel(
+          dayName: 'WED',
+          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+          isAvailable: true),
+      WeekScheduleModel(
+          dayName: 'THU',
+          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+          isAvailable: false),
+      WeekScheduleModel(
+          dayName: 'FRI',
+          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+          isAvailable: true),
+      WeekScheduleModel(
+          dayName: 'SAT',
+          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+          isAvailable: true),
+      WeekScheduleModel(
+          dayName: 'SUN',
+          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+          isAvailable: false),
     ]);
     notifyListeners();
   }
@@ -143,8 +170,10 @@ class EditExpertProvider extends ChangeNotifier {
   void getCertificateList() {
     certificationList.clear();
     _certiAndExpModel.forEach((element) {
-      certificationList
-          .add(CertificationData(title: element.titleController.text.trim(), url: element.urlController.text.trim(), description: element.descriptionController.text.trim()));
+      certificationList.add(CertificationData(
+          title: element.titleController.text.trim(),
+          url: element.urlController.text.trim(),
+          description: element.descriptionController.text.trim()));
     });
     notifyListeners();
   }
@@ -153,7 +182,8 @@ class EditExpertProvider extends ChangeNotifier {
     getSelectedWeekDays();
     CustomLoading.progressDialog(isLoading: true);
 
-    ExpertAvailabilityRequestModel requestModel = ExpertAvailabilityRequestModel(scheduleType: scheduleType, workDays: workDaysList);
+    ExpertAvailabilityRequestModel requestModel =
+        ExpertAvailabilityRequestModel(scheduleType: scheduleType, workDays: workDaysList);
 
     ApiHttpResult response = await _expertProfileRepo.editExpertAvailabilityApi(request: requestModel.toJson());
     CustomLoading.progressDialog(isLoading: false);
@@ -231,13 +261,6 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void setGender(String value) {
-  //   _genderList;
-  //   notifyListeners();
-  // }
-  List<countryList> get getByIdList => _getByIdList;
-  final List<countryList> _getByIdList = [];
-
   void setYesNo(String value) {
     _isSelect = (value == 'Yes') ? true : false;
     notifyListeners();
@@ -249,17 +272,7 @@ class EditExpertProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  // void onGenderTap(int index) {
-  //   for (var element in _genderList) {
-  //     element.isSelected = false;
-  //   }
-  //   _genderList[index].isSelected = !(_genderList[index].isSelected ?? false);
-  //   int newIndex = _genderList.indexWhere((element) => element.isSelected == true);
-  //   _selectedGenderTitle = _genderList[newIndex].title;
-  //   notifyListeners();
-  // }
-
-  getData() async {
+  void getData() async {
     String value = SharedPrefHelper.getUserData;
     _userData = UserData.fromJson(jsonDecode(value));
     expertNameController.text = _userData?.expertName ?? '';
@@ -308,6 +321,4 @@ class EditExpertProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
 }
-
