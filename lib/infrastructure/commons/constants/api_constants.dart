@@ -78,4 +78,7 @@ class ApiConstants {
   static String updateUser = '/user/${SharedPrefHelper.getUserId}';
   static const String category = '/category';
   static const String country = '/country';
+  static const String expertAvailability = '/expertAvailability';
+  static const String certification = '/certification';
+  static const String deleteCertification = '/certification';
 }

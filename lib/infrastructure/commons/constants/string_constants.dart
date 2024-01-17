@@ -120,4 +120,14 @@ class StringConstants {
   static const String changeMirlId = "You can change your MIRL ID only once in 60 days.";
   static const String professionalSkills =
       "Dive into the details of your professional skills, hobbies, or interests. Whether you're a tech wizard, a gardening enthusiast, or a language lover, let users see the diverse aspects of your expertise and personality.";
+  static const String recurring = "Recurring";
+  static const String nonRecurring = "Non-Recurring";
+  static const String sunday = "Sunday";
+  static const String monday = "Monday";
+  static const String tuesday = "Tuesday";
+  static const String wednesday = "Wednesday";
+  static const String thursday = "Thursday";
+  static const String friday = "Friday";
+  static const String saturday = "Saturday";
+  static const String noTimeSchedule = "no time scheduled";
 }

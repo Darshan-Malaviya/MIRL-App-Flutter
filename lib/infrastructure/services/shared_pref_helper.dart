@@ -13,6 +13,14 @@ class SharedPrefHelper {
     return _prefsInstance;
   }
 
+  static Future<bool> saveFirebaseToken(String? authToken) async {
+    return await _prefsInstance?.setString(StorageConstants.firebaseToken, authToken ?? '') ?? false;
+  }
+
+  static String get getFirebaseToken {
+    return _prefsInstance?.getString(StorageConstants.firebaseToken) ?? '';
+  }
+
   static Future<bool> saveAuthToken(String? authToken) async {
     return await _prefsInstance?.setString(StorageConstants.authToken, authToken ?? '') ?? false;
   }

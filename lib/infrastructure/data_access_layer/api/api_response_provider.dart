@@ -118,9 +118,9 @@ class ApiResponseProvider {
       //TODO: for future optimization move decoding to a separate isolate.
       return APIResponse.success(response.data);
     } else {
-      ErrorModel? errorResponse;
+      CommonModel? errorResponse;
       try {
-        errorResponse = await compute(ErrorModel.parseInfo, response.data as Map<String, dynamic>);
+        errorResponse = await compute(CommonModel.parseInfo, response.data as Map<String, dynamic>);
       } catch (e) {
         print(e);
       }
@@ -134,11 +134,11 @@ class ApiResponseProvider {
     // final errorMessage = DioExceptions.fromDioError(e).toString();
     ApplicationError applicationError;
     if ((e.response?.statusCode ?? 400) >= 400 || (e.response?.statusCode ?? 400) <= 499) {
-      ErrorModel? errorResponse = await compute(ErrorModel.parseInfo, e.response?.data as Map<String, dynamic>);
+      CommonModel? errorResponse = await compute(CommonModel.parseInfo, e.response?.data as Map<String, dynamic>);
       return APIResponse.failure(errorResponse);
     } else if ((e.response?.statusCode ?? 400) >= 400 || (e.response?.statusCode ?? 400) <= 499) {
       // ErrorModel? errorResponse = await compute(ErrorModel.parseInfo, e.response?.data as Map<String, dynamic>);
-      return APIResponse.failure(ErrorModel(message: ['Service temporarily unavailable. Please check back soon.']));
+      return APIResponse.failure(CommonModel(message: ['Service temporarily unavailable. Please check back soon.']));
     }
     if (e.error is SocketException) {
       applicationError = NetworkError.getAppError(NetworkErrorType.netUnreachable);
@@ -146,6 +146,6 @@ class ApiResponseProvider {
       applicationError = ErrorResponse.getAppError(e.response?.statusCode ?? 0);
     }
 
-    return APIResponse.failure(ErrorModel(message: [applicationError.errors.first.message ?? '']));
+    return APIResponse.failure(CommonModel(message: [applicationError.errors.first.message ?? '']));
   }
 }

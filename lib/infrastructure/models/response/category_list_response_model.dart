@@ -1,12 +1,12 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/models/response/error_model.dart';
+import 'package:mirl/infrastructure/models/common/common_model.dart';
 
 class CategoryListResponseModel {
   int? status;
   String? message;
   Pagination? pagination;
   List<CategoryList>? data;
-  ErrorModel? err;
+  CommonModel? err;
 
   CategoryListResponseModel({this.status, this.message, this.pagination, this.data});
 

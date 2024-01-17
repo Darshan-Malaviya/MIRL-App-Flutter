@@ -192,14 +192,14 @@
 // }
 
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/models/response/error_model.dart';
+import 'package:mirl/infrastructure/models/common/common_model.dart';
 
 class LoginResponseModel {
   int? status;
   UserData? data;
   String? message;
   String? token;
-  ErrorModel? err;
+  CommonModel? err;
 
   LoginResponseModel({this.status, this.data, this.message, this.token});
 
@@ -208,6 +208,7 @@ class LoginResponseModel {
     data = json['data'] != null ? new UserData.fromJson(json['data']) : null;
     message = json['message'];
     token = json['token'];
+    err = json['err'] != null ? CommonModel.fromJson(json['err']) : null;
   }
 
   Map<String, dynamic> toJson() {

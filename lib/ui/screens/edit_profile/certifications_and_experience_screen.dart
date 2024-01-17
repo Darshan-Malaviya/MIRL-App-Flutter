@@ -30,12 +30,14 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
             onTap: () {
-              Navigator.pop(context);
+              context.toPop();
             },
           ),
           trailingIcon: OnScaleTap(
             onPress: () {
-              if (_loginPassKey.currentState?.validate() ?? false) {}
+              if (_loginPassKey.currentState?.validate() ?? false) {
+                expertRead.expertCertificateApi(context);
+              }
             },
             child: TitleMediumText(
               title: StringConstants.done,
@@ -85,7 +87,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                             ),
                             InkWell(
                               onTap: () {
-                                expertRead.deleteExperience(index);
+                                expertRead.expertCertificateDeleteApi(context: context, certiId: '', index: index);
                               },
                               child: TitleSmallText(
                                 title: StringConstants.delete,
@@ -100,7 +102,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           controller: expertWatch.certiAndExpModel[index].titleController,
                           focusNode: expertWatch.certiAndExpModel[index].titleFocus,
                           hintText: StringConstants.writeYourTitle,
-                          textInputType: TextInputType.emailAddress,
+                          textInputType: TextInputType.text,
                           onFieldSubmitted: (value) {
                             expertWatch.certiAndExpModel[index].titleFocus.toChangeFocus(
                                 currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus,
