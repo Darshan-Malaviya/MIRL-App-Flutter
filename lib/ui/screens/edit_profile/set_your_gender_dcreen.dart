@@ -6,6 +6,7 @@ import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
+import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/ui/common/appbar/appbar_widget.dart';
 import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
@@ -18,9 +19,14 @@ class SetYourGenderScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
-  List<String> _gender = ["Male", "Female","Other"];
+
+
+  int? index;
+
   @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
@@ -29,10 +35,15 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
             Navigator.pop(context);
           },
         ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ).addPaddingRight(14),
+          trailingIcon: InkWell(
+            onTap: () {
+              expertRead.UpdateUserDetailsApiCall();
+            },
+            child: TitleMediumText(
+              title: StringConstants.done,
+              fontFamily: FontWeightEnum.w700.toInter,
+            ).addPaddingRight(14),
+          )
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -44,13 +55,15 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
                 titleColor: ColorConstants.bottomTextColor,
                 fontFamily: FontWeightEnum.w700.toInter,
               ),
-              150.0.spaceY,
+              120.0.spaceY,
               DropdownMenuWidget(
                 hintText: StringConstants.theDropDown,
-                dropdownList: _gender
-                    .map((String item) => dropdownMenuEntry(context: context, value: StringConstants.theDropDown, label: item))
+                dropdownList: expertWatch.genderList
+                    .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                     .toList(),
-                onSelect: (String value) {},
+                onSelect: (String value) {
+                  //expertRead.setGender(value);
+                }, controller: expertWatch.genderController,
               )
               // DropdownButtonFormField(
               //   icon: Icon(Icons.keyboard_arrow_down_sharp),
@@ -108,7 +121,7 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
               // )
             ],
           ),
-        ),
+        ).addAllPadding(20),
       ),
     );
   }

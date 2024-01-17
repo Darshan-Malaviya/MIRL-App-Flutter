@@ -104,8 +104,9 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           hintText: StringConstants.writeYourTitle,
                           textInputType: TextInputType.text,
                           onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].titleFocus
-                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus, nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
+                            expertWatch.certiAndExpModel[index].titleFocus.toChangeFocus(
+                                currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus,
+                                nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
                           },
                           validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredTitle),
                         ),
@@ -115,8 +116,9 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           focusNode: expertWatch.certiAndExpModel[index].urlFocus,
                           hintText: StringConstants.sourceUrl,
                           onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].urlFocus
-                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus, nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
+                            expertWatch.certiAndExpModel[index].urlFocus.toChangeFocus(
+                                currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus,
+                                nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
                           },
                           validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredUrl),
                         ),

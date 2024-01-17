@@ -49,4 +49,12 @@ class SharedPrefHelper {
   static clearPrefs() async {
     await _prefsInstance?.remove(StorageConstants.userData);
   }
+
+  static Future<bool> saveUserId(String? id) async {
+    return await _prefsInstance?.setString(StorageConstants.userId, id ?? '') ?? false;
+  }
+
+  static String get getUserId {
+    return _prefsInstance?.getString(StorageConstants.userId) ?? '';
+  }
 }

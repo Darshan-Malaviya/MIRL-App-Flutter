@@ -19,6 +19,8 @@ ImageConstants {
   static const exploreImage = '${imagePath}explore_image.png';
   static const backIcon = '${imagePath}back.png';
   static const friends = '${imagePath}friends.png';
+  static const plus = '${imagePath}plus.png';
+  static const minus = '${imagePath}minus.png';
 
 
 

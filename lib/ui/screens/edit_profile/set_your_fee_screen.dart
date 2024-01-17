@@ -12,10 +12,18 @@ class SetYourFreeScreen extends ConsumerStatefulWidget {
 
 class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
   @override
+  void initState() {
+    super.initState();
+    // ref.watch(editExpertProvider).countController.text = "0"; // Setting the initial value for the field.
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+   // final expertRead = ref.read(editExpertProvider);
     return Scaffold(
       appBar: AppBarWidget(
-        leading:  InkWell(
+        leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
           onTap: () {
             Navigator.pop(context);
@@ -37,13 +45,42 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlusButtonWidget(),
+              PlusButtonWidget(onTap: () {
+                double currentValue = double.parse(expertWatch.countController.text);
+                setState(() {
+                  currentValue++;
+                  expertWatch.countController.text = (currentValue).toString(); // incrementing value
+                });
+                // setState(() {
+                //   int.parse(countController.text);
+                //   counter++;
+                // });
+                //expertRead.counterController();
+              }),
+              // TitleSmallText(
+              //   title: '${expertWatch.controller.count}',
+              // ),
               TextFormFieldWidget(
+                controller: expertWatch.countController,
                 width: 150,
                 textInputType: TextInputType.number,
-
+                textAlign: TextAlign.center,
               ).addAllPadding(16),
-              MinusButtonWidget(),
+              MinusButtonWidget(
+                onTap: () {
+                  double currentValue = double.parse(expertWatch.countController.text);
+                  setState(() {
+                    print("Setting state");
+                    currentValue--;
+                    expertWatch.countController.text = (currentValue > 0 ? currentValue : 0).toString(); // decrementing value
+                  });
+                  // setState(() {
+                  //   int.parse(countController.text);
+                  //   counter--;
+                  // });
+                  //expertRead.removeCounterController();
+                },
+              ),
             ],
           ),
           TitleSmallText(
@@ -54,9 +91,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
             title: StringConstants.appFees,
           ),
           4.0.spaceY,
-          TitleSmallText(
-              title: StringConstants.ourAppFees,
-              titleColor: ColorConstants.bottomTextColor),
+          TitleSmallText(title: StringConstants.ourAppFees, titleColor: ColorConstants.bottomTextColor),
           PrimaryButton(title: StringConstants.userFees, onPressed: () {}).addAllPadding(50),
         ],
       ),

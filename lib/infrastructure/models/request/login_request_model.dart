@@ -1,3 +1,5 @@
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+
 class LoginRequestModel {
   String? email;
   String? loginType;
@@ -26,5 +28,8 @@ class LoginRequestModel {
     data['deviceToken'] = this.deviceToken;
     data['timezone'] = this.timezone;
     return data;
+  }
+  String prepareRequest() {
+    return jsonEncode(toJson());
   }
 }

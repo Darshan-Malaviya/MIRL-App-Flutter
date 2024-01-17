@@ -8,6 +8,7 @@ class CategoryListProvider extends ChangeNotifier {
 
   List<CategoryList>? get categoryList => _categoryList;
   final List<CategoryList> _categoryList = [];
+  //final List<AreaListModel> areaListModel = [];
 
   // void AddAreaCategoryListRequestCall() {
   //   CategoryListResponseModel categoryListResponseModel = CategoryListResponseModel(
@@ -15,11 +16,13 @@ class CategoryListProvider extends ChangeNotifier {
   //   AddAreaCategoryListApiCall(requestModel: categoryListResponseModel.toJson());
   // }
 
+
+
+
   Future<void> AreaCategoryListApiCall({required String isChildId}) async {
     CustomLoading.progressDialog(isLoading: true);
 
-    ApiHttpResult response = await _categoryListRepository.categoryListApiCall(limit: 10, page: 1, isChild: isChildId);
-
+    ApiHttpResult response = await _categoryListRepository.categoryListApiCall(limit: 5, page: 1, isChild: isChildId);
     CustomLoading.progressDialog(isLoading: false);
 
     switch (response.status) {
@@ -27,7 +30,16 @@ class CategoryListProvider extends ChangeNotifier {
         if (response.data != null && response.data is CategoryListResponseModel) {
           CategoryListResponseModel categoryListResponseModel = response.data;
           Logger().d("Successfully login");
-          _categoryList.addAll(categoryListResponseModel.data ?? []);
+           _categoryList.addAll(categoryListResponseModel.data ?? []);
+
+
+            // List<CategoryList> categoryList = [];
+            // for (int i = 0; i < (categoryListResponseModel.data?.length ?? 0); i++) {
+            //   categoryList.add(categoryListResponseModel.data?[i] ?? CategoryList());
+            // }
+            // areaListModel.add(AreaListModel(categoryList: categoryList, isSelected: false));
+
+
           SharedPrefHelper.saveUserData(jsonEncode(categoryListResponseModel.data));
         }
         break;
@@ -39,6 +51,11 @@ class CategoryListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
+  // void onSelected(int index) {
+  //   for (var element in areaListModel) {
+  //     element.isSelected = false;
+  //   }
+  //   areaListModel[index].isSelected = true;
+  //   notifyListeners();
+  // }
 }

@@ -6,6 +6,7 @@ import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
+import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/ui/common/appbar/appbar_widget.dart';
 import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
@@ -18,23 +19,35 @@ class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
 }
 
 class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAvailabilityScreen> {
-  List<String> _locations = ["Yes", "No"];
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.watch(editExpertProvider).isSelect;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
     return Scaffold(
       appBar: AppBarWidget(
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ).addPaddingRight(14),
-      ),
+          leading: InkWell(
+            child: Image.asset(ImageConstants.backIcon),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          trailingIcon: InkWell(
+            onTap: () {
+              expertRead.UpdateUserDetailsApiCall();
+            },
+            child: TitleMediumText(
+              title: StringConstants.done,
+              fontFamily: FontWeightEnum.w700.toInter,
+            ).addPaddingRight(14),
+          )),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,7 +56,8 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
               title: StringConstants.instantCallsAvailability,
               titleColor: ColorConstants.bottomTextColor,
               fontFamily: FontWeightEnum.w700.toInter,
-
+              maxLine: 2,
+              titleTextAlign: TextAlign.center,
             ),
             20.0.spaceY,
             TitleMediumText(
@@ -56,10 +70,13 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             20.0.spaceY,
             DropdownMenuWidget(
               hintText: StringConstants.theDropDown,
-              dropdownList: _locations
-                  .map((String item) => dropdownMenuEntry(context: context, value: StringConstants.theDropDown, label: item))
+              dropdownList: expertWatch.locations
+                  .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                   .toList(),
-              onSelect: (String value) {},
+              onSelect: (value) {
+                expertWatch.setYesNo(value);
+              },
+              controller: expertWatch.yesNoController,
             ),
             40.0.spaceY,
             TitleSmallText(

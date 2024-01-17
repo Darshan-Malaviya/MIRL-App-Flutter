@@ -45,10 +45,10 @@ class DropdownMenuWidget extends StatelessWidget {
             : const SizedBox.shrink(),
         (labelText?.isNotEmpty ?? false) && labelText != null ? 6.0.spaceY : const SizedBox.shrink(),
         DropdownMenu<String>(
-          expandedInsets: EdgeInsets.all(24),
+          expandedInsets: EdgeInsets.all(0),
           hintText: hintText,
           width: menuWidth,
-          menuHeight: menuHeight ?? 200,
+          menuHeight: menuHeight,
           enableSearch: enableSearch ?? false,
           enableFilter: enableFilter ?? false,
           requestFocusOnTap: requestFocusOnTap ?? false,

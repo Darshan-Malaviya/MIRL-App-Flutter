@@ -16,5 +16,7 @@ class RoutesConstants {
   static const String certificationsAndExperienceScreen = '/certificationsAndExperienceScreen';
   static const String yourBankAccountDetailsScreen = '/yourBankAccountDetailsScreen';
   static const String addYourAreasOfExpertiseScreen = '/addYourAreasOfExpertiseScreen';
-  static const String setYourWeeklyAvailabilityScreen = '/setYourWeeklyAvailabilityScreen';
+  static const String yourExpertProfileName = '/yourExpertProfileName';
+  static const String yourMirlId = '/yourMirlId';
+  static const String moreAboutMeScreen = '/moreAboutMeScreen';
 }

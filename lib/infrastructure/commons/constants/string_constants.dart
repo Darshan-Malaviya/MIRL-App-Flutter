@@ -30,6 +30,7 @@ class StringConstants {
   static const String shareProfile = "SHARE PROFILE";
   static const String moreAboutMe = "MORE ABOUT ME";
   static const String done = "Done";
+  static const String yes = "Yes";
   static const String editYourExpertProfile = "EDIT YOUR EXPERT PROFILE";
   static const String editExpertProfile = "EDIT EXPERT PICTURE";
   static const String editYourDetails = "EDIT YOUR DETAILS";
@@ -107,6 +108,18 @@ class StringConstants {
   static const String requiredUrl = "Url is required";
   static const String requiredTitle = "Title is required";
   static const String noDataFound = "No Data found yet!";
+  static const String charactersLong = "Your MIRL ID should be at least 5 characters long";
+  static const String aroundTheWorld =
+      "Your Expert Name is the official name you’ll be using to connect with users from around the world in MIRL.";
+  static const String twoWeeks = "You can change your Expert Name only once in two weeks.";
+  static const String uniqueId =
+      "Your MIRL ID is your unique ID you can share with anyone on or off the app to get in touch with you.";
+  static const String timeOrAdvice =
+      "Tired of cold calls and people asking you for your “time” or advice? Just ask them to MIRL you on your MIRL ID. It’s a non-awkward, casual yet professional way to let them understand the value of your time, and pay you for your expertise. ";
+  static const String mirlQrCode = "You can share your MIRL ID or MIRL QR code with anyone from your Expert profile page.";
+  static const String changeMirlId = "You can change your MIRL ID only once in 60 days.";
+  static const String professionalSkills =
+      "Dive into the details of your professional skills, hobbies, or interests. Whether you're a tech wizard, a gardening enthusiast, or a language lover, let users see the diverse aspects of your expertise and personality.";
   static const String recurring = "Recurring";
   static const String nonRecurring = "Non-Recurring";
   static const String sunday = "Sunday";
