@@ -19,13 +19,6 @@ class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
 }
 
 class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAvailabilityScreen> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.watch(editExpertProvider).isSelect;
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +34,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
           ),
           trailingIcon: InkWell(
             onTap: () {
-              expertRead.UpdateUserDetailsApiCall();
+              expertRead.updateInstantCallApi();
             },
             child: TitleMediumText(
               title: StringConstants.done,

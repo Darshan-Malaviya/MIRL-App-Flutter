@@ -4,7 +4,7 @@ import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
-import 'package:mirl/infrastructure/models/response/update_expert_profile_response_model.dart';
+import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:dio/src/form_data.dart';
 
 class UpdateUserDetailsRepository extends ApiResponseHandler {
@@ -20,7 +20,7 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
       headers: ApiConstants.headerWithToken(),
     );
 
-    return responseHandler(result: result, json: UpdateUserDetailsResponseModel.parseInfo);
+    return responseHandler(result: result, json: LoginResponseModel.parseInfo);
   }
 
   /// country API
