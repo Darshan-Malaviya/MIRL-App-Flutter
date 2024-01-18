@@ -8,6 +8,7 @@ import 'package:mirl/infrastructure/models/request/login_request_model.dart';
 import 'package:mirl/infrastructure/models/request/otp_verify_request_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/repository/auth_repo.dart';
+import 'package:mirl/infrastructure/services/agora_service.dart';
 import 'package:mirl/mirl_app.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -77,6 +78,7 @@ class AuthProvider with ChangeNotifier {
       deviceToken: SharedPrefHelper.getFirebaseToken,
       timezone: await CommonMethods.getCurrentTimeZone(),
       loginType: loginType.toString(),
+      voIpToken: await AgoraService.singleton.getVoipToken()
     );
     loginApiCall(requestModel: loginRequestModel.prepareRequest(), loginType: loginType);
   }

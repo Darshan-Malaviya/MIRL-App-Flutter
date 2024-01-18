@@ -90,5 +90,11 @@
      <string>123033805966-6vc88aip1vmemr5v24obppu6q7003vkg.apps.googleusercontent.com</string>
     <key>GIDClientID</key>
      <string>123033805966-32ie9m2baveh8f0me1v09gn0uf127m56.apps.googleusercontent.com</string>
+    <key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) requires camera permission to capture photos for upload picture</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) requires photo library permission to use photos for upload picture</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>$(PRODUCT_NAME) requires microphone permission to use calling feature</string>
 </dict>
 </plist>
