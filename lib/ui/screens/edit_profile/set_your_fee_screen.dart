@@ -12,21 +12,15 @@ class SetYourFreeScreen extends ConsumerStatefulWidget {
 
 class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
   @override
-  void initState() {
-    super.initState();
-    // ref.watch(editExpertProvider).countController.text = "0"; // Setting the initial value for the field.
-  }
-
-  @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
-   // final expertRead = ref.read(editExpertProvider);
+    // final expertRead = ref.read(editExpertProvider);
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
           onTap: () {
-            Navigator.pop(context);
+            context.toPop();
           },
         ),
         trailingIcon: TitleMediumText(
@@ -51,15 +45,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   currentValue++;
                   expertWatch.countController.text = (currentValue).toString(); // incrementing value
                 });
-                // setState(() {
-                //   int.parse(countController.text);
-                //   counter++;
-                // });
-                //expertRead.counterController();
               }),
-              // TitleSmallText(
-              //   title: '${expertWatch.controller.count}',
-              // ),
               TextFormFieldWidget(
                 controller: expertWatch.countController,
                 width: 150,
@@ -74,11 +60,6 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                     currentValue--;
                     expertWatch.countController.text = (currentValue > 0 ? currentValue : 0).toString(); // decrementing value
                   });
-                  // setState(() {
-                  //   int.parse(countController.text);
-                  //   counter--;
-                  // });
-                  //expertRead.removeCounterController();
                 },
               ),
             ],

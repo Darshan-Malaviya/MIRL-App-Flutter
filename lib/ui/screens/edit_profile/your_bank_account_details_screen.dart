@@ -31,7 +31,7 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
           trailingIcon: OnScaleTap(
             onPress: () {
               if (_loginPassKey.currentState?.validate() ?? false) {
-                expertRead.UpdateUserDetailsApiCall();
+                expertRead.updateBankApi();
               }
             },
             child: TitleMediumText(

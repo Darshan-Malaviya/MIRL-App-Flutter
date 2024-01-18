@@ -55,7 +55,8 @@ class DropdownMenuWidget extends StatelessWidget {
           enabled: enableDropdown ?? true,
           trailingIcon: Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: ColorConstants.dropDownBorderColor,size: 18,
+            color: ColorConstants.dropDownBorderColor,
+            size: 18,
           ),
           selectedTrailingIcon: Icon(
             size: 18,
@@ -74,7 +75,7 @@ class DropdownMenuWidget extends StatelessWidget {
             padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 10)),
           ),
           errorText: errorText,
-          initialSelection: dropdownList.first.label,
+          initialSelection: hintText ?? dropdownList.first.label,
           controller: controller,
           dropdownMenuEntries: dropdownList,
           onSelected: (value) => onSelect(value ?? ''),
@@ -90,8 +91,7 @@ class DropdownMenuWidget extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   overflow: TextOverflow.ellipsis,
                 ),
-            errorStyle:
-                TextStyle(color: ColorConstants.secondaryColor, fontSize: 12, fontWeight: FontWeight.w600, fontFamily: "Inter"),
+            errorStyle: TextStyle(color: ColorConstants.secondaryColor, fontSize: 12, fontWeight: FontWeight.w600, fontFamily: "Inter"),
             enabledBorder: DecoratedInputBorder(
               child: OutlineInputBorder(
                 borderSide: const BorderSide(color: ColorConstants.dropDownBorderColor),
@@ -127,8 +127,7 @@ class DropdownMenuWidget extends StatelessWidget {
     );
   }
 
-  BoxShadow buildBoxShadow() =>
-      BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.0), blurRadius: 6, offset: const Offset(0, 0));
+  BoxShadow buildBoxShadow() => BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.0), blurRadius: 6, offset: const Offset(0, 0));
 }
 
 DropdownMenuEntry<String> dropdownMenuEntry({required BuildContext context, required String value, required String label}) {

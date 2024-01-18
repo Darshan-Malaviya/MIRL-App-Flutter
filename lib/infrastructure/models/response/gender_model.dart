@@ -1,11 +1,11 @@
-class Gender {
+class GenderModel {
   String? title;
   bool? isSelected;
   int? selectType;
 
-  Gender({this.title, this.isSelected, this.selectType});
+  GenderModel({this.title, this.isSelected, this.selectType});
 
-  Gender.fromJson(Map<String, dynamic> json) {
+  GenderModel.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     isSelected = json['isSelected'];
     selectType = json['selectType'];
