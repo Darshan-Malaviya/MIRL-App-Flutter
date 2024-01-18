@@ -66,7 +66,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                     .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                     .toList(),
                 onSelect: (String value) {
-                  expertWatch.setYesNo(value);
+                  expertWatch.setValueOfCall(value);
                 },
               ),
               20.0.spaceY,
