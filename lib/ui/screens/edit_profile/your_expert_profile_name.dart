@@ -18,13 +18,11 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
             leading: InkWell(
               child: Image.asset(ImageConstants.backIcon),
               onTap: () {
-                Navigator.pop(context);
+                context.toPop();
               },
             ),
             trailingIcon: InkWell(
-              onTap: () {
-                expertRead.UpdateUserDetailsApiCall();
-              },
+              onTap: () => expertRead.updateProfileApi(),
               child: TitleMediumText(
                 title: StringConstants.done,
                 fontFamily: FontWeightEnum.w700.toInter,

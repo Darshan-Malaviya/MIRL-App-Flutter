@@ -33,7 +33,7 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
             ),
             trailingIcon: InkWell(
               onTap: () {
-                expertRead.UpdateUserDetailsApiCall();
+                expertRead.updateMirlIdApi();
               },
               child: TitleMediumText(
                 title: StringConstants.done,

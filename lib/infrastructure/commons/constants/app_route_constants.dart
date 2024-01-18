@@ -8,7 +8,7 @@ import 'package:mirl/ui/screens/edit_profile/edit_your_expert_profile_screen.dar
 import 'package:mirl/ui/screens/edit_profile/instant_calls_availability_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/more_about_me_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/set_your_fee_screen.dart';
-import 'package:mirl/ui/screens/edit_profile/set_your_gender_dcreen.dart';
+import 'package:mirl/ui/screens/edit_profile/set_your_gender_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/set_your_location_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/your_bank_account_details_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/your_expert_profile_name.dart';

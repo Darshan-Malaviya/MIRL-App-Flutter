@@ -37,7 +37,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
           ),
           trailingIcon: InkWell(
             onTap: () {
-              expertRead.UpdateUserDetailsApiCall();
+              expertRead.updateFeesApi();
             },
             child: TitleMediumText(
               title: StringConstants.done,

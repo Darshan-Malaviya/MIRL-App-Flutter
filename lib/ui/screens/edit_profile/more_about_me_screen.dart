@@ -33,7 +33,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
             ),
             trailingIcon: InkWell(
               onTap: () {
-                expertRead.UpdateUserDetailsApiCall();
+                expertRead.updateAboutApi();
               },
               child: TitleMediumText(
                 title: StringConstants.done,

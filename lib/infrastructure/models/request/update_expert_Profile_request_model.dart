@@ -105,10 +105,65 @@ class UpdateExpertProfileRequestModel {
     return formData;
   }
 
-// Future<FormData> toJsonProfilePic() async {
-//   FormData formData = FormData.fromMap({
-//     "image": await MultipartFile.fromFile(image ?? '', filename: DateTime.now().toIso8601String()),
-//   });
-//   return formData;
-// }
+  FormData toJsonGender() {
+    FormData formData = FormData.fromMap({
+      'genderFlag': genderFlag,
+      'gender': gender,
+    });
+    return formData;
+  }
+
+  FormData toJsonFees() {
+    FormData formData = FormData.fromMap({
+      'feeFlag': feeFlag,
+      'fee': fee,
+    });
+    return formData;
+  }
+
+  FormData toJsonInstantCall() {
+    FormData formData = FormData.fromMap({
+      'instantCallAvailable': instantCallAvailable,
+    });
+    return formData;
+  }
+
+  FormData toJsonProfile() {
+    FormData formData = FormData.fromMap({
+      'expertProfileFlag': expertProfileFlag,
+    });
+    return formData;
+  }
+
+  FormData toJsonBank() {
+    FormData formData = FormData.fromMap({
+      'bankDetailsFlag': bankDetailsFlag,
+      'bankAccountHolderName': bankAccountHolderName,
+      'bankName': bankName,
+      'accountNumber': accountNumber,
+    });
+    return formData;
+  }
+
+  FormData toJsonName() {
+    FormData formData = FormData.fromMap({
+      'expertName': expertName,
+    });
+    return formData;
+  }
+
+  FormData toJsonMirlId() {
+    FormData formData = FormData.fromMap({
+      'mirlId': mirlId,
+    });
+    return formData;
+  }
+
+  FormData toJsonAbout() {
+    FormData formData = FormData.fromMap({
+      'aboutFlag': aboutFlag,
+      'about': about,
+    });
+    return formData;
+  }
 }
