@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
 import 'package:mirl/infrastructure/models/request/update_expert_Profile_request_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/models/response/gender_model.dart';
@@ -48,6 +50,10 @@ class EditExpertProvider extends ChangeNotifier {
   List<String> _locations = ["Yes", "No"];
 
   List<String> get locations => _locations;
+
+  String _pickedImage = '';
+
+  String get pickedImage => _pickedImage;
 
   // ignore: prefer_final_fields
   List<GenderModel> _genderList = [
@@ -240,7 +246,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void getUserData() async {
     String value = SharedPrefHelper.getUserData;
-    if(value.isNotEmpty) {
+    if (value.isNotEmpty) {
       _userData = UserData.fromJson(jsonDecode(value));
       expertNameController.text = _userData?.expertName ?? '';
       mirlIdController.text = _userData?.mirlId ?? '';
@@ -300,7 +306,7 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateProfileApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfileFlag: true);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfileFlag: true, userProfile: _pickedImage);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonProfile());
   }
 
@@ -326,6 +332,29 @@ class EditExpertProvider extends ChangeNotifier {
         Logger().d("API fail on update user detail call Api ${response.data}");
         break;
     }
+    notifyListeners();
+  }
+
+  Future<void> pickGalleryImage(BuildContext context) async {
+    XFile? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
+
+    if (image != null && image.path.isNotEmpty) {
+      _pickedImage = image.path;
+      notifyListeners();
+    }
+  }
+
+  Future<void> captureCameraImage(BuildContext context) async {
+    XFile? image = await ImagePickerHandler.singleton.capturePhoto(context: context);
+
+    if (image != null && image.path.isNotEmpty) {
+      _pickedImage = image.path;
+      notifyListeners();
+    }
+  }
+
+  void removePickedImage() {
+    _pickedImage = '';
     notifyListeners();
   }
 

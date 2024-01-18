@@ -25,8 +25,8 @@ class ImagePickerHandler extends PermissionHandler {
   /// pick IMAGE form library
   Future<XFile?> pickImageFromGallery({required BuildContext context}) async {
     //get Storage permission
-    PermissionStatus storagePermissionStatus = await getStoragePermission(
-        context: context, alertMessage: "Open Setting and\nallow {APP_NAME} app to select pictures form library.");
+    PermissionStatus storagePermissionStatus =
+        await getStoragePermission(context: context, alertMessage: "Open Setting and\nallow Mirl app to select pictures form library.");
 
     //pick image from library
     if (storagePermissionStatus == PermissionStatus.granted || storagePermissionStatus == PermissionStatus.limited) {
@@ -39,8 +39,7 @@ class ImagePickerHandler extends PermissionHandler {
   ///pick VIDEO from library
   Future<XFile?> pickVideoFromGallery({required BuildContext context}) async {
     //get Storage permission
-    PermissionStatus storagePermissionStatus = await getStoragePermission(
-        context: context, alertMessage: "Open Setting and\nallow {APP_NAME} app to select video form library.");
+    PermissionStatus storagePermissionStatus = await getStoragePermission(context: context, alertMessage: "Open Setting and\nallow Mirl app to select video form library.");
 
     //pick video from library
     if (storagePermissionStatus == PermissionStatus.granted || storagePermissionStatus == PermissionStatus.limited) {
@@ -75,10 +74,7 @@ class ImagePickerHandler extends PermissionHandler {
   /// CAPTURE PHOTO form camera
   Future<XFile?> capturePhoto({required BuildContext context}) async {
     //get permission status
-    PermissionStatus storagePermissionStatus = await permissionRequest(
-        context: context,
-        permission: Permission.camera,
-        alertMessage: "Open Setting and\nallow {APP_NAME} app to access camera to take a picture. .");
+    await permissionRequest(context: context, permission: Permission.camera, alertMessage: "Open Setting and\nallow {APP_NAME} app to access camera to take a picture. .");
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     return pickedFile;
   }
@@ -96,8 +92,7 @@ class ImagePickerHandler extends PermissionHandler {
     }
 
     //get permission status
-    PermissionStatus storagePermissionStatus =
-        await permissionRequest(context: context, permission: storagePermission, alertMessage: alertMessage);
+    PermissionStatus storagePermissionStatus = await permissionRequest(context: context, permission: storagePermission, alertMessage: alertMessage);
     return storagePermissionStatus;
   }
 

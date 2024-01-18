@@ -130,4 +130,6 @@ class StringConstants {
   static const String friday = "Friday";
   static const String saturday = "Saturday";
   static const String noTimeSchedule = "no time scheduled";
+  static const String gallery = "gallery";
+  static const String camera = "camera";
 }

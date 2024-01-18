@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
+import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
   const EditYourExpertProfileScreen({super.key});
@@ -25,14 +28,15 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: () => context.toPop(),
         ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ).addPaddingRight(14),
+        trailingIcon: InkWell(
+          onTap: () => expertRead.updateProfileApi(),
+          child: TitleMediumText(
+            title: StringConstants.done,
+            fontFamily: FontWeightEnum.w700.toInter,
+          ).addPaddingRight(14),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -43,35 +47,64 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
               fontFamily: FontWeightEnum.w700.toInter,
             ),
             20.0.spaceY,
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            InkWell(
+              onTap: () {
+                CommonBottomSheet.bottomSheet(
+                  context: context,
+                  isDismissible: true,
+                  child: ImagePickerBottomSheet(
+                    onTapCamera: () {
+                      context.toPop();
+                      expertRead.captureCameraImage(context);
+                    },
+                    onTapGalley: () {
+                      context.toPop();
+                      expertRead.pickGalleryImage(context);
+                    },
+                  ),
+                );
+              },
+              child: Stack(
+                alignment: Alignment.topRight,
                 children: [
-                  BodySmallText(
-                    title: StringConstants.expertProfilePhoto,
+                  Container(
+                    height: MediaQuery.sizeOf(context).height * 0.45,
+                    width: MediaQuery.sizeOf(context).width * 0.7,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: ColorConstants.borderColor, width: 1.5),
+                    ),
+                    child: (expertWatch.pickedImage.isNotEmpty)
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.file(
+                              File(expertWatch.pickedImage),
+                              fit: BoxFit.cover,
+                            ))
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              BodySmallText(
+                                title: StringConstants.expertProfilePhoto,
+                              ),
+                              20.0.spaceY,
+                              BodySmallText(
+                                title: StringConstants.highQualityProfile,
+                                titleTextAlign: TextAlign.center,
+                                maxLine: 2,
+                              ),
+                              20.0.spaceY,
+                              BodySmallText(
+                                title: StringConstants.yourFavoriteOne,
+                              ),
+                            ],
+                          ),
                   ),
-                  20.0.spaceY,
-                  BodySmallText(
-                    title: StringConstants.highQualityProfile,
-                    titleTextAlign: TextAlign.center,
-                    maxLine: 2,
-                  ),
-                  20.0.spaceY,
-                  BodySmallText(
-                    title: StringConstants.yourFavoriteOne,
-                  ),
+                  OnScaleTap(onPress: () => expertRead.removePickedImage(), child: Icon(Icons.cancel, color: ColorConstants.bottomTextColor, size: 30))
+                      .addVisibility(expertWatch.pickedImage.isNotEmpty),
                 ],
               ),
-              height: 400,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: ColorConstants.borderColor, //<---- Insert Gradient Here
-                  width: 1.5,
-                ),
-              ),
-            ).addMarginX(45),
+            ),
             5.0.spaceY,
             BodySmallText(
               title: StringConstants.editExpertProfile,

@@ -8,6 +8,7 @@ class UpdateExpertProfileRequestModel {
   String? about;
   int? gender;
   String? fee;
+  String? userProfile;
   String? userProfileFlag;
   bool? expertProfileFlag;
   bool? aboutFlag;
@@ -33,6 +34,7 @@ class UpdateExpertProfileRequestModel {
       this.about,
       this.gender,
       this.fee,
+      this.userProfile,
       this.userProfileFlag,
       this.expertProfileFlag,
       this.aboutFlag,
@@ -58,6 +60,7 @@ class UpdateExpertProfileRequestModel {
     about = json['about'];
     gender = json['gender'];
     fee = json['fee'];
+    userProfile = json['userProfile'];
     userProfileFlag = json['userProfileFlag'];
     expertProfileFlag = json['expertProfileFlag'];
     aboutFlag = json['aboutFlag'];
@@ -85,6 +88,7 @@ class UpdateExpertProfileRequestModel {
       'about': about,
       'gender': gender,
       'fee': fee,
+      'userProfile': userProfile,
       'userProfileFlag': userProfileFlag,
       'expertProfileFlag': expertProfileFlag,
       'aboutFlag': aboutFlag,
@@ -131,6 +135,7 @@ class UpdateExpertProfileRequestModel {
   FormData toJsonProfile() {
     FormData formData = FormData.fromMap({
       'expertProfileFlag': expertProfileFlag,
+      'userProfile': userProfile,
     });
     return formData;
   }

@@ -1,20 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/models/response/category_list_response_model.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
-import 'package:mirl/ui/common/appbar/appbar_widget.dart';
-import 'package:mirl/ui/common/container_widgets/shadow_container.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/network_image/network_image.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
-import 'package:mirl/ui/screens/conponnet/area_model.dart';
-import 'package:pinput/pinput.dart';
 
 class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
   const AddYourAreasOfExpertiseScreen({super.key});
@@ -51,9 +37,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: () => context.toPop(),
         ),
         trailingIcon: TitleMediumText(
           title: StringConstants.done,
