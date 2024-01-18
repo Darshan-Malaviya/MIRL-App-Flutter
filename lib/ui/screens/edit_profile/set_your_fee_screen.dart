@@ -14,19 +14,24 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
-    // final expertRead = ref.read(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
     return Scaffold(
       appBar: AppBarWidget(
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            context.toPop();
-          },
-        ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ).addPaddingRight(14),
+          leading: InkWell(
+            child: Image.asset(ImageConstants.backIcon),
+            onTap: () {
+              context.toPop();
+            },
+          ),
+          trailingIcon: InkWell(
+              onTap: () {
+                expertRead.updateFeesApi();
+              },
+              child: TitleMediumText(
+                title: StringConstants.done,
+                fontFamily: FontWeightEnum.w700.toInter,
+              ).addPaddingRight(14),
+          )
       ),
       body: Column(
         children: [

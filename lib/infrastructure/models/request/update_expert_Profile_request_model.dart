@@ -24,6 +24,8 @@ class UpdateExpertProfileRequestModel {
   String? bankAccountHolderName;
   String? bankName;
   String? accountNumber;
+  String? city;
+  String? country;
 
   UpdateExpertProfileRequestModel(
       {this.userName,
@@ -48,7 +50,9 @@ class UpdateExpertProfileRequestModel {
       this.isLocationVisible,
       this.bankAccountHolderName,
       this.bankName,
-      this.accountNumber});
+      this.accountNumber,
+      this.city,
+      this.country});
 
   UpdateExpertProfileRequestModel.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
@@ -73,7 +77,9 @@ class UpdateExpertProfileRequestModel {
     isLocationVisible = json['isLocationVisible'];
     bankAccountHolderName = json['bankAccountHolderName'];
     bankName = json['bankName'];
+    city = json['city'];
     accountNumber = json['accountNumber'];
+    country = json['country'];
   }
 
   Future<FormData> toJson() async {
@@ -101,6 +107,8 @@ class UpdateExpertProfileRequestModel {
       'bankAccountHolderName': bankAccountHolderName,
       'bankName': bankName,
       'accountNumber': accountNumber,
+      'city': city,
+      'country': country
     });
     return formData;
   }
@@ -163,6 +171,17 @@ class UpdateExpertProfileRequestModel {
     FormData formData = FormData.fromMap({
       'aboutFlag': aboutFlag,
       'about': about,
+    });
+    return formData;
+  }
+
+  FormData toJsonYourLocation() {
+    FormData formData = FormData.fromMap({
+      'locationFlag': locationFlag,
+      'location': location,
+      'isLocationVisible': isLocationVisible,
+      'country': country,
+      'city': city
     });
     return formData;
   }

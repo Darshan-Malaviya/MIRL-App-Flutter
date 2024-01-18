@@ -77,6 +77,7 @@ class AuthProvider with ChangeNotifier {
       deviceToken: SharedPrefHelper.getFirebaseToken,
       timezone: await CommonMethods.getCurrentTimeZone(),
       loginType: loginType.toString(),
+      voIpToken: 'tfhufgyhfyhjfrxyj',
     );
     loginApiCall(requestModel: loginRequestModel.prepareRequest(), loginType: loginType);
   }
@@ -89,10 +90,7 @@ class AuthProvider with ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-
           Logger().d("Successfully login");
-
-          CustomLoading.progressDialog(isLoading: false);
           if (loginType == 0) {
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
@@ -104,11 +102,9 @@ class AuthProvider with ChangeNotifier {
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           }
         }
-
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: loginResponseModel?.err?.message ?? '');
-        CustomLoading.progressDialog(isLoading: false);
         Logger().d("API fail on login callApi ${response.data}");
         break;
     }

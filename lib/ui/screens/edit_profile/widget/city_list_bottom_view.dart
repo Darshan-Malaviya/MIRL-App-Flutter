@@ -18,15 +18,15 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(cityCountryProvider).cityListApiCall();
+      ref.read(editExpertProvider).cityListApiCall();
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        bool isLoading = ref.watch(cityCountryProvider).reachedLastPage;
+        bool isLoading = ref.watch(editExpertProvider).reachedLastPage;
         if (!isLoading) {
           log("this is called");
           // await Future.delayed(const Duration(seconds: 2));
-          ref.read(cityCountryProvider).cityListApiCall();
+          ref.read(editExpertProvider).cityListApiCall();
         } else {
           log('reach last page');
         }
@@ -37,7 +37,8 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
 
   @override
   Widget build(BuildContext context) {
-    final cityCountryWatch = ref.read(cityCountryProvider);
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -53,7 +54,9 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-
+                      expertWatch.city[index].city ?? '';
+                      expertRead.displayCity(value: expertWatch.city[index]);
+                      Navigator.pop(context);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,13 +65,13 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
                           padding: const EdgeInsets.all(8),
                           alignment: Alignment.center,
                           margin: const EdgeInsets.symmetric(vertical: 5),
-                          child: BodyMediumText(title: cityCountryWatch.city[index].city ?? ''),
+                          child: BodyMediumText(title: expertWatch.city[index].city ?? ''),
                         ),
                       ],
                     ),
                   );
                 },
-                itemCount: cityCountryWatch.city.length),
+                itemCount: expertWatch.city.length),
           ),
           16.0.spaceY,
         ],

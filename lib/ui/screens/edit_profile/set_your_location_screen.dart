@@ -15,8 +15,6 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //ref.read(cityCountryProvider).AreaCategoryListApiCall();
-      ref.read(cityCountryProvider).displayCountry();
     });
     super.initState();
   }
@@ -25,8 +23,6 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);
-    final cityCountryWatch = ref.read(cityCountryProvider);
-    final cityCountryRead = ref.read(cityCountryProvider);
     return Scaffold(
       appBar: AppBarWidget(
           leading: InkWell(
@@ -37,7 +33,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
           ),
           trailingIcon: InkWell(
             onTap: () {
-              expertRead.updateFeesApi();
+              expertRead.updateYourLocationApi();
             },
             child: TitleMediumText(
               title: StringConstants.done,
@@ -68,7 +64,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                     .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                     .toList(),
                 onSelect: (String value) {
-                  expertWatch.setYesNo(value);
+                  expertWatch.locationSelect(value);
                 },
               ),
               20.0.spaceY,
@@ -82,6 +78,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 isReadOnly: true,
                 hintText: StringConstants.nearestLandmark,
                 controller: expertWatch.countryNameController,
+                //onChanged: (value) => cityCountryRead.displayCountry(),
                 onTap: () {
                   CommonBottomSheet.bottomSheet(context: context, child: CountryListBottomView());
                 },
@@ -96,6 +93,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               TextFormFieldWidget(
                 isReadOnly: true,
                 hintText: StringConstants.nearestLandmark,
+                controller: expertWatch.cityNameController,
                 onTap: () {
                   CommonBottomSheet.bottomSheet(context: context, child: CityListBottomView());
                 },

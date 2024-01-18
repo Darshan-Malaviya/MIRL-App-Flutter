@@ -5,7 +5,7 @@ class CityResponseModel {
   int? status;
   String? message;
   Pagination? pagination;
-  List<cityList>? data;
+  List<CityModel>? data;
 
   CityResponseModel({this.status, this.message, this.pagination, this.data});
 
@@ -14,9 +14,9 @@ class CityResponseModel {
     message = json['message'];
     pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
-      data = <cityList>[];
+      data = <CityModel>[];
       json['data'].forEach((v) {
-        data!.add(new cityList.fromJson(v));
+        data!.add(new CityModel.fromJson(v));
       });
     }
   }
@@ -44,14 +44,14 @@ class CityResponseModel {
   }
 }
 
-class cityList {
+class CityModel {
   String? id;
   String? countryId;
   String? city;
 
-  cityList({this.id, this.countryId, this.city});
+  CityModel({this.id, this.countryId, this.city});
 
-  cityList.fromJson(Map<String, dynamic> json) {
+  CityModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     countryId = json['country_id'];
     city = json['city'];

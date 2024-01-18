@@ -19,15 +19,15 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(cityCountryProvider).CountryListApiCall();
+      ref.read(editExpertProvider).CountryListApiCall();
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        bool isLoading = ref.watch(cityCountryProvider).reachedLastPage;
+        bool isLoading = ref.watch(editExpertProvider).reachedLastPage;
         if (!isLoading) {
           log("this is called");
           // await Future.delayed(const Duration(seconds: 2));
-          ref.read(cityCountryProvider).CountryListApiCall();
+          ref.read(editExpertProvider).CountryListApiCall();
         } else {
           log('reach last page');
         }
@@ -38,8 +38,8 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
 
   @override
   Widget build(BuildContext context) {
-    final cityCountryWatch = ref.watch(cityCountryProvider);
-    final cityCountryRead = ref.read(cityCountryProvider);
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -55,8 +55,10 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      cityCountryWatch.country[index].id ?? '';
-                      cityCountryRead.setSelectedCountry(value: cityCountryWatch.country[index]);
+                      expertWatch.country[index].id ?? '';
+                      expertWatch.country[index].country ?? '';
+                      expertRead.setSelectedCountry(value: expertWatch.country[index]);
+                      expertRead.displayCountry(value: expertWatch.country[index]);
                       Navigator.pop(context);
                     },
                     child: Row(
@@ -66,13 +68,13 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
                           padding: const EdgeInsets.all(8),
                           alignment: Alignment.center,
                           margin: const EdgeInsets.symmetric(vertical: 5),
-                          child: BodyMediumText(title: cityCountryWatch.country[index].country ?? ''),
+                          child: BodyMediumText(title: expertWatch.country[index].country ?? ''),
                         ),
                       ],
                     ),
                   );
                 },
-                itemCount: cityCountryWatch.country.length),
+                itemCount: expertWatch.country.length),
           ),
           16.0.spaceY,
         ],

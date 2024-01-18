@@ -19,7 +19,6 @@ class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
 }
 
 class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAvailabilityScreen> {
-
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
@@ -67,7 +66,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
                   .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                   .toList(),
               onSelect: (value) {
-                expertWatch.setYesNo(value);
+                expertWatch.callSelect(value);
               },
               controller: expertWatch.yesNoController,
             ),
@@ -85,7 +84,6 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             TitleSmallText(
               title: StringConstants.highlyRecommend,
             )
-
             // DropdownButtonFormField(
             //   icon: Icon(Icons.keyboard_arrow_down_sharp),
             //   decoration: InputDecoration(
