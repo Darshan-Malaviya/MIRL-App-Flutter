@@ -3,6 +3,7 @@ import 'package:mirl/infrastructure/commons/enums/enum.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
+import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/models/response/update_expert_profile_response_model.dart';
 import 'package:dio/src/form_data.dart';
@@ -39,5 +40,24 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
     );
 
     return responseHandler(result: result, json: CountryResponseModel.parseInfo);
+  }
+
+  /// city API
+
+  Future<ApiHttpResult> cityApiCall({
+    required int page,
+    required int limit,
+    required String countryId,
+  }) async {
+    final uri = ApiConstants.endpointUri(
+        path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId});
+
+    APIResponse result = await _apiResponseProvider.requestAPI(
+      uri,
+      apiType: APIType.get,
+      headers: ApiConstants.headerWithOutToken(),
+    );
+
+    return responseHandler(result: result, json: CityResponseModel.parseInfo);
   }
 }

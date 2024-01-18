@@ -77,8 +77,8 @@ class EditExpertProvider extends ChangeNotifier {
 
   List<CertificationData> certificationList = [];
 
-  List<countryList> get getByIdList => _getByIdList;
-  final List<countryList> _getByIdList = [];
+  List<CountryModel> get getByIdList => _getByIdList;
+  final List<CountryModel> _getByIdList = [];
 
   late DateTime plusDay;
   late DateTime hourOnly;

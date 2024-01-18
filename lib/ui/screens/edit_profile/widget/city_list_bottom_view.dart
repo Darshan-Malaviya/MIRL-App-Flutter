@@ -1,25 +1,24 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
 import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
-class CountryListBottomView extends ConsumerStatefulWidget {
-  const CountryListBottomView({super.key});
+class CityListBottomView extends ConsumerStatefulWidget {
+  const CityListBottomView({super.key});
 
   @override
-  ConsumerState<CountryListBottomView> createState() => _CountryListBottomViewState();
+  ConsumerState<CityListBottomView> createState() => _CityListBottomViewState();
 }
 
-class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
+class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
   ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(cityCountryProvider).CountryListApiCall();
+      ref.read(cityCountryProvider).cityListApiCall();
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
@@ -27,7 +26,7 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
         if (!isLoading) {
           log("this is called");
           // await Future.delayed(const Duration(seconds: 2));
-          ref.read(cityCountryProvider).CountryListApiCall();
+          ref.read(cityCountryProvider).cityListApiCall();
         } else {
           log('reach last page');
         }
@@ -38,14 +37,13 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
 
   @override
   Widget build(BuildContext context) {
-    final cityCountryWatch = ref.watch(cityCountryProvider);
-    final cityCountryRead = ref.read(cityCountryProvider);
+    final cityCountryWatch = ref.read(cityCountryProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
           const TitleMediumText(
-            title: "Select Country",
+            title: "Select City",
           ),
           16.0.spaceY,
           SizedBox(
@@ -55,9 +53,7 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      cityCountryWatch.country[index].id ?? '';
-                      cityCountryRead.setSelectedCountry(value: cityCountryWatch.country[index]);
-                      Navigator.pop(context);
+
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,13 +62,13 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
                           padding: const EdgeInsets.all(8),
                           alignment: Alignment.center,
                           margin: const EdgeInsets.symmetric(vertical: 5),
-                          child: BodyMediumText(title: cityCountryWatch.country[index].country ?? ''),
+                          child: BodyMediumText(title: cityCountryWatch.city[index].city ?? ''),
                         ),
                       ],
                     ),
                   );
                 },
-                itemCount: cityCountryWatch.country.length),
+                itemCount: cityCountryWatch.city.length),
           ),
           16.0.spaceY,
         ],
