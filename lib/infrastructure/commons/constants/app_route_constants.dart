@@ -10,6 +10,7 @@ import 'package:mirl/ui/screens/edit_profile/more_about_me_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/set_your_fee_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/set_your_gender_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/set_your_location_screen.dart';
+import 'package:mirl/ui/screens/edit_profile/set_your_weekly_availability_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/your_bank_account_details_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/your_expert_profile_name.dart';
 import 'package:mirl/ui/screens/edit_profile/your_mirl_id_update_screen.dart';
@@ -58,10 +59,12 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const SetYourFreeScreen());
       case RoutesConstants.instantCallsAvailabilityScreen:
         return MaterialPageRoute(builder: (_) => const InstantCallsAvailabilityScreen());
-      case RoutesConstants.srtYourLocationScreen:
+      case RoutesConstants.setYourLocationScreen:
         return MaterialPageRoute(builder: (_) => const SetYourLocationScreen());
-      case RoutesConstants.srtYourGenderScreen:
+      case RoutesConstants.setYourGenderScreen:
         return MaterialPageRoute(builder: (_) => const SetYourGenderScreen());
+      case RoutesConstants.setWeeklyAvailability:
+        return MaterialPageRoute(builder: (_) => const SetYourWeeklyAvailabilityScreen());
       case RoutesConstants.certificationsAndExperienceScreen:
         return MaterialPageRoute(builder: (_) => const CertificationsAndExperienceScreen());
       case RoutesConstants.yourBankAccountDetailsScreen:
@@ -72,7 +75,7 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const YourExpertProfileNameScreen());
       case RoutesConstants.yourMirlId:
         return MaterialPageRoute(builder: (_) => const YourMirlIdScreen());
-        case RoutesConstants.moreAboutMeScreen:
+      case RoutesConstants.moreAboutMeScreen:
         return MaterialPageRoute(builder: (_) => const MoreAboutMeScreen());
       default:
         return MaterialPageRoute(

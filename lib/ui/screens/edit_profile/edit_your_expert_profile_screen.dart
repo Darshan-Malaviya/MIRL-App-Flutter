@@ -12,7 +12,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).getData();
+      ref.read(editExpertProvider).getUserData();
     });
     super.initState();
   }
@@ -135,7 +135,9 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 PrimaryButton(
                   buttonColor: ColorConstants.buttonColor,
                   title: StringConstants.weeklyAvailability,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.toPushNamed(RoutesConstants.setWeeklyAvailability);
+                  },
                 ),
                 50.0.spaceY,
                 PrimaryButton(
@@ -150,7 +152,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.buttonColor,
                   title: StringConstants.setYourLocation,
                   onPressed: () {
-                    context.toPushNamed(RoutesConstants.srtYourLocationScreen);
+                    context.toPushNamed(RoutesConstants.setYourLocationScreen);
                   },
                 ),
                 50.0.spaceY,
@@ -158,7 +160,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.buttonColor,
                   title: StringConstants.setYourGender,
                   onPressed: () {
-                    context.toPushNamed(RoutesConstants.srtYourGenderScreen);
+                    context.toPushNamed(RoutesConstants.setYourGenderScreen);
                   },
                 ),
                 50.0.spaceY,

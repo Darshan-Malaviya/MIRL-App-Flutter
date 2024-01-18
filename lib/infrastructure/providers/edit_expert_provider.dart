@@ -23,7 +23,7 @@ class EditExpertProvider extends ChangeNotifier {
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController bankHolderNameController = TextEditingController();
   TextEditingController countryNameController = TextEditingController();
-  TextEditingController countController = TextEditingController(text: "0");
+  TextEditingController countController = TextEditingController(text: '0');
 
   final _expertProfileRepo = ExpertProfileRepo();
 
@@ -91,11 +91,12 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void generateWeekDaysTime() {
+    _weekScheduleModel.clear();
     var _time = DateTime.now();
     hourOnly = DateTime(_time.year, _time.month, _time.day, 12);
     plusDay = hourOnly.add(Duration(days: 1));
-    DateTime lowerValue = hourOnly.add(Duration(hours: 2));
-    DateTime upperValue = lowerValue.add(Duration(hours: 2, minutes: 30));
+    DateTime lowerValue = DateTime(_time.year, _time.month, _time.day, 10);
+    DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
     _weekScheduleModel.addAll([
       WeekScheduleModel(dayName: 'MON', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
@@ -154,6 +155,8 @@ class EditExpertProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is CommonModel) {
           CommonModel commonModel = response.data;
+          certificationList.clear();
+          _certiAndExpModel.clear();
           context.toPop();
           FlutterToast().showToast(msg: commonModel.message ?? '');
         }
@@ -213,18 +216,18 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void increaseFees() {
-    int.parse(countController.text.trim());
-    _count++;
+    double plusValue = double.parse(countController.text.trim());
+    countController.text = (plusValue + 1).toString();
     notifyListeners();
   }
 
   void decreaseFees() {
-    int.parse(countController.text.trim());
-    _count--;
+    double minusValue = double.parse(countController.text.trim());
+    countController.text = (minusValue - 1).toString();
     notifyListeners();
   }
 
-  void setYesNo(String value) {
+  void setValueOfCall(String value) {
     _isCallSelect = (value == 'Yes') ? true : false;
     notifyListeners();
   }
@@ -235,14 +238,14 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getData() async {
+  void getUserData() async {
     String value = SharedPrefHelper.getUserData;
-    _userData = UserData.fromJson(jsonDecode(value));
-    expertNameController.text = _userData?.expertName ?? '';
-    mirlIdController.text = _userData?.mirlId ?? '';
-    aboutMeController.text = _userData?.about ?? '';
-
-    //phoneNumberController.text = _userData?.phoneNo.toString() ?? '';
+    if(value.isNotEmpty) {
+      _userData = UserData.fromJson(jsonDecode(value));
+      expertNameController.text = _userData?.expertName ?? '';
+      mirlIdController.text = _userData?.mirlId ?? '';
+      aboutMeController.text = _userData?.about ?? '';
+    }
     notifyListeners();
   }
 
@@ -254,7 +257,7 @@ class EditExpertProvider extends ChangeNotifier {
   void updateFeesApi() {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
       feeFlag: true,
-      fee: '',
+      fee: (double.parse(countController.text) * 100).toString(),
     );
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonFees());
   }
@@ -313,6 +316,7 @@ class EditExpertProvider extends ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
+          resetVariable();
           NavigationService.context.toPop();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
         }
@@ -323,5 +327,18 @@ class EditExpertProvider extends ChangeNotifier {
         break;
     }
     notifyListeners();
+  }
+
+  void resetVariable() {
+    countController.text = '0';
+    expertNameController.clear();
+    mirlIdController.clear();
+    aboutMeController.clear();
+    genderController.clear();
+    yesNoController.clear();
+    bankNameController.clear();
+    accountNumberController.clear();
+    bankHolderNameController.clear();
+    countryNameController.clear();
   }
 }
