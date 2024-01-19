@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
-import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
@@ -24,6 +24,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.watch(editExpertProvider);
+
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
@@ -100,7 +101,9 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                             ],
                           ),
                   ),
-                  OnScaleTap(onPress: () => expertRead.removePickedImage(), child: Icon(Icons.cancel, color: ColorConstants.bottomTextColor, size: 30))
+                  OnScaleTap(
+                          onPress: () => expertRead.removePickedImage(),
+                          child: Icon(Icons.cancel, color: ColorConstants.bottomTextColor, size: 30))
                       .addVisibility(expertWatch.pickedImage.isNotEmpty),
                 ],
               ),

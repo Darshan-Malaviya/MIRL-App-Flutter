@@ -14,7 +14,6 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);
-
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
