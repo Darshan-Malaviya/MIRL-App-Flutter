@@ -1,4 +1,4 @@
-import 'package:mirl/infrastructure/models/response/category_list_response_model.dart';
+import 'package:mirl/infrastructure/models/response/pagination_model/pagination_response_model.dart';
 
 class ExpertCategoryResponseModel {
   int? status;

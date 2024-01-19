@@ -19,5 +19,21 @@
   "yes": "Yes",
   "no": "No",
   "submit": "Submit",
-  "notNow": "Not now"
+  "notNow": "Not now",
+  "searchTypeAnyKeyword": "Search (type any keyword, topic, or expert name here)",
+  "exploreExperts": "EXPLORE EXPERTS",
+  "multipleConnect" : "MULTIPLE CONNECT",
+  "browseExpertsFields": "Browse experts in all fields",
+  "inviteMultipleExpertsAndSelectOne" : "Invite multiple experts and select one",
+  "seeAllExpertCategoryAndTopics": "SEE ALL EXPERT CATEGORIES AND TOPICS",
+  "yourFavoriteExperts": "YOUR FAVORITE EXPERTS",
+  "darnNoFavoriteExperts": "Darn, no favorite experts or buddies? Maybe it’s time to look around and pick a few!",
+  "yourPastConversations": "YOUR PAST CONVERSATIONS",
+  "cricketsTalkToSomeone": "Crickets! Talk to someone and watch this space fill up!",
+  "typeSomethingHere": "Type something here...",
+  "experts": "EXPERTS",
+  "expertCategories": "EXPERT CATEGORIES",
+  "topicsWithCategories": "TOPICS WITHIN EXPERT CATEGORIES",
+  "noResultsFoundTypeSomethingElse": "NO RESULTS FOUND! TYPE SOMETHING ELSE?"
+
 }
