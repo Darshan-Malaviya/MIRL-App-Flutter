@@ -11,8 +11,9 @@ class RoutesConstants {
   static const String editYourExpertProfileScreen = '/editYourExpertProfileScreen';
   static const String setYourFreeScreen = '/setYourFreeScreen';
   static const String instantCallsAvailabilityScreen = '/instantCallsAvailabilityScreen';
-  static const String srtYourLocationScreen = '/srtYourLocationScreen';
-  static const String srtYourGenderScreen = '/srtYourGenderScreen';
+  static const String setYourLocationScreen = '/setYourLocationScreen';
+  static const String setYourGenderScreen = '/setYourGenderScreen';
+  static const String setWeeklyAvailability = '/setWeeklyAvailability';
   static const String certificationsAndExperienceScreen = '/certificationsAndExperienceScreen';
   static const String yourBankAccountDetailsScreen = '/yourBankAccountDetailsScreen';
   static const String addYourAreasOfExpertiseScreen = '/addYourAreasOfExpertiseScreen';

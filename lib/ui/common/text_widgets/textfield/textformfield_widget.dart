@@ -33,6 +33,9 @@ class TextFormFieldWidget extends StatelessWidget {
   /// Specifies the hint
   final String? hintText;
 
+  /// Specifies the initalValue
+  final String? initialValue;
+
   /// Defines hint color
   final Color? hintTextColor;
 
@@ -231,7 +234,7 @@ class TextFormFieldWidget extends StatelessWidget {
       this.prefixIconWidgetConstraints,
       this.suffixIconWidgetConstraints,
       this.labelText,
-      this.borderColor})
+      this.borderColor, this.initialValue})
       : super(key: textFormFieldKey);
 
   @override
@@ -271,6 +274,7 @@ class TextFormFieldWidget extends StatelessWidget {
                 textStyle ?? TextStyle(color: ColorConstants.blackColor, fontSize: 14 / scaleFactor, fontWeight: FontWeight.w600),
             keyboardType: textInputType ?? TextInputType.text,
             controller: controller,
+            initialValue: initialValue,
             decoration: decoration ??
                 InputDecoration(
                   counterText: '',

@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
   const EditYourExpertProfileScreen({super.key});
@@ -12,7 +14,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).getData();
+      ref.read(editExpertProvider).getUserData();
     });
     super.initState();
   }
@@ -43,35 +45,52 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
               fontFamily: FontWeightEnum.w700.toInter,
             ),
             20.0.spaceY,
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  BodySmallText(
-                    title: StringConstants.expertProfilePhoto,
+            InkWell(
+              onTap: () {
+                CommonBottomSheet.bottomSheet(
+                  context: context,
+                  isDismissible: true,
+                  child: ImagePickerBottomSheet(
+                    onTapCamera: () {
+                      context.toPop();
+                    },
+                    onTapGalley: () {
+                      context.toPop();
+                      ImagePickerHandler.singleton.pickImageFromGallery(context: context);
+                    },
                   ),
-                  20.0.spaceY,
-                  BodySmallText(
-                    title: StringConstants.highQualityProfile,
-                    titleTextAlign: TextAlign.center,
-                    maxLine: 2,
+                );
+              },
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BodySmallText(
+                      title: StringConstants.expertProfilePhoto,
+                    ),
+                    20.0.spaceY,
+                    BodySmallText(
+                      title: StringConstants.highQualityProfile,
+                      titleTextAlign: TextAlign.center,
+                      maxLine: 2,
+                    ),
+                    20.0.spaceY,
+                    BodySmallText(
+                      title: StringConstants.yourFavoriteOne,
+                    ),
+                  ],
+                ),
+                height: 400,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: ColorConstants.borderColor,
+                    width: 1.5,
                   ),
-                  20.0.spaceY,
-                  BodySmallText(
-                    title: StringConstants.yourFavoriteOne,
-                  ),
-                ],
-              ),
-              height: 400,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: ColorConstants.borderColor, //<---- Insert Gradient Here
-                  width: 1.5,
                 ),
               ),
-            ).addMarginX(45),
+            ) /*.addMarginX(45)*/,
             5.0.spaceY,
             BodySmallText(
               title: StringConstants.editExpertProfile,
@@ -135,7 +154,9 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 PrimaryButton(
                   buttonColor: ColorConstants.buttonColor,
                   title: StringConstants.weeklyAvailability,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.toPushNamed(RoutesConstants.setWeeklyAvailability);
+                  },
                 ),
                 50.0.spaceY,
                 PrimaryButton(
@@ -150,7 +171,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.buttonColor,
                   title: StringConstants.setYourLocation,
                   onPressed: () {
-                    context.toPushNamed(RoutesConstants.srtYourLocationScreen);
+                    context.toPushNamed(RoutesConstants.setYourLocationScreen);
                   },
                 ),
                 50.0.spaceY,
@@ -158,7 +179,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.buttonColor,
                   title: StringConstants.setYourGender,
                   onPressed: () {
-                    context.toPushNamed(RoutesConstants.srtYourGenderScreen);
+                    context.toPushNamed(RoutesConstants.setYourGenderScreen);
                   },
                 ),
                 50.0.spaceY,

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/common/button_widget/minus_button.dart';
-import 'package:mirl/ui/common/button_widget/plus_button.dart';
+import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 
 class SetYourFreeScreen extends ConsumerStatefulWidget {
   const SetYourFreeScreen({super.key});
@@ -17,21 +16,21 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
     final expertRead = ref.read(editExpertProvider);
     return Scaffold(
       appBar: AppBarWidget(
-          leading: InkWell(
-            child: Image.asset(ImageConstants.backIcon),
-            onTap: () {
-              context.toPop();
-            },
-          ),
-          trailingIcon: InkWell(
-              onTap: () {
-                expertRead.updateFeesApi();
-              },
-              child: TitleMediumText(
-                title: StringConstants.done,
-                fontFamily: FontWeightEnum.w700.toInter,
-              ).addPaddingRight(14),
-          )
+        leading: InkWell(
+          child: Image.asset(ImageConstants.backIcon),
+          onTap: () {
+            context.toPop();
+          },
+        ),
+        trailingIcon: InkWell(
+          onTap: () {
+            expertRead.updateFeesApi();
+          },
+          child: TitleMediumText(
+            title: StringConstants.done,
+            fontFamily: FontWeightEnum.w700.toInter,
+          ).addPaddingRight(14),
+        ),
       ),
       body: Column(
         children: [
@@ -44,27 +43,27 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlusButtonWidget(onTap: () {
-                double currentValue = double.parse(expertWatch.countController.text);
-                setState(() {
-                  currentValue++;
-                  expertWatch.countController.text = (currentValue).toString(); // incrementing value
-                });
-              }),
+              FeesActionButtonWidget(
+                  icons: Icons.add,
+                  onTap: () {
+                    expertRead.increaseFees();
+                  }),
               TextFormFieldWidget(
                 controller: expertWatch.countController,
                 width: 150,
-                textInputType: TextInputType.number,
+                textInputType: TextInputType.numberWithOptions(decimal: true),
                 textAlign: TextAlign.center,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                ],
               ).addAllPadding(16),
-              MinusButtonWidget(
+              FeesActionButtonWidget(
+                icons: Icons.remove,
+                isDisable: expertWatch.countController.text == '0.0' || expertWatch.countController.text == '0',
                 onTap: () {
-                  double currentValue = double.parse(expertWatch.countController.text);
-                  setState(() {
-                    print("Setting state");
-                    currentValue--;
-                    expertWatch.countController.text = (currentValue > 0 ? currentValue : 0).toString(); // decrementing value
-                  });
+                  expertRead.decreaseFees();
                 },
               ),
             ],
@@ -78,7 +77,25 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
           ),
           4.0.spaceY,
           TitleSmallText(title: StringConstants.ourAppFees, titleColor: ColorConstants.bottomTextColor),
-          PrimaryButton(title: StringConstants.userFees, onPressed: () {}).addAllPadding(50),
+          50.0.spaceY,
+          Container(
+            width: MediaQuery.sizeOf(context).width * 0.8,
+            padding: EdgeInsets.symmetric(vertical: 18),
+            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: ColorConstants.primaryColor),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                BodyMediumText(
+                  title: StringConstants.userFees,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                ),
+                BodyMediumText(
+                  title:'\$${expertWatch.countController.text}',
+                  fontFamily: FontWeightEnum.w700.toInter,
+                )
+              ],
+            ).addPaddingX(10),
+          )
         ],
       ),
     );
