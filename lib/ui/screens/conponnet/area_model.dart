@@ -1,7 +1,7 @@
-import 'package:mirl/infrastructure/models/response/category_list_response_model.dart';
+import 'package:mirl/infrastructure/models/common/category_model.dart';
 
 class AreaListModel {
-  List<CategoryList>? categoryList;
+  List<CategoryModel>? categoryList;
   bool? isSelected;
 
   AreaListModel({this.categoryList, this.isSelected});
