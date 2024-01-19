@@ -313,7 +313,7 @@ class EditExpertProvider extends ChangeNotifier {
   Future<void> UpdateUserDetailsApiCall({required FormData requestModel}) async {
     CustomLoading.progressDialog(isLoading: true);
 
-    ApiHttpResult response = await _updateUserDetailsRepository.UpdateUserDetails(requestModel);
+    ApiHttpResult response = await _updateUserDetailsRepository.updateUserDetails(requestModel);
 
     CustomLoading.progressDialog(isLoading: false);
 
@@ -321,10 +321,12 @@ class EditExpertProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-          Logger().d("Successfully login");
-          resetVariable();
-          NavigationService.context.toPop();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+          Logger().d("Successfully login");
+          Logger().d("user data=====${loginResponseModel.toJson()}");
+          resetVariable();
+          getUserData();
+          NavigationService.context.toPop();
         }
         break;
       case APIStatus.failure:

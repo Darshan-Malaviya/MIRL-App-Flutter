@@ -10,7 +10,7 @@ import 'package:dio/src/form_data.dart';
 class UpdateUserDetailsRepository extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
-  Future<ApiHttpResult> UpdateUserDetails(FormData requestModel) async {
+  Future<ApiHttpResult> updateUserDetails(FormData requestModel) async {
     final uri = ApiConstants.endpointUri(path: ApiConstants.updateUser);
 
     APIResponse result = await _apiResponseProvider.requestAPI(
@@ -29,8 +29,7 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
     required int page,
     required int limit,
   }) async {
-    final uri = ApiConstants.endpointUri(
-        path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString()});
+    final uri = ApiConstants.endpointUri(path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString()});
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,
