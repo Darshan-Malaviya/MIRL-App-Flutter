@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
@@ -11,6 +12,14 @@ class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProfileScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);

@@ -18,14 +18,10 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            context.toPop();
-          },
+          onTap: () => context.toPop(),
         ),
         trailingIcon: InkWell(
-          onTap: () {
-            expertRead.updateFeesApi();
-          },
+          onTap: () => expertRead.updateFeesApi(),
           child: TitleMediumText(
             title: StringConstants.done,
             fontFamily: FontWeightEnum.w700.toInter,

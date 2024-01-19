@@ -19,9 +19,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
         appBar: AppBarWidget(
             leading: InkWell(
               child: Image.asset(ImageConstants.backIcon),
-              onTap: () {
-                Navigator.pop(context);
-              },
+              onTap: () => context.toPop(),
             ),
             trailingIcon: InkWell(
               onTap: () {

@@ -17,9 +17,7 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
         appBar: AppBarWidget(
             leading: InkWell(
               child: Image.asset(ImageConstants.backIcon),
-              onTap: () {
-                context.toPop();
-              },
+              onTap: () => context.toPop(),
             ),
             trailingIcon: InkWell(
               onTap: () => expertRead.updateExpertNameApi(),

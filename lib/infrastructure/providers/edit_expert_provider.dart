@@ -463,6 +463,29 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> pickGalleryImage(BuildContext context) async {
+    XFile? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
+
+    if (image != null && image.path.isNotEmpty) {
+      _pickedImage = image.path;
+      notifyListeners();
+    }
+  }
+
+  Future<void> captureCameraImage(BuildContext context) async {
+    XFile? image = await ImagePickerHandler.singleton.capturePhoto(context: context);
+
+    if (image != null && image.path.isNotEmpty) {
+      _pickedImage = image.path;
+      notifyListeners();
+    }
+  }
+
+  void removePickedImage() {
+    _pickedImage = '';
+    notifyListeners();
+  }
+
   Future<void> CountryListApiCall() async {
     CustomLoading.progressDialog(isLoading: true);
 
