@@ -209,7 +209,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void displayCity({required CityModel value}) {
     cityNameController.text = _selectedCityModel?.city ?? '';
-    _selectedCityModel = value;
+    //_selectedCityModel = value;
     notifyListeners();
   }
 
@@ -440,7 +440,7 @@ class EditExpertProvider extends ChangeNotifier {
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on area category call Api ${response.data}");
+        Logger().d("API fail on country list call Api ${response.data}");
         break;
     }
     notifyListeners();
@@ -467,7 +467,7 @@ class EditExpertProvider extends ChangeNotifier {
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on area category call Api ${response.data}");
+        Logger().d("API fail on city list call Api ${response.data}");
         break;
     }
     notifyListeners();

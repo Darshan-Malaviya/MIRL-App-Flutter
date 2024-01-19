@@ -38,7 +38,7 @@ class CityResponseModel {
     try {
       return CityResponseModel.fromJson(json ?? {});
     } catch (e) {
-      Logger().e("LoginResponseModel exception : $e");
+      Logger().e("CityResponseModel exception : $e");
       return null;
     }
   }

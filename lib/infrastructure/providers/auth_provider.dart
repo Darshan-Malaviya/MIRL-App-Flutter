@@ -97,7 +97,7 @@ class AuthProvider with ChangeNotifier {
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
             SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
-            SharedPrefHelper.saveAuthToken(jsonEncode(loginResponseModel.token));
+            SharedPrefHelper.saveAuthToken(loginResponseModel.token);
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           }

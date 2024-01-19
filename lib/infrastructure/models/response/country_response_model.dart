@@ -38,7 +38,7 @@ class CountryResponseModel {
     try {
       return CountryResponseModel.fromJson(json ?? {});
     } catch (e) {
-      Logger().e("LoginResponseModel exception : $e");
+      Logger().e("CountryResponseModel exception : $e");
       return null;
     }
   }

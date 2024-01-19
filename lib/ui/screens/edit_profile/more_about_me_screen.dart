@@ -44,41 +44,64 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                 fontFamily: FontWeightEnum.w700.toInter,
               ),
               30.0.spaceY,
+              // TextFormFieldWidget(
+              //   onChanged: (value) {
+              //     setState(() {
+              //       enteredText = value;
+              //     });
+              //   },
+              //   decoration: InputDecoration(
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(color: ColorConstants.borderColor, width: 1.0),
+              //       ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(color: ColorConstants.borderColor, width: 1.0),
+              //       ),
+              //       //counter: Text("5/20"),
+              //       counterText: '${enteredText.length.toString()}/1500 character',
+              //       border: InputBorder.none,
+              //       isDense: true,
+              //       contentPadding: EdgeInsets.all(10)),
+              //   //maxLengthEnforcement: MaxLengthEnforcement.none,
+              //   maxLines: 10,
+              //   maxLength: 1500,
+              //   minLines: 8,
+              //   hintText: StringConstants.moreAboutMe,
+              //   textInputAction: TextInputAction.done,
+              //   controller: expertWatch.aboutMeController,
+              //   onFieldSubmitted: (value) {},
+              // ),
+              30.0.spaceY,
               Container(
-                height: 50,
+                height: 150,
                 decoration: BoxDecoration(
                     border: Border.all(
                       color: ColorConstants.borderColor,
                     ),
                     color: ColorConstants.whiteColor,
                     borderRadius: BorderRadius.all(Radius.circular(8))),
-                child: TextFormField(
-                    onChanged: (value) {
-                      setState(() {
-                        enteredText = value;
-                      });
-                    },
-                    textAlign: TextAlign.left,
-                    cursorColor: ColorConstants.blackColor,
-                    maxLength: 100,
-                    controller: _titleController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        //counter: Text("5/20"),
-                        counterText: '${enteredText.length.toString()} character',
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.all(0))),
-                // child: TextFormFieldWidget(
-                //   maxLength: 1500,
-                //   //maxLengthEnforcement: MaxLengthEnforcement.none,
-                //   maxLines: 10,
-                //   minLines: 8,
-                //   hintText: StringConstants.moreAboutMe,
-                //   textInputAction: TextInputAction.done,
-                //   controller: expertWatch.aboutMeController,
-                //   onFieldSubmitted: (value) {},
-                // ),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8, top: 2, right: 4),
+                  child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          enteredText = value;
+                        });
+                      },
+                      textAlign: TextAlign.left,
+                      cursorColor: ColorConstants.blackColor,
+                      maxLines: 10,
+                      maxLength: 1500,
+                      minLines: 8,
+                      controller: _titleController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          //counter: Text("5/20"),
+                          counterText: '${enteredText.length.toString()}/1500 character',
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(10))),
+                ),
               ),
               30.0.spaceY,
               TitleSmallText(
