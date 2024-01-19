@@ -14,8 +14,7 @@ class SetYourLocationScreen extends ConsumerStatefulWidget {
 class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
     super.initState();
   }
 
@@ -27,9 +26,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
       appBar: AppBarWidget(
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => context.toPop(),
           ),
           trailingIcon: InkWell(
             onTap: () {
