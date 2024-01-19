@@ -68,7 +68,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
               onSelect: (value) {
                 expertWatch.setValueOfCall(value);
               },
-              controller: expertWatch.yesNoController,
+              controller: expertWatch.instantCallAvailabilityController,
             ),
             40.0.spaceY,
             TitleSmallText(

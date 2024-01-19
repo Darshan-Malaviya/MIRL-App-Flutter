@@ -9,10 +9,18 @@ class ExpertProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.white,
       body: Column(
         children: [
           Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),

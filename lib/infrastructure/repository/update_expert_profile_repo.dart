@@ -11,7 +11,7 @@ import 'package:dio/src/form_data.dart';
 class UpdateUserDetailsRepository extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
-  Future<ApiHttpResult> UpdateUserDetails(FormData requestModel) async {
+  Future<ApiHttpResult> updateUserDetails(FormData requestModel) async {
     final uri = ApiConstants.endpointUri(path: ApiConstants.updateUser);
 
     APIResponse result = await _apiResponseProvider.requestAPI(

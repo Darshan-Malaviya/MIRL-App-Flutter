@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:pinput/pinput.dart';
 
 class MoreAboutMeScreen extends ConsumerStatefulWidget {
   const MoreAboutMeScreen({super.key});
@@ -10,7 +9,6 @@ class MoreAboutMeScreen extends ConsumerStatefulWidget {
 }
 
 class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
-  TextEditingController _titleController = TextEditingController();
   String enteredText = '';
 
   @override
@@ -93,7 +91,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                       maxLines: 10,
                       maxLength: 1500,
                       minLines: 8,
-                      controller: _titleController,
+                      controller: expertWatch.aboutMeController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           //counter: Text("5/20"),

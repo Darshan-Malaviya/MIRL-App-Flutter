@@ -22,7 +22,7 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
               },
             ),
             trailingIcon: InkWell(
-              onTap: () => expertRead.updateProfileApi(),
+              onTap: () => expertRead.updateExpertNameApi(),
               child: TitleMediumText(
                 title: StringConstants.done,
                 fontFamily: FontWeightEnum.w700.toInter,

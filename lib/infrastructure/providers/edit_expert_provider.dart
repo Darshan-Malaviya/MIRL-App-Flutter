@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
 import 'package:mirl/infrastructure/models/request/update_expert_Profile_request_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
@@ -19,7 +21,7 @@ class EditExpertProvider extends ChangeNotifier {
   TextEditingController mirlIdController = TextEditingController();
   TextEditingController aboutMeController = TextEditingController();
   TextEditingController genderController = TextEditingController();
-  TextEditingController yesNoController = TextEditingController();
+  TextEditingController instantCallAvailabilityController = TextEditingController();
   TextEditingController bankNameController = TextEditingController();
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController bankHolderNameController = TextEditingController();
@@ -52,6 +54,10 @@ class EditExpertProvider extends ChangeNotifier {
   List<String> _locations = ["Yes", "No"];
 
   List<String> get locations => _locations;
+
+  String _pickedImage = '';
+
+  String get pickedImage => _pickedImage;
 
   // ignore: prefer_final_fields
   List<GenderModel> _genderList = [
@@ -209,8 +215,32 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void displayCity({required CityModel value}) {
+    _selectedCityModel = value;
     cityNameController.text = _selectedCityModel?.city ?? '';
-    //_selectedCityModel = value;
+
+    notifyListeners();
+  }
+
+  void getUserData() async {
+    String value = SharedPrefHelper.getUserData;
+    if (value.isNotEmpty) {
+      _userData = UserData.fromJson(jsonDecode(value));
+      expertNameController.text = _userData?.expertName ?? '';
+      mirlIdController.text = _userData?.mirlId ?? '';
+      aboutMeController.text = _userData?.about ?? '';
+      countryNameController.text = _userData?.country ?? '';
+      cityNameController.text = _userData?.city ?? '';
+      bankHolderNameController.text = _userData?.bankAccountHolderName ?? '';
+      bankNameController.text = _userData?.bankName ?? '';
+      accountNumberController.text = _userData?.accountNumber ?? '';
+      genderController.text = _userData?.gender ?? '';
+      countController.text = _userData?.fee ?? '';
+      if (_userData?.instantCallAvailableFlag ?? false) {
+        instantCallAvailabilityController.text = "Yes";
+      } else {
+        instantCallAvailabilityController.text = "No";
+      }
+    }
     notifyListeners();
   }
 
@@ -315,14 +345,26 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getUserData() async {
-    String value = SharedPrefHelper.getUserData;
-    if(value.isNotEmpty) {
-      _userData = UserData.fromJson(jsonDecode(value));
-      expertNameController.text = _userData?.expertName ?? '';
-      mirlIdController.text = _userData?.mirlId ?? '';
-      aboutMeController.text = _userData?.about ?? '';
+  Future<void> pickGalleryImage(BuildContext context) async {
+    XFile? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
+
+    if (image != null && image.path.isNotEmpty) {
+      _pickedImage = image.path;
+      notifyListeners();
     }
+  }
+
+  Future<void> captureCameraImage(BuildContext context) async {
+    XFile? image = await ImagePickerHandler.singleton.capturePhoto(context: context);
+
+    if (image != null && image.path.isNotEmpty) {
+      _pickedImage = image.path;
+      notifyListeners();
+    }
+  }
+
+  void removePickedImage() {
+    _pickedImage = '';
     notifyListeners();
   }
 
@@ -389,14 +431,15 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateProfileApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfileFlag: true);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
+        UpdateExpertProfileRequestModel(expertProfileFlag: true, userProfile: _pickedImage);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonProfile());
   }
 
   Future<void> UpdateUserDetailsApiCall({required FormData requestModel}) async {
     CustomLoading.progressDialog(isLoading: true);
 
-    ApiHttpResult response = await _updateUserDetailsRepository.UpdateUserDetails(requestModel);
+    ApiHttpResult response = await _updateUserDetailsRepository.updateUserDetails(requestModel);
 
     CustomLoading.progressDialog(isLoading: false);
 
@@ -404,10 +447,12 @@ class EditExpertProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-          Logger().d("Successfully login");
-          resetVariable();
-          NavigationService.context.toPop();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+          Logger().d("Successfully login");
+          Logger().d("user data=====${loginResponseModel.toJson()}");
+          resetVariable();
+          getUserData();
+          NavigationService.context.toPop();
         }
         break;
       case APIStatus.failure:
@@ -483,11 +528,10 @@ class EditExpertProvider extends ChangeNotifier {
     mirlIdController.clear();
     aboutMeController.clear();
     genderController.clear();
-    yesNoController.clear();
+    instantCallAvailabilityController.clear();
     bankNameController.clear();
     accountNumberController.clear();
     bankHolderNameController.clear();
     countryNameController.clear();
   }
-
 }
