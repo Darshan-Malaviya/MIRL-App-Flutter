@@ -29,9 +29,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
         appBar: AppBarWidget(
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
-            onTap: () {
-              context.toPop();
-            },
+            onTap: () => context.toPop(),
           ),
           trailingIcon: OnScaleTap(
             onPress: () {

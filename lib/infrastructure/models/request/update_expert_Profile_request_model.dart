@@ -8,6 +8,7 @@ class UpdateExpertProfileRequestModel {
   String? about;
   int? gender;
   String? fee;
+  String? userProfile;
   String? userProfileFlag;
   bool? expertProfileFlag;
   bool? aboutFlag;
@@ -24,6 +25,8 @@ class UpdateExpertProfileRequestModel {
   String? bankAccountHolderName;
   String? bankName;
   String? accountNumber;
+  String? city;
+  String? country;
 
   UpdateExpertProfileRequestModel(
       {this.userName,
@@ -33,6 +36,7 @@ class UpdateExpertProfileRequestModel {
       this.about,
       this.gender,
       this.fee,
+      this.userProfile,
       this.userProfileFlag,
       this.expertProfileFlag,
       this.aboutFlag,
@@ -48,7 +52,9 @@ class UpdateExpertProfileRequestModel {
       this.isLocationVisible,
       this.bankAccountHolderName,
       this.bankName,
-      this.accountNumber});
+      this.accountNumber,
+      this.city,
+      this.country});
 
   UpdateExpertProfileRequestModel.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
@@ -58,6 +64,7 @@ class UpdateExpertProfileRequestModel {
     about = json['about'];
     gender = json['gender'];
     fee = json['fee'];
+    userProfile = json['userProfile'];
     userProfileFlag = json['userProfileFlag'];
     expertProfileFlag = json['expertProfileFlag'];
     aboutFlag = json['aboutFlag'];
@@ -73,7 +80,9 @@ class UpdateExpertProfileRequestModel {
     isLocationVisible = json['isLocationVisible'];
     bankAccountHolderName = json['bankAccountHolderName'];
     bankName = json['bankName'];
+    city = json['city'];
     accountNumber = json['accountNumber'];
+    country = json['country'];
   }
 
   Future<FormData> toJson() async {
@@ -85,6 +94,7 @@ class UpdateExpertProfileRequestModel {
       'about': about,
       'gender': gender,
       'fee': fee,
+      'userProfile': userProfile,
       'userProfileFlag': userProfileFlag,
       'expertProfileFlag': expertProfileFlag,
       'aboutFlag': aboutFlag,
@@ -101,6 +111,8 @@ class UpdateExpertProfileRequestModel {
       'bankAccountHolderName': bankAccountHolderName,
       'bankName': bankName,
       'accountNumber': accountNumber,
+      'city': city,
+      'country': country
     });
     return formData;
   }
@@ -131,6 +143,7 @@ class UpdateExpertProfileRequestModel {
   FormData toJsonProfile() {
     FormData formData = FormData.fromMap({
       'expertProfileFlag': expertProfileFlag,
+      'userProfile': userProfile,
     });
     return formData;
   }
@@ -163,6 +176,17 @@ class UpdateExpertProfileRequestModel {
     FormData formData = FormData.fromMap({
       'aboutFlag': aboutFlag,
       'about': about,
+    });
+    return formData;
+  }
+
+  FormData toJsonYourLocation() {
+    FormData formData = FormData.fromMap({
+      'locationFlag': locationFlag,
+      'location': location,
+      'isLocationVisible': isLocationVisible,
+      'country': country,
+      'city': city
     });
     return formData;
   }

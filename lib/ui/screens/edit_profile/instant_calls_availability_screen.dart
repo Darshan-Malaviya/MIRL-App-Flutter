@@ -1,15 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
-import 'package:mirl/ui/common/appbar/appbar_widget.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
 class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
   const InstantCallsAvailabilityScreen({super.key});
@@ -19,7 +10,6 @@ class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
 }
 
 class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAvailabilityScreen> {
-
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
@@ -28,9 +18,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
       appBar: AppBarWidget(
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => context.toPop(),
           ),
           trailingIcon: InkWell(
             onTap: () {
@@ -69,7 +57,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
               onSelect: (value) {
                 expertWatch.setValueOfCall(value);
               },
-              controller: expertWatch.yesNoController,
+              controller: expertWatch.instantCallAvailabilityController,
             ),
             40.0.spaceY,
             TitleSmallText(
@@ -85,7 +73,6 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             TitleSmallText(
               title: StringConstants.highlyRecommend,
             )
-
             // DropdownButtonFormField(
             //   icon: Icon(Icons.keyboard_arrow_down_sharp),
             //   decoration: InputDecoration(

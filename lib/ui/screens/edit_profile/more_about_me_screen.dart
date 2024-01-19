@@ -1,15 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
-import 'package:mirl/ui/common/appbar/appbar_widget.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
-import 'package:mirl/ui/common/text_widgets/textfield/textformfield_widget.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class MoreAboutMeScreen extends ConsumerStatefulWidget {
   const MoreAboutMeScreen({super.key});
@@ -19,6 +9,8 @@ class MoreAboutMeScreen extends ConsumerStatefulWidget {
 }
 
 class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
+  String enteredText = '';
+
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
@@ -27,9 +19,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
         appBar: AppBarWidget(
             leading: InkWell(
               child: Image.asset(ImageConstants.backIcon),
-              onTap: () {
-                Navigator.pop(context);
-              },
+              onTap: () => context.toPop(),
             ),
             trailingIcon: InkWell(
               onTap: () {
@@ -50,13 +40,64 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                 fontFamily: FontWeightEnum.w700.toInter,
               ),
               30.0.spaceY,
-              TextFormFieldWidget(
-                maxLines: 10,
-                minLines: 8,
-                hintText: StringConstants.moreAboutMe,
-                textInputAction: TextInputAction.done,
-                controller: expertWatch.aboutMeController,
-                onFieldSubmitted: (value) {},
+              // TextFormFieldWidget(
+              //   onChanged: (value) {
+              //     setState(() {
+              //       enteredText = value;
+              //     });
+              //   },
+              //   decoration: InputDecoration(
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(color: ColorConstants.borderColor, width: 1.0),
+              //       ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(color: ColorConstants.borderColor, width: 1.0),
+              //       ),
+              //       //counter: Text("5/20"),
+              //       counterText: '${enteredText.length.toString()}/1500 character',
+              //       border: InputBorder.none,
+              //       isDense: true,
+              //       contentPadding: EdgeInsets.all(10)),
+              //   //maxLengthEnforcement: MaxLengthEnforcement.none,
+              //   maxLines: 10,
+              //   maxLength: 1500,
+              //   minLines: 8,
+              //   hintText: StringConstants.moreAboutMe,
+              //   textInputAction: TextInputAction.done,
+              //   controller: expertWatch.aboutMeController,
+              //   onFieldSubmitted: (value) {},
+              // ),
+              30.0.spaceY,
+              Container(
+                height: 150,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: ColorConstants.borderColor,
+                    ),
+                    color: ColorConstants.whiteColor,
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8, top: 2, right: 4),
+                  child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          enteredText = value;
+                        });
+                      },
+                      textAlign: TextAlign.left,
+                      cursorColor: ColorConstants.blackColor,
+                      maxLines: 10,
+                      maxLength: 1500,
+                      minLines: 8,
+                      controller: expertWatch.aboutMeController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          //counter: Text("5/20"),
+                          counterText: '${enteredText.length.toString()}/1500 character',
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(10))),
+                ),
               ),
               30.0.spaceY,
               TitleSmallText(
