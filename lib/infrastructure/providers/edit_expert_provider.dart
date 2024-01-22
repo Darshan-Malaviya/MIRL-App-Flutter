@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -98,10 +99,10 @@ class EditExpertProvider extends ChangeNotifier {
 
   void generateWeekDaysTime() {
     _weekScheduleModel.clear();
-    var _time = DateTime.now();
-    hourOnly = DateTime(_time.year, _time.month, _time.day, 12);
+    var _time = DateTime.now().toLocal();
+    hourOnly = DateTime(_time.year, _time.month, _time.day, 24);
     plusDay = hourOnly.add(Duration(days: 1));
-    DateTime lowerValue = DateTime(_time.year, _time.month, _time.day, 10);
+    DateTime lowerValue = hourOnly.add(Duration(hours: 10));
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
     _weekScheduleModel.addAll([
