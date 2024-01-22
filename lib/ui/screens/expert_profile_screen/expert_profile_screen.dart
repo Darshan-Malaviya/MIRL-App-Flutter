@@ -12,10 +12,10 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
 
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(editExpertProvider).getUserData();
     });
+    super.initState();
   }
 
   @override

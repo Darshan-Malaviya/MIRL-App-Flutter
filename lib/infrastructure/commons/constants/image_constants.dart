@@ -21,6 +21,8 @@ ImageConstants {
   static const friends = '${imagePath}friends.png';
   static const plus = '${imagePath}plus.png';
   static const minus = '${imagePath}minus.png';
+  static const expert = '${imagePath}expert.png';
+  static const multipleConnect = '${imagePath}multiple_connect.png';
 
 
 

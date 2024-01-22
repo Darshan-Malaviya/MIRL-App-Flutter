@@ -91,26 +91,21 @@ class AuthProvider with ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-
           Logger().d("Successfully login");
-
-          CustomLoading.progressDialog(isLoading: false);
           if (loginType == 0) {
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
             SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
-            SharedPrefHelper.saveAuthToken(jsonEncode(loginResponseModel.token));
+            SharedPrefHelper.saveAuthToken(loginResponseModel.token);
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           }
         }
-
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: loginResponseModel?.err?.message ?? '');
-        CustomLoading.progressDialog(isLoading: false);
         Logger().d("API fail on login callApi ${response.data}");
         break;
     }

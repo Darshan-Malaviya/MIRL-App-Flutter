@@ -1,14 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/route_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/navigator_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
-import 'package:mirl/ui/common/button_widget/primary_button.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -20,27 +14,107 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: BodyLargeText(
-            title: "Welcome to home screen",
-            fontFamily: FontWeightEnum.w600.toInter,
-            fontSize: 20,
-          ),
-        ),
-        30.0.spaceY,
-        PrimaryButton(
-          title: StringConstants.logOut,
-          onPressed: () async {
-            SharedPrefHelper.clearPrefs();
-            // ignore: use_build_context_synchronously
-            context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-          },
-        ),
-      ],
-    ).addAllPadding(20));
+   return Scaffold(
+     appBar: AppBarWidget(
+       preferSize: 0,
+     ),
+     body: SingleChildScrollView(
+       child: Column(
+         children: [
+           PrimaryButton(
+             title: StringConstants.logOut,
+             onPressed: () async {
+               SharedPrefHelper.clearPrefs();
+               context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+             },
+           ),
+           10.0.spaceY,
+           Container(
+             decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6.0),
+               border: Border.all(color: ColorConstants.dropDownBorderColor)),
+             child: BodySmallText(
+               maxLine: 2,
+               title: LocaleKeys.searchTypeAnyKeyword.tr(),
+             ).addAllMargin(12),
+           ),
+           30.0.spaceY,
+           Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+             children: [
+               Flexible(
+                 child: Container(
+                   decoration: BoxDecoration(
+                     color: ColorConstants.whiteColor,
+                       borderRadius: BorderRadius.circular(6.0),
+                       boxShadow: [
+                            BoxShadow(
+                              color: Color(0x33000000),
+                              blurRadius: 2,
+                              offset: Offset(0, 2),
+                              spreadRadius: 0,
+                            )
+                          ]),
+                      child:   Column(
+                     children: [
+                       BodySmallText(
+                         fontWeight: FontWeight.w700,
+                         title: LocaleKeys.exploreExperts.tr().toUpperCase(),
+                       ),
+                       10.0.spaceY,
+                       Image.asset(ImageConstants.expert,
+                       height: 100,
+                       width: 100,),
+                       10.0.spaceY,
+                       BodySmallText(
+                         title: LocaleKeys.browseExpertsFields.tr(),
+                         titleTextAlign: TextAlign.center,
+                         maxLine: 3,
+                       ),
+                     ],
+                   ).addAllMargin(12)
+                 ),
+               ),
+               40.0.spaceX,
+               Flexible(
+                 child: Container(
+                     decoration: BoxDecoration(
+                       color: ColorConstants.whiteColor,
+                         borderRadius: BorderRadius.circular(6.0),
+                         boxShadow: [
+                           BoxShadow(
+                             color: Color(0x33000000),
+                             blurRadius: 2,
+                             offset: Offset(0, 2),
+                             spreadRadius: 0,
+                           )
+                         ]),
+                     child:   Column(
+                       children: [
+                         BodySmallText(
+                           fontWeight: FontWeight.w700,
+                           title: LocaleKeys.multipleConnect.tr().toUpperCase(),
+                         ),
+                         10.0.spaceY,
+                         Image.asset(ImageConstants.multipleConnect,
+                           height: 100,
+                           width: 100,),
+                         10.0.spaceY,
+                         BodySmallText(
+                           title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
+                           titleTextAlign: TextAlign.center,
+                           maxLine: 3,
+                         ),
+                       ],
+                     ).addAllMargin(12)
+                 ),
+               ),
+             ],
+           ),
+           10.0.spaceY,
+         ],
+       ).addPaddingXY(paddingX: 16, paddingY: 16),
+     ),
+   );
   }
 }

@@ -1,22 +1,22 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/models/response/pagination_model/pagination_response_model.dart';
 
-class CountryResponseModel {
+class CityResponseModel {
   int? status;
   String? message;
   Pagination? pagination;
-  List<CountryModel>? data;
+  List<CityModel>? data;
 
-  CountryResponseModel({this.status, this.message, this.pagination, this.data});
+  CityResponseModel({this.status, this.message, this.pagination, this.data});
 
-  CountryResponseModel.fromJson(Map<String, dynamic> json) {
+  CityResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
-      data = <CountryModel>[];
+      data = <CityModel>[];
       json['data'].forEach((v) {
-        data!.add(new CountryModel.fromJson(v));
+        data!.add(new CityModel.fromJson(v));
       });
     }
   }
@@ -34,31 +34,34 @@ class CountryResponseModel {
     return data;
   }
 
-  static Future<CountryResponseModel?> parseInfo(Map<String, dynamic>? json) async {
+  static Future<CityResponseModel?> parseInfo(Map<String, dynamic>? json) async {
     try {
-      return CountryResponseModel.fromJson(json ?? {});
+      return CityResponseModel.fromJson(json ?? {});
     } catch (e) {
-      Logger().e("CountryResponseModel exception : $e");
+      Logger().e("CityResponseModel exception : $e");
       return null;
     }
   }
 }
 
-class CountryModel {
+class CityModel {
   String? id;
-  String? country;
+  String? countryId;
+  String? city;
 
-  CountryModel({this.id, this.country});
+  CityModel({this.id, this.countryId, this.city});
 
-  CountryModel.fromJson(Map<String, dynamic> json) {
+  CityModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    country = json['country'];
+    countryId = json['country_id'];
+    city = json['city'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['country'] = this.country;
+    data['country_id'] = this.countryId;
+    data['city'] = this.city;
     return data;
   }
 }

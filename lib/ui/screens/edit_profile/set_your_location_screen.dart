@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
-import 'package:mirl/ui/widget/expandble.dart';
 
 class SetYourLocationScreen extends ConsumerStatefulWidget {
   const SetYourLocationScreen({super.key});
@@ -12,19 +12,16 @@ class SetYourLocationScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-  //     ref.read(cityCountryProvider).AreaCategoryListApiCall();
-  //   });
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);
-    final cityCountryWatch = ref.read(cityCountryProvider);
     return Scaffold(
       appBar: AppBarWidget(
           leading: InkWell(
@@ -32,7 +29,9 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
             onTap: () => context.toPop(),
           ),
           trailingIcon: InkWell(
-            onTap: () => expertRead.updateFeesApi(),
+            onTap: () {
+              expertRead.updateYourLocationApi();
+            },
             child: TitleMediumText(
               title: StringConstants.done,
               fontFamily: FontWeightEnum.w700.toInter,
@@ -62,7 +61,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                     .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                     .toList(),
                 onSelect: (String value) {
-                  expertWatch.setValueOfCall(value);
+                  expertWatch.locationSelect(value);
                 },
               ),
               20.0.spaceY,
@@ -76,6 +75,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 isReadOnly: true,
                 hintText: StringConstants.nearestLandmark,
                 controller: expertWatch.countryNameController,
+                //onChanged: (value) => cityCountryRead.displayCountry(),
                 onTap: () {
                   CommonBottomSheet.bottomSheet(context: context, child: CountryListBottomView());
                 },
@@ -87,6 +87,14 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 maxLine: 3,
               ),
               20.0.spaceY,
+              TextFormFieldWidget(
+                isReadOnly: true,
+                hintText: StringConstants.nearestLandmark,
+                controller: expertWatch.cityNameController,
+                onTap: () {
+                  CommonBottomSheet.bottomSheet(context: context, child: CityListBottomView());
+                },
+              ),
             ],
           ).addAllPadding(20),
         ),
