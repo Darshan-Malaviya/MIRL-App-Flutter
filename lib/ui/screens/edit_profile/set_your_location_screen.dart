@@ -58,7 +58,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               DropdownMenuWidget(
                 hintText: StringConstants.theDropDown,
                 dropdownList: expertWatch.locations
-                    .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
+                    .map((String item) => dropdownMenuEntry(context: context, value: StringConstants.theDropDown, label: item))
                     .toList(),
                 onSelect: (String value) {
                   expertWatch.locationSelect(value);

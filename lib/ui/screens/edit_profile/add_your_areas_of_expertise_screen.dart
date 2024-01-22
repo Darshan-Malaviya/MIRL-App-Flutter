@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
 import 'package:mirl/ui/common/network_image/network_image.dart';
+import 'package:mirl/ui/screens/conponnet/area_model.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/child_category_bottom_view.dart';
 
 class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
   const AddYourAreasOfExpertiseScreen({super.key});
@@ -13,35 +16,42 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(categoryListProvider).AreaCategoryListApiCall(isChildId: '1');
+      ref.read(addYourAreaExpertiseProvider).clearSelectChildId();
+      ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall();
     });
     super.initState();
   }
 
-  bool selected = false;
-  List<Tech> _chipsList = [
-    Tech("India", false),
-    Tech("Canada", false),
-    Tech("London", false),
-    Tech("Paris", false),
-    Tech("Japan", false),
-    Tech("Maldives", false),
-    Tech("Switzerland", false)
-  ];
+  //bool selected = false;
+  // List<Tech> _chipsList = [
+  //   Tech("India", false),
+  //   Tech("Canada", false),
+  //   Tech("London", false),
+  //   Tech("Paris", false),
+  //   Tech("Japan", false),
+  //   Tech("Maldives", false),
+  //   Tech("Switzerland", false)
+  // ];
+  List<Child> childList = [];
 
   @override
   Widget build(BuildContext context) {
-    final categoryListProviderWatch = ref.watch(categoryListProvider);
-    final categoryListProviderRead = ref.read(categoryListProvider);
+    final addYourAreaExpertiseProviderWatch = ref.watch(addYourAreaExpertiseProvider);
+    final addYourAreaExpertiseProviderRead = ref.read(addYourAreaExpertiseProvider);
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
         ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
+        trailingIcon: InkWell(
+          onTap: () {
+            addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
+          },
+          child: TitleMediumText(
+            title: StringConstants.done,
+            fontFamily: FontWeightEnum.w700.toInter,
+          ),
         ).addPaddingRight(14),
       ),
       body: Column(
@@ -61,31 +71,92 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           ),
           30.0.spaceY,
           Expanded(
-            child: categoryListProviderWatch.categoryList?.isNotEmpty ?? false
+            child: addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                 ? GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 38, mainAxisSpacing: 30),
-                    itemCount: categoryListProviderWatch.categoryList?.length ?? 0,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10),
+                    itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0,
                     itemBuilder: (context, index) {
-                      return ShadowContainer(
-                        child: Column(
-                          children: [
-                            NetworkImageWidget(
-                              imageURL: categoryListProviderWatch.categoryList?[index].categoryImage ?? '',
-                              isNetworkImage: true,
-                              height: 50,
-                              width: 50,
+                      CategoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
+                      return Column(
+                        children: [
+                          10.0.spaceY,
+                          InkWell(
+                            onTap: () {
+                              addYourAreaExpertiseProviderWatch.onSelected(index);
+                              CommonBottomSheet.bottomSheet(context: context,
+                                  isDismissible: true,
+                                  backgroundColor: ColorConstants.categoryList,
+                                  child: ChildCategoryBottomView(childCategoryList: element,));
+                            },
+                            child: ShadowContainer(
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: NetworkImageWidget(
+                                      boxFit: BoxFit.cover,
+                                      imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].categoryImage ?? '',
+                                      isNetworkImage: true,
+                                      height: 50,
+                                      width: 50,
+                                    ),
+                                  ),
+                                  4.0.spaceY,
+                                  LabelSmallText(
+                                    fontSize: 9,
+                                    title: element?.parentName ?? '',
+                                    titleColor: ColorConstants.blackColor,
+                                    fontFamily: FontWeightEnum.w700.toInter,
+                                    titleTextAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                              height: 90,
+                              width: 90,
+                              isShadow: true,
                             ),
-                            LabelSmallText(
-                              fontSize: 9,
-                              title: categoryListProviderWatch.categoryList?[index].categoryName ?? '',
-                              fontFamily: FontWeightEnum.w700.toInter,
-                            ),
-                          ],
-                        ),
-                        height: 90,
-                        width: 90,
-                        isShadow: true,
-                        shadowColor: ColorConstants.borderColor.withOpacity(0.5),
+                          ),
+
+                        /*  Visibility(
+                            visible: element?.isVisible ?? false,
+                            child: Container(
+                              width: double.infinity,
+                              color: ColorConstants.categoryList,
+                              child: Wrap(
+                                children: List.generate(
+                                  element?.child?.length ?? 0,
+                                  (position) {
+                                    return FilterChip(
+                                      showCheckmark: false,
+                                      padding: EdgeInsets.symmetric(horizontal: 5),
+                                      selectedColor: ColorConstants.primaryColor,
+                                      onSelected: (bool value) {
+                                        setState(() {
+                                          element?.child?[position].isSelected = value;
+                                        });
+                                      },
+                                      label: Text((element?.child?[position].categoryName ?? '')),
+                                      labelStyle: TextStyle(color: Colors.black),
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(color: ColorConstants.transparentColor),
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                      shadowColor: Color(0x19000000),
+                                      backgroundColor: Colors.transparent,
+                                      // backgroundColor: _chipsList[i].color,
+                                      selected: element?.child?[position].isSelected ?? false,
+                                    );
+                                  },
+                                ),
+                                spacing: 8,
+                              ),
+                            ).addMarginY(20),
+                          ),*/
+
+                        ],
                       );
                     })
                 : Center(
@@ -94,45 +165,211 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                       fontFamily: FontWeightEnum.w600.toInter,
                     ),
                   ),
-          )
+          ),
+         // **************
+          /*Expanded(
+            child: addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
+                ? Container(
+              width:  300,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        categoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
+                        return Column(
+                          children: [
+                            10.0.spaceY,
+                            InkWell(
+                              onTap: () {
+                                addYourAreaExpertiseProviderWatch.onSelected(index);
+                              },
+                              child: ShadowContainer(
+                                child: Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: NetworkImageWidget(
+                                        imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].categoryImage ?? '',
+                                        isNetworkImage: true,
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                      // child: Image.network(
+                                      //   element.areaOfList?[position].categoryImage ?? '',
+                                      //   height: 50,
+                                      //   width: 40,
+                                      // ),
+                                    ),
+                                    LabelSmallText(
+                                      fontSize: 9,
+                                      title: element?.parentName ?? '',
+                                      titleColor: ColorConstants.blackColor,
+                                      fontFamily: FontWeightEnum.w700.toInter,
+                                      titleTextAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                                height: 90,
+                                width: 90,
+                                isShadow: true,
+                              ),
+                            ),
+                            10.0.spaceY,
+                            Visibility(
+                              visible: element?.isVisible ?? false,
+                              child: Container(
+                                width: 300,
+                                color: ColorConstants.categoryList,
+                                child: Wrap(
+                                  children: List.generate(
+                                    element?.child?.length ?? 0,
+                                    (position) {
+                                      return FilterChip(
+                                        showCheckmark: false,
+                                        padding: EdgeInsets.symmetric(horizontal: 5),
+                                        selectedColor: ColorConstants.primaryColor,
+                                        onSelected: (bool value) {
+                                          setState(() {
+                                            element?.child?[position].isSelected = value;
+                                          });
+                                        },
+                                        label: Text((element?.child?[position].categoryName ?? '')),
+                                        labelStyle: TextStyle(color: Colors.black),
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(color: ColorConstants.transparentColor),
+                                          borderRadius: BorderRadius.circular(14),
+                                        ),
+                                        shadowColor: Color(0x19000000),
+                                        backgroundColor: Colors.transparent,
+                                        // backgroundColor: _chipsList[i].color,
+                                        selected: element?.child?[position].isSelected ?? false,
+                                      );
+                                    },
+                                  ),
+                                  spacing: 8,
+                                ),
+                              ).addMarginY(20),
+                            ),
+                            10.0.spaceY,
+                          ],
+                        );
+                      }),
+                )
+                : Center(
+                    child: BodyLargeText(
+                      title: StringConstants.noDataFound,
+                      fontFamily: FontWeightEnum.w600.toInter,
+                    ),
+                  ),
+          ),*/
+          // **************
+          // Expanded(
+          //   child: addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
+          //       ? Wrap(
+          //           children: List.generate(addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0, (index) {
+          //             categoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
+          //             return Column(
+          //               children: [
+          //                 10.0.spaceY,
+          //                 InkWell(
+          //                   onTap: () {
+          //                     addYourAreaExpertiseProviderWatch.onSelected(index);
+          //                   },
+          //                   child: ShadowContainer(
+          //                     child: Column(
+          //                       children: [
+          //                         ClipRRect(
+          //                           borderRadius: BorderRadius.circular(20.0),
+          //                           child: NetworkImageWidget(
+          //                             imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].categoryImage ?? '',
+          //                             isNetworkImage: true,
+          //                             height: 50,
+          //                             width: 50,
+          //                           ),
+          //                           // child: Image.network(
+          //                           //   element.areaOfList?[position].categoryImage ?? '',
+          //                           //   height: 50,
+          //                           //   width: 40,
+          //                           // ),
+          //                         ),
+          //                         LabelSmallText(
+          //                           fontSize: 9,
+          //                           title: element?.parentName ?? '',
+          //                           titleColor: ColorConstants.blackColor,
+          //                           fontFamily: FontWeightEnum.w700.toInter,
+          //                           titleTextAlign: TextAlign.center,
+          //                         ),
+          //                       ],
+          //                     ),
+          //                     height: 90,
+          //                     width: 90,
+          //                     isShadow: true,
+          //                   ).addAllPadding(12),
+          //                 ),
+          //                 10.0.spaceY,
+          //                 Visibility(
+          //                   visible: element?.isVisible ?? false,
+          //                   child: Container(
+          //                     width: double.infinity,
+          //                     color: ColorConstants.categoryList,
+          //                     child: Wrap(
+          //                       children: List.generate(
+          //                         element?.child?.length ?? 0,
+          //                         (position) {
+          //                           return FilterChip(
+          //                             showCheckmark: false,
+          //                             padding: EdgeInsets.symmetric(horizontal: 5),
+          //                             selectedColor: ColorConstants.primaryColor,
+          //                             onSelected: (bool value) {
+          //                               setState(() {
+          //                                 element?.child?[position].isSelected = value;
+          //                               });
+          //                             },
+          //                             label: Text((element?.child?[position].categoryName ?? '')),
+          //                             labelStyle: TextStyle(color: Colors.black),
+          //                             shape: RoundedRectangleBorder(
+          //                               side: BorderSide(color: ColorConstants.transparentColor),
+          //                               borderRadius: BorderRadius.circular(14),
+          //                             ),
+          //                             shadowColor: Color(0x19000000),
+          //                             backgroundColor: Colors.transparent,
+          //                             // backgroundColor: _chipsList[i].color,
+          //                             selected: element?.child?[position].isSelected ?? false,
+          //                           ).addMarginX(10);
+          //                         },
+          //                       ),
+          //                       spacing: 8,
+          //                     ),
+          //                   ).addMarginY(20),
+          //                 ),
+          //                 10.0.spaceY,
+          //               ],
+          //             );
+          //           }),
+          //         )
+          //       : Center(
+          //           child: BodyLargeText(
+          //             title: StringConstants.noDataFound,
+          //             fontFamily: FontWeightEnum.w600.toInter,
+          //           ),
+          //         ),
+          // ),
+          PrimaryButton(
+              title: StringConstants.setYourExpertise,
+              onPressed: () {
+                //addYourAreaExpertiseProviderRead.ChildUpdateApiCall();
+              })
         ],
       ).addAllPadding(20),
     );
   }
-
-  List<Widget> techChips() {
-    List<Widget> chips = [];
-    for (int i = 0; i < _chipsList.length; i++) {
-      Widget item = FilterChip(
-        showCheckmark: false,
-        padding: EdgeInsets.symmetric(horizontal: 5),
-        selectedColor: ColorConstants.primaryColor,
-        label: Text(_chipsList[i].label),
-        labelStyle: TextStyle(color: Colors.black),
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: ColorConstants.transparentColor),
-          borderRadius: BorderRadius.circular(14),
-        ),
-        //shape: StadiumBorder(side: BorderSide(color: ColorConstants.transparentColor)),
-        shadowColor: Color(0x19000000),
-        backgroundColor: Colors.transparent,
-        // backgroundColor: _chipsList[i].color,
-        selected: _chipsList[i].isSelected,
-        onSelected: (bool value) {
-          setState(() {
-            _chipsList[i].isSelected = value;
-          });
-        },
-      );
-      chips.add(item);
-    }
-    return chips;
-  }
 }
 
-class Tech {
-  String label;
-  bool isSelected;
-
-  Tech(this.label, this.isSelected);
-}
+// class Tech {
+//   String label;
+//   bool isSelected;
+//
+//   Tech(this.label, this.isSelected);
+// }

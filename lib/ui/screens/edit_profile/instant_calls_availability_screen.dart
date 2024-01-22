@@ -10,6 +10,16 @@ class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
 }
 
 class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAvailabilityScreen> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getInstantCallAvailableFlag();
+    });
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
@@ -50,7 +60,11 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             ),
             20.0.spaceY,
             DropdownMenuWidget(
-              hintText: StringConstants.theDropDown,
+              hintText: expertWatch.isCallSelect
+                  ? "Yes"
+                  : (expertWatch.isCallSelect == false)
+                      ? "No"
+                      : StringConstants.theDropDown,
               dropdownList: expertWatch.locations
                   .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                   .toList(),
@@ -73,60 +87,6 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             TitleSmallText(
               title: StringConstants.highlyRecommend,
             )
-            // DropdownButtonFormField(
-            //   icon: Icon(Icons.keyboard_arrow_down_sharp),
-            //   decoration: InputDecoration(
-            //     enabledBorder: OutlineInputBorder(
-            //       //<-- SEE HERE
-            //       borderSide: BorderSide(color: ColorConstants.dropDownBorderColor, width: 1),
-            //     ),
-            //     focusedBorder: OutlineInputBorder(
-            //       //<-- SEE HERE
-            //       borderSide: BorderSide(color: Colors.black, width: 1),
-            //     ),
-            //     filled: true,
-            //     fillColor: Colors.white,
-            //   ),
-            //   dropdownColor: Colors.white,
-            //   value: dropdownValue,
-            //   onChanged: (String? newValue) {
-            //     setState(() {
-            //       dropdownValue = newValue!;
-            //     });
-            //   },
-            //   items: <String>['Yes', 'No'].map<DropdownMenuItem<String>>((String value) {
-            //     return DropdownMenuItem<String>(
-            //       value: value,
-            //       child: Text(
-            //         value,
-            //         style: TextStyle(fontSize: 20),
-            //       ),
-            //     );
-            //   }).toList(),
-            // ).addPaddingX(44)
-
-            // DropdownButton<String>(
-            //   value: chosenValue,
-            //   items: <String>[
-            //     'Yes',
-            //     'No',
-            //   ].map<DropdownMenuItem<String>>((String value) {
-            //     return DropdownMenuItem<String>(
-            //       value: value,
-            //       child: Text(value),
-            //     );
-            //   }).toList(),
-            //   hint: Text(
-            //     "SELECT YES OR NO FROM THE DROPDOWN ",
-            //     style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-            //   ),
-            //   // onChanged: (){},
-            //   onChanged: (value) {
-            //     setState(() {
-            //       chosenValue = value;
-            //     });
-            //   },
-            // )
           ],
         ).addAllPadding(20),
       ),

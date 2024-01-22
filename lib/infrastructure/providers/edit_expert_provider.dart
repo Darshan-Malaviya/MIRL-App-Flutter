@@ -43,6 +43,7 @@ class EditExpertProvider extends ChangeNotifier {
   String? get selectedGender => _selectedGender;
 
   bool _isCallSelect = false;
+  bool get isCallSelect => _isCallSelect;
 
   bool _isLocationSelect = false;
 
@@ -58,6 +59,10 @@ class EditExpertProvider extends ChangeNotifier {
   String _pickedImage = '';
 
   String get pickedImage => _pickedImage;
+
+  String _setInstantCall = '';
+
+  String get setInstantCall => _setInstantCall;
 
   // ignore: prefer_final_fields
   List<GenderModel> _genderList = [
@@ -117,48 +122,20 @@ class EditExpertProvider extends ChangeNotifier {
 
   void generateWeekDaysTime() {
     _weekScheduleModel.clear();
-    var _time = DateTime.now();
-    hourOnly = DateTime(_time.year, _time.month, _time.day, 12);
+    var _time = DateTime.now().toLocal();
+    hourOnly = DateTime(_time.year, _time.month, _time.day, 24);
     plusDay = hourOnly.add(Duration(days: 1));
-    DateTime lowerValue = DateTime(_time.year, _time.month, _time.day, 10);
+    DateTime lowerValue = hourOnly.add(Duration(hours: 10));
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
     _weekScheduleModel.addAll([
-      WeekScheduleModel(
-          dayName: 'MON',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'TUE',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'WED',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'THU',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: false),
-      WeekScheduleModel(
-          dayName: 'FRI',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'SAT',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'SUN',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: false),
+      WeekScheduleModel(dayName: 'MON', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'TUE', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'WED', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'THU', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
+      WeekScheduleModel(dayName: 'FRI', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'SAT', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'SUN', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
     ]);
     notifyListeners();
   }
@@ -233,13 +210,14 @@ class EditExpertProvider extends ChangeNotifier {
       bankHolderNameController.text = _userData?.bankAccountHolderName ?? '';
       bankNameController.text = _userData?.bankName ?? '';
       accountNumberController.text = _userData?.accountNumber ?? '';
-      genderController.text = _userData?.gender ?? '';
+
+      //genderController.text = _userData?.gender ?? '';
       countController.text = _userData?.fee ?? '';
-      if (_userData?.instantCallAvailableFlag ?? false) {
-        instantCallAvailabilityController.text = "Yes";
-      } else {
-        instantCallAvailabilityController.text = "No";
-      }
+      // if (_userData?.instantCallAvailableFlag ?? false) {
+      //   _setInstantCall = "Yes";
+      // } else {
+      //   _setInstantCall = "No";
+      // }
     }
     notifyListeners();
   }
@@ -317,6 +295,11 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
+  valueSet() {
+    double plusValue = double.parse(countController.text.trim());
+    countController.text = (plusValue / 100).toString();
+  }
+
   void increaseFees() {
     double plusValue = double.parse(countController.text.trim());
     countController.text = (plusValue + 1).toString();
@@ -342,6 +325,16 @@ class EditExpertProvider extends ChangeNotifier {
   void setGender(String value) {
     GenderModel data = _genderList.firstWhere((element) => element.title == value);
     isSelectGender = data.selectType;
+    notifyListeners();
+  }
+
+  void getGender(){
+    isSelectGender = int.parse(_userData?.gender ?? '1');
+    notifyListeners();
+  }
+
+  void getInstantCallAvailableFlag(){
+    _isCallSelect = _userData?.instantCallAvailableFlag ?? false;
     notifyListeners();
   }
 
@@ -432,7 +425,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void updateProfileApi() {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
-        UpdateExpertProfileRequestModel(expertProfileFlag: true, userProfile: _pickedImage);
+        UpdateExpertProfileRequestModel(/*expertProfileFlag: false,*/ userProfile: _pickedImage);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonProfile());
   }
 
@@ -448,7 +441,7 @@ class EditExpertProvider extends ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
-          Logger().d("Successfully login");
+          Logger().d("Successfully updated");
           Logger().d("user data=====${loginResponseModel.toJson()}");
           resetVariable();
           getUserData();

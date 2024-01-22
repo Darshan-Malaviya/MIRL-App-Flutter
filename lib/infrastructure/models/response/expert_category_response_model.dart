@@ -1,10 +1,11 @@
+import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/models/response/pagination_model/pagination_response_model.dart';
 
 class ExpertCategoryResponseModel {
   int? status;
   String? message;
   Pagination? pagination;
-  List<Data>? data;
+  List<CategoryListData>? data;
 
   ExpertCategoryResponseModel({this.status, this.message, this.pagination, this.data});
 
@@ -13,9 +14,9 @@ class ExpertCategoryResponseModel {
     message = json['message'];
     pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <CategoryListData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new CategoryListData.fromJson(v));
       });
     }
   }
@@ -32,22 +33,33 @@ class ExpertCategoryResponseModel {
     }
     return data;
   }
+
+  static Future<ExpertCategoryResponseModel?> parseInfo(Map<String, dynamic>? json) async {
+    try {
+      return ExpertCategoryResponseModel.fromJson(json ?? {});
+    } catch (e) {
+      Logger().e("ExpertCategoryResponseModel exception : $e");
+      return null;
+    }
+  }
 }
 
-class Data {
+class CategoryListData {
   int? id;
   String? parentName;
   int? badgecount;
   String? categoryImage;
   List<Child>? child;
+  bool? isVisible;
 
-  Data({this.id, this.parentName, this.badgecount, this.categoryImage, this.child});
+  CategoryListData({this.id, this.parentName,this.isVisible, this.badgecount, this.categoryImage, this.child});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CategoryListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     parentName = json['parentName'];
     badgecount = json['badgecount'];
     categoryImage = json['categoryImage'];
+    isVisible = false;
     if (json['child'] != null) {
       child = <Child>[];
       json['child'].forEach((v) {

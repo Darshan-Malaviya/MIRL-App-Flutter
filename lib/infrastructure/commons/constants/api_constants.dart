@@ -51,11 +51,13 @@ class ApiConstants {
   // }
 
   static Map<String, String> headerWithToken() {
+    String token = SharedPrefHelper.getAuthToken;
+    print("hsfsbfdsfdsf");
+    print(token);
     Map<String, String> headerData = {
-      'Authorization': SharedPrefHelper.getAuthToken,
+      'Authorization': token,
       'Content-Type': 'application/json',
-      'mirlAppToken':
-          'Bearer 9e03fddc477f8dddf89ca6b608d1c6cccdc882ccd104dbafcdb02ff8edd419296937b1b6562db403c0be150a0a432f70c5e13csdsj232sdbb3438cbdf'
+      'mirlAppToken': 'Bearer 9e03fddc477f8dddf89ca6b608d1c6cccdc882ccd104dbafcdb02ff8edd419296937b1b6562db403c0be150a0a432f70c5e13csdsj232sdbb3438cbdf'
     };
     return headerData;
   }
@@ -80,4 +82,6 @@ class ApiConstants {
   static const String expertAvailability = '/expertAvailability';
   static const String certification = '/certification';
   static const String deleteCertification = '/certification';
+  static const String expertCategory = '/expertCategory/parent/child-category';
+  static const String expertCategorySelection = '/expertCategory/category/selection';
 }
