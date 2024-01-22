@@ -18,6 +18,7 @@ import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart
 import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
+import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
 
@@ -77,6 +78,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const YourMirlIdScreen());
       case RoutesConstants.moreAboutMeScreen:
         return MaterialPageRoute(builder: (_) => const MoreAboutMeScreen());
+        case RoutesConstants.searchScreen:
+        return MaterialPageRoute(builder: (_) => const SearchScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

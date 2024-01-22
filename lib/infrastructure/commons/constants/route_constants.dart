@@ -20,4 +20,5 @@ class RoutesConstants {
   static const String yourExpertProfileName = '/yourExpertProfileName';
   static const String yourMirlId = '/yourMirlId';
   static const String moreAboutMeScreen = '/moreAboutMeScreen';
+  static const String searchScreen = '/searchScreen';
 }
