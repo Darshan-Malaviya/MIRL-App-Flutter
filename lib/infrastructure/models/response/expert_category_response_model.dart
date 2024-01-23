@@ -51,8 +51,9 @@ class CategoryListData {
   String? categoryImage;
   List<Child>? child;
   bool? isVisible;
+  bool? selectAllCategory;
 
-  CategoryListData({this.id, this.parentName,this.isVisible, this.badgecount, this.categoryImage, this.child});
+  CategoryListData({this.id, this.parentName,this.isVisible, this.badgecount, this.categoryImage, this.child,this.selectAllCategory});
 
   CategoryListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -60,6 +61,7 @@ class CategoryListData {
     badgecount = json['badgecount'];
     categoryImage = json['categoryImage'];
     isVisible = false;
+    selectAllCategory = false;
     if (json['child'] != null) {
       child = <Child>[];
       json['child'].forEach((v) {

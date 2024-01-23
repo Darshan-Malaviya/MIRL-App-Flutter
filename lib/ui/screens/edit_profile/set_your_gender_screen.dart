@@ -11,15 +11,6 @@ class SetYourGenderScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).getGender();
-    });
-    super.initState();
-  }
-
   int? index;
 
   @override
@@ -50,13 +41,8 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
               ),
               120.0.spaceY,
               DropdownMenuWidget(
-                hintText: expertWatch.isSelectGender == 1
-                    ? "Male"
-                    : expertWatch.isSelectGender == 2
-                        ? "Female"
-                        : expertWatch.isSelectGender == 3
-                            ? "Other"
-                            : StringConstants.theDropDown,
+                controller: expertWatch.genderController,
+                hintText:  StringConstants.theDropDown,
                 dropdownList: expertWatch.genderList.map((GenderModel item) => dropdownMenuEntry(context: context, value: item.title ?? '', label: item.title ?? '')).toList(),
                 onSelect: (String value) {
                   expertRead.setGender(value);

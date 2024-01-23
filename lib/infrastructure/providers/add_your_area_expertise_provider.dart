@@ -5,7 +5,6 @@ import 'package:mirl/infrastructure/models/request/child_update_request.dart';
 import 'package:mirl/infrastructure/models/response/child_update_response.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
 import 'package:mirl/infrastructure/repository/add_your_area_expertise_repo.dart';
-import 'package:mirl/ui/screens/conponnet/area_model.dart';
 
 class AddYourAreaExpertiseProvider extends ChangeNotifier {
   final _addYourAreaExpertiseRepository = AddYourAreaExpertiseRepository();
@@ -13,10 +12,8 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   List<CategoryListData>? get categoryList => _categoryList;
   final List<CategoryListData> _categoryList = [];
 
-  List<int> _childCategoryIds = [];
-  List<int> get childCategoryIds => _childCategoryIds;
-
-  //final List<AreaOfListModel> areaOfListModel = [];
+  List<CategoryIds> _childCategoryIds = [];
+  List<CategoryIds> get childCategoryIds => _childCategoryIds;
 
   List<int> updateChild = [];
 
@@ -31,12 +28,6 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
           ExpertCategoryResponseModel expertCategoryResponseModel = response.data;
           Logger().d("Successfully expertImage");
           _categoryList.addAll(expertCategoryResponseModel.data ?? []);
-          // List<Data> categoryList = [];
-          // for (int i = 0; i < (expertCategoryResponseModel.data?.length ?? 0); i++) {
-          //   categoryList.add(expertCategoryResponseModel.data?[i] ?? Data());
-          // }
-          // areaOfListModel.add(AreaOfListModel(areaOfList: categoryList, isSelected: false));
-          // SharedPrefHelper.saveUserData(jsonEncode(expertCategoryResponseModel.data));
         }
         break;
       case APIStatus.failure:
@@ -49,7 +40,7 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
 
   Future<void> childUpdateApiCall({required BuildContext context}) async {
     CustomLoading.progressDialog(isLoading: true);
-    ChildUpdateRequest requestModel = ChildUpdateRequest(categoryIds: _childCategoryIds);
+    ChildUpdateRequestModel requestModel = ChildUpdateRequestModel(categoryIds: _childCategoryIds);
     ApiHttpResult response = await _addYourAreaExpertiseRepository.expertiseChildUpdateApiCall(request: requestModel);
     CustomLoading.progressDialog(isLoading: false);
 
@@ -78,18 +69,107 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addSelectedChildIds({required int childCategoryId, required int childIndex}) {
-    int index = _categoryList.indexWhere((element) => element.child?[childIndex].id == childCategoryId);
-    if(index != -1){
-      if(_categoryList[index].child?[childIndex].isSelected ?? false){
-        _childCategoryIds.add(childCategoryId);
-        notifyListeners();
+  void setSelectionBoolValueOfChild({required int position , required bool value,
+    required CategoryListData? childCategoryList}){
+    childCategoryList?.child?[position].isSelected = value;
+    notifyListeners();
+  }
+
+  void selectAllChildCategory({ /*required List<Child>? childList ,*/ required bool isSelectAll,required int parentId}){
+    int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
+    if(parentListIndex != -1){
+      if(_categoryList[parentListIndex].child?.isNotEmpty ?? false) {
+        for(Child data in _categoryList[parentListIndex].child ?? []){
+          if(isSelectAll){
+            data.isSelected = true;
+          } else {
+            data.isSelected = false;
+          }
+          notifyListeners();
+        }
       }
+    }
+
+  }
+
+  void addSelectedChildIds({ required int parentId}) {
+    int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
+    if (parentListIndex != -1) {
+      for( Child? _child in _categoryList[parentListIndex].child ?? []){
+        //Child? _child = _categoryList[parentListIndex].child?[childIndex];
+        if (_child != null) {
+          if(_categoryList[parentListIndex].child?.every((element) => element.isSelected == true) ?? false){
+            _categoryList[parentListIndex].selectAllCategory = true;
+          } else {
+            _categoryList[parentListIndex].selectAllCategory = false;
+          }
+          notifyListeners();
+          if (_childCategoryIds.isEmpty) { /// local childIdLis is empty then add select data in list
+            if (_child.isSelected ?? false) {
+              _childCategoryIds.addAll([
+                CategoryIds(childIds: [_child.id ?? 0], parentId: parentId)
+              ]);
+            }
+          } else {
+            /// local childIdLis is not empty
+            int index = _childCategoryIds.indexWhere((element) => element.parentId == parentId); /// if parent id same then add only child ids in local childIdLis
+            if (index != -1) {
+              if (_child.isSelected ?? false) {
+                _childCategoryIds[index].childIds?.add(_child.id ?? 0);
+              } else {
+                /// after select child user dis-select it then remove child ids from parent.
+                _childCategoryIds[index].childIds?.remove(_child.id ?? 0);
+              }
+            } else {
+              /// if parent not available then add new full object in childIdLis
+              if (_child.isSelected ?? false) {
+                _childCategoryIds.addAll([
+                  CategoryIds(childIds: [_child.id ?? 0], parentId: parentId)
+                ]);
+              }
+            }
+          }
+          notifyListeners();
+        }
+      }
+
     }
   }
 
   void clearSelectChildId() {
     _childCategoryIds.clear();
+    notifyListeners();
+  }
+
+  void setCategoryChildDefaultData() {
+    for (CategoryListData parent in _categoryList) {
+      if (parent.child?.isNotEmpty ?? false) {
+        for (Child child in parent.child ?? []) {
+          if(parent.child?.every((element) => element.isSelected == true) ?? false){
+            parent.selectAllCategory = true;
+          } else {
+            parent.selectAllCategory = false;
+          }
+          notifyListeners();
+          if (child.isSelected ?? false) {
+            if (_childCategoryIds.isEmpty) {
+              _childCategoryIds.addAll([
+                CategoryIds(childIds: [child.id ?? 0], parentId: parent.id)
+              ]);
+            } else {
+              int localListIndex = _childCategoryIds.indexWhere((element) => element.parentId == parent.id);
+              if (localListIndex != -1) {
+                _childCategoryIds[localListIndex].childIds?.add(child.id ?? 0);
+              } else {
+                _childCategoryIds.addAll([
+                  CategoryIds(childIds: [child.id ?? 0], parentId: parent.id)
+                ]);
+              }
+            }
+          }
+        }
+      }
+    }
     notifyListeners();
   }
 }

@@ -1,9 +1,7 @@
 import 'dart:developer';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+
 
 class CityListBottomView extends ConsumerStatefulWidget {
   const CityListBottomView({super.key});
@@ -18,17 +16,16 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).cityListApiCall();
+      ref.read(editExpertProvider).clearSearchCityController();
+      ref.read(editExpertProvider).cityListApiCall(isFullScreenLoader: true);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        bool isLoading = ref.watch(editExpertProvider).reachedLastPage;
+        bool isLoading = ref.watch(editExpertProvider).reachedCityLastPage;
         if (!isLoading) {
-          log("this is called");
-          // await Future.delayed(const Duration(seconds: 2));
           ref.read(editExpertProvider).cityListApiCall();
         } else {
-          log('reach last page');
+          log('reach last page on city list api');
         }
       }
     });
@@ -47,11 +44,41 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
             title: "Select City",
           ),
           16.0.spaceY,
+          TextFormFieldWidget(
+            isReadOnly: false,
+            hintText: "Search here",
+            suffixIcon: expertWatch.searchCityController.text.isNotEmpty
+                ? InkWell(
+                    onTap: () {
+                      expertRead.clearCountryPaginationData();
+                      expertRead.clearSearchCityController();
+                      expertRead.cityListApiCall();
+                      setState(() {});
+                    },
+                    child: Icon(Icons.close))
+                : SizedBox.shrink(),
+            onFieldSubmitted: (value) {
+              context.unFocusKeyboard();
+              expertRead.clearCountryPaginationData();
+              expertRead.cityListApiCall(searchName: expertWatch.searchCityController.text);
+            },
+            height: 40,
+            controller: expertWatch.searchCityController,
+            textInputAction: TextInputAction.done,
+          ).addAllMargin(12),
+          expertWatch.city.isNotEmpty ?
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.45,
             child: ListView.builder(
                 controller: scrollController,
+                itemCount: expertWatch.city.length + (expertWatch.reachedCityLastPage ? 0 : 1),
                 itemBuilder: (context, index) {
+                  if(index == expertWatch.city.length && expertWatch.city.isNotEmpty){
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
                   return InkWell(
                     onTap: () {
                       expertWatch.city[index].city ?? '';
@@ -71,8 +98,11 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
                     ),
                   );
                 },
-                itemCount: expertWatch.city.length),
-          ),
+                ),
+          ) : Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
           16.0.spaceY,
         ],
       ),

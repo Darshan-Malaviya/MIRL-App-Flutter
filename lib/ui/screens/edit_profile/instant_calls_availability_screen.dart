@@ -11,14 +11,6 @@ class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
 
 class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAvailabilityScreen> {
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).getInstantCallAvailableFlag();
-    });
-    super.initState();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +52,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             ),
             20.0.spaceY,
             DropdownMenuWidget(
-              hintText: expertWatch.isCallSelect
-                  ? "Yes"
-                  : (expertWatch.isCallSelect == false)
-                      ? "No"
-                      : StringConstants.theDropDown,
+              hintText: StringConstants.theDropDown,
               dropdownList: expertWatch.locations
                   .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                   .toList(),
