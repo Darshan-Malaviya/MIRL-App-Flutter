@@ -59,12 +59,12 @@ class ApiResponseProvider {
         _dio.interceptors.add(
           RetryOnConnectionChangeInterceptor(
             requestRetriever: DioConnectivityRequestRetriever(
-              dio: Dio(BaseOptions(baseUrl: _dio.options.baseUrl, headers: _dio.options.headers)),
+              dio: Dio(BaseOptions(baseUrl: _dio.options.baseUrl, headers: headers ?? _dio.options.headers)),
               connectivity: Connectivity(),
             ),
           ),
         );
-        response = await _dio.get(newURL, queryParameters: url.queryParameters);
+        response = await _dio.get(newURL, queryParameters: url.queryParameters, options: Options(headers: headers));
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {
@@ -74,8 +74,7 @@ class ApiResponseProvider {
 
     postRequest() async {
       try {
-        response = await _dio.post(newURL,
-            data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
+        response = await _dio.post(newURL, data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {
@@ -85,8 +84,7 @@ class ApiResponseProvider {
 
     deleteRequest() async {
       try {
-        response = await _dio.delete(newURL,
-            data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
+        response = await _dio.delete(newURL, data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {
@@ -96,8 +94,7 @@ class ApiResponseProvider {
 
     putRequest() async {
       try {
-        response = await _dio.put(newURL,
-            data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
+        response = await _dio.put(newURL, data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {

@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:dio/src/form_data.dart';
+import 'package:http_parser/http_parser.dart';
 
 class UpdateExpertProfileRequestModel {
   String? userName;
@@ -140,11 +142,14 @@ class UpdateExpertProfileRequestModel {
     return formData;
   }
 
-  FormData toJsonProfile() {
-    FormData formData = FormData.fromMap({
-      'expertProfileFlag': expertProfileFlag,
-      'userProfile': userProfile,
-    });
+  Future<FormData> toJsonProfile() async {
+    Map<String, dynamic> request = {};
+    request['expertProfile'] = await MultipartFile.fromFile(
+      userProfile ?? '',
+      filename: DateTime.now().toIso8601String(),
+      contentType: MediaType('image', request['expertProfile']?.split('.').last ?? 'jpg'),
+    );
+    FormData formData = FormData.fromMap(request);
     return formData;
   }
 
@@ -181,13 +186,7 @@ class UpdateExpertProfileRequestModel {
   }
 
   FormData toJsonYourLocation() {
-    FormData formData = FormData.fromMap({
-      'locationFlag': locationFlag,
-      'location': location,
-      'isLocationVisible': isLocationVisible,
-      'country': country,
-      'city': city
-    });
+    FormData formData = FormData.fromMap({'locationFlag': locationFlag, 'location': location, 'isLocationVisible': isLocationVisible, 'country': country, 'city': city});
     return formData;
   }
 }

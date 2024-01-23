@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
 import 'package:mirl/infrastructure/models/request/update_expert_Profile_request_model.dart';
+import 'package:mirl/infrastructure/models/response/certificate_response_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/models/response/gender_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
+import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 import 'package:mirl/infrastructure/repository/update_expert_profile_repo.dart';
 import 'package:mirl/infrastructure/commons/extensions/week_days_extension.dart';
 import 'package:mirl/infrastructure/models/common/week_schedule_model.dart';
@@ -36,7 +37,6 @@ class EditExpertProvider extends ChangeNotifier {
 
   List<CertificateAndExperienceModel> get certiAndExpModel => _certiAndExpModel;
 
-  // UserData? get userData => _userData;
   UserData? _userData;
 
   String? _selectedGender;
@@ -48,9 +48,6 @@ class EditExpertProvider extends ChangeNotifier {
   bool _isLocationSelect = false;
 
   int? isSelectGender = 1;
-
-  // String? _selectedYesNo;
-  // String? get selectedYesNo => _selectedYesNo;
 
   List<String> _locations = ["Yes", "No"];
 
@@ -68,9 +65,6 @@ class EditExpertProvider extends ChangeNotifier {
   ];
 
   List<GenderModel> get genderList => _genderList;
-
-  // String? get selectedGenderTitle => _selectedGenderTitle;
-  // String? _selectedGenderTitle;
 
   List<WeekScheduleModel> _weekScheduleModel = [];
 
@@ -91,11 +85,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   CountryModel? _selectedCountryModel;
 
-  // CountryModel? get selectedCountryModel => _selectedCountryModel;
-
   CityModel? _selectedCityModel;
-
-  // CityModel? get selectedCityModel => _selectedCityModel;
 
   int get pageNo => _pageNo;
   int _pageNo = 1;
@@ -103,64 +93,65 @@ class EditExpertProvider extends ChangeNotifier {
   late DateTime plusDay;
   late DateTime hourOnly;
 
-  void generateExperienceList() {
-    _certiAndExpModel.add(
-      CertificateAndExperienceModel(
-          titleController: TextEditingController(),
-          urlController: TextEditingController(),
-          descriptionController: TextEditingController(),
-          titleFocus: FocusNode(),
-          urlFocus: FocusNode(),
-          descriptionFocus: FocusNode()),
-    );
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  void generateExperienceList({required bool fromInit}) {
+    if (fromInit && (_userData?.certification?.isNotEmpty ?? false)) {
+      _userData?.certification?.forEach((element) {
+        _certiAndExpModel.add(CertificateAndExperienceModel(
+            id: element.id,
+            titleController: TextEditingController(text: element.title ?? ''),
+            urlController: TextEditingController(text: element.url ?? ''),
+            descriptionController: TextEditingController(text: element.description ?? ''),
+            titleFocus: FocusNode(),
+            urlFocus: FocusNode(),
+            descriptionFocus: FocusNode()));
+      });
+    } else {
+      _certiAndExpModel.add(
+        CertificateAndExperienceModel(
+            id: null,
+            titleController: TextEditingController(),
+            urlController: TextEditingController(),
+            descriptionController: TextEditingController(),
+            titleFocus: FocusNode(),
+            urlFocus: FocusNode(),
+            descriptionFocus: FocusNode()),
+      );
+    }
     notifyListeners();
   }
 
   void generateWeekDaysTime() {
     _weekScheduleModel.clear();
-    var _time = DateTime.now().toLocal();
-    hourOnly = DateTime(_time.year, _time.month, _time.day, 24);
+    var _time = DateTime.now();
+    hourOnly = DateTime(_time.year, _time.month, _time.day, 0, 0, 0);
     plusDay = hourOnly.add(Duration(days: 1));
     DateTime lowerValue = hourOnly.add(Duration(hours: 10));
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
-    _weekScheduleModel.addAll([
-      WeekScheduleModel(
-          dayName: 'MON',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'TUE',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'WED',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'THU',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: false),
-      WeekScheduleModel(
-          dayName: 'FRI',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'SAT',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'SUN',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: false),
-    ]);
+    if (_userData?.expertAvailability?.isNotEmpty ?? false) {
+      _userData?.expertAvailability?.forEach((element) {
+        _weekScheduleModel.add(WeekScheduleModel(
+          dayName: element.dayOfWeek?.substring(0, 3).toUpperCase(),
+          startTime: double.parse(element.startTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ?? lowerValue.millisecondsSinceEpoch.toString()),
+          endTime: double.parse(element.endTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ?? upperValue.millisecondsSinceEpoch.toString()),
+          isAvailable: element.isAvailable ?? false,
+        ));
+      });
+    } else {
+      _weekScheduleModel.addAll([
+        WeekScheduleModel(dayName: 'MON', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'TUE', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'WED', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'THU', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
+        WeekScheduleModel(dayName: 'FRI', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'SAT', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'SUN', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
+      ]);
+    }
     notifyListeners();
   }
 
@@ -191,10 +182,8 @@ class EditExpertProvider extends ChangeNotifier {
   void getCertificateList() {
     certificationList.clear();
     _certiAndExpModel.forEach((element) {
-      certificationList.add(CertificationData(
-          title: element.titleController.text.trim(),
-          url: element.urlController.text.trim(),
-          description: element.descriptionController.text.trim()));
+      certificationList
+          .add(CertificationData(title: element.titleController.text.trim(), url: element.urlController.text.trim(), description: element.descriptionController.text.trim()));
     });
     notifyListeners();
   }
@@ -227,6 +216,7 @@ class EditExpertProvider extends ChangeNotifier {
     if (value.isNotEmpty) {
       _userData = UserData.fromJson(jsonDecode(value));
       expertNameController.text = _userData?.expertName ?? '';
+      _pickedImage = _userData?.expertProfile ?? '';
       mirlIdController.text = _userData?.mirlId ?? '';
       aboutMeController.text = _userData?.about ?? '';
       countryNameController.text = _userData?.country ?? '';
@@ -234,34 +224,31 @@ class EditExpertProvider extends ChangeNotifier {
       bankHolderNameController.text = _userData?.bankAccountHolderName ?? '';
       bankNameController.text = _userData?.bankName ?? '';
       accountNumberController.text = _userData?.accountNumber ?? '';
-      genderController.text = _userData?.gender ?? '';
       countController.text = _userData?.fee ?? '';
-      if (_userData?.instantCallAvailableFlag ?? false) {
-        instantCallAvailabilityController.text = "Yes";
-      } else {
-        instantCallAvailabilityController.text = "No";
-      }
+      instantCallAvailabilityController.text = _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
+      GenderModel genderModel = _genderList.firstWhere((element) => element.selectType.toString() == _userData?.gender);
+      genderController.text = genderModel.title ?? '';
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> expertAvailabilityApi(BuildContext context, String scheduleType) async {
     getSelectedWeekDays();
     CustomLoading.progressDialog(isLoading: true);
 
-    ExpertAvailabilityRequestModel requestModel =
-        ExpertAvailabilityRequestModel(scheduleType: scheduleType, workDays: workDaysList);
+    ExpertAvailabilityRequestModel requestModel = ExpertAvailabilityRequestModel(scheduleType: scheduleType, workDays: workDaysList);
 
     ApiHttpResult response = await _expertProfileRepo.editExpertAvailabilityApi(request: requestModel.toJson());
     CustomLoading.progressDialog(isLoading: false);
     switch (response.status) {
       case APIStatus.success:
-        if (response.data != null && response.data is CommonModel) {
-          CommonModel commonModel = response.data;
-          certificationList.clear();
-          _certiAndExpModel.clear();
+        if (response.data != null && response.data is WeekAvailabilityResponseModel) {
+          WeekAvailabilityResponseModel responseModel = response.data;
+          _userData?.expertAvailability?.addAll(responseModel.data ?? []);
+          SharedPrefHelper.saveUserData(jsonEncode(_userData));
+          notifyListeners();
           context.toPop();
-          FlutterToast().showToast(msg: commonModel.message ?? '');
+          FlutterToast().showToast(msg: responseModel.message ?? '');
         }
         break;
       case APIStatus.failure:
@@ -269,7 +256,6 @@ class EditExpertProvider extends ChangeNotifier {
         Logger().d("API fail on expert availability Api ${response.data}");
         break;
     }
-    notifyListeners();
   }
 
   Future<void> expertCertificateApi(BuildContext context) async {
@@ -283,10 +269,15 @@ class EditExpertProvider extends ChangeNotifier {
 
     switch (response.status) {
       case APIStatus.success:
-        if (response.data != null && response.data is CommonModel) {
-          CommonModel commonModel = response.data;
+        if (response.data != null && response.data is CertificateResponseModel) {
+          CertificateResponseModel responseModel = response.data;
+          _userData?.certification?.addAll(responseModel.data ?? []);
+          SharedPrefHelper.saveUserData(jsonEncode(_userData));
+          _certiAndExpModel.clear();
+          certificationList.clear();
+          notifyListeners();
           context.toPop();
-          FlutterToast().showToast(msg: commonModel.message ?? '');
+          FlutterToast().showToast(msg: responseModel.message ?? '');
         }
         break;
       case APIStatus.failure:
@@ -296,25 +287,29 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> expertCertificateDeleteApi({required BuildContext context, required String certiId, required int index}) async {
-    CustomLoading.progressDialog(isLoading: true);
+  Future<void> expertCertificateDeleteApi({required BuildContext context, required int? certiId, required int index}) async {
+    if (certiId == null) {
+      _certiAndExpModel.removeAt(index);
+      notifyListeners();
+    } else {
+      CustomLoading.progressDialog(isLoading: true);
 
-    ApiHttpResult response = await _expertProfileRepo.expertCertificateDeleteApi(certiId: certiId);
+      ApiHttpResult response = await _expertProfileRepo.expertCertificateDeleteApi(certiId: certiId);
 
-    CustomLoading.progressDialog(isLoading: false);
+      CustomLoading.progressDialog(isLoading: false);
 
-    switch (response.status) {
-      case APIStatus.success:
-        if (response.data != null && response.data is CommonModel) {
-          _certiAndExpModel.removeAt(index);
-          certificationList.removeAt(index);
-          notifyListeners();
-        }
-        break;
-      case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on expert certificate delete Api ${response.data}");
-        break;
+      switch (response.status) {
+        case APIStatus.success:
+          if (response.data != null && response.data is CommonModel) {
+            _certiAndExpModel.removeAt(index);
+            notifyListeners();
+          }
+          break;
+        case APIStatus.failure:
+          FlutterToast().showToast(msg: response.failure?.message ?? '');
+          Logger().d("API fail on expert certificate delete Api ${response.data}");
+          break;
+      }
     }
   }
 
@@ -370,8 +365,7 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateGenderApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
-        UpdateExpertProfileRequestModel(genderFlag: true, gender: isSelectGender);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(genderFlag: true, gender: isSelectGender);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonGender());
   }
 
@@ -426,15 +420,13 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateInstantCallApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
-        UpdateExpertProfileRequestModel(instantCallAvailable: _isCallSelect);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(instantCallAvailable: _isCallSelect);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonInstantCall());
   }
 
-  void updateProfileApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
-        UpdateExpertProfileRequestModel(expertProfileFlag: true, userProfile: _pickedImage);
-    UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonProfile());
+  Future<void> updateProfileApi() async {
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfileFlag: true, userProfile: _pickedImage);
+    UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile());
   }
 
   Future<void> UpdateUserDetailsApiCall({required FormData requestModel}) async {
@@ -498,8 +490,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   Future<void> cityListApiCall() async {
     CustomLoading.progressDialog(isLoading: true);
-    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
-        limit: 10, page: _pageNo, countryId: _selectedCountryModel?.id.toString() ?? '');
+    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(limit: 10, page: _pageNo, countryId: _selectedCountryModel?.id.toString() ?? '');
     CustomLoading.progressDialog(isLoading: false);
     switch (response.status) {
       case APIStatus.success:
