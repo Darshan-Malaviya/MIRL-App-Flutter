@@ -20,6 +20,8 @@ import 'package:mirl/infrastructure/repository/expert_profile_repo.dart';
 class EditExpertProvider extends ChangeNotifier {
   final _updateUserDetailsRepository = UpdateUserDetailsRepository();
   TextEditingController expertNameController = TextEditingController();
+  TextEditingController searchCityController = TextEditingController();
+  TextEditingController searchCountryController = TextEditingController();
   TextEditingController mirlIdController = TextEditingController();
   TextEditingController aboutMeController = TextEditingController();
   TextEditingController genderController = TextEditingController();
@@ -57,6 +59,10 @@ class EditExpertProvider extends ChangeNotifier {
 
   String get pickedImage => _pickedImage;
 
+  String _setInstantCall = '';
+
+  String get setInstantCall => _setInstantCall;
+
   // ignore: prefer_final_fields
   List<GenderModel> _genderList = [
     GenderModel(title: "Male", isSelected: false, selectType: 1),
@@ -83,12 +89,18 @@ class EditExpertProvider extends ChangeNotifier {
   bool get reachedLastPage => _reachedLastPage;
   bool _reachedLastPage = false;
 
+  bool get reachedCityLastPage => _reachedCityLastPage;
+  bool _reachedCityLastPage = false;
+
   CountryModel? _selectedCountryModel;
 
   CityModel? _selectedCityModel;
 
   int get pageNo => _pageNo;
   int _pageNo = 1;
+
+  int get cityPageNo => _cityPageNo;
+  int _cityPageNo = 1;
 
   late DateTime plusDay;
   late DateTime hourOnly;
@@ -190,6 +202,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void setSelectedCountry({required CountryModel value}) {
     _selectedCountryModel = value;
+    countryNameController.text = _selectedCountryModel?.country ?? '';
     notifyListeners();
   }
 
@@ -313,6 +326,11 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
+  valueSet() {
+    double plusValue = double.parse(countController.text.trim());
+    countController.text = (plusValue / 100).toString();
+  }
+
   void increaseFees() {
     double plusValue = double.parse(countController.text.trim());
     countController.text = (plusValue + 1).toString();
@@ -340,6 +358,7 @@ class EditExpertProvider extends ChangeNotifier {
     isSelectGender = data.selectType;
     notifyListeners();
   }
+
 
   Future<void> pickGalleryImage(BuildContext context) async {
     XFile? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
@@ -441,7 +460,7 @@ class EditExpertProvider extends ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
-          Logger().d("Successfully login");
+          Logger().d("Successfully updated");
           Logger().d("user data=====${loginResponseModel.toJson()}");
           resetVariable();
           getUserData();
@@ -456,20 +475,25 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> CountryListApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
+  Future<void> CountryListApiCall({bool isFullScreenLoader = false,String? searchName}) async {
+    if(isFullScreenLoader){
+      CustomLoading.progressDialog(isLoading: true);
+    }
+
 
     ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(
       limit: 10,
       page: _pageNo,
+        searchName: searchName
     );
-    CustomLoading.progressDialog(isLoading: false);
-
+    if(isFullScreenLoader){
+      CustomLoading.progressDialog(isLoading: false);
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is CountryResponseModel) {
           CountryResponseModel countryResponseModel = response.data;
-          Logger().d("Successfully");
+          Logger().d("Successfully call country list");
           _country.addAll(countryResponseModel.data ?? []);
           if (_pageNo == countryResponseModel.pagination?.itemCount) {
             _reachedLastPage = true;
@@ -488,21 +512,26 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> cityListApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
-    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(limit: 10, page: _pageNo, countryId: _selectedCountryModel?.id.toString() ?? '');
-    CustomLoading.progressDialog(isLoading: false);
+  Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
+    if(isFullScreenLoader){
+      CustomLoading.progressDialog(isLoading: true);
+    }
+    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
+        limit: 10, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
+    if(isFullScreenLoader){
+      CustomLoading.progressDialog(isLoading: false);
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is CityResponseModel) {
           CityResponseModel cityResponseModel = response.data;
-          Logger().d("Successfully");
+          Logger().d("Successfully call city list api");
           _city.addAll(cityResponseModel.data ?? []);
-          if (_pageNo == cityResponseModel.pagination?.itemCount) {
-            _reachedLastPage = true;
+          if (_cityPageNo == cityResponseModel.pagination?.itemCount) {
+            _reachedCityLastPage = true;
           } else {
-            _pageNo = _pageNo + 1;
-            _reachedLastPage = false;
+            _cityPageNo = _cityPageNo + 1;
+            _reachedCityLastPage = false;
           }
         }
         break;
@@ -511,6 +540,30 @@ class EditExpertProvider extends ChangeNotifier {
         Logger().d("API fail on city list call Api ${response.data}");
         break;
     }
+    notifyListeners();
+  }
+
+  void clearCityPaginationData() {
+    _cityPageNo = 1;
+    _reachedCityLastPage = false;
+    _city = [];
+    notifyListeners();
+  }
+
+  void clearSearchCityController() {
+    searchCityController.clear();
+    notifyListeners();
+  }
+
+  void clearCountryPaginationData() {
+    _pageNo = 1;
+    _reachedLastPage = false;
+    _country = [];
+    notifyListeners();
+  }
+
+  void clearSearchCountryController() {
+    searchCountryController.clear();
     notifyListeners();
   }
 

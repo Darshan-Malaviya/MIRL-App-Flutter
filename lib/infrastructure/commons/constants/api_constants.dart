@@ -80,4 +80,7 @@ class ApiConstants {
   static const String expertAvailability = '/expertAvailability';
   static  String getExpertAvailability = '/expertAvailability/${SharedPrefHelper.getUserId}';
   static const String certification = '/certification';
+  static const String deleteCertification = '/certification';
+  static const String expertCategory = '/expertCategory/parent/child-category';
+  static const String expertCategorySelection = '/expertCategory/category/selection';
 }

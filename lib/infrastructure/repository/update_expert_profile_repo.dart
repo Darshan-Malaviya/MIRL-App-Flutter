@@ -29,8 +29,17 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
   Future<ApiHttpResult> countryApiCall({
     required int page,
     required int limit,
+    String? searchName,
   }) async {
-    final uri = ApiConstants.endpointUri(path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString()});
+    final uri;
+    if(searchName == null){
+       uri = ApiConstants.endpointUri(
+          path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString()});
+    } else {
+       uri = ApiConstants.endpointUri(
+          path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString(),"search" : searchName});
+    }
+
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,
@@ -47,9 +56,17 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
     required int page,
     required int limit,
     required String countryId,
+    String? searchName,
   }) async {
-    final uri = ApiConstants.endpointUri(
-        path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId});
+    final uri;
+    if(searchName == null) {
+       uri = ApiConstants.endpointUri(
+          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId});
+    } else {
+       uri = ApiConstants.endpointUri(
+          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId, "search" : searchName});
+    }
+
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,

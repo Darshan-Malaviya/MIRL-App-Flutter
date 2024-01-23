@@ -86,7 +86,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   fontFamily: FontWeightEnum.w700.toInter,
                 ),
                 BodyMediumText(
-                  title:'\$${expertWatch.countController.text}',
+                  title: '\$${expertWatch.countController.text}',
                   fontFamily: FontWeightEnum.w700.toInter,
                 )
               ],
