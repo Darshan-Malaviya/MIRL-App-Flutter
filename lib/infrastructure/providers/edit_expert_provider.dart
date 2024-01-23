@@ -26,6 +26,7 @@ class EditExpertProvider extends ChangeNotifier {
   TextEditingController aboutMeController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController instantCallAvailabilityController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
   TextEditingController bankNameController = TextEditingController();
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController bankHolderNameController = TextEditingController();
@@ -63,7 +64,6 @@ class EditExpertProvider extends ChangeNotifier {
 
   String get setInstantCall => _setInstantCall;
 
-  // ignore: prefer_final_fields
   List<GenderModel> _genderList = [
     GenderModel(title: "Male", isSelected: false, selectType: 1),
     GenderModel(title: "Female", isSelected: false, selectType: 2),
@@ -111,6 +111,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void generateExperienceList({required bool fromInit}) {
     if (fromInit && (_userData?.certification?.isNotEmpty ?? false)) {
+      _certiAndExpModel.clear();
       _userData?.certification?.forEach((element) {
         _certiAndExpModel.add(CertificateAndExperienceModel(
             id: element.id,
@@ -206,21 +207,9 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void setSelectedCity({required CityModel value}) {
-  //   _selectedCityModel = value;
-  //   notifyListeners();
-  // }
-
-  void displayCountry({required CountryModel value}) {
-    countryNameController.text = _selectedCountryModel?.country ?? '';
-    //_selectedCountryModel = value;
-    notifyListeners();
-  }
-
   void displayCity({required CityModel value}) {
     _selectedCityModel = value;
     cityNameController.text = _selectedCityModel?.city ?? '';
-
     notifyListeners();
   }
 
@@ -237,8 +226,9 @@ class EditExpertProvider extends ChangeNotifier {
       bankHolderNameController.text = _userData?.bankAccountHolderName ?? '';
       bankNameController.text = _userData?.bankName ?? '';
       accountNumberController.text = _userData?.accountNumber ?? '';
-      countController.text = _userData?.fee ?? '';
+      countController.text = (int.parse(_userData?.fee ?? '0') / 100).toString();
       instantCallAvailabilityController.text = _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
+      locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
       GenderModel genderModel = _genderList.firstWhere((element) => element.selectType.toString() == _userData?.gender);
       genderController.text = genderModel.title ?? '';
       notifyListeners();
@@ -257,6 +247,7 @@ class EditExpertProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is WeekAvailabilityResponseModel) {
           WeekAvailabilityResponseModel responseModel = response.data;
+          _userData?.expertAvailability?.clear();
           _userData?.expertAvailability?.addAll(responseModel.data ?? []);
           SharedPrefHelper.saveUserData(jsonEncode(_userData));
           notifyListeners();
@@ -284,6 +275,7 @@ class EditExpertProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is CertificateResponseModel) {
           CertificateResponseModel responseModel = response.data;
+          _userData?.certification?.clear();
           _userData?.certification?.addAll(responseModel.data ?? []);
           SharedPrefHelper.saveUserData(jsonEncode(_userData));
           _certiAndExpModel.clear();
@@ -326,11 +318,6 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
-  valueSet() {
-    double plusValue = double.parse(countController.text.trim());
-    countController.text = (plusValue / 100).toString();
-  }
-
   void increaseFees() {
     double plusValue = double.parse(countController.text.trim());
     countController.text = (plusValue + 1).toString();
@@ -358,7 +345,6 @@ class EditExpertProvider extends ChangeNotifier {
     isSelectGender = data.selectType;
     notifyListeners();
   }
-
 
   Future<void> pickGalleryImage(BuildContext context) async {
     XFile? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
@@ -389,9 +375,10 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateFeesApi() {
+    int feesValue = (double.parse(countController.text) * 100).toInt();
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
       feeFlag: true,
-      fee: (double.parse(countController.text) * 100).toString(),
+      fee: feesValue.toString(),
     );
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonFees());
   }
@@ -475,18 +462,13 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> CountryListApiCall({bool isFullScreenLoader = false,String? searchName}) async {
-    if(isFullScreenLoader){
+  Future<void> CountryListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
+    if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
     }
 
-
-    ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(
-      limit: 10,
-      page: _pageNo,
-        searchName: searchName
-    );
-    if(isFullScreenLoader){
+    ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(limit: 10, page: _pageNo, searchName: searchName);
+    if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     }
     switch (response.status) {
@@ -513,12 +495,12 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
-    if(isFullScreenLoader){
+    if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
     }
-    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
-        limit: 10, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
-    if(isFullScreenLoader){
+    ApiHttpResult response =
+        await _updateUserDetailsRepository.cityApiCall(limit: 10, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
+    if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     }
     switch (response.status) {
@@ -574,6 +556,7 @@ class EditExpertProvider extends ChangeNotifier {
     aboutMeController.clear();
     genderController.clear();
     instantCallAvailabilityController.clear();
+    locationController.clear();
     bankNameController.clear();
     accountNumberController.clear();
     bankHolderNameController.clear();

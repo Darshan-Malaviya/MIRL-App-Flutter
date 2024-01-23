@@ -186,7 +186,13 @@ class UpdateExpertProfileRequestModel {
   }
 
   FormData toJsonYourLocation() {
-    FormData formData = FormData.fromMap({'locationFlag': locationFlag, 'location': location, 'isLocationVisible': isLocationVisible, 'country': country, 'city': city});
+    FormData formData = FormData.fromMap({
+      'locationFlag': locationFlag,
+      'location': location,
+      'isLocationVisible': isLocationVisible,
+      'country': country,
+      'city': city,
+    });
     return formData;
   }
 }
