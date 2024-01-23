@@ -20,6 +20,8 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final expertRead = ref.watch(editExpertProvider);
+
     return Scaffold(
       body: Column(
         children: [

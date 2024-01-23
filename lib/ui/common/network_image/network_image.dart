@@ -15,6 +15,7 @@ class NetworkImageWidget extends StatelessWidget {
   final double? placeholderImageSize;
   final BoxFit? boxFit;
   final bool? isNetworkImage;
+  final Widget? emptyImageWidget;
 
   const NetworkImageWidget(
       {Key? key,
@@ -29,7 +30,8 @@ class NetworkImageWidget extends StatelessWidget {
       this.errorImageColor,
       this.placeholderImageSize,
       this.boxFit,
-      this.isNetworkImage = true})
+      this.isNetworkImage = true,
+      this.emptyImageWidget})
       : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class NetworkImageWidget extends StatelessWidget {
                   child: Center(child: SpinKitThreeBounce(color: ColorConstants.primaryColor, size: 20)),
                 ),
               LoadState.completed => null,
-              LoadState.failed => Icon(Icons.person_2_outlined),
+              LoadState.failed => emptyImageWidget ?? Icon(Icons.person_2_outlined),
             };
           },
         );
@@ -74,13 +76,13 @@ class NetworkImageWidget extends StatelessWidget {
                   child: Center(child: SpinKitThreeBounce(color: ColorConstants.scaffoldColor, size: 28)),
                 ),
               LoadState.completed => null,
-              LoadState.failed => Icon(Icons.person_2_outlined),
+              LoadState.failed => emptyImageWidget ?? Icon(Icons.person_2_outlined),
             };
           },
         );
       }
     } else {
-      return Icon(Icons.person_2_outlined);
+      return emptyImageWidget ?? Icon(Icons.person_2_outlined);
     }
   }
 }

@@ -16,7 +16,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).generateExperienceList();
+      ref.read(editExpertProvider).generateExperienceList(fromInit: true);
     });
   }
 
@@ -29,7 +29,11 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
         appBar: AppBarWidget(
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
-            onTap: () => context.toPop(),
+            onTap: () {
+              expertWatch.certiAndExpModel.clear();
+              expertWatch.certificationList.clear();
+              context.toPop();
+            },
           ),
           trailingIcon: OnScaleTap(
             onPress: () {
@@ -85,7 +89,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                             ),
                             InkWell(
                               onTap: () {
-                                expertRead.expertCertificateDeleteApi(context: context, certiId: '', index: index);
+                                expertRead.expertCertificateDeleteApi(context: context, certiId: expertWatch.certiAndExpModel[index].id, index: index);
                               },
                               child: TitleSmallText(
                                 title: StringConstants.delete,
@@ -102,9 +106,8 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           hintText: StringConstants.writeYourTitle,
                           textInputType: TextInputType.text,
                           onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].titleFocus.toChangeFocus(
-                                currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus,
-                                nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
+                            expertWatch.certiAndExpModel[index].titleFocus
+                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus, nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
                           },
                           validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredTitle),
                         ),
@@ -114,9 +117,8 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           focusNode: expertWatch.certiAndExpModel[index].urlFocus,
                           hintText: StringConstants.sourceUrl,
                           onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].urlFocus.toChangeFocus(
-                                currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus,
-                                nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
+                            expertWatch.certiAndExpModel[index].urlFocus
+                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus, nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
                           },
                           validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredUrl),
                         ),
@@ -140,7 +142,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                 PrimaryButton(
                   title: StringConstants.addMoreCredentials,
                   onPressed: () {
-                    expertRead.generateExperienceList();
+                    expertRead.generateExperienceList(fromInit: false);
                   },
                 ),
                 20.0.spaceY,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CertificateAndExperienceModel {
+  final int? id;
   final TextEditingController titleController;
   final TextEditingController urlController;
   final TextEditingController descriptionController;
@@ -9,7 +10,8 @@ class CertificateAndExperienceModel {
   final FocusNode descriptionFocus;
 
   CertificateAndExperienceModel(
-      {required this.titleController,
+      {this.id,
+      required this.titleController,
       required this.urlController,
       required this.descriptionController,
       required this.titleFocus,

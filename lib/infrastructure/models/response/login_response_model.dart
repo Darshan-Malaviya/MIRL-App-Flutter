@@ -22,7 +22,7 @@ class LoginResponseModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data?.toJson();
     }
     data['message'] = this.message;
     data['token'] = this.token;
@@ -67,7 +67,7 @@ class UserData {
   bool? feeFlag;
   bool? areaOfExpertiseFlag;
   bool? weeklyAvailableFlag;
-  bool? instantCallAvailableFlag;
+  bool? instantCallAvailable;
   bool? locationFlag;
   bool? isLocationVisible;
   bool? genderFlag;
@@ -82,50 +82,55 @@ class UserData {
   String? firstCreated;
   String? lastModified;
   String? activeAt;
+  List<CertificationData>? certification;
+  List<WeeklyAvailableData>? expertAvailability;
 
-  UserData(
-      {this.id,
-      this.userName,
-      this.expertName,
-      this.mirlId,
-      this.email,
-      this.phone,
-      this.city,
-      this.about,
-      this.otp,
-      this.gender,
-      this.loginType,
-      this.googleId,
-      this.appleId,
-      this.facebookId,
-      this.country,
-      this.userProfile,
-      this.expertProfile,
-      this.deviceToken,
-      this.deviceType,
-      this.expirationTime,
-      this.fee,
-      this.userProfileFlag,
-      this.expertProfileFlag,
-      this.aboutFlag,
-      this.feeFlag,
-      this.areaOfExpertiseFlag,
-      this.weeklyAvailableFlag,
-      this.instantCallAvailableFlag,
-      this.locationFlag,
-      this.isLocationVisible,
-      this.genderFlag,
-      this.certificateFlag,
-      this.bankDetailsFlag,
-      this.mirlIdFlag,
-      this.bankAccountHolderName,
-      this.bankName,
-      this.accountNumber,
-      this.timezone,
-      this.isDeleted,
-      this.firstCreated,
-      this.lastModified,
-      this.activeAt});
+  UserData({
+    this.id,
+    this.userName,
+    this.expertName,
+    this.mirlId,
+    this.email,
+    this.phone,
+    this.city,
+    this.about,
+    this.otp,
+    this.gender,
+    this.loginType,
+    this.googleId,
+    this.appleId,
+    this.facebookId,
+    this.country,
+    this.userProfile,
+    this.expertProfile,
+    this.deviceToken,
+    this.deviceType,
+    this.expirationTime,
+    this.fee,
+    this.userProfileFlag,
+    this.expertProfileFlag,
+    this.aboutFlag,
+    this.feeFlag,
+    this.areaOfExpertiseFlag,
+    this.weeklyAvailableFlag,
+    this.instantCallAvailable,
+    this.locationFlag,
+    this.isLocationVisible,
+    this.genderFlag,
+    this.certificateFlag,
+    this.bankDetailsFlag,
+    this.mirlIdFlag,
+    this.bankAccountHolderName,
+    this.bankName,
+    this.accountNumber,
+    this.timezone,
+    this.isDeleted,
+    this.firstCreated,
+    this.lastModified,
+    this.activeAt,
+    this.certification,
+    this.expertAvailability,
+  });
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -155,7 +160,7 @@ class UserData {
     feeFlag = json['feeFlag'];
     areaOfExpertiseFlag = json['areaOfExpertiseFlag'];
     weeklyAvailableFlag = json['weeklyAvailableFlag'];
-    instantCallAvailableFlag = json['instantCallAvailableFlag'];
+    instantCallAvailable = json['instantCallAvailable'];
     locationFlag = json['locationFlag'];
     isLocationVisible = json['isLocationVisible'];
     genderFlag = json['genderFlag'];
@@ -170,6 +175,18 @@ class UserData {
     firstCreated = json['firstCreated'];
     lastModified = json['lastModified'];
     activeAt = json['activeAt'];
+    if (json['certification'] != null) {
+      certification = <CertificationData>[];
+      json['certification'].forEach((v) {
+        certification?.add(new CertificationData.fromJson(v));
+      });
+    }
+    if (json['expertAvailability'] != null) {
+      expertAvailability = <WeeklyAvailableData>[];
+      json['expertAvailability'].forEach((v) {
+        expertAvailability?.add(new WeeklyAvailableData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -201,7 +218,7 @@ class UserData {
     data['feeFlag'] = this.feeFlag;
     data['areaOfExpertiseFlag'] = this.areaOfExpertiseFlag;
     data['weeklyAvailableFlag'] = this.weeklyAvailableFlag;
-    data['instantCallAvailableFlag'] = this.instantCallAvailableFlag;
+    data['instantCallAvailable'] = this.instantCallAvailable;
     data['locationFlag'] = this.locationFlag;
     data['isLocationVisible'] = this.isLocationVisible;
     data['genderFlag'] = this.genderFlag;
@@ -216,6 +233,94 @@ class UserData {
     data['firstCreated'] = this.firstCreated;
     data['lastModified'] = this.lastModified;
     data['activeAt'] = this.activeAt;
+    if (this.certification != null) {
+      data['certification'] = this.certification?.map((v) => v.toJson()).toList();
+    }
+    if (this.expertAvailability != null) {
+      data['expertAvailability'] = this.expertAvailability?.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class WeeklyAvailableData {
+  int? id;
+  int? userId;
+  String? dayOfWeek;
+  String? startTime;
+  String? endTime;
+  bool? isAvailable;
+  String? scheduleType;
+  String? firstCreated;
+  String? lastModified;
+
+  WeeklyAvailableData({this.id, this.userId, this.dayOfWeek, this.startTime, this.endTime, this.isAvailable, this.scheduleType, this.firstCreated, this.lastModified});
+
+  WeeklyAvailableData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['userId'];
+    dayOfWeek = json['dayOfWeek'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
+    isAvailable = json['isAvailable'];
+    scheduleType = json['scheduleType'];
+    firstCreated = json['firstCreated'];
+    lastModified = json['lastModified'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['userId'] = this.userId;
+    data['dayOfWeek'] = this.dayOfWeek;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
+    data['isAvailable'] = this.isAvailable;
+    data['scheduleType'] = this.scheduleType;
+    data['firstCreated'] = this.firstCreated;
+    data['lastModified'] = this.lastModified;
+    return data;
+  }
+}
+
+class CertificationData {
+  int? id;
+  int? userId;
+  String? title;
+  String? url;
+  String? description;
+  String? firstCreated;
+  String? lastModified;
+
+  CertificationData({this.id, this.userId, this.title, this.url, this.description, this.firstCreated, this.lastModified});
+
+  CertificationData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['userId'];
+    title = json['title'];
+    url = json['url'];
+    description = json['description'];
+    firstCreated = json['firstCreated'];
+    lastModified = json['lastModified'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['userId'] = this.userId;
+    data['title'] = this.title;
+    data['url'] = this.url;
+    data['description'] = this.description;
+    data['firstCreated'] = this.firstCreated;
+    data['lastModified'] = this.lastModified;
+    return data;
+  }
+
+  Map<String, dynamic> toJsonForRequest() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['title'] = this.title;
+    data['url'] = this.url;
+    data['description'] = this.description;
     return data;
   }
 }

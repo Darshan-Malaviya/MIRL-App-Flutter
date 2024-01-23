@@ -11,7 +11,6 @@ class SetYourGenderScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
-  int? index;
 
   @override
   Widget build(BuildContext context) {
