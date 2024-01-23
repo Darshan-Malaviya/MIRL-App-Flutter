@@ -64,7 +64,8 @@ class ApiResponseProvider {
             ),
           ),
         );
-        response = await _dio.get(newURL, queryParameters: url.queryParameters);
+        response = await _dio.get(newURL, queryParameters: url.queryParameters,options: Options(headers:headers));
+        //response = await _dio.get(newURL, queryParameters: url.queryParameters);
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {

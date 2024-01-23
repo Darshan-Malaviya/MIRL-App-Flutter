@@ -132,4 +132,5 @@ class StringConstants {
   static const String noTimeSchedule = "no time scheduled";
   static const String gallery = "gallery";
   static const String camera = "camera";
+  static const String setYourExpertise = "SET YOUR EXPERTISE";
 }

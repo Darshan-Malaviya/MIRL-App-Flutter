@@ -18,6 +18,8 @@ import 'package:mirl/infrastructure/repository/expert_profile_repo.dart';
 class EditExpertProvider extends ChangeNotifier {
   final _updateUserDetailsRepository = UpdateUserDetailsRepository();
   TextEditingController expertNameController = TextEditingController();
+  TextEditingController searchCityController = TextEditingController();
+  TextEditingController searchCountryController = TextEditingController();
   TextEditingController mirlIdController = TextEditingController();
   TextEditingController aboutMeController = TextEditingController();
   TextEditingController genderController = TextEditingController();
@@ -43,6 +45,7 @@ class EditExpertProvider extends ChangeNotifier {
   String? get selectedGender => _selectedGender;
 
   bool _isCallSelect = false;
+  bool get isCallSelect => _isCallSelect;
 
   bool _isLocationSelect = false;
 
@@ -58,6 +61,10 @@ class EditExpertProvider extends ChangeNotifier {
   String _pickedImage = '';
 
   String get pickedImage => _pickedImage;
+
+  String _setInstantCall = '';
+
+  String get setInstantCall => _setInstantCall;
 
   // ignore: prefer_final_fields
   List<GenderModel> _genderList = [
@@ -88,6 +95,9 @@ class EditExpertProvider extends ChangeNotifier {
   bool get reachedLastPage => _reachedLastPage;
   bool _reachedLastPage = false;
 
+  bool get reachedCityLastPage => _reachedCityLastPage;
+  bool _reachedCityLastPage = false;
+
   CountryModel? _selectedCountryModel;
 
   // CountryModel? get selectedCountryModel => _selectedCountryModel;
@@ -98,6 +108,9 @@ class EditExpertProvider extends ChangeNotifier {
 
   int get pageNo => _pageNo;
   int _pageNo = 1;
+
+  int get cityPageNo => _cityPageNo;
+  int _cityPageNo = 1;
 
   late DateTime plusDay;
   late DateTime hourOnly;
@@ -117,48 +130,20 @@ class EditExpertProvider extends ChangeNotifier {
 
   void generateWeekDaysTime() {
     _weekScheduleModel.clear();
-    var _time = DateTime.now();
-    hourOnly = DateTime(_time.year, _time.month, _time.day, 12);
+    var _time = DateTime.now().toLocal();
+    hourOnly = DateTime(_time.year, _time.month, _time.day, 24);
     plusDay = hourOnly.add(Duration(days: 1));
-    DateTime lowerValue = DateTime(_time.year, _time.month, _time.day, 10);
+    DateTime lowerValue = hourOnly.add(Duration(hours: 10));
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
     _weekScheduleModel.addAll([
-      WeekScheduleModel(
-          dayName: 'MON',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'TUE',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'WED',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'THU',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: false),
-      WeekScheduleModel(
-          dayName: 'FRI',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'SAT',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: true),
-      WeekScheduleModel(
-          dayName: 'SUN',
-          startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-          endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-          isAvailable: false),
+      WeekScheduleModel(dayName: 'MON', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'TUE', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'WED', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'THU', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
+      WeekScheduleModel(dayName: 'FRI', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'SAT', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+      WeekScheduleModel(dayName: 'SUN', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
     ]);
     notifyListeners();
   }
@@ -200,6 +185,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void setSelectedCountry({required CountryModel value}) {
     _selectedCountryModel = value;
+    countryNameController.text = _selectedCountryModel?.country ?? '';
     notifyListeners();
   }
 
@@ -233,13 +219,14 @@ class EditExpertProvider extends ChangeNotifier {
       bankHolderNameController.text = _userData?.bankAccountHolderName ?? '';
       bankNameController.text = _userData?.bankName ?? '';
       accountNumberController.text = _userData?.accountNumber ?? '';
-      genderController.text = _userData?.gender ?? '';
+      GenderModel genderModel = _genderList.firstWhere((element) => element.selectType.toString() == _userData?.gender);
+      genderController.text = genderModel.title ?? '';
       countController.text = _userData?.fee ?? '';
-      if (_userData?.instantCallAvailableFlag ?? false) {
-        instantCallAvailabilityController.text = "Yes";
-      } else {
-        instantCallAvailabilityController.text = "No";
-      }
+      // if (_userData?.instantCallAvailableFlag ?? false) {
+      //   _setInstantCall = "Yes";
+      // } else {
+      //   _setInstantCall = "No";
+      // }
     }
     notifyListeners();
   }
@@ -317,6 +304,11 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
+  valueSet() {
+    double plusValue = double.parse(countController.text.trim());
+    countController.text = (plusValue / 100).toString();
+  }
+
   void increaseFees() {
     double plusValue = double.parse(countController.text.trim());
     countController.text = (plusValue + 1).toString();
@@ -344,6 +336,7 @@ class EditExpertProvider extends ChangeNotifier {
     isSelectGender = data.selectType;
     notifyListeners();
   }
+
 
   Future<void> pickGalleryImage(BuildContext context) async {
     XFile? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
@@ -432,7 +425,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void updateProfileApi() {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
-        UpdateExpertProfileRequestModel(expertProfileFlag: true, userProfile: _pickedImage);
+        UpdateExpertProfileRequestModel(/*expertProfileFlag: false,*/ userProfile: _pickedImage);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonProfile());
   }
 
@@ -448,7 +441,7 @@ class EditExpertProvider extends ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
-          Logger().d("Successfully login");
+          Logger().d("Successfully updated");
           Logger().d("user data=====${loginResponseModel.toJson()}");
           resetVariable();
           getUserData();
@@ -463,20 +456,25 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> CountryListApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
+  Future<void> CountryListApiCall({bool isFullScreenLoader = false,String? searchName}) async {
+    if(isFullScreenLoader){
+      CustomLoading.progressDialog(isLoading: true);
+    }
+
 
     ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(
       limit: 10,
       page: _pageNo,
+        searchName: searchName
     );
-    CustomLoading.progressDialog(isLoading: false);
-
+    if(isFullScreenLoader){
+      CustomLoading.progressDialog(isLoading: false);
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is CountryResponseModel) {
           CountryResponseModel countryResponseModel = response.data;
-          Logger().d("Successfully");
+          Logger().d("Successfully call country list");
           _country.addAll(countryResponseModel.data ?? []);
           if (_pageNo == countryResponseModel.pagination?.itemCount) {
             _reachedLastPage = true;
@@ -495,22 +493,26 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> cityListApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
+  Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
+    if(isFullScreenLoader){
+      CustomLoading.progressDialog(isLoading: true);
+    }
     ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
-        limit: 10, page: _pageNo, countryId: _selectedCountryModel?.id.toString() ?? '');
-    CustomLoading.progressDialog(isLoading: false);
+        limit: 10, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
+    if(isFullScreenLoader){
+      CustomLoading.progressDialog(isLoading: false);
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is CityResponseModel) {
           CityResponseModel cityResponseModel = response.data;
-          Logger().d("Successfully");
+          Logger().d("Successfully call city list api");
           _city.addAll(cityResponseModel.data ?? []);
-          if (_pageNo == cityResponseModel.pagination?.itemCount) {
-            _reachedLastPage = true;
+          if (_cityPageNo == cityResponseModel.pagination?.itemCount) {
+            _reachedCityLastPage = true;
           } else {
-            _pageNo = _pageNo + 1;
-            _reachedLastPage = false;
+            _cityPageNo = _cityPageNo + 1;
+            _reachedCityLastPage = false;
           }
         }
         break;
@@ -519,6 +521,30 @@ class EditExpertProvider extends ChangeNotifier {
         Logger().d("API fail on city list call Api ${response.data}");
         break;
     }
+    notifyListeners();
+  }
+
+  void clearCityPaginationData() {
+    _cityPageNo = 1;
+    _reachedCityLastPage = false;
+    _city = [];
+    notifyListeners();
+  }
+
+  void clearSearchCityController() {
+    searchCityController.clear();
+    notifyListeners();
+  }
+
+  void clearCountryPaginationData() {
+    _pageNo = 1;
+    _reachedLastPage = false;
+    _country = [];
+    notifyListeners();
+  }
+
+  void clearSearchCountryController() {
+    searchCountryController.clear();
     notifyListeners();
   }
 

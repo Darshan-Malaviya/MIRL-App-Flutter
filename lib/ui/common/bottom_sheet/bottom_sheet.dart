@@ -8,6 +8,7 @@ class CommonBottomSheet {
       TickerProvider? vsync,
       double? height,
       double? width,
+        Color? backgroundColor,
       VoidCallback? onTap,
       Widget? suffixIcon,
       isDismissible = false}) async {
@@ -31,7 +32,7 @@ class CommonBottomSheet {
             child: Container(
               constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
               decoration: BoxDecoration(
-                color: ColorConstants.scaffoldColor,
+                color: backgroundColor ?? ColorConstants.scaffoldColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(RadiusConstant.alertdialogRadius),
                   topRight: Radius.circular(RadiusConstant.alertdialogRadius),
