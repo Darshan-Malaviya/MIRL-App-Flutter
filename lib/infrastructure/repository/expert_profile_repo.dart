@@ -1,6 +1,8 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
+import 'package:mirl/infrastructure/models/response/certificate_response_model.dart';
+import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 
 class ExpertProfileRepo extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
@@ -14,7 +16,7 @@ class ExpertProfileRepo extends ApiResponseHandler {
       headers: ApiConstants.headerWithToken(),
     );
 
-    return responseHandler(result: result, json: CommonModel.parseInfo);
+    return responseHandler(result: result, json: WeekAvailabilityResponseModel.parseInfo);
   }
 
   Future<ApiHttpResult> editExpertCertificateApi({required dynamic request}) async {
@@ -26,11 +28,11 @@ class ExpertProfileRepo extends ApiResponseHandler {
       headers: ApiConstants.headerWithToken(),
     );
 
-    return responseHandler(result: result, json: CommonModel.parseInfo);
+    return responseHandler(result: result, json: CertificateResponseModel.parseInfo);
   }
 
-  Future<ApiHttpResult> expertCertificateDeleteApi({required dynamic certiId}) async {
-    final uri = ApiConstants.endpointUri(path: '${ApiConstants.deleteCertification}/$certiId');
+  Future<ApiHttpResult> expertCertificateDeleteApi({required int certiId}) async {
+    final uri = ApiConstants.endpointUri(path: '${ApiConstants.certification}/$certiId');
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,

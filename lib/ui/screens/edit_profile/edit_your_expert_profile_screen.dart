@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
@@ -13,17 +12,9 @@ class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
 
 class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProfileScreen> {
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).getUserData();
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
-    final expertRead = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
 
     return Scaffold(
       appBar: AppBarWidget(
@@ -78,10 +69,12 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                     child: (expertWatch.pickedImage.isNotEmpty)
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.file(
-                              File(expertWatch.pickedImage),
-                              fit: BoxFit.cover,
-                            ))
+                            child: NetworkImageWidget(
+                              imageURL: expertWatch.pickedImage,
+                              isNetworkImage: expertWatch.pickedImage.contains('https'),
+                              boxFit: BoxFit.cover,
+                            ),
+                          )
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -101,9 +94,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                             ],
                           ),
                   ),
-                  OnScaleTap(
-                          onPress: () => expertRead.removePickedImage(),
-                          child: Icon(Icons.cancel, color: ColorConstants.bottomTextColor, size: 30))
+                  OnScaleTap(onPress: () => expertRead.removePickedImage(), child: Icon(Icons.cancel, color: ColorConstants.bottomTextColor, size: 30))
                       .addVisibility(expertWatch.pickedImage.isNotEmpty),
                 ],
               ),
