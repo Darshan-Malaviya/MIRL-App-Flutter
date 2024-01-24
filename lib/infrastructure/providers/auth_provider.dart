@@ -92,6 +92,7 @@ class AuthProvider with ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
+          Logger().d("Login data======${loginResponseModel.toJson()}");
           if (loginType == 0) {
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);

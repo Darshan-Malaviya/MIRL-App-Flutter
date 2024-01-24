@@ -1,10 +1,7 @@
 import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+
 
 class CountryListBottomView extends ConsumerStatefulWidget {
   const CountryListBottomView({super.key});
@@ -19,17 +16,16 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).CountryListApiCall();
+      ref.read(editExpertProvider).clearSearchCountryController();
+      ref.read(editExpertProvider).CountryListApiCall(isFullScreenLoader: true);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(editExpertProvider).reachedLastPage;
         if (!isLoading) {
-          log("this is called");
-          // await Future.delayed(const Duration(seconds: 2));
           ref.read(editExpertProvider).CountryListApiCall();
         } else {
-          log('reach last page');
+          log('reach last page of country list api');
         }
       }
     });
@@ -48,17 +44,44 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
             title: "Select Country",
           ),
           16.0.spaceY,
+          TextFormFieldWidget(
+            isReadOnly: false,
+            hintText: "Search here",
+            suffixIcon: expertWatch.searchCountryController.text.isNotEmpty
+                ? InkWell(
+                onTap: () {
+                  expertRead.clearCountryPaginationData();
+                  expertRead.clearSearchCountryController();
+                  expertRead.CountryListApiCall();
+                  setState(() {});
+                },
+                child: Icon(Icons.close))
+                : SizedBox.shrink(),
+            onFieldSubmitted: (value) {
+              context.unFocusKeyboard();
+              expertRead.clearCountryPaginationData();
+              expertRead.CountryListApiCall(searchName: expertWatch.searchCountryController.text);
+            },
+            height: 40,
+            controller: expertWatch.searchCountryController,
+            textInputAction: TextInputAction.done,
+          ).addAllMargin(12),
+          expertWatch.country.isNotEmpty ?
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.45,
             child: ListView.builder(
                 controller: scrollController,
+                itemCount: expertWatch.country.length + (expertWatch.reachedLastPage ? 0 : 1),
                 itemBuilder: (context, index) {
+                  if(index == expertWatch.country.length && expertWatch.country.isNotEmpty){
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
                   return InkWell(
                     onTap: () {
-                      expertWatch.country[index].id ?? '';
-                      expertWatch.country[index].country ?? '';
                       expertRead.setSelectedCountry(value: expertWatch.country[index]);
-                      expertRead.displayCountry(value: expertWatch.country[index]);
                       Navigator.pop(context);
                     },
                     child: Row(
@@ -74,7 +97,10 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
                     ),
                   );
                 },
-                itemCount: expertWatch.country.length),
+                ),
+          ) : Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Center(child: CircularProgressIndicator()),
           ),
           16.0.spaceY,
         ],

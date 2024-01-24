@@ -11,7 +11,6 @@ class SetYourGenderScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
-  int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
               120.0.spaceY,
               DropdownMenuWidget(
                 controller: expertWatch.genderController,
-                hintText: StringConstants.theDropDown,
+                hintText:  StringConstants.theDropDown,
                 dropdownList: expertWatch.genderList.map((GenderModel item) => dropdownMenuEntry(context: context, value: item.title ?? '', label: item.title ?? '')).toList(),
                 onSelect: (String value) {
                   expertRead.setGender(value);

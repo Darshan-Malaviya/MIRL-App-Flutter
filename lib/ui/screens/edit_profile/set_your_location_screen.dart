@@ -57,6 +57,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               20.0.spaceY,
               DropdownMenuWidget(
                 hintText: StringConstants.theDropDown,
+                controller: expertWatch.locationController,
                 dropdownList: expertWatch.locations
                     .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                     .toList(),
@@ -77,7 +78,8 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 controller: expertWatch.countryNameController,
                 //onChanged: (value) => cityCountryRead.displayCountry(),
                 onTap: () {
-                  CommonBottomSheet.bottomSheet(context: context, child: CountryListBottomView());
+                  CommonBottomSheet.bottomSheet(context: context, child: CountryListBottomView(),
+                  isDismissible: true);
                 },
               ),
               20.0.spaceY,
@@ -92,7 +94,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 hintText: StringConstants.nearestLandmark,
                 controller: expertWatch.cityNameController,
                 onTap: () {
-                  CommonBottomSheet.bottomSheet(context: context, child: CityListBottomView());
+                  CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: CityListBottomView());
                 },
               ),
             ],
