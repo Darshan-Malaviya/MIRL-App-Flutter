@@ -10,11 +10,11 @@ class HomeDataResponseModel {
   HomeDataResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new HomeData.fromJson(json['data']) : null;
+    data = json['data'] != null ? HomeData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.data != null) {
@@ -43,19 +43,19 @@ class HomeData {
     if (json['categories'] != null) {
       categories = <Categories>[];
       json['categories'].forEach((v) {
-        categories!.add(new Categories.fromJson(v));
+        categories!.add(Categories.fromJson(v));
       });
     }
     if (json['userFavorites'] != null) {
       userFavorites = <UserFavorites>[];
       json['userFavorites'].forEach((v) {
-        userFavorites!.add(new UserFavorites.fromJson(v));
+        userFavorites!.add(UserFavorites.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.categories != null) {
       data['categories'] = this.categories!.map((v) => v.toJson()).toList();
     }
@@ -80,7 +80,7 @@ class Categories {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
     data['image'] = this.image;
@@ -102,7 +102,7 @@ class UserFavorites {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['expertName'] = this.expertName;
     data['expertProfile'] = this.expertProfile;

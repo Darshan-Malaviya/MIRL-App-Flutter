@@ -1,14 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
-import 'package:mirl/infrastructure/commons/extensions/navigator_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/ui/common/appbar/appbar_widget.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
-import 'package:mirl/ui/common/text_widgets/textfield/textformfield_widget.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/search_screen/widget/expert_category_search_view.dart';
 import 'package:mirl/ui/screens/search_screen/widget/experts_list_view.dart';
 import 'package:mirl/ui/screens/search_screen/widget/topic_list_search_view.dart';
@@ -21,8 +14,20 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(homeProvider).clearSearchData();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final homeProviderWatch = ref.watch(homeProvider);
+    final homeProviderRead = ref.read(homeProvider);
+
     return Scaffold(
       appBar: AppBarWidget(
         preferSize: 0,
@@ -37,12 +42,21 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Flexible(
                   child: TextFormFieldWidget(
                     textAlign: TextAlign.start,
+                    controller: homeProviderWatch.homeSearchController,
+                    onEditingComplete: (){
+                      if (homeProviderWatch.homeSearchController.text.isNotEmpty) {
+                        homeProviderRead.homeSearchApi();
+                      } else {
+                        FlutterToast().showToast(msg: "Please enter search keyword.");
+                      }
+                    },
+                    textInputAction: TextInputAction.done,
                     hintText: LocaleKeys.typeSomethingHere.tr(),
                   ),
                 ),
                 8.0.spaceX,
                 InkWell(
-                  onTap:() => context.toPop(),
+                  onTap:() => ref.read(homeProvider).clearSearchData(),
                   child: BodySmallText(
                     title: LocaleKeys.cancel.tr().toUpperCase(),
                     fontFamily: FontWeightEnum.w700.toInter,

@@ -13,6 +13,8 @@ class ExpertCategorySearchView extends ConsumerStatefulWidget {
 class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchView> {
   @override
   Widget build(BuildContext context) {
+    final homeProviderWatch = ref.watch(homeProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,54 +25,64 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
           fontFamily: FontWeightEnum.w700.toInter,
         ),
         20.0.spaceY,
-        SizedBox(
-          height: /*((homeProviderWatch.homeData?.categories?.length ?? 0) <= 4) ? 120 :*/ 240,
-          child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 5,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  4.0.spaceY,
-                  InkWell(
-                    onTap: () {},
-                    child: ShadowContainer(
-                      shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: NetworkImageWidget(
-                              boxFit: BoxFit.cover,
-                              imageURL: "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                              isNetworkImage: true,
-                              height: 60,
-                              width: 50,
+        if (homeProviderWatch.homeSearchData?.categories?.isNotEmpty ?? false) ...[
+          SizedBox(
+            height: ((homeProviderWatch.homeSearchData?.categories?.length ?? 0) <= 4) ? 120 : 240,
+            child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 5,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    4.0.spaceY,
+                    InkWell(
+                      onTap: () {},
+                      child: ShadowContainer(
+                        shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: NetworkImageWidget(
+                                boxFit: BoxFit.cover,
+                                imageURL:
+                                    "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                                isNetworkImage: true,
+                                height: 60,
+                                width: 50,
+                              ),
                             ),
-                          ),
-                          4.0.spaceY,
-                          LabelSmallText(
-                            fontSize: 9,
-                            title: "Experts",
-                            maxLine: 2,
-                            titleColor: ColorConstants.blackColor,
-                            fontFamily: FontWeightEnum.w700.toInter,
-                            titleTextAlign: TextAlign.center,
-                          ),
-                        ],
+                            4.0.spaceY,
+                            LabelSmallText(
+                              fontSize: 9,
+                              title: "Experts",
+                              maxLine: 2,
+                              titleColor: ColorConstants.blackColor,
+                              fontFamily: FontWeightEnum.w700.toInter,
+                              titleTextAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        width: 90,
+                        isShadow: true,
                       ),
-                      width: 90,
-                      isShadow: true,
                     ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
-        ),
+        ] else ...[
+          BodySmallText(
+            fontWeight: FontWeight.w400,
+            titleTextAlign: TextAlign.start,
+            maxLine: 4,
+            title: LocaleKeys.noResultsFoundTypeSomethingElse.tr(),
+          ),
+        ]
       ],
     );
   }

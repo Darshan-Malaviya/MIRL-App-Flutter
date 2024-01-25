@@ -17,7 +17,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(homeProvider).homePageApi(context);
+      ref.read(homeProvider).homePageApi();
     });
     super.initState();
   }
