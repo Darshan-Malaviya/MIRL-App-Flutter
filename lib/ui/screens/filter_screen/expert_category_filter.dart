@@ -66,7 +66,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
             DropdownMenuWidget(
               controller: filterWatch.genderController,
               hintText: StringConstants.selectOnrOrLeave,
-              dropdownList: filterWatch.genderList.map((GenderModel item) => dropdownMenuEntry(context: context, value: item.title ?? '', label: item.title ?? '')).toList(),
+              dropdownList: filterWatch.genderList.map((CommonSelectionModel item) => dropdownMenuEntry(context: context, value: item.title ?? '', label: item.title ?? '')).toList(),
               onSelect: filterRead.setGender,
               labelText: StringConstants.setYourGender,
               lableColor: ColorConstants.bottomTextColor,

@@ -108,97 +108,47 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 TextFormFieldWidget(
                   isReadOnly: true,
                   onTap: () {
+                    expertRead.getUserData();
                     context.toPushNamed(RoutesConstants.yourExpertProfileName);
                   },
                   height: 40,
                   labelText: StringConstants.expertName,
-                  controller: expertWatch.expertNameController,
+                  controller: TextEditingController(text: expertWatch.expertName),
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
                   isReadOnly: true,
                   onTap: () {
+                    expertRead.getUserData();
                     context.toPushNamed(RoutesConstants.yourMirlId);
                   },
                   height: 40,
                   labelText: StringConstants.yourMirlId,
-                  controller: expertWatch.mirlIdController,
+                  controller: TextEditingController(text: expertWatch.mirlId),
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
                   isReadOnly: true,
                   onTap: () {
+                    expertRead.getUserData();
                     context.toPushNamed(RoutesConstants.moreAboutMeScreen);
                   },
                   maxLines: 10,
                   minLines: 10,
                   labelText: StringConstants.moreAboutMe,
-                  controller: expertWatch.aboutMeController,
+                  controller: TextEditingController(text: expertWatch.aboute),
                 ),
                 50.0.spaceY,
-                PrimaryButton(
-                  title: StringConstants.setYourFee,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setYourFreeScreen);
-                  },
+                Column(
+                  children: List.generate(expertWatch.editButtonList.length, (index) {
+                    final data = expertWatch.editButtonList[index];
+                    return PrimaryButton(
+                      buttonColor: (data.isSelected ?? false) ? null : ColorConstants.buttonColor,
+                      title: data.title ?? '',
+                      onPressed: () => expertRead.changeSelectedScreenButtonColor(context, index),
+                    ).addPaddingBottom(50);
+                  }),
                 ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.areasOfExpertise,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.addYourAreasOfExpertiseScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.weeklyAvailability,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setWeeklyAvailability);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.callsAvailability,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.instantCallsAvailabilityScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.setYourLocation,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setYourLocationScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.setYourGender,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setYourGenderScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.addCertifications,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.certificationsAndExperienceScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.bankAccountDetails,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.yourBankAccountDetailsScreen);
-                  },
-                ),
-                50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,

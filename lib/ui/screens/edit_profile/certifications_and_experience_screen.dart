@@ -120,7 +120,6 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                             expertWatch.certiAndExpModel[index].urlFocus
                                 .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus, nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
                           },
-                          validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredUrl),
                         ),
                         20.0.spaceY,
                         TextFormFieldWidget(

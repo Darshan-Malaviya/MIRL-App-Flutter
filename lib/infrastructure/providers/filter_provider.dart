@@ -8,13 +8,13 @@ class FilterProvider extends ChangeNotifier {
 
   List<String> get yesNoSelectionList => _yesNoSelectionList;
 
-  List<GenderModel> _genderList = [
-    GenderModel(title: 'Male', isSelected: false, selectType: 1),
-    GenderModel(title: 'Female', isSelected: false, selectType: 2),
-    GenderModel(title: 'Other', isSelected: false, selectType: 3)
+  List<CommonSelectionModel> _genderList = [
+    CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
+    CommonSelectionModel(title: 'Female', isSelected: false, selectType: 2),
+    CommonSelectionModel(title: 'Other', isSelected: false, selectType: 3)
   ];
 
-  List<GenderModel> get genderList => _genderList;
+  List<CommonSelectionModel> get genderList => _genderList;
 
   List<String> _ratingList = ['1', '2', '3', '4', '5'];
 
@@ -34,7 +34,7 @@ class FilterProvider extends ChangeNotifier {
   }
 
   void setGender(String value) {
-    GenderModel data = _genderList.firstWhere((element) => element.title == value);
+    CommonSelectionModel data = _genderList.firstWhere((element) => element.title == value);
     _selectGender = data.selectType ?? 1;
     notifyListeners();
   }

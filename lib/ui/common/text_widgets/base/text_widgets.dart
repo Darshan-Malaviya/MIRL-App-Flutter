@@ -238,6 +238,7 @@ class BodyMediumText extends StatelessWidget {
       this.fontHeight,
       this.lineHeight,
       this.fontFamily,
+      this.shadows,
       this.isUnderline = false})
       : super(key: key);
 
@@ -254,6 +255,7 @@ class BodyMediumText extends StatelessWidget {
   final bool? isUnderline;
   final double? lineHeight;
   final String? fontFamily;
+  final List<Shadow>? shadows;
 
   @override
   Widget build(BuildContext context) {
@@ -267,6 +269,7 @@ class BodyMediumText extends StatelessWidget {
             height: lineHeight,
             fontSize: fontSize,
             fontFamily: fontFamily,
+            shadows: shadows ?? null,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,

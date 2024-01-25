@@ -34,7 +34,17 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      BodyMediumText(title: weekData.dayName ?? '', fontFamily: FontWeightEnum.w700.toInter),
+                      SizedBox(
+                          width: 40,
+                          child: BodyMediumText(
+                            title: weekData.dayName ?? '',
+                            shadows: [
+                              Shadow(
+                                blurRadius: 12.0,
+                                color: Colors.grey,
+                              )
+                            ],
+                          )),
                       Expanded(
                         child: (weekData.isAvailable)
                             ? RangeSlider(
@@ -57,18 +67,21 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
                                 ),
                               ),
                       ),
-                      Transform.scale(
-                        scale: 0.8,
-                        child: Switch(
-                          activeColor: ColorConstants.primaryColor,
-                          inactiveThumbColor: ColorConstants.secondaryColor,
-                          activeTrackColor: ColorConstants.borderColor.withOpacity(0.2),
-                          inactiveTrackColor: ColorConstants.borderColor.withOpacity(0.2),
-                          trackOutlineColor: MaterialStatePropertyAll(ColorConstants.transparentColor),
-                          value: (weekData.isAvailable),
-                          onChanged: (value) {
-                            expertRead.changeWeekAvailability(index);
-                          },
+                      SizedBox(
+                        width: 50,
+                        child: Transform.scale(
+                          scale: 0.8,
+                          child: Switch(
+                            activeColor: ColorConstants.primaryColor,
+                            inactiveThumbColor: ColorConstants.secondaryColor,
+                            activeTrackColor: ColorConstants.borderColor.withOpacity(0.2),
+                            inactiveTrackColor: ColorConstants.borderColor.withOpacity(0.2),
+                            trackOutlineColor: MaterialStatePropertyAll(ColorConstants.transparentColor),
+                            value: (weekData.isAvailable),
+                            onChanged: (value) {
+                              expertRead.changeWeekAvailability(index);
+                            },
+                          ),
                         ),
                       ),
                     ],
