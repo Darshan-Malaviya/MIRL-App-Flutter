@@ -396,19 +396,19 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   Future<void> pickGalleryImage(BuildContext context) async {
-    XFile? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
+    String? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
 
-    if (image != null && image.path.isNotEmpty) {
-      _pickedImage = image.path;
+    if (image != null && image.isNotEmpty) {
+      _pickedImage = image;
       notifyListeners();
     }
   }
 
   Future<void> captureCameraImage(BuildContext context) async {
-    XFile? image = await ImagePickerHandler.singleton.capturePhoto(context: context);
+    String? image = await ImagePickerHandler.singleton.capturePhoto(context: context);
 
-    if (image != null && image.path.isNotEmpty) {
-      _pickedImage = image.path;
+    if (image != null && image.isNotEmpty) {
+      _pickedImage = image;
       notifyListeners();
     }
   }
@@ -476,10 +476,10 @@ class EditExpertProvider extends ChangeNotifier {
 
   Future<void> updateProfileApi() async {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfile: _pickedImage);
-    UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile());
+    UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile(),fromImageUpload: true);
   }
 
-  Future<void> UpdateUserDetailsApiCall({required FormData requestModel}) async {
+  Future<void> UpdateUserDetailsApiCall({required FormData requestModel, bool fromImageUpload = false}) async {
     CustomLoading.progressDialog(isLoading: true);
 
     ApiHttpResult response = await _updateUserDetailsRepository.updateUserDetails(requestModel);
@@ -495,7 +495,9 @@ class EditExpertProvider extends ChangeNotifier {
           Logger().d("user data=====${loginResponseModel.toJson()}");
           resetVariable();
           getUserData();
-          NavigationService.context.toPop();
+          if(!fromImageUpload) {
+            NavigationService.context.toPop();
+          }
         }
         break;
       case APIStatus.failure:
