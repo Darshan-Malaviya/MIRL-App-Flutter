@@ -1,0 +1,21 @@
+
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
+import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
+import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
+
+class HomeRepo extends ApiResponseHandler {
+
+  final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
+
+  Future<ApiHttpResult> homePageService() async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.homepage + SharedPrefHelper.getUserId);
+
+    APIResponse result = await _apiResponseProvider.requestAPI(
+      uri,
+      apiType: APIType.get,
+      headers: ApiConstants.headerWithToken(),
+    );
+    return responseHandler(result: result, json: HomeDataResponseModel.parseInfo);
+  }
+}

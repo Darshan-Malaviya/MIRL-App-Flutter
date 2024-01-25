@@ -9,6 +9,7 @@ class ColorConstants {
   static const greyLightColor = Color(0xffE7EAF0);
   static const borderColor = Color(0xff828C99);
   static const disableColor = Color(0xffBCC1C7);
+  static const grayLightColor = Color(0xffF8F8F8);
   static const textColor = Color(0xff2C323A);
   static const dropDownBorderColor = Color(0xffCAC9C9);
   static const categoryListBorder = Color(0xFFD87CEF);

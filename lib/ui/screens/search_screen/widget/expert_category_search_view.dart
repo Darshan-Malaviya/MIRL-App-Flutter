@@ -3,25 +3,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class CategoryAndTopicListView extends ConsumerStatefulWidget {
-  const CategoryAndTopicListView({super.key});
+class ExpertCategorySearchView extends ConsumerStatefulWidget {
+  const ExpertCategorySearchView({super.key});
 
   @override
-  ConsumerState<CategoryAndTopicListView> createState() => _CategoryAndTopicListViewState();
+  ConsumerState<ExpertCategorySearchView> createState() => _ExpertCategorySearchViewState();
 }
 
-class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListView> {
+class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchView> {
   @override
   Widget build(BuildContext context) {
-    final homeProviderWatch = ref.watch(homeProvider);
-    final homeProviderRead = ref.read(homeProvider);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        20.0.spaceY,
+        BodySmallText(
+          title: LocaleKeys.expertCategories.tr(),
+          titleTextAlign: TextAlign.start,
+          fontFamily: FontWeightEnum.w700.toInter,
+        ),
+        20.0.spaceY,
         SizedBox(
-          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 4) ? 120 : 240,
+          height: /*((homeProviderWatch.homeData?.categories?.length ?? 0) <= 4) ? 120 :*/ 240,
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
-            itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,
+            itemCount: 5,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
             itemBuilder: (BuildContext context, int index) {
@@ -39,7 +45,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
                             borderRadius: BorderRadius.circular(20.0),
                             child: NetworkImageWidget(
                               boxFit: BoxFit.cover,
-                              imageURL: homeProviderWatch.homeData?.categories?[index].image ?? '',
+                              imageURL: "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                               isNetworkImage: true,
                               height: 60,
                               width: 50,
@@ -48,7 +54,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
                           4.0.spaceY,
                           LabelSmallText(
                             fontSize: 9,
-                            title: homeProviderWatch.homeData?.categories?[index].name ?? '',
+                            title: "Experts",
                             maxLine: 2,
                             titleColor: ColorConstants.blackColor,
                             fontFamily: FontWeightEnum.w700.toInter,
@@ -64,12 +70,6 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
               );
             },
           ),
-        ),
-        10.0.spaceY,
-        TitleMediumText(
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-          title: LocaleKeys.seeAllExpertCategoryAndTopics.tr().toUpperCase(),
         ),
       ],
     );

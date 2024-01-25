@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/home_screen/widget/category_and_topic_list_view.dart';
+import 'package:mirl/ui/screens/home_screen/widget/favorite_experts_view.dart';
+import 'package:mirl/ui/screens/home_screen/widget/past_conversation_view.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -13,8 +15,17 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(homeProvider).homePageApi(context);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConstants.grayLightColor,
       appBar: AppBarWidget(
         preferSize: 0,
       ),
@@ -118,16 +129,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ],
           ),
-          20.0.spaceY,
+          40.0.spaceY,
           CategoryAndTopicListView(),
           20.0.spaceY,
-          TitleMediumText(
-            fontWeight: FontWeight.bold,
-            title: LocaleKeys.seeAllExpertCategoryAndTopics.tr().toUpperCase(),
-          ),
+          FavoriteExpertsView(),
+          20.0.spaceY,
+          PastConversationsView(),
           20.0.spaceY,
         ],
-      ).addPaddingXY(paddingX: 16, paddingY: 16)),
+      ).addPaddingXY(paddingX: 16, paddingY: 16)
+      ),
     );
   }
 }
