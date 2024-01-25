@@ -16,6 +16,14 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
   final _loginPassKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);

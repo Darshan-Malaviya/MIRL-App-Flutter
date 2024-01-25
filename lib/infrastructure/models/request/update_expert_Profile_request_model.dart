@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio/src/form_data.dart';
 import 'package:http_parser/http_parser.dart';
 
 class UpdateExpertProfileRequestModel {
@@ -151,7 +150,7 @@ class UpdateExpertProfileRequestModel {
     request['expertProfile'] = await MultipartFile.fromFile(
       expertProfile ?? '',
       filename: DateTime.now().toIso8601String(),
-      contentType: MediaType('image', request['expertProfile']?.split('.').last ?? 'jpg'),
+      contentType: MediaType('image', expertProfile?.split('.').last ?? 'jpg'),
     );
     FormData formData = FormData.fromMap(request);
     return formData;

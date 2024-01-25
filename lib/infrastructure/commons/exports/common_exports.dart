@@ -66,6 +66,8 @@ export 'package:mirl/infrastructure/commons/extensions/validation_extension.dart
 export 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 export 'package:mirl/infrastructure/commons/extensions/datetime_extension.dart';
 export 'package:mirl/ui/common/network_image/network_image.dart';
+export 'package:mirl/infrastructure/models/response/gender_model.dart';
+
 
 
 ///packages exports

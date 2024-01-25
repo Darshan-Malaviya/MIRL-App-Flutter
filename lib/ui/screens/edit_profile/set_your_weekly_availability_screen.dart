@@ -72,6 +72,7 @@ class _DetYourWeeklyAvailabilityScreenState extends ConsumerState<SetYourWeeklyA
                   unselectedLabelColor: ColorConstants.blackColor,
                   indicatorSize: TabBarIndicatorSize.tab,
                   labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14),
+                  onTap: expertRead.getTabIndex,
                   tabs: [
                     Tab(
                       text: StringConstants.recurring,
@@ -80,6 +81,47 @@ class _DetYourWeeklyAvailabilityScreenState extends ConsumerState<SetYourWeeklyA
                   ],
                 ),
               ),
+            ),
+            10.0.spaceY,
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 80,
+                    decoration: ShapeDecoration(
+                        color: expertWatch.tabIndex == 0 ? ColorConstants.primaryColor : ColorConstants.categoryList,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        )),
+                    child: Center(
+                      child: BodyMediumText(
+                        title: StringConstants.followedEveryWeek,
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        maxLine: 5,
+                      ).addMarginX(10),
+                    ),
+                  ),
+                ),
+                16.0.spaceX,
+                Expanded(
+                  child: Container(
+                    height: 80,
+                    decoration: ShapeDecoration(
+                        color: expertWatch.tabIndex == 1 ? ColorConstants.primaryColor : ColorConstants.categoryList,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        )),
+                    child: Center(
+                      child: BodyMediumText(
+                        title: StringConstants.manuallyEveryWeek,
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        titleTextAlign: TextAlign.center,
+                        maxLine: 5,
+                      ).addMarginX(10),
+                    ),
+                  ),
+                )
+              ],
             ),
             20.0.spaceY,
             Expanded(

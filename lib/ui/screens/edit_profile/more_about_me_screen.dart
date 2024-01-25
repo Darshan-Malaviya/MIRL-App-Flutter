@@ -9,12 +9,11 @@ class MoreAboutMeScreen extends ConsumerStatefulWidget {
 }
 
 class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
-  String enteredText = '';
-
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.watch(editExpertProvider);
+
     return Scaffold(
         appBar: AppBarWidget(
             leading: InkWell(
@@ -39,35 +38,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                 titleColor: ColorConstants.bottomTextColor,
                 fontFamily: FontWeightEnum.w700.toInter,
               ),
-              30.0.spaceY,
-              // TextFormFieldWidget(
-              //   onChanged: (value) {
-              //     setState(() {
-              //       enteredText = value;
-              //     });
-              //   },
-              //   decoration: InputDecoration(
-              //       focusedBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(color: ColorConstants.borderColor, width: 1.0),
-              //       ),
-              //       enabledBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(color: ColorConstants.borderColor, width: 1.0),
-              //       ),
-              //       //counter: Text("5/20"),
-              //       counterText: '${enteredText.length.toString()}/1500 character',
-              //       border: InputBorder.none,
-              //       isDense: true,
-              //       contentPadding: EdgeInsets.all(10)),
-              //   //maxLengthEnforcement: MaxLengthEnforcement.none,
-              //   maxLines: 10,
-              //   maxLength: 1500,
-              //   minLines: 8,
-              //   hintText: StringConstants.moreAboutMe,
-              //   textInputAction: TextInputAction.done,
-              //   controller: expertWatch.aboutMeController,
-              //   onFieldSubmitted: (value) {},
-              // ),
-              30.0.spaceY,
+              60.0.spaceY,
               Container(
                 height: 150,
                 decoration: BoxDecoration(
@@ -79,24 +50,17 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8, top: 2, right: 4),
                   child: TextFormField(
-                      onChanged: (value) {
-                        setState(() {
-                          enteredText = value;
-                        });
-                      },
+                      onChanged: expertRead.changeAboutCounterValue,
                       textAlign: TextAlign.left,
                       cursorColor: ColorConstants.blackColor,
                       maxLines: 10,
                       maxLength: 1500,
                       minLines: 8,
                       controller: expertWatch.aboutMeController,
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
-                          //counter: Text("5/20"),
-                          counterText: '${enteredText.length.toString()}/1500 character',
-                          border: InputBorder.none,
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(10))),
+                          counterText: '${expertWatch.enteredText}/1500 character', border: InputBorder.none, isDense: true, contentPadding: EdgeInsets.all(10))),
                 ),
               ),
               30.0.spaceY,

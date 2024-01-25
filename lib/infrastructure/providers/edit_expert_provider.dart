@@ -64,13 +64,26 @@ class EditExpertProvider extends ChangeNotifier {
 
   String get setInstantCall => _setInstantCall;
 
-  List<GenderModel> _genderList = [
-    GenderModel(title: "Male", isSelected: false, selectType: 1),
-    GenderModel(title: "Female", isSelected: false, selectType: 2),
-    GenderModel(title: "Other", isSelected: false, selectType: 3)
+  List<CommonSelectionModel> _genderList = [
+    CommonSelectionModel(title: "Male", isSelected: false, selectType: 1),
+    CommonSelectionModel(title: "Female", isSelected: false, selectType: 2),
+    CommonSelectionModel(title: "Other", isSelected: false, selectType: 3)
   ];
 
-  List<GenderModel> get genderList => _genderList;
+  List<CommonSelectionModel> get genderList => _genderList;
+
+  List<CommonSelectionModel> _editButtonList = [
+    CommonSelectionModel(title: StringConstants.setYourFee, isSelected: false, screenName: RoutesConstants.setYourFreeScreen),
+    CommonSelectionModel(title: StringConstants.areasOfExpertise, isSelected: false, screenName: RoutesConstants.addYourAreasOfExpertiseScreen),
+    CommonSelectionModel(title: StringConstants.weeklyAvailability, isSelected: false, screenName: RoutesConstants.setWeeklyAvailability),
+    CommonSelectionModel(title: StringConstants.callsAvailability, isSelected: false, screenName: RoutesConstants.instantCallsAvailabilityScreen),
+    CommonSelectionModel(title: StringConstants.setYourLocation, isSelected: false, screenName: RoutesConstants.setYourLocationScreen),
+    CommonSelectionModel(title: StringConstants.setYourGender, isSelected: false, screenName: RoutesConstants.setYourGenderScreen),
+    CommonSelectionModel(title: StringConstants.addCertifications, isSelected: false, screenName: RoutesConstants.certificationsAndExperienceScreen),
+    CommonSelectionModel(title: StringConstants.bankAccountDetails, isSelected: false, screenName: RoutesConstants.yourBankAccountDetailsScreen)
+  ];
+
+  List<CommonSelectionModel> get editButtonList => _editButtonList;
 
   List<WeekScheduleModel> _weekScheduleModel = [];
 
@@ -109,6 +122,18 @@ class EditExpertProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+  int _tabIndex = 0;
+
+  int get tabIndex => _tabIndex;
+
+  String _enteredText = '';
+
+  String get enteredText => _enteredText;
+
+  String expertName = '';
+  String mirlId = '';
+  String aboute = '';
+
   void generateExperienceList({required bool fromInit}) {
     if (fromInit && (_userData?.certification?.isNotEmpty ?? false)) {
       _certiAndExpModel.clear();
@@ -139,6 +164,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void generateWeekDaysTime() {
     _weekScheduleModel.clear();
+    _tabIndex = 0;
     var _time = DateTime.now();
     hourOnly = DateTime(_time.year, _time.month, _time.day, 0, 0, 0);
     plusDay = hourOnly.add(Duration(days: 1));
@@ -149,52 +175,31 @@ class EditExpertProvider extends ChangeNotifier {
       _userData?.expertAvailability?.forEach((element) {
         _weekScheduleModel.add(WeekScheduleModel(
           dayName: element.dayOfWeek?.substring(0, 3).toUpperCase(),
-          startTime: double.parse(element.startTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ??
-              lowerValue.millisecondsSinceEpoch.toString()),
-          endTime: double.parse(element.endTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ??
-              upperValue.millisecondsSinceEpoch.toString()),
+          startTime: double.parse(element.startTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ?? lowerValue.millisecondsSinceEpoch.toString()),
+          endTime: double.parse(element.endTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ?? upperValue.millisecondsSinceEpoch.toString()),
           isAvailable: element.isAvailable ?? false,
         ));
       });
     } else {
       _weekScheduleModel.addAll([
-        WeekScheduleModel(
-            dayName: 'MON',
-            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-            isAvailable: true),
-        WeekScheduleModel(
-            dayName: 'TUE',
-            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-            isAvailable: true),
-        WeekScheduleModel(
-            dayName: 'WED',
-            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-            isAvailable: true),
-        WeekScheduleModel(
-            dayName: 'THU',
-            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-            isAvailable: false),
-        WeekScheduleModel(
-            dayName: 'FRI',
-            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-            isAvailable: true),
-        WeekScheduleModel(
-            dayName: 'SAT',
-            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-            isAvailable: true),
-        WeekScheduleModel(
-            dayName: 'SUN',
-            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
-            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
-            isAvailable: false),
+        WeekScheduleModel(dayName: 'MON', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'TUE', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'WED', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'THU', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
+        WeekScheduleModel(dayName: 'FRI', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'SAT', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
+        WeekScheduleModel(dayName: 'SUN', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
       ]);
     }
+    notifyListeners();
+  }
+
+  void changeSelectedScreenButtonColor(BuildContext context, int index) {
+    _editButtonList.forEach((element) {
+      element.isSelected = false;
+    });
+    _editButtonList[index].isSelected = !(_editButtonList[index].isSelected ?? false);
+    context.toPushNamed(editButtonList[index].screenName ?? '');
     notifyListeners();
   }
 
@@ -225,10 +230,8 @@ class EditExpertProvider extends ChangeNotifier {
   void getCertificateList() {
     certificationList.clear();
     _certiAndExpModel.forEach((element) {
-      certificationList.add(CertificationData(
-          title: element.titleController.text.trim(),
-          url: element.urlController.text.trim(),
-          description: element.descriptionController.text.trim()));
+      certificationList
+          .add(CertificationData(title: element.titleController.text.trim(), url: element.urlController.text.trim(), description: element.descriptionController.text.trim()));
     });
     notifyListeners();
   }
@@ -245,25 +248,37 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getUserData() async {
+  void getTabIndex(int index) {
+    _tabIndex = index;
+    notifyListeners();
+  }
+
+  void changeAboutCounterValue(String value) {
+    _enteredText = value.length.toString();
+    notifyListeners();
+  }
+
+  void getUserData() {
     String value = SharedPrefHelper.getUserData;
     if (value.isNotEmpty) {
       _userData = UserData.fromJson(jsonDecode(value));
       expertNameController.text = _userData?.expertName ?? '';
+      expertName = _userData?.expertName ?? '';
       _pickedImage = _userData?.expertProfile ?? '';
       mirlIdController.text = _userData?.mirlId ?? '';
+      mirlId = _userData?.mirlId ?? '';
       aboutMeController.text = _userData?.about ?? '';
+      aboute = _userData?.about ?? '';
+      _enteredText = _userData?.about?.length.toString() ?? '';
       countryNameController.text = _userData?.country ?? '';
       cityNameController.text = _userData?.city ?? '';
       bankHolderNameController.text = _userData?.bankAccountHolderName ?? '';
       bankNameController.text = _userData?.bankName ?? '';
       accountNumberController.text = _userData?.accountNumber ?? '';
       countController.text = (int.parse(_userData?.fee ?? '0') / 100).toString();
-      instantCallAvailabilityController.text =
-          _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
-      locationController.text =
-          _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
-      GenderModel genderModel = _genderList.firstWhere((element) => element.selectType.toString() == _userData?.gender);
+      instantCallAvailabilityController.text = _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
+      locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
+      CommonSelectionModel genderModel = _genderList.firstWhere((element) => element.selectType.toString() == _userData?.gender);
       genderController.text = genderModel.title ?? '';
       notifyListeners();
     }
@@ -273,8 +288,7 @@ class EditExpertProvider extends ChangeNotifier {
     getSelectedWeekDays();
     CustomLoading.progressDialog(isLoading: true);
 
-    ExpertAvailabilityRequestModel requestModel =
-        ExpertAvailabilityRequestModel(scheduleType: scheduleType, workDays: workDaysList);
+    ExpertAvailabilityRequestModel requestModel = ExpertAvailabilityRequestModel(scheduleType: scheduleType, workDays: workDaysList);
 
     ApiHttpResult response = await _expertProfileRepo.editExpertAvailabilityApi(request: requestModel.toJson());
     CustomLoading.progressDialog(isLoading: false);
@@ -376,7 +390,7 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void setGender(String value) {
-    GenderModel data = _genderList.firstWhere((element) => element.title == value);
+    CommonSelectionModel data = _genderList.firstWhere((element) => element.title == value);
     isSelectGender = data.selectType;
     notifyListeners();
   }
@@ -400,8 +414,7 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateGenderApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
-        UpdateExpertProfileRequestModel(genderFlag: true, gender: isSelectGender);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(genderFlag: true, gender: isSelectGender);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonGender());
   }
 
@@ -457,14 +470,12 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateInstantCallApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
-        UpdateExpertProfileRequestModel(instantCallAvailable: _isCallSelect);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(instantCallAvailable: _isCallSelect);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonInstantCall());
   }
 
   Future<void> updateProfileApi() async {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
-        UpdateExpertProfileRequestModel(expertProfile: _pickedImage);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfile: _pickedImage);
     UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile());
   }
 
@@ -500,7 +511,7 @@ class EditExpertProvider extends ChangeNotifier {
       CustomLoading.progressDialog(isLoading: true);
     }
 
-    ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(limit: 10, page: _pageNo, searchName: searchName);
+    ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(limit: 30, page: _pageNo, searchName: searchName);
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     }
@@ -516,7 +527,6 @@ class EditExpertProvider extends ChangeNotifier {
             _pageNo = _pageNo + 1;
             _reachedLastPage = false;
           }
-          SharedPrefHelper.saveUserData(jsonEncode(countryResponseModel.data));
         }
         break;
       case APIStatus.failure:
@@ -531,8 +541,8 @@ class EditExpertProvider extends ChangeNotifier {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
     }
-    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
-        limit: 10, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
+    ApiHttpResult response =
+        await _updateUserDetailsRepository.cityApiCall(limit: 30, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     }
@@ -584,6 +594,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   void resetVariable() {
     countController.text = '0';
+    _enteredText = '';
     expertNameController.clear();
     mirlIdController.clear();
     aboutMeController.clear();
