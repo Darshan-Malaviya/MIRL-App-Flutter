@@ -11,6 +11,7 @@ class UpdateExpertProfileRequestModel {
   int? gender;
   String? fee;
   String? userProfile;
+  String? expertProfile;
   String? userProfileFlag;
   bool? expertProfileFlag;
   bool? aboutFlag;
@@ -39,6 +40,7 @@ class UpdateExpertProfileRequestModel {
       this.gender,
       this.fee,
       this.userProfile,
+      this.expertProfile,
       this.userProfileFlag,
       this.expertProfileFlag,
       this.aboutFlag,
@@ -68,6 +70,7 @@ class UpdateExpertProfileRequestModel {
     fee = json['fee'];
     userProfile = json['userProfile'];
     userProfileFlag = json['userProfileFlag'];
+    expertProfile = json['expertProfile'];
     expertProfileFlag = json['expertProfileFlag'];
     aboutFlag = json['aboutFlag'];
     feeFlag = json['feeFlag'];
@@ -97,6 +100,7 @@ class UpdateExpertProfileRequestModel {
       'gender': gender,
       'fee': fee,
       'userProfile': userProfile,
+      'expertProfile': expertProfile,
       'userProfileFlag': userProfileFlag,
       'expertProfileFlag': expertProfileFlag,
       'aboutFlag': aboutFlag,
@@ -145,7 +149,7 @@ class UpdateExpertProfileRequestModel {
   Future<FormData> toJsonProfile() async {
     Map<String, dynamic> request = {};
     request['expertProfile'] = await MultipartFile.fromFile(
-      userProfile ?? '',
+      expertProfile ?? '',
       filename: DateTime.now().toIso8601String(),
       contentType: MediaType('image', request['expertProfile']?.split('.').last ?? 'jpg'),
     );
