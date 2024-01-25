@@ -34,10 +34,11 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
     final uri;
     if(searchName == null){
        uri = ApiConstants.endpointUri(
-          path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString()});
+          path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString(),"order" :"ASC"});
     } else {
        uri = ApiConstants.endpointUri(
-          path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString(),"search" : searchName});
+          path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString(),"search" : searchName,
+         "order" :"ASC"});
     }
 
 
@@ -61,10 +62,12 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
     final uri;
     if(searchName == null) {
        uri = ApiConstants.endpointUri(
-          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId});
+          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId,
+         "order" :"ASC"});
     } else {
        uri = ApiConstants.endpointUri(
-          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId, "search" : searchName});
+          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId, "search" : searchName,
+         "order" :"ASC"});
     }
 
 

@@ -64,7 +64,7 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
                       //    childIndex: position,
                           parentId: widget.childCategoryList?.id ?? -1);
                     },
-                    label: Text((widget.childCategoryList?.child?[position].categoryName ?? ''),
+                    label: Text((widget.childCategoryList?.child?[position].name ?? ''),
                       style: TextStyle(
                           fontWeight: FontWeight.w500
                       ),),

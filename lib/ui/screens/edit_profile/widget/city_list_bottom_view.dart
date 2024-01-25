@@ -50,7 +50,7 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
             suffixIcon: expertWatch.searchCityController.text.isNotEmpty
                 ? InkWell(
                     onTap: () {
-                      expertRead.clearCountryPaginationData();
+                      expertRead.clearCityPaginationData();
                       expertRead.clearSearchCityController();
                       expertRead.cityListApiCall();
                       setState(() {});
@@ -59,7 +59,7 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
                 : SizedBox.shrink(),
             onFieldSubmitted: (value) {
               context.unFocusKeyboard();
-              expertRead.clearCountryPaginationData();
+              expertRead.clearCityPaginationData();
               expertRead.cityListApiCall(searchName: expertWatch.searchCityController.text);
             },
             height: 40,
