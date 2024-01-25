@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/response/gender_model.dart';
 import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
 
 class SetYourGenderScreen extends ConsumerStatefulWidget {
@@ -11,6 +10,14 @@ class SetYourGenderScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,7 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
               DropdownMenuWidget(
                 controller: expertWatch.genderController,
                 hintText:  StringConstants.theDropDown,
-                dropdownList: expertWatch.genderList.map((GenderModel item) => dropdownMenuEntry(context: context, value: item.title ?? '', label: item.title ?? '')).toList(),
+                dropdownList: expertWatch.genderList.map((CommonSelectionModel item) => dropdownMenuEntry(context: context, value: item.title ?? '', label: item.title ?? '')).toList(),
                 onSelect: (String value) {
                   expertRead.setGender(value);
                 },

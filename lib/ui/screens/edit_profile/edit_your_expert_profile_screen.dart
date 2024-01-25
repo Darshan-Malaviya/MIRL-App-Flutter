@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
@@ -56,47 +55,40 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   ),
                 );
               },
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Container(
-                    height: MediaQuery.sizeOf(context).height * 0.45,
-                    width: MediaQuery.sizeOf(context).width * 0.7,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: ColorConstants.borderColor, width: 1.5),
-                    ),
-                    child: (expertWatch.pickedImage.isNotEmpty)
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: NetworkImageWidget(
-                              imageURL: expertWatch.pickedImage,
-                              isNetworkImage: expertWatch.pickedImage.contains('https'),
-                              boxFit: BoxFit.cover,
-                            ),
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              BodySmallText(
-                                title: StringConstants.expertProfilePhoto,
-                              ),
-                              20.0.spaceY,
-                              BodySmallText(
-                                title: StringConstants.highQualityProfile,
-                                titleTextAlign: TextAlign.center,
-                                maxLine: 2,
-                              ),
-                              20.0.spaceY,
-                              BodySmallText(
-                                title: StringConstants.yourFavoriteOne,
-                              ),
-                            ],
+              child: Container(
+                height: MediaQuery.sizeOf(context).height * 0.45,
+                width: MediaQuery.sizeOf(context).width * 0.7,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: ColorConstants.borderColor, width: 1.5),
+                ),
+                child: (expertWatch.pickedImage.isNotEmpty)
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: NetworkImageWidget(
+                          imageURL: expertWatch.pickedImage,
+                          isNetworkImage: expertWatch.pickedImage.contains('https'),
+                          boxFit: BoxFit.cover,
+                        ),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BodySmallText(
+                            title: StringConstants.expertProfilePhoto,
                           ),
-                  ),
-                  OnScaleTap(onPress: () => expertRead.removePickedImage(), child: Icon(Icons.cancel, color: ColorConstants.bottomTextColor, size: 30))
-                      .addVisibility(expertWatch.pickedImage.isNotEmpty),
-                ],
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: StringConstants.highQualityProfile,
+                            titleTextAlign: TextAlign.center,
+                            maxLine: 2,
+                          ),
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: StringConstants.yourFavoriteOne,
+                          ),
+                        ],
+                      ),
               ),
             ),
             5.0.spaceY,
@@ -116,97 +108,47 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 TextFormFieldWidget(
                   isReadOnly: true,
                   onTap: () {
+                    expertRead.getUserData();
                     context.toPushNamed(RoutesConstants.yourExpertProfileName);
                   },
                   height: 40,
                   labelText: StringConstants.expertName,
-                  controller: expertWatch.expertNameController,
+                  controller: TextEditingController(text: expertWatch.expertName),
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
                   isReadOnly: true,
                   onTap: () {
+                    expertRead.getUserData();
                     context.toPushNamed(RoutesConstants.yourMirlId);
                   },
                   height: 40,
                   labelText: StringConstants.yourMirlId,
-                  controller: expertWatch.mirlIdController,
+                  controller: TextEditingController(text: expertWatch.mirlId),
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
                   isReadOnly: true,
                   onTap: () {
+                    expertRead.getUserData();
                     context.toPushNamed(RoutesConstants.moreAboutMeScreen);
                   },
                   maxLines: 10,
                   minLines: 10,
                   labelText: StringConstants.moreAboutMe,
-                  controller: expertWatch.aboutMeController,
+                  controller: TextEditingController(text: expertWatch.aboute),
                 ),
                 50.0.spaceY,
-                PrimaryButton(
-                  title: StringConstants.setYourFee,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setYourFreeScreen);
-                  },
+                Column(
+                  children: List.generate(expertWatch.editButtonList.length, (index) {
+                    final data = expertWatch.editButtonList[index];
+                    return PrimaryButton(
+                      buttonColor: (data.isSelected ?? false) ? null : ColorConstants.buttonColor,
+                      title: data.title ?? '',
+                      onPressed: () => expertRead.changeSelectedScreenButtonColor(context, index),
+                    ).addPaddingBottom(50);
+                  }),
                 ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.areasOfExpertise,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.addYourAreasOfExpertiseScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.weeklyAvailability,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setWeeklyAvailability);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.callsAvailability,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.instantCallsAvailabilityScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.setYourLocation,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setYourLocationScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.setYourGender,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setYourGenderScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.addCertifications,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.certificationsAndExperienceScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.bankAccountDetails,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.yourBankAccountDetailsScreen);
-                  },
-                ),
-                50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
