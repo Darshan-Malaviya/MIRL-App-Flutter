@@ -1,8 +1,8 @@
 
 class CategoryModel {
   int? id;
-  String? categoryImage;
-  String? categoryName;
+  String? image;
+  String? name;
   String? description;
   int? skillId;
   String? firstCreated;
@@ -12,8 +12,8 @@ class CategoryModel {
 
   CategoryModel(
       {this.id,
-        this.categoryImage,
-        this.categoryName,
+        this.image,
+        this.name,
         this.description,
         this.skillId,
         this.firstCreated,
@@ -23,8 +23,8 @@ class CategoryModel {
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    categoryImage = json['categoryImage'];
-    categoryName = json['categoryName'];
+    image = json['image'];
+    name = json['name'];
     description = json['description'];
     skillId = json['skillId'];
     firstCreated = json['firstCreated'];
@@ -35,8 +35,8 @@ class CategoryModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['categoryImage'] = this.categoryImage;
-    data['categoryName'] = this.categoryName;
+    data['image'] = this.image;
+    data['name'] = this.name;
     data['description'] = this.description;
     data['skillId'] = this.skillId;
     data['firstCreated'] = this.firstCreated;

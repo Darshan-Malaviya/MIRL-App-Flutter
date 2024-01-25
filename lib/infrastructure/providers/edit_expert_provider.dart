@@ -149,20 +149,50 @@ class EditExpertProvider extends ChangeNotifier {
       _userData?.expertAvailability?.forEach((element) {
         _weekScheduleModel.add(WeekScheduleModel(
           dayName: element.dayOfWeek?.substring(0, 3).toUpperCase(),
-          startTime: double.parse(element.startTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ?? lowerValue.millisecondsSinceEpoch.toString()),
-          endTime: double.parse(element.endTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ?? upperValue.millisecondsSinceEpoch.toString()),
+          startTime: double.parse(element.startTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ??
+              lowerValue.millisecondsSinceEpoch.toString()),
+          endTime: double.parse(element.endTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ??
+              upperValue.millisecondsSinceEpoch.toString()),
           isAvailable: element.isAvailable ?? false,
         ));
       });
     } else {
       _weekScheduleModel.addAll([
-        WeekScheduleModel(dayName: 'MON', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-        WeekScheduleModel(dayName: 'TUE', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-        WeekScheduleModel(dayName: 'WED', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-        WeekScheduleModel(dayName: 'THU', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
-        WeekScheduleModel(dayName: 'FRI', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-        WeekScheduleModel(dayName: 'SAT', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: true),
-        WeekScheduleModel(dayName: 'SUN', startTime: lowerValue.millisecondsSinceEpoch.toDouble(), endTime: upperValue.millisecondsSinceEpoch.toDouble(), isAvailable: false),
+        WeekScheduleModel(
+            dayName: 'MON',
+            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+            isAvailable: true),
+        WeekScheduleModel(
+            dayName: 'TUE',
+            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+            isAvailable: true),
+        WeekScheduleModel(
+            dayName: 'WED',
+            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+            isAvailable: true),
+        WeekScheduleModel(
+            dayName: 'THU',
+            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+            isAvailable: false),
+        WeekScheduleModel(
+            dayName: 'FRI',
+            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+            isAvailable: true),
+        WeekScheduleModel(
+            dayName: 'SAT',
+            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+            isAvailable: true),
+        WeekScheduleModel(
+            dayName: 'SUN',
+            startTime: lowerValue.millisecondsSinceEpoch.toDouble(),
+            endTime: upperValue.millisecondsSinceEpoch.toDouble(),
+            isAvailable: false),
       ]);
     }
     notifyListeners();
@@ -195,8 +225,10 @@ class EditExpertProvider extends ChangeNotifier {
   void getCertificateList() {
     certificationList.clear();
     _certiAndExpModel.forEach((element) {
-      certificationList
-          .add(CertificationData(title: element.titleController.text.trim(), url: element.urlController.text.trim(), description: element.descriptionController.text.trim()));
+      certificationList.add(CertificationData(
+          title: element.titleController.text.trim(),
+          url: element.urlController.text.trim(),
+          description: element.descriptionController.text.trim()));
     });
     notifyListeners();
   }
@@ -227,8 +259,10 @@ class EditExpertProvider extends ChangeNotifier {
       bankNameController.text = _userData?.bankName ?? '';
       accountNumberController.text = _userData?.accountNumber ?? '';
       countController.text = (int.parse(_userData?.fee ?? '0') / 100).toString();
-      instantCallAvailabilityController.text = _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
-      locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
+      instantCallAvailabilityController.text =
+          _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
+      locationController.text =
+          _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
       GenderModel genderModel = _genderList.firstWhere((element) => element.selectType.toString() == _userData?.gender);
       genderController.text = genderModel.title ?? '';
       notifyListeners();
@@ -239,7 +273,8 @@ class EditExpertProvider extends ChangeNotifier {
     getSelectedWeekDays();
     CustomLoading.progressDialog(isLoading: true);
 
-    ExpertAvailabilityRequestModel requestModel = ExpertAvailabilityRequestModel(scheduleType: scheduleType, workDays: workDaysList);
+    ExpertAvailabilityRequestModel requestModel =
+        ExpertAvailabilityRequestModel(scheduleType: scheduleType, workDays: workDaysList);
 
     ApiHttpResult response = await _expertProfileRepo.editExpertAvailabilityApi(request: requestModel.toJson());
     CustomLoading.progressDialog(isLoading: false);
@@ -364,13 +399,9 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
-  void removePickedImage() {
-    _pickedImage = '';
-    notifyListeners();
-  }
-
   void updateGenderApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(genderFlag: true, gender: isSelectGender);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
+        UpdateExpertProfileRequestModel(genderFlag: true, gender: isSelectGender);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonGender());
   }
 
@@ -426,12 +457,14 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateInstantCallApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(instantCallAvailable: _isCallSelect);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
+        UpdateExpertProfileRequestModel(instantCallAvailable: _isCallSelect);
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonInstantCall());
   }
 
   Future<void> updateProfileApi() async {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfileFlag: true, userProfile: _pickedImage);
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel =
+        UpdateExpertProfileRequestModel(expertProfile: _pickedImage);
     UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile());
   }
 
@@ -498,8 +531,8 @@ class EditExpertProvider extends ChangeNotifier {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
     }
-    ApiHttpResult response =
-        await _updateUserDetailsRepository.cityApiCall(limit: 10, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
+    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
+        limit: 10, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     }

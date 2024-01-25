@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
@@ -56,47 +55,40 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   ),
                 );
               },
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Container(
-                    height: MediaQuery.sizeOf(context).height * 0.45,
-                    width: MediaQuery.sizeOf(context).width * 0.7,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: ColorConstants.borderColor, width: 1.5),
-                    ),
-                    child: (expertWatch.pickedImage.isNotEmpty)
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: NetworkImageWidget(
-                              imageURL: expertWatch.pickedImage,
-                              isNetworkImage: expertWatch.pickedImage.contains('https'),
-                              boxFit: BoxFit.cover,
-                            ),
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              BodySmallText(
-                                title: StringConstants.expertProfilePhoto,
-                              ),
-                              20.0.spaceY,
-                              BodySmallText(
-                                title: StringConstants.highQualityProfile,
-                                titleTextAlign: TextAlign.center,
-                                maxLine: 2,
-                              ),
-                              20.0.spaceY,
-                              BodySmallText(
-                                title: StringConstants.yourFavoriteOne,
-                              ),
-                            ],
+              child: Container(
+                height: MediaQuery.sizeOf(context).height * 0.45,
+                width: MediaQuery.sizeOf(context).width * 0.7,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: ColorConstants.borderColor, width: 1.5),
+                ),
+                child: (expertWatch.pickedImage.isNotEmpty)
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: NetworkImageWidget(
+                          imageURL: expertWatch.pickedImage,
+                          isNetworkImage: expertWatch.pickedImage.contains('https'),
+                          boxFit: BoxFit.cover,
+                        ),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BodySmallText(
+                            title: StringConstants.expertProfilePhoto,
                           ),
-                  ),
-                  OnScaleTap(onPress: () => expertRead.removePickedImage(), child: Icon(Icons.cancel, color: ColorConstants.bottomTextColor, size: 30))
-                      .addVisibility(expertWatch.pickedImage.isNotEmpty),
-                ],
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: StringConstants.highQualityProfile,
+                            titleTextAlign: TextAlign.center,
+                            maxLine: 2,
+                          ),
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: StringConstants.yourFavoriteOne,
+                          ),
+                        ],
+                      ),
               ),
             ),
             5.0.spaceY,
