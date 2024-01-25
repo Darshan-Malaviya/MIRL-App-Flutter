@@ -133,4 +133,8 @@ class StringConstants {
   static const String gallery = "gallery";
   static const String camera = "camera";
   static const String setYourExpertise = "SET YOUR EXPERTISE";
+  static const String expertCategoryFilter = "EXPERT CATEGORY FILTERS";
+  static const String selectedCategory = "SELECTED CATEGORY";
+  static const String pickTopicFromTheAbove = "PICK A TOPIC FROM THE ABOVE CATEGORY";
+  static const String selectOnrOrLeave = "SELECT ONE OR LEAVE AS IS";
 }

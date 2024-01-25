@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio/src/form_data.dart';
 import 'package:http_parser/http_parser.dart';
 
 class UpdateExpertProfileRequestModel {

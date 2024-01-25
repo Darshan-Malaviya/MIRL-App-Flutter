@@ -4,7 +4,7 @@ class AppTheme {
   static ThemeData setTheme(BuildContext context) {
     return ThemeData(
         useMaterial3: true,
-        fontFamily: FontWeightEnum.w400.toInter,
+        fontFamily: FontWeightEnum.w700.toInter,
         splashColor: Colors.transparent,
         hoverColor: Colors.transparent,
         highlightColor: Colors.transparent,

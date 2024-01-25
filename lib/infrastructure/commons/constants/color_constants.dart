@@ -26,5 +26,5 @@ class ColorConstants {
   static Color successColor = const Color(0xff12805C);
   static Color warningColor = const Color(0xffCB6F10);
   static Color errorColor = const Color(0xffB33F40);
-  static Color lineColor = const Color(0xffFFAD05);
+  static Color lineColor = const Color(0xffFF950A);
 }
