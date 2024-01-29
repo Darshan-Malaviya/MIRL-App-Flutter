@@ -56,7 +56,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ),
                 8.0.spaceX,
                 InkWell(
-                  onTap:() => ref.read(homeProvider).clearSearchData(),
+                  onTap:() => homeProviderRead.clearSearchData(),
                   child: BodySmallText(
                     title: LocaleKeys.cancel.tr().toUpperCase(),
                     fontFamily: FontWeightEnum.w700.toInter,
@@ -65,30 +65,32 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               ],
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return ExpertsListView();
-              },
-              childCount: 1,
+          if(homeProviderWatch.homeSearchData != null )...[
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return ExpertsListView();
+                },
+                childCount: 1,
+              ),
             ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return ExpertCategorySearchView();
-              },
-              childCount: 1,
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return ExpertCategorySearchView();
+                },
+                childCount: 1,
+              ),
             ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return TopicSearchView();
-              },
-              childCount: 1,
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return TopicSearchView();
+                },
+                childCount: 1,
+              ),
             ),
-          ),
+          ],
         ],
       ).addAllPadding(16),
       /*body: SingleChildScrollView(
