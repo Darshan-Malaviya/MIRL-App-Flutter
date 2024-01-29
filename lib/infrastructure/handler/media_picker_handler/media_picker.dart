@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/handler/permission_handler/permission_handler.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,15 +24,21 @@ class ImagePickerHandler extends PermissionHandler {
   final ImagePicker picker = ImagePicker();
 
   /// pick IMAGE form library
-  Future<XFile?> pickImageFromGallery({required BuildContext context}) async {
+  Future<String?> pickImageFromGallery({required BuildContext context}) async {
     //get Storage permission
-    PermissionStatus storagePermissionStatus =
-        await getStoragePermission(context: context, alertMessage: "Open Setting and\nallow Mirl app to select pictures form library.");
+    PermissionStatus storagePermissionStatus = await getStoragePermission(context: context, alertMessage: "Open Setting and\nallow Mirl app to select pictures form library.");
 
     //pick image from library
     if (storagePermissionStatus == PermissionStatus.granted || storagePermissionStatus == PermissionStatus.limited) {
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      return pickedFile;
+      final croppedImage = await ImageCropper().cropImage(
+        sourcePath: pickedFile?.path ?? '',
+        maxWidth: 1080,
+        maxHeight: 1080,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 60,
+      );
+      return croppedImage?.path;
     }
     return null;
   }
@@ -72,11 +79,18 @@ class ImagePickerHandler extends PermissionHandler {
   }
 
   /// CAPTURE PHOTO form camera
-  Future<XFile?> capturePhoto({required BuildContext context}) async {
+  Future<String?> capturePhoto({required BuildContext context}) async {
     //get permission status
-    await permissionRequest(context: context, permission: Permission.camera, alertMessage: "Open Setting and\nallow {APP_NAME} app to access camera to take a picture. .");
+    await permissionRequest(context: context, permission: Permission.camera, alertMessage: "Open Setting and\nallow Mirl app to access camera to take a picture. .");
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
-    return pickedFile;
+    final croppedImage = await ImageCropper().cropImage(
+      sourcePath: pickedFile?.path ?? '',
+      maxWidth: 1080,
+      maxHeight: 1080,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 60,
+    );
+    return croppedImage?.path ?? '';
   }
 
   ///get storage permission based on android OS version
