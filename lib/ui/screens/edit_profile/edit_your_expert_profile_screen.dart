@@ -157,7 +157,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
-                  title: StringConstants.reviews,
+                  title: StringConstants.reviewsAndRatings,
                   onPressed: () {},
                 ),
                 50.0.spaceY,

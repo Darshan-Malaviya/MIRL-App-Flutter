@@ -20,8 +20,6 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final expertRead = ref.watch(editExpertProvider);
-
     return Scaffold(
       body: Column(
         children: [
@@ -88,7 +86,9 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                             Flexible(
                               child: PrimaryButton(
                                 title: StringConstants.shareProfile,
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.toPushNamed(RoutesConstants.expertDetailScreen);
+                                },
                               ),
                             ),
                           ],
