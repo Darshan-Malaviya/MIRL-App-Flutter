@@ -45,7 +45,7 @@ class StringConstants {
   static const String addCertifications = "ADD CERTIFICATIONS AND EXPERIENCE";
   static const String bankAccountDetails = "YOUR BANK ACCOUNT DETAILS";
   static const String calendar = "CALENDAR & APPOINTMENTS";
-  static const String reviews = "YOUR REVIEWS AND RATINGS";
+  static const String reviewsAndRatings = "YOUR REVIEWS AND RATINGS";
   static const String earningReports = "EARNING REPORTS";
   static const String callHistory = "CALL HISTORY";
   static const String blockedUsersList = "BLOCKED USERS LIST";
@@ -133,4 +133,11 @@ class StringConstants {
   static const String gallery = "gallery";
   static const String camera = "camera";
   static const String setYourExpertise = "SET YOUR EXPERTISE";
+  static const String areasExpertise = "AREAS OF EXPERTISE";
+  static const String requestCallNow = "REQUEST A CALL NOW";
+  static const String scheduleCall = "SCHEDULE A CALL FOR LATER";
+  static const String reviewsAndRatting = "REVIEWS AND RATINGS";
+  static const String overallRating = "OVERALL RATING";
+  static const String reviews = "REVIEWS";
+  static const String sortByReviews = "SORT REVIEWS BY: ";
 }

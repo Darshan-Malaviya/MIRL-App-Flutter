@@ -11,7 +11,6 @@ class InstantCallsAvailabilityScreen extends ConsumerStatefulWidget {
 
 class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAvailabilityScreen> {
 
-
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);

@@ -345,6 +345,7 @@ class EditExpertProvider extends ChangeNotifier {
     isSelectGender = data.selectType;
     notifyListeners();
   }
+  
 
   Future<void> pickGalleryImage(BuildContext context) async {
     XFile? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);

@@ -4,6 +4,7 @@ import 'package:mirl/infrastructure/providers/add_your_area_expertise_provider.d
 import 'package:mirl/infrastructure/providers/auth_provider.dart';
 import 'package:mirl/infrastructure/providers/category_list_provider.dart';
 import 'package:mirl/infrastructure/providers/edit_expert_provider.dart';
+import 'package:mirl/infrastructure/providers/expert_detail_provider.dart';
 import 'package:mirl/infrastructure/providers/home_provider.dart';
 
 
@@ -13,6 +14,7 @@ final homeProvider = ChangeNotifierProvider.autoDispose((_) => HomeProvider());
 final categoryListProvider = ChangeNotifierProvider<CategoryListProvider>((_) => CategoryListProvider());
 final editExpertProvider = ChangeNotifierProvider.autoDispose((_) => EditExpertProvider());
 final addYourAreaExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => AddYourAreaExpertiseProvider());
+final expertDetailProvider = ChangeNotifierProvider.autoDispose((_) => ExpertDetailProvider());
 // final cityCountryProvider = ChangeNotifierProvider<CityCountryProvider>((ref) => CityCountryProvider());
 
 
