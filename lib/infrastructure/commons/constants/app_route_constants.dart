@@ -14,6 +14,7 @@ import 'package:mirl/ui/screens/edit_profile/set_your_weekly_availability_screen
 import 'package:mirl/ui/screens/edit_profile/your_bank_account_details_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/your_expert_profile_name.dart';
 import 'package:mirl/ui/screens/edit_profile/your_mirl_id_update_screen.dart';
+import 'package:mirl/ui/screens/expert_detail/expert_detail_screen.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
@@ -77,6 +78,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const YourMirlIdScreen());
       case RoutesConstants.moreAboutMeScreen:
         return MaterialPageRoute(builder: (_) => const MoreAboutMeScreen());
+        case RoutesConstants.expertDetailScreen:
+        return MaterialPageRoute(builder: (_) => const ExpertDetailScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

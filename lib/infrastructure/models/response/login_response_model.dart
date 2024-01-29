@@ -84,53 +84,54 @@ class UserData {
   String? activeAt;
   List<CertificationData>? certification;
   List<WeeklyAvailableData>? expertAvailability;
+  List<AreasOfExpertise>? areasOfExpertise;
 
-  UserData({
-    this.id,
-    this.userName,
-    this.expertName,
-    this.mirlId,
-    this.email,
-    this.phone,
-    this.city,
-    this.about,
-    this.otp,
-    this.gender,
-    this.loginType,
-    this.googleId,
-    this.appleId,
-    this.facebookId,
-    this.country,
-    this.userProfile,
-    this.expertProfile,
-    this.deviceToken,
-    this.deviceType,
-    this.expirationTime,
-    this.fee,
-    this.userProfileFlag,
-    this.expertProfileFlag,
-    this.aboutFlag,
-    this.feeFlag,
-    this.areaOfExpertiseFlag,
-    this.weeklyAvailableFlag,
-    this.instantCallAvailable,
-    this.locationFlag,
-    this.isLocationVisible,
-    this.genderFlag,
-    this.certificateFlag,
-    this.bankDetailsFlag,
-    this.mirlIdFlag,
-    this.bankAccountHolderName,
-    this.bankName,
-    this.accountNumber,
-    this.timezone,
-    this.isDeleted,
-    this.firstCreated,
-    this.lastModified,
-    this.activeAt,
-    this.certification,
-    this.expertAvailability,
-  });
+  UserData(
+      {this.id,
+      this.userName,
+      this.expertName,
+      this.mirlId,
+      this.email,
+      this.phone,
+      this.city,
+      this.about,
+      this.otp,
+      this.gender,
+      this.loginType,
+      this.googleId,
+      this.appleId,
+      this.facebookId,
+      this.country,
+      this.userProfile,
+      this.expertProfile,
+      this.deviceToken,
+      this.deviceType,
+      this.expirationTime,
+      this.fee,
+      this.userProfileFlag,
+      this.expertProfileFlag,
+      this.aboutFlag,
+      this.feeFlag,
+      this.areaOfExpertiseFlag,
+      this.weeklyAvailableFlag,
+      this.instantCallAvailable,
+      this.locationFlag,
+      this.isLocationVisible,
+      this.genderFlag,
+      this.certificateFlag,
+      this.bankDetailsFlag,
+      this.mirlIdFlag,
+      this.bankAccountHolderName,
+      this.bankName,
+      this.accountNumber,
+      this.timezone,
+      this.isDeleted,
+      this.firstCreated,
+      this.lastModified,
+      this.activeAt,
+      this.certification,
+      this.expertAvailability,
+      this.areasOfExpertise});
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -187,6 +188,12 @@ class UserData {
         expertAvailability?.add(new WeeklyAvailableData.fromJson(v));
       });
     }
+    if (json['areasOfExpertise'] != null) {
+      areasOfExpertise = <AreasOfExpertise>[];
+      json['areasOfExpertise'].forEach((v) {
+        areasOfExpertise!.add(new AreasOfExpertise.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -239,6 +246,9 @@ class UserData {
     if (this.expertAvailability != null) {
       data['expertAvailability'] = this.expertAvailability?.map((v) => v.toJson()).toList();
     }
+    if (this.areasOfExpertise != null) {
+      data['areasOfExpertise'] = this.areasOfExpertise!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -254,7 +264,16 @@ class WeeklyAvailableData {
   String? firstCreated;
   String? lastModified;
 
-  WeeklyAvailableData({this.id, this.userId, this.dayOfWeek, this.startTime, this.endTime, this.isAvailable, this.scheduleType, this.firstCreated, this.lastModified});
+  WeeklyAvailableData(
+      {this.id,
+      this.userId,
+      this.dayOfWeek,
+      this.startTime,
+      this.endTime,
+      this.isAvailable,
+      this.scheduleType,
+      this.firstCreated,
+      this.lastModified});
 
   WeeklyAvailableData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -320,6 +339,57 @@ class CertificationData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['title'] = this.title;
     data['url'] = this.url;
+    data['description'] = this.description;
+    return data;
+  }
+}
+
+class AreasOfExpertise {
+  String? parentName;
+  String? image;
+  List<ExpertiseData>? data;
+
+  AreasOfExpertise({this.parentName, this.image, this.data});
+
+  AreasOfExpertise.fromJson(Map<String, dynamic> json) {
+    parentName = json['parentName'];
+    image = json['image'];
+    if (json['data'] != null) {
+      data = <ExpertiseData>[];
+      json['data'].forEach((v) {
+        data!.add(new ExpertiseData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['parentName'] = this.parentName;
+    data['image'] = this.image;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ExpertiseData {
+  int? id;
+  String? name;
+  String? description;
+
+  ExpertiseData({this.id, this.name, this.description});
+
+  ExpertiseData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    description = json['description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
     data['description'] = this.description;
     return data;
   }
