@@ -1,96 +1,81 @@
-import 'package:flutter/material.dart';
-import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
-
-import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
-import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
-import 'package:mirl/ui/screens/home_screen/home_screen.dart';
-import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
+import 'package:logger/logger.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
+import 'package:mirl/infrastructure/models/response/home_search_response_model.dart';
+import 'package:mirl/infrastructure/repository/home_repo.dart';
 
 class HomeProvider extends ChangeNotifier {
-  String _pageTitle = StringConstants.home;
-  PageController pageController = PageController(
-      // initialPage: 0,
-      // keepPage: true,
-      );
+  final HomeRepo _homeRepo = HomeRepo();
 
-  String get pageTitle => _pageTitle;
+  HomeData? get homeData => _homeData;
+  HomeData? _homeData;
 
-  int _selectedIndex = 0;
+  HomeSearchData? get homeSearchData=> _homeSearchData;
+  HomeSearchData? _homeSearchData;
 
-  int get selectedIndex => _selectedIndex;
+  bool get isHomeSearchLoading => _isHomeSearchLoading;
+  bool _isHomeSearchLoading= false;
 
-  // void onTabChange({required int currentIndex}) {
-  //   _selectedIndex = currentIndex;
-  //   if (currentIndex == 0) {
-  //     _pageTitle = StringConstants.home;
-  //   } else if (currentIndex == 1) {
-  //     _pageTitle = StringConstants.explore;
-  //   } else if (currentIndex == 2) {
-  //     _pageTitle = StringConstants.notification;
-  //   } else if (currentIndex == 3) {
-  //     _pageTitle = StringConstants.expertProfile;
-  //   } else {
-  //     _pageTitle = StringConstants.userSetting;
-  //   }
-  //   notifyListeners();
-  // }
+  bool get isHomeLoading => _isHomeLoading;
+  bool _isHomeLoading= false;
 
-  Widget buildPageView() {
-    return PageView(
-      physics: const NeverScrollableScrollPhysics(),
-      controller: pageController,
-      onPageChanged: (index) {
-        pageChanged(index);
-      },
-      children: const <Widget>[
-        HomeScreen(),
-        ExploreScreen(),
-        NotificationScreen(),
-        ExpertProfileScreen(),
-        UserSettingScreen(),
-      ],
-    );
-  }
 
-  void pageChanged(int index) {
-    _selectedIndex = index;
-    notifyListeners();
-    // isLoading(true);
-  }
+  TextEditingController homeSearchController = TextEditingController();
 
-  void bottomTapped(int index) {
-    _selectedIndex = index;
-    pageController.jumpToPage(index);
+  void clearSearchData(){
+    _homeSearchData = null;
+    homeSearchController.clear();
     notifyListeners();
   }
 
-  String getText(int index) {
-    if (index == 1) {
-      return StringConstants.explore;
-    } else if (index == 2) {
-      return StringConstants.notification;
-    } else if (index == 3) {
-      return StringConstants.expertProfile;
-    } else if (index == 4) {
-      return StringConstants.userSetting;
-    } else {
-      return StringConstants.home;
+  Future<void> homePageApi() async {
+    _isHomeLoading= true;
+    notifyListeners();
+    ApiHttpResult response = await _homeRepo.homePageService();
+    _isHomeLoading= false;
+    notifyListeners();
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is HomeDataResponseModel) {
+          HomeDataResponseModel responseModel = response.data;
+          Logger().d("home page API call successfully${response.data}");
+          if (response.data != null && response.data is HomeDataResponseModel) {
+            _homeData = responseModel.data;
+          }
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on home page Api ${response.data}");
+        break;
     }
+    notifyListeners();
   }
 
-  String getImage(int index) {
-    if (index == 1) {
-      return ImageConstants.explore;
-    } else if (index == 2) {
-      return ImageConstants.notification;
-    } else if (index == 3) {
-      return ImageConstants.expertProfile;
-    } else if (index == 4) {
-      return ImageConstants.userSetting;
-    } else {
-      return ImageConstants.home;
+  Future<void> homeSearchApi() async {
+    _isHomeSearchLoading= true;
+    notifyListeners();
+
+    ApiHttpResult response = await _homeRepo.homePageSearchService(searchKeyword: homeSearchController.text);
+
+    _isHomeSearchLoading= false;
+    notifyListeners();
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is HomeSearchResponseModel) {
+          HomeSearchResponseModel responseModel = response.data;
+          Logger().d("home search API call successfully${response.data}");
+          if (response.data != null && response.data is HomeSearchResponseModel) {
+            _homeSearchData = responseModel.data;
+          }
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on home search Api ${response.data}");
+        break;
     }
+    notifyListeners();
   }
 }
