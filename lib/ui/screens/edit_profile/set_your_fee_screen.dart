@@ -10,6 +10,15 @@ class SetYourFreeScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
@@ -54,6 +63,9 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                 ],
+                onFieldSubmitted: (value){
+                  context.unFocusKeyboard();
+                },
               ).addAllPadding(16),
               FeesActionButtonWidget(
                 icons: Icons.remove,

@@ -11,6 +11,7 @@ class DropdownMenuWidget extends StatelessWidget {
   final String? errorText;
   final String? labelText;
   final String? hintText;
+  final Color? lableColor;
   final TextEditingController? controller;
   final Function(String value) onSelect;
 
@@ -26,6 +27,7 @@ class DropdownMenuWidget extends StatelessWidget {
       this.errorText,
       this.labelText,
       this.hintText,
+      this.lableColor,
       required this.onSelect,
       this.requestFocusOnTap})
       : super(key: key);
@@ -37,10 +39,12 @@ class DropdownMenuWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         (labelText?.isNotEmpty ?? false) && labelText != null
-            ? BodySmallText(
-                title: labelText ?? '',
-                titleColor: ColorConstants.blackColor,
-                fontWeight: FontWeight.w400,
+            ? Center(
+                child: BodySmallText(
+                  title: labelText ?? '',
+                  titleColor: lableColor ?? ColorConstants.blackColor,
+                  fontWeight: FontWeight.w400,
+                ),
               )
             : const SizedBox.shrink(),
         (labelText?.isNotEmpty ?? false) && labelText != null ? 6.0.spaceY : const SizedBox.shrink(),
@@ -63,9 +67,9 @@ class DropdownMenuWidget extends StatelessWidget {
             Icons.keyboard_arrow_up_rounded,
             color: ColorConstants.dropDownBorderColor,
           ),
-          textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: ColorConstants.blackColor,
-                fontWeight: FontWeight.w600,
+          textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: ColorConstants.buttonTextColor,
+                fontFamily: FontWeightEnum.w400.toInter,
                 overflow: TextOverflow.ellipsis,
               ),
           menuStyle: MenuStyle(

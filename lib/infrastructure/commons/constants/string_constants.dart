@@ -130,8 +130,8 @@ class StringConstants {
   static const String friday = "Friday";
   static const String saturday = "Saturday";
   static const String noTimeSchedule = "no time scheduled";
-  static const String gallery = "gallery";
-  static const String camera = "camera";
+  static const String gallery = "Gallery";
+  static const String camera = "Camera";
   static const String setYourExpertise = "SET YOUR EXPERTISE";
   static const String areasExpertise = "AREAS OF EXPERTISE";
   static const String requestCallNow = "REQUEST A CALL NOW";
@@ -140,4 +140,10 @@ class StringConstants {
   static const String overallRating = "OVERALL RATING";
   static const String reviews = "REVIEWS";
   static const String sortByReviews = "SORT REVIEWS BY: ";
+  static const String expertCategoryFilter = "EXPERT CATEGORY FILTERS";
+  static const String selectedCategory = "SELECTED CATEGORY";
+  static const String pickTopicFromTheAbove = "PICK A TOPIC FROM THE ABOVE CATEGORY";
+  static const String selectOnrOrLeave = "SELECT ONE OR LEAVE AS IS";
+  static const String followedEveryWeek = 'The same schedule will be followed every week';
+  static const String manuallyEveryWeek = 'You have to set your schedule manually every week';
 }

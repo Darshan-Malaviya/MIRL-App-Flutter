@@ -14,7 +14,9 @@ class SetYourLocationScreen extends ConsumerStatefulWidget {
 class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
     super.initState();
   }
 

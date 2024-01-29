@@ -94,7 +94,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                         child: NetworkImageWidget(
                                           boxFit: BoxFit.cover,
                                           imageURL:
-                                              addYourAreaExpertiseProviderWatch.categoryList?[index].categoryImage ?? '',
+                                              addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
                                           isNetworkImage: true,
                                           height: 50,
                                           width: 50,

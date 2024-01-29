@@ -48,18 +48,18 @@ class CategoryListData {
   int? id;
   String? parentName;
   int? badgecount;
-  String? categoryImage;
+  String? image;
   List<Child>? child;
   bool? isVisible;
   bool? selectAllCategory;
 
-  CategoryListData({this.id, this.parentName,this.isVisible, this.badgecount, this.categoryImage, this.child,this.selectAllCategory});
+  CategoryListData({this.id, this.parentName, this.isVisible, this.badgecount, this.image, this.child, this.selectAllCategory});
 
   CategoryListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     parentName = json['parentName'];
     badgecount = json['badgecount'];
-    categoryImage = json['categoryImage'];
+    image = json['image'];
     isVisible = false;
     selectAllCategory = false;
     if (json['child'] != null) {
@@ -75,7 +75,7 @@ class CategoryListData {
     data['id'] = this.id;
     data['parentName'] = this.parentName;
     data['badgecount'] = this.badgecount;
-    data['categoryImage'] = this.categoryImage;
+    data['image'] = this.image;
     if (this.child != null) {
       data['child'] = this.child!.map((v) => v.toJson()).toList();
     }
@@ -85,21 +85,21 @@ class CategoryListData {
 
 class Child {
   int? id;
-  String? categoryName;
+  String? name;
   bool? isSelected;
 
-  Child({this.id, this.categoryName, this.isSelected});
+  Child({this.id, this.name, this.isSelected});
 
   Child.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    categoryName = json['categoryName'];
+    name = json['name'];
     isSelected = json['isSelected'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['categoryName'] = this.categoryName;
+    data['name'] = this.name;
     data['isSelected'] = this.isSelected;
     return data;
   }
