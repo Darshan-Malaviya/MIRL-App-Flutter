@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
 
 class ExpertsListView extends ConsumerStatefulWidget {
@@ -48,26 +49,29 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         BodyMediumText(
-                          title: 'Preeti Tewari Serai',
+                          title: homeProviderWatch.homeSearchData?.users?[index].expertName ?? '',
                           fontFamily: FontWeightEnum.w700.toInter,
                         ),
                         2.0.spaceY,
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width - 120,
-                          child: Wrap(
-                            alignment: WrapAlignment.start,
-                            children: List.generate(3, (index) {
-                              return Container(
-                                color: ColorConstants.primaryColor.withOpacity(0.4),
-                                child: BodyMediumText(
-                                  maxLine: 3,
-                                  title: index % 3 == 0 ? 'Preeti' : "User name Mirl",
-                                  fontFamily: FontWeightEnum.w700.toInter,
-                                ).addAllPadding(10),
-                              ).addPaddingXY(paddingX: 6, paddingY: 6);
-                            }),
-                          ),
-                        )
+                        if(homeProviderWatch.homeSearchData?.users?[index].categoris?.isNotEmpty ?? false)...[
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 120,
+                            child: Wrap(
+                              alignment: WrapAlignment.start,
+                              children: List.generate(homeProviderWatch.homeSearchData?.users?[index].categoris?.length ?? 0, (i) {
+                                return Container(
+                                  color: ColorConstants.primaryColor.withOpacity(0.4),
+                                  child: BodyMediumText(
+                                    maxLine: 3,
+                                    title: (homeProviderWatch.homeSearchData?.users?[index].categoris?[i].name?.toLowerCase().toCapitalizeAllWord() ?? ''),
+                                    fontFamily: FontWeightEnum.w700.toInter,
+                                  ).addAllPadding(10),
+                                ).addPaddingXY(paddingX: 6, paddingY: 6);
+                              }),
+                            ),
+                          )
+                        ]
+
                       ],
                     )
                   ],
@@ -77,7 +81,9 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
           BodySmallText(
             fontWeight: FontWeight.w400,
             titleTextAlign: TextAlign.start,
+            fontFamily: AppConstants.fontFamily,
             maxLine: 4,
+            fontSize: 12,
             title: LocaleKeys.noResultsFoundTypeSomethingElse.tr(),
           ),
         ]

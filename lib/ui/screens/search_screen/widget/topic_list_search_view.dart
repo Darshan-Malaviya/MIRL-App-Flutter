@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 
 class TopicSearchView extends ConsumerStatefulWidget {
   const TopicSearchView({super.key});
@@ -29,6 +30,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
         20.0.spaceY,
         if (homeProviderWatch.homeSearchData?.topics?.isNotEmpty ?? false) ...[
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(homeProviderWatch.homeSearchData?.topics?.length ?? 0, (index) {
               return Container(
                 decoration: ShapeDecoration(
@@ -48,18 +50,20 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
                 child: TitleMediumText(
                   maxLine: 2,
                   softWrap: true,
-                  title: "Management & Leadership",
+                  title: homeProviderWatch.homeSearchData?.topics?[index].name?.toLowerCase().toCapitalizeAllWord() ?? '',
                   fontFamily: FontWeightEnum.w500.toInter,
                 ).addPaddingXY(paddingX: 10, paddingY: 2),
               ).addPaddingXY(paddingX: 6, paddingY: 6);
             }),
-          )
+          ),
+          30.0.spaceY,
           ]  else ...[
           BodySmallText(
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.w400,
             titleTextAlign: TextAlign.start,
-            softWrap: true,
+            fontFamily: AppConstants.fontFamily,
             maxLine: 4,
+            fontSize: 12,
             title: LocaleKeys.noResultsFoundTypeSomethingElse.tr(),
           ),
         ]

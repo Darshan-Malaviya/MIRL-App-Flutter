@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -14,7 +15,6 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -39,84 +39,77 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           SliverToBoxAdapter(
             child: Row(
               children: [
+                InkWell(
+                    onTap: () => context.toPop(),
+                    child: Icon(
+                      Icons.keyboard_arrow_left_outlined,
+                      size: 28,
+                    )),
+                8.0.spaceX,
                 Flexible(
                   child: TextFormFieldWidget(
                     textAlign: TextAlign.start,
+                    suffixIcon: homeProviderRead.homeSearchController.text.isNotEmpty
+                        ? InkWell(
+                            onTap: () => homeProviderRead.clearSearchData(),
+                            child: Icon(Icons.close),
+                          )
+                        : SizedBox.shrink(),
                     controller: homeProviderWatch.homeSearchController,
-                    onEditingComplete: (){
+                    onChanged: (value) {
                       if (homeProviderWatch.homeSearchController.text.isNotEmpty) {
                         homeProviderRead.homeSearchApi();
-                      } else {
-                        FlutterToast().showToast(msg: "Please enter search keyword.");
                       }
+                    },
+                    onFieldSubmitted: (value) {
+                      context.unFocusKeyboard();
                     },
                     textInputAction: TextInputAction.done,
                     hintText: LocaleKeys.typeSomethingHere.tr(),
                   ),
                 ),
-                8.0.spaceX,
-                InkWell(
-                  onTap:() => homeProviderRead.clearSearchData(),
-                  child: BodySmallText(
-                    title: LocaleKeys.cancel.tr().toUpperCase(),
-                    fontFamily: FontWeightEnum.w700.toInter,
-                  ),
-                ),
               ],
             ),
           ),
-          if(homeProviderWatch.homeSearchData != null )...[
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                  return ExpertsListView();
-                },
-                childCount: 1,
-              ),
+          if (homeProviderWatch.isHomeSearchLoading) ...[
+            SliverToBoxAdapter(
+              child: Center(
+                  child: CupertinoActivityIndicator(
+                animating: true,
+                color: ColorConstants.primaryColor,
+                radius: 16,
+              ).addPaddingY(20)),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                  return ExpertCategorySearchView();
-                },
-                childCount: 1,
+          ] else ...[
+            if (homeProviderWatch.homeSearchData != null) ...[
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return ExpertsListView();
+                  },
+                  childCount: 1,
+                ),
               ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                  return TopicSearchView();
-                },
-                childCount: 1,
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return ExpertCategorySearchView();
+                  },
+                  childCount: 1,
+                ),
               ),
-            ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return TopicSearchView();
+                  },
+                  childCount: 1,
+                ),
+              ),
+            ],
           ],
         ],
       ).addAllPadding(16),
-      /*body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Flexible(
-                  child: TextFormFieldWidget(
-                    // width: 100,
-                    textAlign: TextAlign.start,
-                    hintText: LocaleKeys.typeSomethingHere.tr(),
-                  ),
-                ),
-                8.0.spaceX,
-                BodySmallText(
-                  title: LocaleKeys.cancel.tr().toUpperCase(),
-                  fontFamily: FontWeightEnum.w700.toInter,
-                ),
-              ],
-            ),
-            30.0.spaceY,
-            ExpertsListView()
-          ],
-        ).addAllPadding(20),
-      ),*/
     );
   }
 }

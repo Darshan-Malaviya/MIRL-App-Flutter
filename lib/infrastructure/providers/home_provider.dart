@@ -13,18 +13,27 @@ class HomeProvider extends ChangeNotifier {
   HomeSearchData? get homeSearchData=> _homeSearchData;
   HomeSearchData? _homeSearchData;
 
+  bool get isHomeSearchLoading => _isHomeSearchLoading;
+  bool _isHomeSearchLoading= false;
+
+  bool get isHomeLoading => _isHomeLoading;
+  bool _isHomeLoading= false;
+
+
   TextEditingController homeSearchController = TextEditingController();
 
   void clearSearchData(){
+    _homeSearchData = null;
     homeSearchController.clear();
     notifyListeners();
   }
 
   Future<void> homePageApi() async {
-    CustomLoading.progressDialog(isLoading: true);
-
+    _isHomeLoading= true;
+    notifyListeners();
     ApiHttpResult response = await _homeRepo.homePageService();
-    CustomLoading.progressDialog(isLoading: false);
+    _isHomeLoading= false;
+    notifyListeners();
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is HomeDataResponseModel) {
@@ -44,10 +53,14 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future<void> homeSearchApi() async {
-    CustomLoading.progressDialog(isLoading: true);
+    _isHomeSearchLoading= true;
+    notifyListeners();
 
     ApiHttpResult response = await _homeRepo.homePageSearchService(searchKeyword: homeSearchController.text);
-    CustomLoading.progressDialog(isLoading: false);
+
+    _isHomeSearchLoading= false;
+    notifyListeners();
+
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is HomeSearchResponseModel) {

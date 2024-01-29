@@ -30,7 +30,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
             height: ((homeProviderWatch.homeSearchData?.categories?.length ?? 0) <= 4) ? 120 : 240,
             child: GridView.builder(
               physics: NeverScrollableScrollPhysics(),
-              itemCount: 5,
+              itemCount: homeProviderWatch.homeSearchData?.categories?.length ?? 0,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
               itemBuilder: (BuildContext context, int index) {
@@ -48,8 +48,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                               borderRadius: BorderRadius.circular(20.0),
                               child: NetworkImageWidget(
                                 boxFit: BoxFit.cover,
-                                imageURL:
-                                    "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                                imageURL: homeProviderWatch.homeSearchData?.categories?[index].image ??'',
                                 isNetworkImage: true,
                                 height: 60,
                                 width: 50,
@@ -58,7 +57,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                             4.0.spaceY,
                             LabelSmallText(
                               fontSize: 9,
-                              title: "Experts",
+                              title: homeProviderWatch.homeSearchData?.categories?[index].name?.toUpperCase() ??'',
                               maxLine: 2,
                               titleColor: ColorConstants.blackColor,
                               fontFamily: FontWeightEnum.w700.toInter,
@@ -79,7 +78,9 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
           BodySmallText(
             fontWeight: FontWeight.w400,
             titleTextAlign: TextAlign.start,
+            fontFamily: AppConstants.fontFamily,
             maxLine: 4,
+            fontSize: 12,
             title: LocaleKeys.noResultsFoundTypeSomethingElse.tr(),
           ),
         ]

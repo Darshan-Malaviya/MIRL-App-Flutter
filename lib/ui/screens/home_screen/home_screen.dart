@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
 import 'package:mirl/ui/screens/home_screen/widget/category_and_topic_list_view.dart';
 import 'package:mirl/ui/screens/home_screen/widget/favorite_experts_view.dart';
 import 'package:mirl/ui/screens/home_screen/widget/past_conversation_view.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final homeProviderWatch  = ref.watch(homeProvider);
     return Scaffold(
       backgroundColor: ColorConstants.grayLightColor,
       appBar: AppBarWidget(
@@ -130,12 +132,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
           40.0.spaceY,
-          CategoryAndTopicListView(),
-          20.0.spaceY,
-          FavoriteExpertsView(),
-          20.0.spaceY,
-          PastConversationsView(),
-          20.0.spaceY,
+          if(homeProviderWatch.isHomeLoading) ...[
+            CategoryListShimmerWidget(),
+            20.0.spaceY,
+            CategoryListShimmerWidget()
+          ] else ...[
+            CategoryAndTopicListView(),
+            20.0.spaceY,
+            FavoriteExpertsView(),
+            20.0.spaceY,
+            PastConversationsView(),
+            20.0.spaceY,
+          ]
+
         ],
       ).addPaddingXY(paddingX: 16, paddingY: 16)
       ),
