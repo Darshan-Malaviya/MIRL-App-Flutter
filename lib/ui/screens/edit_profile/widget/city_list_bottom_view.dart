@@ -1,10 +1,15 @@
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-
+import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 
 class CityListBottomView extends ConsumerStatefulWidget {
-  const CityListBottomView({super.key});
+  final Function(CityModel item) onTapItem;
+  final TextEditingController searchController;
+  final VoidCallback clearSearchTap;
+  final String countryId;
+
+  const CityListBottomView({super.key, required this.onTapItem, required this.searchController, required this.clearSearchTap, required this.countryId});
 
   @override
   ConsumerState<CityListBottomView> createState() => _CityListBottomViewState();
@@ -16,14 +21,14 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).clearSearchCityController();
-      ref.read(editExpertProvider).cityListApiCall(isFullScreenLoader: true);
+      widget.clearSearchTap();
+      ref.read(commonAppProvider).cityListApiCall(isFullScreenLoader: true, id: widget.countryId);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        bool isLoading = ref.watch(editExpertProvider).reachedCityLastPage;
+        bool isLoading = ref.watch(commonAppProvider).reachedCityLastPage;
         if (!isLoading) {
-          ref.read(editExpertProvider).cityListApiCall();
+          ref.read(commonAppProvider).cityListApiCall(id: widget.countryId);
         } else {
           log('reach last page on city list api');
         }
@@ -34,75 +39,67 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
 
   @override
   Widget build(BuildContext context) {
-    final expertWatch = ref.watch(editExpertProvider);
-    final expertRead = ref.read(editExpertProvider);
+    final commonWatch = ref.watch(commonAppProvider);
+    final commonRead = ref.read(commonAppProvider);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
-          const TitleMediumText(
-            title: "Select City",
-          ),
+          TitleMediumText(title: "Select City", titleColor: ColorConstants.sheetTitleColor),
           16.0.spaceY,
           TextFormFieldWidget(
             isReadOnly: false,
             hintText: "Search here",
-            suffixIcon: expertWatch.searchCityController.text.isNotEmpty
+            suffixIcon: widget.searchController.text.isNotEmpty
                 ? InkWell(
                     onTap: () {
-                      expertRead.clearCityPaginationData();
-                      expertRead.clearSearchCityController();
-                      expertRead.cityListApiCall();
-                      setState(() {});
+                      commonRead.clearCityPaginationData();
+                      widget.clearSearchTap();
+                      commonRead.cityListApiCall(id: widget.countryId);
                     },
                     child: Icon(Icons.close))
                 : SizedBox.shrink(),
             onFieldSubmitted: (value) {
               context.unFocusKeyboard();
-              expertRead.clearCityPaginationData();
-              expertRead.cityListApiCall(searchName: expertWatch.searchCityController.text);
+              commonRead.clearCityPaginationData();
+              commonRead.cityListApiCall(searchName: value, id: widget.countryId);
             },
             height: 40,
-            controller: expertWatch.searchCityController,
+            controller: widget.searchController,
             textInputAction: TextInputAction.done,
           ).addAllMargin(12),
-          expertWatch.city.isNotEmpty ?
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.45,
-            child: ListView.builder(
-                controller: scrollController,
-                itemCount: expertWatch.city.length + (expertWatch.reachedCityLastPage ? 0 : 1),
-                itemBuilder: (context, index) {
-                  if(index == expertWatch.city.length && expertWatch.city.isNotEmpty){
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-                  return InkWell(
-                    onTap: () {
-                      expertWatch.city[index].city ?? '';
-                      expertRead.displayCity(value: expertWatch.city[index]);
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
+            child: commonWatch.city.isNotEmpty
+                ? ListView.builder(
+                    controller: scrollController,
+                    itemCount: commonWatch.city.length + (commonWatch.reachedCityLastPage ? 0 : 1),
+                    itemBuilder: (context, index) {
+                      if (index == commonWatch.city.length && commonWatch.city.isNotEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                        );
+                      }
+                      return InkWell(
+                        onTap: () {
+                          widget.onTapItem(commonWatch.city[index]);
+                        },
+                        child: Container(
                           padding: const EdgeInsets.all(8),
                           alignment: Alignment.center,
                           margin: const EdgeInsets.symmetric(vertical: 5),
-                          child: BodyMediumText(title: expertWatch.city[index].city ?? ''),
+                          child: BodyMediumText(title: commonWatch.city[index].city ?? '', titleColor: ColorConstants.bottomTextColor),
                         ),
-                      ],
-                    ),
-                  );
-                },
-                ),
-          ) : Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
+                      );
+                    },
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                  ),
+          ),
           16.0.spaceY,
         ],
       ),

@@ -29,7 +29,7 @@ class ExpertCategoryResponseModel {
       data['pagination'] = this.pagination!.toJson();
     }
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -49,7 +49,7 @@ class CategoryListData {
   String? parentName;
   int? badgecount;
   String? image;
-  List<Child>? child;
+  List<TopicData>? child;
   bool? isVisible;
   bool? selectAllCategory;
 
@@ -63,9 +63,9 @@ class CategoryListData {
     isVisible = false;
     selectAllCategory = false;
     if (json['child'] != null) {
-      child = <Child>[];
+      child = <TopicData>[];
       json['child'].forEach((v) {
-        child!.add(new Child.fromJson(v));
+        child?.add(new TopicData.fromJson(v));
       });
     }
   }
@@ -83,14 +83,14 @@ class CategoryListData {
   }
 }
 
-class Child {
+class TopicData {
   int? id;
   String? name;
   bool? isSelected;
 
-  Child({this.id, this.name, this.isSelected});
+  TopicData({this.id, this.name, this.isSelected});
 
-  Child.fromJson(Map<String, dynamic> json) {
+  TopicData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     isSelected = json['isSelected'];

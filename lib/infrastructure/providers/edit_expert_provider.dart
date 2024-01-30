@@ -93,27 +93,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   List<CertificationData> certificationList = [];
 
-  List<CountryModel> get country => _country;
-  List<CountryModel> _country = [];
-
-  List<CityModel> get city => _city;
-  List<CityModel> _city = [];
-
-  bool get reachedLastPage => _reachedLastPage;
-  bool _reachedLastPage = false;
-
-  bool get reachedCityLastPage => _reachedCityLastPage;
-  bool _reachedCityLastPage = false;
-
-  CountryModel? _selectedCountryModel;
-
-  CityModel? _selectedCityModel;
-
-  int get pageNo => _pageNo;
-  int _pageNo = 1;
-
-  int get cityPageNo => _cityPageNo;
-  int _cityPageNo = 1;
+  CountryModel? selectedCountryModel;
 
   late DateTime plusDay;
   late DateTime hourOnly;
@@ -237,14 +217,13 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void setSelectedCountry({required CountryModel value}) {
-    _selectedCountryModel = value;
-    countryNameController.text = _selectedCountryModel?.country ?? '';
+    selectedCountryModel = value;
+    countryNameController.text = selectedCountryModel?.country ?? '';
     notifyListeners();
   }
 
   void displayCity({required CityModel value}) {
-    _selectedCityModel = value;
-    cityNameController.text = _selectedCityModel?.city ?? '';
+    cityNameController.text = value.city ?? '';
     notifyListeners();
   }
 
@@ -476,7 +455,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   Future<void> updateProfileApi() async {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfile: _pickedImage);
-    UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile(),fromImageUpload: true);
+    UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile(), fromImageUpload: true);
   }
 
   Future<void> UpdateUserDetailsApiCall({required FormData requestModel, bool fromImageUpload = false}) async {
@@ -495,7 +474,7 @@ class EditExpertProvider extends ChangeNotifier {
           Logger().d("user data=====${loginResponseModel.toJson()}");
           resetVariable();
           getUserData();
-          if(!fromImageUpload) {
+          if (!fromImageUpload) {
             NavigationService.context.toPop();
           }
         }
@@ -508,84 +487,8 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> CountryListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
-    }
-
-    ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(limit: 30, page: _pageNo, searchName: searchName);
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
-    }
-    switch (response.status) {
-      case APIStatus.success:
-        if (response.data != null && response.data is CountryResponseModel) {
-          CountryResponseModel countryResponseModel = response.data;
-          Logger().d("Successfully call country list");
-          _country.addAll(countryResponseModel.data ?? []);
-          if (_pageNo == countryResponseModel.pagination?.itemCount) {
-            _reachedLastPage = true;
-          } else {
-            _pageNo = _pageNo + 1;
-            _reachedLastPage = false;
-          }
-        }
-        break;
-      case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on country list call Api ${response.data}");
-        break;
-    }
-    notifyListeners();
-  }
-
-  Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
-    }
-    ApiHttpResult response =
-        await _updateUserDetailsRepository.cityApiCall(limit: 30, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
-    }
-    switch (response.status) {
-      case APIStatus.success:
-        if (response.data != null && response.data is CityResponseModel) {
-          CityResponseModel cityResponseModel = response.data;
-          Logger().d("Successfully call city list api");
-          _city.addAll(cityResponseModel.data ?? []);
-          if (_cityPageNo == cityResponseModel.pagination?.itemCount) {
-            _reachedCityLastPage = true;
-          } else {
-            _cityPageNo = _cityPageNo + 1;
-            _reachedCityLastPage = false;
-          }
-        }
-        break;
-      case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on city list call Api ${response.data}");
-        break;
-    }
-    notifyListeners();
-  }
-
-  void clearCityPaginationData() {
-    _cityPageNo = 1;
-    _reachedCityLastPage = false;
-    _city = [];
-    notifyListeners();
-  }
-
   void clearSearchCityController() {
     searchCityController.clear();
-    notifyListeners();
-  }
-
-  void clearCountryPaginationData() {
-    _pageNo = 1;
-    _reachedLastPage = false;
-    _country = [];
     notifyListeners();
   }
 

@@ -23,6 +23,7 @@ ImageConstants {
   static const minus = '${imagePath}minus.png';
   static const expert = '${imagePath}expert.png';
   static const multipleConnect = '${imagePath}multiple_connect.png';
+  static const filter = '${imagePath}filter.png';
 
 
 

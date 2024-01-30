@@ -51,24 +51,6 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  // void startTimer() {
-  //   timer?.cancel();
-  //   const oneSec = Duration(seconds: 1);
-  //   timer = Timer.periodic(
-  //     oneSec,
-  //         (Timer timer) {
-  //       if (start == 0) {
-  //         timer.cancel();
-  //         isResend = true;
-  //       } else {
-  //         start--;
-  //         isResend = false;
-  //       }
-  //       notifyListeners();
-  //     },
-  //   );
-  // }
-
   Future<void> loginRequestCall({required int loginType}) async {
     debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
@@ -174,18 +156,6 @@ class AuthProvider with ChangeNotifier {
       log(error.toString());
     }
   }
-
-  // String getSocialId() {
-  //   if (loginType == 1) {
-  //     return googleId;
-  //   } else if (loginType == 2) {
-  //     return fbId;
-  //   } else if (loginType == 3) {
-  //     return appleId;
-  //   } else {
-  //     return '';
-  //   }
-  // }
 
   /// OTP verify
 

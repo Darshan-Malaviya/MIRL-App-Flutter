@@ -19,6 +19,7 @@ class ColorConstants {
   static Color scaffoldColor = const Color(0xFFF6F9FF);
   static Color buttonTextColor = const Color(0xFF424D5C);
   static Color bottomTextColor = const Color(0xFF6F50EA);
+  static Color sheetTitleColor = const Color(0xFF64569E);
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
   static Color sliderColor = const Color(0xFF85C7F2);

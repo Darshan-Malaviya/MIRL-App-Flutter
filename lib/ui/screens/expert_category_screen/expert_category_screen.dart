@@ -3,14 +3,14 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/child_category_bottom_view.dart';
 
-class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
-  const AddYourAreasOfExpertiseScreen({super.key});
+class ExpertCategoryScreen extends ConsumerStatefulWidget {
+  const ExpertCategoryScreen({super.key});
 
   @override
-  ConsumerState<AddYourAreasOfExpertiseScreen> createState() => _AddYourAreasOfExpertiseScreenState();
+  ConsumerState createState() => _ExpertCategoryScreenState();
 }
 
-class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfExpertiseScreen> {
+class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -25,59 +25,49 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
   Widget build(BuildContext context) {
     final addYourAreaExpertiseProviderWatch = ref.watch(addYourAreaExpertiseProvider);
     final addYourAreaExpertiseProviderRead = ref.read(addYourAreaExpertiseProvider);
+
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
         ),
-        trailingIcon: InkWell(
-          onTap: () {
-            addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
-          },
-          child: TitleMediumText(
-            title: StringConstants.done,
-            fontFamily: FontWeightEnum.w700.toInter,
-          ),
-        ).addPaddingRight(14),
       ),
       body: Column(
         children: [
           TitleLargeText(
-            title: StringConstants.addYourAreas,
-            titleColor: ColorConstants.bottomTextColor,
-            fontFamily: FontWeightEnum.w700.toInter,
+            title: StringConstants.expertCategories,
             maxLine: 2,
             titleTextAlign: TextAlign.center,
           ),
           20.0.spaceY,
-          TitleSmallText(
-            title: StringConstants.categoryView,
+          LabelSmallText(
+            title: StringConstants.tapOnWayExpert,
             titleTextAlign: TextAlign.center,
+            fontFamily: FontWeightEnum.w400.toInter,
             maxLine: 2,
           ),
-          20.0.spaceY,
+          LabelSmallText(
+            title: StringConstants.tapOnWayTopic,
+            titleTextAlign: TextAlign.center,
+            fontFamily: FontWeightEnum.w400.toInter,
+            maxLine: 2,
+          ),
+          30.0.spaceY,
           Expanded(
             child: addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                 ? GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
                     itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0,
                     itemBuilder: (context, index) {
                       CategoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
 
-                      return Stack(
+                      return Column(
                         children: [
                           InkWell(
                             onTap: () {
                               addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
-                              CommonBottomSheet.bottomSheet(
-                                  context: context,
-                                  isDismissible: true,
-                                  backgroundColor: ColorConstants.categoryList,
-                                  child: ChildCategoryBottomView(
-                                    childCategoryList: element,
-                                  ));
+                              context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen);
                             },
                             child: ShadowContainer(
                               shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
@@ -89,8 +79,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                     borderRadius: BorderRadius.circular(20.0),
                                     child: NetworkImageWidget(
                                       boxFit: BoxFit.cover,
-                                      imageURL:
-                                      addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
+                                      imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
                                       isNetworkImage: true,
                                       height: 50,
                                       width: 50,
@@ -109,22 +98,8 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                               height: 90,
                               width: 90,
                               isShadow: true,
-                            ).addPaddingTop(5),
+                            ),
                           ),
-                          if (element?.badgecount != 0) ...[
-                            Positioned(
-                                top: 0,
-                                right: 15,
-                                child: CircleAvatar(
-                                  child: TitleMediumText(
-                                    title: element?.badgecount.toString() ?? '0',
-                                    fontWeight: FontWeight.w600,
-                                    titleColor: ColorConstants.blackColor,
-                                  ),
-                                  radius: 14,
-                                  backgroundColor: ColorConstants.primaryColor,
-                                ))
-                          ]
                         ],
                       );
                     })
@@ -135,13 +110,8 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                     ),
                   ),
           ),
-          PrimaryButton(
-              title: StringConstants.setYourExpertise,
-              onPressed: () {
-                addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
-              })
         ],
-      ).addAllPadding(20),
+      ).addPaddingX(20),
     );
   }
 }

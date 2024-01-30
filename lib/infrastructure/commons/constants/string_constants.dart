@@ -136,7 +136,21 @@ class StringConstants {
   static const String expertCategoryFilter = "EXPERT CATEGORY FILTERS";
   static const String selectedCategory = "SELECTED CATEGORY";
   static const String pickTopicFromTheAbove = "PICK A TOPIC FROM THE ABOVE CATEGORY";
+  static const String pickCategory = "PICK A CATEGORY ";
   static const String selectOnrOrLeave = "SELECT ONE OR LEAVE AS IS";
   static const String followedEveryWeek = 'The same schedule will be followed every week';
   static const String manuallyEveryWeek = 'You have to set your schedule manually every week';
+  static const String overAllRatingText = 'OVERALL RATING';
+  static const String genderText = 'GENDER';
+  static const String countryText = 'COUNTRY';
+  static const String cityText = 'CITY';
+  static const String feeRange = 'FEE RANGE';
+  static const String applyFilter = 'APPLY FILTERS';
+  static const String expertCategories = 'EXPERT CATEGORIES';
+  static const String tapOnWayExpert = 'TAP ON ANY EXPERT CATEGORY TO VIEW THEIR TOPICS.';
+  static const String tapOnWayTopic = 'TAP ON A TOPIC TO VIEW THE LISTED EXPERTS.';
+  static const String needAMentor = 'NEED A MENTOR? START YOUR JOURNEY HERE, OR ZERO IN WITH OUR HANDY SEARCH FILTER';
+  static const String topicText = 'TOPIC';
+  static const String filterExpertCategory = 'FILTER EXPERTS FROM THIS CATEGORY';
+  static const String descriptionText = 'Broad parenting recommendations for various ages, including discipline, education, and balancing parental responsibilities.';
 }
