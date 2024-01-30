@@ -22,9 +22,9 @@
   "notNow": "Not now",
   "searchTypeAnyKeyword": "Search (type any keyword, topic, or expert name here)",
   "exploreExperts": "EXPLORE EXPERTS",
-  "multipleConnect" : "MULTIPLE CONNECT",
+  "multipleConnect": "MULTIPLE CONNECT",
   "browseExpertsFields": "Browse experts in all fields",
-  "inviteMultipleExpertsAndSelectOne" : "Invite multiple experts and select one",
+  "inviteMultipleExpertsAndSelectOne": "Invite multiple experts and select one",
   "seeAllExpertCategoryAndTopics": "SEE ALL EXPERT CATEGORIES AND TOPICS",
   "seeAllFavoriteExperts": "SEE ALL FAVORITE EXPERTS",
   "seeAllPastConversations": "SEE ALL PAST CONVERSATIONS",
@@ -36,6 +36,10 @@
   "experts": "EXPERTS",
   "expertCategories": "EXPERT CATEGORIES",
   "topicsWithCategories": "TOPICS WITHIN EXPERT CATEGORIES",
-  "noResultsFoundTypeSomethingElse": "NO RESULTS FOUND! TYPE SOMETHING ELSE?"
-
+  "noResultsFoundTypeSomethingElse": "NO RESULTS FOUND! TYPE SOMETHING ELSE?",
+  "readMore": "Read more",
+  "readLess": "Read less",
+  "location": "LOCATION: ",
+  "gender": "GENDER: ",
+  "expertOnline": "EXPERT\nONLINE!"
 }
