@@ -91,7 +91,8 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                             ),
                             InkWell(
                               onTap: () {
-                                expertRead.expertCertificateDeleteApi(context: context, certiId: expertWatch.certiAndExpModel[index].id, index: index);
+                                expertRead.expertCertificateDeleteApi(
+                                    context: context, certiId: expertWatch.certiAndExpModel[index].id, index: index);
                               },
                               child: TitleSmallText(
                                 title: StringConstants.delete,
@@ -108,9 +109,13 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           hintText: StringConstants.writeYourTitle,
                           textInputType: TextInputType.text,
                           onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].titleFocus
-                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus, nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
+                            expertWatch.certiAndExpModel[index].titleFocus.toChangeFocus(
+                                currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus,
+                                nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
                           },
+                          // inputFormatters: [
+                          //   LengthLimitingTextInputFormatter(50),
+                          // ],
                           validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredTitle),
                         ),
                         20.0.spaceY,
@@ -119,8 +124,9 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           focusNode: expertWatch.certiAndExpModel[index].urlFocus,
                           hintText: StringConstants.sourceUrl,
                           onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].urlFocus
-                                .toChangeFocus(currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus, nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
+                            expertWatch.certiAndExpModel[index].urlFocus.toChangeFocus(
+                                currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus,
+                                nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
                           },
                         ),
                         20.0.spaceY,
@@ -134,6 +140,9 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           onFieldSubmitted: (value) {
                             context.unFocusKeyboard();
                           },
+                          // inputFormatters: [
+                          //   LengthLimitingTextInputFormatter(255),
+                          // ],
                         ),
                       ],
                     ),

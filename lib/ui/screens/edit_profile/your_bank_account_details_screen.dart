@@ -88,6 +88,9 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
                   onFieldSubmitted: (value) {
                     nameFocus.toChangeFocus(currentFocusNode: nameFocus, nexFocusNode: bankNameFocus);
                   },
+                  // inputFormatters: [
+                  //   LengthLimitingTextInputFormatter(50),
+                  // ],
                 ),
                 20.0.spaceY,
                 TextFormFieldWidget(
@@ -97,6 +100,9 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
                   onFieldSubmitted: (value) {
                     bankNameFocus.toChangeFocus(currentFocusNode: bankNameFocus, nexFocusNode: accountFocus);
                   },
+                  // inputFormatters: [
+                  //   LengthLimitingTextInputFormatter(50),
+                  // ],
                 ),
                 20.0.spaceY,
                 TextFormFieldWidget(

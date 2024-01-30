@@ -79,7 +79,7 @@ class StringConstants {
       "Get picked more often! A relevant and high- quality profile photo can make all the difference.";
   static const String yourFavoriteOne = "Tap here to add your favorite one!";
   static const String trustYourAbilities =
-      "Showcase your expertise and experience prominently – it's key for users to see and trust your abilities.";
+      "Showcase your expertise and experience prominently\n– it's key for users to see and trust your abilities.";
   static const String mediaAccount =
       " This could include links to your professional website or accounts, your social media accounts, any certifications, etc.";
   static const String writeYourTitle = "WRITE YOUR TITLE HERE (role, designation, etc.)";

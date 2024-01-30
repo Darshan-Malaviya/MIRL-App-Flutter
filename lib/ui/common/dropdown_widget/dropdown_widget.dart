@@ -60,10 +60,10 @@ class DropdownMenuWidget extends StatelessWidget {
           trailingIcon: Icon(
             Icons.keyboard_arrow_down_rounded,
             color: ColorConstants.dropDownBorderColor,
-            size: 18,
+            size: 30,
           ),
           selectedTrailingIcon: Icon(
-            size: 18,
+            size: 30,
             Icons.keyboard_arrow_up_rounded,
             color: ColorConstants.dropDownBorderColor,
           ),

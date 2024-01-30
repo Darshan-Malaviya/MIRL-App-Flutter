@@ -106,6 +106,8 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 TitleMediumText(
                   title: StringConstants.editYourDetails,
                   fontFamily: FontWeightEnum.w700.toInter,
+                  titleColor: ColorConstants.blueColor,
+
                 ),
                 18.0.spaceY,
                 TextFormFieldWidget(
