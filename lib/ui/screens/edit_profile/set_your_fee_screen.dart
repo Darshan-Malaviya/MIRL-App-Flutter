@@ -10,7 +10,6 @@ class SetYourFreeScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -63,7 +62,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                 ],
-                onFieldSubmitted: (value){
+                onFieldSubmitted: (value) {
                   context.unFocusKeyboard();
                 },
               ).addAllPadding(16),
@@ -86,14 +85,18 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
             title: StringConstants.appFees,
           ),
           4.0.spaceY,
-          TitleSmallText(title: StringConstants.ourAppFees, titleColor: ColorConstants.bottomTextColor,    fontFamily: FontWeightEnum.w400.toInter,),
+          TitleSmallText(
+            title: StringConstants.ourAppFees,
+            titleColor: ColorConstants.bottomTextColor,
+            fontFamily: FontWeightEnum.w400.toInter,
+          ),
           50.0.spaceY,
           Container(
             width: MediaQuery.sizeOf(context).width * 0.8,
             padding: EdgeInsets.symmetric(vertical: 18),
             decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: ColorConstants.primaryColor),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 BodyMediumText(
                   title: StringConstants.userFees,
@@ -104,7 +107,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   fontFamily: FontWeightEnum.w700.toInter,
                 )
               ],
-            ).addPaddingX(10),
+            ),
           )
         ],
       ),

@@ -79,13 +79,13 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                       ).addMarginXY(paddingX: 8, paddingY: 2),
                       decoration: ShapeDecoration(
                         //  color: Color(0x66D97CF0),
-                        color: index % 2 == 0 ? Color(0x66D97CF0) : Color(0x66FFCF5A),
+                        color: index % 2 == 0 ? ColorConstants.topicColor : ColorConstants.yellowLightColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         shadows: [
                           BoxShadow(
-                            color: Color(0x33000000),
+                            color: ColorConstants.topicShoeColorColor,
                             blurRadius: 4,
                             offset: Offset(0, 2),
                             spreadRadius: 0,

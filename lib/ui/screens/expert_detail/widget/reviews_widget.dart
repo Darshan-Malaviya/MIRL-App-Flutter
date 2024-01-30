@@ -5,7 +5,6 @@ import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/ui/common/rating_bar_widgets/star_rating_widget.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
@@ -19,7 +18,6 @@ class ReviewsWidget extends ConsumerStatefulWidget {
 class _ReviewsWidgetState extends ConsumerState<ReviewsWidget> {
   @override
   Widget build(BuildContext context) {
-    final expertDetailWatch = ref.watch(expertDetailProvider);
     return Column(
         children: List.generate(1, (index) {
       return Container(
@@ -61,7 +59,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewsWidget> {
                             fontFamily: FontWeightEnum.w400.toInter,
                           )),
                       TextSpan(
-                          text: expertDetailWatch.userData?.expertName ?? '',
+                          text: 'PREETI',
                           style: TextStyle(
                             color: ColorConstants.buttonTextColor,
                             fontFamily: FontWeightEnum.w700.toInter,

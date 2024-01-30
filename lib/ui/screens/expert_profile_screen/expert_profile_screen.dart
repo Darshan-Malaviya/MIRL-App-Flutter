@@ -55,18 +55,36 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Flexible(
-                              child: BodySmallText(
-                                title: StringConstants.overallRatting,
-                                fontFamily: FontWeightEnum.w700.toInter,
-                              ),
+                            Row(
+                              children: [
+                                BodySmallText(
+                                  title: StringConstants.overallRatting,
+                                  fontFamily: FontWeightEnum.w700.toInter,
+                                ),
+                                10.0.spaceX,
+                                HeadlineMediumText(
+                                  fontSize: 30,
+                                  title: '0',
+                                  fontFamily: FontWeightEnum.w700.toInter,
+                                  titleColor: ColorConstants.overallRatingColor,
+                                ),
+                              ],
                             ),
                             18.0.spaceY,
-                            Flexible(
-                              child: BodySmallText(
-                                title: StringConstants.feePer,
-                                fontFamily: FontWeightEnum.w700.toInter,
-                              ),
+                            Row(
+                              children: [
+                                BodySmallText(
+                                  title: StringConstants.feePer,
+                                  fontFamily: FontWeightEnum.w700.toInter,
+                                ),
+                                10.0.spaceX,
+                                HeadlineMediumText(
+                                  fontSize: 30,
+                                  title: '\$',
+                                  fontFamily: FontWeightEnum.w700.toInter,
+                                  titleColor: ColorConstants.overallRatingColor,
+                                ),
+                              ],
                             ),
                           ],
                         ),

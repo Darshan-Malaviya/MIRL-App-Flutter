@@ -26,6 +26,10 @@ class ExpertDetailProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
+  // String dropdownValue = 'HIGHEST REVIEW SCORE';
+
+  // var items = ['HIGHEST REVIEW SCORE', 'LOWEST REVIEW SCORE', 'NEWEST REVIEWS', 'OLDEST REVIEWS'];
+
   String? userGender() {
     if (_userData?.gender == '1') {
       return 'Male';
@@ -39,6 +43,7 @@ class ExpertDetailProvider extends ChangeNotifier {
 
   void changeLikeDislike() {
     isFavorite.value = !isFavorite.value;
+    // _userData?.isFavorite = _userData?.isFavorite!;
     notifyListeners();
   }
 
@@ -72,7 +77,7 @@ class ExpertDetailProvider extends ChangeNotifier {
   }
 
   Future<void> favoriteApiCall({required Object requestModel}) async {
-     CustomLoading.progressDialog(isLoading: true);
+    CustomLoading.progressDialog(isLoading: true);
 
     ApiHttpResult response = await _expertProfileRepo.favoriteApi(requestModel: requestModel);
 

@@ -40,14 +40,14 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
                 Container(
                   width: double.infinity,
                   decoration: ShapeDecoration(
-                    color: Color(0xFFF0F0F0),
+                    color: ColorConstants.certificatedBgColor,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1, color: Color(0xFFD8D5D5)),
+                      side: BorderSide(width: 1, color: ColorConstants.certificatedBorderColor),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     shadows: [
                       BoxShadow(
-                        color: Color(0x19000000),
+                        color: ColorConstants.certificatedBoxShadowColor,
                         blurRadius: 2,
                         offset: Offset(0, 2),
                         spreadRadius: 0,
