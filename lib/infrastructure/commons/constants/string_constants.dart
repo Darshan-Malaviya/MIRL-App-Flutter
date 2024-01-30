@@ -148,4 +148,5 @@ class StringConstants {
   static const String manuallyEveryWeek = 'You have to set your schedule manually every week';
   static const String sortExpert = 'SORT EXPERTS BY:';
   static const String sortReviews = 'SORT REVIEWS BY:';
+  static const String callsPaused = 'ZEN MODE: CALLS PAUSED';
 }
