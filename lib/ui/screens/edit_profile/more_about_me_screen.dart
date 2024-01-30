@@ -65,6 +65,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
               ),
               30.0.spaceY,
               TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.professionalSkills,
                 titleTextAlign: TextAlign.center,
                 maxLine: 4,

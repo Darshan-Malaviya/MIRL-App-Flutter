@@ -8,13 +8,10 @@ class OverallRatingWidget extends StatefulWidget {
   final String name;
   final int? value;
 
-  //final Widget child;
-
   OverallRatingWidget({
     Key? key,
     required this.name,
     required this.value,
-    /*required this.child*/
   }) : super(key: key);
 
   @override

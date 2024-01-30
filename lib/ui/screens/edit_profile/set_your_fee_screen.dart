@@ -77,14 +77,16 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
             ],
           ),
           TitleSmallText(
+            fontFamily: FontWeightEnum.w400.toInter,
             title: StringConstants.currency,
           ),
           10.0.spaceY,
           TitleSmallText(
+            fontFamily: FontWeightEnum.w400.toInter,
             title: StringConstants.appFees,
           ),
           4.0.spaceY,
-          TitleSmallText(title: StringConstants.ourAppFees, titleColor: ColorConstants.bottomTextColor),
+          TitleSmallText(title: StringConstants.ourAppFees, titleColor: ColorConstants.bottomTextColor,    fontFamily: FontWeightEnum.w400.toInter,),
           50.0.spaceY,
           Container(
             width: MediaQuery.sizeOf(context).width * 0.8,

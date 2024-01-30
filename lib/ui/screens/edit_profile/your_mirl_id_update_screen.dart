@@ -46,24 +46,28 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
               ),
               20.0.spaceY,
               TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.uniqueId,
                 titleTextAlign: TextAlign.center,
                 maxLine: 4,
               ),
               20.0.spaceY,
               TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.timeOrAdvice,
                 titleTextAlign: TextAlign.center,
                 maxLine: 6,
               ),
               20.0.spaceY,
               TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.mirlQrCode,
                 titleTextAlign: TextAlign.center,
                 maxLine: 3,
               ),
               20.0.spaceY,
               TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.changeMirlId,
                 titleTextAlign: TextAlign.center,
                 maxLine: 2,

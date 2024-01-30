@@ -61,12 +61,14 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                 ),
                 20.0.spaceY,
                 TitleSmallText(
+                  fontFamily: FontWeightEnum.w400.toInter,
                   title: StringConstants.trustYourAbilities,
                   titleTextAlign: TextAlign.center,
                   maxLine: 5,
                 ),
                 20.0.spaceY,
                 TitleSmallText(
+                  fontFamily: FontWeightEnum.w400.toInter,
                   title: StringConstants.mediaAccount,
                   titleTextAlign: TextAlign.center,
                   maxLine: 5,

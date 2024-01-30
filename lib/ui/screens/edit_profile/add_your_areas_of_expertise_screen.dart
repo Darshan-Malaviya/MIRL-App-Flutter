@@ -53,9 +53,10 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           ),
           20.0.spaceY,
           TitleSmallText(
+            fontFamily: FontWeightEnum.w400.toInter,
             title: StringConstants.categoryView,
             titleTextAlign: TextAlign.center,
-            maxLine: 2,
+            maxLine: 3,
           ),
           30.0.spaceY,
           Expanded(
@@ -93,8 +94,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                         borderRadius: BorderRadius.circular(20.0),
                                         child: NetworkImageWidget(
                                           boxFit: BoxFit.cover,
-                                          imageURL:
-                                              addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
+                                          imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
                                           isNetworkImage: true,
                                           height: 50,
                                           width: 50,

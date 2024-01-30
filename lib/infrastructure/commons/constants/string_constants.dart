@@ -146,4 +146,6 @@ class StringConstants {
   static const String selectOnrOrLeave = "SELECT ONE OR LEAVE AS IS";
   static const String followedEveryWeek = 'The same schedule will be followed every week';
   static const String manuallyEveryWeek = 'You have to set your schedule manually every week';
+  static const String sortExpert = 'SORT EXPERTS BY:';
+  static const String sortReviews = 'SORT REVIEWS BY:';
 }

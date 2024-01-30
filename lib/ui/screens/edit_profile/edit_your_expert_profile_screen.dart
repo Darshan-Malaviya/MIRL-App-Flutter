@@ -76,16 +76,19 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                         children: [
                           BodySmallText(
                             title: StringConstants.expertProfilePhoto,
+                            fontFamily: FontWeightEnum.w400.toInter,
                           ),
                           20.0.spaceY,
                           BodySmallText(
                             title: StringConstants.highQualityProfile,
                             titleTextAlign: TextAlign.center,
+                            fontFamily: FontWeightEnum.w400.toInter,
                             maxLine: 2,
                           ),
                           20.0.spaceY,
                           BodySmallText(
                             title: StringConstants.yourFavoriteOne,
+                            fontFamily: FontWeightEnum.w400.toInter,
                           ),
                         ],
                       ),
