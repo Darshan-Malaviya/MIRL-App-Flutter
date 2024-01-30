@@ -85,4 +85,6 @@ class ApiConstants {
   static const String expertCategory = '/expertCategory/parent/child-category';
   static const String expertCategorySelection = '/expertCategory/category/selection';
   static const String userFavorite = '/userFavorite';
+  static const String homepage = '/homePage/';
+  static const String homepageSearch = '/homePage/search/';
 }
