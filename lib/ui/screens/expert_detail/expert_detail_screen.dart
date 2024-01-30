@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
@@ -19,7 +21,7 @@ class ExpertDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
-  List<String> reviews = ["HIGHEST REVIEW SCORE", "LOWEST REVIEW SCORE", "NEWEST REVIEWS", "OLDEST REVIEWS"];
+  // List<String> reviews = ["HIGHEST REVIEW SCORE", "LOWEST REVIEW SCORE", "NEWEST REVIEWS", "OLDEST REVIEWS"];
 
   @override
   void initState() {
@@ -30,6 +32,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
     });
     super.initState();
   }
+
 /*  Future<void> _showBottomSheet() async {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -92,7 +95,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     4.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '9',
+                      title: '0',
                       fontFamily: FontWeightEnum.w700.toInter,
                       titleColor: ColorConstants.overallRatingColor,
                     ),
@@ -132,8 +135,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 trimLines: 2,
                 // colorClickableText: ColorConstants.blackColor,
                 trimMode: TrimMode.Line,
-                trimCollapsedText: 'Read more',
-                trimExpandedText: '  Read less',
+                trimCollapsedText: LocaleKeys.readMore.tr(),
+                trimExpandedText: LocaleKeys.readLess.tr(),
                 moreStyle: TextStyle(fontSize: 18, fontFamily: FontWeightEnum.w700.toInter, color: ColorConstants.blackColor),
               ),
               36.0.spaceY,
@@ -143,6 +146,11 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               title: StringConstants.requestCallNow,
               buttonColor: ColorConstants.requestCallNowColor,
             ),
+            // 36.0.spaceY,
+            // ExpertDetailsButtonWidget(
+            //   title: StringConstants.callsPaused,
+            //   buttonColor: ColorConstants.callsPausedColor,
+            // ),
             24.0.spaceY,
             PrimaryButton(
               title: StringConstants.scheduleCall,
@@ -157,7 +165,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'LOCATION: ',
+                      text: LocaleKeys.location.tr(),
                       style: TextStyle(
                         color: ColorConstants.blueColor,
                         fontSize: 16,
@@ -183,7 +191,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'GENDER: ',
+                      text: LocaleKeys.gender.tr(),
                       style: TextStyle(
                         color: ColorConstants.blueColor,
                         fontSize: 16,
@@ -224,7 +232,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                             TextSpan(
                               text: '0',
                               style: TextStyle(
-                                color: Color(0xFF383636),
+                                color: ColorConstants.overAllRatingColor,
                                 fontSize: 30,
                                 fontFamily: FontWeightEnum.w700.toInter,
                                 height: 0.05,
@@ -234,7 +242,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                             TextSpan(
                               text: '/10',
                               style: TextStyle(
-                                color: Color(0xFF383636),
+                                color: ColorConstants.overAllRatingColor,
                                 fontSize: 18,
                                 fontFamily: FontWeightEnum.w700.toInter,
                                 height: 0.08,
@@ -291,7 +299,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       expertDetailRead.changeLikeDislike();
                       expertDetailRead.favoriteRequestCall();
                     },
-                    child: Image.asset(isFavorite.value ? ImageConstants.like : ImageConstants.dislike),
+                    child: Image.asset(isFavorite.value
+                        /* expertDetailWatch.userData?.isFavorite ?? false*/ ? ImageConstants.like
+                        : ImageConstants.dislike),
                   ),
                   alignment: AlignmentDirectional.topEnd)
               .addAllPadding(15),
