@@ -22,19 +22,21 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
   Widget build(BuildContext context) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
     return Column(
-      children: List.generate(expertDetailWatch.userData?.areasOfExpertise?.length ?? 0, (index) {
-        return Column(
-          children: [
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: TitleMediumText(
-                title: StringConstants.areasExpertise,
-                fontFamily: FontWeightEnum.w700.toInter,
-                titleTextAlign: TextAlign.start,
-                titleColor: ColorConstants.blueColor,
-              ),
-            ),
-            Row(
+      children: [
+        expertDetailWatch.userData?.areasOfExpertise?.isNotEmpty ?? false
+            ? Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: TitleMediumText(
+                  title: StringConstants.areasExpertise,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                  titleTextAlign: TextAlign.start,
+                  titleColor: ColorConstants.blueColor,
+                ),
+              )
+            : SizedBox.shrink(),
+        Column(
+          children: List.generate(expertDetailWatch.userData?.areasOfExpertise?.length ?? 0, (index) {
+            return Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -69,11 +71,15 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                 Container(
                   width: MediaQuery.of(context).size.width - 200,
                   child: Wrap(
-                      children: List.generate(4, (index) {
+                      children: List.generate(expertDetailWatch.userData?.areasOfExpertise?[index].data?.length ?? 0, (i) {
                     return Container(
-                      child: Text('vaidehiiiiiiiiiiiiiiiii').addMarginXY(paddingX: 8, paddingY: 2),
+                      child: TitleSmallText(
+                        title: expertDetailWatch.userData?.areasOfExpertise?[index].data?[i].name ?? '',
+                        fontFamily: FontWeightEnum.w500.toInter,
+                      ).addMarginXY(paddingX: 8, paddingY: 2),
                       decoration: ShapeDecoration(
-                        color: Color(0x66D97CF0),
+                        //  color: Color(0x66D97CF0),
+                        color: index % 2 == 0 ? Color(0x66D97CF0) : Color(0x66FFCF5A),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -90,10 +96,10 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                   })),
                 )
               ],
-            ).addMarginY(20)
-          ],
-        );
-      }),
+            ).addMarginY(20);
+          }),
+        ),
+      ],
     );
   }
 }

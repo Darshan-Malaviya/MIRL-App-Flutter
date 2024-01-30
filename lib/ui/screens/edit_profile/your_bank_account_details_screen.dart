@@ -61,18 +61,21 @@ class _YourBankAccountDetailsScreenState extends ConsumerState<YourBankAccountDe
                 ),
                 20.0.spaceY,
                 TitleSmallText(
+                  fontFamily: FontWeightEnum.w400.toInter,
                   title: StringConstants.shareBankAccountDetails,
                   titleTextAlign: TextAlign.center,
                   maxLine: 3,
                 ),
                 20.0.spaceY,
                 TitleSmallText(
+                  fontFamily: FontWeightEnum.w400.toInter,
                   title: StringConstants.updateBankAccountDetails,
                   titleTextAlign: TextAlign.center,
                   maxLine: 2,
                 ),
                 20.0.spaceY,
                 TitleSmallText(
+                  fontFamily: FontWeightEnum.w400.toInter,
                   title: StringConstants.informationRequired,
                   titleTextAlign: TextAlign.center,
                   maxLine: 2,

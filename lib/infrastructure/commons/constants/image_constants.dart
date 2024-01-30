@@ -25,6 +25,8 @@ class ImageConstants {
   static const expertDetail = '${imagePath}expert_detail.png';
   static const rating = '${imagePath}rating.png';
   static const starFill = '${imagePath}star_fill.png';
+  static const like = '${imagePath}like.png';
+  static const dislike = '${imagePath}dislike.png';
 
   /// gif image
 
