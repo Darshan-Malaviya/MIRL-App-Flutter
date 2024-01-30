@@ -9,7 +9,6 @@ class ExpertProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -86,7 +85,9 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                             Flexible(
                               child: PrimaryButton(
                                 title: StringConstants.shareProfile,
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.toPushNamed(RoutesConstants.expertDetailScreen);
+                                },
                               ),
                             ),
                           ],
@@ -101,22 +102,25 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                         ),
                         12.0.spaceY,
                         TitleMediumText(
+                          fontFamily: FontWeightEnum.w400.toInter,
                           title: StringConstants.welcomeExpertProfile,
                           titleTextAlign: TextAlign.start,
                         ),
                         20.0.spaceY,
                         TitleMediumText(
+                          fontFamily: FontWeightEnum.w400.toInter,
                           title: StringConstants.soWhatNext,
                           maxLine: 5,
-
                         ),
                         20.0.spaceY,
                         TitleMediumText(
+                          fontFamily: FontWeightEnum.w400.toInter,
                           title: StringConstants.clickEditProfile,
                           maxLine: 3,
                         ),
                         20.0.spaceY,
                         TitleMediumText(
+                          fontFamily: FontWeightEnum.w400.toInter,
                           title: StringConstants.goodLuck,
                           maxLine: 2,
                         ),

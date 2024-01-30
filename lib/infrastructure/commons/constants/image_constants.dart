@@ -1,5 +1,4 @@
-class
-ImageConstants {
+class ImageConstants {
   static const imagePath = 'assets/images/';
   static const gifPath = 'assets/gif/';
 
@@ -24,9 +23,11 @@ ImageConstants {
   static const expert = '${imagePath}expert.png';
   static const multipleConnect = '${imagePath}multiple_connect.png';
   static const filter = '${imagePath}filter.png';
-
-
-
+  static const expertDetail = '${imagePath}expert_detail.png';
+  static const rating = '${imagePath}rating.png';
+  static const starFill = '${imagePath}star_fill.png';
+  static const like = '${imagePath}like.png';
+  static const dislike = '${imagePath}dislike.png';
 
   /// gif image
 

@@ -67,6 +67,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               ),
               20.0.spaceY,
               TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.specificCityOrCountry,
                 titleTextAlign: TextAlign.center,
                 maxLine: 4,
@@ -92,6 +93,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               ),
               20.0.spaceY,
               TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.filterExperts,
                 titleTextAlign: TextAlign.center,
                 maxLine: 3,

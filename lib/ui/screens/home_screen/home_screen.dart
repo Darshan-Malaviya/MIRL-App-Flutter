@@ -2,7 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-
+import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
+import 'package:mirl/ui/screens/home_screen/widget/category_and_topic_list_view.dart';
+import 'package:mirl/ui/screens/home_screen/widget/favorite_experts_view.dart';
+import 'package:mirl/ui/screens/home_screen/widget/past_conversation_view.dart';
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -12,9 +15,17 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(homeProvider).homePageApi();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWidget(
+    final homeProviderWatch  = ref.watch(homeProvider);return Scaffold(
+      backgroundColor: ColorConstants.grayLightColor,appBar: AppBarWidget(
         preferSize: 0,
       ),
       body: SingleChildScrollView(
@@ -28,14 +39,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
             ),
             10.0.spaceY,
-            Container(
+           InkWell(
+            onTap: () {
+              context.toPushNamed(RoutesConstants.searchScreen);
+            },
+            child: Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
               child: BodySmallText(
                 maxLine: 2,
                 title: LocaleKeys.searchTypeAnyKeyword.tr(),
               ).addAllMargin(12),
             ),
-            30.0.spaceY,
+           ), 30.0.spaceY,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -60,16 +75,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ImageConstants.expert,
                             height: 100,
                             width: 100,
-                          ),
-                          10.0.spaceY,
+
+                          ),10.0.spaceY,
                           BodySmallText(
                             title: LocaleKeys.browseExpertsFields.tr(),
                             titleTextAlign: TextAlign.center,
                             maxLine: 3,
                           ),
                         ],
-                      ).addAllMargin(12)),
-                ),
+                      ).addAllMargin(12)),),
+
                 40.0.spaceX,
                 Flexible(
                   child: InkWell(
@@ -96,8 +111,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ImageConstants.multipleConnect,
                               height: 100,
                               width: 100,
-                            ),
-                            10.0.spaceY,
+
+                           ), 10.0.spaceY,
                             BodySmallText(
                               title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
                               titleTextAlign: TextAlign.center,
@@ -106,12 +121,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ],
                         ).addAllMargin(12)),
                   ),
-                ),
-              ],
-            ),
-            10.0.spaceY,
+                ],
+              ),
+            40.0.spaceY,
+          if(homeProviderWatch.isHomeLoading) ...[
+            CategoryListShimmerWidget(),
+            20.0.spaceY,
+            CategoryListShimmerWidget()
+          ] else ...[
+            CategoryAndTopicListView(),
+            20.0.spaceY,
+            FavoriteExpertsView(),
+            20.0.spaceY,
+            PastConversationsView(),
+            20.0.spaceY,
+          ]
           ],
-        ).addPaddingXY(paddingX: 16, paddingY: 16),
+        ).addPaddingXY(paddingX: 16, paddingY: 16)
       ),
     );
   }

@@ -9,6 +9,7 @@ class ColorConstants {
   static const greyLightColor = Color(0xffE7EAF0);
   static const borderColor = Color(0xff828C99);
   static const disableColor = Color(0xffBCC1C7);
+  static const grayLightColor = Color(0xffF8F8F8);
   static const textColor = Color(0xff2C323A);
   static const dropDownBorderColor = Color(0xffCAC9C9);
   static const categoryListBorder = Color(0xFFD87CEF);
@@ -23,6 +24,11 @@ class ColorConstants {
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
   static Color sliderColor = const Color(0xFF85C7F2);
+  static Color overallRatingColor = const Color(0xFFFF6666);
+  static Color blueColor = const Color(0xFF01295F);
+  static Color requestCallNowColor = const Color(0xFFC7F84D);
+  static Color scheduleCallColor = const Color(0xFFFFCF5A);
+
 
   static Color successColor = const Color(0xff12805C);
   static Color warningColor = const Color(0xffCB6F10);

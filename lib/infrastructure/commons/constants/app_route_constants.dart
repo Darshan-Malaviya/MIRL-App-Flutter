@@ -16,12 +16,14 @@ import 'package:mirl/ui/screens/edit_profile/your_expert_profile_name.dart';
 import 'package:mirl/ui/screens/edit_profile/your_mirl_id_update_screen.dart';
 import 'package:mirl/ui/screens/expert_category_screen/expert_category_screen.dart';
 import 'package:mirl/ui/screens/expert_category_screen/selected_category_screen.dart';
+import 'package:mirl/ui/screens/expert_detail/expert_detail_screen.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
+import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
 
@@ -81,6 +83,10 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const YourMirlIdScreen());
       case RoutesConstants.moreAboutMeScreen:
         return MaterialPageRoute(builder: (_) => const MoreAboutMeScreen());
+        case RoutesConstants.searchScreen:
+        return MaterialPageRoute(builder: (_) => const SearchScreen());
+        case RoutesConstants.expertDetailScreen:
+        return MaterialPageRoute(builder: (_) => const ExpertDetailScreen());
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.selectedExpertCategoryScreen:

@@ -12,19 +12,19 @@ class PrimaryButton extends StatelessWidget {
   final Color? titleColor;
   final Color? buttonColor;
 
-  const PrimaryButton({
-    Key? key,
-    required this.title,
-    this.height,
-    this.width,
-    this.padding,
-    this.prefixIconPadding,
-    required this.onPressed,
-    this.prefixIcon,
-    this.lineHeight,
-    this.titleColor,
-    this.buttonColor,
-  }) : super(key: key);
+    const PrimaryButton({
+      Key? key,
+      required this.title,
+      this.height,
+      this.width,
+      this.padding,
+      this.prefixIconPadding,
+      required this.onPressed,
+      this.prefixIcon,
+      this.lineHeight,
+      this.titleColor,
+      this.buttonColor,
+    }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

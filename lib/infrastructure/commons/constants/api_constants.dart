@@ -49,6 +49,7 @@ class ApiConstants {
   static const String login = '/user/login';
   static const String otpVerify = '/user/verify-otp';
   static String updateUser = '/user/${SharedPrefHelper.getUserId}';
+  static String getUserDetail = '/user/';
   static const String category = '/category';
   static const String country = '/country';
   static const String city = '/city';
@@ -57,4 +58,7 @@ class ApiConstants {
   static const String user = '/user';
   static const String expertCategory = '/expertCategory/parent/child-category';
   static const String expertCategorySelection = '/expertCategory/category/selection';
+  static const String userFavorite = '/userFavorite';
+  static const String homepage = '/homePage/';
+  static const String homepageSearch = '/homePage/search/';
 }
