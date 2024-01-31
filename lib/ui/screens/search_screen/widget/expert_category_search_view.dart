@@ -32,7 +32,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
               physics: NeverScrollableScrollPhysics(),
               itemCount: homeProviderWatch.homeSearchData?.categories?.length ?? 0,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.6),
+                  crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [
@@ -48,7 +48,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                               borderRadius: BorderRadius.circular(20.0),
                               child: NetworkImageWidget(
                                 boxFit: BoxFit.cover,
-                                imageURL: homeProviderWatch.homeSearchData?.categories?[index].image ??'',
+                                imageURL: homeProviderWatch.homeSearchData?.categories?[index].image ?? '',
                                 isNetworkImage: true,
                                 height: 60,
                                 width: 50,
@@ -57,7 +57,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                             4.0.spaceY,
                             LabelSmallText(
                               fontSize: 9,
-                              title: homeProviderWatch.homeSearchData?.categories?[index].name?.toUpperCase() ??'',
+                              title: homeProviderWatch.homeSearchData?.categories?[index].name?.toUpperCase() ?? '',
                               maxLine: 2,
                               titleColor: ColorConstants.blackColor,
                               fontFamily: FontWeightEnum.w700.toInter,

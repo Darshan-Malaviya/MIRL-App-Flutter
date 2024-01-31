@@ -47,7 +47,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               context.toPushNamed(RoutesConstants.searchScreen);
             },
             child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
               child: BodySmallText(
                 maxLine: 2,
                 title: LocaleKeys.searchTypeAnyKeyword.tr(),
@@ -60,7 +61,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               Flexible(
                 child: Container(
-                    decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                    decoration:
+                        BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                       BoxShadow(
                         color: Color(0x33000000),
                         blurRadius: 2,
@@ -93,10 +95,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Flexible(
                 child: InkWell(
                   onTap: () {
-                    context.toPushNamed(RoutesConstants.expertCategoryScreen);
+                    // context.toPushNamed(RoutesConstants.expertCategoryScreen);
                   },
                   child: Container(
-                      decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                      decoration:
+                          BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                         BoxShadow(
                           color: Color(0x33000000),
                           blurRadius: 2,

@@ -14,7 +14,6 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
   @override
   Widget build(BuildContext context) {
     final homeProviderWatch = ref.watch(homeProvider);
-    final homeProviderRead = ref.read(homeProvider);
     return Column(
       children: [
         SizedBox(
@@ -23,7 +22,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
             physics: NeverScrollableScrollPhysics(),
             itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.6),
+                crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
             itemBuilder: (BuildContext context, int index) {
               return Column(
                 children: [
