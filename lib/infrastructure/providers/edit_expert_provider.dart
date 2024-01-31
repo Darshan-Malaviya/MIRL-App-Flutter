@@ -16,6 +16,7 @@ import 'package:mirl/infrastructure/models/common/week_schedule_model.dart';
 import 'package:mirl/infrastructure/models/request/certificate_request_model.dart';
 import 'package:mirl/infrastructure/models/request/expert_availability_request_model.dart';
 import 'package:mirl/infrastructure/repository/expert_profile_repo.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/week_availability_dialog_widget.dart';
 
 class EditExpertProvider extends ChangeNotifier {
   final _updateUserDetailsRepository = UpdateUserDetailsRepository();
@@ -144,7 +145,6 @@ class EditExpertProvider extends ChangeNotifier {
 
   void generateWeekDaysTime() {
     _weekScheduleModel.clear();
-    _tabIndex = 0;
     var _time = DateTime.now();
     hourOnly = DateTime(_time.year, _time.month, _time.day, 0, 0, 0);
     plusDay = hourOnly.add(Duration(days: 1));
@@ -152,6 +152,7 @@ class EditExpertProvider extends ChangeNotifier {
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
     if (_userData?.expertAvailability?.isNotEmpty ?? false) {
+      _tabIndex = (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1' ? 0 : 1;
       _userData?.expertAvailability?.forEach((element) {
         _weekScheduleModel.add(WeekScheduleModel(
           dayName: element.dayOfWeek?.substring(0, 3).toUpperCase(),
@@ -179,7 +180,7 @@ class EditExpertProvider extends ChangeNotifier {
       element.isSelected = false;
     });
     _editButtonList[index].isSelected = !(_editButtonList[index].isSelected ?? false);
-    context.toPushNamed(editButtonList[index].screenName ?? '');
+    context.toPushNamed(editButtonList[index].screenName ?? '', args: index == 2 ? _tabIndex : null);
     notifyListeners();
   }
 
@@ -241,6 +242,12 @@ class EditExpertProvider extends ChangeNotifier {
     String value = SharedPrefHelper.getUserData;
     if (value.isNotEmpty) {
       _userData = UserData.fromJson(jsonDecode(value));
+      _tabIndex = (_userData?.expertAvailability?.isNotEmpty ?? false)
+          ? (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1'
+              ? 0
+              : 1
+          : 0;
+
       expertNameController.text = _userData?.expertName ?? '';
       expertName = _userData?.expertName ?? '';
       _pickedImage = _userData?.expertProfile ?? '';
@@ -373,7 +380,6 @@ class EditExpertProvider extends ChangeNotifier {
     isSelectGender = data.selectType;
     notifyListeners();
   }
-  
 
   Future<void> pickGalleryImage(BuildContext context) async {
     String? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
@@ -501,6 +507,9 @@ class EditExpertProvider extends ChangeNotifier {
   void resetVariable() {
     countController.text = '0';
     _enteredText = '';
+    expertName = '';
+    mirlId = '';
+    aboute = '';
     expertNameController.clear();
     mirlIdController.clear();
     aboutMeController.clear();

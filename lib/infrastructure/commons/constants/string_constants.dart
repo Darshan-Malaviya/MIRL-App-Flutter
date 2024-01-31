@@ -31,6 +31,7 @@ class StringConstants {
   static const String moreAboutMe = "MORE ABOUT ME";
   static const String done = "Done";
   static const String yes = "Yes";
+  static const String cancel = "Cancel";
   static const String editYourExpertProfile = "EDIT YOUR EXPERT PROFILE";
   static const String editExpertProfile = "EDIT EXPERT PICTURE";
   static const String editYourDetails = "EDIT YOUR DETAILS";
@@ -163,4 +164,5 @@ class StringConstants {
   static const String sortExpert = 'SORT EXPERTS BY:';
   static const String sortReviews = 'SORT REVIEWS BY:';
   static const String callsPaused = 'ZEN MODE: CALLS PAUSED';
+  static const String aboutMe = 'ABOUT ME';
 }

@@ -26,7 +26,6 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
                 alignment: AlignmentDirectional.centerStart,
                 child: TitleMediumText(
                   title: StringConstants.certificationsAndExperience,
-                  fontFamily: FontWeightEnum.w700.toInter,
                   titleTextAlign: TextAlign.start,
                   titleColor: ColorConstants.blueColor,
                 ),

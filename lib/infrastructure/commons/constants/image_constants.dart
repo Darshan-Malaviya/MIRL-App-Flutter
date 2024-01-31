@@ -1,6 +1,7 @@
 class ImageConstants {
   static const imagePath = 'assets/images/';
   static const gifPath = 'assets/gif/';
+  static const iconPath = 'assets/icons/';
 
   static const backgroundLines = '${imagePath}background_line.png';
   static const mirlImage = '${imagePath}mirl_image.png';
@@ -30,6 +31,9 @@ class ImageConstants {
   static const dislike = '${imagePath}dislike.png';
 
   /// gif image
-
   static const splashImages = '${gifPath}splash_image.gif';
+
+  /// icon
+  static const recurringIcon = '${iconPath}recurring.png';
+  static const nonRecurringIcon = '${iconPath}non_recurring.png';
 }

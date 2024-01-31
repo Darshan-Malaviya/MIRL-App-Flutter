@@ -70,7 +70,10 @@ class RouterConstant {
       case RoutesConstants.setYourGenderScreen:
         return MaterialPageRoute(builder: (_) => const SetYourGenderScreen());
       case RoutesConstants.setWeeklyAvailability:
-        return MaterialPageRoute(builder: (_) => const SetYourWeeklyAvailabilityScreen());
+        return MaterialPageRoute(
+            builder: (_) => SetYourWeeklyAvailabilityScreen(
+                  initialIndex: settings.arguments as int,
+                ));
       case RoutesConstants.certificationsAndExperienceScreen:
         return MaterialPageRoute(builder: (_) => const CertificationsAndExperienceScreen());
       case RoutesConstants.yourBankAccountDetailsScreen:
@@ -83,9 +86,9 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const YourMirlIdScreen());
       case RoutesConstants.moreAboutMeScreen:
         return MaterialPageRoute(builder: (_) => const MoreAboutMeScreen());
-        case RoutesConstants.searchScreen:
+      case RoutesConstants.searchScreen:
         return MaterialPageRoute(builder: (_) => const SearchScreen());
-        case RoutesConstants.expertDetailScreen:
+      case RoutesConstants.expertDetailScreen:
         return MaterialPageRoute(builder: (_) => const ExpertDetailScreen());
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());

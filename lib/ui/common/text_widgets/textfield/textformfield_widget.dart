@@ -175,6 +175,8 @@ class TextFormFieldWidget extends StatelessWidget {
 
   final Color? labelColor;
 
+  final AlignmentGeometry? alignment;
+
   const TextFormFieldWidget(
       {this.textFormFieldKey,
       this.controller,
@@ -238,7 +240,8 @@ class TextFormFieldWidget extends StatelessWidget {
       this.labelText,
       this.labelColor,
       this.borderColor,
-      this.initialValue})
+      this.initialValue,
+      this.alignment})
       : super(key: textFormFieldKey);
 
   @override
@@ -249,7 +252,8 @@ class TextFormFieldWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         (labelText?.isNotEmpty ?? false) && labelText != null
-            ? Center(
+            ? Align(
+                alignment: alignment ?? Alignment.center,
                 child: BodySmallText(
                   title: labelText ?? '',
                   titleColor: labelColor ?? ColorConstants.blackColor,

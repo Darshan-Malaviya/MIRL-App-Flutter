@@ -17,7 +17,9 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
     final addYourAreaExpertiseProviderRead = ref.read(addYourAreaExpertiseProvider);
 
     return Scaffold(
+      backgroundColor: ColorConstants.scaffoldBg,
       appBar: AppBarWidget(
+        appBarColor: ColorConstants.scaffoldBg,
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
@@ -135,8 +137,9 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
             ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 itemBuilder: (context, index) {
-                  return ExpertDetail();
+                  return ExpertDetailWidget();
                 },
                 separatorBuilder: (context, index) => 20.0.spaceY,
                 itemCount: 30)
