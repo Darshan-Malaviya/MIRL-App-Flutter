@@ -32,7 +32,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
               physics: NeverScrollableScrollPhysics(),
               itemCount: homeProviderWatch.homeSearchData?.categories?.length ?? 0,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
+                  crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.6),
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [

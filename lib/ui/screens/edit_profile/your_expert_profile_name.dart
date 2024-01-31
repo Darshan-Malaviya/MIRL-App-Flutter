@@ -40,6 +40,9 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
                 hintText: StringConstants.officialNameHere,
                 onFieldSubmitted: (value) {},
                 controller: expertWatch.expertNameController,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(50),
+                ],
               ),
               20.0.spaceY,
               TitleSmallText(

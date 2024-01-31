@@ -1,4 +1,3 @@
-
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/child_update_request.dart';
@@ -13,6 +12,7 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   final List<CategoryListData> _categoryList = [];
 
   List<CategoryIds> _childCategoryIds = [];
+
   List<CategoryIds> get childCategoryIds => _childCategoryIds;
 
   List<int> updateChild = [];
@@ -69,18 +69,17 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectionBoolValueOfChild({required int position , required bool value,
-    required CategoryListData? childCategoryList}){
-    childCategoryList?.child?[position].isSelected = value;
+  void setSelectionBoolValueOfChild({required int position, required bool value, required CategoryListData? childCategoryList}) {
+    childCategoryList?.topic?[position].isSelected = value;
     notifyListeners();
   }
 
-  void selectAllChildCategory({ /*required List<Child>? childList ,*/ required bool isSelectAll,required int parentId}){
+  void selectAllChildCategory({/*required List<Child>? childList ,*/ required bool isSelectAll, required int parentId}) {
     int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
-    if(parentListIndex != -1){
-      if(_categoryList[parentListIndex].child?.isNotEmpty ?? false) {
-        for(Child data in _categoryList[parentListIndex].child ?? []){
-          if(isSelectAll){
+    if (parentListIndex != -1) {
+      if (_categoryList[parentListIndex].topic?.isNotEmpty ?? false) {
+        for (Topic data in _categoryList[parentListIndex].topic ?? []) {
+          if (isSelectAll) {
             data.isSelected = true;
           } else {
             data.isSelected = false;
@@ -89,22 +88,22 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
         }
       }
     }
-
   }
 
-  void addSelectedChildIds({ required int parentId}) {
+  void addSelectedChildIds({required int parentId}) {
     int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
     if (parentListIndex != -1) {
-      for( Child? _child in _categoryList[parentListIndex].child ?? []){
+      for (Topic? _child in _categoryList[parentListIndex].topic ?? []) {
         //Child? _child = _categoryList[parentListIndex].child?[childIndex];
         if (_child != null) {
-          if(_categoryList[parentListIndex].child?.every((element) => element.isSelected == true) ?? false){
+          if (_categoryList[parentListIndex].topic?.every((element) => element.isSelected == true) ?? false) {
             _categoryList[parentListIndex].selectAllCategory = true;
           } else {
             _categoryList[parentListIndex].selectAllCategory = false;
           }
           notifyListeners();
-          if (_childCategoryIds.isEmpty) { /// local childIdLis is empty then add select data in list
+          if (_childCategoryIds.isEmpty) {
+            /// local childIdLis is empty then add select data in list
             if (_child.isSelected ?? false) {
               _childCategoryIds.addAll([
                 CategoryIds(childIds: [_child.id ?? 0], parentId: parentId)
@@ -112,7 +111,9 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
             }
           } else {
             /// local childIdLis is not empty
-            int index = _childCategoryIds.indexWhere((element) => element.parentId == parentId); /// if parent id same then add only child ids in local childIdLis
+            int index = _childCategoryIds.indexWhere((element) => element.parentId == parentId);
+
+            /// if parent id same then add only child ids in local childIdLis
             if (index != -1) {
               if (_child.isSelected ?? false) {
                 _childCategoryIds[index].childIds?.add(_child.id ?? 0);
@@ -132,7 +133,6 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
           notifyListeners();
         }
       }
-
     }
   }
 
@@ -143,9 +143,9 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
 
   void setCategoryChildDefaultData() {
     for (CategoryListData parent in _categoryList) {
-      if (parent.child?.isNotEmpty ?? false) {
-        for (Child child in parent.child ?? []) {
-          if(parent.child?.every((element) => element.isSelected == true) ?? false){
+      if (parent.topic?.isNotEmpty ?? false) {
+        for (Topic child in parent.topic ?? []) {
+          if (parent.topic?.every((element) => element.isSelected == true) ?? false) {
             parent.selectAllCategory = true;
           } else {
             parent.selectAllCategory = false;

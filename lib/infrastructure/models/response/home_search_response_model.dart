@@ -10,11 +10,11 @@ class HomeSearchResponseModel {
   HomeSearchResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ?  HomeSearchData.fromJson(json['data']) : null;
+    data = json['data'] != null ? HomeSearchData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.data != null) {
@@ -44,25 +44,25 @@ class HomeSearchData {
     if (json['categories'] != null) {
       categories = <CategoriesSearch>[];
       json['categories'].forEach((v) {
-        categories!.add( CategoriesSearch.fromJson(v));
+        categories!.add(CategoriesSearch.fromJson(v));
       });
     }
     if (json['users'] != null) {
       users = <Users>[];
       json['users'].forEach((v) {
-        users!.add( Users.fromJson(v));
+        users!.add(Users.fromJson(v));
       });
     }
     if (json['topics'] != null) {
       topics = <Topics>[];
       json['topics'].forEach((v) {
-        topics!.add( Topics.fromJson(v));
+        topics!.add(Topics.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.categories != null) {
       data['categories'] = this.categories!.map((v) => v.toJson()).toList();
     }
@@ -90,7 +90,7 @@ class CategoriesSearch {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
     data['image'] = this.image;
@@ -113,13 +113,13 @@ class Users {
     if (json['categoris'] != null) {
       categoris = <CategoriesSearch>[];
       json['categoris'].forEach((v) {
-        categoris!.add( CategoriesSearch.fromJson(v));
+        categoris!.add(CategoriesSearch.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['expertName'] = this.expertName;
     data['expertProfile'] = this.expertProfile;
@@ -133,24 +133,21 @@ class Users {
 class Topics {
   int? id;
   String? name;
-  String? image;
-  int? skillId;
+  int? categoryId;
 
-  Topics({this.id, this.name, this.image, this.skillId});
+  Topics({this.id, this.name, this.categoryId});
 
   Topics.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    image = json['image'];
-    skillId = json['skillId'];
+    categoryId = json['category'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
-    data['image'] = this.image;
-    data['skillId'] = this.skillId;
+    data['category'] = this.categoryId;
     return data;
   }
 }

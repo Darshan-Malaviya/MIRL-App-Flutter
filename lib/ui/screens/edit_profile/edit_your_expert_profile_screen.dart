@@ -11,6 +11,13 @@ class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
 
 class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProfileScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);
@@ -107,7 +114,6 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   title: StringConstants.editYourDetails,
                   fontFamily: FontWeightEnum.w700.toInter,
                   titleColor: ColorConstants.blueColor,
-
                 ),
                 18.0.spaceY,
                 TextFormFieldWidget(

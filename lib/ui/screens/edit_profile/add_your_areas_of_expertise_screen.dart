@@ -103,7 +103,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                       4.0.spaceY,
                                       LabelSmallText(
                                         fontSize: 9,
-                                        title: element?.parentName ?? '',
+                                        title: element?.name ?? '',
                                         titleColor: ColorConstants.blackColor,
                                         fontFamily: FontWeightEnum.w700.toInter,
                                         titleTextAlign: TextAlign.center,
@@ -117,13 +117,13 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                               ),
                             ],
                           ),
-                          if (element?.badgecount != 0) ...[
+                          if (element?.badgeCount != 0) ...[
                             Positioned(
                                 top: 0,
                                 right: 10,
                                 child: CircleAvatar(
                                   child: TitleMediumText(
-                                    title: element?.badgecount.toString() ?? '0',
+                                    title: element?.badgeCount.toString() ?? '0',
                                     fontWeight: FontWeight.w600,
                                     titleColor: ColorConstants.blackColor,
                                   ),
