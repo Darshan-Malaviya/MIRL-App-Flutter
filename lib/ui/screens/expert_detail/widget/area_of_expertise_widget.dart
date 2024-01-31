@@ -28,7 +28,6 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                 alignment: AlignmentDirectional.centerStart,
                 child: TitleMediumText(
                   title: StringConstants.areasExpertise,
-                  fontFamily: FontWeightEnum.w700.toInter,
                   titleTextAlign: TextAlign.start,
                   titleColor: ColorConstants.blueColor,
                 ),
@@ -58,7 +57,6 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                         fontSize: 9,
                         title: expertDetailWatch.userData?.areasOfExpertise?[index].parentName ?? '',
                         titleColor: ColorConstants.blackColor,
-                        fontFamily: FontWeightEnum.w700.toInter,
                         titleTextAlign: TextAlign.center,
                       ),
                     ],
@@ -78,7 +76,6 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                         fontFamily: FontWeightEnum.w500.toInter,
                       ).addMarginXY(paddingX: 8, paddingY: 2),
                       decoration: ShapeDecoration(
-                        //  color: Color(0x66D97CF0),
                         color: index % 2 == 0 ? ColorConstants.topicColor : ColorConstants.yellowLightColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),

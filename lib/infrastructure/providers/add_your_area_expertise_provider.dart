@@ -17,6 +17,10 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
 
   List<int> updateChild = [];
 
+  CategoryListData? selectedCategory;
+
+  String? selectedTopic;
+
   Future<void> areaCategoryListApiCall() async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 10, page: 1);
@@ -61,24 +65,29 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onSelected(int index) {
+  void onSelectedCategory(int index) {
     for (var element in _categoryList) {
       element.isVisible = false;
     }
     _categoryList[index].isVisible = true;
+    selectedCategory = _categoryList[index];
     notifyListeners();
   }
 
-  void setSelectionBoolValueOfChild({required int position, required bool value, required CategoryListData? childCategoryList}) {
-    childCategoryList?.topic?[position].isSelected = value;
+  void setSelectionBoolValueOfChild({required int position}) {
+    for (var element in selectedCategory?.child ?? []) {
+      element.isSelected = false;
+    }
+    selectedCategory?.topic?[position].isSelected = true;
+    selectedTopic = selectedCategory?.child?[position].name;
     notifyListeners();
   }
 
-  void selectAllChildCategory({/*required List<Child>? childList ,*/ required bool isSelectAll, required int parentId}) {
+  void selectAllChildCategory({required  bool isSelectAll, required int parentId}) {
     int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
     if (parentListIndex != -1) {
-      if (_categoryList[parentListIndex].topic?.isNotEmpty ?? false) {
-        for (Topic data in _categoryList[parentListIndex].topic ?? []) {
+      if (_categoryList[parentListIndex].child?.isNotEmpty ?? false) {
+        for (TopicData data in _categoryList[parentListIndex].child ?? []) {
           if (isSelectAll) {
             data.isSelected = true;
           } else {
@@ -93,15 +102,13 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   void addSelectedChildIds({required int parentId}) {
     int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
     if (parentListIndex != -1) {
-      for (Topic? _child in _categoryList[parentListIndex].topic ?? []) {
-        //Child? _child = _categoryList[parentListIndex].child?[childIndex];
+      for (TopicData? _child in _categoryList[parentListIndex].child ?? []) {
         if (_child != null) {
           if (_categoryList[parentListIndex].topic?.every((element) => element.isSelected == true) ?? false) {
             _categoryList[parentListIndex].selectAllCategory = true;
           } else {
             _categoryList[parentListIndex].selectAllCategory = false;
           }
-          notifyListeners();
           if (_childCategoryIds.isEmpty) {
             /// local childIdLis is empty then add select data in list
             if (_child.isSelected ?? false) {
@@ -143,14 +150,13 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
 
   void setCategoryChildDefaultData() {
     for (CategoryListData parent in _categoryList) {
-      if (parent.topic?.isNotEmpty ?? false) {
-        for (Topic child in parent.topic ?? []) {
-          if (parent.topic?.every((element) => element.isSelected == true) ?? false) {
+      if (parent.child?.isNotEmpty ?? false) {
+        for (TopicData child in parent.child ?? []) {
+          if (parent.child?.every((element) => element.isSelected == true) ?? false) {
             parent.selectAllCategory = true;
           } else {
             parent.selectAllCategory = false;
           }
-          notifyListeners();
           if (child.isSelected ?? false) {
             if (_childCategoryIds.isEmpty) {
               _childCategoryIds.addAll([

@@ -54,10 +54,7 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
                       setState(() {
                         widget.childCategoryList?.topic?[position].isSelected = value;
                       });
-                      ref.read(addYourAreaExpertiseProvider).addSelectedChildIds(
-
-                          //    childIndex: position,
-                          parentId: widget.childCategoryList?.id ?? -1);
+                      ref.read(addYourAreaExpertiseProvider).addSelectedChildIds(parentId: widget.childCategoryList?.id ?? -1);
                     },
                     label: Text(
                       (widget.childCategoryList?.topic?[position].name ?? ''),

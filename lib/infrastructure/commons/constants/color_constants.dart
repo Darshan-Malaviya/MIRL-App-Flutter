@@ -14,12 +14,14 @@ class ColorConstants {
   static const dropDownBorderColor = Color(0xffCAC9C9);
   static const categoryListBorder = Color(0xFFD87CEF);
   static const categoryList = Color(0xFFF0F0F0);
+  static const scaffoldBg = Color(0xFFF4F3F3);
 
   static Color primaryColor = const Color(0xffD97CF0);
   static Color secondaryColor = const Color(0xffED1C22);
   static Color scaffoldColor = const Color(0xFFF6F9FF);
   static Color buttonTextColor = const Color(0xFF424D5C);
   static Color bottomTextColor = const Color(0xFF6F50EA);
+  static Color sheetTitleColor = const Color(0xFF64569E);
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
   static Color sliderColor = const Color(0xFF85C7F2);

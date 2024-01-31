@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/providers/add_your_area_expertise_provider.dart';
 import 'package:mirl/infrastructure/providers/auth_provider.dart';
 import 'package:mirl/infrastructure/providers/category_list_provider.dart';
+import 'package:mirl/infrastructure/providers/common_app_provider.dart';
 import 'package:mirl/infrastructure/providers/dashboard_provider.dart';
 import 'package:mirl/infrastructure/providers/edit_expert_provider.dart';
 import 'package:mirl/infrastructure/providers/filter_provider.dart';
@@ -19,6 +20,6 @@ final editExpertProvider = ChangeNotifierProvider.autoDispose((_) => EditExpertP
 final addYourAreaExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => AddYourAreaExpertiseProvider());
 final expertDetailProvider = ChangeNotifierProvider.autoDispose((_) => ExpertDetailProvider());
 final filterProvider = ChangeNotifierProvider.autoDispose((_) => FilterProvider());
-// final cityCountryProvider = ChangeNotifierProvider<CityCountryProvider>((ref) => CityCountryProvider());
+final commonAppProvider = ChangeNotifierProvider((_) => CommonAppProvider());
 
 
