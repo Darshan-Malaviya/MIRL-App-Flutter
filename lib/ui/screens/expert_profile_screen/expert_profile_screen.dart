@@ -104,7 +104,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               child: PrimaryButton(
                                 title: StringConstants.shareProfile,
                                 onPressed: () {
-                                  context.toPushNamed(RoutesConstants.expertDetailScreen);
+                                  // context.toPushNamed(RoutesConstants.expertDetailScreen);
                                 },
                               ),
                             ),
