@@ -133,11 +133,10 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
               prefixIcon: ImageConstants.filter,
               prefixIconPadding: 10,
             ).addPaddingX(20),
-            30.0.spaceY,
             ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
                 itemBuilder: (context, index) {
                   return ExpertDetailWidget();
                 },
