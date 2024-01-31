@@ -113,9 +113,9 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                                 currentFocusNode: expertWatch.certiAndExpModel[index].titleFocus,
                                 nexFocusNode: expertWatch.certiAndExpModel[index].urlFocus);
                           },
-                          // inputFormatters: [
-                          //   LengthLimitingTextInputFormatter(50),
-                          // ],
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(50),
+                          ],
                           validator: (value) => value?.toEmptyStringValidation(msg: StringConstants.requiredTitle),
                         ),
                         20.0.spaceY,
@@ -140,9 +140,9 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           onFieldSubmitted: (value) {
                             context.unFocusKeyboard();
                           },
-                          // inputFormatters: [
-                          //   LengthLimitingTextInputFormatter(255),
-                          // ],
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(255),
+                          ],
                         ),
                       ],
                     ),

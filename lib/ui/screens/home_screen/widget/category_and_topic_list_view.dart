@@ -14,7 +14,6 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
   @override
   Widget build(BuildContext context) {
     final homeProviderWatch = ref.watch(homeProvider);
-    final homeProviderRead = ref.read(homeProvider);
     return Column(
       children: [
         SizedBox(

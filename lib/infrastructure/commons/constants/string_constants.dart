@@ -60,6 +60,7 @@ class StringConstants {
   static const String instantCallsAvailability = "INSTANT CALLS AVAILABILITY";
   static const String availabilitySchedule = "ALLOW USERS TO REQUEST CALLS WITHIN YOUR WEEKLY AVAILABILITY SCHEDULE?";
   static const String theDropDown = "SELECT YES OR NO FROM THE DROPDOWN";
+  static const String theGenderDropDown = "SELECT YOUR GENDER FROM THE DROPDOWN ";
   static const String visibleOnYourProfile = "DO YOU WANT YOUR LOCATION \nTO BE VISIBLE ON YOUR PROFILE?";
   static const String certificationsAndExperience = "CERTIFICATIONS AND EXPERIENCE";
   static const String nearestLandmark = "TYPE YOUR ADDRESS OR NEAREST LANDMARK HERE";

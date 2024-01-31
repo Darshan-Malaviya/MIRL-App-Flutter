@@ -16,4 +16,15 @@ extension ValidationExtension on String {
     }
     return null;
   }
+
+  String? toMirlIdValidation(String? msg, String? validatedMsg) {
+    if (trim().isEmpty) {
+      return msg;
+    } else if (this.length < 5) {
+      return 'It should be at least 5 character long';
+    } /*else if (!RegExp(RegexConstants.onlyCharacter).hasMatch(this)) {
+      return validatedMsg;
+    }*/
+    return null;
+  }
 }

@@ -39,6 +39,9 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
                 height: 36,
                 hintText: StringConstants.officialNameHere,
                 controller: expertWatch.expertNameController,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(50),
+                ],
               ),
               20.0.spaceY,
               TitleSmallText(

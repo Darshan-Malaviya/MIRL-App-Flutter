@@ -2,7 +2,7 @@ import 'package:mirl/infrastructure/models/response/expert_category_response_mod
 
 class FilterArgs {
   final bool? fromExploreExpert;
-  final List<TopicData>? list;
+  final List<Topic>? list;
 
   FilterArgs({this.fromExploreExpert, this.list});
 }

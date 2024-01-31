@@ -31,7 +31,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
           children: [
             Center(
               child: TitleLargeText(
-                title: addYourAreaExpertiseProviderWatch.selectedCategory?.parentName ?? '',
+                title: addYourAreaExpertiseProviderWatch.selectedCategory?.name ?? '',
                 fontSize: 20,
               ),
             ),
@@ -60,7 +60,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                   4.0.spaceY,
                   LabelSmallText(
                     fontSize: 9,
-                    title: addYourAreaExpertiseProviderWatch.selectedCategory?.parentName ?? '',
+                    title: addYourAreaExpertiseProviderWatch.selectedCategory?.name ?? '',
                     titleColor: ColorConstants.blackColor,
                     fontFamily: FontWeightEnum.w700.toInter,
                     titleTextAlign: TextAlign.center,
@@ -87,19 +87,19 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
               ]),
               child: Wrap(
                 children: List.generate(
-                    addYourAreaExpertiseProviderWatch.selectedCategory?.child?.length ?? 0,
+                    addYourAreaExpertiseProviderWatch.selectedCategory?.topic?.length ?? 0,
                     (index) => OnScaleTap(
                           onPress: () {
                             addYourAreaExpertiseProviderRead.setSelectionBoolValueOfChild(position: index);
                           },
                           child: ShadowContainer(
                               shadowColor: ColorConstants.disableColor,
-                              backgroundColor: addYourAreaExpertiseProviderWatch.selectedCategory?.child?[index].isSelected ?? false ? ColorConstants.primaryColor : null,
+                              backgroundColor: addYourAreaExpertiseProviderWatch.selectedCategory?.topic?[index].isSelected ?? false ? ColorConstants.primaryColor : null,
                               margin: EdgeInsets.only(bottom: 10, right: 10),
                               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                               offset: Offset(0, 3),
                               child: BodyMediumText(
-                                title: addYourAreaExpertiseProviderWatch.selectedCategory?.child?[index].name ?? '',
+                                title: addYourAreaExpertiseProviderWatch.selectedCategory?.topic?[index].name ?? '',
                                 fontFamily: FontWeightEnum.w500.toInter,
                                 maxLine: 5,
                               )),
@@ -128,7 +128,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
               title: StringConstants.filterExpertCategory,
               onPressed: () {
                 context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
-                    args: FilterArgs(fromExploreExpert: false, list: addYourAreaExpertiseProviderWatch.selectedCategory?.child ?? []));
+                    args: FilterArgs(fromExploreExpert: false, list: addYourAreaExpertiseProviderWatch.selectedCategory?.topic ?? []));
               },
               prefixIcon: ImageConstants.filter,
               prefixIconPadding: 10,
