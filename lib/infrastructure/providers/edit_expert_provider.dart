@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
@@ -16,7 +15,6 @@ import 'package:mirl/infrastructure/models/common/week_schedule_model.dart';
 import 'package:mirl/infrastructure/models/request/certificate_request_model.dart';
 import 'package:mirl/infrastructure/models/request/expert_availability_request_model.dart';
 import 'package:mirl/infrastructure/repository/expert_profile_repo.dart';
-import 'package:mirl/ui/screens/edit_profile/widget/week_availability_dialog_widget.dart';
 
 class EditExpertProvider extends ChangeNotifier {
   final _updateUserDetailsRepository = UpdateUserDetailsRepository();
@@ -68,7 +66,7 @@ class EditExpertProvider extends ChangeNotifier {
   List<CommonSelectionModel> _genderList = [
     CommonSelectionModel(title: "Male", isSelected: false, selectType: 1),
     CommonSelectionModel(title: "Female", isSelected: false, selectType: 2),
-    CommonSelectionModel(title: "Other", isSelected: false, selectType: 3)
+    CommonSelectionModel(title: "Non-Binary", isSelected: false, selectType: 3)
   ];
 
   List<CommonSelectionModel> get genderList => _genderList;

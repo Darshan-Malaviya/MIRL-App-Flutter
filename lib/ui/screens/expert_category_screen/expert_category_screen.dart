@@ -88,7 +88,7 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                                   4.0.spaceY,
                                   LabelSmallText(
                                     fontSize: 9,
-                                    title: element?.parentName ?? '',
+                                    title: element?.name ?? '',
                                     titleColor: ColorConstants.blackColor,
                                     fontFamily: FontWeightEnum.w700.toInter,
                                     titleTextAlign: TextAlign.center,

@@ -1,7 +1,7 @@
 class RegexConstants {
   static const String onlyDigits = r'^[0-9]*$';
 
-  static const String onlyCharacter = r'^[a-zA-Z]';
+  static const String onlyCharacter = r'^[a-zA-Z]*$';
 
   static const String emailRegex = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
 

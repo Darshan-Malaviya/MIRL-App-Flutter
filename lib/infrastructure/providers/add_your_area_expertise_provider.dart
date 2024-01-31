@@ -75,19 +75,19 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   }
 
   void setSelectionBoolValueOfChild({required int position}) {
-    for (var element in selectedCategory?.child ?? []) {
+    for (var element in selectedCategory?.topic ?? []) {
       element.isSelected = false;
     }
-    selectedCategory?.child?[position].isSelected = true;
-    selectedTopic = selectedCategory?.child?[position].name;
+    selectedCategory?.topic?[position].isSelected = true;
+    selectedTopic = selectedCategory?.topic?[position].name;
     notifyListeners();
   }
 
-  void selectAllChildCategory({required bool isSelectAll, required int parentId}) {
+  void selectAllChildCategory({required  bool isSelectAll, required int parentId}) {
     int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
     if (parentListIndex != -1) {
-      if (_categoryList[parentListIndex].child?.isNotEmpty ?? false) {
-        for (TopicData data in _categoryList[parentListIndex].child ?? []) {
+      if (_categoryList[parentListIndex].topic?.isNotEmpty ?? false) {
+        for (Topic data in _categoryList[parentListIndex].topic ?? []) {
           if (isSelectAll) {
             data.isSelected = true;
           } else {
@@ -102,9 +102,9 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   void addSelectedChildIds({required int parentId}) {
     int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
     if (parentListIndex != -1) {
-      for (TopicData? _child in _categoryList[parentListIndex].child ?? []) {
+      for (Topic? _child in _categoryList[parentListIndex].topic ?? []) {
         if (_child != null) {
-          if (_categoryList[parentListIndex].child?.every((element) => element.isSelected == true) ?? false) {
+          if (_categoryList[parentListIndex].topic?.every((element) => element.isSelected == true) ?? false) {
             _categoryList[parentListIndex].selectAllCategory = true;
           } else {
             _categoryList[parentListIndex].selectAllCategory = false;
@@ -150,9 +150,9 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
 
   void setCategoryChildDefaultData() {
     for (CategoryListData parent in _categoryList) {
-      if (parent.child?.isNotEmpty ?? false) {
-        for (TopicData child in parent.child ?? []) {
-          if (parent.child?.every((element) => element.isSelected == true) ?? false) {
+      if (parent.topic?.isNotEmpty ?? false) {
+        for (Topic child in parent.topic ?? []) {
+          if (parent.topic?.every((element) => element.isSelected == true) ?? false) {
             parent.selectAllCategory = true;
           } else {
             parent.selectAllCategory = false;

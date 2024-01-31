@@ -65,9 +65,9 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                 .addVisibility((widget.args.fromExploreExpert ?? false)),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.topicController, context, () {
-              List<TopicData> topicList = [];
+              List<Topic> topicList = [];
               topicList.addAll(widget.args.list ?? []);
-              topicList.insert(0, TopicData(name: 'SELECT ONE OR LEAVE AS IS'));
+              topicList.insert(0, Topic(name: 'SELECT ONE OR LEAVE AS IS'));
               CommonBottomSheet.bottomSheet(
                   context: context,
                   child: FilterBottomSheetWidget(itemList: topicList.map((e) => e.name).toList(), title: 'Picked Topic', onTapItem: (item) {}),
