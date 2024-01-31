@@ -20,7 +20,7 @@ extension TimeDuration on Duration {
     String value = ' ${this.inMinutes.remainder(60).toString()}:${(this.inSeconds.remainder(60) % 60).toString().padLeft(2, '0')}';
     return value;
 
-    return "$hours:"
-        "$minutesPadding$minutes";
+/*    return "$hours:"
+        "$minutesPadding$minutes";*/
   }
 }

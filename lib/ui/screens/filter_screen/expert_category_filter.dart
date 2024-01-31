@@ -2,8 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
-import 'package:mirl/infrastructure/providers/filter_provider.dart';
-import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
@@ -40,6 +38,36 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               titleTextAlign: TextAlign.center,
             ),
             Column(
+              children: List.generate(filterWatch.commonSelectionModel.length, (index) {
+                final data = filterWatch.commonSelectionModel[index];
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    OnScaleTap(
+                      onPress: () {},
+                      child: ShadowContainer(
+                        border: 20,
+                        height: 30,
+                        width: 30,
+                        shadowColor: ColorConstants.borderColor,
+                        backgroundColor: ColorConstants.yellowButtonColor,
+                        offset: Offset(0, 3),
+                        child: Center(child: Image.asset(ImageConstants.cancel)),
+                      ),
+                    ),
+                    20.0.spaceX,
+                    ShadowContainer(
+                      border: 10,
+                      child: BodyMediumText(
+                        title: '${data.title}: ${data.value}',
+                        fontFamily: FontWeightEnum.w400.toInter,
+                      ),
+                    )
+                  ],
+                ).addPaddingY(10);
+              }),
+            ),
+            Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 20.0.spaceY,
@@ -54,7 +82,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               ],
             ).addVisibility(!(widget.args.fromExploreExpert ?? false)),
             buildTextFormFieldWidget(filterWatch.topicController, context, () {
-            /*  List<TopicData> topicList = [];
+              /*  List<TopicData> topicList = [];
               topicList.addAll(widget.args.list ?? []);
               topicList.insert(0, TopicData(name: 'SELECT ONE OR LEAVE AS IS'));*/
               CommonBottomSheet.bottomSheet(

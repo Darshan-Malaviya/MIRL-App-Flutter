@@ -2,8 +2,6 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
 import 'package:mirl/infrastructure/models/common/filter_model.dart';
-import 'package:mirl/infrastructure/models/response/certificate_response_model.dart';
-import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 
 class ExpertCategoryRepo extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();

@@ -32,74 +32,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         preferSize: 0,
       ),
       body: SingleChildScrollView(
-          child: Column(
-        children: [
-          PrimaryButton(
-            title: StringConstants.logOut,
-            onPressed: () async {
-              SharedPrefHelper.clearPrefs();
-              context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-            },
-          ),
-          10.0.spaceY,
-          InkWell(
-            onTap: () {
-              context.toPushNamed(RoutesConstants.searchScreen);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
-              child: BodySmallText(
-                maxLine: 2,
-                title: LocaleKeys.searchTypeAnyKeyword.tr(),
-              ).addAllMargin(12),
+        child: Column(
+          children: [
+            PrimaryButton(
+              title: StringConstants.logOut,
+              onPressed: () async {
+                SharedPrefHelper.clearPrefs();
+                context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+              },
             ),
-          ),
-          30.0.spaceY,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Container(
-                    decoration:
-                        BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
-                      BoxShadow(
-                        color: Color(0x33000000),
-                        blurRadius: 2,
-                        offset: Offset(0, 2),
-                        spreadRadius: 0,
-                      )
-                    ]),
-                    child: Column(
-                      children: [
-                        BodySmallText(
-                          fontWeight: FontWeight.w700,
-                          title: LocaleKeys.exploreExperts.tr().toUpperCase(),
-                        ),
-                        10.0.spaceY,
-                        Image.asset(
-                          ImageConstants.expert,
-                          height: 100,
-                          width: 100,
-                        ),
-                        10.0.spaceY,
-                        BodySmallText(
-                          title: LocaleKeys.browseExpertsFields.tr(),
-                          titleTextAlign: TextAlign.center,
-                          maxLine: 3,
-                        ),
-                      ],
-                    ).addAllMargin(12)),
+            10.0.spaceY,
+            InkWell(
+              onTap: () {
+                context.toPushNamed(RoutesConstants.searchScreen);
+              },
+              child: Container(
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
+                child: BodySmallText(
+                  maxLine: 2,
+                  title: LocaleKeys.searchTypeAnyKeyword.tr(),
+                ).addAllMargin(12),
               ),
-              40.0.spaceX,
-              Flexible(
-                child: InkWell(
-                  onTap: () {
-                    // context.toPushNamed(RoutesConstants.expertCategoryScreen);
-                  },
+            ),
+            30.0.spaceY,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
                   child: Container(
-                      decoration:
-                          BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                      decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                         BoxShadow(
                           color: Color(0x33000000),
                           blurRadius: 2,
@@ -111,41 +72,76 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         children: [
                           BodySmallText(
                             fontWeight: FontWeight.w700,
-                            title: LocaleKeys.multipleConnect.tr().toUpperCase(),
+                            title: LocaleKeys.exploreExperts.tr().toUpperCase(),
                           ),
                           10.0.spaceY,
                           Image.asset(
-                            ImageConstants.multipleConnect,
+                            ImageConstants.expert,
                             height: 100,
                             width: 100,
                           ),
                           10.0.spaceY,
                           BodySmallText(
-                            title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
+                            title: LocaleKeys.browseExpertsFields.tr(),
                             titleTextAlign: TextAlign.center,
                             maxLine: 3,
                           ),
                         ],
                       ).addAllMargin(12)),
                 ),
-              )
-            ],
-          ),
-          40.0.spaceY,
-          if (homeProviderWatch.isHomeLoading) ...[
-            CategoryListShimmerWidget(),
-            20.0.spaceY,
-            CategoryListShimmerWidget()
-          ] else ...[
-            CategoryAndTopicListView(),
-            20.0.spaceY,
-            FavoriteExpertsView(),
-            20.0.spaceY,
-            PastConversationsView(),
-            20.0.spaceY,
-          ]
-        ],
-      ).addPaddingXY(paddingX: 16, paddingY: 16)),
+                40.0.spaceX,
+                Flexible(
+                  child: InkWell(
+                    onTap: () {},
+                    child: Container(
+                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                          BoxShadow(
+                            color: Color(0x33000000),
+                            blurRadius: 2,
+                            offset: Offset(0, 2),
+                            spreadRadius: 0,
+                          )
+                        ]),
+                        child: Column(
+                          children: [
+                            BodySmallText(
+                              fontWeight: FontWeight.w700,
+                              title: LocaleKeys.multipleConnect.tr().toUpperCase(),
+                            ),
+                            10.0.spaceY,
+                            Image.asset(
+                              ImageConstants.multipleConnect,
+                              height: 100,
+                              width: 100,
+                            ),
+                            10.0.spaceY,
+                            BodySmallText(
+                              title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
+                              titleTextAlign: TextAlign.center,
+                              maxLine: 3,
+                            ),
+                          ],
+                        ).addAllMargin(12)),
+                  ),
+                )
+              ],
+            ),
+            40.0.spaceY,
+            if (homeProviderWatch.isHomeLoading) ...[
+              CategoryListShimmerWidget(),
+              20.0.spaceY,
+              CategoryListShimmerWidget()
+            ] else ...[
+              CategoryAndTopicListView(),
+              20.0.spaceY,
+              FavoriteExpertsView(),
+              20.0.spaceY,
+              PastConversationsView(),
+              20.0.spaceY,
+            ]
+          ],
+        ).addPaddingXY(paddingX: 16, paddingY: 16),
+      ),
     );
   }
 }

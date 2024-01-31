@@ -15,6 +15,7 @@ class ColorConstants {
   static const categoryListBorder = Color(0xFFD87CEF);
   static const categoryList = Color(0xFFF0F0F0);
   static const scaffoldBg = Color(0xFFF4F3F3);
+  static const emptyTextColor = Color(0xFF7E7E7E);
 
   static Color primaryColor = const Color(0xffD97CF0);
   static Color secondaryColor = const Color(0xffED1C22);

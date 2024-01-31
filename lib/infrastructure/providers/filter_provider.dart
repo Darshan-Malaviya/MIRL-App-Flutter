@@ -45,40 +45,90 @@ class FilterProvider extends ChangeNotifier {
   double start = 30;
   double end = 50;
 
+  List<CommonSelectionModel> commonSelectionModel = [];
+
   void setValueOfCall(String value) {
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.InstantCall.name);
     if (value != _yesNoSelectionList.first) {
       _isCallSelect = (value == 'Yes') ? 1 : 0;
+      instantCallAvailabilityController.text = value;
+      if (index == -1) {
+        commonSelectionModel.add(CommonSelectionModel(title: FilterType.InstantCall.name, value: value));
+      } else {
+        commonSelectionModel[index].value = value;
+      }
     } else {
       _isCallSelect = null;
+      instantCallAvailabilityController.text = '';
+      if (index != -1) {
+        commonSelectionModel.removeAt(index);
+      }
     }
     notifyListeners();
   }
 
   void setGender(String value) {
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Gender.name);
     if (value != _genderList.first.title) {
       CommonSelectionModel data = _genderList.firstWhere((element) => element.title == value);
       _selectGender = data.selectType ?? 1;
       data.isSelected = true;
       genderController.text = data.title ?? '';
+      if (index == -1) {
+        commonSelectionModel.add(CommonSelectionModel(title: FilterType.Gender.name, value: value));
+      } else {
+        commonSelectionModel[index].value = value;
+      }
     } else {
       _selectGender = null;
+      genderController.text = '';
+      if (index != -1) {
+        commonSelectionModel.removeAt(index);
+      }
     }
     notifyListeners();
   }
 
   void setRating(String value) {
-    _selectRating = value;
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.OverAllRating.name);
+    if (value != _ratingList.first) {
+      _selectRating = value;
+      ratingController.text = value;
+      if (index == -1) {
+        commonSelectionModel.add(CommonSelectionModel(title: FilterType.OverAllRating.name, value: value));
+      } else {
+        commonSelectionModel[index].value = value;
+      }
+    } else {
+      _selectRating = null;
+      ratingController.text = '';
+      if (index != -1) {
+        commonSelectionModel.removeAt(index);
+      }
+    }
     notifyListeners();
   }
 
   void setSelectedCountry({required CountryModel value}) {
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Country.name);
     selectedCountryModel = value;
     countryNameController.text = selectedCountryModel?.country ?? '';
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.Country.name, value: value.country));
+    } else {
+      commonSelectionModel[index].value = value.country;
+    }
     notifyListeners();
   }
 
   void setCity({required CityModel value}) {
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.City.name);
     cityNameController.text = value.city ?? '';
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.City.name, value: value.city));
+    } else {
+      commonSelectionModel[index].value = value.city;
+    }
     notifyListeners();
   }
 

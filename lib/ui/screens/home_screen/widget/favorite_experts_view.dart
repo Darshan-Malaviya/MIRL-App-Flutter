@@ -21,9 +21,6 @@ class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
       children: [
         BodySmallText(
           title: LocaleKeys.yourFavoriteExperts.tr(),
-          titleColor: ColorConstants.blackColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-          titleTextAlign: TextAlign.center,
         ),
         20.0.spaceY,
         if ((homeProviderWatch.homeData?.userFavorites?.isNotEmpty ?? false) &&
@@ -53,8 +50,6 @@ class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
                             fontSize: 9,
                             title:(homeProviderWatch.homeData?.userFavorites?[index].expertName ?? 'name').toString().toCapitalizeAllWord(),
                             maxLine: 2,
-                            titleColor: ColorConstants.blackColor,
-                            fontFamily: FontWeightEnum.w700.toInter,
                             titleTextAlign: TextAlign.center,
                           ),
                         ],
@@ -66,23 +61,20 @@ class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
                   );
                 }),
           ),
-          10.0.spaceY,
+          20.0.spaceY,
           Center(
-            child: TitleMediumText(
+            child: LabelSmallText(
               fontSize: 10,
-              fontWeight: FontWeight.bold,
               titleTextAlign: TextAlign.center,
               title: LocaleKeys.seeAllFavoriteExperts.tr().toUpperCase(),
             ),
           ),
         ] else ...[
-          Center(
-            child: BodySmallText(
-              fontWeight: FontWeight.w400,
-              titleTextAlign: TextAlign.start,
-              maxLine: 4,
-              title: LocaleKeys.darnNoFavoriteExperts.tr(),
-            ),
+          BodySmallText(
+            fontWeight: FontWeight.w400,
+            titleColor: ColorConstants.emptyTextColor,
+            maxLine: 4,
+            title: LocaleKeys.darnNoFavoriteExperts.tr(),
           ),
         ]
       ],
