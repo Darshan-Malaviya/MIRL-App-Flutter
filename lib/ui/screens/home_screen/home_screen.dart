@@ -25,7 +25,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final homeProviderWatch  = ref.watch(homeProvider);
+    final homeProviderWatch = ref.watch(homeProvider);
     return Scaffold(
       backgroundColor: ColorConstants.grayLightColor,
       appBar: AppBarWidget(
@@ -47,9 +47,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               context.toPushNamed(RoutesConstants.searchScreen);
             },
             child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6.0),
-                  border: Border.all(color: ColorConstants.dropDownBorderColor)),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
               child: BodySmallText(
                 maxLine: 2,
                 title: LocaleKeys.searchTypeAnyKeyword.tr(),
@@ -62,17 +60,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               Flexible(
                 child: Container(
-                    decoration: BoxDecoration(
-                        color: ColorConstants.whiteColor,
-                        borderRadius: BorderRadius.circular(6.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x33000000),
-                            blurRadius: 2,
-                            offset: Offset(0, 2),
-                            spreadRadius: 0,
-                          )
-                        ]),
+                    decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                      BoxShadow(
+                        color: Color(0x33000000),
+                        blurRadius: 2,
+                        offset: Offset(0, 2),
+                        spreadRadius: 0,
+                      )
+                    ]),
                     child: Column(
                       children: [
                         BodySmallText(
@@ -96,43 +91,45 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               40.0.spaceX,
               Flexible(
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: ColorConstants.whiteColor,
-                        borderRadius: BorderRadius.circular(6.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x33000000),
-                            blurRadius: 2,
-                            offset: Offset(0, 2),
-                            spreadRadius: 0,
-                          )
-                        ]),
-                    child: Column(
-                      children: [
-                        BodySmallText(
-                          fontWeight: FontWeight.w700,
-                          title: LocaleKeys.multipleConnect.tr().toUpperCase(),
-                        ),
-                        10.0.spaceY,
-                        Image.asset(
-                          ImageConstants.multipleConnect,
-                          height: 100,
-                          width: 100,
-                        ),
-                        10.0.spaceY,
-                        BodySmallText(
-                          title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
-                          titleTextAlign: TextAlign.center,
-                          maxLine: 3,
-                        ),
-                      ],
-                    ).addAllMargin(12)),
-              ),
+                child: InkWell(
+                  onTap: () {
+                    context.toPushNamed(RoutesConstants.expertCategoryScreen);
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                        BoxShadow(
+                          color: Color(0x33000000),
+                          blurRadius: 2,
+                          offset: Offset(0, 2),
+                          spreadRadius: 0,
+                        )
+                      ]),
+                      child: Column(
+                        children: [
+                          BodySmallText(
+                            fontWeight: FontWeight.w700,
+                            title: LocaleKeys.multipleConnect.tr().toUpperCase(),
+                          ),
+                          10.0.spaceY,
+                          Image.asset(
+                            ImageConstants.multipleConnect,
+                            height: 100,
+                            width: 100,
+                          ),
+                          10.0.spaceY,
+                          BodySmallText(
+                            title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
+                            titleTextAlign: TextAlign.center,
+                            maxLine: 3,
+                          ),
+                        ],
+                      ).addAllMargin(12)),
+                ),
+              )
             ],
           ),
           40.0.spaceY,
-          if(homeProviderWatch.isHomeLoading) ...[
+          if (homeProviderWatch.isHomeLoading) ...[
             CategoryListShimmerWidget(),
             20.0.spaceY,
             CategoryListShimmerWidget()
@@ -144,10 +141,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             PastConversationsView(),
             20.0.spaceY,
           ]
-
         ],
-      ).addPaddingXY(paddingX: 16, paddingY: 16)
-      ),
+      ).addPaddingXY(paddingX: 16, paddingY: 16)),
     );
   }
 }

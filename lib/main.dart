@@ -5,7 +5,9 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/mirl_app.dart';
+import 'package:mirl/ui/screens/expert_category_screen/expert_category_screen.dart';
 
+import 'ui/screens/expert_category_screen/selected_category_screen.dart';
 import 'ui/screens/filter_screen/expert_category_filter.dart';
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             onGenerateRoute: RouterConstant.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
-            // home: ExpertCategoryFilterScreen(),
+            // home: SelectedCategoryScreen(),
           );
         },
       ),

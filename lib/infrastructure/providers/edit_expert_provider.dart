@@ -16,6 +16,7 @@ import 'package:mirl/infrastructure/models/common/week_schedule_model.dart';
 import 'package:mirl/infrastructure/models/request/certificate_request_model.dart';
 import 'package:mirl/infrastructure/models/request/expert_availability_request_model.dart';
 import 'package:mirl/infrastructure/repository/expert_profile_repo.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/week_availability_dialog_widget.dart';
 
 class EditExpertProvider extends ChangeNotifier {
   final _updateUserDetailsRepository = UpdateUserDetailsRepository();
@@ -93,27 +94,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   List<CertificationData> certificationList = [];
 
-  List<CountryModel> get country => _country;
-  List<CountryModel> _country = [];
-
-  List<CityModel> get city => _city;
-  List<CityModel> _city = [];
-
-  bool get reachedLastPage => _reachedLastPage;
-  bool _reachedLastPage = false;
-
-  bool get reachedCityLastPage => _reachedCityLastPage;
-  bool _reachedCityLastPage = false;
-
-  CountryModel? _selectedCountryModel;
-
-  CityModel? _selectedCityModel;
-
-  int get pageNo => _pageNo;
-  int _pageNo = 1;
-
-  int get cityPageNo => _cityPageNo;
-  int _cityPageNo = 1;
+  CountryModel? selectedCountryModel;
 
   late DateTime plusDay;
   late DateTime hourOnly;
@@ -164,7 +145,6 @@ class EditExpertProvider extends ChangeNotifier {
 
   void generateWeekDaysTime() {
     _weekScheduleModel.clear();
-    _tabIndex = 0;
     var _time = DateTime.now();
     hourOnly = DateTime(_time.year, _time.month, _time.day, 0, 0, 0);
     plusDay = hourOnly.add(Duration(days: 1));
@@ -172,6 +152,7 @@ class EditExpertProvider extends ChangeNotifier {
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
     if (_userData?.expertAvailability?.isNotEmpty ?? false) {
+      _tabIndex = (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1' ? 0 : 1;
       _userData?.expertAvailability?.forEach((element) {
         _weekScheduleModel.add(WeekScheduleModel(
           dayName: element.dayOfWeek?.substring(0, 3).toUpperCase(),
@@ -199,7 +180,7 @@ class EditExpertProvider extends ChangeNotifier {
       element.isSelected = false;
     });
     _editButtonList[index].isSelected = !(_editButtonList[index].isSelected ?? false);
-    context.toPushNamed(editButtonList[index].screenName ?? '');
+    context.toPushNamed(editButtonList[index].screenName ?? '', args: index == 2 ? _tabIndex : null);
     notifyListeners();
   }
 
@@ -237,14 +218,13 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void setSelectedCountry({required CountryModel value}) {
-    _selectedCountryModel = value;
-    countryNameController.text = _selectedCountryModel?.country ?? '';
+    selectedCountryModel = value;
+    countryNameController.text = selectedCountryModel?.country ?? '';
     notifyListeners();
   }
 
   void displayCity({required CityModel value}) {
-    _selectedCityModel = value;
-    cityNameController.text = _selectedCityModel?.city ?? '';
+    cityNameController.text = value.city ?? '';
     notifyListeners();
   }
 
@@ -262,6 +242,12 @@ class EditExpertProvider extends ChangeNotifier {
     String value = SharedPrefHelper.getUserData;
     if (value.isNotEmpty) {
       _userData = UserData.fromJson(jsonDecode(value));
+      _tabIndex = (_userData?.expertAvailability?.isNotEmpty ?? false)
+          ? (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1'
+              ? 0
+              : 1
+          : 0;
+
       expertNameController.text = _userData?.expertName ?? '';
       expertName = _userData?.expertName ?? '';
       _pickedImage = _userData?.expertProfile ?? '';
@@ -394,7 +380,6 @@ class EditExpertProvider extends ChangeNotifier {
     isSelectGender = data.selectType;
     notifyListeners();
   }
-  
 
   Future<void> pickGalleryImage(BuildContext context) async {
     String? image = await ImagePickerHandler.singleton.pickImageFromGallery(context: context);
@@ -477,7 +462,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   Future<void> updateProfileApi() async {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertProfile: _pickedImage);
-    UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile(),fromImageUpload: true);
+    UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile(), fromImageUpload: true);
   }
 
   Future<void> UpdateUserDetailsApiCall({required FormData requestModel, bool fromImageUpload = false}) async {
@@ -496,7 +481,7 @@ class EditExpertProvider extends ChangeNotifier {
           Logger().d("user data=====${loginResponseModel.toJson()}");
           resetVariable();
           getUserData();
-          if(!fromImageUpload) {
+          if (!fromImageUpload) {
             NavigationService.context.toPop();
           }
         }
@@ -509,84 +494,8 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> CountryListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
-    }
-
-    ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(limit: 30, page: _pageNo, searchName: searchName);
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
-    }
-    switch (response.status) {
-      case APIStatus.success:
-        if (response.data != null && response.data is CountryResponseModel) {
-          CountryResponseModel countryResponseModel = response.data;
-          Logger().d("Successfully call country list");
-          _country.addAll(countryResponseModel.data ?? []);
-          if (_pageNo == countryResponseModel.pagination?.itemCount) {
-            _reachedLastPage = true;
-          } else {
-            _pageNo = _pageNo + 1;
-            _reachedLastPage = false;
-          }
-        }
-        break;
-      case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on country list call Api ${response.data}");
-        break;
-    }
-    notifyListeners();
-  }
-
-  Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
-    }
-    ApiHttpResult response =
-        await _updateUserDetailsRepository.cityApiCall(limit: 30, page: _cityPageNo, countryId: _selectedCountryModel?.id.toString() ?? '', searchName: searchName);
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
-    }
-    switch (response.status) {
-      case APIStatus.success:
-        if (response.data != null && response.data is CityResponseModel) {
-          CityResponseModel cityResponseModel = response.data;
-          Logger().d("Successfully call city list api");
-          _city.addAll(cityResponseModel.data ?? []);
-          if (_cityPageNo == cityResponseModel.pagination?.itemCount) {
-            _reachedCityLastPage = true;
-          } else {
-            _cityPageNo = _cityPageNo + 1;
-            _reachedCityLastPage = false;
-          }
-        }
-        break;
-      case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on city list call Api ${response.data}");
-        break;
-    }
-    notifyListeners();
-  }
-
-  void clearCityPaginationData() {
-    _cityPageNo = 1;
-    _reachedCityLastPage = false;
-    _city = [];
-    notifyListeners();
-  }
-
   void clearSearchCityController() {
     searchCityController.clear();
-    notifyListeners();
-  }
-
-  void clearCountryPaginationData() {
-    _pageNo = 1;
-    _reachedLastPage = false;
-    _country = [];
     notifyListeners();
   }
 
@@ -598,6 +507,9 @@ class EditExpertProvider extends ChangeNotifier {
   void resetVariable() {
     countController.text = '0';
     _enteredText = '';
+    expertName = '';
+    mirlId = '';
+    aboute = '';
     expertNameController.clear();
     mirlIdController.clear();
     aboutMeController.clear();

@@ -38,7 +38,6 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
               TextFormFieldWidget(
                 height: 36,
                 hintText: StringConstants.officialNameHere,
-                onFieldSubmitted: (value) {},
                 controller: expertWatch.expertNameController,
               ),
               20.0.spaceY,

@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
@@ -38,7 +37,6 @@ class ExpertDetailsButtonWidget extends StatelessWidget {
           Expanded(
             child: TitleSmallText(
               title: title,
-              fontFamily: FontWeightEnum.w700.toInter,
               titleTextAlign: TextAlign.center,
               titleColor: ColorConstants.blueColor,
             ),
@@ -48,7 +46,6 @@ class ExpertDetailsButtonWidget extends StatelessWidget {
             child: LabelSmallText(
               maxLine: 2,
               title: LocaleKeys.expertOnline.tr(),
-              fontFamily: FontWeightEnum.w700.toInter,
               titleTextAlign: TextAlign.start,
               titleColor: ColorConstants.blueColor,
               fontSize: 10,

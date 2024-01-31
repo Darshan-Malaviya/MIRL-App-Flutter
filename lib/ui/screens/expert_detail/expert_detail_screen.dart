@@ -28,33 +28,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       /// TODO change getUser ID.
       ref.read(expertDetailProvider).getExpertDetailApiCall(userId: SharedPrefHelper.getUserId);
-      //  _showBottomSheet();
     });
     super.initState();
   }
-
-/*  Future<void> _showBottomSheet() async {
-    return showModalBottomSheet(
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-        backgroundColor: Colors.white,
-        context: context,
-        builder: (context){
-          return DraggableScrollableSheet(
-              minChildSize: 0.1,
-              maxChildSize: 0.9,
-              initialChildSize: 0.3,
-              expand: true,
-              builder: (context, scrollController) {
-                return bottomSheetView(); //whatever you're returning, does not have to be a Container
-              }
-          );
-        });
-  }
-
-  void openBottomSheet() {
-    CommonBottomSheet.bottomSheet(context: context, child: bottomSheetView(), isDismissible: true);
-  }*/
 
   Widget bottomSheetView({required ScrollController controller}) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
@@ -133,11 +109,10 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter),
                 expertDetailWatch.userData?.about ?? '',
                 trimLines: 2,
-                // colorClickableText: ColorConstants.blackColor,
                 trimMode: TrimMode.Line,
                 trimCollapsedText: LocaleKeys.readMore.tr(),
                 trimExpandedText: LocaleKeys.readLess.tr(),
-                moreStyle: TextStyle(fontSize: 18, fontFamily: FontWeightEnum.w700.toInter, color: ColorConstants.blackColor),
+                moreStyle: TextStyle(fontSize: 18, color: ColorConstants.blackColor),
               ),
               36.0.spaceY,
             ],
@@ -146,11 +121,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               title: StringConstants.requestCallNow,
               buttonColor: ColorConstants.requestCallNowColor,
             ),
-            // 36.0.spaceY,
-            // ExpertDetailsButtonWidget(
-            //   title: StringConstants.callsPaused,
-            //   buttonColor: ColorConstants.callsPausedColor,
-            // ),
             24.0.spaceY,
             PrimaryButton(
               title: StringConstants.scheduleCall,
@@ -299,9 +269,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       expertDetailRead.changeLikeDislike();
                       expertDetailRead.favoriteRequestCall();
                     },
-                    child: Image.asset(isFavorite.value
-                        /* expertDetailWatch.userData?.isFavorite ?? false*/ ? ImageConstants.like
-                        : ImageConstants.dislike),
+                    child: Image.asset(isFavorite.value /* expertDetailWatch.userData?.isFavorite ?? false*/ ? ImageConstants.like : ImageConstants.dislike),
                   ),
                   alignment: AlignmentDirectional.topEnd)
               .addAllPadding(15),

@@ -11,6 +11,14 @@ class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
 
 class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProfileScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);
@@ -83,7 +91,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                             title: StringConstants.highQualityProfile,
                             titleTextAlign: TextAlign.center,
                             fontFamily: FontWeightEnum.w400.toInter,
-                            maxLine: 2,
+                            maxLine: 5,
                           ),
                           20.0.spaceY,
                           BodySmallText(
@@ -105,9 +113,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
               children: [
                 TitleMediumText(
                   title: StringConstants.editYourDetails,
-                  fontFamily: FontWeightEnum.w700.toInter,
                   titleColor: ColorConstants.blueColor,
-
                 ),
                 18.0.spaceY,
                 TextFormFieldWidget(
@@ -118,6 +124,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   },
                   height: 40,
                   labelText: StringConstants.expertName,
+                  alignment: Alignment.centerLeft,
                   controller: TextEditingController(text: expertWatch.expertName),
                 ),
                 8.0.spaceY,
@@ -129,6 +136,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   },
                   height: 40,
                   labelText: StringConstants.yourMirlId,
+                  alignment: Alignment.centerLeft,
                   controller: TextEditingController(text: expertWatch.mirlId),
                 ),
                 8.0.spaceY,
@@ -141,6 +149,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   maxLines: 10,
                   minLines: 10,
                   labelText: StringConstants.moreAboutMe,
+                  alignment: Alignment.centerLeft,
                   controller: TextEditingController(text: expertWatch.aboute),
                 ),
                 50.0.spaceY,

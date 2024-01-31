@@ -60,9 +60,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
               DropdownMenuWidget(
                 hintText: StringConstants.theDropDown,
                 controller: expertWatch.locationController,
-                dropdownList: expertWatch.locations
-                    .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
-                    .toList(),
+                dropdownList: expertWatch.locations.map((String item) => dropdownMenuEntry(context: context, value: item, label: item)).toList(),
                 onSelect: (String value) {
                   expertWatch.locationSelect(value);
                 },
@@ -79,10 +77,18 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 isReadOnly: true,
                 hintText: StringConstants.nearestLandmark,
                 controller: expertWatch.countryNameController,
-                //onChanged: (value) => cityCountryRead.displayCountry(),
                 onTap: () {
-                  CommonBottomSheet.bottomSheet(context: context, child: CountryListBottomView(),
-                  isDismissible: true);
+                  CommonBottomSheet.bottomSheet(
+                      context: context,
+                      child: CountryListBottomView(
+                        onTapItem: (item) {
+                          expertRead.setSelectedCountry(value: item);
+                          Navigator.pop(context);
+                        },
+                        clearSearchTap: () => expertRead.clearSearchCountryController(),
+                        searchController: expertWatch.searchCountryController,
+                      ),
+                      isDismissible: true);
                 },
               ),
               20.0.spaceY,
@@ -98,7 +104,18 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 hintText: StringConstants.nearestLandmark,
                 controller: expertWatch.cityNameController,
                 onTap: () {
-                  CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: CityListBottomView());
+                  CommonBottomSheet.bottomSheet(
+                      context: context,
+                      isDismissible: true,
+                      child: CityListBottomView(
+                        onTapItem: (item) {
+                          expertRead.displayCity(value: item);
+                          Navigator.pop(context);
+                        },
+                        clearSearchTap: () => expertRead.clearSearchCityController(),
+                        searchController: expertWatch.searchCityController,
+                        countryId: expertWatch.selectedCountryModel?.id ?? '',
+                      ));
                 },
               ),
             ],

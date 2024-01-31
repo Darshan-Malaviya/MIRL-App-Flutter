@@ -36,7 +36,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: ColorConstants.whiteColor,
+      backgroundColor: appBarColor ?? ColorConstants.whiteColor,
       automaticallyImplyLeading: false,
       centerTitle: centerTitle ?? true,
       title: appTitle,
