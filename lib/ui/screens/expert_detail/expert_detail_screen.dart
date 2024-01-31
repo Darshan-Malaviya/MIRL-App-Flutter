@@ -14,29 +14,74 @@ import 'package:mirl/ui/screens/expert_detail/widget/reviews_widget.dart';
 ValueNotifier<bool> isFavorite = ValueNotifier(false);
 
 class ExpertDetailScreen extends ConsumerStatefulWidget {
-  const ExpertDetailScreen({super.key});
+  final String expertId;
+
+  const ExpertDetailScreen({super.key, required this.expertId});
 
   @override
   ConsumerState<ExpertDetailScreen> createState() => _ExpertDetailScreenState();
 }
 
 class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
-  // List<String> reviews = ["HIGHEST REVIEW SCORE", "LOWEST REVIEW SCORE", "NEWEST REVIEWS", "OLDEST REVIEWS"];
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      /// TODO change getUser ID.
-      ref.read(expertDetailProvider).getExpertDetailApiCall(userId: SharedPrefHelper.getUserId);
+      ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
     });
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final expertDetailWatch = ref.watch(expertDetailProvider);
+    final expertDetailRead = ref.read(expertDetailProvider);
+
+    return Scaffold(
+      appBar: AppBarWidget(
+        preferSize: 40,
+        leading: InkWell(
+          child: Image.asset(ImageConstants.backIcon),
+          onTap: () => context.toPop(),
+        ),
+        trailingIcon: InkWell(onTap: () {}, child: Icon(Icons.more_horiz)).addPaddingRight(14),
+      ),
+      body: Stack(
+        children: [
+          NetworkImageWidget(
+            imageURL: expertDetailWatch.userData?.expertProfile ?? '',
+            isNetworkImage: true,
+            boxFit: BoxFit.cover,
+          ),
+          Align(
+            alignment: AlignmentDirectional.topEnd,
+            child: InkWell(
+              onTap: () {
+                expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
+              },
+              child: Image.asset(
+                expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
+                height: 40,
+                width: 40,
+              ),
+            ),
+          ).addAllPadding(15),
+          DraggableScrollableSheet(
+            initialChildSize: 0.45,
+            minChildSize: 0.45,
+            maxChildSize: 0.86,
+            builder: (BuildContext context, myScrollController) {
+              return bottomSheetView(controller: myScrollController);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Widget bottomSheetView({required ScrollController controller}) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
 
     return Container(
-      //height: MediaQuery.of(context).size.height * 0.9,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
@@ -129,7 +174,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             40.0.spaceY,
             CertificationAndExperienceWidget(),
-            if (expertDetailWatch.userData?.locationFlag ?? false) ...[
+            if (expertDetailWatch.userData?.loginType != null) ...[
               40.0.spaceY,
               RichText(
                 text: TextSpan(
@@ -155,7 +200,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 textAlign: TextAlign.start,
               ),
             ],
-            if (expertDetailWatch.userData?.genderFlag ?? false) ...[
+            if (expertDetailWatch.userData?.gender != null) ...[
               35.0.spaceY,
               RichText(
                 text: TextSpan(
@@ -245,63 +290,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
           ],
         ),
       ).addAllPadding(28),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final expertDetailRead = ref.read(expertDetailProvider);
-    return Scaffold(
-      appBar: AppBarWidget(
-        preferSize: 40,
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
-        ),
-        trailingIcon: InkWell(onTap: () {}, child: Icon(Icons.more_horiz)).addPaddingRight(14),
-      ),
-      body: Stack(
-        children: [
-          Image.asset(ImageConstants.expertDetail, fit: BoxFit.fitWidth, width: double.infinity),
-          Align(
-                  child: InkWell(
-                    onTap: () {
-                      expertDetailRead.changeLikeDislike();
-                      expertDetailRead.favoriteRequestCall();
-                    },
-                    child: Image.asset(isFavorite.value /* expertDetailWatch.userData?.isFavorite ?? false*/ ? ImageConstants.like : ImageConstants.dislike),
-                  ),
-                  alignment: AlignmentDirectional.topEnd)
-              .addAllPadding(15),
-          DraggableScrollableSheet(
-            initialChildSize: 0.4,
-            minChildSize: 0.4,
-            maxChildSize: 0.86,
-            builder: (BuildContext context, myScrollController) {
-              return bottomSheetView(controller: myScrollController);
-            },
-          ),
-        ],
-      ),
-      /*    body: Stack(
-        children: [
-          Image.asset(ImageConstants.expertDetail, fit: BoxFit.fitWidth, width: double.infinity),
-        //  bottomSheetView(),
-          Positioned(
-            bottom: 0,
-            child: DraggableScrollableSheet(
-                minChildSize: 0.1,
-                maxChildSize: 0.9,
-                initialChildSize: 0.3,
-                expand: false,
-                builder: (context, scrollController) {
-                  return bottomSheetView();
-                }
-            ),
-          ),
-
-        ],
-      ),*/
     );
   }
 }

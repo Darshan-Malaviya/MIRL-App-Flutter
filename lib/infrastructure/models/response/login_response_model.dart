@@ -67,9 +67,9 @@ class UserData {
   bool? feeFlag;
   bool? areaOfExpertiseFlag;
   bool? weeklyAvailableFlag;
-  bool? instantCallAvailable;
+  int? instantCallAvailable;
   bool? locationFlag;
-  bool? isLocationVisible;
+  int? isLocationVisible;
   bool? genderFlag;
   bool? certificateFlag;
   bool? bankDetailsFlag;

@@ -21,15 +21,6 @@ class ExpertDetailProvider extends ChangeNotifier {
 
   AreasOfExpertise? get areasOfExpertise => _areasOfExpertise;
 
-  // void langage() {
-  //   isFavorite.value = !isFavorite.value;
-  //   notifyListeners();
-  // }
-
-  // String dropdownValue = 'HIGHEST REVIEW SCORE';
-
-  // var items = ['HIGHEST REVIEW SCORE', 'LOWEST REVIEW SCORE', 'NEWEST REVIEWS', 'OLDEST REVIEWS'];
-
   String? userGender() {
     if (_userData?.gender == '1') {
       return 'Male';
@@ -39,12 +30,6 @@ class ExpertDetailProvider extends ChangeNotifier {
       return 'Other';
     }
     return null;
-  }
-
-  void changeLikeDislike() {
-    isFavorite.value = !isFavorite.value;
-    // _userData?.isFavorite = _userData?.isFavorite!;
-    notifyListeners();
   }
 
   Future<void> getExpertDetailApiCall({required String userId}) async {
@@ -70,9 +55,8 @@ class ExpertDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> favoriteRequestCall() async {
-    // debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
-    FavoriteRequestModel favoriteRequestModel = FavoriteRequestModel(userFavoriteId: 1);
+  Future<void> favoriteRequestCall(int expertId) async {
+    FavoriteRequestModel favoriteRequestModel = FavoriteRequestModel(userFavoriteId: expertId);
     favoriteApiCall(requestModel: favoriteRequestModel.prepareRequest());
   }
 
@@ -87,6 +71,8 @@ class ExpertDetailProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is FavoriteResponseModel) {
           FavoriteResponseModel favoriteResponseModel = response.data;
+          _userData?.isFavorite = !(_userData?.isFavorite ?? false);
+          notifyListeners();
           FlutterToast().showToast(msg: favoriteResponseModel.message ?? '');
           Logger().d("User favorite successfully");
         }
@@ -96,6 +82,5 @@ class ExpertDetailProvider extends ChangeNotifier {
         Logger().d("API fail on User favorite call Api ${response.data}");
         break;
     }
-    notifyListeners();
   }
 }
