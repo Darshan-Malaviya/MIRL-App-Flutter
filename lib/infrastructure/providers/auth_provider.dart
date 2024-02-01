@@ -54,15 +54,18 @@ class AuthProvider with ChangeNotifier {
   Future<void> loginRequestCall({required int loginType}) async {
     debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
-      deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
-      email: emailController.text.trim().toString(),
-      socialId: _socialId,
-      deviceToken: SharedPrefHelper.getFirebaseToken,
-      timezone: await CommonMethods.getCurrentTimeZone(),
-      loginType: loginType.toString(),
-      voIpToken: await AgoraService.singleton.getVoipToken()
-    );
-    loginApiCall(requestModel: loginRequestModel.prepareRequest(), loginType: loginType);
+        deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
+        email: emailController.text.trim(),
+        socialId: _socialId,
+        deviceToken: SharedPrefHelper.getFirebaseToken,
+        timezone: await CommonMethods.getCurrentTimeZone(),
+        loginType: loginType.toString(),
+        voIpToken: await AgoraService.singleton.getVoipToken());
+    loginApiCall(
+        requestModel: emailController.text.trim().isNotEmpty
+            ? loginRequestModel.prepareRequest()
+            : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
+        loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -122,7 +125,6 @@ class AuthProvider with ChangeNotifier {
       );
       if (credential.userIdentifier != null) {
         _socialId = credential.userIdentifier ?? '';
-        //  userName = (credential.givenName ?? '') + " " + (credential.familyName ?? '');
         if (credential.email != null) {
           emailController.text = credential.email ?? '';
           if (emailController.text.split('@').last == 'privatelay.appleid.com') {

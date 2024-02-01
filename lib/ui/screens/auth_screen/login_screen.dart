@@ -28,21 +28,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Container(
-                  // decoration: ShapeDecoration(
-                  //   color: Colors.white,
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.only(
-                  //       topLeft: Radius.circular(40),
-                  //       topRight: Radius.circular(40),
-                  //     ),
-                  //   ),
-                  //   shadows: [
-                  //     BoxShadow(
-                  //       color: Color(0x4C000000),
-                  //       blurRadius: 5,
-                  //     )
-                  //   ]
-                  // ),
                   decoration: const BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -102,6 +87,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           loginScreenProviderRead.signInGoogle();
                         },
                         prefixIcon: ImageConstants.google,
+                        prefixIconPadding: 20,
                       ).addMarginX(50),
                       Visibility(
                         visible: Platform.isIOS,
@@ -111,6 +97,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: PrimaryButton(
                             title: StringConstants.continueWithApple,
                             prefixIcon: ImageConstants.apple,
+                            prefixIconPadding: 20,
                             onPressed: () {
                               loginScreenProviderRead.signInApple();
                             },
@@ -121,6 +108,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       PrimaryButton(
                         title: StringConstants.continueWithFacebook,
                         prefixIcon: ImageConstants.facebook,
+                        prefixIconPadding: 20,
                         onPressed: () {
                           loginScreenProviderRead.fbLogin();
                         },
