@@ -66,7 +66,7 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                           InkWell(
                             onTap: () {
                               addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
-                              context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen);
+                              context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen, args: element?.id.toString());
                             },
                             child: ShadowContainer(
                               shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)

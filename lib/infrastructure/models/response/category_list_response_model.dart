@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/models/common/category_model.dart';
 import 'package:mirl/infrastructure/models/common/common_model.dart';
-import 'package:mirl/infrastructure/models/response/pagination_model/pagination_response_model.dart';
+import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 
 class CategoryListResponseModel {
   int? status;

@@ -93,7 +93,7 @@ class RouterConstant {
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.selectedExpertCategoryScreen:
-        return MaterialPageRoute(builder: (_) => const SelectedCategoryScreen());
+        return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(categoryId: settings.arguments as String));
       case RoutesConstants.expertCategoryFilterScreen:
         return MaterialPageRoute(
             builder: (_) => ExpertCategoryFilterScreen(

@@ -6,13 +6,7 @@ class Pagination {
   int? previousPage;
   int? nextPage;
 
-  Pagination(
-      {this.page,
-        this.perPage,
-        this.itemCount,
-        this.pageCount,
-        this.previousPage,
-        this.nextPage});
+  Pagination({this.page, this.perPage, this.itemCount, this.pageCount, this.previousPage, this.nextPage});
 
   Pagination.fromJson(Map<String, dynamic> json) {
     page = json['page'];

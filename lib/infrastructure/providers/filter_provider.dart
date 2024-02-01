@@ -3,6 +3,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/filter_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
+import 'package:mirl/infrastructure/models/response/get_single_category_response_model.dart';
 import 'package:mirl/infrastructure/repository/expert_category_repo.dart';
 
 class FilterProvider extends ChangeNotifier {
@@ -17,10 +18,10 @@ class FilterProvider extends ChangeNotifier {
   TextEditingController searchCityController = TextEditingController();
   TextEditingController searchCountryController = TextEditingController();
 
+  List<String> get yesNoSelectionList => _yesNoSelectionList;
   List<String> _yesNoSelectionList = ['SELECT ONE OR LEAVE AS IS', 'Yes', 'No'];
 
-  List<String> get yesNoSelectionList => _yesNoSelectionList;
-
+  List<CommonSelectionModel> get genderList => _genderList;
   List<CommonSelectionModel> _genderList = [
     CommonSelectionModel(title: 'SELECT ONE OR LEAVE AS IS', isSelected: false, selectType: 1),
     CommonSelectionModel(title: 'Male', isSelected: false, selectType: 2),
@@ -28,11 +29,8 @@ class FilterProvider extends ChangeNotifier {
     CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 4),
   ];
 
-  List<CommonSelectionModel> get genderList => _genderList;
-
-  List<String> _ratingList = ['SELECT ONE OR LEAVE AS IS', '1', '2', '3', '4', '5'];
-
   List<String> get ratingList => _ratingList;
+  List<String> _ratingList = ['SELECT ONE OR LEAVE AS IS', '1', '2', '3', '4', '5'];
 
   int? _isCallSelect;
 
@@ -42,10 +40,18 @@ class FilterProvider extends ChangeNotifier {
 
   CountryModel? selectedCountryModel;
 
+  String? selectedTopic;
+
   double start = 30;
   double end = 50;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
   List<CommonSelectionModel> commonSelectionModel = [];
+
+  SingleCategoryData? get singleCategoryData => _singleCategoryData;
+  SingleCategoryData? _singleCategoryData;
 
   void setValueOfCall(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.InstantCall.name);
@@ -148,7 +154,16 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> FilterApiCall() async {
+  void setSelectionBoolValueOfChild({required int position}) {
+    for (var element in singleCategoryData?.categoryData?.topic ?? []) {
+      element.isSelected = false;
+    }
+    singleCategoryData?.categoryData?.topic?[position].isSelected = true;
+    selectedTopic = singleCategoryData?.categoryData?.topic?[position].name;
+    notifyListeners();
+  }
+
+  Future<void> filterApiCall() async {
     CustomLoading.progressDialog(isLoading: true);
 
     FilterModel filterModel = FilterModel(
@@ -177,6 +192,28 @@ class FilterProvider extends ChangeNotifier {
         Logger().d("API fail filter call Api ${response.data}");
         break;
     }
+  }
+
+  Future<void> getSingleCategoryApiCall({required String categoryId}) async {
+    _isLoading = true;
     notifyListeners();
+
+    ApiHttpResult response = await _expertCategoryRepo.getSingleCategoryApi(categoryId: categoryId);
+
+    _isLoading = false;
+    notifyListeners();
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is GetSingleCategoryResponseModel) {
+          GetSingleCategoryResponseModel responseModel = response.data;
+          _singleCategoryData = responseModel.data;
+          notifyListeners();
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail get category call Api ${response.data}");
+        break;
+    }
   }
 }
