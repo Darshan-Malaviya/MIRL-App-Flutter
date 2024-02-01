@@ -19,8 +19,6 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
 
   CategoryListData? selectedCategory;
 
-  String? selectedTopic;
-
   Future<void> areaCategoryListApiCall() async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 10, page: 1);
@@ -71,15 +69,6 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
     }
     _categoryList[index].isVisible = true;
     selectedCategory = _categoryList[index];
-    notifyListeners();
-  }
-
-  void setSelectionBoolValueOfChild({required int position}) {
-    for (var element in selectedCategory?.topic ?? []) {
-      element.isSelected = false;
-    }
-    selectedCategory?.topic?[position].isSelected = true;
-    selectedTopic = selectedCategory?.topic?[position].name;
     notifyListeners();
   }
 
