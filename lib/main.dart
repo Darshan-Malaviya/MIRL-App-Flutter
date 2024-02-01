@@ -1,14 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mirl/demo_file.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/mirl_app.dart';
-import 'package:mirl/ui/screens/expert_category_screen/expert_category_screen.dart';
-
-import 'ui/screens/expert_category_screen/selected_category_screen.dart';
-import 'ui/screens/filter_screen/expert_category_filter.dart';
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);

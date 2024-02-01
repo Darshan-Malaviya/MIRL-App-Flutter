@@ -54,8 +54,7 @@ class CategoryListData {
   bool? isVisible;
   bool? selectAllCategory;
 
-
-  CategoryListData({this.id, this.name, this.image, this.description, this.topic, this.badgeCount,this.isVisible,this.selectAllCategory});
+  CategoryListData({this.id, this.name, this.image, this.description, this.topic, this.badgeCount, this.isVisible, this.selectAllCategory});
 
   CategoryListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

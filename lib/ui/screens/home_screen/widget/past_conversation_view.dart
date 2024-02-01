@@ -15,23 +15,19 @@ class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
   Widget build(BuildContext context) {
     final homeProviderWatch = ref.watch(homeProvider);
     final homeProviderRead = ref.read(homeProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BodySmallText(
           title: LocaleKeys.yourPastConversations.tr(),
-          titleColor: ColorConstants.blackColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-          titleTextAlign: TextAlign.center,
         ),
         20.0.spaceY,
-        Center(
-          child: BodySmallText(
-            fontWeight: FontWeight.w400,
-            titleTextAlign: TextAlign.start,
-            maxLine: 4,
-            title: LocaleKeys.cricketsTalkToSomeone.tr(),
-          ),
+        BodySmallText(
+          fontWeight: FontWeight.w400,
+          titleColor: ColorConstants.emptyTextColor,
+          maxLine: 4,
+          title: LocaleKeys.cricketsTalkToSomeone.tr(),
         ),
       /*  SizedBox(
           height: 120,

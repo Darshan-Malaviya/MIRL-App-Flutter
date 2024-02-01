@@ -21,8 +21,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
             itemBuilder: (BuildContext context, int index) {
               return Column(
                 children: [
@@ -49,8 +48,6 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
                             fontSize: 9,
                             title: homeProviderWatch.homeData?.categories?[index].name ?? '',
                             maxLine: 2,
-                            titleColor: ColorConstants.blackColor,
-                            fontFamily: FontWeightEnum.w700.toInter,
                             titleTextAlign: TextAlign.center,
                           ),
                         ],
@@ -64,11 +61,14 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
             },
           ),
         ),
-        10.0.spaceY,
-        TitleMediumText(
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-          title: LocaleKeys.seeAllExpertCategoryAndTopics.tr().toUpperCase(),
+        InkWell(
+          onTap: () {
+            context.toPushNamed(RoutesConstants.expertCategoryScreen);
+          },
+          child: LabelSmallText(
+            fontSize: 10,
+            title: LocaleKeys.seeAllExpertCategoryAndTopics.tr().toUpperCase(),
+          ).addMarginY(20),
         ),
       ],
     );

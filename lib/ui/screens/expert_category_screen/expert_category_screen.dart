@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
-import 'package:mirl/ui/screens/edit_profile/widget/child_category_bottom_view.dart';
 
 class ExpertCategoryScreen extends ConsumerStatefulWidget {
   const ExpertCategoryScreen({super.key});
@@ -89,9 +88,6 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                                   LabelSmallText(
                                     fontSize: 9,
                                     title: element?.name ?? '',
-                                    titleColor: ColorConstants.blackColor,
-                                    fontFamily: FontWeightEnum.w700.toInter,
-                                    titleTextAlign: TextAlign.center,
                                   ),
                                 ],
                               ),

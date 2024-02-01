@@ -6,7 +6,6 @@ import 'package:mirl/infrastructure/models/request/update_expert_Profile_request
 import 'package:mirl/infrastructure/models/response/certificate_response_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
-import 'package:mirl/infrastructure/models/response/gender_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 import 'package:mirl/infrastructure/repository/update_expert_profile_repo.dart';
