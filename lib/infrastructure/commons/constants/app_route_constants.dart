@@ -89,7 +89,7 @@ class RouterConstant {
       case RoutesConstants.searchScreen:
         return MaterialPageRoute(builder: (_) => const SearchScreen());
       case RoutesConstants.expertDetailScreen:
-        return MaterialPageRoute(builder: (_) => const ExpertDetailScreen());
+        return MaterialPageRoute(builder: (_) => ExpertDetailScreen(expertId: settings.arguments as String));
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.selectedExpertCategoryScreen:

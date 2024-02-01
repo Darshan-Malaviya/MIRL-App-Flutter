@@ -32,7 +32,23 @@ class LoginRequestModel {
     data['voIpToken'] = this.voIpToken;
     return data;
   }
+
+  Map<String, dynamic> toJsonForAppleWhenEmailEmpty() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['loginType'] = this.loginType;
+    data['deviceType'] = this.deviceType;
+    data['socialId'] = this.socialId;
+    data['deviceToken'] = this.deviceToken;
+    data['timezone'] = this.timezone;
+    data['voIpToken'] = this.voIpToken;
+    return data;
+  }
+
   String prepareRequest() {
     return jsonEncode(toJson());
+  }
+
+  String prepareRequestForAppleWhenEmailEmpty() {
+    return jsonEncode(toJsonForAppleWhenEmailEmpty());
   }
 }

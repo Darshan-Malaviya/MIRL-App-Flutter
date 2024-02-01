@@ -34,48 +34,57 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleNetworkImageWidget(
-                        imageURL: homeProviderWatch.homeSearchData?.users?[index].expertProfile ?? '',
-                        isNetworkImage: true,
-                        radius: 30,
-                        key: UniqueKey()),
-                    12.0.spaceX,
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BodyMediumText(
-                          title: homeProviderWatch.homeSearchData?.users?[index].expertName ?? '',
-                          fontFamily: FontWeightEnum.w700.toInter,
-                        ),
-                        2.0.spaceY,
-                        if(homeProviderWatch.homeSearchData?.users?[index].categoris?.isNotEmpty ?? false)...[
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 120,
-                            child: Wrap(
-                              alignment: WrapAlignment.start,
-                              children: List.generate(homeProviderWatch.homeSearchData?.users?[index].categoris?.length ?? 0, (i) {
-                                return Container(
-                                  color: ColorConstants.primaryColor.withOpacity(0.4),
-                                  child: BodyMediumText(
-                                    maxLine: 3,
-                                    title: (homeProviderWatch.homeSearchData?.users?[index].categoris?[i].name?.toLowerCase().toCapitalizeAllWord() ?? ''),
-                                    fontFamily: FontWeightEnum.w700.toInter,
-                                  ).addAllPadding(10),
-                                ).addPaddingXY(paddingX: 6, paddingY: 6);
-                              }),
-                            ),
-                          )
-                        ]
-
-                      ],
-                    )
-                  ],
-                ).addMarginY(8);
+                return InkWell(
+                  onTap: () {
+                    context.toPushNamed(RoutesConstants.expertDetailScreen,
+                        args: homeProviderWatch.homeSearchData?.users?[index].id.toString());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleNetworkImageWidget(
+                          imageURL: homeProviderWatch.homeSearchData?.users?[index].expertProfile ?? '',
+                          isNetworkImage: true,
+                          radius: 30,
+                          key: UniqueKey()),
+                      12.0.spaceX,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          BodyMediumText(
+                            title: homeProviderWatch.homeSearchData?.users?[index].expertName ?? '',
+                            fontFamily: FontWeightEnum.w700.toInter,
+                          ),
+                          2.0.spaceY,
+                          if (homeProviderWatch.homeSearchData?.users?[index].categoris?.isNotEmpty ?? false) ...[
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 120,
+                              child: Wrap(
+                                alignment: WrapAlignment.start,
+                                children:
+                                    List.generate(homeProviderWatch.homeSearchData?.users?[index].categoris?.length ?? 0, (i) {
+                                  return Container(
+                                    color: ColorConstants.primaryColor.withOpacity(0.4),
+                                    child: BodyMediumText(
+                                      maxLine: 3,
+                                      title: (homeProviderWatch.homeSearchData?.users?[index].categoris?[i].name
+                                              ?.toLowerCase()
+                                              .toCapitalizeAllWord() ??
+                                          ''),
+                                      fontFamily: FontWeightEnum.w700.toInter,
+                                    ).addAllPadding(10),
+                                  ).addPaddingXY(paddingX: 6, paddingY: 6);
+                                }),
+                              ),
+                            )
+                          ]
+                        ],
+                      )
+                    ],
+                  ).addMarginY(8),
+                );
               })
         ] else ...[
           BodySmallText(
