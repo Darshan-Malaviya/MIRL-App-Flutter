@@ -2,9 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
+import 'package:mirl/ui/screens/explore_expert_screen/widget/category_image_and_name_list_widget.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
-import 'package:mirl/ui/screens/home_screen/widget/category_and_topic_list_view.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   const ExploreExpertScreen({super.key});
@@ -24,8 +23,6 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filterProviderWatch = ref.watch(filterProvider);
-    final filterProviderRead = ref.read(filterProvider);
     return Scaffold(
         backgroundColor: ColorConstants.grayLightColor,
         appBar: AppBarWidget(
@@ -42,7 +39,8 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                 15.0.spaceX,
                 InkWell(
                   child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
                     child: BodySmallText(
                       maxLine: 2,
                       title: LocaleKeys.searchCategory.tr(),
@@ -55,59 +53,17 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
             20.0.spaceY,
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ShadowContainer(
-                      shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: NetworkImageWidget(
-                              boxFit: BoxFit.cover,
-                              imageURL: ImageConstants.exploreImage,
-                              isNetworkImage: true,
-                              height: 60,
-                              width: 50,
-                            ),
-                          ),
-                          4.0.spaceY,
-                          LabelSmallText(
-                            fontSize: 9,
-                            title: 'Vaidehii',
-                            maxLine: 2,
-                            titleTextAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                      width: 90,
-                      isShadow: true,
-                    ),
-                    20.0.spaceY,
-                    InkWell(
-                      onTap: () {
-                        // context.toPushNamed(RoutesConstants.expertCategoryScreen);
-                      },
-                      child: LabelSmallText(
-                        fontSize: 10,
-                        title: LocaleKeys.seeAllExpertCategoryAndTopics.tr().toUpperCase(),
-                      ),
-                    ),
-                    40.0.spaceY,
-                    PrimaryButton(
-                      title: LocaleKeys.FilterExperts.tr(),
-                      onPressed: () {
-                        context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
-                      },
-                      prefixIcon: ImageConstants.filter,
-                      prefixIconPadding: 10,
-                    ).addPaddingX(20),
-                    40.0.spaceY,
-                 //   ExpertDetailWidget()
-                  ],
-                ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                  CategoryNameAndImageListView(),
+                  PrimaryButton(
+                    title: LocaleKeys.filterExperts.tr(),
+                    onPressed: () {
+                      context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
+                    },
+                    prefixIcon: ImageConstants.filter,
+                    prefixIconPadding: 10,
+                  ).addPaddingX(20),
+                ]),
               ),
             ),
           ],

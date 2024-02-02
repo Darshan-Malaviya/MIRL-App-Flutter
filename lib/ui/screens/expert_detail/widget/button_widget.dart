@@ -38,7 +38,7 @@ class ExpertDetailsButtonWidget extends StatelessWidget {
             child: TitleSmallText(
               title: title,
               titleTextAlign: TextAlign.center,
-              titleColor: ColorConstants.blueColor,
+              titleColor: ColorConstants.buttonTextColor,
             ),
           ),
           Align(
@@ -47,7 +47,7 @@ class ExpertDetailsButtonWidget extends StatelessWidget {
               maxLine: 2,
               title: LocaleKeys.expertOnline.tr(),
               titleTextAlign: TextAlign.start,
-              titleColor: ColorConstants.blueColor,
+              titleColor: ColorConstants.buttonTextColor,
               fontSize: 10,
             ).addMarginX(6),
           ).addMarginX(10),
