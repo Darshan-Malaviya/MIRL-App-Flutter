@@ -18,6 +18,7 @@ import 'package:mirl/ui/screens/expert_category_screen/expert_category_screen.da
 import 'package:mirl/ui/screens/expert_category_screen/selected_category_screen.dart';
 import 'package:mirl/ui/screens/expert_detail/expert_detail_screen.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
+import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
 import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
@@ -92,6 +93,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => ExpertDetailScreen(expertId: settings.arguments as String));
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
+        case RoutesConstants.exploreExpertScreen:
+        return MaterialPageRoute(builder: (_) => const ExploreExpertScreen());
       case RoutesConstants.selectedExpertCategoryScreen:
         return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(categoryId: settings.arguments as String));
       case RoutesConstants.expertCategoryFilterScreen:

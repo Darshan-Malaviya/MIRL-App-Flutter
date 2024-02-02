@@ -59,39 +59,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  child: Container(
-                      decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
-                        BoxShadow(
-                          color: Color(0x33000000),
-                          blurRadius: 2,
-                          offset: Offset(0, 2),
-                          spreadRadius: 0,
-                        )
-                      ]),
-                      child: Column(
-                        children: [
-                          BodySmallText(
-                            fontWeight: FontWeight.w700,
-                            title: LocaleKeys.exploreExperts.tr().toUpperCase(),
-                          ),
-                          10.0.spaceY,
-                          Image.asset(
-                            ImageConstants.expert,
-                            height: 100,
-                            width: 100,
-                          ),
-                          10.0.spaceY,
-                          BodySmallText(
-                            title: LocaleKeys.browseExpertsFields.tr(),
-                            titleTextAlign: TextAlign.center,
-                            maxLine: 3,
-                          ),
-                        ],
-                      ).addAllMargin(12)),
+                  child: GestureDetector(
+                    onTap: (){
+                      context.toPushNamed(RoutesConstants.exploreExpertScreen);
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                          BoxShadow(
+                            color: Color(0x33000000),
+                            blurRadius: 2,
+                            offset: Offset(0, 2),
+                            spreadRadius: 0,
+                          )
+                        ]),
+                        child: Column(
+                          children: [
+                            BodySmallText(
+                              fontWeight: FontWeight.w700,
+                              title: LocaleKeys.exploreExperts.tr().toUpperCase(),
+                            ),
+                            10.0.spaceY,
+                            Image.asset(
+                              ImageConstants.expert,
+                              height: 100,
+                              width: 100,
+                            ),
+                            10.0.spaceY,
+                            BodySmallText(
+                              title: LocaleKeys.browseExpertsFields.tr(),
+                              titleTextAlign: TextAlign.center,
+                              maxLine: 3,
+                            ),
+                          ],
+                        ).addAllMargin(12)),
+                  ),
                 ),
                 40.0.spaceX,
                 Flexible(
-                  child: InkWell(
+                  child: GestureDetector(
                     onTap: () {},
                     child: Container(
                         decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
@@ -131,14 +136,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               CategoryListShimmerWidget(),
               20.0.spaceY,
               CategoryListShimmerWidget()
-            ] else ...[
-              CategoryAndTopicListView(),
-              20.0.spaceY,
-              FavoriteExpertsView(),
-              20.0.spaceY,
-              PastConversationsView(),
-              20.0.spaceY,
-            ]
+            ] else
+              ...[
+                CategoryAndTopicListView(),
+                20.0.spaceY,
+                FavoriteExpertsView(),
+                20.0.spaceY,
+                PastConversationsView(),
+                20.0.spaceY,
+              ]
           ],
         ).addPaddingXY(paddingX: 16, paddingY: 16),
       ),
