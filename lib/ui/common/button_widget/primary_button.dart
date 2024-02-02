@@ -11,6 +11,7 @@ class PrimaryButton extends StatelessWidget {
   final double? lineHeight;
   final Color? titleColor;
   final Color? buttonColor;
+  final String? buttonTextFontFamily;
 
     const PrimaryButton({
       Key? key,
@@ -24,6 +25,7 @@ class PrimaryButton extends StatelessWidget {
       this.lineHeight,
       this.titleColor,
       this.buttonColor,
+      this.buttonTextFontFamily
     }) : super(key: key);
 
   @override
@@ -67,7 +69,7 @@ class PrimaryButton extends StatelessWidget {
                   : const SizedBox.shrink(),
               BodyMediumText(
                 title: title,
-                fontFamily: FontWeightEnum.w700.toInter,
+                fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
                 titleColor: titleColor ?? ColorConstants.textColor,
                 titleTextAlign: TextAlign.center,
                 fontSize: 13,

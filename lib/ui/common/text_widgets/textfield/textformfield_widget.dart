@@ -177,6 +177,12 @@ class TextFormFieldWidget extends StatelessWidget {
 
   final AlignmentGeometry? alignment;
 
+  final String? textFontFamily;
+
+  final String? labelTextFontFamily;
+
+  final double? labelTextSpace;
+
   const TextFormFieldWidget(
       {this.textFormFieldKey,
       this.controller,
@@ -223,6 +229,9 @@ class TextFormFieldWidget extends StatelessWidget {
       this.contextMenuBuilder,
       this.autofocus,
       this.buildCounter,
+      this.labelTextFontFamily,
+      this.textFontFamily,
+      this.labelTextSpace,
       this.border,
       this.borderRadius,
       this.borderWidth,
@@ -255,12 +264,13 @@ class TextFormFieldWidget extends StatelessWidget {
             ? Align(
                 alignment: alignment ?? Alignment.center,
                 child: BodySmallText(
+                  fontFamily: labelTextFontFamily ?? FontWeightEnum.w400.toInter,
                   title: labelText ?? '',
                   titleColor: labelColor ?? ColorConstants.blackColor,
                 ),
               )
             : const SizedBox.shrink(),
-        (labelText?.isNotEmpty ?? false) && labelText != null ? 6.0.spaceY : const SizedBox.shrink(),
+        (labelText?.isNotEmpty ?? false) && labelText != null ? (labelTextSpace?.spaceY ?? 6.0.spaceY) : const SizedBox.shrink(),
         SizedBox(
           height: height,
           width: width,
@@ -278,7 +288,7 @@ class TextFormFieldWidget extends StatelessWidget {
             maxLength: maxLength,
             textInputAction: textInputAction ?? TextInputAction.next,
             readOnly: isReadOnly ?? false,
-            style: textStyle ?? TextStyle(color: ColorConstants.blackColor, fontSize: 14 / scaleFactor, fontFamily: FontWeightEnum.w600.toInter),
+            style: textStyle ?? TextStyle(color: ColorConstants.blackColor, fontSize: 14 / scaleFactor, fontFamily: textFontFamily ?? FontWeightEnum.w400.toInter),
             keyboardType: textInputType ?? TextInputType.text,
             controller: controller,
             initialValue: initialValue,

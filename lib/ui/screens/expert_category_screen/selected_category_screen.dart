@@ -38,7 +38,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
       ),
       body: SingleChildScrollView(
         child: filterProviderWatch.isLoading
-            ? CupertinoActivityIndicator()
+            ? Center(child: CupertinoActivityIndicator())
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -85,53 +85,56 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                     isShadow: true,
                   ),
                   20.0.spaceY,
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                      ),
-                      BoxShadow(
-                        color: Colors.white,
-                        spreadRadius: 0.0,
-                        blurRadius: 10.0,
-                      ),
-                    ]),
-                    child: Wrap(
-                      children: List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
-                        final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
-                        return OnScaleTap(
-                          onPress: () {
-                            filterProviderRead.setSelectionBoolValueOfChild(position: index);
-                          },
-                          child: ShadowContainer(
-                            shadowColor: ColorConstants.disableColor,
-                            backgroundColor: data?.isSelected ?? false ? ColorConstants.primaryColor : null,
-                            margin: EdgeInsets.only(bottom: 10, right: 10),
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                            offset: Offset(0, 3),
-                            child: BodyMediumText(
-                              title: data?.name ?? '',
-                              fontFamily: FontWeightEnum.w500.toInter,
-                              maxLine: 5,
+                  if (filterProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          spreadRadius: 0.0,
+                          blurRadius: 10.0,
+                        ),
+                      ]),
+                      child: Wrap(
+                        children: List.generate(
+                            filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                          final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
+                          return OnScaleTap(
+                            onPress: () {
+                              filterProviderRead.setSelectionBoolValueOfChild(position: index);
+                            },
+                            child: ShadowContainer(
+                              shadowColor: ColorConstants.disableColor,
+                              backgroundColor: data?.isSelected ?? false ? ColorConstants.primaryColor : null,
+                              margin: EdgeInsets.only(bottom: 10, right: 10),
+                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              offset: Offset(0, 3),
+                              child: BodyMediumText(
+                                title: data?.name ?? '',
+                                fontFamily: FontWeightEnum.w500.toInter,
+                                maxLine: 5,
+                              ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                     ),
-                  ),
-                  20.0.spaceY,
-                  BodyMediumText(
-                    title: StringConstants.topicText,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                  ),
-                  5.0.spaceY,
-                  BodyMediumText(
-                    title: filterProviderWatch.selectedTopic ?? '',
-                    maxLine: 3,
-                  ),
-                  10.0.spaceY,
+                    20.0.spaceY,
+                    BodyMediumText(
+                      title: StringConstants.topicText,
+                      fontFamily: FontWeightEnum.w400.toInter,
+                    ),
+                    5.0.spaceY,
+                    BodyMediumText(
+                      title: filterProviderWatch.selectedTopic ?? '',
+                      maxLine: 3,
+                    ),
+                    10.0.spaceY,
+                  ],
                   BodyMediumText(
                     title: StringConstants.descriptionText,
                     fontFamily: FontWeightEnum.w400.toInter,
@@ -148,15 +151,19 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                     prefixIcon: ImageConstants.filter,
                     prefixIconPadding: 10,
                   ).addPaddingX(20),
-                  ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                      itemBuilder: (context, index) {
-                        return ExpertDetailWidget();
-                      },
-                      separatorBuilder: (context, index) => 20.0.spaceY,
-                      itemCount: 30)
+                  if (filterProviderWatch.singleCategoryData?.expertData?.isNotEmpty ?? false) ...[
+                    ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                        itemBuilder: (context, i) {
+                          return ExpertDetailWidget(
+                            expertData: filterProviderWatch.singleCategoryData?.expertData?[i],
+                          );
+                        },
+                        separatorBuilder: (context, index) => 20.0.spaceY,
+                        itemCount: filterProviderWatch.singleCategoryData?.expertData?.length ?? 0)
+                  ]
                 ],
               ),
       ),

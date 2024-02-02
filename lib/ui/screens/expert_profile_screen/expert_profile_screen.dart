@@ -12,112 +12,122 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConstants.purpleDarkColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
             Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
-            Column(
-              children: [
-                HeadlineMediumText(
-                  title: StringConstants.yourExpertName,
-                  fontFamily: FontWeightEnum.w700.toInter,
-                  fontSize: 30,
-                  titleColor: ColorConstants.bottomTextColor,
-                ),
-                28.0.spaceY,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
-                      children: [
-                        BodySmallText(
-                          title: StringConstants.overallRatting,
-                          fontFamily: FontWeightEnum.w700.toInter,
-                        ),
-                        10.0.spaceX,
-                        HeadlineMediumText(
-                          fontSize: 30,
-                          title: '0',
-                          fontFamily: FontWeightEnum.w700.toInter,
-                          titleColor: ColorConstants.overallRatingColor,
-                        ),
-                      ],
-                    ),
-                    18.0.spaceY,
-                    Row(
-                      children: [
-                        BodySmallText(
-                          title: StringConstants.feePer,
-                          fontFamily: FontWeightEnum.w700.toInter,
-                        ),
-                        10.0.spaceX,
-                        HeadlineMediumText(
-                          fontSize: 30,
-                          title: '\$',
-                          fontFamily: FontWeightEnum.w700.toInter,
-                          titleColor: ColorConstants.overallRatingColor,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                28.0.spaceY,
-                Row(
-                  children: [
-                    Flexible(
-                      child: PrimaryButton(
-                        title: StringConstants.editProfile,
-                        onPressed: () {
-                          context.toPushNamed(RoutesConstants.editYourExpertProfileScreen);
-                        },
-                      ),
-                    ),
-                    44.0.spaceX,
-                    Flexible(
-                      child: PrimaryButton(
-                        title: StringConstants.shareProfile,
-                        onPressed: () {
-                          // context.toPushNamed(RoutesConstants.expertDetailScreen);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                42.0.spaceY,
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: TitleMediumText(
-                    title: StringConstants.moreAboutMe,
+            Container(
+              decoration: BoxDecoration(
+                color: ColorConstants.whiteColor,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+              ),
+              child: Column(
+                children: [
+                  HeadlineMediumText(
+                    title: StringConstants.yourExpertName,
                     fontFamily: FontWeightEnum.w700.toInter,
+                    fontSize: 30,
+                    titleColor: ColorConstants.bottomTextColor,
                   ),
-                ),
-                12.0.spaceY,
-                TitleMediumText(
-                  fontFamily: FontWeightEnum.w400.toInter,
-                  title: StringConstants.welcomeExpertProfile,
-                  titleTextAlign: TextAlign.start,
-                  maxLine: 2,
-                ),
-                20.0.spaceY,
-                TitleMediumText(
-                  fontFamily: FontWeightEnum.w400.toInter,
-                  title: StringConstants.soWhatNext,
-                  maxLine: 5,
-                ),
-                20.0.spaceY,
-                TitleMediumText(
-                  fontFamily: FontWeightEnum.w400.toInter,
-                  title: StringConstants.clickEditProfile,
-                  maxLine: 3,
-                ),
-                20.0.spaceY,
-                TitleMediumText(
-                  fontFamily: FontWeightEnum.w400.toInter,
-                  title: StringConstants.goodLuck,
-                  maxLine: 2,
-                ),
-              ],
-            ).addAllPadding(32)
+                  28.0.spaceY,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Row(
+                        children: [
+                          BodySmallText(
+                            title: StringConstants.overallRatting,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                          ),
+                          10.0.spaceX,
+                          HeadlineMediumText(
+                            fontSize: 30,
+                            title: '0',
+                            fontFamily: FontWeightEnum.w700.toInter,
+                            titleColor: ColorConstants.overallRatingColor,
+                          ),
+                        ],
+                      ),
+                      18.0.spaceY,
+                      Row(
+                        children: [
+                          BodySmallText(
+                            title: StringConstants.feePer,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                          ),
+                          10.0.spaceX,
+                          HeadlineMediumText(
+                            fontSize: 30,
+                            title: '\$',
+                            fontFamily: FontWeightEnum.w700.toInter,
+                            titleColor: ColorConstants.overallRatingColor,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  28.0.spaceY,
+                  Row(
+                    children: [
+                      Flexible(
+                        child: PrimaryButton(
+                          title: StringConstants.editProfile,
+                          buttonTextFontFamily: FontWeightEnum.w400.toInter,
+                          onPressed: () {
+                            context.toPushNamed(RoutesConstants.editYourExpertProfileScreen);
+                          },
+                        ),
+                      ),
+                      44.0.spaceX,
+                      Flexible(
+                        child: PrimaryButton(
+                          title: StringConstants.shareProfile,
+                          buttonTextFontFamily: FontWeightEnum.w400.toInter,
+                          onPressed: () {
+                            // context.toPushNamed(RoutesConstants.expertDetailScreen);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  42.0.spaceY,
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: TitleMediumText(
+                      title: StringConstants.moreAboutMe,
+                      fontFamily: FontWeightEnum.w700.toInter,
+                    ),
+                  ),
+                  12.0.spaceY,
+                  TitleMediumText(
+                    fontFamily: FontWeightEnum.w400.toInter,
+                    title: StringConstants.welcomeExpertProfile,
+                    titleTextAlign: TextAlign.start,
+                    maxLine: 2,
+                  ),
+                  20.0.spaceY,
+                  TitleMediumText(
+                    fontFamily: FontWeightEnum.w400.toInter,
+                    title: StringConstants.soWhatNext,
+                    maxLine: 10,
+                  ),
+                  20.0.spaceY,
+                  TitleMediumText(
+                    fontFamily: FontWeightEnum.w400.toInter,
+                    title: StringConstants.clickEditProfile,
+                    maxLine: 6,
+                  ),
+                  20.0.spaceY,
+                  TitleMediumText(
+                    fontFamily: FontWeightEnum.w400.toInter,
+                    title: StringConstants.goodLuck,
+                    maxLine: 10,
+                  ),
+                ],
+              ).addAllPadding(32),
+            ),
+
           ],
         ),
       ),
