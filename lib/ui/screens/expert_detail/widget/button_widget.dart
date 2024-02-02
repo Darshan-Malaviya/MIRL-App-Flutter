@@ -18,7 +18,10 @@ class ExpertDetailsButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? MediaQuery.of(context).size.width,
+      width: width ?? MediaQuery
+          .of(context)
+          .size
+          .width,
       height: height ?? 45,
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
