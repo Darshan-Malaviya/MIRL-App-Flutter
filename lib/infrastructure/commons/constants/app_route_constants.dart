@@ -24,6 +24,7 @@ import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
+import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
@@ -102,6 +103,8 @@ class RouterConstant {
             builder: (_) => ExpertCategoryFilterScreen(
                   args: settings.arguments as FilterArgs,
                 ));
+      case RoutesConstants.scheduleCallScreen:
+        return MaterialPageRoute(builder: (_) => const ScheduleCallScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

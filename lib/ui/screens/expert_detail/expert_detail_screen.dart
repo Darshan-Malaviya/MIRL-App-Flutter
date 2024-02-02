@@ -93,14 +93,11 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: AlignmentDirectional.topCenter,
+            Center(
               child: HeadlineMediumText(
                 title: expertDetailWatch.userData?.expertName ?? '',
-                fontFamily: FontWeightEnum.w700.toInter,
                 fontSize: 30,
                 titleColor: ColorConstants.bottomTextColor,
-                titleTextAlign: TextAlign.center,
               ),
             ),
             22.0.spaceY,
@@ -111,13 +108,12 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   children: [
                     BodySmallText(
                       title: StringConstants.overallRatting,
-                      fontFamily: FontWeightEnum.w700.toInter,
+                      fontFamily: FontWeightEnum.w400.toInter,
                     ),
                     4.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
                       title: '0',
-                      fontFamily: FontWeightEnum.w700.toInter,
                       titleColor: ColorConstants.overallRatingColor,
                     ),
                   ],
@@ -127,13 +123,12 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   children: [
                     BodySmallText(
                       title: StringConstants.feePer,
-                      fontFamily: FontWeightEnum.w700.toInter,
+                      fontFamily: FontWeightEnum.w400.toInter,
                     ),
                     4.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '\$${(int.parse(expertDetailWatch.userData?.fee ?? '0') / 100).toString()}',
-                      fontFamily: FontWeightEnum.w700.toInter,
+                      title: '\$${(expertDetailWatch.userData?.fee ?? 0 / 100).toString()}',
                       titleColor: ColorConstants.overallRatingColor,
                     ),
                   ],
@@ -170,7 +165,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             24.0.spaceY,
             PrimaryButton(
               title: StringConstants.scheduleCall,
-              onPressed: () {},
+              onPressed: () {
+                context.toPushNamed(RoutesConstants.scheduleCallScreen);
+              },
               buttonColor: ColorConstants.scheduleCallColor,
               titleColor: ColorConstants.buttonTextColor,
             ),
@@ -186,7 +183,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       style: TextStyle(
                         color: ColorConstants.blueColor,
                         fontSize: 16,
-                        fontFamily: FontWeightEnum.w700.toInter,
                       ),
                     ),
                     TextSpan(
@@ -212,7 +208,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       style: TextStyle(
                         color: ColorConstants.blueColor,
                         fontSize: 16,
-                        fontFamily: FontWeightEnum.w700.toInter,
                       ),
                     ),
                     TextSpan(
@@ -250,7 +245,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                               style: TextStyle(
                                 color: ColorConstants.overAllRatingColor,
                                 fontSize: 30,
-                                fontFamily: FontWeightEnum.w700.toInter,
                                 height: 0.05,
                                 letterSpacing: -0.33,
                               ),
@@ -260,7 +254,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                               style: TextStyle(
                                 color: ColorConstants.overAllRatingColor,
                                 fontSize: 18,
-                                fontFamily: FontWeightEnum.w700.toInter,
                                 height: 0.08,
                                 letterSpacing: -0.20,
                               ),

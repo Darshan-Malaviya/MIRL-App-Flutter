@@ -25,5 +25,6 @@ class RoutesConstants {
   static const String expertCategoryFilterScreen = '/expertCategoryFilterScreen';
   static const String searchScreen = '/searchScreen';
   static const String expertDetailScreen = '/expertDetailScreen';
+  static const String scheduleCallScreen = '/scheduleCallScreen';
   static const String exploreExpertScreen = '/exploreExpertScreen';
 }
