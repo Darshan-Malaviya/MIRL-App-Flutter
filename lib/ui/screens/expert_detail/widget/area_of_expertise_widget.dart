@@ -23,7 +23,7 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
     final expertDetailWatch = ref.watch(expertDetailProvider);
     return Column(
       children: [
-        expertDetailWatch.userData?.areasOfExpertise?.isNotEmpty ?? false
+        expertDetailWatch.userData?.areaOfExpertise?.isNotEmpty ?? false
             ? Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: TitleMediumText(
@@ -34,7 +34,7 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
               )
             : SizedBox.shrink(),
         Column(
-          children: List.generate(expertDetailWatch.userData?.areasOfExpertise?.length ?? 0, (index) {
+          children: List.generate(expertDetailWatch.userData?.areaOfExpertise?.length ?? 0, (index) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +46,7 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                         borderRadius: BorderRadius.circular(20.0),
                         child: NetworkImageWidget(
                           boxFit: BoxFit.cover,
-                          imageURL: expertDetailWatch.userData?.areasOfExpertise?[index].image ?? '',
+                          imageURL: expertDetailWatch.userData?.areaOfExpertise?[index].image ?? '',
                           isNetworkImage: true,
                           height: 50,
                           width: 50,
@@ -55,7 +55,7 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                       4.0.spaceY,
                       LabelSmallText(
                         fontSize: 9,
-                        title: expertDetailWatch.userData?.areasOfExpertise?[index].parentName ?? '',
+                        title: expertDetailWatch.userData?.areaOfExpertise?[index].name ?? '',
                         titleColor: ColorConstants.blackColor,
                         titleTextAlign: TextAlign.center,
                       ),
@@ -69,10 +69,10 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                 Container(
                   width: MediaQuery.of(context).size.width - 200,
                   child: Wrap(
-                      children: List.generate(expertDetailWatch.userData?.areasOfExpertise?[index].data?.length ?? 0, (i) {
+                      children: List.generate(expertDetailWatch.userData?.areaOfExpertise?[index].topic?.length ?? 0, (i) {
                     return Container(
                       child: TitleSmallText(
-                        title: expertDetailWatch.userData?.areasOfExpertise?[index].data?[i].name ?? '',
+                        title: expertDetailWatch.userData?.areaOfExpertise?[index].topic?[i].name ?? '',
                         fontFamily: FontWeightEnum.w500.toInter,
                       ).addMarginXY(paddingX: 8, paddingY: 2),
                       decoration: ShapeDecoration(
