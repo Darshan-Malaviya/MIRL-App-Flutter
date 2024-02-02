@@ -27,7 +27,10 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
                 children: [
                   4.0.spaceY,
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
+                          args: homeProviderWatch.homeData?.categories?[index].id.toString());
+                    },
                     child: ShadowContainer(
                       shadowColor: ColorConstants.blackColor.withOpacity(0.1),
                       child: Column(

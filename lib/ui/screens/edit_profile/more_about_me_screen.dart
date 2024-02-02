@@ -48,7 +48,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                     color: ColorConstants.whiteColor,
                     borderRadius: BorderRadius.all(Radius.circular(8))),
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8, top: 2, right: 4),
+                  padding: const EdgeInsets.only(bottom: 8, ),
                   child: TextFormField(
                       onChanged: expertRead.changeAboutCounterValue,
                       textAlign: TextAlign.left,
@@ -68,7 +68,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                 fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.professionalSkills,
                 titleTextAlign: TextAlign.center,
-                maxLine: 4,
+                maxLine: 10,
               ),
             ],
           ).addAllPadding(20),

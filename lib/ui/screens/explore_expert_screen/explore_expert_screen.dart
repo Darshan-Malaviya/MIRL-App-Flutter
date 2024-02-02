@@ -105,7 +105,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                       prefixIconPadding: 10,
                     ).addPaddingX(20),
                     40.0.spaceY,
-                    ExpertDetailWidget()
+                 //   ExpertDetailWidget()
                   ],
                 ),
               ),
