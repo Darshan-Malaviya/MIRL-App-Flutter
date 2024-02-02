@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 import 'package:mirl/infrastructure/models/common/filter_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
@@ -13,6 +14,7 @@ class FilterProvider extends ChangeNotifier {
   TextEditingController instantCallAvailabilityController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController topicController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
   TextEditingController ratingController = TextEditingController();
   TextEditingController countryNameController = TextEditingController();
   TextEditingController cityNameController = TextEditingController();
@@ -41,6 +43,12 @@ class FilterProvider extends ChangeNotifier {
 
   CountryModel? selectedCountryModel;
 
+  CategoryIdNameCommonModel? _selectedCategory;
+  CategoryIdNameCommonModel? get selectedCategory => _selectedCategory;
+
+  List<CategoryIdNameCommonModel>? _selectedTopicList;
+  List<CategoryIdNameCommonModel>?  get selectedTopicList => _selectedTopicList;
+
   String? selectedTopic;
 
   double start = 30;
@@ -56,6 +64,18 @@ class FilterProvider extends ChangeNotifier {
 
   CategoryAndExpertUser? get categoryList => _categoryList;
   CategoryAndExpertUser? _categoryList;
+
+
+  void setCategory({required CategoryIdNameCommonModel value}) {
+    _selectedCategory = value;
+    notifyListeners();
+  }
+
+  void setTopicByCategory({required List<CategoryIdNameCommonModel>? value}) {
+    _selectedTopicList?.addAll(value ?? []);
+    notifyListeners();
+  }
+
 
   void setValueOfCall(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.InstantCall.name);
@@ -145,6 +165,16 @@ class FilterProvider extends ChangeNotifier {
   void setRange(RangeValues value) {
     start = value.start;
     end = value.end;
+    notifyListeners();
+  }
+
+  void clearSearchCategoryController() {
+    categoryController.clear();
+    notifyListeners();
+  }
+
+  void clearSearchTopicController() {
+    categoryController.clear();
     notifyListeners();
   }
 
