@@ -1,60 +1,87 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
+import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/button_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/certifications_and_experience_widget.dart';
+import 'package:mirl/ui/screens/expert_detail/widget/droup_down_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/reviews_widget.dart';
 
+ValueNotifier<bool> isFavorite = ValueNotifier(false);
+
 class ExpertDetailScreen extends ConsumerStatefulWidget {
-  const ExpertDetailScreen({super.key});
+  final String expertId;
+
+  const ExpertDetailScreen({super.key, required this.expertId});
 
   @override
   ConsumerState<ExpertDetailScreen> createState() => _ExpertDetailScreenState();
 }
 
 class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
-  List<String> reviews = ["HIGHEST REVIEW SCORE", "LOWEST REVIEW SCORE", "NEWEST REVIEWS", "OLDEST REVIEWS"];
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(expertDetailProvider).getExpertDetailApiCall();
-      //  _showBottomSheet();
+      ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
     });
     super.initState();
   }
 
-/*  Future<void> _showBottomSheet() async {
-    return showModalBottomSheet(
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-        backgroundColor: Colors.white,
-        context: context,
-        builder: (context){
-          return DraggableScrollableSheet(
-              minChildSize: 0.1,
-              maxChildSize: 0.9,
-              initialChildSize: 0.3,
-              expand: true,
-              builder: (context, scrollController) {
-                return bottomSheetView(); //whatever you're returning, does not have to be a Container
-              }
-          );
-        });
-  }
+  @override
+  Widget build(BuildContext context) {
+    final expertDetailWatch = ref.watch(expertDetailProvider);
+    final expertDetailRead = ref.read(expertDetailProvider);
 
-  void openBottomSheet() {
-    CommonBottomSheet.bottomSheet(context: context, child: bottomSheetView(), isDismissible: true);
-  }*/
+    return Scaffold(
+      appBar: AppBarWidget(
+        preferSize: 40,
+        leading: InkWell(
+          child: Image.asset(ImageConstants.backIcon),
+          onTap: () => context.toPop(),
+        ),
+        trailingIcon: InkWell(onTap: () {}, child: Icon(Icons.more_horiz)).addPaddingRight(14),
+      ),
+      body: Stack(
+        children: [
+          NetworkImageWidget(
+            imageURL: expertDetailWatch.userData?.expertProfile ?? '',
+            isNetworkImage: true,
+            boxFit: BoxFit.cover,
+          ),
+          Align(
+            alignment: AlignmentDirectional.topEnd,
+            child: InkWell(
+              onTap: () {
+                expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
+              },
+              child: Image.asset(
+                expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
+                height: 40,
+                width: 40,
+              ),
+            ),
+          ).addAllPadding(15),
+          DraggableScrollableSheet(
+            initialChildSize: 0.45,
+            minChildSize: 0.45,
+            maxChildSize: 0.86,
+            builder: (BuildContext context, myScrollController) {
+              return bottomSheetView(controller: myScrollController);
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget bottomSheetView({required ScrollController controller}) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
 
     return Container(
-      //height: MediaQuery.of(context).size.height * 0.9,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
@@ -89,7 +116,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     4.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '9',
+                      title: '0',
                       fontFamily: FontWeightEnum.w700.toInter,
                       titleColor: ColorConstants.overallRatingColor,
                     ),
@@ -105,7 +132,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     4.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '\$20',
+                      title: '\$${(int.parse(expertDetailWatch.userData?.fee ?? '0') / 100).toString()}',
                       fontFamily: FontWeightEnum.w700.toInter,
                       titleColor: ColorConstants.overallRatingColor,
                     ),
@@ -113,20 +140,27 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 ),
               ],
             ),
-            36.0.spaceY,
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: TitleMediumText(
-                title: StringConstants.moreAboutMe,
-                fontFamily: FontWeightEnum.w700.toInter,
+            if (expertDetailWatch.userData?.about?.isNotEmpty ?? false) ...[
+              35.0.spaceY,
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: TitleMediumText(
+                  title: StringConstants.moreAboutMe,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                ),
               ),
-            ),
-            12.0.spaceY,
-            TitleMediumText(
-              title: expertDetailWatch.userData?.about ?? '',
-              maxLine: 10,
-            ),
-            35.0.spaceY,
+              12.0.spaceY,
+              ReadMoreText(
+                style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter),
+                expertDetailWatch.userData?.about ?? '',
+                trimLines: 2,
+                trimMode: TrimMode.Line,
+                trimCollapsedText: LocaleKeys.readMore.tr(),
+                trimExpandedText: LocaleKeys.readLess.tr(),
+                moreStyle: TextStyle(fontSize: 18, color: ColorConstants.blackColor),
+              ),
+              36.0.spaceY,
+            ],
             AreaOfExpertiseWidget(),
             ExpertDetailsButtonWidget(
               title: StringConstants.requestCallNow,
@@ -142,55 +176,59 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             40.0.spaceY,
             CertificationAndExperienceWidget(),
-            40.0.spaceY,
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'LOCATION: ',
-                    style: TextStyle(
-                      color: ColorConstants.blueColor,
-                      fontSize: 16,
-                      fontFamily: FontWeightEnum.w700.toInter,
+            if (expertDetailWatch.userData?.loginType != null) ...[
+              40.0.spaceY,
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: LocaleKeys.location.tr(),
+                      style: TextStyle(
+                        color: ColorConstants.blueColor,
+                        fontSize: 16,
+                        fontFamily: FontWeightEnum.w700.toInter,
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    text: '${expertDetailWatch.userData?.city ?? ''},${expertDetailWatch.userData?.country ?? ''}',
-                    style: TextStyle(
-                      color: ColorConstants.blueColor,
-                      fontSize: 16,
-                      fontFamily: FontWeightEnum.w400.toInter,
+                    TextSpan(
+                      text: '${expertDetailWatch.userData?.city ?? ''},${expertDetailWatch.userData?.country ?? ''}',
+                      style: TextStyle(
+                        color: ColorConstants.blueColor,
+                        fontSize: 16,
+                        fontFamily: FontWeightEnum.w400.toInter,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                textAlign: TextAlign.start,
               ),
-              textAlign: TextAlign.start,
-            ),
-            30.0.spaceY,
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'GENDER: ',
-                    style: TextStyle(
-                      color: ColorConstants.blueColor,
-                      fontSize: 16,
-                      fontFamily: FontWeightEnum.w700.toInter,
+            ],
+            if (expertDetailWatch.userData?.gender != null) ...[
+              35.0.spaceY,
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: LocaleKeys.gender.tr(),
+                      style: TextStyle(
+                        color: ColorConstants.blueColor,
+                        fontSize: 16,
+                        fontFamily: FontWeightEnum.w700.toInter,
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    text: expertDetailWatch.userGender(),
-                    style: TextStyle(
-                      color: ColorConstants.blueColor,
-                      fontSize: 16,
-                      fontFamily: FontWeightEnum.w400.toInter,
+                    TextSpan(
+                      text: expertDetailWatch.userGender(),
+                      style: TextStyle(
+                        color: ColorConstants.blueColor,
+                        fontSize: 16,
+                        fontFamily: FontWeightEnum.w400.toInter,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                textAlign: TextAlign.start,
               ),
-              textAlign: TextAlign.start,
-            ),
-            40.0.spaceY,
+              40.0.spaceY,
+            ],
             Image.asset(ImageConstants.line),
             40.0.spaceY,
             TitleMediumText(
@@ -209,12 +247,11 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: '9',
+                              text: '0',
                               style: TextStyle(
-                                color: Color(0xFF383636),
+                                color: ColorConstants.overAllRatingColor,
                                 fontSize: 30,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
+                                fontFamily: FontWeightEnum.w700.toInter,
                                 height: 0.05,
                                 letterSpacing: -0.33,
                               ),
@@ -222,10 +259,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                             TextSpan(
                               text: '/10',
                               style: TextStyle(
-                                color: Color(0xFF383636),
+                                color: ColorConstants.overAllRatingColor,
                                 fontSize: 18,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
+                                fontFamily: FontWeightEnum.w700.toInter,
                                 height: 0.08,
                                 letterSpacing: -0.20,
                               ),
@@ -249,90 +285,13 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               child: SizedBox.shrink(),
             ),
             30.0.spaceY,
-            Row(
-              children: [
-                Expanded(
-                  child: LabelSmallText(
-                    title: StringConstants.sortByReviews,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                    titleTextAlign: TextAlign.end,
-                    titleColor: ColorConstants.blueColor,
-                    fontSize: 10,
-                  ),
-                ),
-                20.0.spaceX,
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: Container(
-                    width: 140,
-                    child: DropdownMenuWidget(
-                      hintText: StringConstants.theDropDown,
-                      dropdownList: reviews
-                          .map((String item) => dropdownMenuEntry(
-                                context: context,
-                                value: item,
-                                label: item,
-                              ))
-                          .toList(),
-                      onSelect: (String value) {},
-                    ),
-                  ),
-                ),
-                20.0.spaceY,
-              ],
-            ),
-            20.0.spaceY,
+            DropDownWidget(),
+            40.0.spaceY,
             ReviewsWidget(),
             20.0.spaceY,
           ],
         ),
       ).addAllPadding(28),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWidget(
-        preferSize: 40,
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
-        ),
-        trailingIcon: InkWell(onTap: () {}, child: Icon(Icons.more_horiz)).addPaddingRight(14),
-      ),
-      body: Stack(
-        children: [
-          Image.asset(ImageConstants.expertDetail, fit: BoxFit.fitWidth, width: double.infinity),
-          DraggableScrollableSheet(
-            initialChildSize: 0.4,
-            minChildSize: 0.4,
-            maxChildSize: 0.96,
-            builder: (BuildContext context, myscrollController) {
-              return bottomSheetView(controller: myscrollController);
-            },
-          ),
-        ],
-      ),
-      /*    body: Stack(
-        children: [
-          Image.asset(ImageConstants.expertDetail, fit: BoxFit.fitWidth, width: double.infinity),
-        //  bottomSheetView(),
-          Positioned(
-            bottom: 0,
-            child: DraggableScrollableSheet(
-                minChildSize: 0.1,
-                maxChildSize: 0.9,
-                initialChildSize: 0.3,
-                expand: false,
-                builder: (context, scrollController) {
-                  return bottomSheetView();
-                }
-            ),
-          ),
-
-        ],
-      ),*/
     );
   }
 }

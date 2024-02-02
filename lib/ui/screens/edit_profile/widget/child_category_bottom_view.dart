@@ -30,7 +30,7 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
               ref.read(addYourAreaExpertiseProvider).selectAllChildCategory(isSelectAll: value, parentId: widget.childCategoryList?.id ?? -1);
               ref.read(addYourAreaExpertiseProvider).addSelectedChildIds(parentId: widget.childCategoryList?.id ?? -1);
             },
-            label: Text('${widget.childCategoryList?.parentName ?? ''} - All topics'),
+            label: Text('${widget.childCategoryList?.name ?? ''} - All topics'),
             labelStyle: TextStyle(color: Colors.black, fontFamily: FontWeightEnum.w500.toInter),
             shape: RoundedRectangleBorder(
               side: BorderSide(color: ColorConstants.transparentColor),
@@ -44,7 +44,7 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
             width: double.infinity,
             child: Wrap(
               children: List.generate(
-                widget.childCategoryList?.child?.length ?? 0,
+                widget.childCategoryList?.topic?.length ?? 0,
                 (position) {
                   return FilterChip(
                     showCheckmark: false,
@@ -52,15 +52,12 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
                     selectedColor: ColorConstants.primaryColor,
                     onSelected: (bool value) {
                       setState(() {
-                        widget.childCategoryList?.child?[position].isSelected = value;
+                        widget.childCategoryList?.topic?[position].isSelected = value;
                       });
-                      ref.read(addYourAreaExpertiseProvider).addSelectedChildIds(
-
-                          //    childIndex: position,
-                          parentId: widget.childCategoryList?.id ?? -1);
+                      ref.read(addYourAreaExpertiseProvider).addSelectedChildIds(parentId: widget.childCategoryList?.id ?? -1);
                     },
                     label: Text(
-                      (widget.childCategoryList?.child?[position].name ?? ''),
+                      (widget.childCategoryList?.topic?[position].name ?? ''),
                       maxLines: 3,
                     ),
                     labelStyle: TextStyle(color: Colors.black, fontFamily: FontWeightEnum.w500.toInter),
@@ -70,7 +67,7 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
                     ),
                     shadowColor: ColorConstants.blackColor,
                     backgroundColor: Colors.white,
-                    selected: widget.childCategoryList?.child?[position].isSelected ?? false,
+                    selected: widget.childCategoryList?.topic?[position].isSelected ?? false,
                   );
                 },
               ),

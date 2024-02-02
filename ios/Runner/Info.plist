@@ -96,5 +96,7 @@
     <string>$(PRODUCT_NAME) requires photo library permission to use photos for upload picture</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>$(PRODUCT_NAME) requires microphone permission to use calling feature</string>
-</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(PRODUCT_NAME) requires media library permission to get the captured photos.</string>
+	</dict>
 </plist>

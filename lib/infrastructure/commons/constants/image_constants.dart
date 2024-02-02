@@ -1,6 +1,7 @@
 class ImageConstants {
   static const imagePath = 'assets/images/';
   static const gifPath = 'assets/gif/';
+  static const iconPath = 'assets/icons/';
 
   static const backgroundLines = '${imagePath}background_line.png';
   static const mirlImage = '${imagePath}mirl_image.png';
@@ -22,11 +23,18 @@ class ImageConstants {
   static const minus = '${imagePath}minus.png';
   static const expert = '${imagePath}expert.png';
   static const multipleConnect = '${imagePath}multiple_connect.png';
+  static const filter = '${imagePath}filter.png';
   static const expertDetail = '${imagePath}expert_detail.png';
   static const rating = '${imagePath}rating.png';
   static const starFill = '${imagePath}star_fill.png';
+  static const like = '${imagePath}like.png';
+  static const dislike = '${imagePath}dislike.png';
+  static const cancel = '${imagePath}cancel.png';
 
   /// gif image
-
   static const splashImages = '${gifPath}splash_image.gif';
+
+  /// icon
+  static const recurringIcon = '${iconPath}recurring.png';
+  static const nonRecurringIcon = '${iconPath}non_recurring.png';
 }

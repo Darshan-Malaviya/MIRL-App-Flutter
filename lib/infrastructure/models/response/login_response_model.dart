@@ -67,9 +67,9 @@ class UserData {
   bool? feeFlag;
   bool? areaOfExpertiseFlag;
   bool? weeklyAvailableFlag;
-  bool? instantCallAvailable;
+  int? instantCallAvailable;
   bool? locationFlag;
-  bool? isLocationVisible;
+  int? isLocationVisible;
   bool? genderFlag;
   bool? certificateFlag;
   bool? bankDetailsFlag;
@@ -82,6 +82,7 @@ class UserData {
   String? firstCreated;
   String? lastModified;
   String? activeAt;
+  bool? isFavorite;
   List<CertificationData>? certification;
   List<WeeklyAvailableData>? expertAvailability;
   List<AreasOfExpertise>? areasOfExpertise;
@@ -130,6 +131,7 @@ class UserData {
       this.lastModified,
       this.activeAt,
       this.certification,
+      this.isFavorite,
       this.expertAvailability,
       this.areasOfExpertise});
 
@@ -176,6 +178,7 @@ class UserData {
     firstCreated = json['firstCreated'];
     lastModified = json['lastModified'];
     activeAt = json['activeAt'];
+    isFavorite = json['isFavorite'];
     if (json['certification'] != null) {
       certification = <CertificationData>[];
       json['certification'].forEach((v) {
@@ -240,6 +243,8 @@ class UserData {
     data['firstCreated'] = this.firstCreated;
     data['lastModified'] = this.lastModified;
     data['activeAt'] = this.activeAt;
+    data['isFavorite'] = this.isFavorite;
+
     if (this.certification != null) {
       data['certification'] = this.certification?.map((v) => v.toJson()).toList();
     }

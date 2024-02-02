@@ -51,36 +51,21 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  // void startTimer() {
-  //   timer?.cancel();
-  //   const oneSec = Duration(seconds: 1);
-  //   timer = Timer.periodic(
-  //     oneSec,
-  //         (Timer timer) {
-  //       if (start == 0) {
-  //         timer.cancel();
-  //         isResend = true;
-  //       } else {
-  //         start--;
-  //         isResend = false;
-  //       }
-  //       notifyListeners();
-  //     },
-  //   );
-  // }
-
   Future<void> loginRequestCall({required int loginType}) async {
     debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
-      deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
-      email: emailController.text.trim().toString(),
-      socialId: _socialId,
-      deviceToken: SharedPrefHelper.getFirebaseToken,
-      timezone: await CommonMethods.getCurrentTimeZone(),
-      loginType: loginType.toString(),
-      voIpToken: await AgoraService.singleton.getVoipToken()
-    );
-    loginApiCall(requestModel: loginRequestModel.prepareRequest(), loginType: loginType);
+        deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
+        email: emailController.text.trim(),
+        socialId: _socialId,
+        deviceToken: SharedPrefHelper.getFirebaseToken,
+        timezone: await CommonMethods.getCurrentTimeZone(),
+        loginType: loginType.toString(),
+        voIpToken: await AgoraService.singleton.getVoipToken());
+    loginApiCall(
+        requestModel: emailController.text.trim().isNotEmpty
+            ? loginRequestModel.prepareRequest()
+            : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
+        loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -92,7 +77,6 @@ class AuthProvider with ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
-          Logger().d("Login data======${loginResponseModel.toJson()}");
           if (loginType == 0) {
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
@@ -141,7 +125,6 @@ class AuthProvider with ChangeNotifier {
       );
       if (credential.userIdentifier != null) {
         _socialId = credential.userIdentifier ?? '';
-        //  userName = (credential.givenName ?? '') + " " + (credential.familyName ?? '');
         if (credential.email != null) {
           emailController.text = credential.email ?? '';
           if (emailController.text.split('@').last == 'privatelay.appleid.com') {
@@ -175,18 +158,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // String getSocialId() {
-  //   if (loginType == 1) {
-  //     return googleId;
-  //   } else if (loginType == 2) {
-  //     return fbId;
-  //   } else if (loginType == 3) {
-  //     return appleId;
-  //   } else {
-  //     return '';
-  //   }
-  // }
-
   /// OTP verify
 
   void otpVerifyRequestCall() {
@@ -206,6 +177,7 @@ class AuthProvider with ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
+          Logger().d("Login data======${loginResponseModel.toJson()}");
           timer?.cancel();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
           SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));

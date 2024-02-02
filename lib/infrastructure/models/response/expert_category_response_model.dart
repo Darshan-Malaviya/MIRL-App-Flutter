@@ -1,5 +1,5 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/models/response/pagination_model/pagination_response_model.dart';
+import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 
 class ExpertCategoryResponseModel {
   int? status;
@@ -46,53 +46,58 @@ class ExpertCategoryResponseModel {
 
 class CategoryListData {
   int? id;
-  String? parentName;
-  int? badgecount;
+  String? name;
   String? image;
-  List<Child>? child;
+  String? description;
+  List<Topic>? topic;
+  int? badgeCount;
   bool? isVisible;
   bool? selectAllCategory;
 
-  CategoryListData({this.id, this.parentName, this.isVisible, this.badgecount, this.image, this.child, this.selectAllCategory});
+  CategoryListData({this.id, this.name, this.image, this.description, this.topic, this.badgeCount, this.isVisible, this.selectAllCategory});
 
   CategoryListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    parentName = json['parentName'];
-    badgecount = json['badgecount'];
+    name = json['name'];
     image = json['image'];
-    isVisible = false;
-    selectAllCategory = false;
-    if (json['child'] != null) {
-      child = <Child>[];
-      json['child'].forEach((v) {
-        child!.add(new Child.fromJson(v));
+    description = json['description'];
+    if (json['topic'] != null) {
+      topic = <Topic>[];
+      json['topic'].forEach((v) {
+        topic!.add(new Topic.fromJson(v));
       });
     }
+    badgeCount = json['badgeCount'];
+    isVisible = false;
+    selectAllCategory = false;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['parentName'] = this.parentName;
-    data['badgecount'] = this.badgecount;
+    data['name'] = this.name;
     data['image'] = this.image;
-    if (this.child != null) {
-      data['child'] = this.child!.map((v) => v.toJson()).toList();
+    data['description'] = this.description;
+    if (this.topic != null) {
+      data['topic'] = this.topic?.map((v) => v.toJson()).toList();
     }
+    data['badgeCount'] = this.badgeCount;
     return data;
   }
 }
 
-class Child {
+class Topic {
   int? id;
   String? name;
+  int? categoryId;
   bool? isSelected;
 
-  Child({this.id, this.name, this.isSelected});
+  Topic({this.id, this.name, this.categoryId, this.isSelected});
 
-  Child.fromJson(Map<String, dynamic> json) {
+  Topic.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    categoryId = json['categoryId'];
     isSelected = json['isSelected'];
   }
 
@@ -100,6 +105,7 @@ class Child {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    data['categoryId'] = this.categoryId;
     data['isSelected'] = this.isSelected;
     return data;
   }

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
-import 'package:mirl/ui/common/network_image/network_image.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/child_category_bottom_view.dart';
 
 class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
@@ -53,11 +52,12 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           ),
           20.0.spaceY,
           TitleSmallText(
+            fontFamily: FontWeightEnum.w400.toInter,
             title: StringConstants.categoryView,
             titleTextAlign: TextAlign.center,
-            maxLine: 2,
+            maxLine: 3,
           ),
-          30.0.spaceY,
+          20.0.spaceY,
           Expanded(
             child: addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                 ? GridView.builder(
@@ -69,61 +69,56 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
 
                       return Stack(
                         children: [
-                          Column(
-                            children: [
-                              10.0.spaceY,
-                              InkWell(
-                                onTap: () {
-                                  addYourAreaExpertiseProviderWatch.onSelected(index);
-                                  CommonBottomSheet.bottomSheet(
-                                      context: context,
-                                      isDismissible: true,
-                                      backgroundColor: ColorConstants.categoryList,
-                                      child: ChildCategoryBottomView(
-                                        childCategoryList: element,
-                                      ));
-                                },
-                                child: ShadowContainer(
-                                  shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
-                                      ? ColorConstants.categoryListBorder
-                                      : ColorConstants.blackColor.withOpacity(0.1),
-                                  child: Column(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                        child: NetworkImageWidget(
-                                          boxFit: BoxFit.cover,
-                                          imageURL:
-                                              addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
-                                          isNetworkImage: true,
-                                          height: 50,
-                                          width: 50,
-                                        ),
-                                      ),
-                                      4.0.spaceY,
-                                      LabelSmallText(
-                                        fontSize: 9,
-                                        title: element?.parentName ?? '',
-                                        titleColor: ColorConstants.blackColor,
-                                        fontFamily: FontWeightEnum.w700.toInter,
-                                        titleTextAlign: TextAlign.center,
-                                      ),
-                                    ],
+                          InkWell(
+                            onTap: () {
+                              addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
+                              CommonBottomSheet.bottomSheet(
+                                  context: context,
+                                  isDismissible: true,
+                                  backgroundColor: ColorConstants.categoryList,
+                                  child: ChildCategoryBottomView(
+                                    childCategoryList: element,
+                                  ));
+                            },
+                            child: ShadowContainer(
+                              shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
+                                  ? ColorConstants.categoryListBorder
+                                  : ColorConstants.blackColor.withOpacity(0.1),
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: NetworkImageWidget(
+                                      boxFit: BoxFit.cover,
+                                      imageURL:
+                                      addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
+                                      isNetworkImage: true,
+                                      height: 50,
+                                      width: 50,
+                                    ),
                                   ),
-                                  height: 90,
-                                  width: 90,
-                                  isShadow: true,
-                                ),
+                                  4.0.spaceY,
+                                  LabelSmallText(
+                                    fontSize: 9,
+                                    title: element?.name ?? '',
+                                    titleColor: ColorConstants.blackColor,
+                                    fontFamily: FontWeightEnum.w700.toInter,
+                                    titleTextAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
-                            ],
+                              height: 90,
+                              width: 90,
+                              isShadow: true,
+                            ).addPaddingTop(5),
                           ),
-                          if (element?.badgecount != 0) ...[
+                          if (element?.badgeCount != 0) ...[
                             Positioned(
                                 top: 0,
-                                right: 10,
+                                right: 15,
                                 child: CircleAvatar(
                                   child: TitleMediumText(
-                                    title: element?.badgecount.toString() ?? '0',
+                                    title: element?.badgeCount.toString() ?? '0',
                                     fontWeight: FontWeight.w600,
                                     titleColor: ColorConstants.blackColor,
                                   ),

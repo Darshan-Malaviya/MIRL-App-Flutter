@@ -173,6 +173,10 @@ class TextFormFieldWidget extends StatelessWidget {
 
   final String? labelText;
 
+  final Color? labelColor;
+
+  final AlignmentGeometry? alignment;
+
   const TextFormFieldWidget(
       {this.textFormFieldKey,
       this.controller,
@@ -234,7 +238,10 @@ class TextFormFieldWidget extends StatelessWidget {
       this.prefixIconWidgetConstraints,
       this.suffixIconWidgetConstraints,
       this.labelText,
-      this.borderColor, this.initialValue})
+      this.labelColor,
+      this.borderColor,
+      this.initialValue,
+      this.alignment})
       : super(key: textFormFieldKey);
 
   @override
@@ -245,11 +252,12 @@ class TextFormFieldWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         (labelText?.isNotEmpty ?? false) && labelText != null
-            ? BodySmallText(
-                title: labelText ?? '',
-                titleColor: ColorConstants.blackColor,
-                // fontWeight: FontWeight.w600,
-                fontFamily: FontWeightEnum.w500.toInter,
+            ? Align(
+                alignment: alignment ?? Alignment.center,
+                child: BodySmallText(
+                  title: labelText ?? '',
+                  titleColor: labelColor ?? ColorConstants.blackColor,
+                ),
               )
             : const SizedBox.shrink(),
         (labelText?.isNotEmpty ?? false) && labelText != null ? 6.0.spaceY : const SizedBox.shrink(),
@@ -270,8 +278,7 @@ class TextFormFieldWidget extends StatelessWidget {
             maxLength: maxLength,
             textInputAction: textInputAction ?? TextInputAction.next,
             readOnly: isReadOnly ?? false,
-            style:
-                textStyle ?? TextStyle(color: ColorConstants.blackColor, fontSize: 14 / scaleFactor, fontWeight: FontWeight.w600),
+            style: textStyle ?? TextStyle(color: ColorConstants.blackColor, fontSize: 14 / scaleFactor, fontFamily: FontWeightEnum.w600.toInter),
             keyboardType: textInputType ?? TextInputType.text,
             controller: controller,
             initialValue: initialValue,
@@ -284,18 +291,13 @@ class TextFormFieldWidget extends StatelessWidget {
                   prefix: prefixWidget ?? const SizedBox.shrink(),
                   errorText: errorText != null && (errorText?.isNotEmpty ?? false) ? errorText : null,
                   suffixIcon: suffixIcon,
-                  hintStyle: hintStyle ??
-                      TextStyle(
-                          color: ColorConstants.greyColor,
-                          fontSize: 12 / scaleFactor,
-                          fontFamily: fontFamily ?? FontWeightEnum.w400.toInter),
+                  hintStyle: hintStyle ?? TextStyle(color: ColorConstants.greyColor, fontSize: 12 / scaleFactor, fontFamily: fontFamily ?? FontWeightEnum.w400.toInter),
                   hintText: hintText ?? '',
                   border: border ?? InputBorder.none,
                   contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                   fillColor: fillColor ?? Colors.white,
                   filled: true,
-                  errorStyle:
-                      TextStyle(color: ColorConstants.secondaryColor, fontSize: 12 / scaleFactor, fontWeight: FontWeight.w600),
+                  errorStyle: TextStyle(color: ColorConstants.secondaryColor, fontSize: 12 / scaleFactor, fontWeight: FontWeight.w600),
 
                   ///textfield without text field
                   // enabledBorder: OutlineInputBorder(
@@ -305,7 +307,7 @@ class TextFormFieldWidget extends StatelessWidget {
                   ///text field with shadow
                   enabledBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
-                      borderSide: const BorderSide(color: ColorConstants.borderColor),
+                      borderSide: BorderSide(color: enabledBorderColor ?? ColorConstants.borderColor),
                       borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                     ),
                     shadow: buildBoxShadow(),
@@ -392,6 +394,5 @@ class TextFormFieldWidget extends StatelessWidget {
     );
   }
 
-  BoxShadow buildBoxShadow() =>
-      BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.1), blurRadius: 6, offset: const Offset(0, 0));
+  BoxShadow buildBoxShadow() => BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.1), blurRadius: 6, offset: const Offset(0, 0));
 }

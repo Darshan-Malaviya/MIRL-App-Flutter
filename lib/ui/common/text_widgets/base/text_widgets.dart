@@ -482,7 +482,7 @@ class TitleLargeText extends StatelessWidget {
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
             fontFamily: fontFamily,
-            fontSize: fontSize
+            fontSize: fontSize,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,

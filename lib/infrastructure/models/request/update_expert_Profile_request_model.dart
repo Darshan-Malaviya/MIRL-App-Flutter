@@ -7,7 +7,7 @@ class UpdateExpertProfileRequestModel {
   String? mirlId;
   String? location;
   String? about;
-  int? gender;
+  String? gender;
   String? fee;
   String? userProfile;
   String? expertProfile;
@@ -17,13 +17,13 @@ class UpdateExpertProfileRequestModel {
   bool? feeFlag;
   String? areaOfExpertiseFlag;
   String? weeklyAvailableFlag;
-  bool? instantCallAvailable;
+  int? instantCallAvailable;
   bool? locationFlag;
   bool? genderFlag;
   String? certificateFlag;
   bool? bankDetailsFlag;
   String? phone;
-  bool? isLocationVisible;
+  int? isLocationVisible;
   String? bankAccountHolderName;
   String? bankName;
   String? accountNumber;

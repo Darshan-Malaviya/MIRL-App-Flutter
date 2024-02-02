@@ -1,5 +1,5 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/models/response/pagination_model/pagination_response_model.dart';
+import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 
 class CityResponseModel {
   int? status;

@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/models/common/category_model.dart';
 import 'package:mirl/infrastructure/models/common/common_model.dart';
-import 'package:mirl/infrastructure/models/response/pagination_model/pagination_response_model.dart';
+import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 
 class CategoryListResponseModel {
   int? status;
@@ -19,7 +19,7 @@ class CategoryListResponseModel {
     if (json['data'] != null) {
       data = <CategoryModel>[];
       json['data'].forEach((v) {
-        data!.add(new CategoryModel.fromJson(v));
+        data?.add(new CategoryModel.fromJson(v));
       });
     }
   }
@@ -29,10 +29,10 @@ class CategoryListResponseModel {
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+      data['pagination'] = this.pagination?.toJson();
     }
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
     return data;
   }

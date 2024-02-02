@@ -31,6 +31,7 @@ class StringConstants {
   static const String moreAboutMe = "MORE ABOUT ME";
   static const String done = "Done";
   static const String yes = "Yes";
+  static const String cancel = "Cancel";
   static const String editYourExpertProfile = "EDIT YOUR EXPERT PROFILE";
   static const String editExpertProfile = "EDIT EXPERT PICTURE";
   static const String editYourDetails = "EDIT YOUR DETAILS";
@@ -59,6 +60,7 @@ class StringConstants {
   static const String instantCallsAvailability = "INSTANT CALLS AVAILABILITY";
   static const String availabilitySchedule = "ALLOW USERS TO REQUEST CALLS WITHIN YOUR WEEKLY AVAILABILITY SCHEDULE?";
   static const String theDropDown = "SELECT YES OR NO FROM THE DROPDOWN";
+  static const String theGenderDropDown = "SELECT YOUR GENDER FROM THE DROPDOWN ";
   static const String visibleOnYourProfile = "DO YOU WANT YOUR LOCATION \nTO BE VISIBLE ON YOUR PROFILE?";
   static const String certificationsAndExperience = "CERTIFICATIONS AND EXPERIENCE";
   static const String nearestLandmark = "TYPE YOUR ADDRESS OR NEAREST LANDMARK HERE";
@@ -79,7 +81,7 @@ class StringConstants {
       "Get picked more often! A relevant and high- quality profile photo can make all the difference.";
   static const String yourFavoriteOne = "Tap here to add your favorite one!";
   static const String trustYourAbilities =
-      "Showcase your expertise and experience prominently – it's key for users to see and trust your abilities.";
+      "Showcase your expertise and experience prominently\n– it's key for users to see and trust your abilities.";
   static const String mediaAccount =
       " This could include links to your professional website or accounts, your social media accounts, any certifications, etc.";
   static const String writeYourTitle = "WRITE YOUR TITLE HERE (role, designation, etc.)";
@@ -143,7 +145,25 @@ class StringConstants {
   static const String expertCategoryFilter = "EXPERT CATEGORY FILTERS";
   static const String selectedCategory = "SELECTED CATEGORY";
   static const String pickTopicFromTheAbove = "PICK A TOPIC FROM THE ABOVE CATEGORY";
+  static const String pickCategory = "PICK A CATEGORY ";
   static const String selectOnrOrLeave = "SELECT ONE OR LEAVE AS IS";
   static const String followedEveryWeek = 'The same schedule will be followed every week';
   static const String manuallyEveryWeek = 'You have to set your schedule manually every week';
+  static const String overAllRatingText = 'OVERALL RATING';
+  static const String genderText = 'GENDER';
+  static const String countryText = 'COUNTRY';
+  static const String cityText = 'CITY';
+  static const String feeRange = 'FEE RANGE';
+  static const String applyFilter = 'APPLY FILTERS';
+  static const String expertCategories = 'EXPERT CATEGORIES';
+  static const String tapOnWayExpert = 'TAP ON ANY EXPERT CATEGORY TO VIEW THEIR TOPICS.';
+  static const String tapOnWayTopic = 'TAP ON A TOPIC TO VIEW THE LISTED EXPERTS.';
+  static const String needAMentor = 'NEED A MENTOR? START YOUR JOURNEY HERE, OR ZERO IN WITH OUR HANDY SEARCH FILTER';
+  static const String topicText = 'TOPIC';
+  static const String filterExpertCategory = 'FILTER EXPERTS FROM THIS CATEGORY';
+  static const String descriptionText = 'Broad parenting recommendations for various ages, including discipline, education, and balancing parental responsibilities.';
+  static const String sortExpert = 'SORT EXPERTS BY:';
+  static const String sortReviews = 'SORT REVIEWS BY:';
+  static const String callsPaused = 'ZEN MODE: CALLS PAUSED';
+  static const String aboutMe = 'ABOUT ME';
 }

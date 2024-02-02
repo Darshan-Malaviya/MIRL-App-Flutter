@@ -38,17 +38,21 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
               TextFormFieldWidget(
                 height: 36,
                 hintText: StringConstants.officialNameHere,
-                onFieldSubmitted: (value) {},
                 controller: expertWatch.expertNameController,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(50),
+                ],
               ),
               20.0.spaceY,
               TitleSmallText(
                 title: StringConstants.aroundTheWorld,
+                fontFamily: FontWeightEnum.w400.toInter,
                 titleTextAlign: TextAlign.center,
                 maxLine: 4,
               ),
               20.0.spaceY,
               TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
                 title: StringConstants.twoWeeks,
                 titleTextAlign: TextAlign.center,
                 maxLine: 3,

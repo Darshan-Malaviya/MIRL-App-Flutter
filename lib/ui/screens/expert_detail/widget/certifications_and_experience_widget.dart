@@ -20,64 +20,72 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
   Widget build(BuildContext context) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
     return Column(
-      children: List.generate(expertDetailWatch.userData?.certification?.length ?? 0, (index) {
-        return Column(
-          children: [
-            TitleMediumText(
-              title: StringConstants.certificationsAndExperience,
-              fontFamily: FontWeightEnum.w700.toInter,
-              titleTextAlign: TextAlign.start,
-              titleColor: ColorConstants.blueColor,
-            ),
-            30.0.spaceY,
-            Container(
-              width: double.infinity,
-              decoration: ShapeDecoration(
-                color: Color(0xFFF0F0F0),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1, color: Color(0xFFD8D5D5)),
-                  borderRadius: BorderRadius.circular(5),
+      children: [
+        expertDetailWatch.userData?.certification?.isNotEmpty ?? false
+            ? Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: TitleMediumText(
+                  title: StringConstants.certificationsAndExperience,
+                  titleTextAlign: TextAlign.start,
+                  titleColor: ColorConstants.blueColor,
                 ),
-                shadows: [
-                  BoxShadow(
-                    color: Color(0x19000000),
-                    blurRadius: 2,
-                    offset: Offset(0, 2),
-                    spreadRadius: 0,
-                  )
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  TitleMediumText(
-                    title: expertDetailWatch.userData?.certification?[index].title ?? '',
-                    fontFamily: FontWeightEnum.w600.toInter,
-                    titleTextAlign: TextAlign.start,
-                    titleColor: ColorConstants.blackColor,
+              )
+            : SizedBox.shrink(),
+        Column(
+          children: List.generate(expertDetailWatch.userData?.certification?.length ?? 0, (index) {
+            return Column(
+              children: [
+                30.0.spaceY,
+                Container(
+                  width: double.infinity,
+                  decoration: ShapeDecoration(
+                    color: ColorConstants.certificatedBgColor,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 1, color: ColorConstants.certificatedBorderColor),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    shadows: [
+                      BoxShadow(
+                        color: ColorConstants.certificatedBoxShadowColor,
+                        blurRadius: 2,
+                        offset: Offset(0, 2),
+                        spreadRadius: 0,
+                      )
+                    ],
                   ),
-                  8.0.spaceY,
-                  TitleSmallText(
-                    title: expertDetailWatch.userData?.certification?[index].url ?? '',
-                    fontFamily: FontWeightEnum.w400.toInter,
-                    titleTextAlign: TextAlign.start,
-                    titleColor: ColorConstants.bottomTextColor,
-                  ),
-                  8.0.spaceY,
-                  TitleSmallText(
-                    maxLine: 10,
-                    title: expertDetailWatch.userData?.certification?[index].description ?? '',
-                    fontFamily: FontWeightEnum.w400.toInter,
-                    titleTextAlign: TextAlign.start,
-                    titleColor: ColorConstants.blueColor,
-                  ),
-                ],
-              ).addMarginXY(paddingX: 24, paddingY: 18),
-            ),
-          ],
-        );
-      }),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TitleMediumText(
+                        title: expertDetailWatch.userData?.certification?[index].title ?? '',
+                        fontFamily: FontWeightEnum.w600.toInter,
+                        titleTextAlign: TextAlign.start,
+                        titleColor: ColorConstants.blackColor,
+                      ),
+                      8.0.spaceY,
+                      TitleSmallText(
+                        title: expertDetailWatch.userData?.certification?[index].url ?? '',
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        titleTextAlign: TextAlign.start,
+                        titleColor: ColorConstants.bottomTextColor,
+                      ),
+                      8.0.spaceY,
+                      TitleSmallText(
+                        maxLine: 10,
+                        title: expertDetailWatch.userData?.certification?[index].description ?? '',
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        titleTextAlign: TextAlign.start,
+                        titleColor: ColorConstants.blueColor,
+                      ),
+                    ],
+                  ).addMarginXY(paddingX: 24, paddingY: 18),
+                ),
+              ],
+            );
+          }),
+        ),
+      ],
     );
   }
 }

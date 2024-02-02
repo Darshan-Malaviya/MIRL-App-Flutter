@@ -70,16 +70,19 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             ),
             40.0.spaceY,
             TitleSmallText(
+              fontFamily: FontWeightEnum.w400.toInter,
               title: StringConstants.instantCalls,
               maxLine: 2,
             ),
             20.0.spaceY,
             TitleSmallText(
+              fontFamily: FontWeightEnum.w400.toInter,
               title: StringConstants.declineAnyCall,
               maxLine: 2,
             ),
             20.0.spaceY,
             TitleSmallText(
+              fontFamily: FontWeightEnum.w400.toInter,
               title: StringConstants.highlyRecommend,
             )
           ],

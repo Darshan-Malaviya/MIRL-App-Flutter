@@ -22,10 +22,12 @@
   "notNow": "Not now",
   "searchTypeAnyKeyword": "Search (type any keyword, topic, or expert name here)",
   "exploreExperts": "EXPLORE EXPERTS",
-  "multipleConnect" : "MULTIPLE CONNECT",
+  "multipleConnect": "MULTIPLE CONNECT",
   "browseExpertsFields": "Browse experts in all fields",
-  "inviteMultipleExpertsAndSelectOne" : "Invite multiple experts and select one",
+  "inviteMultipleExpertsAndSelectOne": "Invite multiple experts and select one",
   "seeAllExpertCategoryAndTopics": "SEE ALL EXPERT CATEGORIES AND TOPICS",
+  "seeAllFavoriteExperts": "SEE ALL FAVORITE EXPERTS",
+  "seeAllPastConversations": "SEE ALL PAST CONVERSATIONS",
   "yourFavoriteExperts": "YOUR FAVORITE EXPERTS",
   "darnNoFavoriteExperts": "Darn, no favorite experts or buddies? Maybe it’s time to look around and pick a few!",
   "yourPastConversations": "YOUR PAST CONVERSATIONS",
@@ -48,5 +50,12 @@
   "durationOfAppointment": "DURATION OF APPOINTMENT",
   "minutes": "minutes",
   "maxCallDuration": "maximum call duration of 30 minutes",
-  "scheduleAppointment": "SCHEDULE  APPOINTMENT"
+  "scheduleAppointment": "SCHEDULE  APPOINTMENT",
+  "readMore": "Read more",
+  "readLess": "Read less",
+  "location": "LOCATION: ",
+  "gender": "GENDER: ",
+  "expertOnline": "EXPERT\nONLINE!",
+  "searchCategory": "Search (type any category, topic, or name here)",
+  "FilterExperts": "FILTER EXPERTS"
 }

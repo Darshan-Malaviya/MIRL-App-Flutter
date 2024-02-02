@@ -9,16 +9,20 @@ class ColorConstants {
   static const greyLightColor = Color(0xffE7EAF0);
   static const borderColor = Color(0xff828C99);
   static const disableColor = Color(0xffBCC1C7);
+  static const grayLightColor = Color(0xffF8F8F8);
   static const textColor = Color(0xff2C323A);
   static const dropDownBorderColor = Color(0xffCAC9C9);
   static const categoryListBorder = Color(0xFFD87CEF);
   static const categoryList = Color(0xFFF0F0F0);
+  static const scaffoldBg = Color(0xFFF4F3F3);
+  static const emptyTextColor = Color(0xFF7E7E7E);
 
   static Color primaryColor = const Color(0xffD97CF0);
   static Color secondaryColor = const Color(0xffED1C22);
   static Color scaffoldColor = const Color(0xFFF6F9FF);
   static Color buttonTextColor = const Color(0xFF424D5C);
   static Color bottomTextColor = const Color(0xFF6F50EA);
+  static Color sheetTitleColor = const Color(0xFF64569E);
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
   static Color sliderColor = const Color(0xFF85C7F2);
@@ -28,6 +32,14 @@ class ColorConstants {
   static Color scheduleCallColor = const Color(0xFFFFCF5A);
   static Color lightPurpleColor = const Color(0xFFF9F0FB);
 
+  static Color overAllRatingColor = const Color(0xFF393737);
+  static Color topicColor = const Color(0x66D97CF0);
+  static Color yellowLightColor = const Color(0x66FFCF5A);
+  static Color topicShoeColorColor = const Color(0x33000000);
+  static Color certificatedBoxShadowColor = const Color(0x19000000);
+  static Color callsPausedColor = const Color(0xFFEC4E62);
+  static Color certificatedBorderColor = const Color(0xFFD8D5D5);
+  static Color certificatedBgColor = const Color(0xFFF0F0F0);
 
   static Color successColor = const Color(0xff12805C);
   static Color warningColor = const Color(0xffCB6F10);

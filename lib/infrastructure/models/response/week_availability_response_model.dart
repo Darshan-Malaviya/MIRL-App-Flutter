@@ -14,7 +14,7 @@ class WeekAvailabilityResponseModel {
     if (json['data'] != null) {
       data = <WeeklyAvailableData>[];
       json['data'].forEach((v) {
-        data!.add(new WeeklyAvailableData.fromJson(v));
+        data?.add(new WeeklyAvailableData.fromJson(v));
       });
     }
   }
