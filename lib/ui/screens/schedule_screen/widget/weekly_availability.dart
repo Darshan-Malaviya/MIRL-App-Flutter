@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/demo_file.dart';
+import 'package:mirl/ui/common/table_calender_widget/tabel_calender.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
@@ -21,43 +21,36 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        TitleMediumText(
-            title: LocaleKeys.weeklyAvailability.tr(),
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            titleColor: ColorConstants.bottomTextColor),
+        TitleMediumText(title: LocaleKeys.weeklyAvailability.tr(), fontSize: 18, fontWeight: FontWeight.w700, titleColor: ColorConstants.bottomTextColor),
         27.0.spaceY,
-        ListView.builder(
-            itemCount: scheduleProviderWatch.weekAvailability.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) => slotWidget(
-                    dayText: scheduleProviderWatch.weekAvailability[index].weekDay,
-                    dayTimeText: scheduleProviderWatch.weekAvailability[index].dayTime)
-                .addPaddingY(12)).addPaddingX(15),
+        Column(
+          children: List.generate(
+              scheduleProviderWatch.weekAvailability.length,
+              (index) =>
+                  slotWidget(dayText: scheduleProviderWatch.weekAvailability[index].weekDay, dayTimeText: scheduleProviderWatch.weekAvailability[index].dayTime).addPaddingY(12)),
+        ).addPaddingX(20),
         40.0.spaceY,
         Image.asset(ImageConstants.line),
-        40.0.spaceY,
+        20.0.spaceY,
         TitleSmallText(
           title: LocaleKeys.pickDateAndTime.tr(),
           titleTextAlign: TextAlign.center,
           titleColor: ColorConstants.bottomTextColor,
         ),
         22.0.spaceY,
-        TableRangeExample(),
+        TableCalenderRangeWidget(),
         22.0.spaceY,
         BodyMediumText(
           title: LocaleKeys.durationOfAppointment.tr(),
           fontSize: 15,
-          fontWeight: FontWeight.w700,
           titleColor: ColorConstants.blueColor,
         ),
-        21.0.spaceY,
+        20.0.spaceY,
         durationWidget(scheduleProviderWatch),
         10.0.spaceY,
-        TitleSmallText(title: LocaleKeys.maxCallDuration.tr()),
+        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} ${scheduleProviderWatch.callDuration} ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
         23.0.spaceY,
-        setTimeWidget(),
+        generateSlotTime(),
         11.0.spaceY,
         PrimaryButton(
           title: LocaleKeys.scheduleAppointment.tr(),
@@ -70,36 +63,45 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
 
   Widget slotWidget({required String dayText, required String dayTimeText}) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-            alignment: Alignment.center,
-            height: 25,
-            width: 100,
+            width: 120,
+            padding: EdgeInsets.symmetric(vertical: 6),
             decoration: BoxDecoration(
               color: ColorConstants.scheduleCallColor,
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: ColorConstants.dropDownBorderColor),
             ),
-            child: BodySmallText(
-              title: dayText,
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
+            child: Center(
+              child: BodySmallText(
+                title: dayText,
+                shadows: [
+                  Shadow(
+                    blurRadius: 8.0,
+                    color: ColorConstants.greyColor,
+                  )
+                ],
+              ),
             )),
-        49.0.spaceX,
         Container(
-            alignment: Alignment.center,
-            height: 25,
-            width: 178,
+            width: 200,
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             decoration: BoxDecoration(
               color: ColorConstants.primaryColor,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: ColorConstants.dropDownBorderColor),
             ),
-            child: BodySmallText(
-              title: dayTimeText,
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
+            child: Center(
+              child: BodySmallText(
+                title: dayTimeText,
+                shadows: [
+                  Shadow(
+                    blurRadius: 8.0,
+                    color: ColorConstants.greyColor,
+                  )
+                ],
+              ),
             )),
       ],
     );
@@ -136,13 +138,13 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
     );
   }
 
-  Widget setTimeWidget() {
+  Widget generateSlotTime() {
     return Stack(
       alignment: Alignment.center,
       children: [
         Container(
-          width: 340,
-          height: 122,
+          padding: EdgeInsets.symmetric(vertical: 70),
+          margin: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
@@ -160,11 +162,13 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         ),
         SizedBox(
           height: 90,
-          child: ListView.builder(
+          child: ListView.separated(
             shrinkWrap: true,
             itemCount: 5,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, int index) => timeContainer().addPaddingX(13),
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            itemBuilder: (BuildContext context, int index) => timeContainer(),
+            separatorBuilder: (BuildContext context, int index) => 20.0.spaceX,
           ),
         )
       ],
@@ -174,8 +178,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
   Widget timeContainer() {
     return Container(
       alignment: Alignment.center,
-      width: 164,
-      height: 80,
+      padding: EdgeInsets.symmetric(horizontal: 50),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
@@ -193,7 +196,6 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
       child: TitleSmallText(
         title: '10:30AM',
         fontSize: 15,
-        fontWeight: FontWeight.w700,
       ),
     );
   }

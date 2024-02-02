@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/schedule_screen/widget/no_weekly_availability.dart';
 import 'package:mirl/ui/screens/schedule_screen/widget/weekly_availability.dart';
 
 class ScheduleCallScreen extends ConsumerStatefulWidget {

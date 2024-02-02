@@ -1,23 +1,20 @@
-// Copyright 2019 Aleksander Woźniak
-// SPDX-License-Identifier: Apache-2.0
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/table_calender_widget/table_border.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
-class TableRangeExample extends StatefulWidget {
+class TableCalenderRangeWidget extends StatefulWidget {
   @override
-  _TableRangeExampleState createState() => _TableRangeExampleState();
+  _TableCalenderRangeWidgetState createState() => _TableCalenderRangeWidgetState();
 }
 
-class _TableRangeExampleState extends State<TableRangeExample> {
+class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode =
-      RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -32,18 +29,19 @@ class _TableRangeExampleState extends State<TableRangeExample> {
       selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
       rangeStartDay: _rangeStart,
       rangeEndDay: _rangeEnd,
+      availableGestures: AvailableGestures.horizontalSwipe,
       calendarStyle: CalendarStyle(
-        tableBorder: TableBorder.symmetric(outside: BorderSide(color: ColorConstants.dropDownBorderColor)),
-        outsideDecoration: BoxDecoration( borderRadius: BorderRadius.only(topRight: Radius.circular(25), topLeft: Radius.circular(25)),),
-        defaultTextStyle:
-            TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.buttonTextColor),
-        disabledTextStyle:
-            TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.disableColor),
-        weekendTextStyle:
-            TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.buttonTextColor),
+        tableBorder: TableBorderDecoration(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+       ),
+        outsideDecoration: BoxDecoration(
+          borderRadius: BorderRadius.only(topRight: Radius.circular(25), topLeft: Radius.circular(25)),
+        ),
+        defaultTextStyle: TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.buttonTextColor),
+        disabledTextStyle: TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.disableColor),
+        weekendTextStyle: TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.buttonTextColor),
       ),
-      headerStyle: HeaderStyle(
-          rightChevronVisible: false, leftChevronVisible: false, formatButtonVisible: false, titleCentered: true),
+      headerStyle: HeaderStyle(rightChevronVisible: false, leftChevronVisible: false, formatButtonVisible: false, titleCentered: true),
       calendarBuilders: CalendarBuilders(
         rangeHighlightBuilder: (context, day, isWithinRange) {
           if ((_rangeStart != day && _rangeEnd != day) && isWithinRange) {
@@ -154,13 +152,11 @@ class _TableRangeExampleState extends State<TableRangeExample> {
       ),
       calendarFormat: _calendarFormat,
       rangeSelectionMode: _rangeSelectionMode,
-      daysOfWeekHeight: 20,
+      daysOfWeekHeight: 50,
       startingDayOfWeek: StartingDayOfWeek.monday,
       daysOfWeekStyle: DaysOfWeekStyle(
-        weekdayStyle:
-            TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
-        weekendStyle:
-            TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
+        weekdayStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
+        weekendStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
       ),
       onDaySelected: (selectedDay, focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {
@@ -202,11 +198,7 @@ class _TableRangeExampleState extends State<TableRangeExample> {
         borderRadius: borderRadius,
         color: ColorConstants.primaryColor.withOpacity(0.5),
       ),
-      child: Center(
-          child: BodyMediumText(
-              title: day.day.toString(),
-              fontFamily: FontWeightEnum.w700.toInter,
-              titleColor: ColorConstants.buttonTextColor)),
+      child: Center(child: BodyMediumText(title: day.day.toString(), fontFamily: FontWeightEnum.w700.toInter, titleColor: ColorConstants.buttonTextColor)),
     );
   }
 }
