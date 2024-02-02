@@ -135,7 +135,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             24.0.spaceY,
             PrimaryButton(
               title: StringConstants.scheduleCall,
-              onPressed: () {},
+              onPressed: () {
+                context.toPushNamed(RoutesConstants.scheduleCallScreen);
+              },
               buttonColor: ColorConstants.scheduleCallColor,
             ),
             40.0.spaceY,

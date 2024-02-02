@@ -34,6 +34,19 @@
   "experts": "EXPERTS",
   "expertCategories": "EXPERT CATEGORIES",
   "topicsWithCategories": "TOPICS WITHIN EXPERT CATEGORIES",
-  "noResultsFoundTypeSomethingElse": "NO RESULTS FOUND! TYPE SOMETHING ELSE?"
-
+  "noResultsFoundTypeSomethingElse": "NO RESULTS FOUND! TYPE SOMETHING ELSE?",
+  "scheduleCall": "SCHEDULE A CALL",
+  "noWeeklyAvailability": "NO WEEKLY AVAILABILITY!",
+  "notScheduleThisWeekAvailability": "THE EXPERT HASN’T SCHEDULED \nTHIS WEEK’S AVAILABILITY",
+  "canTryOneOfTwoThings": "You can try one of two things now:",
+  "checkAvailabilityAgain": "Check their availability again later",
+  "or": "OR",
+  "visitMultipleConnect": "VISIT MULTIPLE CONNECT",
+  "useMultipleConnect": "Use Multiple Connect on the Home Screen to handpick multiple Experts who are available right this minute to talk to you.",
+  "weeklyAvailability": "WEEKLY AVAILABILITY",
+  "pickDateAndTime": "PICK A DATE AND TIME\nTO SCHEDULE THE APPOINTMENT",
+  "durationOfAppointment": "DURATION OF APPOINTMENT",
+  "minutes": "minutes",
+  "maxCallDuration": "maximum call duration of 30 minutes",
+  "scheduleAppointment": "SCHEDULE  APPOINTMENT"
 }

@@ -26,6 +26,7 @@ class ColorConstants {
   static Color blueColor = const Color(0xFF01295F);
   static Color requestCallNowColor = const Color(0xFFC7F84D);
   static Color scheduleCallColor = const Color(0xFFFFCF5A);
+  static Color lightPurpleColor = const Color(0xFFF9F0FB);
 
 
   static Color successColor = const Color(0xff12805C);
