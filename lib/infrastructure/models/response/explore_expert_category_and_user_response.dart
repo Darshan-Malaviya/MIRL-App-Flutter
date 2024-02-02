@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
+import 'package:mirl/infrastructure/models/common/expert_data_model.dart';
 import 'package:mirl/infrastructure/models/common/pagination_model.dart';
-import 'package:mirl/infrastructure/models/response/get_single_category_response_model.dart';
 import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 
 class ExploreExpertCategoryAndUserResponseModel {

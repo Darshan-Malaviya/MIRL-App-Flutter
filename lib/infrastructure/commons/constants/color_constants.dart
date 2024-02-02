@@ -8,6 +8,7 @@ class ColorConstants {
   static const greyColor = Color(0xff6D7A8B);
   static const greyLightColor = Color(0xffE7EAF0);
   static const borderColor = Color(0xff828C99);
+  static const borderLightColor = Color(0xffE8E4E4);
   static const disableColor = Color(0xffBCC1C7);
   static const grayLightColor = Color(0xffF8F8F8);
   static const textColor = Color(0xff2C323A);
@@ -38,6 +39,7 @@ class ColorConstants {
   static Color callsPausedColor = const Color(0xFFEC4E62);
   static Color certificatedBorderColor = const Color(0xFFD8D5D5);
   static Color certificatedBgColor = const Color(0xFFF0F0F0);
+  static Color purpleDarkColor = const Color(0xFF773a79);
 
   static Color successColor = const Color(0xff12805C);
   static Color warningColor = const Color(0xffCB6F10);

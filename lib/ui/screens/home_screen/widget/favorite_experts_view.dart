@@ -33,7 +33,10 @@ class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.toPushNamed(RoutesConstants.expertDetailScreen,
+                          args: homeProviderWatch.homeData?.userFavorites?[index].id.toString());
+                    },
                     child: ShadowContainer(
                       padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
                       shadowColor: ColorConstants.blackColor.withOpacity(0.1),

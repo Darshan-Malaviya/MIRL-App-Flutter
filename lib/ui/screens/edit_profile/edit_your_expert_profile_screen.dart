@@ -67,8 +67,18 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 height: MediaQuery.sizeOf(context).height * 0.45,
                 width: MediaQuery.sizeOf(context).width * 0.7,
                 decoration: BoxDecoration(
+                  boxShadow: [
+                     BoxShadow(
+                      color: ColorConstants.borderLightColor,
+                    ),
+                    const BoxShadow(
+                      color: ColorConstants.whiteColor,
+                      spreadRadius: 0.0,
+                      blurRadius: 6.0,
+                    ),
+                  ],
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: ColorConstants.borderColor, width: 1.5),
+                  border: Border.all(color: ColorConstants.borderLightColor, width: 1.5),
                 ),
                 child: (expertWatch.pickedImage.isNotEmpty)
                     ? ClipRRect(
@@ -117,6 +127,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 ),
                 18.0.spaceY,
                 TextFormFieldWidget(
+                  enabledBorderColor: ColorConstants.borderLightColor,
                   isReadOnly: true,
                   onTap: () {
                     expertRead.getUserData();
@@ -125,10 +136,13 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   height: 40,
                   labelText: StringConstants.expertName,
                   alignment: Alignment.centerLeft,
+                  labelTextSpace: 0.0,
                   controller: TextEditingController(text: expertWatch.expertName),
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
+                  labelTextSpace: 0.0,
+                  enabledBorderColor: ColorConstants.borderLightColor,
                   isReadOnly: true,
                   onTap: () {
                     expertRead.getUserData();
@@ -141,6 +155,8 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
+                  labelTextSpace: 0.0,
+                  enabledBorderColor: ColorConstants.borderLightColor,
                   isReadOnly: true,
                   onTap: () {
                     expertRead.getUserData();
@@ -166,30 +182,35 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.reviewsAndRatings,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.earningReports,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.callHistory,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.blockedUsersList,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,
