@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 // displayLarge - Font Size - 57
 
 /// labelSmall - Font Size - 11
-  class LabelSmallText extends StatelessWidget {
+class LabelSmallText extends StatelessWidget {
   const LabelSmallText(
       {Key? key,
       required this.title,
@@ -185,6 +185,7 @@ class BodySmallText extends StatelessWidget {
       this.fontHeight,
       this.fontFamily,
       this.lineHeight,
+      this.shadows,
       this.isUnderline = false})
       : super(key: key);
 
@@ -201,6 +202,7 @@ class BodySmallText extends StatelessWidget {
   final bool? isUnderline;
   final String? fontFamily;
   final double? lineHeight;
+  final List<Shadow>? shadows;
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +215,7 @@ class BodySmallText extends StatelessWidget {
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
             fontFamily: fontFamily,
+            shadows: shadows ?? null,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,
@@ -585,7 +588,7 @@ class HeadlineMediumText extends StatelessWidget {
             fontWeight: fontWeight,
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
-        fontFamily: fontFamily,
+            fontFamily: fontFamily,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,

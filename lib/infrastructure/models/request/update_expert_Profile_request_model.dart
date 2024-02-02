@@ -17,13 +17,13 @@ class UpdateExpertProfileRequestModel {
   bool? feeFlag;
   String? areaOfExpertiseFlag;
   String? weeklyAvailableFlag;
-  int? instantCallAvailable;
+  bool? instantCallAvailable;
   bool? locationFlag;
   bool? genderFlag;
   String? certificateFlag;
   bool? bankDetailsFlag;
   String? phone;
-  int? isLocationVisible;
+  bool? isLocationVisible;
   String? bankAccountHolderName;
   String? bankName;
   String? accountNumber;
