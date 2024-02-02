@@ -2,6 +2,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
 import 'package:mirl/infrastructure/models/common/filter_model.dart';
+import 'package:mirl/infrastructure/models/response/explore_expert_category_and_user_response.dart';
 import 'package:mirl/infrastructure/models/response/get_single_category_response_model.dart';
 
 class ExpertCategoryRepo extends ApiResponseHandler {
@@ -38,5 +39,17 @@ class ExpertCategoryRepo extends ApiResponseHandler {
     );
 
     return responseHandler(result: result, json: GetSingleCategoryResponseModel.parseInfo);
+  }
+
+  Future<ApiHttpResult> exploreExpertUserAndCategoryApi() async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.user);
+
+    APIResponse result = await _apiResponseProvider.requestAPI(
+      uri,
+      apiType: APIType.get,
+      headers: ApiConstants.headerWithToken(),
+    );
+
+    return responseHandler(result: result, json: ExploreExpertCategoryAndUserResponseModel.parseInfo);
   }
 }

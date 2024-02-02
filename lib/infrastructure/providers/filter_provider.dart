@@ -3,6 +3,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/filter_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
+import 'package:mirl/infrastructure/models/response/explore_expert_category_and_user_response.dart';
 import 'package:mirl/infrastructure/models/response/get_single_category_response_model.dart';
 import 'package:mirl/infrastructure/repository/expert_category_repo.dart';
 
@@ -52,6 +53,9 @@ class FilterProvider extends ChangeNotifier {
 
   SingleCategoryData? get singleCategoryData => _singleCategoryData;
   SingleCategoryData? _singleCategoryData;
+
+  CategoryAndExpertUser? get categoryList => _categoryList;
+  CategoryAndExpertUser? _categoryList;
 
   void setValueOfCall(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.InstantCall.name);
@@ -213,6 +217,29 @@ class FilterProvider extends ChangeNotifier {
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
         Logger().d("API fail get category call Api ${response.data}");
+        break;
+    }
+  }
+
+  Future<void> exploreExpertUserAndCategoryApiCall() async {
+    _isLoading = true;
+    notifyListeners();
+
+    ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi();
+
+    _isLoading = false;
+    notifyListeners();
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is ExploreExpertCategoryAndUserResponseModel) {
+          ExploreExpertCategoryAndUserResponseModel responseModel = response.data;
+          _categoryList = responseModel.data;
+          notifyListeners();
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail exploreExpertUserAndCategory call Api ${response.data}");
         break;
     }
   }

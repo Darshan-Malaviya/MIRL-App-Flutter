@@ -41,5 +41,7 @@
   "readLess": "Read less",
   "location": "LOCATION: ",
   "gender": "GENDER: ",
-  "expertOnline": "EXPERT\nONLINE!"
+  "expertOnline": "EXPERT\nONLINE!",
+  "searchCategory": "Search (type any category, topic, or name here)",
+  "FilterExperts": "FILTER EXPERTS"
 }

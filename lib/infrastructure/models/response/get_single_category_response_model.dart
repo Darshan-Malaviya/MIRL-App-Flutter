@@ -1,5 +1,6 @@
 import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
+import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 
 class GetSingleCategoryResponseModel {
   int? status;
@@ -108,9 +109,10 @@ class ExpertData {
   String? expertProfile;
   String? fee;
   String? about;
-  List<ExpertCategory>? expertCategory;
+  String? overAllRating;
+  List<Categories>? expertCategory;
 
-  ExpertData({this.id, this.expertName, this.expertProfile, this.fee, this.about, this.expertCategory});
+  ExpertData({this.id, this.expertName, this.expertProfile, this.fee, this.about, this.expertCategory, this.overAllRating,});
 
   ExpertData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -118,10 +120,11 @@ class ExpertData {
     expertProfile = json['expertProfile'];
     fee = json['fee'];
     about = json['about'];
+    overAllRating = json['overAllRating'];
     if (json['expertCategory'] != null) {
-      expertCategory = <ExpertCategory>[];
+      expertCategory = <Categories>[];
       json['expertCategory'].forEach((v) {
-        expertCategory!.add(new ExpertCategory.fromJson(v));
+        expertCategory?.add(new Categories.fromJson(v));
       });
     }
   }
@@ -133,28 +136,10 @@ class ExpertData {
     data['expertProfile'] = this.expertProfile;
     data['fee'] = this.fee;
     data['about'] = this.about;
+    data['overAllRating'] = this.overAllRating;
     if (this.expertCategory != null) {
       data['expertCategory'] = this.expertCategory?.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class ExpertCategory {
-  int? id;
-  String? name;
-
-  ExpertCategory({this.id, this.name});
-
-  ExpertCategory.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
     return data;
   }
 }

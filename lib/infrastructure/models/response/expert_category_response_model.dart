@@ -79,7 +79,7 @@ class CategoryListData {
     data['image'] = this.image;
     data['description'] = this.description;
     if (this.topic != null) {
-      data['topic'] = this.topic!.map((v) => v.toJson()).toList();
+      data['topic'] = this.topic?.map((v) => v.toJson()).toList();
     }
     data['badgeCount'] = this.badgeCount;
     return data;

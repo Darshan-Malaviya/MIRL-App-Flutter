@@ -1,4 +1,6 @@
 import 'package:logger/logger.dart';
+import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
+import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 
 class HomeSearchResponseModel {
   int? status;
@@ -34,17 +36,17 @@ class HomeSearchResponseModel {
 }
 
 class HomeSearchData {
-  List<CategoriesSearch>? categories;
+  List<Categories>? categories;
   List<Users>? users;
-  List<Topics>? topics;
+  List<Topic>? topics;
 
   HomeSearchData({this.categories, this.users, this.topics});
 
   HomeSearchData.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
-      categories = <CategoriesSearch>[];
+      categories = <Categories>[];
       json['categories'].forEach((v) {
-        categories!.add(CategoriesSearch.fromJson(v));
+        categories?.add(Categories.fromJson(v));
       });
     }
     if (json['users'] != null) {
@@ -54,9 +56,9 @@ class HomeSearchData {
       });
     }
     if (json['topics'] != null) {
-      topics = <Topics>[];
+      topics = <Topic>[];
       json['topics'].forEach((v) {
-        topics!.add(Topics.fromJson(v));
+        topics?.add(Topic.fromJson(v));
       });
     }
   }
@@ -64,36 +66,14 @@ class HomeSearchData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.categories != null) {
-      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
+      data['categories'] = this.categories?.map((v) => v.toJson()).toList();
     }
     if (this.users != null) {
-      data['users'] = this.users!.map((v) => v.toJson()).toList();
+      data['users'] = this.users?.map((v) => v.toJson()).toList();
     }
     if (this.topics != null) {
-      data['topics'] = this.topics!.map((v) => v.toJson()).toList();
+      data['topics'] = this.topics?.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class CategoriesSearch {
-  int? id;
-  String? name;
-  String? image;
-
-  CategoriesSearch({this.id, this.name, this.image});
-
-  CategoriesSearch.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    image = json['image'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['image'] = this.image;
     return data;
   }
 }
@@ -102,7 +82,7 @@ class Users {
   int? id;
   String? expertName;
   String? expertProfile;
-  List<CategoriesSearch>? categoris;
+  List<Categories>? categoris;
 
   Users({this.id, this.expertName, this.expertProfile, this.categoris});
 
@@ -111,9 +91,9 @@ class Users {
     expertName = json['expertName'];
     expertProfile = json['expertProfile'];
     if (json['categoris'] != null) {
-      categoris = <CategoriesSearch>[];
+      categoris = <Categories>[];
       json['categoris'].forEach((v) {
-        categoris!.add(CategoriesSearch.fromJson(v));
+        categoris?.add(Categories.fromJson(v));
       });
     }
   }
@@ -124,30 +104,8 @@ class Users {
     data['expertName'] = this.expertName;
     data['expertProfile'] = this.expertProfile;
     if (this.categoris != null) {
-      data['categoris'] = this.categoris!.map((v) => v.toJson()).toList();
+      data['categoris'] = this.categoris?.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Topics {
-  int? id;
-  String? name;
-  int? categoryId;
-
-  Topics({this.id, this.name, this.categoryId});
-
-  Topics.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    categoryId = json['category'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category'] = this.categoryId;
     return data;
   }
 }
