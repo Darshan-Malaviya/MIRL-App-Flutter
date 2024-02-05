@@ -16,8 +16,8 @@ class SelectedCategoryScreen extends ConsumerStatefulWidget {
 class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(filterProvider).getSingleCategoryApiCall(categoryId: widget.categoryId);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+     await ref.read(filterProvider).getSingleCategoryApiCall(categoryId: widget.categoryId);
     });
     super.initState();
   }

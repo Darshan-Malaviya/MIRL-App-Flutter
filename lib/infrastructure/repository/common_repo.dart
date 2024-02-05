@@ -13,7 +13,7 @@ class CommonRepository extends ApiResponseHandler {
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,
       apiType: APIType.get,
-      headers: ApiConstants.headerWithOutToken(),
+      headers: ApiConstants.headerWithToken(),
     );
 
     return responseHandler(result: result, json: AllCategoryListResponseModel.parseInfo);
@@ -21,11 +21,11 @@ class CommonRepository extends ApiResponseHandler {
 
 
   Future<ApiHttpResult> allTopicListByCategoryService({Map<String, dynamic>? requestModel}) async {
-    final uri = ApiConstants.endpointUri(path: ApiConstants.allCategoryList, queryParameters: requestModel);
+    final uri = ApiConstants.endpointUri(path: ApiConstants.topicByCategory, queryParameters: requestModel);
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,
       apiType: APIType.get,
-      headers: ApiConstants.headerWithOutToken(),
+      headers: ApiConstants.headerWithToken(),
     );
 
     return responseHandler(result: result, json: AllCategoryListResponseModel.parseInfo);

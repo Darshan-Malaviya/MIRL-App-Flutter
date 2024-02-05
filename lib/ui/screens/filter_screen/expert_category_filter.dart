@@ -18,8 +18,21 @@ class ExpertCategoryFilterScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilterScreen> {
+
+  @override
+  void initState() {
+   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+     if(widget.args.fromExploreExpert ?? false) {
+       ref.read(commonAppProvider).setOtherCategoryValueFalse();
+     } else {
+       ref.read(filterProvider).getSelectedCategory();
+     }
+   });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    final commonProviderWatch = ref.watch(commonAppProvider);
     final filterWatch = ref.watch(filterProvider);
     final filterRead = ref.read(filterProvider);
 
@@ -69,29 +82,31 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                 ).addPaddingY(10);
               }),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                20.0.spaceY,
-                BodySmallText(
-                  title: StringConstants.selectedCategory,
-                  titleColor: ColorConstants.bottomTextColor,
-                ),
-                5.0.spaceY,
-                BodyMediumText(
-                  title: 'Mentor'.toUpperCase(),
-                ),
-              ],
-            ).addVisibility(!(widget.args.fromExploreExpert ?? false)),
-            30.0.spaceY,
+            if(filterWatch.selectedCategory != null)...[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  20.0.spaceY,
+                  BodySmallText(
+                    title: StringConstants.selectedCategory,
+                    titleColor: ColorConstants.bottomTextColor,
+                  ),
+                  5.0.spaceY,
+                  BodyMediumText(
+                    title:filterWatch.selectedCategory?.name ?? '',
+                  ),
+                  30.0.spaceY,
+                ],
+              ).addVisibility(!(widget.args.fromExploreExpert ?? false)),
+            ],
             buildTextFormFieldWidget(filterWatch.categoryController, context, () {
               CommonBottomSheet.bottomSheet(
                   context: context,
-                  isDismissible: true,
+                  isDismissible: false,
                   child: AllCategoryListBottomView(
                     onTapItem: (item) {
+                      commonProviderWatch.setOtherCategoryValueFalse();
                       filterWatch.setCategory(value: item);
-                      Navigator.pop(context);
                     },
                     clearSearchTap: () => {filterRead.clearSearchCategoryController()},
                     searchController: filterWatch.categoryController,
@@ -99,14 +114,17 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
             }, StringConstants.pickCategory).addVisibility(widget.args.fromExploreExpert ?? false),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.topicController, context, () {
-              if(filterWatch.selectedCategory != null){
+              if(filterWatch.categoryController.text.isNotEmpty){
                 CommonBottomSheet.bottomSheet(
                     context: context,
-                    isDismissible: true,
+                    isDismissible: false,
                     child: TopicListByCategoryBottomView(
+                      doneOnTap: (){
+                        filterWatch.setTopicByCategory();
+                         Navigator.of(context).pop();
+                      },
                       onTapItem: (item) {
-                        filterWatch.setTopicByCategory(value: [item]);
-                        Navigator.pop(context);
+                        commonProviderWatch.setTopicList(topic: item);
                       },
                       clearSearchTap: () => {filterRead.clearSearchTopicController()},
                       searchController: filterWatch.topicController,

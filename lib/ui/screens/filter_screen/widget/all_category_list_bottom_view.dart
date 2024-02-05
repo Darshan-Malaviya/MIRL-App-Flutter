@@ -48,7 +48,26 @@ class _AllCategoryListBottomViewState extends ConsumerState<AllCategoryListBotto
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
-          TitleMediumText(title: "Select Category", titleColor: ColorConstants.sheetTitleColor),
+          Stack(
+            children: [
+              Center(child: TitleMediumText(title: "Select Category", titleColor: ColorConstants.sheetTitleColor)),
+              Positioned(
+                right: 0,
+                bottom: 2,
+                top: 2,
+                child: InkWell(
+                  onTap: () {
+                    context.toPop();
+                  },
+                  child: BodySmallText(
+                    titleTextAlign: TextAlign.center,
+                    title: StringConstants.done,
+                    titleColor: ColorConstants.blackColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
           16.0.spaceY,
           TextFormFieldWidget(
             isReadOnly: false,
@@ -91,11 +110,19 @@ class _AllCategoryListBottomViewState extends ConsumerState<AllCategoryListBotto
                           widget.onTapItem(commonWatch.allCategory[index]);
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                           alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: (commonWatch.allCategory[index].isCategorySelected ?? false)
+                                ? ColorConstants.bottomTextColor.withOpacity(0.1)
+                                : ColorConstants.scaffoldColor,
+                          ),
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           child: BodyMediumText(
                               title: commonWatch.allCategory[index].name ?? '',
+                              maxLine: 3,
+                              titleTextAlign: TextAlign.center,
                               titleColor: ColorConstants.bottomTextColor),
                         ),
                       );

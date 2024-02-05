@@ -48,6 +48,25 @@ class CommonAppProvider extends ChangeNotifier {
   int get topicPageNo => _topicPageNo;
   int _topicPageNo = 1;
 
+  void setOtherCategoryValueFalse(){
+    _allCategory.forEach((element) {
+      element.isCategorySelected = false;
+    });
+    notifyListeners();
+  }
+
+  void setTopicList({required CategoryIdNameCommonModel topic}) {
+    int index = _allTopic.indexWhere((element) => element.id == topic.id);
+    if (index != -1) {
+      if (_allTopic[index].isCategorySelected ?? false) {
+        _allTopic[index].isCategorySelected = false;
+      } else {
+        _allTopic[index].isCategorySelected = true;
+      }
+      notifyListeners();
+    }
+  }
+
   Future<void> CountryListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
@@ -63,7 +82,7 @@ class CommonAppProvider extends ChangeNotifier {
           CountryResponseModel countryResponseModel = response.data;
           Logger().d("Successfully call country list");
           _country.addAll(countryResponseModel.data ?? []);
-          if (_pageNo == countryResponseModel.pagination?.itemCount) {
+          if (_pageNo == countryResponseModel.pagination?.pageCount) {
             _reachedLastPage = true;
           } else {
             _pageNo = _pageNo + 1;
@@ -93,7 +112,7 @@ class CommonAppProvider extends ChangeNotifier {
           CityResponseModel cityResponseModel = response.data;
           Logger().d("Successfully call city list api");
           _city.addAll(cityResponseModel.data ?? []);
-          if (_cityPageNo == cityResponseModel.pagination?.itemCount) {
+          if (_cityPageNo == cityResponseModel.pagination?.pageCount) {
             _reachedCityLastPage = true;
           } else {
             _cityPageNo = _cityPageNo + 1;
@@ -121,7 +140,7 @@ class CommonAppProvider extends ChangeNotifier {
     } else {
       model = SearchPaginationCommonRequestModel(page: _categoryPageNo.toString(),limit:'40');
     }*/
-    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _categoryPageNo.toString(),limit:'40',search: searchName);
+    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _categoryPageNo.toString(),limit: "40",search: searchName);
 
     ApiHttpResult response = await _commonRepository.allCategoryLIstService(requestModel: model.toNullFreeJson());
     if (isFullScreenLoader) {
@@ -133,7 +152,7 @@ class CommonAppProvider extends ChangeNotifier {
           AllCategoryListResponseModel categoryResponseModel = response.data;
           Logger().d("Successfully call category list api");
           _allCategory.addAll(categoryResponseModel.data ?? []);
-          if (_categoryPageNo == categoryResponseModel.pagination?.itemCount) {
+          if (_categoryPageNo == categoryResponseModel.pagination?.pageCount) {
             _reachedCategoryLastPage = true;
           } else {
             _categoryPageNo = _categoryPageNo + 1;
@@ -168,7 +187,7 @@ class CommonAppProvider extends ChangeNotifier {
           AllCategoryListResponseModel categoryResponseModel = response.data;
           Logger().d("Successfully call topic list api");
           _allTopic.addAll(categoryResponseModel.data ?? []);
-          if (_topicPageNo == categoryResponseModel.pagination?.itemCount) {
+          if (_topicPageNo == categoryResponseModel.pagination?.pageCount) {
             _reachedTopicLastPage = true;
           } else {
             _topicPageNo = _topicPageNo + 1;

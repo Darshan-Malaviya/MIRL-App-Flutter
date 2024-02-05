@@ -5,7 +5,7 @@ class ExpertData {
   int? id;
   String? expertName;
   String? expertProfile;
-  String? fee;
+  int? fee;
   String? about;
   List<ExpertCategory>? expertCategory;
 

@@ -18,9 +18,9 @@ final dashboardProvider = ChangeNotifierProvider.autoDispose((_) => DashboardPro
 final editExpertProvider = ChangeNotifierProvider.autoDispose((_) => EditExpertProvider());
 final addYourAreaExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => AddYourAreaExpertiseProvider());
 final expertDetailProvider = ChangeNotifierProvider.autoDispose((_) => ExpertDetailProvider());
-final filterProvider = ChangeNotifierProvider.autoDispose((_) => FilterProvider());
+final filterProvider = ChangeNotifierProvider<FilterProvider>((ref) => FilterProvider(ref));
 final scheduleCallProvider = ChangeNotifierProvider.autoDispose((_) => ScheduleCallProvider());
 // final cityCountryProvider = ChangeNotifierProvider<CityCountryProvider>((ref) => CityCountryProvider());
-final commonAppProvider = ChangeNotifierProvider((_) => CommonAppProvider());
+final commonAppProvider = ChangeNotifierProvider<CommonAppProvider>((_) => CommonAppProvider());
 
 

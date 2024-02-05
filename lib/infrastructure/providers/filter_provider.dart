@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
@@ -9,6 +10,9 @@ import 'package:mirl/infrastructure/models/response/get_single_category_response
 import 'package:mirl/infrastructure/repository/expert_category_repo.dart';
 
 class FilterProvider extends ChangeNotifier {
+  ChangeNotifierProviderRef<FilterProvider> ref;
+
+  FilterProvider(this.ref);
   final _expertCategoryRepo = ExpertCategoryRepo();
 
   TextEditingController instantCallAvailabilityController = TextEditingController();
@@ -43,10 +47,10 @@ class FilterProvider extends ChangeNotifier {
 
   CountryModel? selectedCountryModel;
 
-  CategoryIdNameCommonModel? _selectedCategory;
-  CategoryIdNameCommonModel? get selectedCategory => _selectedCategory;
+  CategoryIdNameCommonModel? selectedCategory;
 
-  List<CategoryIdNameCommonModel>? _selectedTopicList;
+
+  List<CategoryIdNameCommonModel>? _selectedTopicList = [];
   List<CategoryIdNameCommonModel>?  get selectedTopicList => _selectedTopicList;
 
   String? selectedTopic;
@@ -67,12 +71,53 @@ class FilterProvider extends ChangeNotifier {
 
 
   void setCategory({required CategoryIdNameCommonModel value}) {
-    _selectedCategory = value;
+     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Category.name);
+     selectedCategory = value;
+     selectedCategory?.isCategorySelected = true;
+     categoryController.text = selectedCategory?.name ?? '';
+     if (index == -1) {
+       commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: value.name));
+     } else {
+       commonSelectionModel[index].value = value.name;
+     }
+     notifyListeners();
+  }
+
+  void getSelectedCategory() {
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Category.name);
+    selectedCategory = CategoryIdNameCommonModel(
+        name: _singleCategoryData?.categoryData?.name.toString() ?? '',
+        isCategorySelected: true,
+        id: _singleCategoryData?.categoryData?.id);
+    categoryController.text = selectedCategory?.name ?? '';
+    if (index == -1) {
+      commonSelectionModel
+          .add(CommonSelectionModel(title: FilterType.Category.name, value: selectedCategory?.name ?? ''));
+    } else {
+      commonSelectionModel[index].value = selectedCategory?.name ?? '';
+    }
     notifyListeners();
   }
 
-  void setTopicByCategory({required List<CategoryIdNameCommonModel>? value}) {
-    _selectedTopicList?.addAll(value ?? []);
+  void setTopicByCategory() {
+    List<CategoryIdNameCommonModel> topicList = ref.watch(commonAppProvider).allTopic;
+    topicList.forEach((element) {
+      if(_selectedTopicList?.isEmpty ?? false){
+        if(element.isCategorySelected ?? false){
+          _selectedTopicList?.add(CategoryIdNameCommonModel(
+              isCategorySelected: true,
+              name: element.name ?? '',
+              id: element.id ?? 0));
+        }
+      }
+    });
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Topic.name);
+    topicController.text = selectedTopicList?.first.name ?? '';
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.Topic.name, value: selectedTopicList?.first.name ?? ''));
+    } else {
+      commonSelectionModel[index].value = selectedTopicList?.first.name ?? '';
+    }
     notifyListeners();
   }
 

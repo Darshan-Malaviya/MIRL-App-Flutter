@@ -8,12 +8,14 @@ class TopicListByCategoryBottomView extends ConsumerStatefulWidget {
   final TextEditingController searchController;
   final VoidCallback clearSearchTap;
   final String categoryId;
+  final void Function()? doneOnTap;
 
   const TopicListByCategoryBottomView(
       {super.key,
       required this.onTapItem,
       required this.searchController,
       required this.clearSearchTap,
+        this.doneOnTap,
       required this.categoryId});
 
   @override
@@ -27,6 +29,7 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.clearSearchTap();
+      ref.read(commonAppProvider).clearTopicPaginationData();
       ref.read(commonAppProvider).topicListByCategory(
             isFullScreenLoader: true,
             categoryId: widget.categoryId,
@@ -56,7 +59,24 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
-          TitleMediumText(title: "Select Topic", titleColor: ColorConstants.sheetTitleColor),
+          Stack(
+            children: [
+              Center(child: TitleMediumText(title: "Select Topic", titleColor: ColorConstants.sheetTitleColor)),
+              Positioned(
+                right: 0,
+                bottom: 2,
+                top: 2,
+                child: InkWell(
+                  onTap: widget.doneOnTap,
+                  child: BodySmallText(
+                    titleTextAlign: TextAlign.center,
+                    title: StringConstants.done,
+                    titleColor: ColorConstants.blackColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
           16.0.spaceY,
           TextFormFieldWidget(
             isReadOnly: false,
@@ -102,10 +122,18 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
                           widget.onTapItem(commonWatch.allTopic[index]);
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                           alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: (commonWatch.allTopic[index].isCategorySelected ?? false)
+                                ? ColorConstants.bottomTextColor.withOpacity(0.1)
+                                : ColorConstants.scaffoldColor,
+                          ),
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           child: BodyMediumText(
+                            maxLine: 3,
+                              titleTextAlign: TextAlign.center,
                               title: commonWatch.allTopic[index].name ?? '',
                               titleColor: ColorConstants.bottomTextColor),
                         ),
