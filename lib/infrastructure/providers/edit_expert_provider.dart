@@ -263,7 +263,7 @@ class EditExpertProvider extends ChangeNotifier {
         locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
       }
       if (_userData?.gender != null) {
-        CommonSelectionModel genderModel = _genderList.firstWhere((element) => element.selectType.toString() == _userData?.gender);
+        CommonSelectionModel genderModel = _genderList.firstWhere((element) => element.selectType == _userData?.gender);
         genderController.text = genderModel.title ?? '';
       }
       notifyListeners();
