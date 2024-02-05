@@ -29,7 +29,6 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
               },
               child: TitleMediumText(
                 title: StringConstants.done,
-                fontFamily: FontWeightEnum.w700.toInter,
               ).addPaddingRight(14),
             )),
         body: SingleChildScrollView(
@@ -41,15 +40,16 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
                 TitleLargeText(
                   title: StringConstants.yourMirlId,
                   titleColor: ColorConstants.bottomTextColor,
-                  fontFamily: FontWeightEnum.w700.toInter,
                 ),
                 30.0.spaceY,
                 TextFormFieldWidget(
                   hintText: StringConstants.charactersLong,
-                  onFieldSubmitted: (value) {},
                   controller: expertWatch.mirlIdController,
                   validator: (value) {
                     return value?.toMirlIdValidation('Please enter MIRL ID', 'MIRL ID contains only character');
+                  },
+                  onFieldSubmitted: (value){
+                    context.unFocusKeyboard();
                   },
                   textInputAction: TextInputAction.done,
                 ),

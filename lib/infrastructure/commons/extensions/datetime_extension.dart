@@ -54,10 +54,12 @@ extension DateTimeFormatter on String {
   /// UTC time format
   String toUTCDateTimeFormat() {
     try {
+      DateTime value = DateTime.now();
       int intValue = int.parse(this);
       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue, isUtc: true);
-      var output = dateTime.toString();
-      return output;
+      // String output = dateTime.toString().split(' ').last.split('.').first;
+      // var output = DateFormat("hh:mm a").format(value.add(Duration(hours: dateTime.hour,minutes: dateTime.minute)));
+      return dateTime.toString();
     } catch (e) {
       Logger().d("Exception occurred on toUTCDateTimeFormat : $e");
     }
@@ -81,10 +83,10 @@ extension DateTimeFormatter on String {
 
   DateTime? toLocaleFromUtc() {
     try {
-      if (this != null) {
-        DateTime localTime = DateTime.parse(this).toLocal();
-        return localTime;
-      }
+      DateTime now = DateTime.now();
+      DateTime localTime = DateTime.parse(this).toLocal();
+      DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, localTime.hour, localTime.minute);
+      return setTimeOfDay;
     } catch (e) {
       Logger().d("Exception on toLocaleFromStringUtc : $e");
     }
