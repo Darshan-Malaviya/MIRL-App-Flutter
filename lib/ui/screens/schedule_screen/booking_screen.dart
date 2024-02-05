@@ -4,14 +4,14 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 
-class ScheduleAppointmentScreen extends ConsumerStatefulWidget {
-  const ScheduleAppointmentScreen({super.key});
+class BookingConfirmScreen extends ConsumerStatefulWidget {
+  const BookingConfirmScreen({super.key});
 
   @override
-  ConsumerState createState() => _ScheduleAppointmentScreenState();
+  ConsumerState createState() => _BookingConfirmScreenState();
 }
 
-class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentScreen> {
+class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
   @override
   Widget build(BuildContext context) {
     final scheduleWatch = ref.watch(scheduleCallProvider);
@@ -45,7 +45,6 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
       ),
     );
   }
-
   Widget bottomSheetView(ScheduleCallProvider scheduleWatch) {
     return Container(
       width: double.infinity,
@@ -58,59 +57,27 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
-              child: HeadlineMediumText(
-                title: 'Preeti Tewari Serai',
-                fontSize: 30,
-                titleColor: ColorConstants.bottomTextColor,
-              ),
+            HeadlineMediumText(
+              title: LocaleKeys.bookingConfirm.tr(),
+              fontSize: 30,
+              titleColor: ColorConstants.bottomTextColor,
             ),
             22.0.spaceY,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    BodySmallText(
-                      title: StringConstants.overallRatting,
-                      fontFamily: FontWeightEnum.w400.toInter,
-                    ),
-                    4.0.spaceX,
-                    HeadlineMediumText(
-                      fontSize: 30,
-                      title: '0',
-                      titleColor: ColorConstants.overallRatingColor,
-                    ),
-                  ],
-                ),
-                18.0.spaceY,
-                Row(
-                  children: [
-                    BodySmallText(
-                      title: StringConstants.feePer,
-                      fontFamily: FontWeightEnum.w400.toInter,
-                    ),
-                    4.0.spaceX,
-                    HeadlineMediumText(
-                      fontSize: 30,
-                      title: '\$${(int.parse('0') / 100).toString()}',
-                      titleColor: ColorConstants.overallRatingColor,
-                    ),
-                  ],
-                ),
-              ],
+            BodyLargeText(
+              title: LocaleKeys.bookingDescription.tr(),
+              titleColor: ColorConstants.blueColor,
             ),
-            20.0.spaceY,
-            BodyMediumText(
-              title: LocaleKeys.scheduleAppointment.tr(),
+            22.0.spaceY,
+            BodyLargeText(
+              title: LocaleKeys.bookingDetail.tr(),
               fontSize: 15,
               titleColor: ColorConstants.blueColor,
             ),
             20.0.spaceY,
             PrimaryButton(
               height: 45,
-              width: 148,
-              title: '${20} ${LocaleKeys.minutes.tr()}',
+              title: 'December 21, 2023',
+              titleColor: ColorConstants.buttonTextColor,
               onPressed: () {},
               buttonColor: ColorConstants.buttonColor,
             ),
