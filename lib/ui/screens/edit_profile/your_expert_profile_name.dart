@@ -23,7 +23,6 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
               onTap: () => expertRead.updateExpertNameApi(),
               child: TitleMediumText(
                 title: StringConstants.done,
-                fontFamily: FontWeightEnum.w700.toInter,
               ).addPaddingRight(14),
             )),
         body: SingleChildScrollView(
@@ -32,7 +31,6 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
               TitleLargeText(
                 title: StringConstants.yourExpertProfileName,
                 titleColor: ColorConstants.bottomTextColor,
-                fontFamily: FontWeightEnum.w700.toInter,
               ),
               30.0.spaceY,
               TextFormFieldWidget(
@@ -42,6 +40,10 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(50),
                 ],
+                onFieldSubmitted: (value){
+                  context.unFocusKeyboard();
+                },
+                textInputAction: TextInputAction.done,
               ),
               20.0.spaceY,
               TitleSmallText(

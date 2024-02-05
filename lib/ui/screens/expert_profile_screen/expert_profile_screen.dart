@@ -10,7 +10,17 @@ class ExpertProfileScreen extends ConsumerStatefulWidget {
 
 class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+
     return Scaffold(
       backgroundColor: ColorConstants.purpleDarkColor,
       body: SingleChildScrollView(
@@ -23,12 +33,14 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  HeadlineMediumText(
-                    title: StringConstants.yourExpertName,
-                    fontFamily: FontWeightEnum.w700.toInter,
-                    fontSize: 30,
-                    titleColor: ColorConstants.bottomTextColor,
+                  Center(
+                    child: HeadlineMediumText(
+                      title: expertWatch.expertName,
+                      fontSize: 30,
+                      titleColor: ColorConstants.bottomTextColor,
+                    ),
                   ),
                   28.0.spaceY,
                   Row(
@@ -44,7 +56,6 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                           HeadlineMediumText(
                             fontSize: 30,
                             title: '0',
-                            fontFamily: FontWeightEnum.w700.toInter,
                             titleColor: ColorConstants.overallRatingColor,
                           ),
                         ],
@@ -59,8 +70,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                           10.0.spaceX,
                           HeadlineMediumText(
                             fontSize: 30,
-                            title: '\$',
-                            fontFamily: FontWeightEnum.w700.toInter,
+                            title: '\$${expertWatch.countController.text}',
                             titleColor: ColorConstants.overallRatingColor,
                           ),
                         ],
@@ -85,25 +95,20 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                           title: StringConstants.shareProfile,
                           buttonTextFontFamily: FontWeightEnum.w400.toInter,
                           onPressed: () {
-                            // context.toPushNamed(RoutesConstants.expertDetailScreen);
                           },
                         ),
                       ),
                     ],
                   ),
                   42.0.spaceY,
-                  Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: TitleMediumText(
-                      title: StringConstants.moreAboutMe,
-                      fontFamily: FontWeightEnum.w700.toInter,
-                    ),
+                  TitleMediumText(
+                    title: StringConstants.moreAboutMe,
+                    titleColor: ColorConstants.blueColor,
                   ),
                   12.0.spaceY,
                   TitleMediumText(
-                    fontFamily: FontWeightEnum.w400.toInter,
                     title: StringConstants.welcomeExpertProfile,
-                    titleTextAlign: TextAlign.start,
+                    fontFamily: FontWeightEnum.w400.toInter,
                     maxLine: 2,
                   ),
                   20.0.spaceY,
