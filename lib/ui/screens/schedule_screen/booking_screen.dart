@@ -38,14 +38,15 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             minChildSize: 0.6,
             maxChildSize: 0.86,
             builder: (BuildContext context, myScrollController) {
-              return bottomSheetView(scheduleWatch);
+              return bottomSheetView(scheduleWatch,myScrollController);
             },
           ),
         ],
       ),
     );
   }
-  Widget bottomSheetView(ScheduleCallProvider scheduleWatch) {
+
+  Widget bottomSheetView(ScheduleCallProvider scheduleWatch, ScrollController controller) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -53,6 +54,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
         color: ColorConstants.whiteColor,
       ),
       child: SingleChildScrollView(
+        controller: controller,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,38 +68,87 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             BodyLargeText(
               title: LocaleKeys.bookingDescription.tr(),
               titleColor: ColorConstants.blueColor,
+              fontFamily: FontWeightEnum.w400.toInter,
+              maxLine: 5,
+              titleTextAlign: TextAlign.center,
             ),
-            22.0.spaceY,
+            26.0.spaceY,
             BodyLargeText(
               title: LocaleKeys.bookingDetail.tr(),
               fontSize: 15,
               titleColor: ColorConstants.blueColor,
             ),
-            20.0.spaceY,
-            PrimaryButton(
+            30.0.spaceY,
+            ShadowContainer(
+              shadowColor: Color(0x33000000),
+              offset: Offset(0, 2),
+              border: 5,
               height: 45,
-              title: 'December 21, 2023',
-              titleColor: ColorConstants.buttonTextColor,
-              onPressed: () {},
-              buttonColor: ColorConstants.buttonColor,
+              padding: EdgeInsets.zero,
+              width: MediaQuery.of(context).size.width,
+              backgroundColor: ColorConstants.buttonColor,
+              child: Center(
+                child: BodyMediumText(
+                  title: 'December 21, 2023',
+                  fontSize: 15,
+                  titleColor: ColorConstants.buttonTextColor,
+                ),
+              ),
+            ),
+            30.0.spaceY,
+            ShadowContainer(
+              shadowColor: Color(0x33000000),
+              offset: Offset(0, 2),
+              border: 5,
+              height: 85,
+              padding: EdgeInsets.zero,
+              width: MediaQuery.of(context).size.width,
+              backgroundColor: ColorConstants.buttonColor,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BodySmallText(
+                    title: '03:00pm - 03:20pm',
+                    fontSize: 13,
+                    titleColor: ColorConstants.buttonTextColor,
+                  ),
+                  8.0.spaceY,
+                  BodySmallText(
+                    title: '${LocaleKeys.duration.tr()}: 20 minutes',
+                    fontSize: 13,
+                    titleColor: ColorConstants.buttonTextColor,
+                  ),
+                ],
+              ),
             ),
             20.0.spaceY,
-            PrimaryButton(
-              height: 45,
-              title: '02:15pm, December 21, 2023',
-              margin: EdgeInsets.symmetric(horizontal: 40),
-              onPressed: () {},
-              buttonColor: ColorConstants.buttonColor,
-            ),
-            20.0.spaceY,
-            PrimaryButton(
-              height: 55,
-              title: 'PAY \$40',
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              onPressed: () {},
+            LabelSmallText(
+              title: '${LocaleKeys.yourTimeZone.tr()}:INDIAN STANDARD TIME (UTC +5:30)',
+              titleColor: ColorConstants.blueColor,
+              fontFamily: FontWeightEnum.w400.toInter,
             ),
             10.0.spaceY,
-            BodyMediumText(title: '${LocaleKeys.scheduleDescription.tr()} Preeti', fontFamily: FontWeightEnum.w500.toInter)
+            LabelSmallText(
+              title: '${LocaleKeys.expertTimeZone.tr()}:CENTRAL TIME (UTC -6:00',
+              titleColor: ColorConstants.blueColor,
+              fontFamily: FontWeightEnum.w400.toInter,
+            ),
+            30.0.spaceY,
+            PrimaryButton(
+              title: LocaleKeys.checkNotification.tr(),
+              onPressed: () {},
+              buttonColor: ColorConstants.yellowButtonColor,
+              titleColor: ColorConstants.buttonTextColor,
+              fontSize: 15,
+            ),
+            20.0.spaceY,
+            PrimaryButton(
+              title: LocaleKeys.cancelBooking.tr(),
+              onPressed: () {},
+              buttonColor: ColorConstants.yellowButtonColor,
+              titleColor: ColorConstants.buttonTextColor,
+              fontSize: 15,
+            ),
           ],
         ),
       ).addAllPadding(28),

@@ -15,7 +15,7 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);
-    DateFormat usHour = DateFormat("h:mm a");
+    DateFormat usHour = DateFormat("hh:mm a");
 
     if (expertWatch.isLoading) {
       return Center(

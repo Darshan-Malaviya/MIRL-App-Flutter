@@ -13,6 +13,7 @@ class PrimaryButton extends StatelessWidget {
   final Color? titleColor;
   final Color? buttonColor;
   final String? buttonTextFontFamily;
+  final double? fontSize;
 
     const PrimaryButton({
       Key? key,
@@ -27,7 +28,8 @@ class PrimaryButton extends StatelessWidget {
       this.lineHeight,
       this.titleColor,
       this.buttonColor,
-      this.buttonTextFontFamily
+      this.buttonTextFontFamily,
+      this.fontSize
     }) : super(key: key);
 
   @override
@@ -75,7 +77,7 @@ class PrimaryButton extends StatelessWidget {
                 fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
                 titleColor: titleColor ?? ColorConstants.textColor,
                 titleTextAlign: TextAlign.center,
-                fontSize: 13,
+                fontSize: fontSize ?? 13,
               ),
             ],
           ),

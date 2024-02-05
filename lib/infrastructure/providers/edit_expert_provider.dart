@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
@@ -255,7 +256,7 @@ class EditExpertProvider extends ChangeNotifier {
       _enteredText = _userData?.about?.length.toString() ?? '';
       countryNameController.text = _userData?.country ?? '';
       cityNameController.text = _userData?.city ?? '';
-      countController.text = _userData?.fee != null ? (_userData?.fee ?? 0 / 100).toString() : '0';
+      countController.text = _userData?.fee != null ? ((_userData?.fee ?? 0) / 100).toString() : '0';
       if (_userData?.instantCallAvailable != null) {
         instantCallAvailabilityController.text = _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
       }

@@ -58,12 +58,10 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
-              child: HeadlineMediumText(
-                title: 'Preeti Tewari Serai',
-                fontSize: 30,
-                titleColor: ColorConstants.bottomTextColor,
-              ),
+            HeadlineMediumText(
+              title: 'Preeti Tewari Serai',
+              fontSize: 30,
+              titleColor: ColorConstants.bottomTextColor,
             ),
             22.0.spaceY,
             Row(
