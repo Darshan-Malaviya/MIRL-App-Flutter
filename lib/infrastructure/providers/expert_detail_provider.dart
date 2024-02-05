@@ -22,12 +22,12 @@ class ExpertDetailProvider extends ChangeNotifier {
   AreasOfExpertise? get areasOfExpertise => _areasOfExpertise;
 
   String? userGender() {
-    if (_userData?.gender == '1') {
+    if (_userData?.gender == 1) {
       return 'Male';
-    } else if (userData?.gender == '2') {
+    } else if (userData?.gender == 2) {
       return 'Female';
-    } else if (userData?.gender == '3') {
-      return 'Other';
+    } else if (userData?.gender == 3) {
+      return 'Non-Binary';
     }
     return null;
   }

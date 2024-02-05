@@ -49,8 +49,8 @@ class UserData {
   String? phone;
   String? city;
   String? about;
-  String? gender;
-  String? loginType;
+  int? gender;
+  int? loginType;
   String? country;
   String? userProfile;
   String? expertProfile;

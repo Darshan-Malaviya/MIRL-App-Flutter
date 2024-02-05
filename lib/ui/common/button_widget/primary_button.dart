@@ -5,6 +5,7 @@ class PrimaryButton extends StatelessWidget {
   final double? height;
   final double? width;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final String? prefixIcon;
   final double? prefixIconPadding;
   final VoidCallback onPressed;
@@ -19,6 +20,7 @@ class PrimaryButton extends StatelessWidget {
       this.height,
       this.width,
       this.padding,
+      this.margin,
       this.prefixIconPadding,
       required this.onPressed,
       this.prefixIcon,
@@ -41,6 +43,7 @@ class PrimaryButton extends StatelessWidget {
         ]),
         width: width ?? MediaQuery.of(context).size.width,
         height: height ?? 45,
+        margin: margin,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             surfaceTintColor: buttonColor ?? ColorConstants.primaryColor,
