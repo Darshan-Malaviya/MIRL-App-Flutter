@@ -24,7 +24,8 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
     } else {
       return SingleChildScrollView(
         child: Column(
-              children: List.generate(expertWatch.weekScheduleModel.length, (index) {
+              children: List.generate(
+                  expertWatch.weekScheduleModel.length, (index) {
                 final weekData = expertWatch.weekScheduleModel[index];
                 return Column(
                   children: [

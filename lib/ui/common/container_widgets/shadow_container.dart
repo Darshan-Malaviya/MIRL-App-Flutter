@@ -32,22 +32,24 @@ class ShadowContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Container(
-        alignment: alignment,
-        margin: margin,
-        height: height,
-        width: width,
-        padding: padding ?? const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(border ?? 20),
-          border: Border.all(color: borderColor ?? ColorConstants.transparentColor),
-          color: backgroundColor ?? ColorConstants.whiteColor,
-          boxShadow:
-              (isShadow ?? false) ? [BoxShadow(color: shadowColor ?? ColorConstants.categoryListBorder, blurRadius: 6, offset: offset ?? Offset(0, 0), spreadRadius: -1)] : [],
-        ),
-        child: child,
-      )
-    ]);
+    return Column(
+      children: [
+        Container(
+          alignment: alignment,
+          margin: margin,
+          height: height,
+          width: width,
+          padding: padding ?? const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(border ?? 20),
+            border: Border.all(color: borderColor ?? ColorConstants.transparentColor),
+            color: backgroundColor ?? ColorConstants.whiteColor,
+            boxShadow:
+                (isShadow ?? false) ? [BoxShadow(color: shadowColor ?? ColorConstants.categoryListBorder, blurRadius: 6, offset: offset ?? Offset(0, 0), spreadRadius: -1)] : [],
+          ),
+          child: child,
+        )
+      ],
+    );
   }
 }

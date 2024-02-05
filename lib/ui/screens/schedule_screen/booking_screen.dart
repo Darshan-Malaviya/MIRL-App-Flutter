@@ -38,7 +38,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             minChildSize: 0.6,
             maxChildSize: 0.86,
             builder: (BuildContext context, myScrollController) {
-              return bottomSheetView(scheduleWatch,myScrollController);
+              return bottomSheetView(scheduleWatch, myScrollController);
             },
           ),
         ],
@@ -66,7 +66,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             ),
             22.0.spaceY,
             BodyLargeText(
-              title: LocaleKeys.bookingDescription.tr(),
+              title: '${LocaleKeys.bookingDescription.tr()} Expert Name here',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
               maxLine: 5,
@@ -136,17 +136,19 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             30.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.checkNotification.tr(),
-              onPressed: () {},
+              onPressed: () {
+                context.toPushNamed(RoutesConstants.notificationScreen);
+              },
               buttonColor: ColorConstants.yellowButtonColor,
-              titleColor: ColorConstants.buttonTextColor,
               fontSize: 15,
             ),
             20.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.cancelBooking.tr(),
-              onPressed: () {},
+              onPressed: () {
+                context.toPushNamed(RoutesConstants.canceledAppointmentOptionScreen);
+              },
               buttonColor: ColorConstants.yellowButtonColor,
-              titleColor: ColorConstants.buttonTextColor,
               fontSize: 15,
             ),
           ],

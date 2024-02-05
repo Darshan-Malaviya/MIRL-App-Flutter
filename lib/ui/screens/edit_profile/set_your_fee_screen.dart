@@ -100,11 +100,11 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
               children: [
                 BodyMediumText(
                   title: StringConstants.userFees,
-                  fontFamily: FontWeightEnum.w700.toInter,
+                  titleColor: ColorConstants.buttonTextColor,
                 ),
                 BodyMediumText(
                   title: '\$${expertWatch.countController.text}',
-                  fontFamily: FontWeightEnum.w700.toInter,
+                  titleColor: ColorConstants.buttonTextColor,
                 )
               ],
             ),
