@@ -55,6 +55,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         PrimaryButton(
           title: LocaleKeys.scheduleAppointment.tr(),
           onPressed: () {},
+          fontSize: 15,
           titleColor: ColorConstants.blueColor,
         ).addPaddingXY(paddingX: 29, paddingY: 12),
       ],

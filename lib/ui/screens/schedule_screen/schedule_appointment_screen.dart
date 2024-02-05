@@ -125,10 +125,18 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
               height: 55,
               title: 'PAY \$40',
               margin: EdgeInsets.symmetric(horizontal: 10),
-              onPressed: () {},
+              fontSize: 18,
+              titleColor: ColorConstants.buttonTextColor,
+              onPressed: () {
+                context.toPushNamed(RoutesConstants.bookingConfirmScreen);
+              },
             ),
             10.0.spaceY,
-            BodyMediumText(title: '${LocaleKeys.scheduleDescription.tr()} Preeti', fontFamily: FontWeightEnum.w500.toInter)
+            BodyMediumText(
+              title: '${LocaleKeys.scheduleDescription.tr()} expert name here',
+              fontFamily: FontWeightEnum.w500.toInter,
+              titleColor: ColorConstants.buttonTextColor,
+            )
           ],
         ),
       ).addAllPadding(28),

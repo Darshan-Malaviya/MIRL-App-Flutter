@@ -3,6 +3,8 @@ import 'package:mirl/infrastructure/models/common/week_availability_model.dart';
 
 
 class ScheduleCallProvider extends ChangeNotifier {
+  TextEditingController reasonController = TextEditingController();
+
   List<weeklyAvailabilityModel> weekAvailability = [
     weeklyAvailabilityModel(weekDay: 'MONDAY', dayTime: '9:00AM  - 5:00PM'),
     weeklyAvailabilityModel(weekDay: 'TUESDAY', dayTime: '9:00AM  - 5:00PM'),

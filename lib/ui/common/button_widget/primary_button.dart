@@ -75,7 +75,7 @@ class PrimaryButton extends StatelessWidget {
               BodyMediumText(
                 title: title,
                 fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
-                titleColor: titleColor ?? ColorConstants.textColor,
+                titleColor: titleColor ?? ColorConstants.buttonTextColor,
                 titleTextAlign: TextAlign.center,
                 fontSize: fontSize ?? 13,
               ),

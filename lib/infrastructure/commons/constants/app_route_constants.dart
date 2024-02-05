@@ -24,6 +24,10 @@ import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
+import 'package:mirl/ui/screens/schedule_screen/booking_screen.dart';
+import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_option_screen.dart';
+import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_screen.dart';
+import 'package:mirl/ui/screens/schedule_screen/schedule_appointment_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
@@ -94,7 +98,7 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => ExpertDetailScreen(expertId: settings.arguments as String));
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
-        case RoutesConstants.exploreExpertScreen:
+      case RoutesConstants.exploreExpertScreen:
         return MaterialPageRoute(builder: (_) => const ExploreExpertScreen());
       case RoutesConstants.selectedExpertCategoryScreen:
         return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(categoryId: settings.arguments as String));
@@ -105,6 +109,14 @@ class RouterConstant {
                 ));
       case RoutesConstants.scheduleCallScreen:
         return MaterialPageRoute(builder: (_) => const ScheduleCallScreen());
+        case RoutesConstants.bookingConfirmScreen:
+        return MaterialPageRoute(builder: (_) => const BookingConfirmScreen());
+      case RoutesConstants.scheduleAppointmentScreen:
+        return MaterialPageRoute(builder: (_) => const ScheduleAppointmentScreen());
+      case RoutesConstants.canceledAppointmentScreen:
+        return MaterialPageRoute(builder: (_) => const CanceledAppointmentScreen());
+      case RoutesConstants.canceledAppointmentOptionScreen:
+        return MaterialPageRoute(builder: (_) => const CanceledAppointmentOptionScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

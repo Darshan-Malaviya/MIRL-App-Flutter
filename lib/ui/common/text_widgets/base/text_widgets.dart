@@ -273,6 +273,7 @@ class BodyMediumText extends StatelessWidget {
             fontSize: fontSize,
             fontFamily: fontFamily,
             shadows: shadows ?? null,
+            fontStyle: fontStyle,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,

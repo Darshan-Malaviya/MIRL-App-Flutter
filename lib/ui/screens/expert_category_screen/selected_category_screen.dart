@@ -144,6 +144,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                   20.0.spaceY,
                   PrimaryButton(
                     title: StringConstants.filterExpertCategory,
+                    titleColor: ColorConstants.blackColor,
                     onPressed: () {
                       context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
                           args: FilterArgs(fromExploreExpert: false));

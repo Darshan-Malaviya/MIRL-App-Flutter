@@ -118,6 +118,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 //  Image.asset(ImageConstants.line),
                 PrimaryButton(
                   title: StringConstants.verifyOtp,
+                  titleColor: ColorConstants.textColor,
                   onPressed: () {
                     if (loginScreenProviderWatch.otpController.text.isNotEmpty) {
                       loginScreenProviderRead.otpVerifyRequestCall();
