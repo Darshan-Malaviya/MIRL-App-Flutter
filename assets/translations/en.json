@@ -79,5 +79,6 @@
   "retainAppointment": "NO, RETAIN MY APPOINTMENT!",
   "sureYouWantCancel": "Are you sure you want to cancel your \nappointment?",
   "characters": "characters",
-  "thereAreNoAvailableTopics": "There are no available topics!"
+  "thereAreNoAvailableTopics": "There are no available topics!",
+  "filterExperts": "FILTER EXPERTS"
 }
