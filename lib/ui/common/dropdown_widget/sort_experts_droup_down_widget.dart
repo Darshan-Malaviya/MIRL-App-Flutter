@@ -23,7 +23,7 @@ class _SortExpertDropDownState extends State<SortExpertDropDown> {
             children: [
               LabelSmallText(
                 title: StringConstants.sortExpert,
-                fontSize: 10,
+                fontSize: 8,
                 fontFamily: FontWeightEnum.w400.toInter,
                 titleColor: ColorConstants.buttonTextColor,
               ),
@@ -64,7 +64,7 @@ class _SortExpertDropDownState extends State<SortExpertDropDown> {
                         child: LabelSmallText(
                           maxLine: 2,
                           title: items,
-                          fontSize: 10,
+                          fontSize: 8,
                           fontFamily: FontWeightEnum.w400.toInter,
                         ).addMarginX(6),
                       );
@@ -114,7 +114,7 @@ class _SortExpertDropDownState extends State<SortExpertDropDown> {
                         child: LabelSmallText(
                           maxLine: 2,
                           title: item,
-                          fontSize: 10,
+                          fontSize: 8,
                           fontFamily: FontWeightEnum.w400.toInter,
                         ).addMarginX(6),
                       );

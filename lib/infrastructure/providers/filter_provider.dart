@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/common/filter_model.dart';
+import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/models/response/explore_expert_category_and_user_response.dart';
@@ -18,6 +18,7 @@ class FilterProvider extends ChangeNotifier {
   TextEditingController cityNameController = TextEditingController();
   TextEditingController searchCityController = TextEditingController();
   TextEditingController searchCountryController = TextEditingController();
+  TextEditingController exploreExpertController = TextEditingController();
 
   List<String> get yesNoSelectionList => _yesNoSelectionList;
   List<String> _yesNoSelectionList = ['SELECT ONE OR LEAVE AS IS', 'Yes', 'No'];
@@ -158,6 +159,12 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSearchData() {
+    // _categoryList = null;
+    exploreExpertController.clear();
+    notifyListeners();
+  }
+
   void setSelectionBoolValueOfChild({required int position}) {
     for (var element in singleCategoryData?.categoryData?.topic ?? []) {
       element.isSelected = false;
@@ -165,37 +172,6 @@ class FilterProvider extends ChangeNotifier {
     singleCategoryData?.categoryData?.topic?[position].isSelected = true;
     selectedTopic = singleCategoryData?.categoryData?.topic?[position].name;
     notifyListeners();
-  }
-
-  Future<void> filterApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
-
-    FilterModel filterModel = FilterModel(
-      _selectGender.toString(),
-      _isCallSelect.toString(),
-      countryNameController.text,
-      cityNameController.text,
-      null,
-      start.toString(),
-      end.toString(),
-      'searchUser',
-      '1',
-      '10',
-    );
-
-    ApiHttpResult response = await _expertCategoryRepo.filterExpertsApi(request: filterModel);
-
-    CustomLoading.progressDialog(isLoading: false);
-
-    switch (response.status) {
-      case APIStatus.success:
-        if (response.data != null && response.data is CommonModel) {}
-        break;
-      case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail filter call Api ${response.data}");
-        break;
-    }
   }
 
   Future<void> getSingleCategoryApiCall({required String categoryId}) async {
@@ -225,7 +201,13 @@ class FilterProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi();
+    ExpertDataRequestModel expertDataRequestModel = ExpertDataRequestModel(
+      search: exploreExpertController.text,
+      country: countryNameController.text,
+    );
+
+    ApiHttpResult response =
+        await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: expertDataRequestModel.toNullFreeJson());
 
     _isLoading = false;
     notifyListeners();
@@ -233,7 +215,9 @@ class FilterProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is ExploreExpertCategoryAndUserResponseModel) {
           ExploreExpertCategoryAndUserResponseModel responseModel = response.data;
+          Logger().d("expert data  API call successfully${response.data}");
           _categoryList = responseModel.data;
+
           notifyListeners();
         }
         break;

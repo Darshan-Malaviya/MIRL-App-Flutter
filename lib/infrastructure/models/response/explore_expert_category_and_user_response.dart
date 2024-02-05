@@ -43,9 +43,9 @@ class ExploreExpertCategoryAndUserResponseModel {
 
 class CategoryAndExpertUser {
   List<Categories>? category;
-  List<ExpertData>? expertUsers;
+  List<ExpertData>? expertData;
 
-  CategoryAndExpertUser({this.category, this.expertUsers});
+  CategoryAndExpertUser({this.category, this.expertData});
 
   CategoryAndExpertUser.fromJson(Map<String, dynamic> json) {
     if (json['category'] != null) {
@@ -54,10 +54,10 @@ class CategoryAndExpertUser {
         category?.add(new Categories.fromJson(v));
       });
     }
-    if (json['expertUsers'] != null) {
-      expertUsers = <ExpertData>[];
-      json['expertUsers'].forEach((v) {
-        expertUsers?.add(new ExpertData.fromJson(v));
+    if (json['expertData'] != null) {
+      expertData = <ExpertData>[];
+      json['expertData'].forEach((v) {
+        expertData?.add(new ExpertData.fromJson(v));
       });
     }
   }
@@ -67,8 +67,8 @@ class CategoryAndExpertUser {
     if (this.category != null) {
       data['category'] = this.category?.map((v) => v.toJson()).toList();
     }
-    if (this.expertUsers != null) {
-      data['expertUsers'] = this.expertUsers?.map((v) => v.toJson()).toList();
+    if (this.expertData != null) {
+      data['expertUsers'] = this.expertData?.map((v) => v.toJson()).toList();
     }
     return data;
   }
