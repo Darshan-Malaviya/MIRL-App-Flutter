@@ -78,5 +78,6 @@
   "cancelReasonDescription": "Can you please tell us why so we can share this with the Expert?",
   "retainAppointment": "NO, RETAIN MY APPOINTMENT!",
   "sureYouWantCancel": "Are you sure you want to cancel your \nappointment?",
-  "characters": "characters"
+  "characters": "characters",
+  "thereAreNoAvailableTopics": "There are no available topics!"
 }
