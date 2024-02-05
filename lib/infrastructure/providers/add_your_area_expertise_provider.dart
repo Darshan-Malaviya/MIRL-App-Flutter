@@ -19,22 +19,39 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
 
   CategoryListData? selectedCategory;
 
-  Future<void> areaCategoryListApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
-    ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 10, page: 1);
-    CustomLoading.progressDialog(isLoading: false);
+  int get categoryPageNo => _categoryPageNo;
+  int _categoryPageNo = 1;
+
+  bool get reachedCategoryLastPage => _reachedCategoryLastPage;
+  bool _reachedCategoryLastPage = false;
+
+  Future<void> areaCategoryListApiCall({bool isLoaderVisible = false}) async {
+    if(isLoaderVisible){
+      CustomLoading.progressDialog(isLoading: true);
+    }
+
+    ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo);
+    if(isLoaderVisible){
+      CustomLoading.progressDialog(isLoading: false);
+    }
 
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is ExpertCategoryResponseModel) {
           ExpertCategoryResponseModel expertCategoryResponseModel = response.data;
-          Logger().d("Successfully expertImage");
+          Logger().d("Successfully Category on add expert areas");
           _categoryList.addAll(expertCategoryResponseModel.data ?? []);
+          if (_categoryPageNo == expertCategoryResponseModel.pagination?.itemCount) {
+            _reachedCategoryLastPage = true;
+          } else {
+            _categoryPageNo = _categoryPageNo + 1;
+            _reachedCategoryLastPage = false;
+          }
         }
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on area category call Api ${response.data}");
+        Logger().d("API fail on Category on add expert areas call Api ${response.data}");
         break;
     }
     notifyListeners();

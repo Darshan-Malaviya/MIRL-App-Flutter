@@ -13,7 +13,7 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall();
+      await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall(isLoaderVisible: true);
       ref.read(addYourAreaExpertiseProvider).clearSelectChildId();
       ref.read(addYourAreaExpertiseProvider).setCategoryChildDefaultData();
     });

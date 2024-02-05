@@ -1,11 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
-import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
+import 'package:mirl/ui/screens/filter_screen/widget/all_category_list_bottom_view.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_bottomsheet_widget.dart';
+import 'package:mirl/ui/screens/filter_screen/widget/topic_list_by_category_bottom_view.dart';
 
 class ExpertCategoryFilterScreen extends ConsumerStatefulWidget {
   final FilterArgs args;
@@ -17,8 +18,21 @@ class ExpertCategoryFilterScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilterScreen> {
+
+  @override
+  void initState() {
+   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+     if(widget.args.fromExploreExpert ?? false) {
+       ref.read(commonAppProvider).setOtherCategoryValueFalse();
+     } else {
+       ref.read(filterProvider).getSelectedCategory();
+     }
+   });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    final commonProviderWatch = ref.watch(commonAppProvider);
     final filterWatch = ref.watch(filterProvider);
     final filterRead = ref.read(filterProvider);
 
@@ -68,39 +82,58 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                 ).addPaddingY(10);
               }),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                20.0.spaceY,
-                BodySmallText(
-                  title: StringConstants.selectedCategory,
-                  titleColor: ColorConstants.bottomTextColor,
-                ),
-                5.0.spaceY,
-                BodyMediumText(
-                  title: 'Mentor'.toUpperCase(),
-                ),
-              ],
-            ).addVisibility(!(widget.args.fromExploreExpert ?? false)),
-            buildTextFormFieldWidget(filterWatch.topicController, context, () {
-              /*  List<TopicData> topicList = [];
-              topicList.addAll(widget.args.list ?? []);
-              topicList.insert(0, TopicData(name: 'SELECT ONE OR LEAVE AS IS'));*/
+            if(filterWatch.selectedCategory != null)...[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  20.0.spaceY,
+                  BodySmallText(
+                    title: StringConstants.selectedCategory,
+                    titleColor: ColorConstants.bottomTextColor,
+                  ),
+                  5.0.spaceY,
+                  BodyMediumText(
+                    title:filterWatch.selectedCategory?.name ?? '',
+                  ),
+                  30.0.spaceY,
+                ],
+              ).addVisibility(!(widget.args.fromExploreExpert ?? false)),
+            ],
+            buildTextFormFieldWidget(filterWatch.categoryController, context, () {
               CommonBottomSheet.bottomSheet(
                   context: context,
-                  child: FilterBottomSheetWidget(itemList: filterWatch.yesNoSelectionList.map((e) => e).toList(), title: 'Picked Category', onTapItem: (item) {}),
-                  isDismissible: true);
-            }, StringConstants.pickCategory)
-                .addVisibility((widget.args.fromExploreExpert ?? false)),
+                  isDismissible: false,
+                  child: AllCategoryListBottomView(
+                    onTapItem: (item) {
+                      commonProviderWatch.setOtherCategoryValueFalse();
+                      filterWatch.setCategory(value: item);
+                    },
+                    clearSearchTap: () => {filterRead.clearSearchCategoryController()},
+                    searchController: filterWatch.categoryController,
+                  ));
+            }, StringConstants.pickCategory).addVisibility(widget.args.fromExploreExpert ?? false),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.topicController, context, () {
-              List<Topic> topicList = [];
-              topicList.addAll(widget.args.list ?? []);
-              topicList.insert(0, Topic(name: 'SELECT ONE OR LEAVE AS IS'));
-              CommonBottomSheet.bottomSheet(
-                  context: context,
-                  child: FilterBottomSheetWidget(itemList: topicList.map((e) => e.name).toList(), title: 'Picked Topic', onTapItem: (item) {}),
-                  isDismissible: true);
+              if(filterWatch.categoryController.text.isNotEmpty){
+                CommonBottomSheet.bottomSheet(
+                    context: context,
+                    isDismissible: false,
+                    child: TopicListByCategoryBottomView(
+                      doneOnTap: (){
+                        filterWatch.setTopicByCategory();
+                         Navigator.of(context).pop();
+                      },
+                      onTapItem: (item) {
+                        commonProviderWatch.setTopicList(topic: item);
+                      },
+                      clearSearchTap: () => {filterRead.clearSearchTopicController()},
+                      searchController: filterWatch.topicController,
+                      categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                    ));
+              } else {
+                FlutterToast().showToast(msg: "Please select category first");
+              }
+
             }, StringConstants.pickTopicFromTheAbove),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.instantCallAvailabilityController, context, () {

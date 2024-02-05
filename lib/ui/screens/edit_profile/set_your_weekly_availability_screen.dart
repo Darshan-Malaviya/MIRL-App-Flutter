@@ -47,7 +47,6 @@ class _DetYourWeeklyAvailabilityScreenState extends ConsumerState<SetYourWeeklyA
             },
             child: TitleMediumText(
               title: StringConstants.done,
-              fontFamily: FontWeightEnum.w700.toInter,
             ).addPaddingRight(14),
           ),
         ),

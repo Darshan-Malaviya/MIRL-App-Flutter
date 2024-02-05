@@ -15,7 +15,7 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
     final expertRead = ref.read(editExpertProvider);
-    DateFormat usHour = DateFormat("h:mm a");
+    DateFormat usHour = DateFormat("hh:mm a");
 
     if (expertWatch.isLoading) {
       return Center(
@@ -24,7 +24,8 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
     } else {
       return SingleChildScrollView(
         child: Column(
-              children: List.generate(expertWatch.weekScheduleModel.length, (index) {
+              children: List.generate(
+                  expertWatch.weekScheduleModel.length, (index) {
                 final weekData = expertWatch.weekScheduleModel[index];
                 return Column(
                   children: [

@@ -72,6 +72,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       14.0.spaceY,
                       PrimaryButton(
                           title: StringConstants.selectLoginCode,
+                          titleColor: ColorConstants.textColor,
                           width: 235,
                           onPressed: () {
                             if (_loginPassKey.currentState?.validate() ?? false) {
@@ -83,6 +84,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       40.0.spaceY,
                       PrimaryButton(
                         title: StringConstants.continueWithGoogle,
+                        titleColor: ColorConstants.textColor,
                         onPressed: () {
                           loginScreenProviderRead.signInGoogle();
                         },
@@ -97,6 +99,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: PrimaryButton(
                             title: StringConstants.continueWithApple,
                             prefixIcon: ImageConstants.apple,
+                            titleColor: ColorConstants.textColor,
                             prefixIconPadding: 20,
                             onPressed: () {
                               loginScreenProviderRead.signInApple();
@@ -108,6 +111,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       PrimaryButton(
                         title: StringConstants.continueWithFacebook,
                         prefixIcon: ImageConstants.facebook,
+                        titleColor: ColorConstants.textColor,
                         prefixIconPadding: 20,
                         onPressed: () {
                           loginScreenProviderRead.fbLogin();
@@ -142,11 +146,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ]),
                       ).addPaddingX(16),
                       30.0.spaceY,
-                      // const LabelSmallText(
-                      //   title: StringConstants.terms,
-                      //   fontWeight: FontWeight.w400,
-                      //   fontSize: 10,
-                      // ),
                     ],
                   ),
                 ),

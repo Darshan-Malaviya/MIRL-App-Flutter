@@ -17,8 +17,8 @@ class SelectedCategoryScreen extends ConsumerStatefulWidget {
 class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(filterProvider).getSingleCategoryApiCall(categoryId: widget.categoryId);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+     await ref.read(filterProvider).getSingleCategoryApiCall(categoryId: widget.categoryId);
     });
     super.initState();
   }
@@ -145,6 +145,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                   20.0.spaceY,
                   PrimaryButton(
                     title: StringConstants.filterExpertCategory,
+                    titleColor: ColorConstants.blackColor,
                     onPressed: () {
                       context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: false));
                     },

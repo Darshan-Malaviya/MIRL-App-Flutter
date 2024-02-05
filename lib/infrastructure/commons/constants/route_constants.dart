@@ -27,4 +27,8 @@ class RoutesConstants {
   static const String expertDetailScreen = '/expertDetailScreen';
   static const String scheduleCallScreen = '/scheduleCallScreen';
   static const String exploreExpertScreen = '/exploreExpertScreen';
+  static const String bookingConfirmScreen = '/bookingConfirmScreen';
+  static const String scheduleAppointmentScreen = '/scheduleAppointmentScreen';
+  static const String canceledAppointmentScreen = '/canceledAppointmentScreen';
+  static const String canceledAppointmentOptionScreen = '/canceledAppointmentOptionScreen';
 }

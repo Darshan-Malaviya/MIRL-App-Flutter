@@ -216,34 +216,25 @@ class WeeklyAvailableData {
 
 class CertificationData {
   int? id;
-  int? userId;
   String? title;
   String? url;
   String? description;
-  String? firstCreated;
-  String? lastModified;
 
-  CertificationData({this.id, this.userId, this.title, this.url, this.description, this.firstCreated, this.lastModified});
+  CertificationData({this.id, this.title, this.url, this.description});
 
   CertificationData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['userId'];
     title = json['title'];
     url = json['url'];
     description = json['description'];
-    firstCreated = json['firstCreated'];
-    lastModified = json['lastModified'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['userId'] = this.userId;
     data['title'] = this.title;
     data['url'] = this.url;
     data['description'] = this.description;
-    data['firstCreated'] = this.firstCreated;
-    data['lastModified'] = this.lastModified;
     return data;
   }
 

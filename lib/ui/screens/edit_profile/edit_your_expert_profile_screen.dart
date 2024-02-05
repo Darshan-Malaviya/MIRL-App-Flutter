@@ -13,7 +13,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(editExpertProvider).getUserData();
+      // ref.read(editExpertProvider).getUserData();
     });
     super.initState();
   }
@@ -33,7 +33,6 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
           onTap: () => expertRead.updateProfileApi(),
           child: TitleMediumText(
             title: StringConstants.done,
-            fontFamily: FontWeightEnum.w700.toInter,
           ).addPaddingRight(14),
         ),
       ),
@@ -43,7 +42,6 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
             TitleLargeText(
               title: StringConstants.editYourExpertProfile,
               titleColor: ColorConstants.bottomTextColor,
-              fontFamily: FontWeightEnum.w700.toInter,
             ),
             20.0.spaceY,
             InkWell(
@@ -174,6 +172,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                     final data = expertWatch.editButtonList[index];
                     return PrimaryButton(
                       buttonColor: (data.isSelected ?? false) ? null : ColorConstants.buttonColor,
+                      fontSize: 12,
                       title: data.title ?? '',
                       onPressed: () => expertRead.changeSelectedScreenButtonColor(context, index),
                     ).addPaddingBottom(50);

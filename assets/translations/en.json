@@ -1,5 +1,4 @@
 {
-  "appName": "EEAU Service App",
   "requiredFirstName": "The first name field is required",
   "requiredLastName": "The last name field is required",
   "requiredLocation": "The location field is required",
@@ -66,5 +65,20 @@
   "expertTimeZone": "EXPERT TIME ZONE",
   "checkNotification": "CHECK NOTIFICATIONS",
   "cancelBooking": "CANCEL BOOKING",
+  "duration": "Duration",
+  "appointmentCanceled": "Appointment\ncanceled!",
+  "expertNotify": "THE EXPERT HAS BEEN NOTIFIED",
+  "expert": "EXPERT",
+  "time": "TIME",
+  "reasonForCanceledAppointment": "REASON FOR CANCELLATION",
+  "goTONotification": "GO TO NOTIFICATIONS",
+  "refundStatus": "Refund status",
+  "refundDescription": "Your booking payment will be returned in full within 2-4 working days to the source",
+  "yesGoToCanceled": "YES! GO AHEAD AND CANCEL IT",
+  "cancelReasonDescription": "Can you please tell us why so we can share this with the Expert?",
+  "retainAppointment": "NO, RETAIN MY APPOINTMENT!",
+  "sureYouWantCancel": "Are you sure you want to cancel your \nappointment?",
+  "characters": "characters",
+  "thereAreNoAvailableTopics": "There are no available topics!",
   "filterExperts": "FILTER EXPERTS"
 }
