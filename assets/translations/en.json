@@ -57,5 +57,14 @@
   "gender": "GENDER: ",
   "expertOnline": "EXPERT\nONLINE!",
   "searchCategory": "Search (type any category, topic, or name here)",
+  "FilterExperts": "FILTER EXPERTS",
+  "scheduleDescription": "PLEASE COMPLETE THE PAYMENT \nTO SCHEDULE THE CALL WITH",
+  "bookingConfirm": "Booking Confirmed!",
+  "bookingDescription": "Nice! You’ve successfully scheduled your appointment with",
+  "bookingDetail": "BOOKING DETAILS",
+  "yourTimeZone": "YOUR TIME ZONE",
+  "expertTimeZone": "EXPERT TIME ZONE",
+  "checkNotification": "CHECK NOTIFICATIONS",
+  "cancelBooking": "CANCEL BOOKING"
   "filterExperts": "FILTER EXPERTS"
 }
