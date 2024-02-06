@@ -50,7 +50,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewsWidget> {
               children: [
                 RichText(
                   text: TextSpan(
-                    style: TextStyle(color: Colors.blue, fontSize: 14),
+                    style: TextStyle(fontSize: 14),
                     children: <TextSpan>[
                       TextSpan(
                           text: 'User: ',

@@ -46,8 +46,10 @@ class ExpertDetailWidget extends StatelessWidget {
                               alignment: WrapAlignment.center,
                               spacing: 0,
                               children: List.generate(
-                                  expertData?.expertCategory?.length ?? 0,
-                                      (i) => Container(
+                                  ((expertData?.expertCategory?.length ?? 0) > 7)
+                                      ? 6
+                                      : expertData?.expertCategory?.length ?? 0,
+                                  (i) => Container(
                                     color: ColorConstants.sliderColor,
                                     padding: EdgeInsets.symmetric(horizontal: 10),
                                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),

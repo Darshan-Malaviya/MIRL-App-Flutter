@@ -1,6 +1,8 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/common/filter_model.dart';
+import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
+import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/models/response/explore_expert_category_and_user_response.dart';
@@ -8,16 +10,21 @@ import 'package:mirl/infrastructure/models/response/get_single_category_response
 import 'package:mirl/infrastructure/repository/expert_category_repo.dart';
 
 class FilterProvider extends ChangeNotifier {
+  ChangeNotifierProviderRef<FilterProvider> ref;
+
+  FilterProvider(this.ref);
   final _expertCategoryRepo = ExpertCategoryRepo();
 
   TextEditingController instantCallAvailabilityController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController topicController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
   TextEditingController ratingController = TextEditingController();
   TextEditingController countryNameController = TextEditingController();
   TextEditingController cityNameController = TextEditingController();
   TextEditingController searchCityController = TextEditingController();
   TextEditingController searchCountryController = TextEditingController();
+  TextEditingController exploreExpertController = TextEditingController();
 
   List<String> get yesNoSelectionList => _yesNoSelectionList;
   List<String> _yesNoSelectionList = ['SELECT ONE OR LEAVE AS IS', 'Yes', 'No'];
@@ -41,6 +48,12 @@ class FilterProvider extends ChangeNotifier {
 
   CountryModel? selectedCountryModel;
 
+  CategoryIdNameCommonModel? selectedCategory;
+
+
+  List<CategoryIdNameCommonModel>? _selectedTopicList = [];
+  List<CategoryIdNameCommonModel>?  get selectedTopicList => _selectedTopicList;
+
   String? selectedTopic;
 
   double start = 30;
@@ -56,6 +69,59 @@ class FilterProvider extends ChangeNotifier {
 
   CategoryAndExpertUser? get categoryList => _categoryList;
   CategoryAndExpertUser? _categoryList;
+
+
+  void setCategory({required CategoryIdNameCommonModel value}) {
+     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Category.name);
+     selectedCategory = value;
+     selectedCategory?.isCategorySelected = true;
+     categoryController.text = selectedCategory?.name ?? '';
+     if (index == -1) {
+       commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: value.name));
+     } else {
+       commonSelectionModel[index].value = value.name;
+     }
+     notifyListeners();
+  }
+
+  void getSelectedCategory() {
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Category.name);
+    selectedCategory = CategoryIdNameCommonModel(
+        name: _singleCategoryData?.categoryData?.name.toString() ?? '',
+        isCategorySelected: true,
+        id: _singleCategoryData?.categoryData?.id);
+    categoryController.text = selectedCategory?.name ?? '';
+    if (index == -1) {
+      commonSelectionModel
+          .add(CommonSelectionModel(title: FilterType.Category.name, value: selectedCategory?.name ?? ''));
+    } else {
+      commonSelectionModel[index].value = selectedCategory?.name ?? '';
+    }
+    notifyListeners();
+  }
+
+  void setTopicByCategory() {
+    List<CategoryIdNameCommonModel> topicList = ref.watch(commonAppProvider).allTopic;
+    topicList.forEach((element) {
+      if(_selectedTopicList?.isEmpty ?? false){
+        if(element.isCategorySelected ?? false){
+          _selectedTopicList?.add(CategoryIdNameCommonModel(
+              isCategorySelected: true,
+              name: element.name ?? '',
+              id: element.id ?? 0));
+        }
+      }
+    });
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Topic.name);
+    topicController.text = selectedTopicList?.first.name ?? '';
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.Topic.name, value: selectedTopicList?.first.name ?? ''));
+    } else {
+      commonSelectionModel[index].value = selectedTopicList?.first.name ?? '';
+    }
+    notifyListeners();
+  }
+
 
   void setValueOfCall(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.InstantCall.name);
@@ -148,6 +214,16 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSearchCategoryController() {
+    categoryController.clear();
+    notifyListeners();
+  }
+
+  void clearSearchTopicController() {
+    categoryController.clear();
+    notifyListeners();
+  }
+
   void clearSearchCityController() {
     searchCityController.clear();
     notifyListeners();
@@ -158,6 +234,12 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSearchData() {
+    // _categoryList = null;
+    exploreExpertController.clear();
+    notifyListeners();
+  }
+
   void setSelectionBoolValueOfChild({required int position}) {
     for (var element in singleCategoryData?.categoryData?.topic ?? []) {
       element.isSelected = false;
@@ -165,37 +247,6 @@ class FilterProvider extends ChangeNotifier {
     singleCategoryData?.categoryData?.topic?[position].isSelected = true;
     selectedTopic = singleCategoryData?.categoryData?.topic?[position].name;
     notifyListeners();
-  }
-
-  Future<void> filterApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
-
-    FilterModel filterModel = FilterModel(
-      _selectGender.toString(),
-      _isCallSelect.toString(),
-      countryNameController.text,
-      cityNameController.text,
-      null,
-      start.toString(),
-      end.toString(),
-      'searchUser',
-      '1',
-      '10',
-    );
-
-    ApiHttpResult response = await _expertCategoryRepo.filterExpertsApi(request: filterModel);
-
-    CustomLoading.progressDialog(isLoading: false);
-
-    switch (response.status) {
-      case APIStatus.success:
-        if (response.data != null && response.data is CommonModel) {}
-        break;
-      case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail filter call Api ${response.data}");
-        break;
-    }
   }
 
   Future<void> getSingleCategoryApiCall({required String categoryId}) async {
@@ -225,7 +276,13 @@ class FilterProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi();
+    ExpertDataRequestModel expertDataRequestModel = ExpertDataRequestModel(
+      search: exploreExpertController.text,
+      country: countryNameController.text,
+    );
+
+    ApiHttpResult response =
+        await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: expertDataRequestModel.toNullFreeJson());
 
     _isLoading = false;
     notifyListeners();
@@ -233,7 +290,9 @@ class FilterProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is ExploreExpertCategoryAndUserResponseModel) {
           ExploreExpertCategoryAndUserResponseModel responseModel = response.data;
+          Logger().d("expert data  API call successfully${response.data}");
           _categoryList = responseModel.data;
+
           notifyListeners();
         }
         break;

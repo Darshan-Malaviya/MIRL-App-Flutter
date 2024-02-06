@@ -103,23 +103,24 @@ class CategoryData {
   }
 }
 
-
-
 class ExpertCategory {
   int? id;
   String? name;
+  String? colorCode;
 
-  ExpertCategory({this.id, this.name});
+  ExpertCategory({this.id, this.name, this.colorCode});
 
   ExpertCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    colorCode = json['colorCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    data['colorCode'] = this.colorCode;
     return data;
   }
 }

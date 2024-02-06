@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
 
@@ -16,8 +17,8 @@ class SelectedCategoryScreen extends ConsumerStatefulWidget {
 class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(filterProvider).getSingleCategoryApiCall(categoryId: widget.categoryId);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+     await ref.read(filterProvider).getSingleCategoryApiCall(categoryId: widget.categoryId);
     });
     super.initState();
   }
@@ -100,8 +101,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                         ),
                       ]),
                       child: Wrap(
-                        children: List.generate(
-                            filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                        children:
+                            List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                           final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
                           return OnScaleTap(
                             onPress: () {
@@ -146,12 +147,13 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                     title: StringConstants.filterExpertCategory,
                     titleColor: ColorConstants.blackColor,
                     onPressed: () {
-                      context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
-                          args: FilterArgs(fromExploreExpert: false));
+                      context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: false));
                     },
                     prefixIcon: ImageConstants.filter,
                     prefixIconPadding: 10,
                   ).addPaddingX(20),
+                  20.0.spaceY,
+                  SortExpertDropDown(),
                   if (filterProviderWatch.singleCategoryData?.expertData?.isNotEmpty ?? false) ...[
                     ListView.separated(
                         shrinkWrap: true,
@@ -163,7 +165,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                           );
                         },
                         separatorBuilder: (context, index) => 20.0.spaceY,
-                        itemCount: filterProviderWatch.singleCategoryData?.expertData?.length ?? 0)
+                        itemCount: filterProviderWatch.singleCategoryData?.expertData?.length ?? 0),
                   ]
                 ],
               ),

@@ -19,25 +19,39 @@ class _SortExpertDropDownState extends State<SortExpertDropDown> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LabelSmallText(
                 title: StringConstants.sortExpert,
                 fontSize: 8,
                 fontFamily: FontWeightEnum.w400.toInter,
+                titleColor: ColorConstants.buttonTextColor,
               ),
+              16.0.spaceX,
               Container(
                 height: 30,
                 padding: EdgeInsets.all(5.0),
                 decoration: ShapeDecoration(
                   color: ColorConstants.whiteColor,
+                  shadows: [
+                    BoxShadow(
+                      color: ColorConstants.dropDownBorderColor.withOpacity(0.1),
+                      blurRadius: 5.0, // has the effect of softening the shadow
+                      spreadRadius: 0, // has the effect of extending the shadow
+                      offset: Offset(
+                        1, // horizontal, move right 10
+                        1,
+                      ),
+                    )
+                  ],
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: ColorConstants.dropDownBorderColor),
+                    side: BorderSide(width: 1.5, color: ColorConstants.dropDownBorderColor),
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton(
+                    //isExpanded: true,
                     elevation: 0,
                     value: dropdown,
                     icon: Icon(
@@ -48,10 +62,11 @@ class _SortExpertDropDownState extends State<SortExpertDropDown> {
                       return DropdownMenuItem(
                         value: items,
                         child: LabelSmallText(
+                          maxLine: 2,
                           title: items,
                           fontSize: 8,
                           fontFamily: FontWeightEnum.w400.toInter,
-                        ),
+                        ).addMarginX(6),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
@@ -62,18 +77,31 @@ class _SortExpertDropDownState extends State<SortExpertDropDown> {
                   ),
                 ),
               ),
+              10.0.spaceX,
               Container(
                 height: 30,
                 padding: EdgeInsets.all(5.0),
                 decoration: ShapeDecoration(
                   color: ColorConstants.whiteColor,
+                  shadows: [
+                    BoxShadow(
+                      color: ColorConstants.dropDownBorderColor.withOpacity(0.1),
+                      blurRadius: 5.0, // has the effect of softening the shadow
+                      spreadRadius: 0, // has the effect of extending the shadow
+                      offset: Offset(
+                        1, // horizontal, move right 10
+                        1,
+                      ),
+                    )
+                  ],
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: ColorConstants.dropDownBorderColor),
+                    side: BorderSide(width: 1.5, color: ColorConstants.dropDownBorderColor),
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton(
+                    // isExpanded: true,
                     elevation: 0,
                     value: dropdownValue,
                     icon: Icon(
@@ -84,10 +112,11 @@ class _SortExpertDropDownState extends State<SortExpertDropDown> {
                       return DropdownMenuItem(
                         value: item,
                         child: LabelSmallText(
+                          maxLine: 2,
                           title: item,
                           fontSize: 8,
                           fontFamily: FontWeightEnum.w400.toInter,
-                        ),
+                        ).addMarginX(6),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
