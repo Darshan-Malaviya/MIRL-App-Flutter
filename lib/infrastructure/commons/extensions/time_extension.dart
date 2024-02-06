@@ -1,3 +1,5 @@
+import 'package:logger/logger.dart';
+
 extension TimeDuration on Duration {
   String toHHmmss() {
     var microseconds = inMicroseconds;
@@ -22,5 +24,16 @@ extension TimeDuration on Duration {
 
 /*    return "$hours:"
         "$minutesPadding$minutes";*/
+  }
+
+  String toTimeString() {
+    try {
+      final minutes = this.inMinutes.remainder(Duration.minutesPerHour).toString().padLeft(2, '0');
+      final seconds = this.inSeconds.remainder(Duration.secondsPerMinute).toString().padLeft(2, '0');
+      return "$minutes:$seconds";
+    } catch (e) {
+      Logger().d("Exception on toTimeString : $e");
+    }
+    return '';
   }
 }

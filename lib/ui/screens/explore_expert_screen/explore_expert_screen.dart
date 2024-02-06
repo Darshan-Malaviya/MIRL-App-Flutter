@@ -2,9 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
-import 'package:mirl/ui/screens/home_screen/widget/category_and_topic_list_view.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   const ExploreExpertScreen({super.key});

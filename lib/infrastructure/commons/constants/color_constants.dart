@@ -26,11 +26,12 @@ class ColorConstants {
   static Color sheetTitleColor = const Color(0xFF64569E);
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
+  static Color greenColor = const Color(0xFFABDF75);
+  static Color redColor = const Color(0xFFFE654F);
   static Color sliderColor = const Color(0xFF85C7F2);
   static Color overallRatingColor = const Color(0xFFFF6666);
   static Color blueColor = const Color(0xFF01295F);
   static Color requestCallNowColor = const Color(0xFFC7F84D);
-  static Color scheduleCallColor = const Color(0xFFFFCF5A);
   static Color lightPurpleColor = const Color(0xFFF9F0FB);
 
   static Color overAllRatingColor = const Color(0xFF393737);
@@ -38,7 +39,7 @@ class ColorConstants {
   static Color yellowLightColor = const Color(0x66FFCF5A);
   static Color topicShoeColorColor = const Color(0x33000000);
   static Color certificatedBoxShadowColor = const Color(0x19000000);
-  static Color callsPausedColor = const Color(0xFFEC4E62);
+  static Color callsPausedColor = const Color(0xFFBD3B28);
   static Color certificatedBorderColor = const Color(0xFFD8D5D5);
   static Color certificatedBgColor = const Color(0xFFF0F0F0);
   static Color purpleDarkColor = const Color(0xFF773a79);
@@ -47,4 +48,5 @@ class ColorConstants {
   static Color warningColor = const Color(0xffCB6F10);
   static Color errorColor = const Color(0xffB33F40);
   static Color lineColor = const Color(0xffFF950A);
+  static Color callRequestColor = const Color(0xffFFAD05);
 }

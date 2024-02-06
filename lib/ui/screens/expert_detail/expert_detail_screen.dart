@@ -166,7 +166,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               onPressed: () {
                 context.toPushNamed(RoutesConstants.scheduleCallScreen);
               },
-              buttonColor: ColorConstants.scheduleCallColor,
+              buttonColor: ColorConstants.yellowButtonColor,
             ),
             40.0.spaceY,
             CertificationAndExperienceWidget(),
@@ -232,7 +232,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             26.0.spaceY,
             ReviewsAndRatingWidget(
               title: StringConstants.overallRating,
-              buttonColor: ColorConstants.scheduleCallColor,
+              buttonColor: ColorConstants.yellowButtonColor,
               child: Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Text.rich(
@@ -271,7 +271,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             60.0.spaceY,
             ReviewsAndRatingWidget(
               title: StringConstants.reviews,
-              buttonColor: ColorConstants.scheduleCallColor,
+              buttonColor: ColorConstants.yellowButtonColor,
               child: SizedBox.shrink(),
             ),
             30.0.spaceY,

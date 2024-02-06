@@ -8,7 +8,6 @@ import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/repository/expert_profile_repo.dart';
 import 'package:mirl/ui/common/alert_widgets/loader_widget.dart';
 import 'package:mirl/ui/common/alert_widgets/toast_message.dart';
-import 'package:mirl/ui/screens/expert_detail/expert_detail_screen.dart';
 
 class ExpertDetailProvider extends ChangeNotifier {
   final _expertProfileRepo = ExpertProfileRepo();
