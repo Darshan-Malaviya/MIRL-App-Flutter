@@ -32,7 +32,6 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
           onTap: () => expertRead.updateFeesApi(),
           child: TitleMediumText(
             title: StringConstants.done,
-            fontFamily: FontWeightEnum.w700.toInter,
           ).addPaddingRight(14),
         ),
       ),

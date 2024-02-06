@@ -55,7 +55,6 @@ class _DetYourWeeklyAvailabilityScreenState extends ConsumerState<SetYourWeeklyA
             TitleLargeText(
               title: StringConstants.weeklyAvailability,
               titleColor: ColorConstants.bottomTextColor,
-              fontFamily: FontWeightEnum.w700.toInter,
               titleTextAlign: TextAlign.center,
               maxLine: 2,
             ),
