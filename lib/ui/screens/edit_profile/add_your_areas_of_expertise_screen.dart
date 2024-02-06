@@ -54,7 +54,6 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           },
           child: TitleMediumText(
             title: StringConstants.done,
-            fontFamily: FontWeightEnum.w700.toInter,
           ),
         ).addPaddingRight(14),
       ),
@@ -63,7 +62,6 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           TitleLargeText(
             title: StringConstants.addYourAreas,
             titleColor: ColorConstants.bottomTextColor,
-            fontFamily: FontWeightEnum.w700.toInter,
             maxLine: 2,
             titleTextAlign: TextAlign.center,
           ),

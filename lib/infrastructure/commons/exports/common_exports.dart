@@ -42,7 +42,6 @@ export 'package:mirl/infrastructure/commons/constants/api_constants.dart';
 export 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 export 'package:mirl/infrastructure/services/shared_pref_helper.dart';
 export 'package:mirl/infrastructure/services/app_path_provider.dart';
-export 'package:mirl/infrastructure/commons/enums/device_type_enum.dart';
 export 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
 export 'package:mirl/ui/common/alert_widgets/loader_widget.dart';
 export 'package:shared_preferences/shared_preferences.dart';
@@ -63,7 +62,6 @@ export 'package:mirl/infrastructure/commons/extensions/build_context_extension.d
 export 'package:mirl/infrastructure/commons/extensions/field_focus_extension.dart';
 export 'package:mirl/infrastructure/models/common/certificate_and_experience_model.dart';
 export 'package:mirl/infrastructure/commons/extensions/validation_extension.dart';
-export 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 export 'package:mirl/infrastructure/commons/extensions/datetime_extension.dart';
 export 'package:mirl/ui/common/network_image/network_image.dart';
 export 'package:mirl/infrastructure/models/common/common_selection_model.dart';

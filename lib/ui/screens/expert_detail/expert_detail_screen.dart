@@ -141,7 +141,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 alignment: AlignmentDirectional.centerStart,
                 child: TitleMediumText(
                   title: StringConstants.moreAboutMe,
-                  fontFamily: FontWeightEnum.w700.toInter,
                   titleColor: ColorConstants.blueColor,
                 ),
               ),
@@ -168,7 +167,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               onPressed: () {
                 context.toPushNamed(RoutesConstants.scheduleCallScreen);
               },
-              buttonColor: ColorConstants.scheduleCallColor,
+              buttonColor: ColorConstants.yellowButtonColor,
               titleColor: ColorConstants.buttonTextColor,
             ),
             40.0.spaceY,
@@ -234,7 +233,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             26.0.spaceY,
             ReviewsAndRatingWidget(
               title: StringConstants.overallRating,
-              buttonColor: ColorConstants.scheduleCallColor,
+              buttonColor: ColorConstants.yellowButtonColor,
               child: Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Text.rich(
@@ -273,7 +272,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             60.0.spaceY,
             ReviewsAndRatingWidget(
               title: StringConstants.reviews,
-              buttonColor: ColorConstants.scheduleCallColor,
+              buttonColor: ColorConstants.yellowButtonColor,
               child: SizedBox.shrink(),
             ),
             30.0.spaceY,

@@ -15,7 +15,7 @@ class NoWeeklyAvailability extends StatelessWidget {
         Container(
           width: 332,
           decoration: BoxDecoration(
-            color: ColorConstants.scheduleCallColor,
+            color: ColorConstants.yellowButtonColor,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(color: ColorConstants.dropDownBorderColor),
             boxShadow: [

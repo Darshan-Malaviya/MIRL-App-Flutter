@@ -35,7 +35,6 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             },
             child: TitleMediumText(
               title: StringConstants.done,
-              fontFamily: FontWeightEnum.w700.toInter,
             ).addPaddingRight(14),
           )),
       body: SingleChildScrollView(
@@ -45,14 +44,12 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             TitleLargeText(
               title: StringConstants.instantCallsAvailability,
               titleColor: ColorConstants.bottomTextColor,
-              fontFamily: FontWeightEnum.w700.toInter,
               maxLine: 2,
               titleTextAlign: TextAlign.center,
             ),
             20.0.spaceY,
             TitleMediumText(
               title: StringConstants.availabilitySchedule,
-              fontFamily: FontWeightEnum.w700.toInter,
               titleTextAlign: TextAlign.center,
               maxLine: 3,
               fontSize: 15,

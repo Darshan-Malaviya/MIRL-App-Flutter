@@ -216,6 +216,7 @@ class BodySmallText extends StatelessWidget {
             height: lineHeight,
             fontFamily: fontFamily,
             shadows: shadows ?? null,
+            fontSize: fontSize,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,

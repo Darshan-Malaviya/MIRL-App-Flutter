@@ -70,7 +70,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
             width: 120,
             padding: EdgeInsets.symmetric(vertical: 6),
             decoration: BoxDecoration(
-              color: ColorConstants.scheduleCallColor,
+              color: ColorConstants.yellowButtonColor,
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: ColorConstants.dropDownBorderColor),
             ),
