@@ -278,7 +278,7 @@ class FilterProvider extends ChangeNotifier {
 
     ExpertDataRequestModel expertDataRequestModel = ExpertDataRequestModel(
       search: exploreExpertController.text,
-      country: countryNameController.text,
+     // country: countryNameController.text,
     );
 
     ApiHttpResult response =
