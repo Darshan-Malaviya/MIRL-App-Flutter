@@ -30,6 +30,7 @@ class ImageConstants {
   static const like = '${imagePath}like.png';
   static const dislike = '${imagePath}dislike.png';
   static const cancel = '${imagePath}cancel.png';
+  static const purpleLine = '${imagePath}purple_line.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';

@@ -80,5 +80,6 @@
   "sureYouWantCancel": "Are you sure you want to cancel your \nappointment?",
   "characters": "characters",
   "thereAreNoAvailableTopics": "There are no available topics!",
-  "filterExperts": "FILTER EXPERTS"
+  "filterExperts": "FILTER EXPERTS",
+  "expertCallHistory": "EXPERT CALL HISTORY"
 }
