@@ -129,9 +129,9 @@ class UserData {
         expertAvailability?.add(new WeeklyAvailableData.fromJson(v));
       });
     }
-    if (json['areasOfExpertise'] != null) {
+    if (json['areaOfExpertise'] != null) {
       areaOfExpertise = <AreasOfExpertise>[];
-      json['areasOfExpertise'].forEach((v) {
+      json['areaOfExpertise'].forEach((v) {
         areaOfExpertise?.add(new AreasOfExpertise.fromJson(v));
       });
     }
@@ -168,7 +168,7 @@ class UserData {
       data['expertAvailability'] = this.expertAvailability?.map((v) => v.toJson()).toList();
     }
     if (this.areaOfExpertise != null) {
-      data['areasOfExpertise'] = this.areaOfExpertise?.map((v) => v.toJson()).toList();
+      data['areaOfExpertise'] = this.areaOfExpertise?.map((v) => v.toJson()).toList();
     }
     return data;
   }

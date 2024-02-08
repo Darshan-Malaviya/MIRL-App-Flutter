@@ -1,22 +1,11 @@
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 
 class TopicListByCategoryBottomView extends ConsumerStatefulWidget {
-  final Function(CategoryIdNameCommonModel item) onTapItem;
-  final TextEditingController searchController;
-  final VoidCallback clearSearchTap;
   final String categoryId;
-  final void Function()? doneOnTap;
 
-  const TopicListByCategoryBottomView(
-      {super.key,
-      required this.onTapItem,
-      required this.searchController,
-      required this.clearSearchTap,
-        this.doneOnTap,
-      required this.categoryId});
+  const TopicListByCategoryBottomView({super.key, required this.categoryId});
 
   @override
   ConsumerState<TopicListByCategoryBottomView> createState() => _TopicListByCategoryBottomViewState();
@@ -28,18 +17,20 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      widget.clearSearchTap();
-      ref.read(commonAppProvider).clearTopicPaginationData();
-      ref.read(commonAppProvider).topicListByCategory(
-            isFullScreenLoader: true,
-            categoryId: widget.categoryId,
-          );
+      if(ref.watch(filterProvider).allTopic.isEmpty){
+        ref.read(filterProvider).clearSearchTopicController();
+        ref.read(filterProvider).clearTopicPaginationData();
+        ref.read(filterProvider).topicListByCategory(
+          isFullScreenLoader: true,
+          categoryId: widget.categoryId,
+        );
+      }
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        bool isLoading = ref.watch(commonAppProvider).reachedTopicLastPage;
+        bool isLoading = ref.watch(filterProvider).reachedTopicLastPage;
         if (!isLoading) {
-          ref.read(commonAppProvider).topicListByCategory(
+          ref.read(filterProvider).topicListByCategory(
                 categoryId: widget.categoryId,
               );
         } else {
@@ -52,8 +43,8 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
 
   @override
   Widget build(BuildContext context) {
-    final commonWatch = ref.watch(commonAppProvider);
-    final commonRead = ref.read(commonAppProvider);
+    final filterProviderWatch = ref.watch(filterProvider);
+    final filterProviderRead = ref.read(filterProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -67,7 +58,10 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
                 bottom: 2,
                 top: 2,
                 child: InkWell(
-                  onTap: widget.doneOnTap,
+                  onTap: () {
+                    filterProviderRead.setTopicByCategory();
+                    context.toPop();
+                  },
                   child: BodySmallText(
                     titleTextAlign: TextAlign.center,
                     title: StringConstants.done,
@@ -81,12 +75,12 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
           TextFormFieldWidget(
             isReadOnly: false,
             hintText: "Search here",
-            suffixIcon: widget.searchController.text.isNotEmpty
+            suffixIcon: filterProviderWatch.searchTopicController.text.isNotEmpty
                 ? InkWell(
                     onTap: () {
-                      commonRead.clearTopicPaginationData();
-                      widget.clearSearchTap();
-                      commonRead.topicListByCategory(
+                      filterProviderRead.clearTopicPaginationData();
+                      filterProviderRead.clearSearchTopicController();
+                      filterProviderRead.topicListByCategory(
                         categoryId: widget.categoryId,
                       );
                     },
@@ -94,24 +88,24 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
                 : SizedBox.shrink(),
             onFieldSubmitted: (value) {
               context.unFocusKeyboard();
-              commonRead.clearTopicPaginationData();
-              commonRead.topicListByCategory(
+              filterProviderRead.clearTopicPaginationData();
+              filterProviderRead.topicListByCategory(
                 searchName: value,
                 categoryId: widget.categoryId,
               );
             },
             height: 40,
-            controller: widget.searchController,
+            controller: filterProviderWatch.searchTopicController,
             textInputAction: TextInputAction.done,
           ).addAllMargin(12),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.45,
-            child: commonWatch.allTopic.isNotEmpty
+            child: filterProviderWatch.allTopic.isNotEmpty
                 ? ListView.builder(
                     controller: scrollController,
-                    itemCount: commonWatch.allTopic.length + (commonWatch.reachedTopicLastPage ? 0 : 1),
+                    itemCount: filterProviderWatch.allTopic.length + (filterProviderWatch.reachedTopicLastPage ? 0 : 1),
                     itemBuilder: (context, index) {
-                      if (index == commonWatch.allTopic.length && commonWatch.allTopic.isNotEmpty) {
+                      if (index == filterProviderWatch.allTopic.length && filterProviderWatch.allTopic.isNotEmpty) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
@@ -119,22 +113,22 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
                       }
                       return InkWell(
                         onTap: () {
-                          widget.onTapItem(commonWatch.allTopic[index]);
+                          filterProviderRead.setTopicList(topic: filterProviderWatch.allTopic[index]);
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.0),
-                            color: (commonWatch.allTopic[index].isCategorySelected ?? false)
+                            color: (filterProviderWatch.allTopic[index].isCategorySelected ?? false)
                                 ? ColorConstants.bottomTextColor.withOpacity(0.1)
                                 : ColorConstants.scaffoldColor,
                           ),
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           child: BodyMediumText(
-                            maxLine: 3,
+                              maxLine: 3,
                               titleTextAlign: TextAlign.center,
-                              title: commonWatch.allTopic[index].name ?? '',
+                              title: filterProviderWatch.allTopic[index].name ?? '',
                               titleColor: ColorConstants.bottomTextColor),
                         ),
                       );

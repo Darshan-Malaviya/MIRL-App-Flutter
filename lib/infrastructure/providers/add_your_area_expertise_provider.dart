@@ -67,6 +67,7 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is ChildUpdateResponseModel) {
           ChildUpdateResponseModel childUpdateResponseModel = response.data;
+          SharedPrefHelper.saveAreaOfExpertise(jsonEncode(childUpdateResponseModel.data ?? []));
           Logger().d("Successfully childUpdateApiCall");
           context.toPop();
           FlutterToast().showToast(msg: childUpdateResponseModel.message ?? '');
