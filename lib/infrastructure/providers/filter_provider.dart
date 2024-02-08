@@ -576,7 +576,7 @@ class FilterProvider extends ChangeNotifier {
     }
     ExpertDataRequestModel data = ExpertDataRequestModel(
         page: _exploreExpertPageNo.toString(),
-        limit: '2',
+        limit: '10',
       search: requestModel?.search,
       city: requestModel?.city,
       country: requestModel?.country,
