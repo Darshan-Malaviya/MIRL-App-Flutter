@@ -113,7 +113,6 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
             5.0.spaceY,
             BodySmallText(
               title: StringConstants.editExpertProfile,
-              fontFamily: FontWeightEnum.w700.toInter,
             ),
             30.0.spaceY,
             Column(

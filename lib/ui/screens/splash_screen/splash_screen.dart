@@ -1,3 +1,4 @@
+import 'package:lottie/lottie.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -7,7 +8,10 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+  //late AnimationController _controller;
+  late final Future<LottieComposition> _composition;
+
   // SharedPrefHelper get _sharePref => _services.sharedPreferenceService;
 
   @override
@@ -30,16 +34,44 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
     super.initState();
+
+    _composition = AssetLottie(ImageConstants.splashScreen).load();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.whiteColor,
-      body: Center(
-          child: Image.asset(
-        ImageConstants.splashImages,
-      )),
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        child: Center(
+          //     child: Image.asset(
+          //   ImageConstants.splashImages,
+          // ),
+          child: Lottie.asset(
+            ImageConstants.splashScreen,
+            decoder: LottieComposition.decodeGZip,
+            frameBuilder: (context, child, composition) => Transform.scale(
+              scale: 1.5,
+              child: child,
+            ),
+          ),
+          // child: Lottie.asset(
+          //   ImageConstants.splashScreen,
+          //   width: double.infinity,
+          //   frameBuilder: (context, child, composition) => Transform.scale(
+          //     scale: 1.5,
+          //     child: child,
+          //   ),
+          // ),
+        ),
+      ),
     );
+  }
+
+  Future<LottieComposition?> customDecoder(List<int> bytes) {
+    return LottieComposition.decodeZip(bytes, filePicker: (files) {
+      return files.firstWhere((f) => f.name.startsWith('animations/') && f.name.endsWith('.json'));
+    });
   }
 }

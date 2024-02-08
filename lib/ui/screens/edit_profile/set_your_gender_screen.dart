@@ -33,7 +33,6 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
             onTap: () => expertRead.updateGenderApi(),
             child: TitleMediumText(
               title: StringConstants.done,
-              fontFamily: FontWeightEnum.w700.toInter,
             ).addPaddingRight(14),
           )),
       body: SingleChildScrollView(
@@ -43,7 +42,6 @@ class _SetYourGenderScreenState extends ConsumerState<SetYourGenderScreen> {
               TitleLargeText(
                 title: StringConstants.setYourGender,
                 titleColor: ColorConstants.bottomTextColor,
-                fontFamily: FontWeightEnum.w700.toInter,
               ),
               120.0.spaceY,
               DropdownMenuWidget(

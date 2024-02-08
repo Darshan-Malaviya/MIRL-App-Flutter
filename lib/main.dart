@@ -5,11 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/mirl_app.dart';
 
-import 'ui/screens/schedule_screen/booking_screen.dart';
-import 'ui/screens/schedule_screen/canceled_appointment_option_screen.dart';
-import 'ui/screens/schedule_screen/canceled_appointment_screen.dart';
-import 'ui/screens/schedule_screen/schedule_appointment_screen.dart';
-
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);
 
