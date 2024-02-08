@@ -1,4 +1,5 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/block_user/block_user_screen.dart';
 import 'package:mirl/ui/screens/expert_call_history_screen/expert_call_history_screen.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
@@ -27,7 +28,8 @@ class DashboardProvider extends ChangeNotifier {
         ExpertCallHistoryScreen(),
         //NotificationScreen(),
         ExpertProfileScreen(),
-        UserSettingScreen(),
+        //UserSettingScreen(),
+        BlockUserScreen()
       ],
     );
   }

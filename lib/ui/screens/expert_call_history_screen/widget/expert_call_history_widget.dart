@@ -216,20 +216,24 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                       ],
                     )),
                     Container(
-                        decoration: BoxDecoration(
-                          color: ColorConstants.yellowButtonColor,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: ColorConstants.dropDownBorderColor,
-                              blurRadius: 2,
-                              offset: Offset(2, 4),
-                              spreadRadius: 0,
-                            )
-                          ],
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            offset: Offset(2, 5),
+                            color: ColorConstants.blackColor.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 2),
+                      ], shape: BoxShape.circle),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: NetworkImageWidget(
+                          imageURL:
+                              'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                          boxFit: BoxFit.cover,
+                          height: 75,
+                          width: 75,
                         ),
-                        child: CircleNetworkImageWidget(
-                            imageURL: ImageConstants.expert, radius: 30, isNetworkImage: true, key: UniqueKey())),
+                      ),
+                    ),
                     //Image.asset(ImageConstants.expert,height: 70,width: 70,)
                   ],
                 ),
@@ -240,7 +244,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                     title: "Block / Report User",
                     fontFamily: FontWeightEnum.w400.toInter,
                     titleTextAlign: TextAlign.end,
-                    titleColor: ColorConstants.redColor,
+                    titleColor: ColorConstants.darkRedColor,
                   ),
                 ),
               ],

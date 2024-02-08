@@ -2,6 +2,7 @@ class ImageConstants {
   static const imagePath = 'assets/images/';
   static const gifPath = 'assets/gif/';
   static const iconPath = 'assets/icons/';
+  static const rawPath = 'assets/raw/';
 
   static const backgroundLines = '${imagePath}background_line.png';
   static const mirlImage = '${imagePath}mirl_image.png';
@@ -38,4 +39,8 @@ class ImageConstants {
   /// icon
   static const recurringIcon = '${iconPath}recurring.png';
   static const nonRecurringIcon = '${iconPath}non_recurring.png';
+
+  /// json
+  static const splashScreen = '${rawPath}splash_screen.json';
+
 }

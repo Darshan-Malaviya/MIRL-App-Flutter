@@ -31,4 +31,8 @@ class RoutesConstants {
   static const String scheduleAppointmentScreen = '/scheduleAppointmentScreen';
   static const String canceledAppointmentScreen = '/canceledAppointmentScreen';
   static const String canceledAppointmentOptionScreen = '/canceledAppointmentOptionScreen';
+  static const String blockUserListScreen = '/blockUserListScreen';
+  static const String reportUserScreen = '/reportUserScreen';
+  static const String thanksScreen = '/thanksScreen';
+  static const String reportExpertScreen = '/reportExpertScreen';
 }
