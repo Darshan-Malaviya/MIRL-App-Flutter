@@ -54,9 +54,14 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                           text: '${LocaleKeys.expert.tr()}: ',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
-                            TextSpan(text: 'PREETI', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                            TextSpan(
+                                text: 'PREETI',
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                           ],
                         ),
                       ),
@@ -66,9 +71,14 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                           text: '${LocaleKeys.time.tr()}: ',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
-                            TextSpan(text: '03:30PM - 03:50PM', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                            TextSpan(
+                                text: '03:30PM - 03:50PM',
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                           ],
                         ),
                       ),
@@ -78,9 +88,14 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                           text: '${LocaleKeys.duration.tr()}: ',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
-                            TextSpan(text: '20 minutes', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                            TextSpan(
+                                text: '20 minutes',
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                           ],
                         ),
                       ),
@@ -88,7 +103,11 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                   ),
                   Container(
                     decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(offset: Offset(2, 5), color: ColorConstants.blackColor.withOpacity(0.3), spreadRadius: 2, blurRadius: 2),
+                      BoxShadow(
+                          offset: Offset(2, 5),
+                          color: ColorConstants.blackColor.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 2),
                     ], shape: BoxShape.circle),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
