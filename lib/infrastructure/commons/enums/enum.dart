@@ -14,5 +14,3 @@ abstract class LoginType {
   static const apple = 2;
   static const facebook = 3;
 }
-
-enum CallType { callRequest, requestApproved, requestDeclined, requestTimeout, receiverRequested, multiConnectReceiverRequested }

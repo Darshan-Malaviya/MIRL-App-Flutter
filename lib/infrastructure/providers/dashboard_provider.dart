@@ -28,8 +28,8 @@ class DashboardProvider extends ChangeNotifier {
         ExpertCallHistoryScreen(),
         //NotificationScreen(),
         ExpertProfileScreen(),
-        //UserSettingScreen(),
-        BlockUserScreen()
+        UserSettingScreen(),
+        // BlockUserScreen()
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/week_availability_model.dart';
+import 'package:mirl/infrastructure/models/request/slots_request_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
 
@@ -47,19 +48,23 @@ class ScheduleCallProvider extends ChangeNotifier {
   void getSelectedDate(DateTime dateTime) {
     final now = DateTime.now().toLocal();
     selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second);
-    _selectedUTCDate = selectedDate?.toUtc().toIso8601String() ?? '';
+    _selectedUTCDate = selectedDate?.toUtc().toString() ?? '';
     print(_selectedUTCDate);
 
     String getDate = _selectedUTCDate.to12HourTimeFormat();
     print(getDate);
-
+    getSlotsApi();
     notifyListeners();
   }
 
-  Future<void> getSlotsApi(BuildContext context) async {
+  Future<void> getSlotsApi() async {
     _isLoadingSlot = true;
     notifyListeners();
-    ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(date: _selectedUTCDate, duration: _callDuration.toString(), expertId: '');
+
+    ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(
+      request: SlotsRequestModel(expertId: '72', date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
+    );
+
     _isLoadingSlot = false;
     notifyListeners();
 

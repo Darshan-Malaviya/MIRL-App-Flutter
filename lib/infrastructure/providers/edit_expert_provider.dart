@@ -293,6 +293,7 @@ class EditExpertProvider extends ChangeNotifier {
       } else {
         _editButtonList[2].isSelected = false;
       }
+      // if(SharedPrefHelper.getAreaOfExpertise)
       notifyListeners();
     }
   }

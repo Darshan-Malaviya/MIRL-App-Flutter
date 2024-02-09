@@ -200,11 +200,11 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                       separatorBuilder: (BuildContext context, int index) => 20.0.spaceX,
                     )
                   : Center(
-                    child: BodyMediumText(
-                        title: 'No slots available',
+                      child: BodyMediumText(
+                        title: LocaleKeys.noSlotAvailable.tr(),
                         titleColor: ColorConstants.primaryColor,
                       ),
-                  ),
+                    ),
         )
       ],
     );

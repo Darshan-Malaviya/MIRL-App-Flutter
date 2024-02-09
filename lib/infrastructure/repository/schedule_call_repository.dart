@@ -11,10 +11,10 @@ class ScheduleCallRepository extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
   /// get slots
-  Future<ApiHttpResult> getTimeSlotsApi({required String date, required String expertId, required String duration}) async {
-    final uri = ApiConstants.endpointUri(path: ApiConstants.timeSlots, queryParameters: {'date': date, 'expertId': expertId, 'duration': duration});
+  Future<ApiHttpResult> getTimeSlotsApi({required String request}) async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.timeSlots);
 
-    APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithOutToken(), apiType: APIType.get);
+    APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), body: request);
 
     return responseHandler(result: result, json: GetSlotsResponseModel.parseInfo);
   }
