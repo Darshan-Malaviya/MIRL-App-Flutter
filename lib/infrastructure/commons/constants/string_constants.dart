@@ -24,8 +24,6 @@ class StringConstants {
   static const String expertProfile = "EXPERT PROFILE";
   static const String userSetting = "USER SETTINGS";
   static const String yourExpertName = "Your Expert Name";
-  static const String overallRatting = "OVERALL \n  RATING";
-  static const String feePer = "    FEE PER \n10 MINUTES";
   static const String editProfile = "EDIT PROFILE";
   static const String shareProfile = "SHARE PROFILE";
   static const String moreAboutMe = "MORE ABOUT ME";

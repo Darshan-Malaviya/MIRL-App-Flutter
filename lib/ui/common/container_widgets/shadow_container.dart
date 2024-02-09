@@ -51,10 +51,7 @@ class ShadowContainer extends StatelessWidget {
             boxShadow: (isShadow ?? false)
                 ? [
                     BoxShadow(
-                        color: shadowColor ?? ColorConstants.categoryListBorder,
-                        blurRadius: blurRadius ?? 6,
-                        offset: offset ?? Offset(0, 0),
-                        spreadRadius: spreadRadius ?? -3)
+                        color: shadowColor ?? ColorConstants.categoryListBorder, blurRadius: blurRadius ?? 6, offset: offset ?? Offset(0, 0), spreadRadius: spreadRadius ?? -3)
                   ]
                 : [],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
+import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/all_category_list_bottom_view.dart';
@@ -18,18 +19,18 @@ class ExpertCategoryFilterScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilterScreen> {
-
   @override
   void initState() {
-   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     if(widget.args.fromExploreExpert ?? false) {
-       ref.read(commonAppProvider).setOtherCategoryValueFalse();
-     } else {
-       ref.read(filterProvider).getSelectedCategory();
-     }
-   });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.args.fromExploreExpert ?? false) {
+        ref.read(commonAppProvider).setOtherCategoryValueFalse();
+      } else {
+        ref.read(filterProvider).getSelectedCategory();
+      }
+    });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final commonProviderWatch = ref.watch(commonAppProvider);
@@ -51,6 +52,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               maxLine: 2,
               titleTextAlign: TextAlign.center,
             ),
+
             /// TODO This is selected filter list
             Column(
               children: List.generate(filterWatch.commonSelectionModel.length, (index) {
@@ -82,7 +84,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                 ).addPaddingY(10);
               }),
             ),
-            if(filterWatch.selectedCategory != null)...[
+            if (filterWatch.selectedCategory != null) ...[
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -93,7 +95,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                   ),
                   5.0.spaceY,
                   BodyMediumText(
-                    title:filterWatch.selectedCategory?.name ?? '',
+                    title: filterWatch.selectedCategory?.name ?? '',
                   ),
                   30.0.spaceY,
                 ],
@@ -111,17 +113,18 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                     clearSearchTap: () => {filterRead.clearSearchCategoryController()},
                     searchController: filterWatch.categoryController,
                   ));
-            }, StringConstants.pickCategory).addVisibility(widget.args.fromExploreExpert ?? false),
+            }, StringConstants.pickCategory)
+                .addVisibility(widget.args.fromExploreExpert ?? false),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.topicController, context, () {
-              if(filterWatch.categoryController.text.isNotEmpty){
+              if (filterWatch.categoryController.text.isNotEmpty) {
                 CommonBottomSheet.bottomSheet(
                     context: context,
                     isDismissible: false,
                     child: TopicListByCategoryBottomView(
-                      doneOnTap: (){
+                      doneOnTap: () {
                         filterWatch.setTopicByCategory();
-                         Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                       },
                       onTapItem: (item) {
                         commonProviderWatch.setTopicList(topic: item);
@@ -133,7 +136,6 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               } else {
                 FlutterToast().showToast(msg: "Please select category first");
               }
-
             }, StringConstants.pickTopicFromTheAbove),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.instantCallAvailabilityController, context, () {
@@ -209,14 +211,17 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               title: StringConstants.feeRange,
               titleColor: ColorConstants.bottomTextColor,
             ),
-            RangeSlider(
-              values: RangeValues(filterWatch.start, filterWatch.end),
-              activeColor: ColorConstants.yellowButtonColor,
-              inactiveColor: ColorConstants.lineColor,
-              divisions: 25,
-              onChanged: filterRead.setRange,
-              min: 0,
-              max: 100,
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(rangeThumbShape:  RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
+              child: RangeSlider(
+                values: RangeValues(filterWatch.start, filterWatch.end),
+                activeColor: ColorConstants.yellowButtonColor,
+                inactiveColor: ColorConstants.lineColor,
+                divisions: 25,
+                onChanged: filterRead.setRange,
+                min: 0,
+                max: 100,
+              ),
             ),
           ],
         ).addPaddingX(20),
@@ -242,6 +247,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
       labelText: labelText,
       labelColor: ColorConstants.bottomTextColor,
       enabledBorderColor: ColorConstants.dropDownBorderColor,
+      labelTextFontFamily: FontWeightEnum.w700.toInter,
       textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       suffixIcon: Icon(
         size: 18,

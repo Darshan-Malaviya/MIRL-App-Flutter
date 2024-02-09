@@ -6,6 +6,7 @@ import 'package:mirl/ui/common/read_more/readmore.dart';
 
 class ExpertDetailWidget extends StatelessWidget {
   final ExpertData? expertData;
+
   const ExpertDetailWidget({super.key, required this.expertData});
 
   @override
@@ -41,23 +42,21 @@ class ExpertDetailWidget extends StatelessWidget {
                         children: [
                           BodyMediumText(title: expertData?.expertName ?? ''),
                           8.0.spaceY,
-                          if(expertData?.expertCategory?.isNotEmpty ?? false)...[
+                          if (expertData?.expertCategory?.isNotEmpty ?? false) ...[
                             Wrap(
                               alignment: WrapAlignment.center,
                               spacing: 0,
                               children: List.generate(
-                                  ((expertData?.expertCategory?.length ?? 0) > 7)
-                                      ? 6
-                                      : expertData?.expertCategory?.length ?? 0,
+                                  ((expertData?.expertCategory?.length ?? 0) > 7) ? 6 : expertData?.expertCategory?.length ?? 0,
                                   (i) => Container(
-                                    color: ColorConstants.sliderColor,
-                                    padding: EdgeInsets.symmetric(horizontal: 10),
-                                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                                    child: BodyMediumText(
-                                      title:  expertData?.expertCategory?[i].name ?? '',
-                                      fontFamily: FontWeightEnum.w400.toInter,
-                                    ),
-                                  )),
+                                        color: ColorConstants.sliderColor,
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                        child: BodyMediumText(
+                                          title: expertData?.expertCategory?[i].name ?? '',
+                                          fontFamily: FontWeightEnum.w400.toInter,
+                                        ),
+                                      )),
                             )
                           ]
                         ],
@@ -71,21 +70,33 @@ class ExpertDetailWidget extends StatelessWidget {
                       Row(
                         children: [
                           BodySmallText(
-                            title: StringConstants.overallRatting,
+                            title: LocaleKeys.overAllRating.tr(),
                             fontFamily: FontWeightEnum.w400.toInter,
+                            titleTextAlign: TextAlign.center,
                           ),
-                          3.0.spaceX,
-                          HeadlineLargeText(title: '9', titleColor: ColorConstants.bottomTextColor)
+                          10.0.spaceX,
+                          HeadlineMediumText(
+                            fontSize: 30,
+                            title: '-',
+                            titleColor: ColorConstants.overallRatingColor,
+                            shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                          ),
                         ],
                       ),
                       Row(
                         children: [
                           BodySmallText(
-                            title: StringConstants.feePer,
+                            title: LocaleKeys.feesPerMinute.tr(),
                             fontFamily: FontWeightEnum.w400.toInter,
+                            titleTextAlign: TextAlign.center,
                           ),
-                          5.0.spaceX,
-                          HeadlineLargeText(title: '\$9', titleColor: ColorConstants.bottomTextColor)
+                          10.0.spaceX,
+                          HeadlineMediumText(
+                            fontSize: 30,
+                            title: '\$${9}',
+                            titleColor: ColorConstants.overallRatingColor,
+                            shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                          ),
                         ],
                       ),
                     ],

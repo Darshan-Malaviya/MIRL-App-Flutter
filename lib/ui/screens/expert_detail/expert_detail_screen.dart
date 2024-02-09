@@ -112,29 +112,32 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 Row(
                   children: [
                     BodySmallText(
-                      title: StringConstants.overallRatting,
+                      title: LocaleKeys.overAllRating.tr(),
                       fontFamily: FontWeightEnum.w400.toInter,
+                      titleTextAlign: TextAlign.center,
                     ),
-                    4.0.spaceX,
+                    10.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '0',
+                      title: '-',
                       titleColor: ColorConstants.overallRatingColor,
+                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                     ),
                   ],
                 ),
-                18.0.spaceY,
                 Row(
                   children: [
                     BodySmallText(
-                      title: StringConstants.feePer,
+                      title: LocaleKeys.feesPerMinute.tr(),
                       fontFamily: FontWeightEnum.w400.toInter,
+                      titleTextAlign: TextAlign.center,
                     ),
-                    4.0.spaceX,
+                    10.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
                       title: '\$${(expertDetailWatch.userData?.fee ?? 0 / 100).toString()}',
                       titleColor: ColorConstants.overallRatingColor,
+                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                     ),
                   ],
                 ),

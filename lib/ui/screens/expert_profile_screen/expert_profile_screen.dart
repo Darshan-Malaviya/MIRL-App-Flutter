@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class ExpertProfileScreen extends ConsumerStatefulWidget {
@@ -44,34 +46,37 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                   ),
                   28.0.spaceY,
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           BodySmallText(
-                            title: StringConstants.overallRatting,
+                            title: LocaleKeys.overAllRating.tr(),
                             fontFamily: FontWeightEnum.w400.toInter,
+                            titleTextAlign: TextAlign.center,
                           ),
                           10.0.spaceX,
                           HeadlineMediumText(
                             fontSize: 30,
-                            title: '0',
+                            title: '-',
                             titleColor: ColorConstants.overallRatingColor,
+                            shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                           ),
                         ],
                       ),
-                      18.0.spaceY,
                       Row(
                         children: [
                           BodySmallText(
-                            title: StringConstants.feePer,
+                            title: LocaleKeys.feesPerMinute.tr(),
                             fontFamily: FontWeightEnum.w400.toInter,
+                            titleTextAlign: TextAlign.center,
                           ),
                           10.0.spaceX,
                           HeadlineMediumText(
                             fontSize: 30,
                             title: '\$${expertWatch.countController.text}',
                             titleColor: ColorConstants.overallRatingColor,
+                            shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                           ),
                         ],
                       ),
