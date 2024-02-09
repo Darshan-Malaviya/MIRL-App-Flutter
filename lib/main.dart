@@ -47,10 +47,10 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-  /*          initialRoute: '/',
-            onGenerateRoute: RouterConstant.generateRoute,*/
+            initialRoute: '/',
+            onGenerateRoute: RouterConstant.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
-            home: ScheduleCallScreen(),
+            // home: ScheduleCallScreen(),
           );
         },
       ),
