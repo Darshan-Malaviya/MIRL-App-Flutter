@@ -7,7 +7,7 @@ import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.da
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/all_category_list_bottom_view.dart';
-import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_bottomsheet_widget.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/topic_list_by_category_bottom_view.dart';
 

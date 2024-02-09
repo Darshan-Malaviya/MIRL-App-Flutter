@@ -293,7 +293,11 @@ class EditExpertProvider extends ChangeNotifier {
       } else {
         _editButtonList[2].isSelected = false;
       }
-      // if(SharedPrefHelper.getAreaOfExpertise)
+      if (SharedPrefHelper.getAreaOfExpertise.isEmpty) {
+        _editButtonList[1].isSelected = false;
+      } else {
+        _editButtonList[1].isSelected = true;
+      }
       notifyListeners();
     }
   }
@@ -434,7 +438,7 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateGenderApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(genderFlag: true, gender: isSelectGender.toString());
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(gender: isSelectGender.toString());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonGender());
   }
 
@@ -457,7 +461,6 @@ class EditExpertProvider extends ChangeNotifier {
 
   void updateBankApi() {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      bankDetailsFlag: true,
       bankName: bankNameController.text.trim(),
       bankAccountHolderName: bankHolderNameController.text.trim(),
       accountNumber: accountNumberController.text.trim(),
@@ -483,7 +486,6 @@ class EditExpertProvider extends ChangeNotifier {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
       city: cityNameController.text.trim(),
       country: countryNameController.text.trim(),
-      locationFlag: true,
       isLocationVisible: _isLocationSelect,
     );
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonYourLocation());
