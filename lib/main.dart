@@ -5,11 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/mirl_app.dart';
 
-import 'ui/screens/multi_call_screen/multi_connect_screen.dart';
-import 'ui/screens/schedule_screen/payment_complete_screen.dart';
-import 'ui/screens/schedule_screen/schedule_appointment_screen.dart';
-import 'ui/screens/schedule_screen/schedule_call_screen.dart';
-
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);
 
@@ -47,10 +42,10 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-/*            initialRoute: '/',
-            onGenerateRoute: RouterConstant.generateRoute,*/
+            initialRoute: '/',
+            onGenerateRoute: RouterConstant.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
-            home: ScheduleCallScreen(),
+           // home: ScheduleCallScreen(),
           );
         },
       ),

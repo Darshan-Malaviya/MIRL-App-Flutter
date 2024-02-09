@@ -45,7 +45,7 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
-          TitleMediumText(title: "Select Country", titleColor: ColorConstants.sheetTitleColor),
+          TitleMediumText(title: "Select Country".toUpperCase(), titleColor: ColorConstants.sheetTitleColor),
           16.0.spaceY,
           TextFormFieldWidget(
             isReadOnly: false,
@@ -62,7 +62,7 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
             onFieldSubmitted: (value) {
               context.unFocusKeyboard();
               commonRead.clearCountryPaginationData();
-              commonRead.CountryListApiCall(searchName: value);
+              commonRead.CountryListApiCall(searchName: value.trim());
             },
             height: 40,
             controller: widget.searchController,

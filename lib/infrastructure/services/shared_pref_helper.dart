@@ -42,6 +42,14 @@ class SharedPrefHelper {
     return _prefsInstance?.getString(StorageConstants.userData) ?? '';
   }
 
+  static Future<bool> saveAreaOfExpertise(String? userData) async {
+    return await _prefsInstance?.setString(StorageConstants.areaOfExpertise, userData ?? '') ?? false;
+  }
+
+  static String get getAreaOfExpertise {
+    return _prefsInstance?.getString(StorageConstants.areaOfExpertise) ?? '';
+  }
+
   static clearPrefs() async {
     await _prefsInstance?.remove(StorageConstants.userData);
   }
