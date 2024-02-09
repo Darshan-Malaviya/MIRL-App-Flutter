@@ -26,7 +26,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
   void initState() {
    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
      if(widget.args.fromExploreExpert ?? false) {
-       ref.read(commonAppProvider).setOtherCategoryValueFalse();
+       ref.read(filterProvider).setOtherCategoryValueFalse();
      } else {
        ref.read(filterProvider).getSelectedCategory();
      }
