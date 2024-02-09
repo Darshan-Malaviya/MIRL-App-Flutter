@@ -179,6 +179,11 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                 max: 100,
               ),
             ),
+            10.0.spaceY,
+            BodySmallText(
+              title: '${filterWatch.start - filterWatch.end}',
+              titleColor: ColorConstants.bottomTextColor,
+            ),
           ],
         ).addPaddingX(20),
       ),
