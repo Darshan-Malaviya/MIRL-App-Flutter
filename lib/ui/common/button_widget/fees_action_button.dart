@@ -2,7 +2,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class FeesActionButtonWidget extends StatelessWidget {
   final VoidCallback onTap;
-  final IconData icons;
+  final String icons;
   final bool isDisable;
 
   const FeesActionButtonWidget({super.key, required this.onTap, required this.icons, this.isDisable = false});
@@ -15,9 +15,8 @@ class FeesActionButtonWidget extends StatelessWidget {
         child: Container(
           height: 20,
           width: 20,
-          child: Icon(
+          child: Image.asset(
             icons,
-            size: 18,
           ),
           decoration: ShapeDecoration(
             color: isDisable ? ColorConstants.greyLightColor : ColorConstants.yellowButtonColor,

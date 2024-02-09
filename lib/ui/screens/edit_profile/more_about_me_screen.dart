@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -14,7 +16,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
-    final expertRead = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
 
     return Scaffold(
         appBar: AppBarWidget(
@@ -50,10 +52,11 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                     controller: expertWatch.aboutMeController,
                     textInputType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
-                    contentPadding: EdgeInsets.only(left: 16,right: 16,top: 10,bottom: 30),
+                    setFormatter: false,
+                    contentPadding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 30),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8,right: 12),
+                    padding: const EdgeInsets.only(bottom: 8, right: 12),
                     child: BodySmallText(
                       title: '${expertWatch.enteredText}/1500 ${LocaleKeys.characters.tr()}',
                       fontFamily: FontWeightEnum.w400.toInter,
@@ -72,5 +75,56 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
             ],
           ).addAllPadding(20),
         ));
+  }
+}
+
+class _Utf8LengthLimitingTextInputFormatter extends TextInputFormatter {
+  _Utf8LengthLimitingTextInputFormatter(this.maxLength)
+      : assert(maxLength == -1 || maxLength > 0);
+
+  final int maxLength;
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) {
+    if (maxLength > 0 && bytesLength(newValue.text) > maxLength) {
+      // If already at the maximum and tried to enter even more, keep the old value.
+      if (bytesLength(oldValue.text) == maxLength) {
+        return oldValue;
+      }
+      return truncate(newValue, maxLength);
+    }
+    return newValue;
+  }
+
+  static TextEditingValue truncate(TextEditingValue value, int maxLength) {
+    var newValue = '';
+    if (bytesLength(value.text) > maxLength) {
+      var length = 0;
+
+      value.text.characters.takeWhile((char) {
+        var nbBytes = bytesLength(char);
+        if (length + nbBytes <= maxLength) {
+          newValue += char;
+          length += nbBytes;
+          return true;
+        }
+        return false;
+      });
+    }
+    return TextEditingValue(
+      text: newValue,
+      selection: value.selection.copyWith(
+        baseOffset: min(value.selection.start, newValue.length),
+        extentOffset: min(value.selection.end, newValue.length),
+      ),
+      composing: TextRange.empty,
+    );
+  }
+
+  static int bytesLength(String value) {
+    return utf8.encode(value).length;
   }
 }

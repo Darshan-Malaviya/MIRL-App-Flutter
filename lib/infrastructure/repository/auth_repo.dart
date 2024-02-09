@@ -6,8 +6,7 @@ import 'package:mirl/infrastructure/handler/api_response_handler/api_response_ha
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 
 class AuthRepository extends ApiResponseHandler {
-  // final ApiResponseProvider _apiResponseProvider =
-  //     ApiResponseProvider(header: ApiConstants.headerWithToken(SharedPrefHelper.getAuthToken));
+
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
   /// login

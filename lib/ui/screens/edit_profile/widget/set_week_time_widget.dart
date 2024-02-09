@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
+import '../../../common/range_slider/thumb_shape.dart';
+
 class SetWeekTimeWidget extends ConsumerStatefulWidget {
   const SetWeekTimeWidget({super.key});
 
@@ -31,8 +33,8 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
                   children: [
                     LabelSmallText(
                         title: (weekData.isAvailable)
-                            ? "${usHour.format(DateTime.fromMicrosecondsSinceEpoch(weekData.startTime.toInt() * 1000))} - "
-                                "${usHour.format(DateTime.fromMicrosecondsSinceEpoch(weekData.endTime.toInt() * 1000))}"
+                            ? "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.startTime.toInt()))} - "
+                                "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.endTime.toInt()))}"
                             : StringConstants.noTimeSchedule),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +58,7 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
                                   inactiveColor: ColorConstants.sliderColor,
                                   min: expertWatch.hourOnly.millisecondsSinceEpoch.toDouble(),
                                   max: expertWatch.plusDay.millisecondsSinceEpoch.toDouble(),
-                                  divisions: 96,
+                                  divisions: 144,
                                   onChanged: (RangeValues value) {
                                     expertRead.changeTime(index, value.start, value.end);
                                   },
@@ -65,7 +67,6 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
                                   height: 10,
                                   margin: EdgeInsets.symmetric(horizontal: 24),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
                                     color: ColorConstants.sliderColor,
                                   ),
                                 ),

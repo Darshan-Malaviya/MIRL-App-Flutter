@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/set_week_time_widget.dart';
 
@@ -6,7 +8,8 @@ import 'widget/week_availability_dialog_widget.dart';
 
 class SetYourWeeklyAvailabilityScreen extends ConsumerStatefulWidget {
   final int initialIndex;
-  const SetYourWeeklyAvailabilityScreen({super.key,required this.initialIndex});
+
+  const SetYourWeeklyAvailabilityScreen({super.key, required this.initialIndex});
 
   @override
   ConsumerState<SetYourWeeklyAvailabilityScreen> createState() => _DetYourWeeklyAvailabilityScreenState();
@@ -78,7 +81,7 @@ class _DetYourWeeklyAvailabilityScreenState extends ConsumerState<SetYourWeeklyA
                       CommonAlertDialog.permissionAlert(
                           context: context,
                           child: WeekAvailabilityDialog(
-                              description: index == 0 ? 'The Same schedule automatic repeated every week.' : 'You have to set your schedule time every week manually,',
+                              description: index == 0 ? LocaleKeys.sameScheduleRepeat.tr() : LocaleKeys.setManually.tr(),
                               icon: index == 0 ? ImageConstants.recurringIcon : ImageConstants.nonRecurringIcon),
                           acceptButtonTitle: StringConstants.yes,
                           discardButtonTitle: StringConstants.cancel,
