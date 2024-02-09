@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
+import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/all_category_list_bottom_view.dart';
@@ -81,6 +82,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                     context: context,
                     isDismissible: false,
                     child: TopicListByCategoryBottomView(
+                      isFromExploreExpert: widget.args.fromExploreExpert ?? false,
                       categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
                     ));
               } else {
@@ -94,7 +96,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                   context: context,
                   child: FilterBottomSheetWidget(
                       itemList: filterWatch.yesNoSelectionList.map((e) => e).toList(),
-                      title: 'Select Call Availability',
+                      title: 'Select Call Availability'.toUpperCase(),
                       onTapItem: (item) {
                         filterRead.setValueOfCall(item);
                         context.toPop();
@@ -107,7 +109,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                   context: context,
                   child: FilterBottomSheetWidget(
                       itemList: filterWatch.ratingList.map((e) => e).toList(),
-                      title: 'Picked Rating',
+                      title: 'Pick a Rating'.toUpperCase(),
                       onTapItem: (item) {
                         filterRead.setRating(item);
                         context.toPop();
@@ -120,7 +122,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                   context: context,
                   child: FilterBottomSheetWidget(
                     itemList: filterWatch.genderList.map((e) => e.title).toList(),
-                    title: 'Picked Gender',
+                    title: 'Pick a Gender'.toUpperCase(),
                     onTapItem: (item) {
                       filterRead.setGender(item);
                       context.toPop();
@@ -157,6 +159,8 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                     countryId: filterWatch.selectedCountryModel?.id ?? '',
                   ));
             }, StringConstants.cityText),
+            30.0.spaceY,
+            SortExpertDropDown(),
             30.0.spaceY,
             BodySmallText(
               title: StringConstants.feeRange,

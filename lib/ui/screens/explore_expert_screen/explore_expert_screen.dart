@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/widget/category_image_and_name_list_widget.dart';
@@ -128,8 +127,6 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                           prefixIcon: ImageConstants.filter,
                           prefixIconPadding: 10,
                         ),
-                        20.0.spaceY,
-                        SortExpertDropDown(),
                         if(filterProviderWatch.commonSelectionModel.isNotEmpty)...[
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

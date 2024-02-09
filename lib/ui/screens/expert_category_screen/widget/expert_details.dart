@@ -10,104 +10,115 @@ class ExpertDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? fee;
+    if(expertData?.fee!= null){
+       double data = (expertData?.fee?.toDouble() ?? 0.0) / 100;
+       fee = data.toStringAsFixed(2);
+    }
     return ShadowContainer(
       width: double.infinity,
       shadowColor: ColorConstants.borderColor,
       offset: Offset(2, 2),
       border: 15,
       padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              NetworkImageWidget(
-                imageURL: expertData?.expertProfile ?? '',
-                isNetworkImage: true,
-                height: 240,
-                width: double.infinity,
-                boxFit: BoxFit.cover,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  180.0.spaceY,
-                  Center(
-                    child: ShadowContainer(
-                      border: 20,
-                      shadowColor: ColorConstants.borderColor,
-                      offset: Offset(0, 3),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          BodyMediumText(title: expertData?.expertName ?? ''),
-                          8.0.spaceY,
-                          if(expertData?.expertCategory?.isNotEmpty ?? false)...[
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              spacing: 0,
-                              children: List.generate(
-                                  ((expertData?.expertCategory?.length ?? 0) > 7)
-                                      ? 6
-                                      : expertData?.expertCategory?.length ?? 0,
-                                  (i) => Container(
-                                    color: ColorConstants.sliderColor,
-                                    padding: EdgeInsets.symmetric(horizontal: 10),
-                                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                                    child: BodyMediumText(
-                                      title:  expertData?.expertCategory?[i].name ?? '',
-                                      fontFamily: FontWeightEnum.w400.toInter,
-                                    ),
-                                  )),
-                            )
-                          ]
-                        ],
-                      ).addAllPadding(10),
+      child: InkWell(
+        onTap: () {
+          context.toPushNamed(RoutesConstants.expertDetailScreen,
+              args: expertData?.id.toString());
+        },
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                NetworkImageWidget(
+                  imageURL: expertData?.expertProfile ?? '',
+                  isNetworkImage: true,
+                  height: 240,
+                  width: double.infinity,
+                  boxFit: BoxFit.cover,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    180.0.spaceY,
+                    Center(
+                      child: ShadowContainer(
+                        border: 20,
+                        shadowColor: ColorConstants.borderColor,
+                        offset: Offset(0, 3),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            BodyMediumText(title: expertData?.expertName ?? ''),
+                            8.0.spaceY,
+                            if(expertData?.expertCategory?.isNotEmpty ?? false)...[
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: 0,
+                                children: List.generate(
+                                    ((expertData?.expertCategory?.length ?? 0) > 7)
+                                        ? 6
+                                        : expertData?.expertCategory?.length ?? 0,
+                                    (i) => Container(
+                                      color: ColorConstants.sliderColor,
+                                      padding: EdgeInsets.symmetric(horizontal: 10),
+                                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                      child: BodyMediumText(
+                                        title:  expertData?.expertCategory?[i].name ?? '',
+                                        fontFamily: FontWeightEnum.w400.toInter,
+                                      ),
+                                    )),
+                              )
+                            ]
+                          ],
+                        ).addAllPadding(10),
+                      ),
                     ),
-                  ),
-                  28.0.spaceY,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          BodySmallText(
-                            title: StringConstants.overallRatting,
-                            fontFamily: FontWeightEnum.w400.toInter,
-                          ),
-                          3.0.spaceX,
-                          HeadlineLargeText(title: '9', titleColor: ColorConstants.bottomTextColor)
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          BodySmallText(
-                            title: StringConstants.feePer,
-                            fontFamily: FontWeightEnum.w400.toInter,
-                          ),
-                          5.0.spaceX,
-                          HeadlineLargeText(title: '\$9', titleColor: ColorConstants.bottomTextColor)
-                        ],
-                      ),
-                    ],
-                  ),
-                  10.0.spaceY,
-                  Align(alignment: Alignment.centerLeft, child: BodySmallText(title: StringConstants.aboutMe)),
-                  5.0.spaceY,
-                  ReadMoreText(
-                    style: TextStyle(fontSize: 14, fontFamily: FontWeightEnum.w400.toInter),
-                    expertData?.about ?? '',
-                    trimLines: 2,
-                    trimMode: TrimMode.Line,
-                    textAlign: TextAlign.start,
-                    trimCollapsedText: LocaleKeys.readMore.tr(),
-                    trimExpandedText: LocaleKeys.readLess.tr(),
-                    moreStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
+                    28.0.spaceY,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            BodySmallText(
+                              title: StringConstants.overallRatting,
+                              fontFamily: FontWeightEnum.w400.toInter,
+                            ),
+                            3.0.spaceX,
+                            HeadlineLargeText(title: '9', titleColor: ColorConstants.bottomTextColor)
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            BodySmallText(
+                              title: StringConstants.feePer,
+                              fontFamily: FontWeightEnum.w400.toInter,
+                            ),
+                            5.0.spaceX,
+                            HeadlineLargeText(title: fee != null ?  '\$${fee}' : "", titleColor: ColorConstants.bottomTextColor)
+                          ],
+                        ),
+                      ],
+                    ),
+                    10.0.spaceY,
+                    Align(alignment: Alignment.centerLeft, child: BodySmallText(title: StringConstants.aboutMe)),
+                    5.0.spaceY,
+                    ReadMoreText(
+                      style: TextStyle(fontSize: 14, fontFamily: FontWeightEnum.w400.toInter),
+                      expertData?.about ?? '',
+                      trimLines: 2,
+                      trimMode: TrimMode.Line,
+                      textAlign: TextAlign.start,
+                      trimCollapsedText: LocaleKeys.readMore.tr(),
+                      trimExpandedText: LocaleKeys.readLess.tr(),
+                      moreStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

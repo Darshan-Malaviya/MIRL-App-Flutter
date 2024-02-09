@@ -47,6 +47,13 @@ class FilterProvider extends ChangeNotifier {
     CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 4),
   ];
 
+  String sortBySelectedItem = 'PRICE';
+  String sortBySelectedOrder = 'HIGH TO LOW';
+
+  List<String> sortByItems = ['PRICE', 'REVIEW SCORE', 'EXPERIENCE'];
+  List<String> orderFilterList = ['HIGH TO LOW', ' LOW TO HIGH'];
+
+
   List<String> get ratingList => _ratingList;
   List<String> _ratingList = ['SELECT ONE OR LEAVE AS IS', '1', '2', '3', '4', '5'];
 
@@ -107,6 +114,12 @@ class FilterProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool _isLoading = false;
 
+  bool get isSearchTopicBottomSheetLoading => _isSearchTopicBottomSheetLoading;
+  bool _isSearchTopicBottomSheetLoading = false;
+
+  bool get isSearchCategoryBottomSheetLoading => _isSearchCategoryBottomSheetLoading;
+  bool _isSearchCategoryBottomSheetLoading = false;
+
   int get categorySelectionIndex => _categorySelectionIndex;
   int _categorySelectionIndex = -1;
 
@@ -118,41 +131,97 @@ class FilterProvider extends ChangeNotifier {
   CategoryAndExpertUser? get categoryList => _categoryList;
   CategoryAndExpertUser? _categoryList;
 
-  Future<void> removeFilter({required int index, bool isFromExploreExpert = false,
-  required BuildContext context, String? singleCategoryId}) async {
-    if(isFromExploreExpert){
-
+  Future<void> removeFilter(
+      {required int index,
+      bool isFromExploreExpert = false,
+      required BuildContext context,
+      String? singleCategoryId}) async {
+    String? selectedTopicId;
+    if (commonSelectionModel[index].title == FilterType.Topic.name) {
+      _selectedTopicList = null;
+      selectedTopicId = null;
+      topicController.clear();
+      searchTopicController.clear();
+      _allTopic.forEach((element) {
+        element.isCategorySelected = false;
+      });
     } else {
-      String? selectedTopicId;
-      if(_selectedTopicList?.isNotEmpty ?? false){
+      if (_selectedTopicList?.isNotEmpty ?? false) {
         selectedTopicId = _selectedTopicList?.map((e) => e.id).join(",");
       }
-      clearSingleCategoryData();
-      ExpertDataRequestModel data = ExpertDataRequestModel(
-          page: _exploreExpertPageNo.toString(),
-          limit: '2',
-          city: commonSelectionModel[index].title == FilterType.City.name ? null : cityNameController.text.isNotEmpty ? cityNameController.text : null,
-          country:commonSelectionModel[index].title == FilterType.Country.name  ? null : countryNameController.text.isNotEmpty ? countryNameController.text : null,
-          gender: commonSelectionModel[index].title == FilterType.Gender.name  ? null : genderController.text.isNotEmpty ? ((selectGender ?? 0 ) - 1 ).toString()  : null,
-          instantCallAvailable: commonSelectionModel[index].title == FilterType.InstantCall.name  ? null : instantCallAvailabilityController.text.isNotEmpty ? isCallSelect == 1 ? "true" : "false" : null,
-         // experienceOder: requestModel?.experienceOder,
-         // feeOrder: requestModel?.feeOrder,
-         // maxFee: requestModel?.maxFee,
-          //minFee: requestModel?.minFee,
-           // reviewOrder: requestModel?.reviewOrder,
-          topicIds: selectedTopicId,
-          categoryId: singleCategoryId,
-          userId: SharedPrefHelper.getUserId
-      );
-      commonSelectionModel.removeAt(index);
-      clearAllFilter();
-      await getSingleCategoryApiCall(
-          categoryId: singleCategoryId ?? "", requestModel: data, context: context
-      );
     }
 
-
-
+    ExpertDataRequestModel data = ExpertDataRequestModel(
+        page: _exploreExpertPageNo.toString(),
+        limit: '10',
+        city: commonSelectionModel[index].title == FilterType.City.name
+            ? null
+            : cityNameController.text.isNotEmpty
+                ? cityNameController.text
+                : null,
+        country: commonSelectionModel[index].title == FilterType.Country.name
+            ? null
+            : countryNameController.text.isNotEmpty
+                ? countryNameController.text
+                : null,
+        gender: commonSelectionModel[index].title == FilterType.Gender.name
+            ? null
+            : genderController.text.isNotEmpty
+                ? ((selectGender ?? 0) - 1).toString()
+                : null,
+        instantCallAvailable: commonSelectionModel[index].title == FilterType.InstantCall.name
+            ? null
+            : instantCallAvailabilityController.text.isNotEmpty
+                ? isCallSelect == 1
+                    ? "true"
+                    : "false"
+                : null,
+        // experienceOder: requestModel?.experienceOder,
+        // feeOrder: requestModel?.feeOrder,
+        // maxFee: requestModel?.maxFee,
+        //minFee: requestModel?.minFee,
+        // reviewOrder: requestModel?.reviewOrder,
+        topicIds: selectedTopicId,
+        categoryId: isFromExploreExpert
+            ? (commonSelectionModel[index].title == FilterType.Category.name)
+                ? null
+                : selectedCategory?.id.toString()
+            : singleCategoryId,
+        userId: SharedPrefHelper.getUserId);
+    if (commonSelectionModel[index].title == FilterType.Country.name) {
+      countryNameController.clear();
+      searchCategoryController.clear();
+      selectedCountryModel = null;
+    } else if (commonSelectionModel[index].title == FilterType.City.name) {
+      cityNameController.clear();
+      searchCityController.clear();
+    } else if (commonSelectionModel[index].title == FilterType.InstantCall.name) {
+      instantCallAvailabilityController.clear();
+      _isCallSelect = null;
+    } else if (commonSelectionModel[index].title == FilterType.Gender.name) {
+      genderController.clear();
+      _selectGender = null;
+    } else if (commonSelectionModel[index].title == FilterType.Category.name) {
+      int index = _allCategory.indexWhere((element) => element.id == (selectedCategory?.id ?? -1));
+      if (index != -1) {
+        _allCategory[index].isCategorySelected = false;
+      }
+      _categorySelectionIndex = -1;
+      selectedCategory = null;
+      categoryController.clear();
+    } else if (commonSelectionModel[index].title == FilterType.OverAllRating.name) {
+      _selectRating = null;
+      ratingController.clear();
+    }
+    commonSelectionModel.removeAt(index);
+    if (isFromExploreExpert) {
+      clearExploreExpertSearchData();
+      clearExploreController();
+      exploreExpertUserAndCategoryApiCall(context: context);
+    } else {
+      clearSingleCategoryData();
+      await getSingleCategoryApiCall(categoryId: singleCategoryId ?? "", requestModel: data, context: context);
+    }
     notifyListeners();
   }
 
@@ -439,12 +508,18 @@ class FilterProvider extends ChangeNotifier {
   Future<void> allCategoryListApi({bool isFullScreenLoader = false, String? searchName}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
+    } else {
+      _isSearchCategoryBottomSheetLoading = true;
+      notifyListeners();
     }
     SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _categoryPageNo.toString(),limit: "40",search: searchName);
 
     ApiHttpResult response = await _commonRepository.allCategoryLIstService(requestModel: model.toNullFreeJson());
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
+    }  else {
+      _isSearchCategoryBottomSheetLoading = false;
+      notifyListeners();
     }
     switch (response.status) {
       case APIStatus.success:
@@ -472,6 +547,9 @@ class FilterProvider extends ChangeNotifier {
       {bool isFullScreenLoader = false, String? searchName, required String categoryId}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
+    } else {
+      _isSearchTopicBottomSheetLoading = true;
+      notifyListeners();
     }
     SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(
         page: _topicPageNo.toString(), limit: '40', search: searchName, categoryId: categoryId);
@@ -480,6 +558,9 @@ class FilterProvider extends ChangeNotifier {
     await _commonRepository.allTopicListByCategoryService(requestModel: model.toNullFreeJson());
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
+    } else {
+      _isSearchTopicBottomSheetLoading = false;
+      notifyListeners();
     }
     switch (response.status) {
       case APIStatus.success:

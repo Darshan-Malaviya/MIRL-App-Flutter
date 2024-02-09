@@ -5,9 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
-import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
 
@@ -31,6 +29,14 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
           categoryId: widget.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId), context: context
       );
       ref.read(filterProvider).getSelectedCategory();
+        if(ref.watch(filterProvider).allTopic.isEmpty){
+          ref.read(filterProvider).clearSearchTopicController();
+          ref.read(filterProvider).clearTopicPaginationData();
+          ref.read(filterProvider).topicListByCategory(
+            isFullScreenLoader: true,
+            categoryId: widget.categoryId,
+          );
+        }
     });
 
     scrollController.addListener(() async {
@@ -126,34 +132,35 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                          ),
-                          BoxShadow(
-                            color: Colors.white,
-                            spreadRadius: 0.0,
-                            blurRadius: 10.0,
-                          ),
-                        ]),
+                        decoration: BoxDecoration(
+                          color: ColorConstants.scaffoldBg,
+                          boxShadow: [
+                             BoxShadow(
+                               offset: Offset(0,0),
+                              color: ColorConstants.blackColor.withOpacity(0.1),
+                               spreadRadius: 2.0,
+                              blurRadius: 2.0,
+                            ),
+
+                          ],
+                        ),
                         child: Wrap(
                           children:
                               List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                             final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
+                            int topicIndex = filterProviderWatch.allTopic.indexWhere((element) => element.id == data?.id);
                             return OnScaleTap(
-                              onPress: () {
-                                filterProviderRead.setSelectionBoolValueOfChild(topic: CategoryIdNameCommonModel(
-                                  id: filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].id,
-                                  name: filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].name,
-                                  isCategorySelected: true
-                                ));
-                              },
+                              onPress: () {},
                               child: ShadowContainer(
-                                shadowColor: ColorConstants.disableColor,
-                                backgroundColor: data?.isSelected ?? false ? ColorConstants.primaryColor : null,
+                                shadowColor: (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false)) ? ColorConstants.primaryColor
+                                    : ColorConstants.blackColor.withOpacity(0.1),
+                                backgroundColor: ColorConstants.whiteColor,
+                                isShadow: true,
+                                spreadRadius: 1,
+                                blurRadius: 2,
                                 margin: EdgeInsets.only(bottom: 10, right: 10),
                                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                offset: Offset(0, 3),
+                               // offset: Offset(0, 3),
                                 child: BodyMediumText(
                                   title: data?.name ?? '',
                                   fontFamily: FontWeightEnum.w500.toInter,
@@ -198,8 +205,6 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       prefixIcon: ImageConstants.filter,
                       prefixIconPadding: 10,
                     ).addPaddingX(20),
-                    20.0.spaceY,
-                    SortExpertDropDown(),
                     if(filterProviderWatch.commonSelectionModel.isNotEmpty)...[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
