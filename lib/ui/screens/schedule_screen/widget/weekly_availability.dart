@@ -6,6 +6,8 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 
+import '../../../common/shimmer_widgets/slots_shimmer_widget.dart';
+
 class WeeklyAvailability extends ConsumerStatefulWidget {
   const WeeklyAvailability({super.key});
 
@@ -57,7 +59,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         10.0.spaceY,
         BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} ${scheduleProviderWatch.callDuration} ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
         23.0.spaceY,
-        generateSlotTime(),
+        generateSlotTime(scheduleProviderWatch),
         11.0.spaceY,
         PrimaryButton(
           height: 55,
@@ -139,7 +141,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
     );
   }
 
-  Widget generateSlotTime() {
+  Widget generateSlotTime(ScheduleCallProvider scheduleCallProvider) {
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -163,41 +165,48 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         ),
         SizedBox(
           height: 90,
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: 5,
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            itemBuilder: (BuildContext context, int index) => timeContainer(),
-            separatorBuilder: (BuildContext context, int index) => 20.0.spaceX,
-          ),
+          child: scheduleCallProvider.isLoadingSlot
+              ? SlotsShimmer()
+              : scheduleCallProvider.slotList.isNotEmpty
+                  ? ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: 5,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.25),
+                              ),
+                              BoxShadow(
+                                color: ColorConstants.buttonColor,
+                                spreadRadius: 0.0,
+                                blurRadius: 4.0,
+                                offset: Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          child: TitleSmallText(
+                            title: '10:30AM',
+                            fontSize: 15,
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) => 20.0.spaceX,
+                    )
+                  : Center(
+                    child: BodyMediumText(
+                        title: 'No slots available',
+                        titleColor: ColorConstants.primaryColor,
+                      ),
+                  ),
         )
       ],
-    );
-  }
-
-  Widget timeContainer() {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 50),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.25),
-          ),
-          BoxShadow(
-            color: ColorConstants.buttonColor,
-            spreadRadius: 0.0,
-            blurRadius: 4.0,
-            offset: Offset(2, 2),
-          ),
-        ],
-      ),
-      child: TitleSmallText(
-        title: '10:30AM',
-        fontSize: 15,
-      ),
     );
   }
 }

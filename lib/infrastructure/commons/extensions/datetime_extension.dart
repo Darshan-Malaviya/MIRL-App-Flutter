@@ -43,7 +43,7 @@ extension DateTimeFormatter on String {
   /// 10:10 AM
   String to12HourTimeFormat() {
     try {
-      DateTime timeStamp = DateTime.parse(this);
+      DateTime timeStamp = DateTime.parse(this).toLocal();
       var output = DateFormat('hh:mm a').format(timeStamp);
       return output;
     } catch (e) {
