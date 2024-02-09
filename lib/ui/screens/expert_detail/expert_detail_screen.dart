@@ -4,7 +4,7 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
-import 'package:mirl/ui/screens/expert_detail/widget/button_widget.dart';
+import 'package:mirl/ui/screens/expert_detail/widget/request_call_button_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/certifications_and_experience_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/droup_down_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_rating_widget.dart';
@@ -83,7 +83,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
     );
   }
 
-  Widget bottomSheetView({required ScrollController controller})  {
+  Widget bottomSheetView({required ScrollController controller}) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
 
     return Container(
@@ -168,6 +168,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ExpertDetailsButtonWidget(
               title: StringConstants.requestCallNow,
               buttonColor: ColorConstants.requestCallNowColor,
+              onTap: () {
+                context.toPushNamed(RoutesConstants.videoCallScreen);
+              },
             ),
             24.0.spaceY,
             PrimaryButton(

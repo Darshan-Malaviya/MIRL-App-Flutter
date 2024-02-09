@@ -32,6 +32,11 @@ class ImageConstants {
   static const dislike = '${imagePath}dislike.png';
   static const cancel = '${imagePath}cancel.png';
   static const purpleLine = '${imagePath}purple_line.png';
+  static const callCut = '${imagePath}call_cut.png';
+  static const cameraON = '${imagePath}camera_on.png';
+  static const videoOff = '${imagePath}video_off.png';
+  static const voiceOff = '${imagePath}voice_off.png';
+  static const videoCall = '${imagePath}video_call.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';

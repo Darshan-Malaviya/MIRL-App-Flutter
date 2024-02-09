@@ -35,4 +35,5 @@ class RoutesConstants {
   static const String reportUserScreen = '/reportUserScreen';
   static const String thanksScreen = '/thanksScreen';
   static const String reportExpertScreen = '/reportExpertScreen';
+  static const String videoCallScreen = '/videoCallScreen';
 }

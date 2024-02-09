@@ -4,7 +4,9 @@ import 'package:mirl/ui/screens/expert_call_history_screen/expert_call_history_s
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
+import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
+import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
 class DashboardProvider extends ChangeNotifier {
   String _pageTitle = StringConstants.home;
@@ -25,11 +27,11 @@ class DashboardProvider extends ChangeNotifier {
       children: const <Widget>[
         HomeScreen(),
         ExploreScreen(),
-        ExpertCallHistoryScreen(),
-        //NotificationScreen(),
+        //ExpertCallHistoryScreen(),
+        NotificationScreen(),
         ExpertProfileScreen(),
-        //UserSettingScreen(),
-        BlockUserScreen()
+        UserSettingScreen(),
+        //BlockUserScreen()
       ],
     );
   }

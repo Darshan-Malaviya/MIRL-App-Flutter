@@ -4,7 +4,9 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class ThanksWidget extends ConsumerStatefulWidget {
-  const ThanksWidget({super.key});
+  final String reportName;
+
+  const ThanksWidget({super.key, this.reportName = 'BACK'});
 
   @override
   ConsumerState<ThanksWidget> createState() => _ThanksWidgetState();

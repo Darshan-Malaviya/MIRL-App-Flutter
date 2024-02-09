@@ -36,6 +36,7 @@ import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
+import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
 ///use this service for provide global context to widgets
 class NavigationService {
@@ -129,6 +130,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
         case RoutesConstants.reportExpertScreen:
         return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
+        case RoutesConstants.videoCallScreen:
+        return MaterialPageRoute(builder: (_) => const VideoCallScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
