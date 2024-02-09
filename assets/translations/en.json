@@ -102,7 +102,6 @@
   "multiConnectReceiver": "You’ll be notified in two minutes\nif you’ve been chosen over everyone else.",
   "instantCallReceiver": "Your video call will start in about two minutes \nas soon as the user completes your payment.",
   "thereAreNoAvailableTopics": "There are no available topics!",
-  "filterExperts": "FILTER EXPERTS",
   "multiConnectScreenDesc": "Steps: Pick multiple Experts from any category \nand we’ll send a Multiple Connect request to ALL of them.\n \nYou can then handpick one Expert of your liking \nand start the call in under 2 minutes!",
   "confirmMultiCall": "PLEASE CONFIRM THE  EXPERTS TO START \nTHE MULTIPLE CONNECT REQUEST",
   "confirm": "CONFIRM",
@@ -139,4 +138,22 @@
   "signOut": "SIGN OUT",
   "userProfileAndSetting": "USER PROFILE & SETTINGS"
 
+  "filterExperts": "FILTER EXPERTS",
+  "expertCallHistory": "EXPERT CALL HISTORY",
+  "blockedUser": "Block User?",
+  "contactingUser": "Do you want to block this user from contacting you again?",
+  "notified": "(the user will not be notified)",
+  "temporaryBlock": "TEMPORARY BLOCK",
+  "permanentBlock": "PERMANENT BLOCK",
+  "timePeriod": "Block this user from contacting me for a period of 24 hours",
+  "permanentlyBlock": "Block this user from contacting me permanently",
+  "reportUser": "REPORT USER",
+  "blockedUsers": "VIEW YOUR BLOCKED USERS LIST HERE",
+  "blockedUserList": "BLOCKED USERS LIST",
+  "reportThisUser": "REPORT THIS USER",
+  "appropriate": "Would you like to report this User? Please select the appropriate response from the list below.",
+  "thanks": "Thanks for letting us know!",
+  "bringing": "Thank you for bringing this to our attention.",
+  "maintaining": "We are committed to maintaining a high standard of service on our platform. To ensure this, we will carefully review the reported user’s activity on the app, consider feedback from other Experts, and make an informed decision regarding the user’s future on our platform shortly.",
+  "back": "BACK"
 }

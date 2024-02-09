@@ -43,7 +43,12 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
         ),
-        trailingIcon: InkWell(onTap: () {}, child: Icon(Icons.more_horiz)).addPaddingRight(14),
+        trailingIcon: InkWell(
+                onTap: () {
+                  context.toPushNamed(RoutesConstants.reportExpertScreen);
+                },
+                child: Icon(Icons.more_horiz))
+            .addPaddingRight(14),
       ),
       body: Stack(
         children: [
@@ -66,9 +71,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
           ).addAllPadding(15),
           DraggableScrollableSheet(
-            initialChildSize: 0.45,
-            minChildSize: 0.45,
-            maxChildSize: 0.86,
+            initialChildSize: 0.50,
+            minChildSize: 0.50,
+            maxChildSize: 0.90,
             builder: (BuildContext context, myScrollController) {
               return bottomSheetView(controller: myScrollController);
             },
@@ -78,7 +83,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
     );
   }
 
-  Widget bottomSheetView({required ScrollController controller}) {
+  Widget bottomSheetView({required ScrollController controller})  {
     final expertDetailWatch = ref.watch(expertDetailProvider);
 
     return Container(

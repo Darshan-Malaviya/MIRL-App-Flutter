@@ -1,6 +1,9 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/auth_screen/login_screen.dart';
 import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
+import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
+import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
+import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/add_your_areas_of_expertise_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/certifications_and_experience_screen.dart';
@@ -17,6 +20,7 @@ import 'package:mirl/ui/screens/edit_profile/your_mirl_id_update_screen.dart';
 import 'package:mirl/ui/screens/expert_category_screen/expert_category_screen.dart';
 import 'package:mirl/ui/screens/expert_category_screen/selected_category_screen.dart';
 import 'package:mirl/ui/screens/expert_detail/expert_detail_screen.dart';
+import 'package:mirl/ui/screens/expert_detail/report_expert_screen.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
 import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
@@ -117,6 +121,14 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const CanceledAppointmentScreen());
       case RoutesConstants.canceledAppointmentOptionScreen:
         return MaterialPageRoute(builder: (_) => const CanceledAppointmentOptionScreen());
+        case RoutesConstants.blockUserListScreen:
+        return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
+        case RoutesConstants.reportUserScreen:
+        return MaterialPageRoute(builder: (_) => const ReportUserScreen());
+        case RoutesConstants.thanksScreen:
+        return MaterialPageRoute(builder: (_) => const ThanksScreen());
+        case RoutesConstants.reportExpertScreen:
+        return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
