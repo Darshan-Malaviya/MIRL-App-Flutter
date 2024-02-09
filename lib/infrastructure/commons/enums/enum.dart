@@ -14,3 +14,6 @@ abstract class LoginType {
   static const apple = 2;
   static const facebook = 3;
 }
+
+enum CallHistoryEnum { InstantCall, MultipleConnect, Appointment }
+

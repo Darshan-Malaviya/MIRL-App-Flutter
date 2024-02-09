@@ -3,14 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class ReportExpertUserWidget extends ConsumerStatefulWidget {
-  const ReportExpertUserWidget({super.key});
+class ReportUserWidget extends ConsumerStatefulWidget {
+  final String reportName;
+
+  const ReportUserWidget({super.key, this.reportName = 'REPORT THIS USER'});
 
   @override
-  ConsumerState<ReportExpertUserWidget> createState() => _ReportExpertUserWidgetState();
+  ConsumerState<ReportUserWidget> createState() => _ReportUserWidgetState();
 }
 
-class _ReportExpertUserWidgetState extends ConsumerState<ReportExpertUserWidget> {
+class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
   @override
   Widget build(BuildContext context) {
     final reportUserRead = ref.read(reportUserProvider);
@@ -20,7 +22,8 @@ class _ReportExpertUserWidgetState extends ConsumerState<ReportExpertUserWidget>
       children: [
         30.0.spaceY,
         TitleLargeText(
-          title: LocaleKeys.reportThisUser.tr(),
+          // title: LocaleKeys.reportThisUser.tr(),
+          title: widget.reportName,
           titleColor: ColorConstants.bottomTextColor,
           titleTextAlign: TextAlign.center,
         ),

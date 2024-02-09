@@ -82,6 +82,7 @@ class AuthProvider with ChangeNotifier {
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+            SharedPrefHelper.saveAreaOfExpertise(jsonEncode(jsonEncode(loginResponseModel.data?.areaOfExpertise)));
             SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
             SharedPrefHelper.saveAuthToken(loginResponseModel.token);
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
@@ -180,6 +181,7 @@ class AuthProvider with ChangeNotifier {
           Logger().d("Login data======${loginResponseModel.toJson()}");
           timer?.cancel();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+          SharedPrefHelper.saveAreaOfExpertise(jsonEncode(jsonEncode(loginResponseModel.data?.areaOfExpertise)));
           SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
           SharedPrefHelper.saveAuthToken(loginResponseModel.token);
           NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);

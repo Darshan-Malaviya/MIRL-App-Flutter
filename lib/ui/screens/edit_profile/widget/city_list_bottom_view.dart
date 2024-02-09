@@ -63,7 +63,7 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
             onFieldSubmitted: (value) {
               context.unFocusKeyboard();
               commonRead.clearCityPaginationData();
-              commonRead.cityListApiCall(searchName: value, id: widget.countryId);
+              commonRead.cityListApiCall(searchName: value.trim(), id: widget.countryId);
             },
             height: 40,
             controller: widget.searchController,

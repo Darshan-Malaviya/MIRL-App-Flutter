@@ -5,6 +5,7 @@ class StorageConstants {
   static const String searchHistory = 'search_history';
   static const String userData = 'user_data';
   static const String userId = 'id';
+  static const String areaOfExpertise = 'area_of_expertise';
 
 
 }
