@@ -6,13 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
+import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
 
 class SelectedCategoryScreen extends ConsumerStatefulWidget {
-  final String categoryId;
+  final SelectedCategoryArgument args;
 
-  const SelectedCategoryScreen({super.key, required this.categoryId});
+  const SelectedCategoryScreen({super.key, required this.args});
 
   @override
   ConsumerState createState() => _SelectedCategoryScreenState();
@@ -26,15 +27,15 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(filterProvider).clearSingleCategoryData();
       await ref.read(filterProvider).getSingleCategoryApiCall(
-          categoryId: widget.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId), context: context
+          categoryId: widget.args.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId), context: context
       );
       ref.read(filterProvider).getSelectedCategory();
         if(ref.watch(filterProvider).allTopic.isEmpty){
           ref.read(filterProvider).clearSearchTopicController();
           ref.read(filterProvider).clearTopicPaginationData();
           ref.read(filterProvider).topicListByCategory(
-            isFullScreenLoader: true,
-            categoryId: widget.categoryId,
+            isFullScreenLoader: false,
+            categoryId: widget.args.categoryId,
           );
         }
     });
@@ -45,7 +46,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
         if (!isLoading) {
           await ref.read(filterProvider).getSingleCategoryApiCall(
             isPaginating: true,
-              categoryId: widget.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId), context: context
+              categoryId: widget.args.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId), context: context
           );
         } else {
           log('reach last page on selected category export data list api');
@@ -219,7 +220,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                   onTap: () {
                                     filterProviderRead.clearAllFilter();
                                     filterProviderRead.getSingleCategoryApiCall(context: context,
-                                        categoryId: widget.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId));
+                                        categoryId: widget.args.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId));
                                     filterProviderRead.getSelectedCategory();
                                   },
                                   child: BodySmallText(
@@ -241,7 +242,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                     OnScaleTap(
                                       onPress: () {
                                         filterProviderRead.removeFilter(index: index, context: context,isFromExploreExpert: false,
-                                        singleCategoryId: widget.categoryId );
+                                        singleCategoryId: widget.args.categoryId );
                                       },
                                       child: ShadowContainer(
                                         border: 20,

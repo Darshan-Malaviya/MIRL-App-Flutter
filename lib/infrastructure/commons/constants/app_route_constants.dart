@@ -17,6 +17,7 @@ import 'package:mirl/ui/screens/edit_profile/set_your_weekly_availability_screen
 import 'package:mirl/ui/screens/edit_profile/your_bank_account_details_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/your_expert_profile_name.dart';
 import 'package:mirl/ui/screens/edit_profile/your_mirl_id_update_screen.dart';
+import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/expert_category_screen.dart';
 import 'package:mirl/ui/screens/expert_category_screen/selected_category_screen.dart';
 import 'package:mirl/ui/screens/expert_detail/expert_detail_screen.dart';
@@ -106,7 +107,7 @@ class RouterConstant {
       case RoutesConstants.exploreExpertScreen:
         return MaterialPageRoute(builder: (_) => const ExploreExpertScreen());
       case RoutesConstants.selectedExpertCategoryScreen:
-        return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(categoryId: settings.arguments as String));
+        return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(args: settings.arguments as SelectedCategoryArgument));
       case RoutesConstants.expertCategoryFilterScreen:
         return MaterialPageRoute(
             builder: (_) => ExpertCategoryFilterScreen(

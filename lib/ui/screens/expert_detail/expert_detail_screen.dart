@@ -86,6 +86,12 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   Widget bottomSheetView({required ScrollController controller}) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
 
+    String? fee;
+    if(expertDetailWatch.userData?.fee!= null){
+      double data = (expertDetailWatch.userData?.fee?.toDouble() ?? 0.0) / 100;
+      fee = data.toStringAsFixed(2);
+    }
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -135,7 +141,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     10.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '\$${(expertDetailWatch.userData?.fee ?? 0 / 100).toString()}',
+                      title: fee != null ? '\$${fee}' :"",
                       titleColor: ColorConstants.overallRatingColor,
                       shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                     ),

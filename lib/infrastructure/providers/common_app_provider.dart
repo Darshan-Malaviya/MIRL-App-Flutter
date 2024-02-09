@@ -13,6 +13,12 @@ class CommonAppProvider extends ChangeNotifier {
   List<CityModel> get city => _city;
   List<CityModel> _city = [];
 
+  bool get isSearchCityBottomSheetLoading => _isSearchCityBottomSheetLoading;
+  bool _isSearchCityBottomSheetLoading = false;
+
+  bool get isSearchCountryBottomSheetLoading => _isSearchCountryBottomSheetLoading;
+  bool _isSearchCountryBottomSheetLoading = false;
+
   bool get reachedCityLastPage => _reachedCityLastPage;
   bool _reachedCityLastPage = false;
 
@@ -28,12 +34,18 @@ class CommonAppProvider extends ChangeNotifier {
   Future<void> CountryListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
+    } else {
+      _isSearchCountryBottomSheetLoading = true;
+      notifyListeners();
     }
 
     ApiHttpResult response =
         await _updateUserDetailsRepository.countryApiCall(limit: 30, page: _pageNo, searchName: searchName);
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
+    } else {
+      _isSearchCountryBottomSheetLoading = false;
+      notifyListeners();
     }
     switch (response.status) {
       case APIStatus.success:
@@ -60,11 +72,17 @@ class CommonAppProvider extends ChangeNotifier {
   Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName, required String id}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
+    } else {
+      _isSearchCityBottomSheetLoading = true;
+      notifyListeners();
     }
     ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
         limit: 30, page: _cityPageNo, countryId: id, searchName: searchName);
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
+    } else {
+      _isSearchCityBottomSheetLoading = false;
+      notifyListeners();
     }
     switch (response.status) {
       case APIStatus.success:

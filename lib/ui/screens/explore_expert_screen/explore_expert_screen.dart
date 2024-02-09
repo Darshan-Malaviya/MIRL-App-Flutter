@@ -87,7 +87,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                       onChanged: (value) {
                         if (filterProviderWatch.exploreExpertController.text.isNotEmpty) {
                           filterProviderRead.clearExploreExpertSearchData();
-                          filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
+                          filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context,);
                         }
                       },
                       textInputAction: TextInputAction.done,

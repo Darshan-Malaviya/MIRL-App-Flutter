@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 
 class CategoryNameAndImageListView extends ConsumerStatefulWidget {
   const CategoryNameAndImageListView({super.key});
@@ -30,7 +31,8 @@ class _CategoryNameAndImageListViewState extends ConsumerState<CategoryNameAndIm
                     InkWell(
                       onTap: () {
                         context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                            args: filterProviderWatch.categoryList?.category?[index].id.toString());
+                            args: SelectedCategoryArgument(
+                                categoryId: filterProviderWatch.categoryList?.category?[index].id.toString() ?? '', isFromExploreExpert: true));
                       },
                       child: ShadowContainer(
                         shadowColor: ColorConstants.blackColor.withOpacity(0.1),
