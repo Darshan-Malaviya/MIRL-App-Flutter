@@ -63,4 +63,5 @@ class ApiConstants {
   static const String homepageSearch = '/homePage/search/';
   static const String allCategoryList = '/category/list/all';
   static const String topicByCategory = '/topic/list/all';
+  static const String timeSlots = '/timeSlots';
 }

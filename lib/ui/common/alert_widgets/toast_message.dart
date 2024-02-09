@@ -50,7 +50,7 @@ class FlutterToast {
       ),
     );
 
-    fToast.showToast(child: toast, toastDuration: const Duration(seconds: 2), gravity: ToastGravity.TOP);
+    fToast.showToast(child: toast, toastDuration: const Duration(seconds: 2), gravity: ToastGravity.BOTTOM);
   }
 
   cancelToast() {

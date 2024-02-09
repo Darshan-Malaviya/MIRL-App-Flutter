@@ -1,5 +1,7 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
+import '../../../ui/common/range_slider/thumb_shape.dart';
+
 class AppTheme {
   static ThemeData setTheme(BuildContext context) {
     return ThemeData(
@@ -17,7 +19,10 @@ class AppTheme {
           selectionColor: ColorConstants.primaryColor.withOpacity(0.4),
           selectionHandleColor: ColorConstants.primaryColor,
         ),
-        sliderTheme: SliderThemeData(trackHeight: 10),
+        sliderTheme: SliderThemeData(
+          trackHeight: 10,
+          rangeTrackShape: RectangularRangeSliderTrackShape(),
+        ),
         menuTheme: MenuThemeData(
           style: MenuStyle(
             backgroundColor: MaterialStateProperty.all(ColorConstants.whiteColor),

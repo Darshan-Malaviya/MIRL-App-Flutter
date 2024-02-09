@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
+import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
@@ -25,7 +26,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
   void initState() {
    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
      if(widget.args.fromExploreExpert ?? false) {
-       ref.read(filterProvider).setOtherCategoryValueFalse();
+       ref.read(commonAppProvider).setOtherCategoryValueFalse();
      } else {
        ref.read(filterProvider).getSelectedCategory();
      }
@@ -34,6 +35,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
   }
   @override
   Widget build(BuildContext context) {
+    final commonProviderWatch = ref.watch(commonAppProvider);
     final filterWatch = ref.watch(filterProvider);
     final filterRead = ref.read(filterProvider);
 
@@ -88,7 +90,6 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               } else {
                 FlutterToast().showToast(msg: "Please select category first");
               }
-
             }, StringConstants.pickTopicFromTheAbove),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.instantCallAvailabilityController, context, () {
@@ -166,14 +167,17 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               title: StringConstants.feeRange,
               titleColor: ColorConstants.bottomTextColor,
             ),
-            RangeSlider(
-              values: RangeValues(filterWatch.start, filterWatch.end),
-              activeColor: ColorConstants.yellowButtonColor,
-              inactiveColor: ColorConstants.lineColor,
-              divisions: 25,
-              onChanged: filterRead.setRange,
-              min: 0,
-              max: 100,
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(rangeThumbShape:  RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
+              child: RangeSlider(
+                values: RangeValues(filterWatch.start, filterWatch.end),
+                activeColor: ColorConstants.yellowButtonColor,
+                inactiveColor: ColorConstants.lineColor,
+                divisions: 25,
+                onChanged: filterRead.setRange,
+                min: 0,
+                max: 100,
+              ),
             ),
           ],
         ).addPaddingX(20),
@@ -249,6 +253,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
       labelText: labelText,
       labelColor: ColorConstants.bottomTextColor,
       enabledBorderColor: ColorConstants.dropDownBorderColor,
+      labelTextFontFamily: FontWeightEnum.w700.toInter,
       textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       suffixIcon: Icon(
         size: 18,

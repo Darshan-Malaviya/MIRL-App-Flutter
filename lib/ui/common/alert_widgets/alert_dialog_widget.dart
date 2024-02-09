@@ -44,6 +44,7 @@ class CommonAlertDialog {
     double? width,
     bool? barrierDismissible,
     double? borderRadius,
+    EdgeInsets? insetPadding,
   }) {
     return showDialog(
         context: context,
@@ -52,7 +53,7 @@ class CommonAlertDialog {
         builder: (BuildContext context) {
           return ZoomInAnimation(
             child: Dialog(
-              insetPadding: EdgeInsets.symmetric(horizontal: 50),
+              insetPadding: insetPadding ?? EdgeInsets.symmetric(horizontal: 45),
               backgroundColor: ColorConstants.transparentColor,
               elevation: 0,
               child: child,

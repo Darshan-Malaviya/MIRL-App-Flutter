@@ -104,13 +104,13 @@ class EditExpertProvider extends ChangeNotifier {
 
   int get tabIndex => _tabIndex;
 
-  String _enteredText = '';
+  String _enteredText = '0';
 
   String get enteredText => _enteredText;
 
   String expertName = '';
   String mirlId = '';
-  String aboute = '';
+  String about = '';
 
   void generateExperienceList({required bool fromInit}) {
     if (fromInit && (_userData?.certification?.isNotEmpty ?? false)) {
@@ -172,13 +172,15 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeSelectedScreenButtonColor(BuildContext context, int index) {
-    _editButtonList.forEach((element) {
-      element.isSelected = false;
-    });
-    _editButtonList[index].isSelected = !(_editButtonList[index].isSelected ?? false);
-    context.toPushNamed(editButtonList[index].screenName ?? '', args: index == 2 ? _tabIndex : null);
-    notifyListeners();
+  void redirectSelectedButton(BuildContext context, int index) {
+    if (index == 2) {
+      _tabIndex = (_userData?.expertAvailability?.isNotEmpty ?? false)
+          ? (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1'
+              ? 0
+              : 1
+          : 0;
+    }
+    context.toPushNamed(_editButtonList[index].screenName ?? '', args: index == 2 ? _tabIndex : null);
   }
 
   void changeWeekAvailability(int index) {
@@ -202,6 +204,7 @@ class EditExpertProvider extends ChangeNotifier {
         isAvailable: element.isAvailable ? 1 : 0,
       ));
     });
+    print('workList=======${workDaysList.toList()}');
     notifyListeners();
   }
 
@@ -239,11 +242,6 @@ class EditExpertProvider extends ChangeNotifier {
     String value = SharedPrefHelper.getUserData;
     if (value.isNotEmpty) {
       _userData = UserData.fromJson(jsonDecode(value));
-      _tabIndex = (_userData?.expertAvailability?.isNotEmpty ?? false)
-          ? (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1'
-              ? 0
-              : 1
-          : 0;
 
       expertNameController.text = _userData?.expertName ?? '';
       expertName = _userData?.expertName ?? '';
@@ -251,20 +249,49 @@ class EditExpertProvider extends ChangeNotifier {
       mirlIdController.text = _userData?.mirlId ?? '';
       mirlId = _userData?.mirlId ?? '';
       aboutMeController.text = _userData?.about ?? '';
-      aboute = _userData?.about ?? '';
-      _enteredText = _userData?.about?.length.toString() ?? '';
+      about = _userData?.about ?? '';
+      _enteredText = _userData?.about?.length.toString() ?? '0';
       countryNameController.text = _userData?.country ?? '';
       cityNameController.text = _userData?.city ?? '';
-      countController.text = _userData?.fee != null ? ((_userData?.fee ?? 0) / 100).toString() : '0';
+      if (_userData?.fee != null) {
+        countController.text = ((_userData?.fee ?? 0) / 100).toString();
+        _editButtonList[0].isSelected = true;
+      } else {
+        _editButtonList[0].isSelected = false;
+      }
       if (_userData?.instantCallAvailable != null) {
         instantCallAvailabilityController.text = _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
+        _editButtonList[3].isSelected = true;
+      } else {
+        _editButtonList[3].isSelected = false;
       }
       if (_userData?.isLocationVisible != null) {
         locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
+        _editButtonList[4].isSelected = true;
+      } else {
+        _editButtonList[4].isSelected = false;
       }
       if (_userData?.gender != null) {
         CommonSelectionModel genderModel = _genderList.firstWhere((element) => element.selectType == _userData?.gender);
         genderController.text = genderModel.title ?? '';
+        _editButtonList[5].isSelected = true;
+      } else {
+        _editButtonList[5].isSelected = false;
+      }
+      if (_userData?.areaOfExpertise?.isNotEmpty ?? false) {
+        _editButtonList[1].isSelected = true;
+      } else {
+        _editButtonList[1].isSelected = false;
+      }
+      if (_userData?.certification?.isNotEmpty ?? false) {
+        _editButtonList[6].isSelected = true;
+      } else {
+        _editButtonList[6].isSelected = false;
+      }
+      if (_userData?.expertAvailability?.isNotEmpty ?? false) {
+        _editButtonList[2].isSelected = true;
+      } else {
+        _editButtonList[2].isSelected = false;
       }
       notifyListeners();
     }
@@ -284,6 +311,11 @@ class EditExpertProvider extends ChangeNotifier {
           WeekAvailabilityResponseModel responseModel = response.data;
           _userData?.expertAvailability?.clear();
           _userData?.expertAvailability?.addAll(responseModel.data ?? []);
+          if (responseModel.data?.isEmpty ?? false) {
+            _editButtonList[2].isSelected = false;
+          } else {
+            _editButtonList[2].isSelected = true;
+          }
           SharedPrefHelper.saveUserData(jsonEncode(_userData));
           notifyListeners();
           context.toPop();
@@ -312,6 +344,7 @@ class EditExpertProvider extends ChangeNotifier {
           CertificateResponseModel responseModel = response.data;
           _userData?.certification?.clear();
           _userData?.certification?.addAll(responseModel.data ?? []);
+          _editButtonList[6].isSelected = true;
           SharedPrefHelper.saveUserData(jsonEncode(_userData));
           _certiAndExpModel.clear();
           certificationList.clear();
@@ -507,10 +540,10 @@ class EditExpertProvider extends ChangeNotifier {
 
   void resetVariable() {
     countController.text = '0';
-    _enteredText = '';
+    _enteredText = '0';
     expertName = '';
     mirlId = '';
-    aboute = '';
+    about = '';
     expertNameController.clear();
     mirlIdController.clear();
     aboutMeController.clear();

@@ -53,15 +53,11 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
       oneSec,
       (Timer timer) {
         if (bgCallEndTrigger.value == 0) {
-          setState(() {
             timer.cancel();
             _timer?.cancel();
             bgCallEndTrigger.value = 20;
-          });
         } else {
-          setState(() {
             bgCallEndTrigger.value--;
-          });
         }
       },
     );
@@ -96,10 +92,9 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
               borderRadius: BorderRadius.circular(RadiusConstant.alertdialogRadius),
               color: ColorConstants.yellowButtonColor,
               boxShadow: [BoxShadow(offset: Offset(0, 6), color: ColorConstants.borderColor.withOpacity(0.5), spreadRadius: 1, blurRadius: 2)]),
-          width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              32.0.spaceY,
+              20.0.spaceY,
               BodySmallText(
                 title: widget.desc,
                 titleColor: ColorConstants.textColor,
@@ -134,20 +129,20 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                   ],
                 ).addPaddingXY(paddingX: 16, paddingY: 16),
               ),
-              32.0.spaceY,
+              20.0.spaceY,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton(
                     title: widget.secondBtnTile,
-                    width: MediaQuery.sizeOf(context).width * 0.3,
+                    width: 130,
                     onPressed: widget.onSecondBtnTap ?? () => Navigator.pop(context),
                     buttonColor: widget.secondBtnColor ?? ColorConstants.primaryColor,
                     titleColor: ColorConstants.textColor,
                   ).addVisibility(widget.secondBtnTile.isNotEmpty),
                   16.0.spaceX,
                   PrimaryButton(
-                    width: MediaQuery.sizeOf(context).width * 0.3,
+                    width: 130,
                     title: widget.firstBTnTitle,
                     onPressed: widget.onFirstBtnTap,
                     buttonColor: ColorConstants.primaryColor,
@@ -167,12 +162,13 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
           child: TitleSmallText(
             title: LocaleKeys.viewOtherExpert.tr(),
             fontFamily: FontWeightEnum.w400.toInter,
+            titleTextAlign: TextAlign.center,
             titleColor: ColorConstants.textColor,
           ),
         ),
         20.0.spaceY,
         Visibility(
-          visible:  widget.callTypeEnum == CallType.receiverRequested.name || widget.callTypeEnum == CallType.multiConnectReceiverRequested.name,
+          visible: widget.callTypeEnum == CallType.receiverRequested.name || widget.callTypeEnum == CallType.multiConnectReceiverRequested.name,
           replacement: SizedBox.shrink(),
           child: Align(
             alignment: Alignment.bottomRight,
