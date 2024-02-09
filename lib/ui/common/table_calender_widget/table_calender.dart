@@ -4,10 +4,15 @@ import 'package:mirl/ui/common/table_calender_widget/table_border.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day);
+final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
 
 class TableCalenderRangeWidget extends StatefulWidget {
+  final Function(DateTime selectedDay, DateTime focusedDay) onDateSelected;
+  final DateTime? selectedDay;
+
+  TableCalenderRangeWidget({super.key, required this.onDateSelected, required this.selectedDay});
+
   @override
   _TableCalenderRangeWidgetState createState() => _TableCalenderRangeWidgetState();
 }
@@ -16,7 +21,8 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+
+  // DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
@@ -24,16 +30,16 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
   Widget build(BuildContext context) {
     return TableCalendar(
       firstDay: kFirstDay,
-      lastDay: kLastDay,
+      lastDay: kToday.add(Duration(days: 30)),
       focusedDay: _focusedDay,
-      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+      selectedDayPredicate: (day) => isSameDay(widget.selectedDay, day),
       rangeStartDay: _rangeStart,
       rangeEndDay: _rangeEnd,
       availableGestures: AvailableGestures.horizontalSwipe,
       calendarStyle: CalendarStyle(
         tableBorder: TableBorderDecoration(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-       ),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        ),
         outsideDecoration: BoxDecoration(
           borderRadius: BorderRadius.only(topRight: Radius.circular(25), topLeft: Radius.circular(25)),
         ),
@@ -82,7 +88,6 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                   child: Center(
                     child: BodyMediumText(
                       title: DateFormat.MMMM().format(DateTime(day.year, day.month - 1, day.day)),
-                      fontFamily: FontWeightEnum.w700.toInter,
                       titleColor: ColorConstants.buttonTextColor,
                     ),
                   ),
@@ -100,7 +105,6 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                 child: Center(
                   child: BodyMediumText(
                     title: DateFormat.MMMM().format(day),
-                    fontFamily: FontWeightEnum.w700.toInter,
                     titleColor: ColorConstants.buttonTextColor,
                   ),
                 ),
@@ -117,7 +121,6 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                   child: Center(
                     child: BodyMediumText(
                       title: DateFormat.MMMM().format(DateTime(day.year, day.month + 1, day.day)),
-                      fontFamily: FontWeightEnum.w700.toInter,
                       titleColor: ColorConstants.buttonTextColor,
                     ),
                   ),
@@ -134,20 +137,35 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
               decoration: BoxDecoration(
                 color: ColorConstants.yellowButtonColor,
                 shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 8)],
+                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
               ),
               child: Center(
                 child: BodyMediumText(
                   title: day.day.toString(),
                   titleColor: ColorConstants.buttonTextColor,
-                  fontFamily: FontWeightEnum.w700.toInter,
                 ),
               ),
             ),
           );
         },
-        disabledBuilder: (context, day, focusedDay) {
-          return Container();
+        todayBuilder: (context, day, focusedDay) {
+          return Center(
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                color: ColorConstants.primaryColor.withOpacity(0.5),
+                shape: BoxShape.circle,
+                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
+              ),
+              child: Center(
+                child: BodyMediumText(
+                  title: day.day.toString(),
+                  titleColor: ColorConstants.buttonTextColor,
+                ),
+              ),
+            ),
+          );
         },
       ),
       calendarFormat: _calendarFormat,
@@ -158,7 +176,8 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         weekdayStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
         weekendStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
       ),
-      onDaySelected: (selectedDay, focusedDay) {
+      onDaySelected: widget
+          .onDateSelected /*(selectedDay, focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {
           setState(() {
             _selectedDay = selectedDay;
@@ -168,10 +187,11 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
             _rangeSelectionMode = RangeSelectionMode.toggledOff;
           });
         }
-      },
+      }*/
+      ,
       onRangeSelected: (start, end, focusedDay) {
         setState(() {
-          _selectedDay = null;
+          // widget.selectedDay = null;
           _focusedDay = focusedDay;
           _rangeStart = start;
           _rangeEnd = end;
@@ -198,7 +218,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         borderRadius: borderRadius,
         color: ColorConstants.primaryColor.withOpacity(0.5),
       ),
-      child: Center(child: BodyMediumText(title: day.day.toString(), fontFamily: FontWeightEnum.w700.toInter, titleColor: ColorConstants.buttonTextColor)),
+      child: Center(child: BodyMediumText(title: day.day.toString(), titleColor: ColorConstants.buttonTextColor)),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/ui/common/table_calender_widget/tabel_calender.dart';
+import 'package:mirl/ui/common/table_calender_widget/table_calender.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
@@ -17,6 +17,8 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
   @override
   Widget build(BuildContext context) {
     final scheduleProviderWatch = ref.watch(scheduleCallProvider);
+    final scheduleProviderRead = ref.read(scheduleCallProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +40,12 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
           titleColor: ColorConstants.bottomTextColor,
         ),
         22.0.spaceY,
-        TableCalenderRangeWidget(),
+        TableCalenderRangeWidget(
+          onDateSelected: (selectedDay, focusedDay) {
+            scheduleProviderRead.getSelectedDate(selectedDay);
+          },
+          selectedDay: scheduleProviderWatch.selectedDate,
+        ),
         22.0.spaceY,
         BodyMediumText(
           title: LocaleKeys.durationOfAppointment.tr(),
@@ -53,8 +60,9 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         generateSlotTime(),
         11.0.spaceY,
         PrimaryButton(
+          height: 55,
           title: LocaleKeys.scheduleAppointment.tr(),
-          onPressed: () {},
+          onPressed: () => context.toPushNamed(RoutesConstants.scheduleAppointmentScreen),
           fontSize: 15,
           titleColor: ColorConstants.blueColor,
         ).addPaddingXY(paddingX: 29, paddingY: 12),
@@ -94,15 +102,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
               border: Border.all(color: ColorConstants.dropDownBorderColor),
             ),
             child: Center(
-              child: BodySmallText(
-                title: dayTimeText,
-                shadows: [
-                  Shadow(
-                    blurRadius: 8.0,
-                    color: ColorConstants.greyColor,
-                  )
-                ],
-              ),
+              child: BodySmallText(title: dayTimeText, fontFamily: FontWeightEnum.w600.toInter),
             )),
       ],
     );
@@ -114,12 +114,12 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
       children: [
         FeesActionButtonWidget(
           onTap: () {
-            scheduleCallProvider.incrementCallDuration();
+            scheduleCallProvider.decrementCallDuration();
           },
-          icons: Icons.add,
-          isDisable: scheduleCallProvider.callDuration == 30,
+          icons: ImageConstants.minus,
+          isDisable: scheduleCallProvider.callDuration == 10,
         ),
-        19.0.spaceX,
+        20.0.spaceX,
         PrimaryButton(
           height: 45,
           width: 148,
@@ -127,13 +127,13 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
           onPressed: () {},
           buttonColor: ColorConstants.buttonColor,
         ),
-        19.0.spaceX,
+        20.0.spaceX,
         FeesActionButtonWidget(
           onTap: () {
-            scheduleCallProvider.decrementCallDuration();
+            scheduleCallProvider.incrementCallDuration();
           },
-          icons: Icons.remove,
-          isDisable: scheduleCallProvider.callDuration == 10,
+          icons: ImageConstants.plus,
+          isDisable: scheduleCallProvider.callDuration == 30,
         ),
       ],
     );

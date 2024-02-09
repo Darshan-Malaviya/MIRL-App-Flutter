@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 /// convert date and time form timestamp
@@ -54,11 +55,8 @@ extension DateTimeFormatter on String {
   /// UTC time format
   String toUTCDateTimeFormat() {
     try {
-      DateTime value = DateTime.now();
       int intValue = int.parse(this);
       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue, isUtc: true);
-      // String output = dateTime.toString().split(' ').last.split('.').first;
-      // var output = DateFormat("hh:mm a").format(value.add(Duration(hours: dateTime.hour,minutes: dateTime.minute)));
       return dateTime.toString();
     } catch (e) {
       Logger().d("Exception occurred on toUTCDateTimeFormat : $e");
@@ -84,8 +82,12 @@ extension DateTimeFormatter on String {
   DateTime? toLocaleFromUtc() {
     try {
       DateTime now = DateTime.now();
-      DateTime localTime = DateTime.parse(this).toLocal();
+      DateTime localTime = DateFormat('HH:mm:ss').parse(this,true).toLocal();
+      debugPrint('localTime=====================${localTime}');
+      debugPrint('this=====================$this');
       DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, localTime.hour, localTime.minute);
+      debugPrint('setTimeOfDay=====================$setTimeOfDay');
+
       return setTimeOfDay;
     } catch (e) {
       Logger().d("Exception on toLocaleFromStringUtc : $e");

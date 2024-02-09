@@ -563,7 +563,8 @@ class HeadlineMediumText extends StatelessWidget {
       this.fontHeight,
       this.lineHeight,
       this.fontFamily,
-      this.isUnderline = false})
+      this.isUnderline = false,
+      this.shadow})
       : super(key: key);
 
   final String title;
@@ -579,6 +580,7 @@ class HeadlineMediumText extends StatelessWidget {
   final bool? isUnderline;
   final double? lineHeight;
   final String? fontFamily;
+  final List<Shadow>? shadow;
 
   @override
   Widget build(BuildContext context) {
@@ -591,6 +593,7 @@ class HeadlineMediumText extends StatelessWidget {
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
             fontFamily: fontFamily,
+            shadows: shadow,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,

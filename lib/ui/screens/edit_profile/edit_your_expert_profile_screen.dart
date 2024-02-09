@@ -10,13 +10,6 @@ class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProfileScreen> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // ref.read(editExpertProvider).getUserData();
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +156,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   minLines: 10,
                   labelText: StringConstants.moreAboutMe,
                   alignment: Alignment.centerLeft,
-                  controller: TextEditingController(text: expertWatch.aboute),
+                  controller: TextEditingController(text: expertWatch.about),
                 ),
                 50.0.spaceY,
                 Column(
@@ -173,7 +166,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                       buttonColor: (data.isSelected ?? false) ? null : ColorConstants.buttonColor,
                       fontSize: 12,
                       title: data.title ?? '',
-                      onPressed: () => expertRead.changeSelectedScreenButtonColor(context, index),
+                      onPressed: () => expertRead.redirectSelectedButton(context, index),
                     ).addPaddingBottom(50);
                   }),
                 ),

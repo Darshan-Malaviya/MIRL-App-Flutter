@@ -183,6 +183,8 @@ class TextFormFieldWidget extends StatelessWidget {
 
   final double? labelTextSpace;
 
+  final bool? setFormatter;
+
   const TextFormFieldWidget(
       {this.textFormFieldKey,
       this.controller,
@@ -250,7 +252,8 @@ class TextFormFieldWidget extends StatelessWidget {
       this.labelColor,
       this.borderColor,
       this.initialValue,
-      this.alignment})
+      this.alignment,
+      this.setFormatter})
       : super(key: textFormFieldKey);
 
   @override
@@ -276,11 +279,13 @@ class TextFormFieldWidget extends StatelessWidget {
           width: width,
           child: TextFormField(
             textAlign: textAlign ?? TextAlign.left,
-            inputFormatters: [
-              ...?inputFormatters,
-              FilteringTextInputFormatter.deny(RegExp(r"^\s*")),
-              FilteringTextInputFormatter.deny(RegExp(RegexConstants.emojiRegex)),
-            ],
+            inputFormatters: setFormatter ?? true
+                ? [
+                    ...?inputFormatters,
+                    FilteringTextInputFormatter.deny(RegExp(r"^\s*")),
+                    FilteringTextInputFormatter.deny(RegExp(RegexConstants.emojiRegex)),
+                  ]
+                : null,
             validator: validator,
             focusNode: focusNode,
             maxLines: maxLines ?? 1,

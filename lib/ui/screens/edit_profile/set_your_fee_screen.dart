@@ -47,7 +47,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FeesActionButtonWidget(
-                  icons: Icons.add,
+                  icons: ImageConstants.plus,
                   onTap: () {
                     expertRead.increaseFees();
                   }),
@@ -66,7 +66,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                 },
               ).addAllPadding(16),
               FeesActionButtonWidget(
-                icons: Icons.remove,
+                icons: ImageConstants.minus,
                 isDisable: expertWatch.countController.text == '0.0' || expertWatch.countController.text == '0',
                 onTap: () {
                   expertRead.decreaseFees();
