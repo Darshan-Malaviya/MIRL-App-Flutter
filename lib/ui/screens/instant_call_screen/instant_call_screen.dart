@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
@@ -17,7 +18,7 @@ class InstantCallRequestDialog extends ConsumerStatefulWidget {
   final VoidCallback? onSecondBtnTap;
   final Color? bgColor;
   final Color? secondBtnColor;
-  final String callTypeEnum;
+  final CallTypeEnum callTypeEnum;
 
   const InstantCallRequestDialog(
       {super.key,
@@ -53,11 +54,11 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
       oneSec,
       (Timer timer) {
         if (bgCallEndTrigger.value == 0) {
-            timer.cancel();
-            _timer?.cancel();
-            bgCallEndTrigger.value = 20;
+          timer.cancel();
+          _timer?.cancel();
+          bgCallEndTrigger.value = 20;
         } else {
-            bgCallEndTrigger.value--;
+          bgCallEndTrigger.value--;
         }
       },
     );
@@ -90,7 +91,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
         Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(RadiusConstant.alertdialogRadius),
-              color: ColorConstants.yellowButtonColor,
+              color: widget.callTypeEnum.typeName,
               boxShadow: [BoxShadow(offset: Offset(0, 6), color: ColorConstants.borderColor.withOpacity(0.5), spreadRadius: 1, blurRadius: 2)]),
           child: Column(
             children: [
@@ -157,7 +158,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
         30.0.spaceY,
         Visibility(
           visible:
-              widget.callTypeEnum == CallType.requestDeclined.name || widget.callTypeEnum == CallType.requestTimeout.name || widget.callTypeEnum == CallType.receiverRequested.name,
+              widget.callTypeEnum == CallTypeEnum.requestDeclined || widget.callTypeEnum == CallTypeEnum.requestTimeout || widget.callTypeEnum == CallTypeEnum.receiverRequested,
           replacement: SizedBox.shrink(),
           child: TitleSmallText(
             title: LocaleKeys.viewOtherExpert.tr(),
@@ -168,7 +169,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
         ),
         20.0.spaceY,
         Visibility(
-          visible: widget.callTypeEnum == CallType.receiverRequested.name || widget.callTypeEnum == CallType.multiConnectReceiverRequested.name,
+          visible: widget.callTypeEnum == CallTypeEnum.receiverRequested || widget.callTypeEnum == CallTypeEnum.multiConnectReceiverRequested,
           replacement: SizedBox.shrink(),
           child: Align(
             alignment: Alignment.bottomRight,

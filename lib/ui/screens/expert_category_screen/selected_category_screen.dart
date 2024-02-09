@@ -8,7 +8,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
-import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class SelectedCategoryScreen extends ConsumerStatefulWidget {
   final SelectedCategoryArgument args;

@@ -167,8 +167,7 @@
   "pleaseSelectCategoryFirst": "Please select category first",
   "searchHere": "Search here",
   "selectCity": "Select City",
-  "selectCountry": "Select Country"
-
-
-
+  "selectCountry": "Select Country",
+  "noSlotAvailable": "No slot available",
+  "pleaseSelectSlot": "You have select slot for scheduling appointment"
 }

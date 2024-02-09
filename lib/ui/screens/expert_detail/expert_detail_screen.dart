@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/request_call_button_widget.dart';
@@ -182,7 +183,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             PrimaryButton(
               title: StringConstants.scheduleCall,
               onPressed: () {
-                context.toPushNamed(RoutesConstants.scheduleCallScreen);
+                context.toPushNamed(RoutesConstants.scheduleCallScreen, args: CallArgs(expertId: widget.expertId));
               },
               buttonColor: ColorConstants.yellowButtonColor,
               titleColor: ColorConstants.buttonTextColor,
