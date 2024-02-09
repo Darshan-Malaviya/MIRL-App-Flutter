@@ -16,3 +16,6 @@ abstract class LoginType {
 }
 
 enum CallType { callRequest, requestApproved, requestDeclined, requestTimeout, receiverRequested, multiConnectReceiverRequested }
+
+enum CallHistoryEnum { InstantCall, MultipleConnect, Appointment }
+

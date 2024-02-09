@@ -30,7 +30,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
             Container(
               decoration: BoxDecoration(
                 color: ColorConstants.whiteColor,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,8 +94,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                         child: PrimaryButton(
                           title: StringConstants.shareProfile,
                           buttonTextFontFamily: FontWeightEnum.w400.toInter,
-                          onPressed: () {
-                          },
+                          onPressed: () {},
                         ),
                       ),
                     ],
@@ -132,7 +131,6 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                 ],
               ).addAllPadding(32),
             ),
-
           ],
         ),
       ),

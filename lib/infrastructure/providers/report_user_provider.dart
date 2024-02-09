@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:mirl/ui/screens/block_user/widget/reprt_expert_user_widget.dart';
+import 'package:mirl/ui/screens/block_user/widget/report_user_widget.dart';
 import 'package:mirl/ui/screens/block_user/widget/thanks_widget.dart';
 
 class ReportUserProvider extends ChangeNotifier {
@@ -21,8 +21,8 @@ class ReportUserProvider extends ChangeNotifier {
 
   void changeReportAndThanksScreen() {
     _pages = [
-      ReportExpertUserWidget(),
-      ThanksWidget(),
+      ReportUserWidget(),
+      ThanksWidget(reportName: 'BACK TO PROFILE'),
     ];
   }
 }
