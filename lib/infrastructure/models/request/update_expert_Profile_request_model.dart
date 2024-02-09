@@ -11,17 +11,9 @@ class UpdateExpertProfileRequestModel {
   String? fee;
   String? userProfile;
   String? expertProfile;
-  String? userProfileFlag;
-  bool? expertProfileFlag;
   bool? aboutFlag;
   bool? feeFlag;
-  String? areaOfExpertiseFlag;
-  String? weeklyAvailableFlag;
   bool? instantCallAvailable;
-  bool? locationFlag;
-  bool? genderFlag;
-  String? certificateFlag;
-  bool? bankDetailsFlag;
   String? phone;
   bool? isLocationVisible;
   String? bankAccountHolderName;
@@ -40,17 +32,9 @@ class UpdateExpertProfileRequestModel {
       this.fee,
       this.userProfile,
       this.expertProfile,
-      this.userProfileFlag,
-      this.expertProfileFlag,
       this.aboutFlag,
       this.feeFlag,
-      this.areaOfExpertiseFlag,
-      this.weeklyAvailableFlag,
       this.instantCallAvailable,
-      this.locationFlag,
-      this.genderFlag,
-      this.certificateFlag,
-      this.bankDetailsFlag,
       this.phone,
       this.isLocationVisible,
       this.bankAccountHolderName,
@@ -68,18 +52,10 @@ class UpdateExpertProfileRequestModel {
     gender = json['gender'];
     fee = json['fee'];
     userProfile = json['userProfile'];
-    userProfileFlag = json['userProfileFlag'];
     expertProfile = json['expertProfile'];
-    expertProfileFlag = json['expertProfileFlag'];
     aboutFlag = json['aboutFlag'];
     feeFlag = json['feeFlag'];
-    areaOfExpertiseFlag = json['areaOfExpertiseFlag'];
-    weeklyAvailableFlag = json['weeklyAvailableFlag'];
     instantCallAvailable = json['instantCallAvailable'];
-    locationFlag = json['locationFlag'];
-    genderFlag = json['genderFlag'];
-    certificateFlag = json['certificateFlag'];
-    bankDetailsFlag = json['bankDetailsFlag'];
     phone = json['phone'];
     isLocationVisible = json['isLocationVisible'];
     bankAccountHolderName = json['bankAccountHolderName'];
@@ -89,42 +65,8 @@ class UpdateExpertProfileRequestModel {
     country = json['country'];
   }
 
-  Future<FormData> toJson() async {
-    FormData formData = FormData.fromMap({
-      'userName': userName,
-      'expertName': expertName,
-      'mirlId': mirlId,
-      'location': location,
-      'about': about,
-      'gender': gender,
-      'fee': fee,
-      'userProfile': userProfile,
-      'expertProfile': expertProfile,
-      'userProfileFlag': userProfileFlag,
-      'expertProfileFlag': expertProfileFlag,
-      'aboutFlag': aboutFlag,
-      'feeFlag': feeFlag,
-      'areaOfExpertiseFlag': areaOfExpertiseFlag,
-      'weeklyAvailableFlag': weeklyAvailableFlag,
-      'instantCallAvailable': instantCallAvailable,
-      'locationFlag': locationFlag,
-      'genderFlag': genderFlag,
-      'certificateFlag': certificateFlag,
-      'bankDetailsFlag': bankDetailsFlag,
-      'phone': phone,
-      'isLocationVisible': isLocationVisible,
-      'bankAccountHolderName': bankAccountHolderName,
-      'bankName': bankName,
-      'accountNumber': accountNumber,
-      'city': city,
-      'country': country
-    });
-    return formData;
-  }
-
   FormData toJsonGender() {
     FormData formData = FormData.fromMap({
-      'genderFlag': genderFlag,
       'gender': gender,
     });
     return formData;
@@ -158,7 +100,6 @@ class UpdateExpertProfileRequestModel {
 
   FormData toJsonBank() {
     FormData formData = FormData.fromMap({
-      'bankDetailsFlag': bankDetailsFlag,
       'bankAccountHolderName': bankAccountHolderName,
       'bankName': bankName,
       'accountNumber': accountNumber,
@@ -190,8 +131,6 @@ class UpdateExpertProfileRequestModel {
 
   FormData toJsonYourLocation() {
     FormData formData = FormData.fromMap({
-      'locationFlag': locationFlag,
-      'location': location,
       'isLocationVisible': isLocationVisible,
       'country': country,
       'city': city,

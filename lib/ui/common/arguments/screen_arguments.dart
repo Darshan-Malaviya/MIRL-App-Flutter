@@ -6,3 +6,9 @@ class FilterArgs {
 
   FilterArgs({this.fromExploreExpert, this.list});
 }
+
+class CallArgs {
+  final String? expertId;
+
+  CallArgs({this.expertId});
+}

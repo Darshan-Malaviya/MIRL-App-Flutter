@@ -52,6 +52,19 @@ extension DateTimeFormatter on String {
     return '';
   }
 
+  /// 5:20
+  String toLocalTimeFromUtc() {
+    try {
+      DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
+      var output = DateFormat('hh:mm a').format(localTime);
+
+      return output;
+    } catch (e) {
+      Logger().d("Exception occurred on toLocalTimeFromUtc : $e");
+    }
+    return '';
+  }
+
   /// UTC time format
   String toUTCDateTimeFormat() {
     try {
@@ -82,7 +95,7 @@ extension DateTimeFormatter on String {
   DateTime? toLocaleFromUtc() {
     try {
       DateTime now = DateTime.now();
-      DateTime localTime = DateFormat('HH:mm:ss').parse(this,true).toLocal();
+      DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
       debugPrint('localTime=====================${localTime}');
       debugPrint('this=====================$this');
       DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, localTime.hour, localTime.minute);

@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class GetSlotsResponseModel {
   int? status;
@@ -42,12 +41,14 @@ class GetSlotsResponseModel {
 class SlotsData {
   String? startTimeUTC;
   String? endTimeUTC;
+  bool? isSelected;
 
-  SlotsData({this.startTimeUTC, this.endTimeUTC});
+  SlotsData({this.startTimeUTC, this.endTimeUTC, this.isSelected});
 
   SlotsData.fromJson(Map<String, dynamic> json) {
-    startTimeUTC = (json['startTimeUTC'] as String).to12HourTimeFormat();
+    startTimeUTC = json['startTimeUTC'];
     endTimeUTC = json['endTimeUTC'];
+    isSelected = false;
   }
 
   Map<String, dynamic> toJson() {

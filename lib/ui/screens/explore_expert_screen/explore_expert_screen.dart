@@ -8,7 +8,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/widget/category_image_and_name_list_widget.dart';
-import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   const ExploreExpertScreen({super.key});

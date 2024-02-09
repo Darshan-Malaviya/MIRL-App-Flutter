@@ -140,7 +140,6 @@
   "callHistoryAndBilling": "CALL HISTORY AND BILLING",
   "signOut": "SIGN OUT",
   "userProfileAndSetting": "USER PROFILE & SETTINGS",
-
   "filterExperts": "FILTER EXPERTS",
   "expertCallHistory": "EXPERT CALL HISTORY",
   "blockedUser": "Block User?",
@@ -158,5 +157,7 @@
   "thanks": "Thanks for letting us know!",
   "bringing": "Thank you for bringing this to our attention.",
   "maintaining": "We are committed to maintaining a high standard of service on our platform. To ensure this, we will carefully review the reported user’s activity on the app, consider feedback from other Experts, and make an informed decision regarding the user’s future on our platform shortly.",
-  "back": "BACK"
+  "back": "BACK",
+  "noSlotAvailable": "No slot available",
+  "pleaseSelectSlot": "You have select slot for scheduling appointment"
 }
