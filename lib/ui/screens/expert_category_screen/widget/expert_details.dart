@@ -56,16 +56,22 @@ class ExpertDetailWidget extends StatelessWidget {
                                 alignment: WrapAlignment.center,
                                 spacing: 0,
                                 children: List.generate(
-                                    ((expertData?.expertCategory?.length ?? 0) > 7) ? 6 : expertData?.expertCategory?.length ?? 0,
-                                    (i) => Container(
-                                          color: ColorConstants.sliderColor,
-                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                                          child: BodyMediumText(
-                                            title: expertData?.expertCategory?[i].name ?? '',
-                                            fontFamily: FontWeightEnum.w400.toInter,
-                                          ),
-                                        )),
+                                    ((expertData?.expertCategory?.length ?? 0) > 7)
+                                        ? 6
+                                        : expertData?.expertCategory?.length ?? 0, (i) {
+                                  String color = expertData?.expertCategory?[i].colorCode?.substring(1) ?? "D97CF0";
+                                  int colorConcat = int.parse('0xff$color');
+
+                                  return Container(
+                                    color: Color(colorConcat),
+                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                    child: BodyMediumText(
+                                      title: expertData?.expertCategory?[i].name ?? '',
+                                      fontFamily: FontWeightEnum.w400.toInter,
+                                    ),
+                                  );
+                                }),
                               )
                             ]
                           ],

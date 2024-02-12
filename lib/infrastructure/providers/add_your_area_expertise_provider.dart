@@ -73,7 +73,6 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
             SharedPrefHelper.saveAreaOfExpertise('');
           }
           Logger().d("Successfully childUpdateApiCall");
-          context.toPop();
           FlutterToast().showToast(msg: childUpdateResponseModel.message ?? '');
         }
         break;

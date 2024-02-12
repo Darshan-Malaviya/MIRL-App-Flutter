@@ -65,6 +65,11 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
       canPop: true,
       onPopInvoked: (value){
         filterProviderRead.clearAllFilter();
+        if(widget.args.isFromExploreExpert) {
+          ref.read(filterProvider).clearExploreExpertSearchData();
+          ref.read(filterProvider).clearExploreController();
+          ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isFromFilter: false,isPaginating: false);
+        }
       },
       child: Scaffold(
         backgroundColor: ColorConstants.scaffoldBg,
@@ -74,6 +79,11 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
             child: Image.asset(ImageConstants.backIcon),
               onTap: () {
                 filterProviderRead.clearAllFilter();
+                if(widget.args.isFromExploreExpert) {
+                  ref.read(filterProvider).clearExploreExpertSearchData();
+                  ref.read(filterProvider).clearExploreController();
+                  ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isFromFilter: false,isPaginating: false);
+                }
                 context.toPop();
               }),
         ),

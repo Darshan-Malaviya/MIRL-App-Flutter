@@ -21,6 +21,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      ref.read(editExpertProvider).getUserData();
       await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall(isLoaderVisible: true);
       ref.read(addYourAreaExpertiseProvider).clearSelectChildId();
       ref.read(addYourAreaExpertiseProvider).setCategoryChildDefaultData();
@@ -49,8 +50,10 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           onTap: () => context.toPop(),
         ),
         trailingIcon: InkWell(
-          onTap: () {
-            addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
+          onTap: () async {
+           await addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
+            ref.read(editExpertProvider).getUserData();
+            context.toPop();
           },
           child: TitleMediumText(
             title: StringConstants.done,
@@ -168,8 +171,10 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           ),
           PrimaryButton(
               title: StringConstants.setYourExpertise,
-              onPressed: () {
-                addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
+              onPressed: () async {
+                await addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
+                ref.read(editExpertProvider).getUserData();
+                context.toPop();
               })
         ],
       ).addAllPadding(20),
