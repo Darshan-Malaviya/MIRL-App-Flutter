@@ -47,10 +47,10 @@ class FilterProvider extends ChangeNotifier {
     CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 4),
   ];
 
-  String sortBySelectedItem = 'PRICE';
+  String sortBySelectedItem = 'SORT BY';
   String sortBySelectedOrder = 'HIGH TO LOW';
 
-  List<String> sortByItems = ['PRICE', 'REVIEW SCORE', 'EXPERIENCE'];
+  List<String> sortByItems = ['SORT BY', 'PRICE', 'REVIEW SCORE', 'EXPERIENCE'];
   List<String> orderFilterList = ['HIGH TO LOW', ' LOW TO HIGH'];
 
 
@@ -62,9 +62,6 @@ class FilterProvider extends ChangeNotifier {
 
   int? _selectGender;
   int? get selectGender => _selectGender;
-
-  String dropdown = 'PRICE';
-  String dropdownValue = 'HIGH TO LOW';
 
 
   List<CategoryIdNameCommonModel> get allCategory => _allCategory;
@@ -108,8 +105,8 @@ class FilterProvider extends ChangeNotifier {
 
   //String? selectedTopic;
 
-  double start = 30;
-  double end = 50;
+  double? start;
+  double? end;
 
   bool get isLoading => _isLoading;
   bool _isLoading = false;
@@ -176,6 +173,15 @@ class FilterProvider extends ChangeNotifier {
                     ? "true"
                     : "false"
                 : null,
+        feeOrder: commonSelectionModel[index].title == FilterType.PriceOrder.name
+            ? null
+            : sortBySelectedItem == 'SORT BY'
+                ? null
+                : sortBySelectedItem == 'PRICE'
+                    ? sortBySelectedOrder == 'HIGH TO LOW'
+                        ? 'ASC'
+                        : 'DESC'
+                    : null,
         // experienceOder: requestModel?.experienceOder,
         // feeOrder: requestModel?.feeOrder,
         // maxFee: requestModel?.maxFee,
@@ -201,6 +207,12 @@ class FilterProvider extends ChangeNotifier {
     } else if (commonSelectionModel[index].title == FilterType.Gender.name) {
       genderController.clear();
       _selectGender = null;
+    } else if (commonSelectionModel[index].title == FilterType.FeeRange.name) {
+      start = null;
+      end = null;
+    } else if (commonSelectionModel[index].title == FilterType.PriceOrder.name) {
+       sortBySelectedItem = 'SORT BY';
+       sortBySelectedOrder = 'HIGH TO LOW';
     } else if (commonSelectionModel[index].title == FilterType.Category.name) {
       int index = _allCategory.indexWhere((element) => element.id == (selectedCategory?.id ?? -1));
       if (index != -1) {
@@ -251,6 +263,10 @@ class FilterProvider extends ChangeNotifier {
     reviewOrderController.clear();
     selectedCategory = null;
     selectedCountryModel = null;
+    start = null;
+    end  = null;
+    sortBySelectedItem = 'SORT BY';
+    sortBySelectedOrder = 'HIGH TO LOW';
     _allCategory = [];
     _allTopic = [];
     _reachedCategoryLastPage = false;
@@ -290,27 +306,6 @@ class FilterProvider extends ChangeNotifier {
       }
       notifyListeners();
     }
-  }
-
-  void setSelectionBoolValueOfChild({required CategoryIdNameCommonModel topic}) {
-    if(_selectedTopicList?.isNotEmpty ?? false) {
-    } else {
-     /* for (var element in singleCategoryData?.categoryData?.topic ?? []) {
-        element.isSelected = false;
-      }*/
-      int index = singleCategoryData?.categoryData?.topic?.indexWhere((element) => element.id == topic.id) ?? -1;
-      if (index != -1) {
-        if (singleCategoryData?.categoryData?.topic?[index].isSelected ?? false) {
-          singleCategoryData?.categoryData?.topic?[index].isSelected = false;
-        //  selectedTopic  = selectedTopic?.replaceAll(singleCategoryData?.categoryData?.topic?[index].name ?? '', '');
-        } else {
-          singleCategoryData?.categoryData?.topic?[index].isSelected = true;
-         // selectedTopic =  singleCategoryData?.categoryData?.topic?.takeWhile((element) => element.isSelected ==true).map((e) => e.name).join("\n");
-        }
-        notifyListeners();
-      }
-    }
-    notifyListeners();
   }
 
   void setTopicByCategory() {
@@ -453,6 +448,24 @@ class FilterProvider extends ChangeNotifier {
   void setRange(RangeValues value) {
     start = value.start;
     end = value.end;
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.FeeRange.name);
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.FeeRange.name, value: '\$${value.start.toStringAsFixed(2)} - \$${value.end.toStringAsFixed(2)}'));
+    } else {
+      commonSelectionModel[index].value = '\$${value.start.toStringAsFixed(2)} - \$${value.end.toStringAsFixed(2)}';
+    }
+    notifyListeners();
+  }
+
+  void setSortByPriceValue({required String order, required String sortByValue}) {
+    sortBySelectedOrder = order /*?? 'SORT BY'*/;
+    sortBySelectedItem = sortByValue /*?? 'HIGH TO LOW'*/;
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.PriceOrder.name);
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.PriceOrder.name, value: '$sortBySelectedItem - $sortBySelectedOrder'));
+    } else {
+      commonSelectionModel[index].value = '$sortBySelectedItem - $sortBySelectedOrder';
+    }
     notifyListeners();
   }
 
@@ -658,7 +671,7 @@ class FilterProvider extends ChangeNotifier {
     ExpertDataRequestModel data = ExpertDataRequestModel(
         page: _exploreExpertPageNo.toString(),
         limit: '10',
-      search: requestModel?.search,
+      search: exploreExpertController.text.isNotEmpty ? exploreExpertController.text : null,
       city: requestModel?.city,
       country: requestModel?.country,
       experienceOder: requestModel?.experienceOder,
@@ -670,7 +683,7 @@ class FilterProvider extends ChangeNotifier {
       reviewOrder: requestModel?.reviewOrder,
       topicIds: requestModel?.topicIds,
       categoryId: requestModel?.categoryId,
-      userId: SharedPrefHelper.getUserId
+      userId: SharedPrefHelper.getUserId,
     );
 
     ApiHttpResult response =

@@ -2,7 +2,7 @@
 enum APIType { get, post, put, delete }
 
 ///define filter type
-enum FilterType { Gender, InstantCall, Country, City, Topic, Category, OverAllRating }
+enum FilterType { Gender, InstantCall, Country, City, Topic, Category, OverAllRating, FeeRange, PriceOrder, }
 
 ///define device type
 enum DeviceType { A, I }

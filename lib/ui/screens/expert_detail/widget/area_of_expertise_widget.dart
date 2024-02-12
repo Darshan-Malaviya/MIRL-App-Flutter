@@ -71,12 +71,13 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                   child: Wrap(
                       children: List.generate(expertDetailWatch.userData?.areaOfExpertise?[index].topic?.length ?? 0, (i) {
                     return Container(
-                      child: TitleSmallText(
+                      child: TitleMediumText(
+                        maxLine: 3,
                         title: expertDetailWatch.userData?.areaOfExpertise?[index].topic?[i].name ?? '',
                         fontFamily: FontWeightEnum.w500.toInter,
                       ).addMarginXY(paddingX: 8, paddingY: 2),
                       decoration: ShapeDecoration(
-                        color: index % 2 == 0 ? ColorConstants.topicColor : ColorConstants.yellowLightColor,
+                        color: index % 2 == 0 ? ColorConstants.primaryColor.withOpacity(0.40) : ColorConstants.yellowButtonColor.withOpacity(0.4),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -89,7 +90,7 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                           )
                         ],
                       ),
-                    ).addMarginY(6);
+                    ).addMarginXY(paddingX: 4, paddingY: 4);
                   })),
                 )
               ],

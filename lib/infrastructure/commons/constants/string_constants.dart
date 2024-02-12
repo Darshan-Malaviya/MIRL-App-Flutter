@@ -153,9 +153,6 @@ class StringConstants {
   static const String cityText = 'CITY';
   static const String feeRange = 'FEE RANGE';
   static const String applyFilter = 'APPLY FILTERS';
-  static const String expertCategories = 'EXPERT CATEGORIES';
-  static const String tapOnWayExpert = 'TAP ON ANY EXPERT CATEGORY TO VIEW THEIR TOPICS.';
-  static const String tapOnWayTopic = 'TAP ON A TOPIC TO VIEW THE LISTED EXPERTS.';
   static const String needAMentor = 'NEED A MENTOR? START YOUR JOURNEY HERE, OR ZERO IN WITH OUR HANDY SEARCH FILTER';
   static const String topicText = 'TOPIC';
   static const String filterExpertCategory = 'FILTER EXPERTS FROM THIS CATEGORY';

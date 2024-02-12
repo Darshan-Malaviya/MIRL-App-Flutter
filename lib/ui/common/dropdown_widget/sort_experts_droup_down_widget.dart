@@ -77,6 +77,7 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             setState(() {
                               filterProviderWatch.sortBySelectedItem = newValue!;
                             });
+                            filterProviderRead.setSortByPriceValue(order: filterProviderWatch.sortBySelectedOrder, sortByValue: newValue ??'');
                           },
                         ),
                       ),
@@ -130,6 +131,7 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             setState(() {
                               filterProviderWatch.sortBySelectedOrder = newValue!;
                             });
+                            filterProviderRead.setSortByPriceValue(sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ??'');
                           },
                         ),
                       ),

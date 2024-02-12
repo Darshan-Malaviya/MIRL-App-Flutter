@@ -70,6 +70,7 @@ class Categories {
   int? id;
   String? name;
   String? image;
+  String? colorCode;
 
   Categories({this.id, this.name, this.image});
 
@@ -77,6 +78,7 @@ class Categories {
     id = json['id'];
     name = json['name'];
     image = json['image'];
+    colorCode = json['colorCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -84,6 +86,7 @@ class Categories {
     data['id'] = this.id;
     data['name'] = this.name;
     data['image'] = this.image;
+    data['colorCode'] = this.colorCode;
     return data;
   }
 }
