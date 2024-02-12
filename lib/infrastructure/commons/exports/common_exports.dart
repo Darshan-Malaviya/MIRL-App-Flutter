@@ -65,6 +65,7 @@ export 'package:mirl/infrastructure/commons/extensions/validation_extension.dart
 export 'package:mirl/infrastructure/commons/extensions/datetime_extension.dart';
 export 'package:mirl/ui/common/network_image/network_image.dart';
 export 'package:mirl/infrastructure/models/common/common_selection_model.dart';
+export 'package:mirl/infrastructure/services/socket_service.dart';
 
 
 
