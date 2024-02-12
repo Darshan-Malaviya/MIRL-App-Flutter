@@ -72,8 +72,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
           ).addAllPadding(15),
           DraggableScrollableSheet(
-            initialChildSize: 0.50,
-            minChildSize: 0.50,
+            initialChildSize: 0.55,
+            minChildSize: 0.55,
             maxChildSize: 0.90,
             builder: (BuildContext context, myScrollController) {
               return bottomSheetView(controller: myScrollController);

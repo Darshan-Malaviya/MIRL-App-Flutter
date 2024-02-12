@@ -22,8 +22,8 @@ class ScheduleCallRepository extends ApiResponseHandler {
   }
 
   /// get expertAvailability
-  Future<ApiHttpResult> getExpertAvailabilityApi() async {
-    final uri = ApiConstants.endpointUri(path: '${ApiConstants.expertAvailability}/${SharedPrefHelper.getUserId}');
+  Future<ApiHttpResult> getExpertAvailabilityApi(String expertId) async {
+    final uri = ApiConstants.endpointUri(path: '${ApiConstants.expertAvailability}/$expertId');
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.get);
 

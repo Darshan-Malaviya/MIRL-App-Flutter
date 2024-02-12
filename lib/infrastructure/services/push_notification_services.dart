@@ -72,16 +72,19 @@ class PushNotificationService {
           RemoteNotification? notification = message?.notification;
           AndroidNotification? android = message?.notification?.android;
 
-          if (notification != null && android != null) {
-            flutterLocalNotificationsPlugin.show(
-                notification.hashCode,
-                notification.title,
-                notification.body,
-                const NotificationDetails(
-                    android: AndroidNotificationDetails("high_importance_channel", "High Importance Notifications",
-                        channelDescription: "This channel is used for important notifications.", importance: Importance.max, icon: "@drawable/notification_logo"),
-                    iOS: DarwinNotificationDetails(presentSound: true)),
-                payload: jsonEncode(message?.data));
+          if (message?.data['type'] == 'connectAndroidCall') {
+          } else {
+            if (notification != null && android != null) {
+              flutterLocalNotificationsPlugin.show(
+                  notification.hashCode,
+                  notification.title,
+                  notification.body,
+                  const NotificationDetails(
+                      android: AndroidNotificationDetails("high_importance_channel", "High Importance Notifications",
+                          channelDescription: "This channel is used for important notifications.", importance: Importance.max, icon: "@drawable/notification_logo"),
+                      iOS: DarwinNotificationDetails(presentSound: true)),
+                  payload: jsonEncode(message?.data));
+            }
           }
         } catch (e) {
           log('FireBase onMessage.lister Exception: $e');

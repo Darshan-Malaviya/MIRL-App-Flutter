@@ -84,7 +84,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     _isLoadingAvailable = true;
     notifyListeners();
 
-    ApiHttpResult response = await _scheduleCallRepository.getExpertAvailabilityApi();
+    ApiHttpResult response = await _scheduleCallRepository.getExpertAvailabilityApi(expertId);
 
     _isLoadingAvailable = false;
     notifyListeners();
@@ -110,7 +110,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     notifyListeners();
 
     ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(
-      request: SlotsRequestModel(expertId: /*_expertId*/ '72', date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
+      request: SlotsRequestModel(expertId: _expertId, date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
     );
 
     _isLoadingSlot = false;
@@ -140,7 +140,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     CustomLoading.progressDialog(isLoading: true);
 
     ScheduleAppointmentRequestModel requestModel = ScheduleAppointmentRequestModel(
-        duration: _callDuration.toString(), expertId: /*_expertId*/ 0, endTime: selectedSlotData?.endTimeUTC ?? '', startTime: selectedSlotData?.startTimeUTC ?? '', status: '0');
+        duration: _callDuration.toString(), expertId: int.parse(_expertId), endTime: selectedSlotData?.endTimeUTC ?? '', startTime: selectedSlotData?.startTimeUTC ?? '', status: '0');
 
     ApiHttpResult response = await _scheduleCallRepository.bookAppointment(request: requestModel.prepareRequest());
 
