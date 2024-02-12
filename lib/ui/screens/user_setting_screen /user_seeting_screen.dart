@@ -17,6 +17,8 @@ class UserSettingScreen extends ConsumerStatefulWidget {
 class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
   @override
   Widget build(BuildContext context) {
+    final providerWatch = ref.watch(callProvider);
+
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
@@ -31,15 +33,21 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
         ),
       ),
       body: Center(
-        child: PageView(
+          child: PrimaryButton(
+        onPressed: () {
+          ref.read(callProvider).callRequestEmit();
+        },
+        title: 'Tap',
+      ) /*PageView(
+
           children: [
-       /*     RatingWidget(
+       */ /*     RatingWidget(
               onRatingChanged: (value) {},
-            )*/
+            )*/ /*
             ReviewSlider(onChange: (value){})
           ],
-        ),
-      ),
+        ),*/
+          ),
     );
   }
 }

@@ -17,8 +17,9 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final videoCallWatch = ref.watch(videoCallProvider);
-    final videoCallRead = ref.read(videoCallProvider);
+    final callWatch = ref.watch(callProvider);
+    final callRead = ref.read(callProvider);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -29,7 +30,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
           ),
           InkWell(
             onTap: () {
-              videoCallRead.visibleBottomSheet();
+              callRead.visibleBottomSheet();
             },
           ),
           Positioned(
@@ -37,7 +38,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
             left: 0,
             right: 0,
             child: Visibility(
-              visible: videoCallWatch.visible,
+              visible: callWatch.visible,
               child: AnimatedContainer(
                 duration: Duration(seconds: 2),
                 child: VideoCallWidget(),
@@ -45,7 +46,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
             ),
           ),
           Positioned(
-            bottom: videoCallWatch.visible ? 200 : 10,
+            bottom: callWatch.visible ? 200 : 10,
             right: 2,
             child: Stack(
               children: [
@@ -65,11 +66,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
                 Container(
                   decoration: BoxDecoration(
                     boxShadow: [
-                      BoxShadow(
-                          offset: Offset(0, 0),
-                          color: ColorConstants.whiteColor.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5),
+                      BoxShadow(offset: Offset(0, 0), color: ColorConstants.whiteColor.withOpacity(0.2), spreadRadius: 1, blurRadius: 5),
                     ],
                   ),
                   child: Image.asset(ImageConstants.voiceOff).addAllPadding(8),
