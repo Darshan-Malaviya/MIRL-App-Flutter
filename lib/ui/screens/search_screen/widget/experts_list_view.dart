@@ -65,8 +65,12 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
                                 alignment: WrapAlignment.start,
                                 children:
                                     List.generate(homeProviderWatch.homeSearchData?.users?[index].categoris?.length ?? 0, (i) {
+                                      String color = homeProviderWatch.homeSearchData?.users?[index].categoris?[i].colorCode?.substring(1) ?? "D97CF0";
+                                      int colorConcat = int.parse('0xff$color');
+
                                   return Container(
-                                    color: ColorConstants.primaryColor.withOpacity(0.4),
+                                    color: Color(colorConcat),
+                                    //color: ColorConstants.primaryColor.withOpacity(0.4),
                                     child: BodyMediumText(
                                       maxLine: 3,
                                       title: (homeProviderWatch.homeSearchData?.users?[index].categoris?[i].name

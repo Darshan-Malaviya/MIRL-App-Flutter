@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
+import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 
 class ExpertCategoryScreen extends ConsumerStatefulWidget {
   const ExpertCategoryScreen({super.key});
@@ -35,19 +38,19 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
       body: Column(
         children: [
           TitleLargeText(
-            title: StringConstants.expertCategories,
+            title: LocaleKeys.expertCategories.tr().toUpperCase(),
             maxLine: 2,
             titleTextAlign: TextAlign.center,
           ),
           20.0.spaceY,
           LabelSmallText(
-            title: StringConstants.tapOnWayExpert,
+            title: LocaleKeys.tapOnWayExpert.tr(),
             titleTextAlign: TextAlign.center,
             fontFamily: FontWeightEnum.w400.toInter,
             maxLine: 2,
           ),
           LabelSmallText(
-            title: StringConstants.tapOnWayTopic,
+            title: LocaleKeys.tapOnWayTopic.tr(),
             titleTextAlign: TextAlign.center,
             fontFamily: FontWeightEnum.w400.toInter,
             maxLine: 2,
@@ -56,6 +59,7 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
           Expanded(
             child: addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                 ? GridView.builder(
+              padding: EdgeInsets.zero,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
                     itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0,
                     itemBuilder: (context, index) {
@@ -66,7 +70,9 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                           InkWell(
                             onTap: () {
                               addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
-                              context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen, args: element?.id.toString());
+                              context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
+                                  args: SelectedCategoryArgument(
+                                      categoryId: element?.id.toString() ?? '', isFromExploreExpert: true));
                             },
                             child: ShadowContainer(
                               shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
@@ -106,6 +112,13 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                     ),
                   ),
           ),
+          LabelSmallText(
+            title: LocaleKeys.suggestNewCategoriesAndTopicsToAdd.tr(),
+            titleTextAlign: TextAlign.center,
+            fontFamily: FontWeightEnum.w700.toInter,
+            maxLine: 2,
+          ),
+          20.0.spaceY
         ],
       ).addPaddingX(20),
     );
