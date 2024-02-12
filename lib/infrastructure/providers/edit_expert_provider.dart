@@ -204,7 +204,6 @@ class EditExpertProvider extends ChangeNotifier {
         isAvailable: element.isAvailable ? 1 : 0,
       ));
     });
-    print('workList=======${workDaysList.toList()}');
     notifyListeners();
   }
 
