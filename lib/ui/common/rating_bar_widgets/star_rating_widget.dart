@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
 import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
 
 typedef RatingChangeCallback = void Function(double rating);
@@ -13,7 +14,7 @@ class StarRating extends StatelessWidget {
   Widget buildStar(BuildContext context, int index) {
     Image icon;
     if (index >= rating) {
-      icon = Image.asset(ImageConstants.rating);
+      icon = Image.asset(ImageConstants.star);
     }
     /* else if (index > rating - 1 && index < rating) {
       icon =  Icon(
@@ -22,7 +23,7 @@ class StarRating extends StatelessWidget {
       );
     }*/
     else {
-      icon = Image.asset(ImageConstants.starFill);
+      icon = Image.asset(ImageConstants.star, color: ColorConstants.yellowButtonColor);
     }
     return InkResponse(
       onTap: () => onRatingChanged(index + 1.0),

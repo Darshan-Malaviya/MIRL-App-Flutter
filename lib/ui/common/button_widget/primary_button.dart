@@ -78,6 +78,7 @@ class PrimaryButton extends StatelessWidget {
                 titleColor: titleColor ?? ColorConstants.buttonTextColor,
                 titleTextAlign: TextAlign.center,
                 fontSize: fontSize ?? 13,
+                maxLine: 2,
               ),
             ],
           ),

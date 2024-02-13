@@ -15,7 +15,7 @@ class AvailableTimeShimmer extends StatelessWidget {
             Shimmer.fromColors(
               child: Container(
                 height: 30,
-                width: 150,
+                width: 130,
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: ColorConstants.whiteColor),
                 child: SizedBox.shrink(),
               ),
