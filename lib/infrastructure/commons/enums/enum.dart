@@ -2,7 +2,7 @@
 enum APIType { get, post, put, delete }
 
 ///define filter type
-enum FilterType { Gender, InstantCall, Country, City, Topic, Category, OverAllRating, FeeRange, PriceOrder, }
+enum FilterType { Gender, InstantCall, Country, City, Topic, Category, OverAllRating, FeeRange, SortBy }
 
 ///define device type
 enum DeviceType { A, I }
@@ -17,3 +17,4 @@ abstract class LoginType {
 
 enum CallHistoryEnum { InstantCall, MultipleConnect, Appointment }
 
+enum RatingEnum { EXPERTISE, COMMUNICATION, HELPFULNESS,EMPATHY,PROFESSIONALISM }

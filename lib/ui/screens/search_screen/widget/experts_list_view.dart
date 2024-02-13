@@ -24,7 +24,6 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
         BodySmallText(
           title: LocaleKeys.experts.tr(),
           titleTextAlign: TextAlign.start,
-          fontFamily: FontWeightEnum.w700.toInter,
         ),
         20.0.spaceY,
         if (homeProviderWatch.homeSearchData?.users?.isNotEmpty ?? false) ...[
@@ -36,18 +35,13 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    context.toPushNamed(RoutesConstants.expertDetailScreen,
-                        args: homeProviderWatch.homeSearchData?.users?[index].id.toString());
+                    context.toPushNamed(RoutesConstants.expertDetailScreen, args: homeProviderWatch.homeSearchData?.users?[index].id.toString());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircleNetworkImageWidget(
-                          imageURL: homeProviderWatch.homeSearchData?.users?[index].expertProfile ?? '',
-                          isNetworkImage: true,
-                          radius: 30,
-                          key: UniqueKey()),
+                      CircleNetworkImageWidget(imageURL: homeProviderWatch.homeSearchData?.users?[index].expertProfile ?? '', isNetworkImage: true, radius: 30, key: UniqueKey()),
                       12.0.spaceX,
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -55,7 +49,6 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
                         children: [
                           BodyMediumText(
                             title: homeProviderWatch.homeSearchData?.users?[index].expertName ?? '',
-                            fontFamily: FontWeightEnum.w700.toInter,
                           ),
                           2.0.spaceY,
                           if (homeProviderWatch.homeSearchData?.users?[index].categoris?.isNotEmpty ?? false) ...[
@@ -63,23 +56,20 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
                               width: MediaQuery.of(context).size.width - 120,
                               child: Wrap(
                                 alignment: WrapAlignment.start,
-                                children:
-                                    List.generate(homeProviderWatch.homeSearchData?.users?[index].categoris?.length ?? 0, (i) {
-                                      String color = homeProviderWatch.homeSearchData?.users?[index].categoris?[i].colorCode?.substring(1) ?? "D97CF0";
-                                      int colorConcat = int.parse('0xff$color');
+                                children: List.generate(homeProviderWatch.homeSearchData?.users?[index].categoris?.length ?? 0, (i) {
+                                  String color = homeProviderWatch.homeSearchData?.users?[index].categoris?[i].colorCode?.substring(1) ?? "D97CF0";
+                                  int colorConcat = int.parse('0xff$color');
 
                                   return Container(
                                     color: Color(colorConcat),
-                                    //color: ColorConstants.primaryColor.withOpacity(0.4),
+                                    margin: EdgeInsets.only(right: 8,top: 5,bottom: 5),
+                                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                                     child: BodyMediumText(
                                       maxLine: 3,
-                                      title: (homeProviderWatch.homeSearchData?.users?[index].categoris?[i].name
-                                              ?.toLowerCase()
-                                              .toCapitalizeAllWord() ??
-                                          ''),
-                                      fontFamily: FontWeightEnum.w700.toInter,
-                                    ).addAllPadding(10),
-                                  ).addPaddingXY(paddingX: 6, paddingY: 6);
+                                      title: (homeProviderWatch.homeSearchData?.users?[index].categoris?[i].name?.toLowerCase().toCapitalizeAllWord() ?? ''),
+                                      fontFamily: FontWeightEnum.w400.toInter,
+                                    ),
+                                  );
                                 }),
                               ),
                             )
@@ -92,11 +82,9 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
               })
         ] else ...[
           BodySmallText(
-            fontWeight: FontWeight.w400,
+            fontFamily: FontWeightEnum.w400.toInter,
             titleTextAlign: TextAlign.start,
-            fontFamily: AppConstants.fontFamily,
             maxLine: 4,
-            fontSize: 12,
             title: LocaleKeys.noResultsFoundTypeSomethingElse.tr(),
           ),
         ]

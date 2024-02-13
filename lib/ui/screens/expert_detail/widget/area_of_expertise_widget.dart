@@ -40,7 +40,12 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ShadowContainer(
+                  shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                  offset: Offset(0,2),
+                  blurRadius: 2,
+                  spreadRadius: 0,
                   child: Column(
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
@@ -48,34 +53,36 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                           boxFit: BoxFit.cover,
                           imageURL: expertDetailWatch.userData?.areaOfExpertise?[index].image ?? '',
                           isNetworkImage: true,
-                          height: 50,
-                          width: 50,
+                          height: 60,
+                          width: 55,
                         ),
                       ),
                       4.0.spaceY,
                       LabelSmallText(
                         fontSize: 9,
                         title: expertDetailWatch.userData?.areaOfExpertise?[index].name ?? '',
+                        maxLine: 2,
                         titleColor: ColorConstants.blackColor,
                         titleTextAlign: TextAlign.center,
                       ),
                     ],
                   ),
-                  shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                  height: 90,
                   width: 90,
-                ).addMarginY(10),
+                  isShadow: true,
+                ),
                 15.0.spaceX,
-                Container(
-                  width: MediaQuery.of(context).size.width - 200,
+                Expanded(
                   child: Wrap(
                       children: List.generate(expertDetailWatch.userData?.areaOfExpertise?[index].topic?.length ?? 0, (i) {
                     return Container(
+                      margin: EdgeInsets.only(bottom: 14,right: 4),
+                      padding: EdgeInsets.symmetric(horizontal: 6,vertical: 3),
                       child: TitleMediumText(
                         maxLine: 3,
                         title: expertDetailWatch.userData?.areaOfExpertise?[index].topic?[i].name ?? '',
                         fontFamily: FontWeightEnum.w500.toInter,
-                      ).addMarginXY(paddingX: 8, paddingY: 2),
+                        titleTextAlign: TextAlign.center,
+                      ),
                       decoration: ShapeDecoration(
                         color: index % 2 == 0 ? ColorConstants.primaryColor.withOpacity(0.40) : ColorConstants.yellowButtonColor.withOpacity(0.4),
                         shape: RoundedRectangleBorder(
@@ -90,7 +97,7 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                           )
                         ],
                       ),
-                    ).addMarginXY(paddingX: 4, paddingY: 4);
+                    );
                   })),
                 )
               ],

@@ -5,6 +5,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
+import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
@@ -22,8 +23,8 @@ class ScheduleCallRepository extends ApiResponseHandler {
   }
 
   /// get expertAvailability
-  Future<ApiHttpResult> getExpertAvailabilityApi() async {
-    final uri = ApiConstants.endpointUri(path: '${ApiConstants.expertAvailability}/${SharedPrefHelper.getUserId}');
+  Future<ApiHttpResult> getExpertAvailabilityApi(String expertId) async {
+    final uri = ApiConstants.endpointUri(path: '${ApiConstants.expertAvailability}/$expertId');
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.get);
 
@@ -36,6 +37,6 @@ class ScheduleCallRepository extends ApiResponseHandler {
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), body: request);
 
-    return responseHandler(result: result, json: WeekAvailabilityResponseModel.parseInfo);
+    return responseHandler(result: result, json: AppointmentResponseModel.parseInfo);
   }
 }

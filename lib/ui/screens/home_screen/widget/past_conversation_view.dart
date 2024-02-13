@@ -3,16 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class PastConversationsView extends ConsumerStatefulWidget {
+class PastConversationsView extends ConsumerWidget {
   const PastConversationsView({super.key});
 
   @override
-  ConsumerState<PastConversationsView> createState() => _PastConversationsViewState();
-}
-
-class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final homeProviderWatch = ref.watch(homeProvider);
     final homeProviderRead = ref.read(homeProvider);
 
@@ -24,12 +19,12 @@ class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
         ),
         20.0.spaceY,
         BodySmallText(
-          fontWeight: FontWeight.w400,
           titleColor: ColorConstants.emptyTextColor,
-          maxLine: 4,
+          fontFamily: FontWeightEnum.w400.toInter,
+          maxLine: 2,
           title: LocaleKeys.cricketsTalkToSomeone.tr(),
         ),
-      /*  SizedBox(
+        /*  SizedBox(
           height: 120,
           child: ListView.builder(
               itemCount: 10,

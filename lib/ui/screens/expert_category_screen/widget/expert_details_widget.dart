@@ -17,9 +17,11 @@ class ExpertDetailWidget extends StatelessWidget {
     }
     return ShadowContainer(
       width: double.infinity,
-      shadowColor: ColorConstants.borderColor,
+      shadowColor: ColorConstants.blackColor.withOpacity(0.4),
       offset: Offset(2, 2),
       border: 15,
+      spreadRadius: 0,
+      blurRadius: 2,
       padding: EdgeInsets.all(16),
       child: InkWell(
         onTap: () {
@@ -93,8 +95,7 @@ class ExpertDetailWidget extends StatelessWidget {
                             HeadlineMediumText(
                               fontSize: 30,
                               title: '-',
-                              titleColor: ColorConstants.overallRatingColor,
-                              shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                              titleColor: ColorConstants.bottomTextColor,
                             ),
                           ],
                         ),
@@ -109,8 +110,7 @@ class ExpertDetailWidget extends StatelessWidget {
                             HeadlineMediumText(
                               fontSize: 30,
                               title: fee != null ? '\$${fee}' :"",
-                              titleColor: ColorConstants.overallRatingColor,
-                              shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                              titleColor: ColorConstants.bottomTextColor,
                             ),
                           ],
                         ),

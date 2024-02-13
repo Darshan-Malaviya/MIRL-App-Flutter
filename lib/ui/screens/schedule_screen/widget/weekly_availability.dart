@@ -27,7 +27,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        TitleMediumText(title: LocaleKeys.weeklyAvailability.tr(), fontSize: 18, fontWeight: FontWeight.w700, titleColor: ColorConstants.bottomTextColor),
+        TitleMediumText(title: LocaleKeys.weeklyAvailability.tr(), fontSize: 18, titleColor: ColorConstants.bottomTextColor),
         27.0.spaceY,
         scheduleProviderWatch.isLoadingAvailable
             ? AvailableTimeShimmer().addPaddingX(20)
@@ -70,9 +70,13 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         PrimaryButton(
           height: 55,
           title: LocaleKeys.scheduleAppointment.tr(),
-          onPressed: () {
+          onPressed: () async {
             if (scheduleProviderWatch.selectedSlotData != null) {
-              scheduleProviderRead.scheduleAppointmentApiCall(context: context);
+              scheduleProviderRead.getPayValue();
+              final result = await context.toPushNamed(RoutesConstants.scheduleAppointmentScreen);
+              if (result == 'callApi') {
+                scheduleProviderRead.getSlotsApi();
+              }
             } else {
               FlutterToast().showToast(msg: LocaleKeys.pleaseSelectSlot.tr());
             }
@@ -99,7 +103,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
             child: Center(
               child: BodySmallText(
                 title: dayText,
-          /*      shadows: [
+                /*      shadows: [
                   Shadow(
                     blurRadius: 8.0,
                     offset: Offset(0,3),
@@ -115,7 +119,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
               color: ColorConstants.primaryColor,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: ColorConstants.dropDownBorderColor),
-     /*         boxShadow: [
+              /*         boxShadow: [
                 BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.25),
                 ),

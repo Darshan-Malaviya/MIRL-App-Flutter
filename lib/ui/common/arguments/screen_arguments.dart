@@ -1,4 +1,5 @@
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
+import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 
 class FilterArgs {
   final bool? fromExploreExpert;
@@ -8,7 +9,7 @@ class FilterArgs {
 }
 
 class CallArgs {
-  final String? expertId;
+  final UserData? expertData;
 
-  CallArgs({this.expertId});
+  CallArgs({this.expertData});
 }

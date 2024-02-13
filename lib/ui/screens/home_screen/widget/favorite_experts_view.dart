@@ -5,16 +5,11 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
 
-class FavoriteExpertsView extends ConsumerStatefulWidget {
+class FavoriteExpertsView extends ConsumerWidget {
   const FavoriteExpertsView({super.key});
 
   @override
-  ConsumerState<FavoriteExpertsView> createState() => _FavoriteExpertsViewState();
-}
-
-class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final homeProviderWatch = ref.watch(homeProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,8 +18,7 @@ class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
           title: LocaleKeys.yourFavoriteExperts.tr(),
         ),
         20.0.spaceY,
-        if ((homeProviderWatch.homeData?.userFavorites?.isNotEmpty ?? false) &&
-            homeProviderWatch.homeData?.userFavorites != null) ...[
+        if ((homeProviderWatch.homeData?.userFavorites?.isNotEmpty ?? false) && homeProviderWatch.homeData?.userFavorites != null) ...[
           SizedBox(
             height: 120,
             child: ListView.builder(
@@ -34,8 +28,7 @@ class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      context.toPushNamed(RoutesConstants.expertDetailScreen,
-                          args: homeProviderWatch.homeData?.userFavorites?[index].id.toString());
+                      context.toPushNamed(RoutesConstants.expertDetailScreen, args: homeProviderWatch.homeData?.userFavorites?[index].id.toString());
                     },
                     child: ShadowContainer(
                       padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
@@ -45,13 +38,11 @@ class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CircleNetworkImageWidget(imageURL : homeProviderWatch.homeData?.userFavorites?[index].expertProfile ?? '',
-                            isNetworkImage: true,
-                            key: UniqueKey()),
+                          CircleNetworkImageWidget(imageURL: homeProviderWatch.homeData?.userFavorites?[index].expertProfile ?? '', isNetworkImage: true, key: UniqueKey()),
                           10.0.spaceY,
                           LabelSmallText(
                             fontSize: 9,
-                            title:(homeProviderWatch.homeData?.userFavorites?[index].expertName ?? 'name').toString().toCapitalizeAllWord(),
+                            title: (homeProviderWatch.homeData?.userFavorites?[index].expertName ?? 'name').toString().toCapitalizeAllWord(),
                             maxLine: 2,
                             titleTextAlign: TextAlign.center,
                           ),
@@ -74,8 +65,8 @@ class _FavoriteExpertsViewState extends ConsumerState<FavoriteExpertsView> {
           ),
         ] else ...[
           BodySmallText(
-            fontWeight: FontWeight.w400,
             titleColor: ColorConstants.emptyTextColor,
+            fontFamily: FontWeightEnum.w400.toInter,
             maxLine: 4,
             title: LocaleKeys.darnNoFavoriteExperts.tr(),
           ),

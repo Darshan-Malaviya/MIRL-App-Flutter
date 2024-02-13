@@ -173,7 +173,7 @@ class FilterProvider extends ChangeNotifier {
                     ? "true"
                     : "false"
                 : null,
-        feeOrder: commonSelectionModel[index].title == FilterType.PriceOrder.name
+        feeOrder: commonSelectionModel[index].title == FilterType.SortBy.name
             ? null
             : sortBySelectedItem == 'SORT BY'
                 ? null
@@ -210,7 +210,7 @@ class FilterProvider extends ChangeNotifier {
     } else if (commonSelectionModel[index].title == FilterType.FeeRange.name) {
       start = null;
       end = null;
-    } else if (commonSelectionModel[index].title == FilterType.PriceOrder.name) {
+    } else if (commonSelectionModel[index].title == FilterType.SortBy.name) {
        sortBySelectedItem = 'SORT BY';
        sortBySelectedOrder = 'HIGH TO LOW';
     } else if (commonSelectionModel[index].title == FilterType.Category.name) {
@@ -460,9 +460,9 @@ class FilterProvider extends ChangeNotifier {
   void setSortByPriceValue({required String order, required String sortByValue}) {
     sortBySelectedOrder = order /*?? 'SORT BY'*/;
     sortBySelectedItem = sortByValue /*?? 'HIGH TO LOW'*/;
-    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.PriceOrder.name);
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.SortBy.name);
     if (index == -1) {
-      commonSelectionModel.add(CommonSelectionModel(title: FilterType.PriceOrder.name, value: '$sortBySelectedItem - $sortBySelectedOrder'));
+      commonSelectionModel.add(CommonSelectionModel(title:FilterType.SortBy.name, value: '$sortBySelectedItem - $sortBySelectedOrder'));
     } else {
       commonSelectionModel[index].value = '$sortBySelectedItem - $sortBySelectedOrder';
     }
@@ -678,8 +678,8 @@ class FilterProvider extends ChangeNotifier {
       feeOrder: requestModel?.feeOrder,
       gender: requestModel?.gender,
       instantCallAvailable: requestModel?.instantCallAvailable,
-      maxFee: requestModel?.maxFee,
-      minFee: requestModel?.minFee,
+      maxFee: double.parse(requestModel?.maxFee ?? '0').toStringAsFixed(2),
+      minFee:  double.parse(requestModel?.minFee ?? '0').toStringAsFixed(2),
       reviewOrder: requestModel?.reviewOrder,
       topicIds: requestModel?.topicIds,
       categoryId: requestModel?.categoryId,
