@@ -53,6 +53,8 @@ dependencies:
   # localization
   easy_localization: ^3.0.3
 
+  agora_rtc_engine: ^6.2.6
+
   #ui
   logger: ^2.0.2+1
 #  url_launcher: ^6.1.12
@@ -65,6 +67,7 @@ dependencies:
   http_parser: ^4.0.2
   image_cropper: ^5.0.1
   shimmer: ^3.0.0
+  uuid: ^4.3.3
 
   #permission
   permission_handler: ^11.2.0

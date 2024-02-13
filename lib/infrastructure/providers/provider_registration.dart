@@ -10,6 +10,7 @@ import 'package:mirl/infrastructure/providers/expert_detail_provider.dart';
 import 'package:mirl/infrastructure/providers/home_provider.dart';
 import 'package:mirl/infrastructure/providers/report_user_provider.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
+import 'package:mirl/infrastructure/providers/socket_provider.dart';
 
 // final authProvider = ChangeNotifierProvider.autoDispose((ref) => AuthProvider());
 final loginScreenProvider = ChangeNotifierProvider.autoDispose((_) => AuthProvider());
@@ -24,4 +25,6 @@ final scheduleCallProvider = ChangeNotifierProvider.autoDispose((_) => ScheduleC
 final commonAppProvider = ChangeNotifierProvider<CommonAppProvider>((_) => CommonAppProvider());
 final reportUserProvider = ChangeNotifierProvider.autoDispose((_) => ReportUserProvider());
 final callProvider = ChangeNotifierProvider.autoDispose((_) => CallProvider());
+final socketProvider = ChangeNotifierProvider<SocketProvider>((ref) => SocketProvider(ref));
+
 

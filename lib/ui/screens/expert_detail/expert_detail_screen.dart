@@ -1,7 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
@@ -11,6 +15,7 @@ import 'package:mirl/ui/screens/expert_detail/widget/droup_down_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/reviews_widget.dart';
+import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 
 ValueNotifier<bool> isFavorite = ValueNotifier(false);
 
@@ -173,10 +178,40 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ],
             AreaOfExpertiseWidget(),
             ExpertDetailsButtonWidget(
-              title: StringConstants.requestCallNow,
-              buttonColor: ColorConstants.requestCallNowColor,
+
+              titleColor:  expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.buttonTextColor : ColorConstants.overAllRatingColor,
+              title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : "ZEN MODE : CALL PAUSED",
+              buttonColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.requestCallNowColor : ColorConstants.redLightColor ,
               onTap: () {
-                context.toPushNamed(RoutesConstants.videoCallScreen);
+                instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
+                context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
+                args: InstanceCallDialogArguments(
+                  name: expertDetailWatch.userData?.userName ?? "Name",
+                  //callTypeEnum: CallTypeEnum.callRequest,
+                 // title: LocaleKeys.instantCallRequest.tr().toUpperCase(),
+                //  desc: "${LocaleKeys.instantCallRequest.tr().toUpperCase()}${expertDetailWatch.userData?.expertName?.toUpperCase() ?? "USERNAME"}?",
+                  //secondBtnTile: LocaleKeys.goBack.tr().toUpperCase(),
+                  //firstBTnTitle:LocaleKeys.requestCall.tr().toUpperCase(),
+                  onFirstBtnTap: () {
+                    ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                  },
+                  onSecondBtnTap: () {
+                    if(instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                      context.toPop();
+                    } else if(instanceCallEnumNotifier.value == CallTypeEnum.requestApproved){
+                      ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
+                      ///context.toPop();
+                    }
+                    else {
+                      ref.read(socketProvider).updateRequestStatusEmit(expertId: widget.expertId, callStatusEnum: CallStatusEnum.cancel,
+                          callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
+                      context.toPop();
+                    }
+                  },
+                  image: expertDetailWatch.userData?.userProfile ?? "",
+                  expertId: expertDetailWatch.userData?.id.toString() ??'',
+                  userID: SharedPrefHelper.getUserId.toString(),
+                ));
               },
             ),
             24.0.spaceY,

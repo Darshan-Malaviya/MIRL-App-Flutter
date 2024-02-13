@@ -34,6 +34,7 @@ class ColorConstants {
   static Color requestCallNowColor = const Color(0xFFC7F84D);
   static Color lightPurpleColor = const Color(0xFFF9F0FB);
   static Color darkRedColor = const Color(0xFFFF3131);
+  static Color redLightColor = const Color(0xFFEC4E62);
 
   //static Color greenColor = const Color(0xFFABDF75);
   static Color textGreenColor = const Color(0xFF65C106);

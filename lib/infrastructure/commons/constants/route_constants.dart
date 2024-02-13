@@ -36,4 +36,5 @@ class RoutesConstants {
   static const String thanksScreen = '/thanksScreen';
   static const String reportExpertScreen = '/reportExpertScreen';
   static const String videoCallScreen = '/videoCallScreen';
+  static const String instantCallRequestDialogScreen = '/instantCallRequestDialog';
 }

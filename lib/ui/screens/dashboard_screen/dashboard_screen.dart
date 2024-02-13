@@ -18,9 +18,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    ref.read(socketProvider).listenerEvent();
       SocketApi.singleTone.init(onListenMethod: (value) {
         if (value) {
-          ref.read(callProvider).listenAllMethods(context);
+          ref.read(socketProvider).listenAllMethods(context);
         }
       });
     });

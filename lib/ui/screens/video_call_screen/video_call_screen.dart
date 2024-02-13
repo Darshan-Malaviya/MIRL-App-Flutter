@@ -1,9 +1,13 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/services/agora_service.dart';
+import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/widget/video_call_bottomsgeet_widget.dart';
 
 class VideoCallScreen extends ConsumerStatefulWidget {
-  const VideoCallScreen({super.key});
+final VideoCallArguments arguments;
+  const VideoCallScreen({super.key,required this.arguments});
 
   @override
   ConsumerState<VideoCallScreen> createState() => _VideoCallScreenState();
@@ -12,7 +16,9 @@ class VideoCallScreen extends ConsumerStatefulWidget {
 class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(callProvider).initVideoCallAgora(channelId: widget.arguments.agoraChannelId, token: widget.arguments.agoraToken);
+    });
   }
 
   @override
@@ -23,11 +29,17 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset(
+          AgoraVideoView(
+            controller: VideoViewController(
+              rtcEngine: engine,
+              canvas: const VideoCanvas(uid: 0, mirrorMode: VideoMirrorModeType.videoMirrorModeAuto),
+            ),
+          ),
+         /* Image.asset(
             width: double.infinity,
             ImageConstants.videoCall,
             fit: BoxFit.cover,
-          ),
+          ),*/
           InkWell(
             onTap: () {
               callRead.visibleBottomSheet();

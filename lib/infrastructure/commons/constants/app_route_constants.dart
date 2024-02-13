@@ -28,6 +28,8 @@ import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
+import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
+import 'package:mirl/ui/screens/instant_call_screen/instant_call_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/booking_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_option_screen.dart';
@@ -37,6 +39,7 @@ import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
+import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
 ///use this service for provide global context to widgets
@@ -129,7 +132,9 @@ class RouterConstant {
       case RoutesConstants.reportExpertScreen:
         return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
       case RoutesConstants.videoCallScreen:
-        return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+        return MaterialPageRoute(builder: (_) =>  VideoCallScreen(arguments: settings.arguments as VideoCallArguments,));
+        case RoutesConstants.instantCallRequestDialogScreen:
+        return MaterialPageRoute(builder: (_) =>  InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments,));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
