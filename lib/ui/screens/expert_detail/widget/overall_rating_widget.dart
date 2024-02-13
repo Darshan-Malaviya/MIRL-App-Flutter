@@ -21,39 +21,35 @@ class OverallRatingWidget extends StatefulWidget {
 class _OverallRatingWidgetState extends State<OverallRatingWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        TitleSmallText(
+          fontSize: 13,
+          title: widget.name,
+          titleColor: ColorConstants.blueColor,
+          titleTextAlign: TextAlign.start,
+        ).addMarginX(12),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TitleSmallText(
-              fontSize: 13,
-              title: widget.name,
-              fontFamily: FontWeightEnum.w600.toInter,
-              titleTextAlign: TextAlign.start,
-              titleColor: ColorConstants.blackColor,
-            ).addMarginX(12),
-            Row(
-                children: List.generate(5, (index) {
-              return Container(
-                width: 18,
-                height: 12,
-                decoration: BoxDecoration(
-                  color: ColorConstants.categoryListBorder,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x4C000000),
-                      blurRadius: 3,
-                      offset: Offset(0, 3),
-                      spreadRadius: 0,
-                    )
-                  ],
-                ),
-              ).addMarginX(4);
-            })),
-          ],
-        ).addMarginY(6),
+            children: List.generate(5, (index) {
+          return Container(
+            width: 18,
+            height: 12,
+            margin: EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              color: ColorConstants.primaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x4C000000),
+                  blurRadius: 3,
+                  offset: Offset(0, 3),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+          );
+        })),
       ],
-    );
+    ).addMarginXY(paddingY: 6,paddingX: 10);
   }
 }

@@ -70,9 +70,13 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         PrimaryButton(
           height: 55,
           title: LocaleKeys.scheduleAppointment.tr(),
-          onPressed: () {
+          onPressed: () async {
             if (scheduleProviderWatch.selectedSlotData != null) {
-              scheduleProviderRead.scheduleAppointmentApiCall(context: context);
+              scheduleProviderRead.getPayValue();
+              final result = await context.toPushNamed(RoutesConstants.scheduleAppointmentScreen);
+              if (result == 'callApi') {
+                scheduleProviderRead.getSlotsApi();
+              }
             } else {
               FlutterToast().showToast(msg: LocaleKeys.pleaseSelectSlot.tr());
             }

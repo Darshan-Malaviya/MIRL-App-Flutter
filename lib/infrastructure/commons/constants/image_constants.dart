@@ -27,7 +27,7 @@ class ImageConstants {
   static const filter = '${imagePath}filter.png';
   static const expertDetail = '${imagePath}expert_detail.png';
   static const rating = '${imagePath}rating.png';
-  static const starFill = '${imagePath}star_fill.png';
+  static const star = '${imagePath}star.png';
   static const like = '${imagePath}like.png';
   static const dislike = '${imagePath}dislike.png';
   static const cancel = '${imagePath}cancel.png';

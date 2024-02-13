@@ -9,9 +9,7 @@ class CircleNetworkImageWidget extends StatelessWidget {
   final Widget? emptyImageWidget;
   final double? radius;
 
-  const CircleNetworkImageWidget(
-      {Key? key, required this.imageURL, this.radius, this.boxFit, this.isNetworkImage = true, this.emptyImageWidget})
-      : super(key: key);
+  const CircleNetworkImageWidget({Key? key, required this.imageURL, this.radius, this.boxFit, this.isNetworkImage = true, this.emptyImageWidget}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +30,8 @@ class CircleNetworkImageWidget extends StatelessWidget {
                   radius: radius ?? 37.5,
                   child: Center(child: SpinKitThreeBounce(color: ColorConstants.primaryColor, size: 20)),
                 ),
-              LoadState.completed => CircleAvatar(radius: radius ?? 37.5, backgroundImage: NetworkImage(imageURL)),
-              LoadState.failed =>
-                CircleAvatar(radius: radius ?? 37.5, child: Center(child: Icon(Icons.person_2_outlined))),
+              LoadState.completed => CircleAvatar(radius: radius ?? 37.5, backgroundImage: NetworkImage(imageURL), backgroundColor: ColorConstants.grayLightColor),
+              LoadState.failed => CircleAvatar(radius: radius ?? 37.5, child: Center(child: Icon(Icons.person_2_outlined))),
             };
           },
         );
@@ -49,15 +46,14 @@ class CircleNetworkImageWidget extends StatelessWidget {
                   radius: radius ?? 37.5,
                   child: Center(child: SpinKitThreeBounce(color: ColorConstants.primaryColor, size: 20)),
                 ),
-              LoadState.completed => CircleAvatar(radius: radius ?? 37.5, backgroundImage: NetworkImage(imageURL)),
+              LoadState.completed => CircleAvatar(radius: radius ?? 37.5, backgroundImage: FileImage(File(imageURL)), backgroundColor: ColorConstants.grayLightColor),
               LoadState.failed => CircleAvatar(radius: radius ?? 37.5, child: Icon(Icons.person_2_outlined)),
             };
           },
         );
       }
     } else {
-      return emptyImageWidget ??
-          CircleAvatar(radius: radius ?? 37.5, child: Center(child: Icon(Icons.person_2_outlined)));
+      return emptyImageWidget ?? CircleAvatar(radius: radius ?? 37.5, child: Center(child: Icon(Icons.person_2_outlined)));
     }
   }
 }

@@ -19,7 +19,8 @@ class _ScheduleCallScreenState extends ConsumerState<ScheduleCallScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(scheduleCallProvider).expertAvailabilityApi(widget.callArgs.expertId ?? '');
+      ref.read(scheduleCallProvider).getExpertData(widget.callArgs.expertData);
+      ref.read(scheduleCallProvider).expertAvailabilityApi();
     });
   }
 

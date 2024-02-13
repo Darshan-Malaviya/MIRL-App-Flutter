@@ -2,6 +2,7 @@ import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/schedule_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/slots_request_model.dart';
+import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
@@ -36,7 +37,12 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   int? oldIndex;
 
-  String _expertId = '';
+  UserData? expertData;
+
+  double? totalPayAmount;
+
+  AppointmentData? get appointmentData => _appointmentData;
+  AppointmentData? _appointmentData;
 
   void incrementCallDuration() {
     _callDuration += 10;
@@ -47,6 +53,16 @@ class ScheduleCallProvider extends ChangeNotifier {
   void decrementCallDuration() {
     _callDuration -= 10;
     getSlotsApi();
+    notifyListeners();
+  }
+
+  void getExpertData(UserData? data) {
+    expertData = data;
+    notifyListeners();
+  }
+
+  void getPayValue() {
+    totalPayAmount = ((expertData?.fee ?? 0) / 100 * _callDuration);
     notifyListeners();
   }
 
@@ -80,11 +96,11 @@ class ScheduleCallProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> expertAvailabilityApi(String expertId) async {
+  Future<void> expertAvailabilityApi() async {
     _isLoadingAvailable = true;
     notifyListeners();
 
-    ApiHttpResult response = await _scheduleCallRepository.getExpertAvailabilityApi(expertId);
+    ApiHttpResult response = await _scheduleCallRepository.getExpertAvailabilityApi(expertData?.id.toString() ?? '');
 
     _isLoadingAvailable = false;
     notifyListeners();
@@ -94,7 +110,6 @@ class ScheduleCallProvider extends ChangeNotifier {
         if (response.data != null && response.data is WeekAvailabilityResponseModel) {
           WeekAvailabilityResponseModel responseModel = response.data;
           _weekAvailability.addAll(responseModel.data ?? []);
-          _expertId = expertId;
           notifyListeners();
         }
         break;
@@ -110,7 +125,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     notifyListeners();
 
     ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(
-      request: SlotsRequestModel(expertId: _expertId, date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
+      request: SlotsRequestModel(expertId: expertData?.id.toString(), date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
     );
 
     _isLoadingSlot = false;
@@ -121,6 +136,8 @@ class ScheduleCallProvider extends ChangeNotifier {
         if (response.data != null && response.data is GetSlotsResponseModel) {
           GetSlotsResponseModel responseModel = response.data;
           _slotList.clear();
+          selectedSlotData = null;
+          oldIndex = null;
           _slotList.addAll(responseModel.data ?? []);
           notifyListeners();
         }
@@ -140,7 +157,13 @@ class ScheduleCallProvider extends ChangeNotifier {
     CustomLoading.progressDialog(isLoading: true);
 
     ScheduleAppointmentRequestModel requestModel = ScheduleAppointmentRequestModel(
-        duration: _callDuration.toString(), expertId: int.parse(_expertId), endTime: selectedSlotData?.endTimeUTC ?? '', startTime: selectedSlotData?.startTimeUTC ?? '', status: '0');
+      duration: _callDuration.toString(),
+      expertId: expertData?.id,
+      endTime: selectedSlotData?.endTimeUTC ?? '',
+      startTime: selectedSlotData?.startTimeUTC ?? '',
+      status: '0',
+      amount: ((totalPayAmount ?? 0) * 100).toInt(),
+    );
 
     ApiHttpResult response = await _scheduleCallRepository.bookAppointment(request: requestModel.prepareRequest());
 
@@ -148,16 +171,17 @@ class ScheduleCallProvider extends ChangeNotifier {
 
     switch (response.status) {
       case APIStatus.success:
-        context.toPushNamed(RoutesConstants.scheduleAppointmentScreen);
-/*        if (response.data != null && response.data is ChildUpdateResponseModel) {
-          ChildUpdateResponseModel childUpdateResponseModel = response.data;
-          SharedPrefHelper.saveAreaOfExpertise(jsonEncode(childUpdateResponseModel.data ?? []));
-          Logger().d("Successfully childUpdateApiCall");
-          context.toPop();
-          FlutterToast().showToast(msg: childUpdateResponseModel.message ?? '');
-        }*/
+        if (response.data != null && response.data is AppointmentResponseModel) {
+          AppointmentResponseModel responseModel = response.data;
+          _appointmentData = responseModel.data;
+          context.toPushNamed(RoutesConstants.bookingConfirmScreen);
+          notifyListeners();
+        }
         break;
       case APIStatus.failure:
+        if (response.failure?.statusCode == 302) {
+          context.toPop(result: 'callApi');
+        }
         FlutterToast().showToast(msg: response.failure?.message ?? '');
         Logger().d("API fail on scheduleAppointmentApiCall Api ${response.data}");
         break;

@@ -72,7 +72,7 @@ class PushNotificationService {
           RemoteNotification? notification = message?.notification;
           AndroidNotification? android = message?.notification?.android;
 
-          if (message?.data['type'] == 'connectAndroidCall') {
+          if (message?.data['key'] == 'connectAndroidCall') {
           } else {
             if (notification != null && android != null) {
               flutterLocalNotificationsPlugin.show(

@@ -66,6 +66,7 @@ class _CategoryNameAndImageListViewState extends ConsumerState<CategoryNameAndIm
                 );
               }),
         ),
+        5.0.spaceY,
         InkWell(
           onTap: () {
             context.toPushNamed(RoutesConstants.expertCategoryScreen);
@@ -73,7 +74,7 @@ class _CategoryNameAndImageListViewState extends ConsumerState<CategoryNameAndIm
           child: LabelSmallText(
             fontSize: 10,
             title: LocaleKeys.seeAllExpertCategoryAndTopics.tr().toUpperCase(),
-          ).addMarginY(20),
+          ).addMarginBottom(20),
         ),
       ],
     );
