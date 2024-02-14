@@ -26,7 +26,8 @@ class DashboardProvider extends ChangeNotifier {
       },
       children: const <Widget>[
         HomeScreen(),
-        ExploreScreen(),
+        //ExploreScreen(),
+        BlockUserScreen(),
         //ExpertCallHistoryScreen(),
         NotificationScreen(),
         ExpertProfileScreen(),

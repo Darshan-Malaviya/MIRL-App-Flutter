@@ -1,4 +1,3 @@
-
 class ExpertDataRequestModel {
   String? userId;
   String? page;
@@ -16,23 +15,21 @@ class ExpertDataRequestModel {
   String? topicIds;
   String? categoryId;
 
-
   ExpertDataRequestModel(
-      {
-        this.userId,
+      {this.userId,
       this.page,
-        this.limit,
-        this.feeOrder,
-        this.reviewOrder,
-        this.experienceOder,
-        this.search,
-        this.gender,
-        this.instantCallAvailable,
-        this.country,
-        this.city,
-        this.minFee,
-        this.maxFee,
-        this.topicIds,
+      this.limit,
+      this.feeOrder,
+      this.reviewOrder,
+      this.experienceOder,
+      this.search,
+      this.gender,
+      this.instantCallAvailable,
+      this.country,
+      this.city,
+      this.minFee,
+      this.maxFee,
+      this.topicIds,
       this.categoryId});
 
   ExpertDataRequestModel.fromJson(Map<String, dynamic> json) {
@@ -86,6 +83,4 @@ class ExpertDataRequestModel {
     json.removeWhere((key, value) => value == null);
     return json;
   }
-
 }
-

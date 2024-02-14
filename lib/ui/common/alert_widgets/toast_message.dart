@@ -18,7 +18,7 @@ class FlutterToast {
       decoration: BoxDecoration(
         color: ColorConstants.primaryColor,
         borderRadius: const BorderRadius.all(
-          Radius.circular(100),
+          Radius.circular(10),
         ),
       ),
       child: Column(
@@ -34,6 +34,7 @@ class FlutterToast {
                       BodySmallText(
                         title: bulletPoint,
                         maxLine: 10,
+                        titleColor: ColorConstants.whiteColor,
                       ),
                     if (bulletPoint.isNotEmpty) 4.0.spaceX,
                     Expanded(

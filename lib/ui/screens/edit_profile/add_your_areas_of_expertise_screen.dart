@@ -115,6 +115,9 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                 shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
                                     ? ColorConstants.categoryListBorder
                                     : ColorConstants.blackColor.withOpacity(0.1),
+                                offset: Offset(0,2),
+                                spreadRadius: 0,
+                                blurRadius: 3,
                                 child: Column(
                                   children: [
                                     ClipRRect(
@@ -133,13 +136,13 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                       fontSize: 9,
                                       title: element?.name ?? '',
                                       titleColor: ColorConstants.blackColor,
-                                      fontFamily: FontWeightEnum.w700.toInter,
                                       titleTextAlign: TextAlign.center,
+                                      maxLine: 2,
                                     ),
                                   ],
                                 ),
-                                height: 90,
-                                width: 90,
+                                height: 100,
+                                width: 100,
                                 isShadow: true,
                               ).addPaddingTop(5),
                             ),
@@ -150,7 +153,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                   child: CircleAvatar(
                                     child: TitleMediumText(
                                       title: element?.badgeCount.toString() ?? '0',
-                                      fontWeight: FontWeight.w600,
+                                      fontFamily: FontWeightEnum.w600.toInter,
                                       titleColor: ColorConstants.blackColor,
                                     ),
                                     radius: 14,

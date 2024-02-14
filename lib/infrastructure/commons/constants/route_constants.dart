@@ -37,4 +37,7 @@ class RoutesConstants {
   static const String reportExpertScreen = '/reportExpertScreen';
   static const String videoCallScreen = '/videoCallScreen';
   static const String blockUserScreen = '/blockUserScreen';
+  static const String multiConnectScreen = '/multiConnectScreen';
+  static const String multiConnectFilterScreen = '/multiConnectFilterScreen';
+  static const String viewCalendarAppointment = '/viewCalendarAppointment';
 }

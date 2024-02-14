@@ -81,42 +81,41 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           }),
                       40.0.spaceY,
                       Image.asset(ImageConstants.line),
-                      40.0.spaceY,
+                      10.0.spaceY,
                       PrimaryButton(
                         title: StringConstants.continueWithGoogle,
                         titleColor: ColorConstants.textColor,
+                        margin: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
                         onPressed: () {
                           loginScreenProviderRead.signInGoogle();
                         },
                         prefixIcon: ImageConstants.google,
                         prefixIconPadding: 20,
-                      ).addMarginX(50),
+                      ),
                       Visibility(
                         visible: Platform.isIOS,
                         replacement: const SizedBox.shrink(),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: PrimaryButton(
-                            title: StringConstants.continueWithApple,
-                            prefixIcon: ImageConstants.apple,
-                            titleColor: ColorConstants.textColor,
-                            prefixIconPadding: 20,
-                            onPressed: () {
-                              loginScreenProviderRead.signInApple();
-                            },
-                          ),
+                        child: PrimaryButton(
+                          title: StringConstants.continueWithApple,
+                          prefixIcon: ImageConstants.apple,
+                          titleColor: ColorConstants.textColor,
+                          prefixIconPadding: 20,
+                          margin: EdgeInsets.only(left: 50, right: 50, bottom: 30),
+                          onPressed: () {
+                            loginScreenProviderRead.signInApple();
+                          },
                         ),
-                      ).addPaddingX(50),
-                      30.0.spaceY,
+                      ),
                       PrimaryButton(
                         title: StringConstants.continueWithFacebook,
                         prefixIcon: ImageConstants.facebook,
                         titleColor: ColorConstants.textColor,
                         prefixIconPadding: 20,
+                        margin: EdgeInsets.symmetric(horizontal: 50),
                         onPressed: () {
                           loginScreenProviderRead.fbLogin();
                         },
-                      ).addPaddingX(50),
+                      ),
                       30.0.spaceY,
                       RichText(
                         softWrap: true,

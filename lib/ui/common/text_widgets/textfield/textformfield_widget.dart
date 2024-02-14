@@ -165,8 +165,6 @@ class TextFormFieldWidget extends StatelessWidget {
 
   final String? fontFamily;
 
-  final bool? enable;
-
   final double? width;
 
   final double? height;
@@ -184,6 +182,8 @@ class TextFormFieldWidget extends StatelessWidget {
   final double? labelTextSpace;
 
   final bool? setFormatter;
+
+  final bool? canRequestFocus;
 
   const TextFormFieldWidget(
       {this.textFormFieldKey,
@@ -242,7 +242,6 @@ class TextFormFieldWidget extends StatelessWidget {
       this.prefixWidget,
       this.prefixIconWidget,
       this.shadowColor,
-      this.enable,
       this.width,
       this.height,
       this.fontFamily,
@@ -253,7 +252,8 @@ class TextFormFieldWidget extends StatelessWidget {
       this.borderColor,
       this.initialValue,
       this.alignment,
-      this.setFormatter})
+      this.setFormatter,
+      this.canRequestFocus})
       : super(key: textFormFieldKey);
 
   @override
@@ -313,12 +313,6 @@ class TextFormFieldWidget extends StatelessWidget {
                   fillColor: fillColor ?? Colors.white,
                   filled: true,
                   errorStyle: TextStyle(color: ColorConstants.secondaryColor, fontSize: 12 / scaleFactor, fontWeight: FontWeight.w600),
-
-                  ///textfield without text field
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderSide: const BorderSide(color: Colors.transparent),
-                  //   borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
-                  // ),
                   ///text field with shadow
                   enabledBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
@@ -336,14 +330,21 @@ class TextFormFieldWidget extends StatelessWidget {
                   ),
                   errorBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorConstants.secondaryColor),
+                      borderSide: BorderSide(color: ColorConstants.borderColor),
                       borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                     ),
                     shadow: buildBoxShadow(),
                   ),
                   focusedErrorBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorConstants.secondaryColor),
+                      borderSide: BorderSide(color: ColorConstants.borderColor),
+                      borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
+                    ),
+                    shadow: buildBoxShadow(),
+                  ),
+                  disabledBorder: DecoratedInputBorder(
+                    child: OutlineInputBorder(
+                      borderSide: BorderSide(color: ColorConstants.borderColor),
                       borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                     ),
                     shadow: buildBoxShadow(),
@@ -360,7 +361,7 @@ class TextFormFieldWidget extends StatelessWidget {
             cursorColor: ColorConstants.greyColor,
             cursorRadius: const Radius.circular(100),
             cursorHeight: 24,
-            enabled: enable ?? true,
+            enabled: canRequestFocus ?? true,
             enableIMEPersonalizedLearning: true,
             enableInteractiveSelection: true,
             enableSuggestions: true,

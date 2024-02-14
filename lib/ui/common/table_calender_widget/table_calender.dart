@@ -10,8 +10,9 @@ final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
 class TableCalenderRangeWidget extends StatefulWidget {
   final Function(DateTime selectedDay, DateTime focusedDay) onDateSelected;
   final DateTime? selectedDay;
+  final List<int>? scheduleDateList;
 
-  TableCalenderRangeWidget({super.key, required this.onDateSelected, required this.selectedDay});
+  TableCalenderRangeWidget({super.key, required this.onDateSelected, required this.selectedDay, this.scheduleDateList});
 
   @override
   _TableCalenderRangeWidgetState createState() => _TableCalenderRangeWidgetState();
@@ -32,7 +33,16 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
       firstDay: kFirstDay,
       lastDay: kToday.add(Duration(days: 30)),
       focusedDay: _focusedDay,
-      selectedDayPredicate: (day) => isSameDay(widget.selectedDay, day),
+      selectedDayPredicate: (day) {
+        if (widget.scheduleDateList?.isNotEmpty ?? false) {
+          for (var element in widget.scheduleDateList ?? []) {
+            if (day.day == element) {
+              return true;
+            }
+          }
+        }
+        return isSameDay(widget.selectedDay, day);
+      },
       rangeStartDay: _rangeStart,
       rangeEndDay: _rangeEnd,
       availableGestures: AvailableGestures.horizontalSwipe,
