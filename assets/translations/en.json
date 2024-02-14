@@ -169,5 +169,7 @@
   "selectCity": "Select City",
   "selectCountry": "Select Country",
   "noSlotAvailable": "No slot available",
-  "pleaseSelectSlot": "You have select slot for scheduling appointment"
+  "pleaseSelectSlot": "You have select slot for scheduling appointment",
+  "backCalenderAppointment": "BACK TO CALENDAR AND APPOINTMENTS",
+  "user": "USER"
 }

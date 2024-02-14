@@ -117,7 +117,7 @@ class RouterConstant {
       case RoutesConstants.scheduleAppointmentScreen:
         return MaterialPageRoute(builder: (_) => const ScheduleAppointmentScreen());
       case RoutesConstants.canceledAppointmentScreen:
-        return MaterialPageRoute(builder: (_) => const CanceledAppointmentScreen());
+        return MaterialPageRoute(builder: (_) => CanceledAppointmentScreen(args: settings.arguments as AppointmentArgs));
       case RoutesConstants.canceledAppointmentOptionScreen:
         return MaterialPageRoute(builder: (_) => const CanceledAppointmentOptionScreen());
       case RoutesConstants.blockUserListScreen:

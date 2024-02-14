@@ -34,45 +34,36 @@ class AppointmentResponseModel {
 }
 
 class AppointmentData {
+  int? id;
   String? date;
   String? duration;
   String? startTime;
   String? endTime;
   String? status;
-  String? reason;
   ExpertDetail? expertDetail;
 
-  AppointmentData(
-      {this.date,
-        this.duration,
-        this.startTime,
-        this.endTime,
-        this.status,
-        this.reason,
-        this.expertDetail});
+  AppointmentData({this.id,this.date, this.duration, this.startTime, this.endTime, this.status, this.expertDetail});
 
   AppointmentData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     date = json['date'];
     duration = json['duration'];
     startTime = json['startTime'];
     endTime = json['endTime'];
     status = json['status'];
-    reason = json['reason'];
-    expertDetail = json['expertDetail'] != null
-        ? new ExpertDetail.fromJson(json['expertDetail'])
-        : null;
+    expertDetail = json['expertDetail'] != null ? new ExpertDetail.fromJson(json['expertDetail']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['date'] = this.date;
     data['duration'] = this.duration;
     data['startTime'] = this.startTime;
     data['endTime'] = this.endTime;
     data['status'] = this.status;
-    data['reason'] = this.reason;
     if (this.expertDetail != null) {
-      data['expertDetail'] = this.expertDetail!.toJson();
+      data['expertDetail'] = this.expertDetail?.toJson();
     }
     return data;
   }
