@@ -16,14 +16,15 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
   @override
   Widget build(BuildContext context) {
     final homeProviderWatch = ref.watch(homeProvider);
-    return Column(
-      children: [
+    return Column(children: [
+      if ((homeProviderWatch.homeData?.categories?.isNotEmpty ?? false) && homeProviderWatch.homeData?.categories != null) ...[
         SizedBox(
           height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 4) ? 120 : 240,
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
@@ -72,7 +73,14 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
             title: LocaleKeys.seeAllExpertCategoryAndTopics.tr().toUpperCase(),
           ).addMarginY(20),
         ).addVisibility(homeProviderWatch.homeData?.categories?.isNotEmpty ?? false),
-      ],
-    );
+      ] else ...[
+        BodySmallText(
+          titleColor: ColorConstants.emptyTextColor,
+          fontFamily: FontWeightEnum.w400.toInter,
+          maxLine: 4,
+          title: 'No category found',
+        ),
+      ]
+    ]);
   }
 }

@@ -47,7 +47,7 @@ class _NewNotificationWidgetState extends State<NewNotificationWidget> {
             children: [
               Row(
                 children: [
-                  Image.asset(ImageConstants.starFill),
+                  Image.asset(ImageConstants.star),
                   6.0.spaceX,
                   BodyMediumText(
                     title: '02:00',

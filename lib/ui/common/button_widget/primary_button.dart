@@ -15,8 +15,8 @@ class PrimaryButton extends StatelessWidget {
   final String? buttonTextFontFamily;
   final double? fontSize;
 
-    const PrimaryButton({
-      Key? key,
+  const PrimaryButton(
+      {Key? key,
       required this.title,
       this.height,
       this.width,
@@ -29,8 +29,8 @@ class PrimaryButton extends StatelessWidget {
       this.titleColor,
       this.buttonColor,
       this.buttonTextFontFamily,
-      this.fontSize
-    }) : super(key: key);
+      this.fontSize})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +68,13 @@ class PrimaryButton extends StatelessWidget {
             children: [
               (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
                   ? Padding(
-                      padding: EdgeInsets.only(right: prefixIconPadding ?? 0.0),
+                      padding: EdgeInsets.only(
+                        right: prefixIconPadding ?? 0.0,
+                      ),
                       child: Image.asset(prefixIcon ?? ''),
                     )
                   : const SizedBox.shrink(),
-              Expanded(
+              Flexible(
                 child: BodyMediumText(
                   title: title,
                   fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,

@@ -6,14 +6,15 @@ import 'package:mirl/ui/common/read_more/readmore.dart';
 
 class ExpertDetailWidget extends StatelessWidget {
   final ExpertData? expertData;
+
   const ExpertDetailWidget({super.key, required this.expertData});
 
   @override
   Widget build(BuildContext context) {
     String? fee;
-    if(expertData?.fee!= null){
-       double data = (expertData?.fee?.toDouble() ?? 0.0) / 100;
-       fee = data.toStringAsFixed(2);
+    if (expertData?.fee != null) {
+      double data = (expertData?.fee?.toDouble() ?? 0.0) / 100;
+      fee = data.toStringAsFixed(2);
     }
     return ShadowContainer(
       width: double.infinity,
@@ -25,8 +26,7 @@ class ExpertDetailWidget extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: InkWell(
         onTap: () {
-          context.toPushNamed(RoutesConstants.expertDetailScreen,
-              args: expertData?.id.toString());
+          context.toPushNamed(RoutesConstants.expertDetailScreen, args: expertData?.id.toString());
         },
         child: Column(
           children: [
@@ -58,9 +58,8 @@ class ExpertDetailWidget extends StatelessWidget {
                                 alignment: WrapAlignment.center,
                                 spacing: 0,
                                 children: List.generate(
-                                    ((expertData?.expertCategory?.length ?? 0) > 7)
-                                        ? 6
-                                        : expertData?.expertCategory?.length ?? 0, (i) {
+                                    ((expertData?.expertCategory?.length ?? 0) > 7) ? 6 : expertData?.expertCategory?.length ?? 0,
+                                    (i) {
                                   String color = expertData?.expertCategory?[i].colorCode?.substring(1) ?? "D97CF0";
                                   int colorConcat = int.parse('0xff$color');
 
@@ -82,7 +81,7 @@ class ExpertDetailWidget extends StatelessWidget {
                     ),
                     28.0.spaceY,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Row(
                           children: [
@@ -99,20 +98,29 @@ class ExpertDetailWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            BodySmallText(
-                              title: LocaleKeys.feesPerMinute.tr(),
-                              fontFamily: FontWeightEnum.w400.toInter,
-                              titleTextAlign: TextAlign.center,
-                            ),
-                            10.0.spaceX,
-                            HeadlineMediumText(
-                              fontSize: 30,
-                              title: fee != null ? '\$${fee}' :"",
-                              titleColor: ColorConstants.bottomTextColor,
-                            ),
-                          ],
+                        20.0.spaceX,
+                        Flexible(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              BodySmallText(
+                                title: LocaleKeys.feesPerMinute.tr(),
+                                fontFamily: FontWeightEnum.w400.toInter,
+                                titleTextAlign: TextAlign.center,
+                              ),
+                              10.0.spaceX,
+                              Flexible(
+                                child: HeadlineMediumText(
+                                  fontSize: 30,
+                                  maxLine: 3,
+                                  title: fee != null ? '\$${fee}' : "",
+                                  titleColor: ColorConstants.bottomTextColor,
+                                  titleTextAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
