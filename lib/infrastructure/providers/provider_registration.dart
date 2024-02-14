@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/providers/add_your_area_expertise_provider.dart';
 import 'package:mirl/infrastructure/providers/auth_provider.dart';
+import 'package:mirl/infrastructure/providers/block_provider.dart';
 import 'package:mirl/infrastructure/providers/call_provider.dart';
 import 'package:mirl/infrastructure/providers/common_app_provider.dart';
 import 'package:mirl/infrastructure/providers/dashboard_provider.dart';
@@ -24,4 +25,5 @@ final scheduleCallProvider = ChangeNotifierProvider.autoDispose((_) => ScheduleC
 final commonAppProvider = ChangeNotifierProvider<CommonAppProvider>((_) => CommonAppProvider());
 final reportUserProvider = ChangeNotifierProvider.autoDispose((_) => ReportUserProvider());
 final callProvider = ChangeNotifierProvider.autoDispose((_) => CallProvider());
+final blockUserProvider = ChangeNotifierProvider.autoDispose((_) => BlockProvider());
 

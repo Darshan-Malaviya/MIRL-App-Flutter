@@ -2,6 +2,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/auth_screen/login_screen.dart';
 import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
 import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
+import 'package:mirl/ui/screens/block_user/block_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
@@ -130,6 +131,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
       case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+      case RoutesConstants.blockUserScreen:
+        return MaterialPageRoute(builder: (_) => const BlockUserScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
