@@ -15,8 +15,8 @@ class PrimaryButton extends StatelessWidget {
   final String? buttonTextFontFamily;
   final double? fontSize;
 
-    const PrimaryButton({
-      Key? key,
+  const PrimaryButton(
+      {Key? key,
       required this.title,
       this.height,
       this.width,
@@ -29,8 +29,8 @@ class PrimaryButton extends StatelessWidget {
       this.titleColor,
       this.buttonColor,
       this.buttonTextFontFamily,
-      this.fontSize
-    }) : super(key: key);
+      this.fontSize})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,22 +63,26 @@ class PrimaryButton extends StatelessWidget {
           ),
           onPressed: onPressed,
           child: Row(
-            //mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
                   ? Padding(
-                      padding: EdgeInsets.only(right: prefixIconPadding ?? 0.0),
+                      padding: EdgeInsets.only(
+                        right: prefixIconPadding ?? 0.0,
+                      ),
                       child: Image.asset(prefixIcon ?? ''),
                     )
                   : const SizedBox.shrink(),
-              BodyMediumText(
-                title: title,
-                fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
-                titleColor: titleColor ?? ColorConstants.buttonTextColor,
-                titleTextAlign: TextAlign.center,
-                fontSize: fontSize ?? 13,
-                maxLine: 2,
+              Flexible(
+                child: BodyMediumText(
+                  title: title,
+                  fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
+                  titleColor: titleColor ?? ColorConstants.buttonTextColor,
+                  titleTextAlign: TextAlign.center,
+                  fontSize: fontSize ?? 13,
+                  maxLine: 3,
+                ),
               ),
             ],
           ),

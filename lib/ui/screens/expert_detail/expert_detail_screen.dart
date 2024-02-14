@@ -28,6 +28,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
+     // ref.read(reportUserProvider).changeReportAndThanksScreen();
+
     });
     super.initState();
   }
@@ -46,7 +48,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         ),
         trailingIcon: InkWell(
                 onTap: () {
-                  context.toPushNamed(RoutesConstants.reportExpertScreen);
+                  //ReportThisUserWidget();
+                   context.toPushNamed(RoutesConstants.reportExpertScreen);
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),
@@ -132,21 +135,27 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    BodySmallText(
-                      title: LocaleKeys.feesPerMinute.tr(),
-                      fontFamily: FontWeightEnum.w400.toInter,
-                      titleTextAlign: TextAlign.center,
-                    ),
-                    10.0.spaceX,
-                    HeadlineMediumText(
-                      fontSize: 30,
-                      title: fee != null ? '\$${fee}' : "",
-                      titleColor: ColorConstants.overallRatingColor,
-                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
-                    ),
-                  ],
+                40.0.spaceX,
+                Flexible(
+                  child: Row(
+                    children: [
+                      BodySmallText(
+                        title: LocaleKeys.feesPerMinute.tr(),
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        titleTextAlign: TextAlign.center,
+                      ),
+                      10.0.spaceX,
+                      Flexible(
+                        child: HeadlineMediumText(
+                          fontSize: 30,
+                         maxLine: 4,
+                          title: fee != null ? '\$${fee}' : "",
+                          titleColor: ColorConstants.overallRatingColor,
+                          shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
