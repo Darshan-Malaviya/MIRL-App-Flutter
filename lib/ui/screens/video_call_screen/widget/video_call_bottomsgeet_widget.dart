@@ -11,8 +11,9 @@ class VideoCallWidget extends ConsumerStatefulWidget {
 class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
   @override
   Widget build(BuildContext context) {
-    final videoCallWatch = ref.watch(videoCallProvider);
-    final videoCallRead = ref.read(videoCallProvider);
+    final callWatch = ref.watch(callProvider);
+    final callRead = ref.read(callProvider);
+
     return Container(
       decoration: BoxDecoration(
         color: ColorConstants.whiteColor.withOpacity(0.35),
@@ -27,14 +28,14 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
             children: [
               InkWell(
                 onTap: () {
-                  videoCallRead.changeCameraColor();
+                  callRead.changeCameraColor();
                 },
                 child: Container(
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
                       // ref.watch(videoCallProvider)
-                      color: videoCallWatch.cameraOn
+                      color: callWatch.cameraOn
                           ? ColorConstants.whiteColor.withOpacity(0.25)
                           : ColorConstants.whiteColor.withOpacity(0.7),
                       boxShadow: [
@@ -50,13 +51,13 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
               ),
               InkWell(
                 onTap: () {
-                  videoCallRead.changeVideoColor();
+                  callRead.changeVideoColor();
                 },
                 child: Container(
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                      color: videoCallWatch.videoOn
+                      color: callWatch.videoOn
                           ? ColorConstants.whiteColor.withOpacity(0.25)
                           : ColorConstants.whiteColor.withOpacity(0.7),
                       boxShadow: [
@@ -72,13 +73,13 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
               ),
               InkWell(
                 onTap: () {
-                  videoCallRead.changeVoiceColor();
+                  callRead.changeVoiceColor();
                 },
                 child: Container(
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                      color: videoCallWatch.voiceOn
+                      color: callWatch.voiceOn
                           ? ColorConstants.whiteColor.withOpacity(0.25)
                           : ColorConstants.whiteColor.withOpacity(0.7),
                       boxShadow: [

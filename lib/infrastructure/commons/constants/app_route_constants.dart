@@ -17,6 +17,7 @@ import 'package:mirl/ui/screens/edit_profile/set_your_weekly_availability_screen
 import 'package:mirl/ui/screens/edit_profile/your_bank_account_details_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/your_expert_profile_name.dart';
 import 'package:mirl/ui/screens/edit_profile/your_mirl_id_update_screen.dart';
+import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/expert_category_screen.dart';
 import 'package:mirl/ui/screens/expert_category_screen/selected_category_screen.dart';
 import 'package:mirl/ui/screens/expert_detail/expert_detail_screen.dart';
@@ -25,7 +26,7 @@ import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart
 import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
 import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
-import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/booking_screen.dart';
@@ -106,15 +107,12 @@ class RouterConstant {
       case RoutesConstants.exploreExpertScreen:
         return MaterialPageRoute(builder: (_) => const ExploreExpertScreen());
       case RoutesConstants.selectedExpertCategoryScreen:
-        return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(categoryId: settings.arguments as String));
+        return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(args: settings.arguments as SelectedCategoryArgument));
       case RoutesConstants.expertCategoryFilterScreen:
-        return MaterialPageRoute(
-            builder: (_) => ExpertCategoryFilterScreen(
-                  args: settings.arguments as FilterArgs,
-                ));
+        return MaterialPageRoute(builder: (_) => ExpertCategoryFilterScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.scheduleCallScreen:
-        return MaterialPageRoute(builder: (_) => const ScheduleCallScreen());
-        case RoutesConstants.bookingConfirmScreen:
+        return MaterialPageRoute(builder: (_) => ScheduleCallScreen(callArgs: settings.arguments as CallArgs));
+      case RoutesConstants.bookingConfirmScreen:
         return MaterialPageRoute(builder: (_) => const BookingConfirmScreen());
       case RoutesConstants.scheduleAppointmentScreen:
         return MaterialPageRoute(builder: (_) => const ScheduleAppointmentScreen());
@@ -122,15 +120,15 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const CanceledAppointmentScreen());
       case RoutesConstants.canceledAppointmentOptionScreen:
         return MaterialPageRoute(builder: (_) => const CanceledAppointmentOptionScreen());
-        case RoutesConstants.blockUserListScreen:
+      case RoutesConstants.blockUserListScreen:
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
-        case RoutesConstants.reportUserScreen:
+      case RoutesConstants.reportUserScreen:
         return MaterialPageRoute(builder: (_) => const ReportUserScreen());
-        case RoutesConstants.thanksScreen:
+      case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
-        case RoutesConstants.reportExpertScreen:
+      case RoutesConstants.reportExpertScreen:
         return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
-        case RoutesConstants.videoCallScreen:
+      case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(builder: (_) => const VideoCallScreen());
       default:
         return MaterialPageRoute(

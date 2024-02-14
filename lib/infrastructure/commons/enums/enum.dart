@@ -2,7 +2,7 @@
 enum APIType { get, post, put, delete }
 
 ///define filter type
-enum FilterType { Gender, InstantCall, Country, City, Topic, Category, OverAllRating }
+enum FilterType { Gender, InstantCall, Country, City, Topic, Category, OverAllRating, FeeRange, SortBy }
 
 ///define device type
 enum DeviceType { A, I }
@@ -15,7 +15,6 @@ abstract class LoginType {
   static const facebook = 3;
 }
 
-enum CallType { callRequest, requestApproved, requestDeclined, requestTimeout, receiverRequested, multiConnectReceiverRequested }
-
 enum CallHistoryEnum { InstantCall, MultipleConnect, Appointment }
 
+enum RatingEnum { EXPERTISE, COMMUNICATION, HELPFULNESS,EMPATHY,PROFESSIONALISM }

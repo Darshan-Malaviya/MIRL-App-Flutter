@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
-import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details.dart';
+import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/widget/category_image_and_name_list_widget.dart';
-import 'package:mirl/ui/screens/filter_screen/widget/filter_args.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   const ExploreExpertScreen({super.key});
@@ -51,7 +51,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
         filterProviderRead.clearAllFilter();
       },
       child: Scaffold(
-          backgroundColor: ColorConstants.scaffoldBg,
+          backgroundColor: ColorConstants.grayLightColor,
           appBar: AppBarWidget(
             preferSize: 0,
           ),
@@ -87,7 +87,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                       onChanged: (value) {
                         if (filterProviderWatch.exploreExpertController.text.isNotEmpty) {
                           filterProviderRead.clearExploreExpertSearchData();
-                          filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
+                          filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context,);
                         }
                       },
                       textInputAction: TextInputAction.done,
@@ -98,7 +98,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                   ),
                 ],
               ),
-              20.0.spaceY,
+              10.0.spaceY,
               if (filterProviderWatch.isLoading) ...[
                 Center(
                     child: CupertinoActivityIndicator(
@@ -132,7 +132,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              20.0.spaceY,
+                              10.0.spaceY,
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -144,10 +144,10 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                                       },
                                       child: BodySmallText(
                                         title: LocaleKeys.clearAll.tr(),
-                                      )),
+                                      ).addAllPadding(5)),
                                 ],
                               ),
-                              10.0.spaceY,
+                              5.0.spaceY,
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,

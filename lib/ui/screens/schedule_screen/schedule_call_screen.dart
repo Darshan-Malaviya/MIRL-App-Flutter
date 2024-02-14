@@ -2,16 +2,28 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/schedule_screen/widget/weekly_availability.dart';
 
 class ScheduleCallScreen extends ConsumerStatefulWidget {
-  const ScheduleCallScreen({super.key});
+  final CallArgs callArgs;
+
+  const ScheduleCallScreen({super.key, required this.callArgs});
 
   @override
   ConsumerState createState() => _ScheduleCallScreenState();
 }
 
 class _ScheduleCallScreenState extends ConsumerState<ScheduleCallScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(scheduleCallProvider).getExpertData(widget.callArgs.expertData);
+      ref.read(scheduleCallProvider).expertAvailabilityApi();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

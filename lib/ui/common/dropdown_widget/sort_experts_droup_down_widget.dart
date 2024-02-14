@@ -55,9 +55,10 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
-                          //isExpanded: true,
+                          isExpanded: true,
                           elevation: 0,
                           value: filterProviderWatch.sortBySelectedItem,
+                          padding: EdgeInsets.zero,
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             size: 20,
@@ -77,6 +78,7 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             setState(() {
                               filterProviderWatch.sortBySelectedItem = newValue!;
                             });
+                            filterProviderRead.setSortByPriceValue(order: filterProviderWatch.sortBySelectedOrder, sortByValue: newValue ??'');
                           },
                         ),
                       ),
@@ -107,7 +109,7 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
-                          // isExpanded: true,
+                          isExpanded: true,
                           elevation: 0,
                           value: filterProviderWatch.sortBySelectedOrder,
                           padding: EdgeInsets.zero,
@@ -130,6 +132,7 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             setState(() {
                               filterProviderWatch.sortBySelectedOrder = newValue!;
                             });
+                            filterProviderRead.setSortByPriceValue(sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ??'');
                           },
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
@@ -15,8 +16,19 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late final AppLifecycleListener _listener;
+
   @override
   void initState() {
+    _listener = AppLifecycleListener(
+      onDetach: () => Logger().d('onDetach'),
+      onHide: () => Logger().d('onHide'),
+      onInactive: () => Logger().d('onInactive'),
+      onPause: () => Logger().d('onPause'),
+      onRestart: () => Logger().d('onRestart'),
+      onResume: () => Logger().d('onResume'),
+      onShow: () => Logger().d('onShow'),
+    );
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(homeProvider).homePageApi();
     });
@@ -33,6 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PrimaryButton(
               title: StringConstants.logOut,
@@ -60,7 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Flexible(
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       context.toPushNamed(RoutesConstants.exploreExpertScreen);
                     },
                     child: Container(
@@ -75,7 +88,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: Column(
                           children: [
                             BodySmallText(
-                              fontWeight: FontWeight.w700,
                               title: LocaleKeys.exploreExperts.tr().toUpperCase(),
                             ),
                             10.0.spaceY,
@@ -89,6 +101,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               title: LocaleKeys.browseExpertsFields.tr(),
                               titleTextAlign: TextAlign.center,
                               maxLine: 3,
+                              fontFamily: FontWeightEnum.w400.toInter,
                             ),
                           ],
                         ).addAllMargin(12)),
@@ -110,7 +123,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: Column(
                           children: [
                             BodySmallText(
-                              fontWeight: FontWeight.w700,
                               title: LocaleKeys.multipleConnect.tr().toUpperCase(),
                             ),
                             10.0.spaceY,
@@ -123,6 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             BodySmallText(
                               title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
                               titleTextAlign: TextAlign.center,
+                              fontFamily: FontWeightEnum.w400.toInter,
                               maxLine: 3,
                             ),
                           ],
@@ -136,15 +149,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               CategoryListShimmerWidget(),
               20.0.spaceY,
               CategoryListShimmerWidget()
-            ] else
-              ...[
-                CategoryAndTopicListView(),
-                20.0.spaceY,
-                FavoriteExpertsView(),
-                20.0.spaceY,
-                PastConversationsView(),
-                20.0.spaceY,
-              ]
+            ] else ...[
+              CategoryAndTopicListView(),
+              20.0.spaceY,
+              FavoriteExpertsView(),
+              20.0.spaceY,
+              PastConversationsView(),
+              20.0.spaceY,
+            ]
           ],
         ).addPaddingXY(paddingX: 16, paddingY: 16),
       ),

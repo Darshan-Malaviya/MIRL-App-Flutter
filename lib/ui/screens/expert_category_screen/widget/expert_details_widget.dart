@@ -17,9 +17,11 @@ class ExpertDetailWidget extends StatelessWidget {
     }
     return ShadowContainer(
       width: double.infinity,
-      shadowColor: ColorConstants.borderColor,
+      shadowColor: ColorConstants.blackColor.withOpacity(0.4),
       offset: Offset(2, 2),
       border: 15,
+      spreadRadius: 0,
+      blurRadius: 2,
       padding: EdgeInsets.all(16),
       child: InkWell(
         onTap: () {
@@ -56,16 +58,22 @@ class ExpertDetailWidget extends StatelessWidget {
                                 alignment: WrapAlignment.center,
                                 spacing: 0,
                                 children: List.generate(
-                                    ((expertData?.expertCategory?.length ?? 0) > 7) ? 6 : expertData?.expertCategory?.length ?? 0,
-                                    (i) => Container(
-                                          color: ColorConstants.sliderColor,
-                                          padding: EdgeInsets.symmetric(horizontal: 10),
-                                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                                          child: BodyMediumText(
-                                            title: expertData?.expertCategory?[i].name ?? '',
-                                            fontFamily: FontWeightEnum.w400.toInter,
-                                          ),
-                                        )),
+                                    ((expertData?.expertCategory?.length ?? 0) > 7)
+                                        ? 6
+                                        : expertData?.expertCategory?.length ?? 0, (i) {
+                                  String color = expertData?.expertCategory?[i].colorCode?.substring(1) ?? "D97CF0";
+                                  int colorConcat = int.parse('0xff$color');
+
+                                  return Container(
+                                    color: Color(colorConcat),
+                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                    child: BodyMediumText(
+                                      title: expertData?.expertCategory?[i].name ?? '',
+                                      fontFamily: FontWeightEnum.w400.toInter,
+                                    ),
+                                  );
+                                }),
                               )
                             ]
                           ],
@@ -87,8 +95,7 @@ class ExpertDetailWidget extends StatelessWidget {
                             HeadlineMediumText(
                               fontSize: 30,
                               title: '-',
-                              titleColor: ColorConstants.overallRatingColor,
-                              shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                              titleColor: ColorConstants.bottomTextColor,
                             ),
                           ],
                         ),
@@ -103,8 +110,7 @@ class ExpertDetailWidget extends StatelessWidget {
                             HeadlineMediumText(
                               fontSize: 30,
                               title: fee != null ? '\$${fee}' :"",
-                              titleColor: ColorConstants.overallRatingColor,
-                              shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                              titleColor: ColorConstants.bottomTextColor,
                             ),
                           ],
                         ),

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/request_call_button_widget.dart';
@@ -74,8 +75,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
           ).addAllPadding(15),
           DraggableScrollableSheet(
-            initialChildSize: 0.50,
-            minChildSize: 0.50,
+            initialChildSize: 0.55,
+            minChildSize: 0.55,
             maxChildSize: 0.90,
             builder: (BuildContext context, myScrollController) {
               return bottomSheetView(controller: myScrollController);
@@ -89,11 +90,17 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   Widget bottomSheetView({required ScrollController controller}) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
 
+    String? fee;
+    if (expertDetailWatch.userData?.fee != null) {
+      double data = (expertDetailWatch.userData?.fee?.toDouble() ?? 0.0) / 100;
+      fee = data.toStringAsFixed(2);
+    }
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-        color: ColorConstants.whiteColor,
+        color: ColorConstants.grayLightColor,
       ),
       child: SingleChildScrollView(
         controller: controller,
@@ -138,7 +145,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     10.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '\$${(expertDetailWatch.userData?.fee ?? 0 / 100).toString()}',
+                      title: fee != null ? '\$${fee}' : "",
                       titleColor: ColorConstants.overallRatingColor,
                       shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                     ),
@@ -155,7 +162,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   titleColor: ColorConstants.blueColor,
                 ),
               ),
-              12.0.spaceY,
+              8.0.spaceY,
               ReadMoreText(
                 style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter),
                 expertDetailWatch.userData?.about ?? '',
@@ -179,7 +186,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             PrimaryButton(
               title: StringConstants.scheduleCall,
               onPressed: () {
-                context.toPushNamed(RoutesConstants.scheduleCallScreen);
+                context.toPushNamed(RoutesConstants.scheduleCallScreen, args: CallArgs(expertData: expertDetailWatch.userData));
               },
               buttonColor: ColorConstants.yellowButtonColor,
               titleColor: ColorConstants.buttonTextColor,
@@ -195,6 +202,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       text: LocaleKeys.location.tr(),
                       style: TextStyle(
                         color: ColorConstants.blueColor,
+                        fontFamily: FontWeightEnum.w700.toInter,
                         fontSize: 16,
                       ),
                     ),
@@ -220,6 +228,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       text: LocaleKeys.gender.tr(),
                       style: TextStyle(
                         color: ColorConstants.blueColor,
+                        fontFamily: FontWeightEnum.w700.toInter,
                         fontSize: 16,
                       ),
                     ),
@@ -237,7 +246,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               ),
               40.0.spaceY,
             ],
-            Image.asset(ImageConstants.line),
+            Center(child: Image.asset(ImageConstants.line)),
             40.0.spaceY,
             TitleMediumText(
               title: StringConstants.reviewsAndRatting,
@@ -249,40 +258,40 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               title: StringConstants.overallRating,
               buttonColor: ColorConstants.yellowButtonColor,
               child: Align(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '0',
-                              style: TextStyle(
-                                color: ColorConstants.overAllRatingColor,
-                                fontSize: 30,
-                                height: 0.05,
-                                letterSpacing: -0.33,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '/10',
-                              style: TextStyle(
-                                color: ColorConstants.overAllRatingColor,
-                                fontSize: 18,
-                                height: 0.08,
-                                letterSpacing: -0.20,
-                              ),
-                            ),
-                          ],
+                alignment: AlignmentDirectional.centerEnd,
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '0',
+                        style: TextStyle(
+                          color: ColorConstants.overAllRatingColor,
+                          fontSize: 30,
+                          height: 0.05,
+                          letterSpacing: -0.33,
                         ),
-                        textAlign: TextAlign.center,
-                      ).addMarginX(20))
-                  .addMarginX(10),
+                      ),
+                      TextSpan(
+                        text: '/10',
+                        style: TextStyle(
+                          color: ColorConstants.overAllRatingColor,
+                          fontSize: 18,
+                          height: 0.08,
+                          letterSpacing: -0.20,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
             26.0.spaceY,
-            OverallRatingWidget(name: 'EXPERTISE', value: 5),
-            OverallRatingWidget(name: 'COMMUNICATION', value: 5),
-            OverallRatingWidget(name: 'HELPFULNESS', value: 5),
-            OverallRatingWidget(name: 'EMPATHY', value: 5),
-            OverallRatingWidget(name: 'PROFESSIONALISM', value: 5),
+            OverallRatingWidget(name: RatingEnum.EXPERTISE.name, value: 5),
+            OverallRatingWidget(name:  RatingEnum.COMMUNICATION.name, value: 5),
+            OverallRatingWidget(name:  RatingEnum.HELPFULNESS.name, value: 5),
+            OverallRatingWidget(name:  RatingEnum.EMPATHY.name, value: 5),
+            OverallRatingWidget(name:  RatingEnum.PROFESSIONALISM.name, value: 5),
             60.0.spaceY,
             ReviewsAndRatingWidget(
               title: StringConstants.reviews,
@@ -290,7 +299,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               child: SizedBox.shrink(),
             ),
             30.0.spaceY,
-            DropDownWidget(),
+            ShortReviewWidget(dropdownValue: 'Highest to Lowest'),
             40.0.spaceY,
             ReviewsWidget(),
             20.0.spaceY,

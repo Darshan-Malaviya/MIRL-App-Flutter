@@ -22,7 +22,6 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
         BodySmallText(
           title: LocaleKeys.expertCategories.tr(),
           titleTextAlign: TextAlign.start,
-          fontFamily: FontWeightEnum.w700.toInter,
         ),
         20.0.spaceY,
         if (homeProviderWatch.homeSearchData?.categories?.isNotEmpty ?? false) ...[
@@ -41,6 +40,9 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                       onTap: () {},
                       child: ShadowContainer(
                         shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                        offset: Offset(0,2),
+                        blurRadius: 2,
+                        spreadRadius: 0,
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -51,7 +53,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                                 imageURL: homeProviderWatch.homeSearchData?.categories?[index].image ?? '',
                                 isNetworkImage: true,
                                 height: 60,
-                                width: 50,
+                                width: 55,
                               ),
                             ),
                             4.0.spaceY,
@@ -60,7 +62,6 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                               title: homeProviderWatch.homeSearchData?.categories?[index].name?.toUpperCase() ?? '',
                               maxLine: 2,
                               titleColor: ColorConstants.blackColor,
-                              fontFamily: FontWeightEnum.w700.toInter,
                               titleTextAlign: TextAlign.center,
                             ),
                           ],
@@ -76,11 +77,9 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
           ),
         ] else ...[
           BodySmallText(
-            fontWeight: FontWeight.w400,
             titleTextAlign: TextAlign.start,
-            fontFamily: AppConstants.fontFamily,
+            fontFamily: FontWeightEnum.w400.toInter,
             maxLine: 4,
-            fontSize: 12,
             title: LocaleKeys.noResultsFoundTypeSomethingElse.tr(),
           ),
         ]
