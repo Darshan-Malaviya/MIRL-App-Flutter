@@ -10,7 +10,6 @@ class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProfileScreen> {
-
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
@@ -59,7 +58,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 width: MediaQuery.sizeOf(context).width * 0.7,
                 decoration: BoxDecoration(
                   boxShadow: [
-                     BoxShadow(
+                    BoxShadow(
                       color: ColorConstants.borderLightColor,
                     ),
                     const BoxShadow(
@@ -174,7 +173,9 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.toPushNamed(RoutesConstants.viewCalendarAppointment);
+                  },
                 ),
                 50.0.spaceY,
                 PrimaryButton(

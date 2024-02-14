@@ -4,6 +4,7 @@ import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
 import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
 import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
+import 'package:mirl/ui/screens/calendar_and_appointment_screen/calendar_and_appointment_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/add_your_areas_of_expertise_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/certifications_and_experience_screen.dart';
@@ -28,6 +29,8 @@ import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
+import 'package:mirl/ui/screens/multi_call_screen/multi_connect_filter_screen.dart';
+import 'package:mirl/ui/screens/multi_call_screen/multi_connect_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/booking_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_option_screen.dart';
@@ -130,6 +133,12 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
       case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+      case RoutesConstants.multiConnectScreen:
+        return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
+      case RoutesConstants.multiConnectFilterScreen:
+        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen(args: settings.arguments as FilterArgs));
+      case RoutesConstants.viewCalendarAppointment:
+        return MaterialPageRoute(builder: (_) => ViewCalendarAppointment());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

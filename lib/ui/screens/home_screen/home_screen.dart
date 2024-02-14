@@ -110,7 +110,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 40.0.spaceX,
                 Flexible(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                     child: Container(
                         decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                           BoxShadow(

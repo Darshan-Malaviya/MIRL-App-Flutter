@@ -87,12 +87,12 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
         ),
         body: filterProviderWatch.isLoading
             ? Center(
-              child: CupertinoActivityIndicator(
+                child: CupertinoActivityIndicator(
                   animating: true,
                   color: ColorConstants.primaryColor,
                   radius: 16,
                 ),
-            )
+              )
             : SingleChildScrollView(
                 controller: scrollController,
                 child: Column(
@@ -213,12 +213,13 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                     PrimaryButton(
                       title: StringConstants.filterExpertCategory,
                       titleColor: ColorConstants.blackColor,
+                      margin: EdgeInsets.symmetric(horizontal: 20),
                       onPressed: () {
                         context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: false));
                       },
                       prefixIcon: ImageConstants.filter,
                       prefixIconPadding: 10,
-                    ).addPaddingX(20),
+                    ),
                     if (filterProviderWatch.commonSelectionModel.isNotEmpty) ...[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

@@ -49,4 +49,13 @@ class ScheduleCallRepository extends ApiResponseHandler {
 
     return responseHandler(result: result, json: CancelAppointmentResponseModel.parseInfo);
   }
+
+  /// view appointment
+  Future<ApiHttpResult> viewUpcomingAppointment({required Map<String, dynamic> queryParameters}) async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.appointment, queryParameters: queryParameters);
+
+    APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.get);
+
+    return responseHandler(result: result, json: CancelAppointmentResponseModel.parseInfo);
+  }
 }

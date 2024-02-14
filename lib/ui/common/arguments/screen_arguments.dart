@@ -5,8 +5,9 @@ import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 class FilterArgs {
   final bool? fromExploreExpert;
   final List<Topic>? list;
+  final String? categoryId;
 
-  FilterArgs({this.fromExploreExpert, this.list});
+  FilterArgs({this.fromExploreExpert, this.list,this.categoryId});
 }
 
 class CallArgs {
