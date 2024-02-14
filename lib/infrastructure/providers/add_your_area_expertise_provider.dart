@@ -11,9 +11,8 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   List<CategoryListData>? get categoryList => _categoryList;
   final List<CategoryListData> _categoryList = [];
 
-  List<CategoryIds> _childCategoryIds = [];
-
   List<CategoryIds> get childCategoryIds => _childCategoryIds;
+  List<CategoryIds> _childCategoryIds = [];
 
   List<int> updateChild = [];
 

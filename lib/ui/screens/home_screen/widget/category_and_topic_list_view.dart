@@ -19,7 +19,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
     return Column(children: [
       if ((homeProviderWatch.homeData?.categories?.isNotEmpty ?? false) && homeProviderWatch.homeData?.categories != null) ...[
         SizedBox(
-          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 4) ? 120 : 240,
+          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 4) ? 120 : 255,
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,
@@ -35,6 +35,12 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
                 },
                 child: ShadowContainer(
                   shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                  height: 110,
+                  offset: Offset(0,2),
+                  spreadRadius: 0,
+                  blurRadius: 3,
+                  width: 90,
+                  isShadow: true,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -57,8 +63,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
                       ),
                     ],
                   ),
-                  width: 90,
-                  isShadow: true,
+
                 ),
               );
             },

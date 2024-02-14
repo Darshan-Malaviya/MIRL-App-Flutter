@@ -1,12 +1,15 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/schedule_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/slots_request_model.dart';
 import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
+import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ScheduleCallProvider extends ChangeNotifier {
   final _scheduleCallRepository = ScheduleCallRepository();
@@ -41,8 +44,13 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   double? totalPayAmount;
 
+  int? reasonTextLength = 0;
+
   AppointmentData? get appointmentData => _appointmentData;
   AppointmentData? _appointmentData;
+
+  bool? get isLoadingReason => _isLoadingReason;
+  bool? _isLoadingReason = false;
 
   void incrementCallDuration() {
     _callDuration += 10;
@@ -63,6 +71,11 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   void getPayValue() {
     totalPayAmount = ((expertData?.fee ?? 0) / 100 * _callDuration);
+    notifyListeners();
+  }
+
+  void setReasonLength(String value) {
+    reasonTextLength = value.length;
     notifyListeners();
   }
 
@@ -184,6 +197,36 @@ class ScheduleCallProvider extends ChangeNotifier {
         }
         FlutterToast().showToast(msg: response.failure?.message ?? '');
         Logger().d("API fail on scheduleAppointmentApiCall Api ${response.data}");
+        break;
+    }
+  }
+
+  Future<void> cancelAppointmentApiCall({required BuildContext context}) async {
+    _isLoadingReason = true;
+    notifyListeners();
+
+    CancelAppointmentRequestModel requestModel = CancelAppointmentRequestModel(
+      userId: int.parse(SharedPrefHelper.getUserId),
+      expertId: expertData?.id,
+      cancelByUser: '1',
+      reason: reasonController.text.trim(),
+    );
+
+    ApiHttpResult response = await _scheduleCallRepository.cancelAppointment(request: requestModel.prepareRequest(), appointmentId: _appointmentData?.id.toString() ?? '');
+
+    _isLoadingReason = false;
+    notifyListeners();
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is CancelAppointmentResponseModel) {
+          CancelAppointmentResponseModel responseModel = response.data;
+          context.toPushNamed(RoutesConstants.canceledAppointmentScreen, args: AppointmentArgs(cancelData: responseModel.data, fromUser: true));
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on cancelAppointmentApiCall Api ${response.data}");
         break;
     }
   }

@@ -30,7 +30,7 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
               ref.read(addYourAreaExpertiseProvider).selectAllChildCategory(isSelectAll: value, parentId: widget.childCategoryList?.id ?? -1);
               ref.read(addYourAreaExpertiseProvider).addSelectedChildIds(parentId: widget.childCategoryList?.id ?? -1);
             },
-            label: Text('${widget.childCategoryList?.name ?? ''} - All topics'),
+            label: Text('${widget.childCategoryList?.name ?? ''} - All topics',maxLines: 5),
             labelStyle: TextStyle(color: Colors.black, fontFamily: FontWeightEnum.w500.toInter),
             shape: RoundedRectangleBorder(
               side: BorderSide(color: ColorConstants.transparentColor),
@@ -58,7 +58,7 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
                     },
                     label: Text(
                       (widget.childCategoryList?.topic?[position].name ?? ''),
-                      maxLines: 3,
+                      maxLines: 5,
                     ),
                     labelStyle: TextStyle(color: Colors.black, fontFamily: FontWeightEnum.w500.toInter),
                     shape: RoundedRectangleBorder(

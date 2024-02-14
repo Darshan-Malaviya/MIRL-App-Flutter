@@ -169,5 +169,11 @@
   "selectCity": "Select City",
   "selectCountry": "Select Country",
   "noSlotAvailable": "No slot available",
-  "pleaseSelectSlot": "You have select slot for scheduling appointment"
+  "pleaseSelectSlot": "You have select slot for scheduling appointment",
+  "backCalenderAppointment": "BACK TO CALENDAR AND APPOINTMENTS",
+  "user": "USER",
+  "filterFromTopicAndCategories": "FILTER CATEGORIES AND TOPICS",
+  "instantlyConnectWithLiveExpert": "INSTANTLY CONNECT WITH  LIVE EXPERTS  IN MINUTES!",
+  "calendarAndAppointment": "CALENDAR AND APPOINTMENTS",
+  "checkYourAppComingAppointment": "Check out your scheduled appointments over the next 30 days."
 }
