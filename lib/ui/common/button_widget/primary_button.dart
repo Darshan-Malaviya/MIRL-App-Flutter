@@ -63,7 +63,7 @@ class PrimaryButton extends StatelessWidget {
           ),
           onPressed: onPressed,
           child: Row(
-            //mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
@@ -72,12 +72,15 @@ class PrimaryButton extends StatelessWidget {
                       child: Image.asset(prefixIcon ?? ''),
                     )
                   : const SizedBox.shrink(),
-              BodyMediumText(
-                title: title,
-                fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
-                titleColor: titleColor ?? ColorConstants.buttonTextColor,
-                titleTextAlign: TextAlign.center,
-                fontSize: fontSize ?? 13,
+              Expanded(
+                child: BodyMediumText(
+                  title: title,
+                  fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
+                  titleColor: titleColor ?? ColorConstants.buttonTextColor,
+                  titleTextAlign: TextAlign.center,
+                  fontSize: fontSize ?? 13,
+                  maxLine: 3,
+                ),
               ),
             ],
           ),

@@ -27,6 +27,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
+     // ref.read(reportUserProvider).changeReportAndThanksScreen();
+
     });
     super.initState();
   }
@@ -45,7 +47,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         ),
         trailingIcon: InkWell(
                 onTap: () {
-                  context.toPushNamed(RoutesConstants.reportExpertScreen);
+                  //ReportThisUserWidget();
+                   context.toPushNamed(RoutesConstants.reportExpertScreen);
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),
