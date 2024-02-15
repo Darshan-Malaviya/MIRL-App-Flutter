@@ -68,4 +68,5 @@ class ApiConstants {
   static const String timeSlots = '/appointment/timeSlots';
   static const String appointment = '/appointment';
   static const String userBlock = '/userBlock';
+  static const String unBlockUser = '/userBlock';
 }

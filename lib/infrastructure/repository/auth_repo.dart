@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:mirl/infrastructure/commons/constants/api_constants.dart';
+import 'package:mirl/infrastructure/commons/enums/enum.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
+import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/models/response/user_block_response_model.dart';
 
 class AuthRepository extends ApiResponseHandler {
@@ -40,5 +42,16 @@ class AuthRepository extends ApiResponseHandler {
         await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), body: requestModel);
 
     return responseHandler(result: result, json: UserBlockResponseModel.parseInfo);
+  }
+
+///  un block user
+
+  Future<ApiHttpResult> unBlockUserApi({required int userBlockId}) async {
+    final uri = ApiConstants.endpointUri(path: '${ApiConstants.unBlockUser}/$userBlockId');
+
+    APIResponse result =
+        await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(),apiType: APIType.put);
+
+    return responseHandler(result: result, json: UnBlockUserResponseModel.parseInfo);
   }
 }
