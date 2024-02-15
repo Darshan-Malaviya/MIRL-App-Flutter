@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:mirl/infrastructure/commons/constants/storage_constants.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
@@ -11,6 +7,14 @@ class SharedPrefHelper {
   static Future<SharedPreferences?> init() async {
     _prefsInstance = await SharedPreferences.getInstance();
     return _prefsInstance;
+  }
+
+  static Future<bool> saveFirebaseToken(String? authToken) async {
+    return await _prefsInstance?.setString(StorageConstants.firebaseToken, authToken ?? '') ?? false;
+  }
+
+  static String get getFirebaseToken {
+    return _prefsInstance?.getString(StorageConstants.firebaseToken) ?? '';
   }
 
   static Future<bool> saveAuthToken(String? authToken) async {
@@ -38,7 +42,23 @@ class SharedPrefHelper {
     return _prefsInstance?.getString(StorageConstants.userData) ?? '';
   }
 
+  static Future<bool> saveAreaOfExpertise(String? userData) async {
+    return await _prefsInstance?.setString(StorageConstants.areaOfExpertise, userData ?? '') ?? false;
+  }
+
+  static String get getAreaOfExpertise {
+    return _prefsInstance?.getString(StorageConstants.areaOfExpertise) ?? '';
+  }
+
   static clearPrefs() async {
     await _prefsInstance?.remove(StorageConstants.userData);
+  }
+
+  static Future<bool> saveUserId(String? id) async {
+    return await _prefsInstance?.setString(StorageConstants.userId, id ?? '') ?? false;
+  }
+
+  static String get getUserId {
+    return _prefsInstance?.getString(StorageConstants.userId) ?? '';
   }
 }

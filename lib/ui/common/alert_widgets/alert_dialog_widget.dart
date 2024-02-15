@@ -27,9 +27,7 @@ class CommonAlertDialog {
                 insetPadding: PaddingConstant.scaffoldPadding,
                 child: Container(
                     padding: PaddingConstant.alertDialogPadding,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.alertdialogRadius),
-                        color: ColorConstants.scaffoldColor),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.alertdialogRadius), color: ColorConstants.scaffoldColor),
                     height: height,
                     width: width ?? maxWidth,
                     child: child),
@@ -39,49 +37,26 @@ class CommonAlertDialog {
         });
   }
 
-  static successDialog({
+  static callDialog({
     required BuildContext context,
-    required String message,
+    required Widget child,
     double? height,
     double? width,
     bool? barrierDismissible,
     double? borderRadius,
+    EdgeInsets? insetPadding,
   }) {
     return showDialog(
         context: context,
         barrierColor: ColorConstants.blackColor.withOpacity(0.2),
-        barrierDismissible: barrierDismissible ?? true,
+        barrierDismissible: true,
         builder: (BuildContext context) {
-          final maxWidth = MediaQuery.of(context).size.width;
-          return BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 10.0,
-              sigmaY: 10.0,
-            ),
-            child: ZoomInAnimation(
-              child: Dialog(
-                insetPadding: PaddingConstant.scaffoldPadding,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.alertdialogRadius),
-                      color: ColorConstants.scaffoldColor),
-                  height: height,
-                  width: width ?? maxWidth,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Image.asset(ImageConstants.successIcon),
-                      16.0.spaceY,
-                      TitleLargeText(
-                        title: message,
-                        fontWeight: FontWeight.w600,
-                        titleColor: ColorConstants.primaryColor,
-                      )
-                    ],
-                  ),
-                ),
-              ),
+          return ZoomInAnimation(
+            child: Dialog(
+              insetPadding: insetPadding ?? EdgeInsets.symmetric(horizontal: 45),
+              backgroundColor: ColorConstants.transparentColor,
+              elevation: 0,
+              child: child,
             ),
           );
         });
@@ -98,6 +73,7 @@ class CommonAlertDialog {
     required String discardButtonTitle,
     required VoidCallback onAcceptTap,
     VoidCallback? onDiscardTap,
+    Color? bgColor,
   }) {
     return showDialog(
         context: context,
@@ -116,9 +92,7 @@ class CommonAlertDialog {
                 backgroundColor: ColorConstants.transparentColor,
                 child: Container(
                   padding: PaddingConstant.alertDialogPadding,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.alertdialogRadius),
-                      color: ColorConstants.scaffoldColor),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.alertdialogRadius), color: bgColor ?? ColorConstants.scaffoldColor),
                   height: height,
                   width: width ?? maxWidth,
                   child: Column(
@@ -150,25 +124,25 @@ class CommonAlertDialog {
         });
   }
 
-static fullScreenDialog({
-  required BuildContext context,
-  required Widget child,
-  Color? backgroundColor,
-  Color? barrierColor,
-  double? height,
-  double? width,
-  bool? barrierDismissible,
-  double? borderRadius,
-}) {
-  return showDialog(
-      context: context,
-      barrierColor: barrierColor ?? ColorConstants.primaryColor.withOpacity(0.5),
-      barrierDismissible: barrierDismissible ?? false,
-      builder: (BuildContext context) {
-        return Dialog.fullscreen(
-          backgroundColor: backgroundColor,
-          child: child,
-        );
-      });
-}
+  static fullScreenDialog({
+    required BuildContext context,
+    required Widget child,
+    Color? backgroundColor,
+    Color? barrierColor,
+    double? height,
+    double? width,
+    bool? barrierDismissible,
+    double? borderRadius,
+  }) {
+    return showDialog(
+        context: context,
+        barrierColor: barrierColor ?? ColorConstants.primaryColor.withOpacity(0.5),
+        barrierDismissible: barrierDismissible ?? false,
+        builder: (BuildContext context) {
+          return Dialog.fullscreen(
+            backgroundColor: backgroundColor,
+            child: child,
+          );
+        });
+  }
 }

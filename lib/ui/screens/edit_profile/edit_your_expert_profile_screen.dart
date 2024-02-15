@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
   const EditYourExpertProfileScreen({super.key});
@@ -11,70 +12,99 @@ class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
 class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.read(editExpertProvider);
+
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: () => context.toPop(),
         ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.editYourExpertProfile,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
+        trailingIcon: InkWell(
+          onTap: () => expertRead.updateProfileApi(),
+          child: TitleMediumText(
+            title: StringConstants.done,
+          ).addPaddingRight(14),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  BodySmallText(
-                    title: StringConstants.expertProfilePhoto,
-                    titleColor: ColorConstants.blackColor,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                    titleTextAlign: TextAlign.center,
-                    fontSize: 15,
+            TitleLargeText(
+              title: StringConstants.editYourExpertProfile,
+              titleColor: ColorConstants.bottomTextColor,
+            ),
+            20.0.spaceY,
+            InkWell(
+              onTap: () {
+                CommonBottomSheet.bottomSheet(
+                  context: context,
+                  isDismissible: true,
+                  child: ImagePickerBottomSheet(
+                    onTapCamera: () {
+                      context.toPop();
+                      expertRead.captureCameraImage(context);
+                    },
+                    onTapGalley: () {
+                      context.toPop();
+                      expertRead.pickGalleryImage(context);
+                    },
                   ),
-                  20.0.spaceY,
-                  BodySmallText(
-                    title: StringConstants.highQualityProfile,
-                    titleColor: ColorConstants.blackColor,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                    titleTextAlign: TextAlign.center,
-                    fontSize: 15,
-                  ),
-                  20.0.spaceY,
-                  BodySmallText(
-                    title: StringConstants.yourFavoriteOne,
-                    titleColor: ColorConstants.blackColor,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                    titleTextAlign: TextAlign.center,
-                    fontSize: 15,
-                  ),
-                ],
-              ),
-              height: 400,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: ColorConstants.borderColor, //<---- Insert Gradient Here
-                  width: 1.5,
+                );
+              },
+              child: Container(
+                height: MediaQuery.sizeOf(context).height * 0.45,
+                width: MediaQuery.sizeOf(context).width * 0.7,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorConstants.borderLightColor,
+                    ),
+                    const BoxShadow(
+                      color: ColorConstants.whiteColor,
+                      spreadRadius: 0.0,
+                      blurRadius: 6.0,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: ColorConstants.borderLightColor, width: 1.5),
                 ),
+                child: (expertWatch.pickedImage.isNotEmpty)
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: NetworkImageWidget(
+                          imageURL: expertWatch.pickedImage,
+                          isNetworkImage: expertWatch.pickedImage.contains('https'),
+                          boxFit: BoxFit.cover,
+                        ),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BodySmallText(
+                            title: StringConstants.expertProfilePhoto,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                          ),
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: StringConstants.highQualityProfile,
+                            titleTextAlign: TextAlign.center,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                            maxLine: 5,
+                          ),
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: StringConstants.yourFavoriteOne,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                          ),
+                        ],
+                      ),
               ),
-            ).addMarginX(45),
+            ),
             5.0.spaceY,
-            TitleMediumText(
+            BodySmallText(
               title: StringConstants.editExpertProfile,
-              fontFamily: FontWeightEnum.w700.toInter,
             ),
             30.0.spaceY,
             Column(
@@ -82,126 +112,97 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
               children: [
                 TitleMediumText(
                   title: StringConstants.editYourDetails,
-                  fontFamily: FontWeightEnum.w700.toInter,
+                  titleColor: ColorConstants.blueColor,
                 ),
                 18.0.spaceY,
                 TextFormFieldWidget(
+                  enabledBorderColor: ColorConstants.borderLightColor,
+                  isReadOnly: true,
+                  onTap: () {
+                    expertRead.getUserData();
+                    context.toPushNamed(RoutesConstants.yourExpertProfileName);
+                  },
                   height: 40,
-                  fontFamily: FontWeightEnum.w400.toInter,
                   labelText: StringConstants.expertName,
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.done,
-                  textInputType: TextInputType.emailAddress,
+                  alignment: Alignment.centerLeft,
+                  labelTextSpace: 0.0,
+                  controller: TextEditingController(text: expertWatch.expertName),
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
+                  labelTextSpace: 0.0,
+                  enabledBorderColor: ColorConstants.borderLightColor,
+                  isReadOnly: true,
+                  onTap: () {
+                    expertRead.getUserData();
+                    context.toPushNamed(RoutesConstants.yourMirlId);
+                  },
                   height: 40,
-                  fontFamily: FontWeightEnum.w400.toInter,
                   labelText: StringConstants.yourMirlId,
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.done,
-                  textInputType: TextInputType.emailAddress,
+                  alignment: Alignment.centerLeft,
+                  controller: TextEditingController(text: expertWatch.mirlId),
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
-                  contentPadding: EdgeInsets.symmetric(vertical: 110, horizontal: 2),
-                  fontFamily: FontWeightEnum.w400.toInter,
+                  labelTextSpace: 0.0,
+                  enabledBorderColor: ColorConstants.borderLightColor,
+                  isReadOnly: true,
+                  onTap: () {
+                    expertRead.getUserData();
+                    context.toPushNamed(RoutesConstants.moreAboutMeScreen);
+                  },
+                  maxLines: 10,
+                  minLines: 10,
                   labelText: StringConstants.moreAboutMe,
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.done,
-                  textInputType: TextInputType.emailAddress,
+                  alignment: Alignment.centerLeft,
+                  controller: TextEditingController(text: expertWatch.about),
                 ),
                 50.0.spaceY,
-                PrimaryButton(
-                  title: StringConstants.setYourFee,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.setYourFreeScreen);
-                  },
+                Column(
+                  children: List.generate(expertWatch.editButtonList.length, (index) {
+                    final data = expertWatch.editButtonList[index];
+                    return PrimaryButton(
+                      buttonColor: (data.isSelected ?? false) ? null : ColorConstants.buttonColor,
+                      fontSize: 12,
+                      title: data.title ?? '',
+                      onPressed: () => expertRead.redirectSelectedButton(context, index),
+                    ).addPaddingBottom(50);
+                  }),
                 ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.areasOfExpertise,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.addYourAreasOfExpertiseScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.weeklyAvailability,
-                  onPressed: () {},
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.callsAvailability,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.instantCallsAvailabilityScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.setYourLocation,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.srtYourLocationScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.setYourGender,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.srtYourGenderScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.addCertifications,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.certificationsAndExperienceScreen);
-                  },
-                ),
-                50.0.spaceY,
-                PrimaryButton(
-                  buttonColor: ColorConstants.buttonColor,
-                  title: StringConstants.bankAccountDetails,
-                  onPressed: () {
-                    context.toPushNamed(RoutesConstants.yourBankAccountDetailsScreen);
-                  },
-                ),
-                50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {
-                    context.toPushNamed(RoutesConstants.demoListScreen);
+                    context.toPushNamed(RoutesConstants.viewCalendarAppointment);
                   },
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
-                  title: StringConstants.reviews,
+                  title: StringConstants.reviewsAndRatings,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.earningReports,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.callHistory,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.blockedUsersList,
+                  titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {},
                 ),
                 50.0.spaceY,

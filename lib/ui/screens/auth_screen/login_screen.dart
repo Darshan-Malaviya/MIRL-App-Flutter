@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -29,29 +28,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Container(
-                  // decoration: ShapeDecoration(
-                  //   color: Colors.white,
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.only(
-                  //       topLeft: Radius.circular(40),
-                  //       topRight: Radius.circular(40),
-                  //     ),
-                  //   ),
-                  //   shadows: [
-                  //     BoxShadow(
-                  //       color: Color(0x4C000000),
-                  //       blurRadius: 5,
-                  //     )
-                  //   ]
-                  // ),
-                  decoration: const BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      color: ColorConstants.borderColor,
-                      //spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, -3),
-                    )
-                  ], color: ColorConstants.whiteColor, borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+                  decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorConstants.borderColor,
+                          //spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, -3),
+                        )
+                      ],
+                      color: ColorConstants.whiteColor,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -79,19 +66,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           context.unFocusKeyboard();
                         },
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return StringConstants.requiredEmail;
-                          } else {
-                            if (!EmailValidator.validate(value)) {
-                              return StringConstants.emailIsNotInProperFormat;
-                            }
-                          }
-                          return null;
+                          return value?.toEmailValidation();
                         },
                       ).addPaddingX(42),
                       14.0.spaceY,
                       PrimaryButton(
                           title: StringConstants.selectLoginCode,
+                          titleColor: ColorConstants.textColor,
                           width: 235,
                           onPressed: () {
                             if (_loginPassKey.currentState?.validate() ?? false) {
@@ -100,32 +81,41 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           }),
                       40.0.spaceY,
                       Image.asset(ImageConstants.line),
-                      40.0.spaceY,
+                      10.0.spaceY,
+                      PrimaryButton(
+                        title: StringConstants.continueWithGoogle,
+                        titleColor: ColorConstants.textColor,
+                        margin: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+                        onPressed: () {
+                          loginScreenProviderRead.signInGoogle();
+                        },
+                        prefixIcon: ImageConstants.google,
+                        prefixIconPadding: 20,
+                      ),
                       Visibility(
                         visible: Platform.isIOS,
-                        replacement: PrimaryButton(
-                          title: StringConstants.continueWithGoogle,
-                          onPressed: () {
-                            loginScreenProviderRead.signInGoogle();
-                          },
-                          prefixIcon: ImageConstants.google,
-                        ),
+                        replacement: const SizedBox.shrink(),
                         child: PrimaryButton(
                           title: StringConstants.continueWithApple,
                           prefixIcon: ImageConstants.apple,
+                          titleColor: ColorConstants.textColor,
+                          prefixIconPadding: 20,
+                          margin: EdgeInsets.only(left: 50, right: 50, bottom: 30),
                           onPressed: () {
                             loginScreenProviderRead.signInApple();
                           },
                         ),
-                      ).addPaddingX(50),
-                      30.0.spaceY,
+                      ),
                       PrimaryButton(
                         title: StringConstants.continueWithFacebook,
                         prefixIcon: ImageConstants.facebook,
+                        titleColor: ColorConstants.textColor,
+                        prefixIconPadding: 20,
+                        margin: EdgeInsets.symmetric(horizontal: 50),
                         onPressed: () {
                           loginScreenProviderRead.fbLogin();
                         },
-                      ).addPaddingX(50),
+                      ),
                       30.0.spaceY,
                       RichText(
                         softWrap: true,
@@ -145,7 +135,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             style: textStyle(context: context),
                           ),
                           TextSpan(
-                              text: StringConstants.privacyPolicy, style: textStyle(context: context, textColor: ColorConstants.primaryColor), recognizer: TapGestureRecognizer()
+                              text: StringConstants.privacyPolicy,
+                              style: textStyle(context: context, textColor: ColorConstants.primaryColor),
+                              recognizer: TapGestureRecognizer()
                               // ..onTap = () {
                               //   termsOfUse();
                               // },
@@ -153,11 +145,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ]),
                       ).addPaddingX(16),
                       30.0.spaceY,
-                      // const LabelSmallText(
-                      //   title: StringConstants.terms,
-                      //   fontWeight: FontWeight.w400,
-                      //   fontSize: 10,
-                      // ),
                     ],
                   ),
                 ),

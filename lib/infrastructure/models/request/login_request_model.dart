@@ -1,12 +1,15 @@
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+
 class LoginRequestModel {
   String? email;
-  String? loginType;
+  int? loginType;
   String? deviceType;
   String? socialId;
   String? deviceToken;
   String? timezone;
+  String? voIpToken;
 
-  LoginRequestModel({this.email, this.loginType, this.deviceType, this.socialId, this.deviceToken, this.timezone});
+  LoginRequestModel({this.email, this.loginType, this.deviceType, this.socialId, this.deviceToken, this.timezone,this.voIpToken});
 
   LoginRequestModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -15,6 +18,7 @@ class LoginRequestModel {
     socialId = json['socialId'];
     deviceToken = json['deviceToken'];
     timezone = json['timezone'];
+    voIpToken = json['voIpToken'];
   }
 
   Map<String, dynamic> toJson() {
@@ -25,6 +29,26 @@ class LoginRequestModel {
     data['socialId'] = this.socialId;
     data['deviceToken'] = this.deviceToken;
     data['timezone'] = this.timezone;
+    data['voIpToken'] = this.voIpToken;
     return data;
+  }
+
+  Map<String, dynamic> toJsonForAppleWhenEmailEmpty() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['loginType'] = this.loginType;
+    data['deviceType'] = this.deviceType;
+    data['socialId'] = this.socialId;
+    data['deviceToken'] = this.deviceToken;
+    data['timezone'] = this.timezone;
+    data['voIpToken'] = this.voIpToken;
+    return data;
+  }
+
+  String prepareRequest() {
+    return jsonEncode(toJson());
+  }
+
+  String prepareRequestForAppleWhenEmailEmpty() {
+    return jsonEncode(toJsonForAppleWhenEmailEmpty());
   }
 }

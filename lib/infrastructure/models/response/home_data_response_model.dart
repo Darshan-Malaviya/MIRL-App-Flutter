@@ -1,0 +1,114 @@
+import 'package:logger/logger.dart';
+
+class HomeDataResponseModel {
+  int? status;
+  String? message;
+  HomeData? data;
+
+  HomeDataResponseModel({this.status, this.message, this.data});
+
+  HomeDataResponseModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    data = json['data'] != null ? HomeData.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+
+  static Future<HomeDataResponseModel?> parseInfo(Map<String, dynamic>? json) async {
+    try {
+      return HomeDataResponseModel.fromJson(json ?? {});
+    } catch (e) {
+      Logger().e("HomeDataResponseModel exception : $e");
+      return null;
+    }
+  }
+}
+
+class HomeData {
+  List<Categories>? categories;
+  List<UserFavorites>? userFavorites;
+
+  HomeData({this.categories, this.userFavorites});
+
+  HomeData.fromJson(Map<String, dynamic> json) {
+    if (json['categories'] != null) {
+      categories = <Categories>[];
+      json['categories'].forEach((v) {
+        categories!.add(Categories.fromJson(v));
+      });
+    }
+    if (json['userFavorites'] != null) {
+      userFavorites = <UserFavorites>[];
+      json['userFavorites'].forEach((v) {
+        userFavorites!.add(UserFavorites.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (this.categories != null) {
+      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
+    }
+    if (this.userFavorites != null) {
+      data['userFavorites'] = this.userFavorites!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Categories {
+  int? id;
+  String? name;
+  String? image;
+  String? colorCode;
+
+  Categories({this.id, this.name, this.image});
+
+  Categories.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    image = json['image'];
+    colorCode = json['colorCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['image'] = this.image;
+    data['colorCode'] = this.colorCode;
+    return data;
+  }
+}
+
+class UserFavorites {
+  int? id;
+  String? expertName;
+  String? expertProfile;
+
+  UserFavorites({this.id, this.expertName, this.expertProfile});
+
+  UserFavorites.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    expertName = json['expertName'];
+    expertProfile = json['expertProfile'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['expertName'] = this.expertName;
+    data['expertProfile'] = this.expertProfile;
+    return data;
+  }
+}

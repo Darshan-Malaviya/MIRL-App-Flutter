@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 import 'package:mirl/infrastructure/providers/provider_registration.dart';
-
+import 'package:mirl/infrastructure/services/socket_service.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -13,30 +13,35 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
-  // final List<Widget> children = const [
-  //   HomeScreen(),
-  //   ExploreScreen(),
-  //   NotificationScreen(),
-  //   ExpertProfileScreen(),
-  //   UserSettingScreen()
-  // ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      SocketApi.singleTone.init(onListenMethod: (value) {
+        if (value) {
+          ref.read(callProvider).listenAllMethods(context);
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final homeProviderWatch = ref.watch(homeProvider);
-    final homeProviderRead = ref.read(homeProvider);
+    final dashboardProviderWatch = ref.watch(dashboardProvider);
+    final dashboardProviderRead = ref.read(dashboardProvider);
     return Scaffold(
       backgroundColor: ColorConstants.whiteColor,
-      body: homeProviderRead.buildPageView(),
+      body: dashboardProviderRead.buildPageView(),
       bottomNavigationBar: ClipRRect(
         child: Container(
           decoration: BoxDecoration(
             color: ColorConstants.whiteColor,
           ),
           child: BottomNavigationBar(
-            currentIndex: homeProviderWatch.selectedIndex,
+            currentIndex: dashboardProviderWatch.selectedIndex,
             onTap: (index) {
-              homeProviderRead.bottomTapped(index);
+              dashboardProviderRead.bottomTapped(index);
             },
             useLegacyColorScheme: false,
             backgroundColor: ColorConstants.transparentColor,
@@ -45,21 +50,22 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             elevation: 0,
             selectedFontSize: 7,
             unselectedFontSize: 7,
-            selectedLabelStyle: TextStyle(color: ColorConstants.bottomTextColor, fontFamily: FontWeightEnum.w400.toInter),
+            selectedLabelStyle:
+                TextStyle(color: ColorConstants.bottomTextColor, fontFamily: FontWeightEnum.w400.toInter),
             unselectedLabelStyle: TextStyle(color: ColorConstants.blackColor, fontFamily: FontWeightEnum.w400.toInter),
             selectedItemColor: ColorConstants.blackColor,
             items: List.generate(
               5,
               (index) => BottomNavigationBarItem(
-                icon: homeProviderWatch.selectedIndex == index
+                icon: dashboardProviderWatch.selectedIndex == index
                     ? Image.asset(
                         color: ColorConstants.bottomTextColor,
-                        homeProviderRead.getImage(index),
+                        dashboardProviderRead.getImage(index),
                       )
                     : Image.asset(
-                        homeProviderRead.getImage(index),
+                        dashboardProviderRead.getImage(index),
                       ),
-                label: homeProviderRead.getText(index),
+                label: dashboardProviderRead.getText(index),
               ),
             ),
           ),

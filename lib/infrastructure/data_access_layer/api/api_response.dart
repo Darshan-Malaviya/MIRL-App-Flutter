@@ -2,13 +2,13 @@
 
 
 
-import 'package:mirl/infrastructure/models/response/error_model.dart';
+import 'package:mirl/infrastructure/models/common/common_model.dart';
 
 enum APIStatus { success, failure }
 
 class APIResponse {
   Map<String, dynamic>? response;
-  ErrorModel? failure;
+  CommonModel? failure;
   APIStatus status;
 
   APIResponse.success(this.response) : status = APIStatus.success;
@@ -19,7 +19,7 @@ class APIResponse {
 
 class ApiHttpResult<T> {
   T? data;
-  ErrorModel? failure;
+  CommonModel? failure;
   APIStatus status;
 
   ApiHttpResult.success(this.data) : status = APIStatus.success;

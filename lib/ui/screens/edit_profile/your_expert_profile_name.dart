@@ -11,24 +11,56 @@ class YourExpertProfileNameScreen extends ConsumerStatefulWidget {
 class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileNameScreen> {
   @override
   Widget build(BuildContext context) {
+    final expertWatch = ref.watch(editExpertProvider);
+    final expertRead = ref.watch(editExpertProvider);
     return Scaffold(
-      appBar: AppBarWidget(
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.yourExpertProfileName,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ),
-      ),
-    );
+        appBar: AppBarWidget(
+            leading: InkWell(
+              child: Image.asset(ImageConstants.backIcon),
+              onTap: () => context.toPop(),
+            ),
+            trailingIcon: InkWell(
+              onTap: () => expertRead.updateExpertNameApi(),
+              child: TitleMediumText(
+                title: StringConstants.done,
+              ).addPaddingRight(14),
+            )),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              TitleLargeText(
+                title: StringConstants.yourExpertProfileName,
+                titleColor: ColorConstants.bottomTextColor,
+              ),
+              30.0.spaceY,
+              TextFormFieldWidget(
+                height: 36,
+                hintText: StringConstants.officialNameHere,
+                controller: expertWatch.expertNameController,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(50),
+                ],
+                onFieldSubmitted: (value){
+                  context.unFocusKeyboard();
+                },
+                textInputAction: TextInputAction.done,
+              ),
+              20.0.spaceY,
+              TitleSmallText(
+                title: StringConstants.aroundTheWorld,
+                fontFamily: FontWeightEnum.w400.toInter,
+                titleTextAlign: TextAlign.center,
+                maxLine: 4,
+              ),
+              20.0.spaceY,
+              TitleSmallText(
+                fontFamily: FontWeightEnum.w400.toInter,
+                title: StringConstants.twoWeeks,
+                titleTextAlign: TextAlign.center,
+                maxLine: 3,
+              ),
+            ],
+          ).addAllPadding(20),
+        ));
   }
 }

@@ -11,6 +11,7 @@ class DropdownMenuWidget extends StatelessWidget {
   final String? errorText;
   final String? labelText;
   final String? hintText;
+  final Color? labelColor;
   final TextEditingController? controller;
   final Function(String value) onSelect;
 
@@ -26,6 +27,7 @@ class DropdownMenuWidget extends StatelessWidget {
       this.errorText,
       this.labelText,
       this.hintText,
+      this.labelColor,
       required this.onSelect,
       this.requestFocusOnTap})
       : super(key: key);
@@ -37,98 +39,47 @@ class DropdownMenuWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         (labelText?.isNotEmpty ?? false) && labelText != null
-            ? BodySmallText(
-                title: labelText ?? '',
-                titleColor: ColorConstants.blackColor,
-                fontWeight: FontWeight.w400,
+            ? Center(
+                child: BodySmallText(
+                  title: labelText ?? '',
+                  titleColor: labelColor ?? ColorConstants.blackColor,
+                ),
               )
             : const SizedBox.shrink(),
         (labelText?.isNotEmpty ?? false) && labelText != null ? 6.0.spaceY : const SizedBox.shrink(),
         DropdownMenu<String>(
-          expandedInsets: EdgeInsets.all(24),
+          expandedInsets: EdgeInsets.all(0),
           hintText: hintText,
           width: menuWidth,
-          menuHeight: menuHeight ?? 200,
+          menuHeight: menuHeight,
           enableSearch: enableSearch ?? false,
           enableFilter: enableFilter ?? false,
           requestFocusOnTap: requestFocusOnTap ?? false,
           enabled: enableDropdown ?? true,
           trailingIcon: Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: ColorConstants.dropDownBorderColor,size: 18,
+            color: ColorConstants.dropDownBorderColor,
+            size: 30,
           ),
           selectedTrailingIcon: Icon(
-            size: 18,
+            size: 30,
             Icons.keyboard_arrow_up_rounded,
             color: ColorConstants.dropDownBorderColor,
           ),
-          textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: ColorConstants.blackColor,
-                fontWeight: FontWeight.w600,
+          textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: ColorConstants.buttonTextColor,
+                fontFamily: FontWeightEnum.w400.toInter,
                 overflow: TextOverflow.ellipsis,
               ),
-          menuStyle: MenuStyle(
-            backgroundColor: MaterialStateProperty.all(ColorConstants.greyLightColor),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-            elevation: MaterialStateProperty.all(0),
-            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 10)),
-          ),
           errorText: errorText,
-          initialSelection: dropdownList.first.label,
+          initialSelection: hintText ?? dropdownList.first.label,
           controller: controller,
           dropdownMenuEntries: dropdownList,
           onSelected: (value) => onSelect(value ?? ''),
-          inputDecorationTheme: InputDecorationTheme(
-            isCollapsed: true,
-            isDense: true,
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            fillColor: ColorConstants.whiteColor,
-            filled: true,
-            labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: ColorConstants.blackColor,
-                  fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis,
-                ),
-            errorStyle:
-                TextStyle(color: ColorConstants.secondaryColor, fontSize: 12, fontWeight: FontWeight.w600, fontFamily: "Inter"),
-            enabledBorder: DecoratedInputBorder(
-              child: OutlineInputBorder(
-                borderSide: const BorderSide(color: ColorConstants.dropDownBorderColor),
-                borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
-              ),
-              shadow: buildBoxShadow(),
-            ),
-            focusedBorder: DecoratedInputBorder(
-              child: OutlineInputBorder(
-                borderSide: BorderSide(color: ColorConstants.blackColor),
-                borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
-              ),
-              shadow: buildBoxShadow(),
-            ),
-            errorBorder: DecoratedInputBorder(
-              child: OutlineInputBorder(
-                borderSide: BorderSide(color: ColorConstants.secondaryColor),
-                borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
-              ),
-              shadow: buildBoxShadow(),
-            ),
-            focusedErrorBorder: DecoratedInputBorder(
-              child: OutlineInputBorder(
-                borderSide: BorderSide(color: ColorConstants.secondaryColor),
-                borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
-              ),
-              shadow: buildBoxShadow(),
-            ),
-            errorMaxLines: 3,
-          ),
         ),
       ],
     );
   }
-
-  BoxShadow buildBoxShadow() =>
-      BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.0), blurRadius: 6, offset: const Offset(0, 0));
 }
 
 DropdownMenuEntry<String> dropdownMenuEntry({required BuildContext context, required String value, required String label}) {

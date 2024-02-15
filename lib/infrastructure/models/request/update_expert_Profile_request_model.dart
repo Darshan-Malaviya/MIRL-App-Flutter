@@ -1,3 +1,6 @@
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
+
 class UpdateExpertProfileRequestModel {
   String? userName;
   String? expertName;
@@ -6,47 +9,39 @@ class UpdateExpertProfileRequestModel {
   String? about;
   String? gender;
   String? fee;
-  String? userProfileFlag;
-  String? expertProfileFlag;
-  String? aboutFlag;
-  String? feeFlag;
-  String? areaOfExpertiseFlag;
-  String? weeklyAvailableFlag;
-  String? instantCallAvailableFlag;
-  String? locationFlag;
-  String? genderFlag;
-  String? certificateFlag;
-  String? bankDetailsFlag;
+  String? userProfile;
+  String? expertProfile;
+  bool? aboutFlag;
+  bool? feeFlag;
+  bool? instantCallAvailable;
   String? phone;
-  String? isLocationVisible;
+  bool? isLocationVisible;
   String? bankAccountHolderName;
   String? bankName;
   String? accountNumber;
+  String? city;
+  String? country;
 
   UpdateExpertProfileRequestModel(
       {this.userName,
-        this.expertName,
-        this.mirlId,
-        this.location,
-        this.about,
-        this.gender,
-        this.fee,
-        this.userProfileFlag,
-        this.expertProfileFlag,
-        this.aboutFlag,
-        this.feeFlag,
-        this.areaOfExpertiseFlag,
-        this.weeklyAvailableFlag,
-        this.instantCallAvailableFlag,
-        this.locationFlag,
-        this.genderFlag,
-        this.certificateFlag,
-        this.bankDetailsFlag,
-        this.phone,
-        this.isLocationVisible,
-        this.bankAccountHolderName,
-        this.bankName,
-        this.accountNumber});
+      this.expertName,
+      this.mirlId,
+      this.location,
+      this.about,
+      this.gender,
+      this.fee,
+      this.userProfile,
+      this.expertProfile,
+      this.aboutFlag,
+      this.feeFlag,
+      this.instantCallAvailable,
+      this.phone,
+      this.isLocationVisible,
+      this.bankAccountHolderName,
+      this.bankName,
+      this.accountNumber,
+      this.city,
+      this.country});
 
   UpdateExpertProfileRequestModel.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
@@ -56,49 +51,90 @@ class UpdateExpertProfileRequestModel {
     about = json['about'];
     gender = json['gender'];
     fee = json['fee'];
-    userProfileFlag = json['userProfileFlag'];
-    expertProfileFlag = json['expertProfileFlag'];
+    userProfile = json['userProfile'];
+    expertProfile = json['expertProfile'];
     aboutFlag = json['aboutFlag'];
     feeFlag = json['feeFlag'];
-    areaOfExpertiseFlag = json['areaOfExpertiseFlag'];
-    weeklyAvailableFlag = json['weeklyAvailableFlag'];
-    instantCallAvailableFlag = json['instantCallAvailableFlag'];
-    locationFlag = json['locationFlag'];
-    genderFlag = json['genderFlag'];
-    certificateFlag = json['certificateFlag'];
-    bankDetailsFlag = json['bankDetailsFlag'];
+    instantCallAvailable = json['instantCallAvailable'];
     phone = json['phone'];
     isLocationVisible = json['isLocationVisible'];
     bankAccountHolderName = json['bankAccountHolderName'];
     bankName = json['bankName'];
+    city = json['city'];
     accountNumber = json['accountNumber'];
+    country = json['country'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userName'] = this.userName;
-    data['expertName'] = this.expertName;
-    data['mirlId'] = this.mirlId;
-    data['location'] = this.location;
-    data['about'] = this.about;
-    data['gender'] = this.gender;
-    data['fee'] = this.fee;
-    data['userProfileFlag'] = this.userProfileFlag;
-    data['expertProfileFlag'] = this.expertProfileFlag;
-    data['aboutFlag'] = this.aboutFlag;
-    data['feeFlag'] = this.feeFlag;
-    data['areaOfExpertiseFlag'] = this.areaOfExpertiseFlag;
-    data['weeklyAvailableFlag'] = this.weeklyAvailableFlag;
-    data['instantCallAvailableFlag'] = this.instantCallAvailableFlag;
-    data['locationFlag'] = this.locationFlag;
-    data['genderFlag'] = this.genderFlag;
-    data['certificateFlag'] = this.certificateFlag;
-    data['bankDetailsFlag'] = this.bankDetailsFlag;
-    data['phone'] = this.phone;
-    data['isLocationVisible'] = this.isLocationVisible;
-    data['bankAccountHolderName'] = this.bankAccountHolderName;
-    data['bankName'] = this.bankName;
-    data['accountNumber'] = this.accountNumber;
-    return data;
+  FormData toJsonGender() {
+    FormData formData = FormData.fromMap({
+      'gender': gender,
+    });
+    return formData;
+  }
+
+  FormData toJsonFees() {
+    FormData formData = FormData.fromMap({
+      'feeFlag': feeFlag,
+      'fee': fee,
+    });
+    return formData;
+  }
+
+  FormData toJsonInstantCall() {
+    FormData formData = FormData.fromMap({
+      'instantCallAvailable': instantCallAvailable,
+    });
+    return formData;
+  }
+
+  Future<FormData> toJsonProfile() async {
+    Map<String, dynamic> request = {};
+    request['expertProfile'] = await MultipartFile.fromFile(
+      expertProfile ?? '',
+      filename: DateTime.now().toIso8601String(),
+      contentType: MediaType('image', expertProfile?.split('.').last ?? 'jpg'),
+    );
+    FormData formData = FormData.fromMap(request);
+    return formData;
+  }
+
+  FormData toJsonBank() {
+    FormData formData = FormData.fromMap({
+      'bankAccountHolderName': bankAccountHolderName,
+      'bankName': bankName,
+      'accountNumber': accountNumber,
+    });
+    return formData;
+  }
+
+  FormData toJsonName() {
+    FormData formData = FormData.fromMap({
+      'expertName': expertName,
+    });
+    return formData;
+  }
+
+  FormData toJsonMirlId() {
+    FormData formData = FormData.fromMap({
+      'mirlId': mirlId,
+    });
+    return formData;
+  }
+
+  FormData toJsonAbout() {
+    FormData formData = FormData.fromMap({
+      'aboutFlag': aboutFlag,
+      'about': about,
+    });
+    return formData;
+  }
+
+  FormData toJsonYourLocation() {
+    FormData formData = FormData.fromMap({
+      'isLocationVisible': isLocationVisible,
+      'country': country,
+      'city': city,
+    });
+    return formData;
   }
 }

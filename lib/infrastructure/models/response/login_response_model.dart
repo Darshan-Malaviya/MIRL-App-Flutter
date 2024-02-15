@@ -1,34 +1,32 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/models/response/error_model.dart';
+import 'package:mirl/infrastructure/models/common/common_model.dart';
+import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
 
 class LoginResponseModel {
   int? status;
   UserData? data;
   String? message;
   String? token;
-  ErrorModel? err;
+  CommonModel? err;
 
-  LoginResponseModel({this.status, this.data, this.message, this.token , this.err});
+  LoginResponseModel({this.status, this.data, this.message, this.token});
 
   LoginResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? UserData.fromJson(json['data']) : null;
+    data = json['data'] != null ? new UserData.fromJson(json['data']) : null;
     message = json['message'];
     token = json['token'];
-    err = json['err'] != null ? ErrorModel.fromJson(json['err']) : null;
+    err = json['err'] != null ? CommonModel.fromJson(json['err']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
     if (this.data != null) {
       data['data'] = this.data?.toJson();
     }
-    data['message'] = message;
-    data['token'] = token;
-    if (err != null) {
-      data['err'] = err?.toJson();
-    }
+    data['message'] = this.message;
+    data['token'] = this.token;
     return data;
   }
 
@@ -49,34 +47,25 @@ class UserData {
   String? mirlId;
   String? email;
   String? phone;
-  String? location;
+  String? city;
   String? about;
-  String? otp;
-  String? gender;
-  String? loginType;
-  String? googleId;
-  String? appleId;
-  String? facebookId;
+  int? gender;
+  int? loginType;
+  String? country;
   String? userProfile;
   String? expertProfile;
-  String? deviceToken;
-  String? deviceType;
-  int? expirationTime;
-  String? fee;
-  bool? userProfileFlag;
-  bool? expertProfileFlag;
-  bool? aboutFlag;
-  bool? feeFlag;
-  bool? areaOfExpertiseFlag;
-  bool? weeklyAvailableFlag;
-  bool? instantCallAvailableFlag;
-  bool? locationFlag;
+  int? fee;
+  bool? instantCallAvailable;
   bool? isLocationVisible;
-  bool? genderFlag;
-  bool? certificateFlag;
-  bool? bankDetailsFlag;
+  String? timezone;
+  bool? isDeleted;
   String? firstCreated;
   String? lastModified;
+  String? activeAt;
+  bool? isFavorite;
+  List<CertificationData>? certification;
+  List<WeeklyAvailableData>? expertAvailability;
+  List<AreasOfExpertise>? areaOfExpertise;
 
   UserData(
       {this.id,
@@ -85,34 +74,25 @@ class UserData {
       this.mirlId,
       this.email,
       this.phone,
-      this.location,
+      this.city,
       this.about,
-      this.otp,
       this.gender,
       this.loginType,
-      this.googleId,
-      this.appleId,
-      this.facebookId,
+      this.country,
       this.userProfile,
       this.expertProfile,
-      this.deviceToken,
-      this.deviceType,
-      this.expirationTime,
       this.fee,
-      this.userProfileFlag,
-      this.expertProfileFlag,
-      this.aboutFlag,
-      this.feeFlag,
-      this.areaOfExpertiseFlag,
-      this.weeklyAvailableFlag,
-      this.instantCallAvailableFlag,
-      this.locationFlag,
+      this.instantCallAvailable,
       this.isLocationVisible,
-      this.genderFlag,
-      this.certificateFlag,
-      this.bankDetailsFlag,
+      this.timezone,
+      this.isDeleted,
       this.firstCreated,
-      this.lastModified});
+      this.lastModified,
+      this.activeAt,
+      this.certification,
+      this.isFavorite,
+      this.expertAvailability,
+      this.areaOfExpertise});
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -121,72 +101,183 @@ class UserData {
     mirlId = json['mirlId'];
     email = json['email'];
     phone = json['phone'];
-    location = json['location'];
+    city = json['city'];
     about = json['about'];
-    otp = json['otp'];
     gender = json['gender'];
     loginType = json['loginType'];
-    googleId = json['googleId'];
-    appleId = json['appleId'];
-    facebookId = json['facebookId'];
+    country = json['country'];
     userProfile = json['userProfile'];
     expertProfile = json['expertProfile'];
-    deviceToken = json['deviceToken'];
-    deviceType = json['deviceType'];
-    expirationTime = json['expirationTime'];
     fee = json['fee'];
-    userProfileFlag = json['userProfileFlag'];
-    expertProfileFlag = json['expertProfileFlag'];
-    aboutFlag = json['aboutFlag'];
-    feeFlag = json['feeFlag'];
-    areaOfExpertiseFlag = json['areaOfExpertiseFlag'];
-    weeklyAvailableFlag = json['weeklyAvailableFlag'];
-    instantCallAvailableFlag = json['instantCallAvailableFlag'];
-    locationFlag = json['locationFlag'];
+    instantCallAvailable = json['instantCallAvailable'];
     isLocationVisible = json['isLocationVisible'];
-    genderFlag = json['genderFlag'];
-    certificateFlag = json['certificateFlag'];
-    bankDetailsFlag = json['bankDetailsFlag'];
+    timezone = json['timezone'];
+    isDeleted = json['isDeleted'];
+    firstCreated = json['firstCreated'];
+    lastModified = json['lastModified'];
+    activeAt = json['activeAt'];
+    isFavorite = json['isFavorite'];
+    if (json['certification'] != null) {
+      certification = <CertificationData>[];
+      json['certification'].forEach((v) {
+        certification?.add(new CertificationData.fromJson(v));
+      });
+    }
+    if (json['expertAvailability'] != null) {
+      expertAvailability = <WeeklyAvailableData>[];
+      json['expertAvailability'].forEach((v) {
+        expertAvailability?.add(new WeeklyAvailableData.fromJson(v));
+      });
+    }
+    if (json['areaOfExpertise'] != null) {
+      areaOfExpertise = <AreasOfExpertise>[];
+      json['areaOfExpertise'].forEach((v) {
+        areaOfExpertise?.add(new AreasOfExpertise.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['userName'] = this.userName;
+    data['expertName'] = this.expertName;
+    data['mirlId'] = this.mirlId;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['city'] = this.city;
+    data['about'] = this.about;
+    data['gender'] = this.gender;
+    data['loginType'] = this.loginType;
+    data['country'] = this.country;
+    data['userProfile'] = this.userProfile;
+    data['expertProfile'] = this.expertProfile;
+    data['fee'] = this.fee;
+    data['instantCallAvailable'] = this.instantCallAvailable;
+    data['isLocationVisible'] = this.isLocationVisible;
+    data['timezone'] = this.timezone;
+    data['isDeleted'] = this.isDeleted;
+    data['firstCreated'] = this.firstCreated;
+    data['lastModified'] = this.lastModified;
+    data['activeAt'] = this.activeAt;
+    data['isFavorite'] = this.isFavorite;
+    if (this.certification != null) {
+      data['certification'] = this.certification?.map((v) => v.toJson()).toList();
+    }
+    if (this.expertAvailability != null) {
+      data['expertAvailability'] = this.expertAvailability?.map((v) => v.toJson()).toList();
+    }
+    if (this.areaOfExpertise != null) {
+      data['areaOfExpertise'] = this.areaOfExpertise?.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class WeeklyAvailableData {
+  int? id;
+  int? userId;
+  String? dayOfWeek;
+  String? startTime;
+  String? endTime;
+  bool? isAvailable;
+  String? scheduleType;
+  String? firstCreated;
+  String? lastModified;
+
+  WeeklyAvailableData({this.id, this.userId, this.dayOfWeek, this.startTime, this.endTime, this.isAvailable, this.scheduleType, this.firstCreated, this.lastModified});
+
+  WeeklyAvailableData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['userId'];
+    dayOfWeek = json['dayOfWeek'];
+    startTime = json['startTime'];
+    endTime = json['endTime'];
+    isAvailable = json['isAvailable'];
+    scheduleType = json['scheduleType'];
     firstCreated = json['firstCreated'];
     lastModified = json['lastModified'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['userName'] = userName;
-    data['expertName'] = expertName;
-    data['mirlId'] = mirlId;
-    data['email'] = email;
-    data['phone'] = phone;
-    data['location'] = location;
-    data['about'] = about;
-    data['otp'] = otp;
-    data['gender'] = gender;
-    data['loginType'] = loginType;
-    data['googleId'] = googleId;
-    data['appleId'] = appleId;
-    data['facebookId'] = facebookId;
-    data['userProfile'] = userProfile;
-    data['expertProfile'] = expertProfile;
-    data['deviceToken'] = deviceToken;
-    data['deviceType'] = deviceType;
-    data['expirationTime'] = expirationTime;
-    data['fee'] = fee;
-    data['userProfileFlag'] = userProfileFlag;
-    data['expertProfileFlag'] = expertProfileFlag;
-    data['aboutFlag'] = aboutFlag;
-    data['feeFlag'] = feeFlag;
-    data['areaOfExpertiseFlag'] = areaOfExpertiseFlag;
-    data['weeklyAvailableFlag'] = weeklyAvailableFlag;
-    data['instantCallAvailableFlag'] = instantCallAvailableFlag;
-    data['locationFlag'] = locationFlag;
-    data['isLocationVisible'] = isLocationVisible;
-    data['genderFlag'] = genderFlag;
-    data['certificateFlag'] = certificateFlag;
-    data['bankDetailsFlag'] = bankDetailsFlag;
-    data['firstCreated'] = firstCreated;
-    data['lastModified'] = lastModified;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['userId'] = this.userId;
+    data['dayOfWeek'] = this.dayOfWeek;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
+    data['isAvailable'] = this.isAvailable;
+    data['scheduleType'] = this.scheduleType;
+    data['firstCreated'] = this.firstCreated;
+    data['lastModified'] = this.lastModified;
+    return data;
+  }
+}
+
+class CertificationData {
+  int? id;
+  String? title;
+  String? url;
+  String? description;
+
+  CertificationData({this.id, this.title, this.url, this.description});
+
+  CertificationData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    url = json['url'];
+    description = json['description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['url'] = this.url;
+    data['description'] = this.description;
+    return data;
+  }
+
+  Map<String, dynamic> toJsonForRequest() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['title'] = this.title;
+    data['url'] = this.url;
+    data['description'] = this.description;
+    return data;
+  }
+}
+
+class AreasOfExpertise {
+  int? id;
+  String? name;
+  String? image;
+  String? description;
+  List<Topic>? topic;
+
+  AreasOfExpertise({this.id, this.name, this.image, this.description, this.topic});
+
+  AreasOfExpertise.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    image = json['image'];
+    description = json['description'];
+    if (json['topic'] != null) {
+      topic = <Topic>[];
+      json['topic'].forEach((v) {
+        topic?.add(new Topic.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['image'] = this.image;
+    data['description'] = this.description;
+    if (this.topic != null) {
+      data['topic'] = this.topic?.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

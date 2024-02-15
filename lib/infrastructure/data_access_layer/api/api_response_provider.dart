@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-
 class ApiResponseProvider {
   late Dio _dio;
 
@@ -65,7 +64,8 @@ class ApiResponseProvider {
             ),
           ),
         );
-        response = await _dio.get(newURL, queryParameters: url.queryParameters);
+        response = await _dio.get(newURL, queryParameters: url.queryParameters,options: Options(headers:headers));
+        //response = await _dio.get(newURL, queryParameters: url.queryParameters);
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {
@@ -75,10 +75,7 @@ class ApiResponseProvider {
 
     postRequest() async {
       try {
-        response = await _dio.post(newURL,
-            data: json.encode(body),
-            queryParameters: url.queryParameters,
-            options: Options(headers: headers ?? _dio.options.headers));
+        response = await _dio.post(newURL, data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {
@@ -88,10 +85,7 @@ class ApiResponseProvider {
 
     deleteRequest() async {
       try {
-        response = await _dio.delete(newURL,
-            data: json.encode(body),
-            queryParameters: url.queryParameters,
-            options: Options(headers: headers ?? _dio.options.headers));
+        response = await _dio.delete(newURL, data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {
@@ -101,10 +95,7 @@ class ApiResponseProvider {
 
     putRequest() async {
       try {
-        response = await _dio.put(newURL,
-            data: json.encode(body),
-            queryParameters: url.queryParameters,
-            options: Options(headers: headers ?? _dio.options.headers));
+        response = await _dio.put(newURL, data: body, queryParameters: url.queryParameters, options: Options(headers: headers ?? _dio.options.headers));
         responseJson = await _processResponse(response);
         return responseJson;
       } on DioException catch (e) {
@@ -125,9 +116,9 @@ class ApiResponseProvider {
       //TODO: for future optimization move decoding to a separate isolate.
       return APIResponse.success(response.data);
     } else {
-      ErrorModel? errorResponse;
+      CommonModel? errorResponse;
       try {
-        errorResponse = await compute(ErrorModel.parseInfo, response.data as Map<String, dynamic>);
+        errorResponse = await compute(CommonModel.parseInfo, response.data as Map<String, dynamic>);
       } catch (e) {
         print(e);
       }
@@ -141,11 +132,11 @@ class ApiResponseProvider {
     // final errorMessage = DioExceptions.fromDioError(e).toString();
     ApplicationError applicationError;
     if ((e.response?.statusCode ?? 400) >= 400 || (e.response?.statusCode ?? 400) <= 499) {
-      ErrorModel? errorResponse = await compute(ErrorModel.parseInfo, e.response?.data as Map<String, dynamic>);
+      CommonModel? errorResponse = await compute(CommonModel.parseInfo, e.response?.data as Map<String, dynamic>);
       return APIResponse.failure(errorResponse);
     } else if ((e.response?.statusCode ?? 400) >= 400 || (e.response?.statusCode ?? 400) <= 499) {
       // ErrorModel? errorResponse = await compute(ErrorModel.parseInfo, e.response?.data as Map<String, dynamic>);
-      return APIResponse.failure(ErrorModel(message: ['Service temporarily unavailable. Please check back soon.']));
+      return APIResponse.failure(CommonModel(message: ['Service temporarily unavailable. Please check back soon.']));
     }
     if (e.error is SocketException) {
       applicationError = NetworkError.getAppError(NetworkErrorType.netUnreachable);
@@ -153,6 +144,6 @@ class ApiResponseProvider {
       applicationError = ErrorResponse.getAppError(e.response?.statusCode ?? 0);
     }
 
-    return APIResponse.failure(ErrorModel(message: [applicationError.errors.first.message ?? '']));
+    return APIResponse.failure(CommonModel(message: [applicationError.errors.first.message ?? '']));
   }
 }

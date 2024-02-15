@@ -1,30 +1,39 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/loader/three_bounce.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String title;
   final double? height;
   final double? width;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final String? prefixIcon;
   final double? prefixIconPadding;
   final VoidCallback onPressed;
   final double? lineHeight;
   final Color? titleColor;
   final Color? buttonColor;
+  final String? buttonTextFontFamily;
+  final double? fontSize;
+  final bool? isLoading;
 
-  const PrimaryButton({
-    Key? key,
-    required this.title,
-    this.height,
-    this.width,
-    this.padding,
-    this.prefixIconPadding,
-    required this.onPressed,
-    this.prefixIcon,
-    this.lineHeight,
-    this.titleColor,
-    this.buttonColor,
-  }) : super(key: key);
+  const PrimaryButton(
+      {Key? key,
+      required this.title,
+      this.height,
+      this.width,
+      this.padding,
+      this.margin,
+      this.prefixIconPadding,
+      required this.onPressed,
+      this.prefixIcon,
+      this.lineHeight,
+      this.titleColor,
+      this.buttonColor,
+      this.buttonTextFontFamily,
+      this.fontSize,
+      this.isLoading})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +48,7 @@ class PrimaryButton extends StatelessWidget {
         ]),
         width: width ?? MediaQuery.of(context).size.width,
         height: height ?? 45,
+        margin: margin,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             surfaceTintColor: buttonColor ?? ColorConstants.primaryColor,
@@ -55,27 +65,33 @@ class PrimaryButton extends StatelessWidget {
             ),
           ),
           onPressed: onPressed,
-          child: Row(
-            //mainAxisSize: MainAxisSize.min,
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
-                  ? Padding(
-                      padding: EdgeInsets.only(right: prefixIconPadding ?? 0.0),
-                      child: Image.asset(prefixIcon ?? ''),
-                    )
-                  : const SizedBox.shrink(),
-              Expanded(
-                child: BodyMediumText(
-                  title: title,
-                  fontFamily: FontWeightEnum.w700.toInter,
-                  titleColor: titleColor ?? ColorConstants.textColor,
-                  titleTextAlign: TextAlign.center,
-                  fontSize: 13,
+          child: (isLoading ?? false)
+              ? SpinKitThreeBounce(
+                  color: ColorConstants.whiteColor,
+                  size: 24,
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
+                        ? Padding(
+                            padding: EdgeInsets.only(right: prefixIconPadding ?? 0.0,
+                            ),child: Image.asset(prefixIcon ?? ''),
+                          )
+                        : const SizedBox.shrink(),
+                    Flexible(
+                child:BodyMediumText(
+                      title: title,
+                      fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
+                      titleColor: titleColor ?? ColorConstants.buttonTextColor,
+                      titleTextAlign: TextAlign.center,
+                      fontSize: fontSize ?? 13,
+                      maxLine: 3,
                 ),
-              ),
-            ],
-          ),
+                    ),
+                  ],
+                ),
         ));
   }
 }

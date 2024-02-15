@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPScreen extends ConsumerStatefulWidget {
@@ -12,11 +13,6 @@ class OTPScreen extends ConsumerStatefulWidget {
 class _OTPScreenState extends ConsumerState<OTPScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //ref.watch(signupProvider).otpController.clear();
-
-      //ref.watch(signupProvider).fileName = null;
-    });
     super.initState();
     ref.read(loginScreenProvider).startTimer();
   }
@@ -55,7 +51,6 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 Pinput(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   inputFormatters: [
-                    //FilteringTextInputFormatter.deny(RegExp(RegexConstants.blankSpace)),
                     FilteringTextInputFormatter.deny(RegExp(RegexConstants.emojiRegex)),
                     FilteringTextInputFormatter.digitsOnly,
                   ],
@@ -115,14 +110,14 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   ),
                 ).addPaddingX(20),
                 60.0.spaceY,
-                //  Image.asset(ImageConstants.line),
                 PrimaryButton(
                   title: StringConstants.verifyOtp,
+                  titleColor: ColorConstants.textColor,
                   onPressed: () {
                     if (loginScreenProviderWatch.otpController.text.isNotEmpty) {
                       loginScreenProviderRead.otpVerifyRequestCall();
                     } else {
-                      FlutterToast().showToast(msg: "The OTP Field is required ");
+                      FlutterToast().showToast(msg: "The OTP Field is required");
                     }
                   },
                 ).addPaddingX(55),
@@ -145,23 +140,14 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                           },
                           child: BodySmallText(
                             title: 'Resend',
-                            fontFamily: FontWeightEnum.w700.toInter,
-                            titleColor:
-                                loginScreenProviderWatch.enableResend ? ColorConstants.primaryColor : ColorConstants.whiteColor,
-
-                            // style: TextStyle(
-                            //     color:
-                            //         loginScreenProviderWatch.enableResend ? ColorConstants.primaryColor : ColorConstants.whiteColor,
-                            //     fontSize: 14,
-                            //     fontWeight: FontWeight.bold),
+                            titleColor: loginScreenProviderWatch.enableResend ? ColorConstants.primaryColor : ColorConstants.whiteColor,
                           ),
                         ),
                       )
                     } else ...{
                       Flexible(
                         child: BodySmallText(
-                          title: _getTimeString(Duration(seconds: loginScreenProviderWatch.secondsRemaining)),
-                          fontWeight: FontWeight.w700,
+                          title: Duration(seconds: loginScreenProviderWatch.secondsRemaining).toTimeString(),
                           fontSize: 10,
                         ),
                       ),
@@ -174,11 +160,5 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
         ),
       ),
     );
-  }
-
-  String _getTimeString(Duration time) {
-    final minutes = time.inMinutes.remainder(Duration.minutesPerHour).toString().padLeft(2, '0');
-    final seconds = time.inSeconds.remainder(Duration.secondsPerMinute).toString().padLeft(2, '0');
-    return time.inHours > 0 ? "${time.inHours}:${minutes.padLeft(2, "0")}:$seconds" : "$minutes:$seconds";
   }
 }

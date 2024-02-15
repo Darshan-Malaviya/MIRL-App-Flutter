@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/commons/enums/login_type_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/login_request_model.dart';
 import 'package:mirl/infrastructure/models/request/otp_verify_request_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/repository/auth_repo.dart';
+import 'package:mirl/infrastructure/services/agora_service.dart';
 import 'package:mirl/mirl_app.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -51,35 +51,21 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  // void startTimer() {
-  //   timer?.cancel();
-  //   const oneSec = Duration(seconds: 1);
-  //   timer = Timer.periodic(
-  //     oneSec,
-  //         (Timer timer) {
-  //       if (start == 0) {
-  //         timer.cancel();
-  //         isResend = true;
-  //       } else {
-  //         start--;
-  //         isResend = false;
-  //       }
-  //       notifyListeners();
-  //     },
-  //   );
-  // }
-
   Future<void> loginRequestCall({required int loginType}) async {
-    debugPrint('Token=================${SharedPrefHelper.getAuthToken}');
+    debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
-      deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
-      email: emailController.text.trim().toString(),
-      socialId: _socialId,
-      deviceToken: SharedPrefHelper.getAuthToken,
-      timezone:  await CommonMethods.getCurrentTimeZone(),
-      loginType: loginType.toString(),
-    );
-    loginApiCall(requestModel: loginRequestModel.toJson(), loginType: loginType);
+        deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
+        email: emailController.text.trim(),
+        socialId: _socialId,
+        deviceToken: SharedPrefHelper.getFirebaseToken,
+        timezone: await CommonMethods.getCurrentTimeZone(),
+        loginType: loginType,
+        voIpToken: await AgoraService.singleton.getVoipToken());
+    loginApiCall(
+        requestModel: emailController.text.trim().isNotEmpty
+            ? loginRequestModel.prepareRequest()
+            : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
+        loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -90,24 +76,22 @@ class AuthProvider with ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-
           Logger().d("Successfully login");
-
-          CustomLoading.progressDialog(isLoading: false);
           if (loginType == 0) {
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+            SharedPrefHelper.saveAreaOfExpertise(jsonEncode(jsonEncode(loginResponseModel.data?.areaOfExpertise)));
+            SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
+            SharedPrefHelper.saveAuthToken(loginResponseModel.token);
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           }
         }
-
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: loginResponseModel?.err?.message ?? '');
-        CustomLoading.progressDialog(isLoading: false);
         Logger().d("API fail on login callApi ${response.data}");
         break;
     }
@@ -142,7 +126,6 @@ class AuthProvider with ChangeNotifier {
       );
       if (credential.userIdentifier != null) {
         _socialId = credential.userIdentifier ?? '';
-        //  userName = (credential.givenName ?? '') + " " + (credential.familyName ?? '');
         if (credential.email != null) {
           emailController.text = credential.email ?? '';
           if (emailController.text.split('@').last == 'privatelay.appleid.com') {
@@ -176,18 +159,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // String getSocialId() {
-  //   if (loginType == 1) {
-  //     return googleId;
-  //   } else if (loginType == 2) {
-  //     return fbId;
-  //   } else if (loginType == 3) {
-  //     return appleId;
-  //   } else {
-  //     return '';
-  //   }
-  // }
-
   /// OTP verify
 
   void otpVerifyRequestCall() {
@@ -195,7 +166,7 @@ class AuthProvider with ChangeNotifier {
       email: emailController.text.trim().toString(),
       otp: otpController.text.trim().toString(),
     );
-    otpVerifyApiCall(requestModel: otpVerifyRequestModel.toJson());
+    otpVerifyApiCall(requestModel: otpVerifyRequestModel.prepareRequest());
   }
 
   Future<void> otpVerifyApiCall({required Object requestModel}) async {
@@ -207,7 +178,12 @@ class AuthProvider with ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
+          Logger().d("Login data======${loginResponseModel.toJson()}");
+          timer?.cancel();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
+          SharedPrefHelper.saveAreaOfExpertise(jsonEncode(jsonEncode(loginResponseModel.data?.areaOfExpertise)));
+          SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
+          SharedPrefHelper.saveAuthToken(loginResponseModel.token);
           NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }

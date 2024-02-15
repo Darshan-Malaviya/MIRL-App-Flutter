@@ -1,15 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
-import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
-import 'package:mirl/ui/common/appbar/appbar_widget.dart';
-import 'package:mirl/ui/common/container_widgets/shadow_container.dart';
-import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/child_category_bottom_view.dart';
 
 class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
   const AddYourAreasOfExpertiseScreen({super.key});
@@ -19,89 +15,170 @@ class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
 }
 
 class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfExpertiseScreen> {
+  ScrollController scrollController = ScrollController();
+
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(categoryListProvider).AddAreaCategoryListApiCall(isChildId: "1");
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      ref.read(editExpertProvider).getUserData();
+      await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall(isLoaderVisible: true);
+      ref.read(addYourAreaExpertiseProvider).clearSelectChildId();
+      ref.read(addYourAreaExpertiseProvider).setCategoryChildDefaultData();
+    });
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        bool isLoading = ref.watch(addYourAreaExpertiseProvider).reachedCategoryLastPage;
+        if (!isLoading) {
+          await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall();
+        } else {
+          log('reach last page on all category list api');
+        }
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final categoryListProviderWatch = ref.watch(categoryListProvider);
-    // final categoryListProviderRead = ref.read(categoryListProvider);
+    final addYourAreaExpertiseProviderWatch = ref.watch(addYourAreaExpertiseProvider);
+    final addYourAreaExpertiseProviderRead = ref.read(addYourAreaExpertiseProvider);
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
-          onTap: () {
-            Navigator.pop(context);
+          onTap: () => context.toPop(),
+        ),
+        trailingIcon: InkWell(
+          onTap: () async {
+           await addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
+            ref.read(editExpertProvider).getUserData();
+            context.toPop();
           },
-        ),
-        trailingIcon: TitleMediumText(
-          title: StringConstants.done,
-          fontFamily: FontWeightEnum.w700.toInter,
+          child: TitleMediumText(
+            title: StringConstants.done,
+          ),
         ).addPaddingRight(14),
-        appTitle: TitleLargeText(
-          title: StringConstants.addYourAreas,
-          titleColor: ColorConstants.bottomTextColor,
-          fontFamily: FontWeightEnum.w700.toInter,
-        ),
       ),
       body: Column(
         children: [
-          TitleSmallText(
-            title: StringConstants.categoryView,
-            titleColor: ColorConstants.blackColor,
-            fontFamily: FontWeightEnum.w400.toInter,
+          TitleLargeText(
+            title: StringConstants.addYourAreas,
+            titleColor: ColorConstants.bottomTextColor,
+            maxLine: 2,
             titleTextAlign: TextAlign.center,
           ),
-          30.0.spaceY,
-          categoryListProviderWatch.categoryList?.isNotEmpty ?? false
-              ? Expanded(
-                  child: GridView.builder(
-                      // scrollDirection: Axis.vertical,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3, crossAxisSpacing: 38, mainAxisSpacing: 30),
-                      itemCount: categoryListProviderWatch.categoryList?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return ShadowContainer(
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image.network(
-                                  categoryListProviderWatch.categoryList?[index].categoryImage ?? '',
-                                  height: 60,
-                                  width: 50,
+          20.0.spaceY,
+          TitleSmallText(
+            fontFamily: FontWeightEnum.w400.toInter,
+            title: StringConstants.categoryView,
+            titleTextAlign: TextAlign.center,
+            maxLine: 3,
+          ),
+          20.0.spaceY,
+          Expanded(
+            child: addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
+                ? GridView.builder(
+                  controller: scrollController,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                    itemCount: ((addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0)
+                        + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1)),
+                    itemBuilder: (context, index) {
+                      if (index == addYourAreaExpertiseProviderWatch.categoryList?.length
+                          && (addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false)) {
+                      /*  return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                        );*/
+                      } else {
+                        CategoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
+
+                        return Stack(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                if (element?.topic?.isNotEmpty ?? false) {
+                                  addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
+                                  CommonBottomSheet.bottomSheet(
+                                      context: context,
+                                      isDismissible: true,
+                                      backgroundColor: ColorConstants.categoryList,
+                                      child: ChildCategoryBottomView(
+                                        childCategoryList: element,
+                                      ));
+                                } else {
+                                  FlutterToast().showToast(msg: LocaleKeys.thereAreNoAvailableTopics.tr());
+                                }
+                              },
+                              child: ShadowContainer(
+                                shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
+                                    ? ColorConstants.categoryListBorder
+                                    : ColorConstants.blackColor.withOpacity(0.1),
+                                offset: Offset(0,2),
+                                spreadRadius: 0,
+                                blurRadius: 3,
+                                child: Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: NetworkImageWidget(
+                                        boxFit: BoxFit.cover,
+                                        imageURL:
+                                        addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
+                                        isNetworkImage: true,
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                    ),
+                                    4.0.spaceY,
+                                    LabelSmallText(
+                                      fontSize: 9,
+                                      title: element?.name ?? '',
+                                      titleColor: ColorConstants.blackColor,
+                                      titleTextAlign: TextAlign.center,
+                                      maxLine: 2,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              LabelSmallText(
-                                fontSize: 9,
-                                title: categoryListProviderWatch.categoryList?[index].categoryName ?? '',
-                                titleColor: ColorConstants.blackColor,
-                                fontFamily: FontWeightEnum.w700.toInter,
-                                titleTextAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          height: 90,
-                          width: 90,
-                          isShadow: true,
+                                height: 100,
+                                width: 100,
+                                isShadow: true,
+                              ).addPaddingTop(5),
+                            ),
+                            if (element?.badgeCount != 0) ...[
+                              Positioned(
+                                  top: 0,
+                                  right: 15,
+                                  child: CircleAvatar(
+                                    child: TitleMediumText(
+                                      title: element?.badgeCount.toString() ?? '0',
+                                      fontFamily: FontWeightEnum.w600.toInter,
+                                      titleColor: ColorConstants.blackColor,
+                                    ),
+                                    radius: 14,
+                                    backgroundColor: ColorConstants.primaryColor,
+                                  ))
+                            ]
+                          ],
                         );
-                      }),
-                )
-              : Center(
-                  child: Text(
-                    "No Data Found",
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: ColorConstants.primaryColor,
-                      fontWeight: FontWeight.bold,
+                      }
+
+                    })
+                : Center(
+                    child: BodyLargeText(
+                      title: StringConstants.noDataFound,
+                      fontFamily: FontWeightEnum.w600.toInter,
                     ),
                   ),
-                ),
+          ),
+          PrimaryButton(
+              title: StringConstants.setYourExpertise,
+              onPressed: () async {
+                await addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
+                ref.read(editExpertProvider).getUserData();
+                context.toPop();
+              })
         ],
       ).addAllPadding(20),
     );

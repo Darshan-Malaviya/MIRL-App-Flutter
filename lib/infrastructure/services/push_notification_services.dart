@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
+import 'package:mirl/infrastructure/services/call_kit_service.dart';
 import 'package:mirl/mirl_app.dart';
 
 class PushNotificationService {
@@ -72,16 +74,21 @@ class PushNotificationService {
           RemoteNotification? notification = message?.notification;
           AndroidNotification? android = message?.notification?.android;
 
-          if (notification != null && android != null) {
-            flutterLocalNotificationsPlugin.show(
-                notification.hashCode,
-                notification.title,
-                notification.body,
-                const NotificationDetails(
-                    android: AndroidNotificationDetails("high_importance_channel", "High Importance Notifications",
-                        channelDescription: "This channel is used for important notifications.", importance: Importance.max, icon: "@drawable/notification_logo"),
-                    iOS: DarwinNotificationDetails(presentSound: true)),
-                payload: jsonEncode(message?.data));
+          if (message?.data['key'] == 'connectAndroidCall') {
+            ExtraResponseModel extraResponseModel = ExtraResponseModel.fromJson(message?.data ?? {});
+             // showCallkitIncoming(uuid: const Uuid().v4(), extraResponseModel: extraResponseModel);
+          } else {
+            if (notification != null && android != null) {
+              flutterLocalNotificationsPlugin.show(
+                  notification.hashCode,
+                  notification.title,
+                  notification.body,
+                  const NotificationDetails(
+                      android: AndroidNotificationDetails("high_importance_channel", "High Importance Notifications",
+                          channelDescription: "This channel is used for important notifications.", importance: Importance.max, icon: "@drawable/notification_logo"),
+                      iOS: DarwinNotificationDetails(presentSound: true)),
+                  payload: jsonEncode(message?.data));
+            }
           }
         } catch (e) {
           log('FireBase onMessage.lister Exception: $e');
@@ -104,6 +111,6 @@ class PushNotificationService {
 
   Future getFirebaseToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
-    SharedPrefHelper.saveAuthToken(token);
+    SharedPrefHelper.saveFirebaseToken(token);
   }
 }
