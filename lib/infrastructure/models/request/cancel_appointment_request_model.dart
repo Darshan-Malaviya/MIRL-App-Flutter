@@ -3,15 +3,15 @@ import 'dart:convert';
 class CancelAppointmentRequestModel {
   int? expertId;
   int? userId;
-  String? cancelByUser;
+  String? role;
   String? reason;
 
-  CancelAppointmentRequestModel({this.expertId, this.userId, this.cancelByUser, this.reason});
+  CancelAppointmentRequestModel({this.expertId, this.userId, this.role, this.reason});
 
   CancelAppointmentRequestModel.fromJson(Map<String, dynamic> json) {
     expertId = json['expertId'];
     userId = json['userId'];
-    cancelByUser = json['cancelByUser'];
+    role = json['role'];
     reason = json['reason'];
   }
 
@@ -19,7 +19,7 @@ class CancelAppointmentRequestModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['expertId'] = this.expertId;
     data['userId'] = this.userId;
-    data['cancelByUser'] = this.cancelByUser;
+    data['role'] = this.role;
     data['reason'] = this.reason;
     return data;
   }

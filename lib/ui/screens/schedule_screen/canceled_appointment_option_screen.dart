@@ -2,9 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class CanceledAppointmentOptionScreen extends ConsumerStatefulWidget {
-  const CanceledAppointmentOptionScreen({super.key});
+  final CancelArgs args;
+
+  const CanceledAppointmentOptionScreen({super.key, required this.args});
 
   @override
   ConsumerState createState() => _CanceledAppointmentOptionScreenState();
@@ -15,8 +19,8 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
 
   @override
   Widget build(BuildContext context) {
-    final scheduleWatch = ref.watch(scheduleCallProvider);
-    final scheduleRead = ref.read(scheduleCallProvider);
+    final cancelWatch = ref.watch(cancelAppointmentProvider);
+    final cancelRead = ref.read(cancelAppointmentProvider);
 
     return Scaffold(
       appBar: AppBarWidget(
@@ -66,14 +70,14 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
                 alignment: Alignment.bottomRight,
                 children: [
                   TextFormFieldWidget(
-                    onChanged: scheduleRead.setReasonLength,
+                    onChanged: cancelRead.setReasonLength,
                     maxLines: 10,
                     maxLength: 500,
                     minLines: 8,
-                    controller: scheduleWatch.reasonController,
+                    controller: cancelWatch.reasonController,
                     textInputType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
-                    canRequestFocus: !(scheduleWatch.isLoadingReason ?? false),
+                    canRequestFocus: !(cancelWatch.isLoadingReason ?? false),
                     contentPadding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 30),
                     validator: (value) {
                       return value?.toEmptyStringValidation(msg: 'Reason is required');
@@ -82,7 +86,7 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8, right: 12),
                     child: BodySmallText(
-                      title: '${scheduleWatch.reasonTextLength}/500 ${LocaleKeys.characters.tr()}',
+                      title: '${cancelWatch.reasonTextLength}/500 ${LocaleKeys.characters.tr()}',
                       fontFamily: FontWeightEnum.w400.toInter,
                       titleColor: ColorConstants.buttonTextColor,
                     ),
@@ -93,10 +97,15 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
               PrimaryButton(
                 title: LocaleKeys.yesGoToCanceled.tr(),
                 buttonColor: ColorConstants.buttonColor,
-                isLoading: scheduleWatch.isLoadingReason,
+                isLoading: cancelWatch.isLoadingReason,
                 onPressed: () {
                   if (_loginPassKey.currentState?.validate() ?? false) {
-                    scheduleRead.cancelAppointmentApiCall(context: context);
+                    cancelRead.cancelAppointmentApiCall(
+                      context: context,
+                      appointmentData: widget.args.appointmentData,
+                      role: widget.args.role ?? '1',
+                      fromUser: widget.args.fromUser ?? false,
+                    );
                   }
                 },
                 fontSize: 15,

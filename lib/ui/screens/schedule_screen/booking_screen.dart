@@ -4,6 +4,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class BookingConfirmScreen extends ConsumerStatefulWidget {
   const BookingConfirmScreen({super.key});
@@ -149,7 +150,10 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             PrimaryButton(
               title: LocaleKeys.cancelBooking.tr(),
               onPressed: () {
-                context.toPushNamed(RoutesConstants.canceledAppointmentOptionScreen);
+                context.toPushNamed(
+                  RoutesConstants.canceledAppointmentOptionScreen,
+                  args: CancelArgs(appointmentData: scheduleWatch.appointmentData, role: '1', fromUser: true),
+                );
               },
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,
