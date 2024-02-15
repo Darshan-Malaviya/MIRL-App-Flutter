@@ -11,6 +11,7 @@ import 'package:mirl/infrastructure/providers/filter_provider.dart';
 import 'package:mirl/infrastructure/providers/expert_detail_provider.dart';
 import 'package:mirl/infrastructure/providers/home_provider.dart';
 import 'package:mirl/infrastructure/providers/multi_connect_provider.dart';
+import 'package:mirl/infrastructure/providers/notification_provider.dart';
 import 'package:mirl/infrastructure/providers/report_user_provider.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/infrastructure/providers/upcoming_appointment_provider.dart';
@@ -32,4 +33,5 @@ final blockUserProvider = ChangeNotifierProvider.autoDispose((_) => BlockProvide
 final multiConnectProvider = ChangeNotifierProvider.autoDispose((_) => MultiConnectProvider());
 final viewUpcomingAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => ViewUpcomingAppointmentProvider());
 final cancelAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => CancelAppointmentProvider());
+final notificationProvider = ChangeNotifierProvider.autoDispose((_) => NotificationProvider());
 

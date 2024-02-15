@@ -1,7 +1,8 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class UserOlderNotificationWidget extends StatefulWidget {
-  const UserOlderNotificationWidget({super.key});
+  final Color? titleBgColor;
+  const UserOlderNotificationWidget({super.key, this.titleBgColor});
 
   @override
   State<UserOlderNotificationWidget> createState() => _UserOlderNotificationWidgetState();
@@ -14,7 +15,6 @@ class _UserOlderNotificationWidgetState extends State<UserOlderNotificationWidge
       width: double.infinity,
       decoration: BoxDecoration(
         color: ColorConstants.whiteColor,
-        //border: Border.all(color: ColorConstants.dropDownBorderColor),
         boxShadow: [
           BoxShadow(
               offset: Offset(0, 2), color: ColorConstants.blackColor.withOpacity(0.25), spreadRadius: 0, blurRadius: 2),
@@ -28,7 +28,7 @@ class _UserOlderNotificationWidgetState extends State<UserOlderNotificationWidge
       child: Stack(
         children: [
           Container(
-            color: Colors.amber,
+            color: widget.titleBgColor ??Colors.amber,
             padding: EdgeInsets.only(left: 10),
             child: BodySmallText(
               title: 'NEW NOTIFICATIONS',

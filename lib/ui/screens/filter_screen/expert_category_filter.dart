@@ -23,18 +23,18 @@ class ExpertCategoryFilterScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilterScreen> {
-
   @override
   void initState() {
-   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     if(widget.args.fromExploreExpert ?? false) {
-       ref.read(filterProvider).setOtherCategoryValueFalse();
-     } else {
-       ref.read(filterProvider).getSelectedCategory();
-     }
-   });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.args.fromExploreExpert ?? false) {
+        ref.read(filterProvider).setOtherCategoryValueFalse();
+      } else {
+        ref.read(filterProvider).getSelectedCategory();
+      }
+    });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final filterWatch = ref.watch(filterProvider);
@@ -55,7 +55,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               maxLine: 2,
               titleTextAlign: TextAlign.center,
             ),
-            if(filterWatch.selectedCategory != null)...[
+            if (filterWatch.selectedCategory != null) ...[
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -66,21 +66,19 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                   ),
                   5.0.spaceY,
                   BodyMediumText(
-                    title:filterWatch.selectedCategory?.name ?? '',
+                    title: filterWatch.selectedCategory?.name ?? '',
                   ),
                   30.0.spaceY,
                 ],
               ).addVisibility(!(widget.args.fromExploreExpert ?? false)),
             ],
             buildTextFormFieldWidget(filterWatch.categoryController, context, () {
-              CommonBottomSheet.bottomSheet(
-                  context: context,
-                  isDismissible: true,
-                  child: AllCategoryListBottomView());
-            }, StringConstants.pickCategory).addVisibility(widget.args.fromExploreExpert ?? false),
+              CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: AllCategoryListBottomView());
+            }, StringConstants.pickCategory)
+                .addVisibility(widget.args.fromExploreExpert ?? false),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.topicController, context, () {
-              if(filterWatch.categoryController.text.isNotEmpty){
+              if (filterWatch.categoryController.text.isNotEmpty) {
                 CommonBottomSheet.bottomSheet(
                     context: context,
                     isDismissible: false,
@@ -169,7 +167,8 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               titleColor: ColorConstants.bottomTextColor,
             ),
             SliderTheme(
-              data: SliderTheme.of(context).copyWith(rangeThumbShape:  RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
+              data: SliderTheme.of(context)
+                  .copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
               child: RangeSlider(
                 values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
                 activeColor: ColorConstants.yellowButtonColor,
@@ -194,63 +193,79 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
         title: StringConstants.applyFilter,
         height: 55,
         onPressed: () async {
-          String? selectedTopicId;
-          if(filterWatch.selectedTopicList?.isNotEmpty ?? false){
-            selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
-          }
-          double endFeeRange = filterWatch.end ?? 0;
-          double startFeeRange = filterWatch.start ?? 0;
-          if (widget.args.fromExploreExpert ?? false) {
-            filterRead.clearExploreExpertSearchData();
-            filterRead.clearExploreController();
-            await filterRead.exploreExpertUserAndCategoryApiCall(
-                context: context,
-                isFromFilter: true,
-                requestModel: ExpertDataRequestModel(
-                    userId: SharedPrefHelper.getUserId,
-                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
-                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                    country:filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0 ) - 1 ).toString()  : null,
-                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty ? filterWatch.isCallSelect == 1 ? "true" : "false" : null,
-                    /*  experienceOder: "ASC",
+          if (filterWatch.commonSelectionModel.isNotEmpty) {
+            String? selectedTopicId;
+            if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
+              selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+            }
+            double endFeeRange = filterWatch.end ?? 0;
+            double startFeeRange = filterWatch.start ?? 0;
+            if (widget.args.fromExploreExpert ?? false) {
+              filterRead.clearExploreExpertSearchData();
+              filterRead.clearExploreController();
+              await filterRead.exploreExpertUserAndCategoryApiCall(
+                  context: context,
+                  isFromFilter: true,
+                  requestModel: ExpertDataRequestModel(
+                      userId: SharedPrefHelper.getUserId,
+                      categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false)
+                          ? filterWatch.selectedCategory?.id.toString()
+                          : null,
+                      city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                      country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                      gender:
+                          filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
+                      instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                          ? filterWatch.isCallSelect == 1
+                              ? "true"
+                              : "false"
+                          : null,
+                      /*  experienceOder: "ASC",
                   reviewOrder: "ASC",*/
-                    maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString(): null,
-                    minFee:  filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
-                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                        ? null
-                        : filterWatch.sortBySelectedItem == 'PRICE'
-                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                ? 'ASC'
-                                : 'DESC'
-                            : null,
-                    topicIds: selectedTopicId)
-            );
-          } else {
-            filterRead.clearSingleCategoryData();
-            await filterRead.getSingleCategoryApiCall(categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
-                context: context,
-                isFromFilter: true,
-                requestModel: ExpertDataRequestModel(
-                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                    country:filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                  /*  experienceOder: "ASC",
+                      maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
+                      minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
+                      feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                          ? null
+                          : filterWatch.sortBySelectedItem == 'PRICE'
+                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                  ? 'ASC'
+                                  : 'DESC'
+                              : null,
+                      topicIds: selectedTopicId));
+            } else {
+              filterRead.clearSingleCategoryData();
+              await filterRead.getSingleCategoryApiCall(
+                  categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                  context: context,
+                  isFromFilter: true,
+                  requestModel: ExpertDataRequestModel(
+                      city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                      country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                      /*  experienceOder: "ASC",
                     feeOrder: "ASC",
                     reviewOrder: "ASC",*/
-                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0 ) - 1 ).toString()  : null,
-                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty ? filterWatch.isCallSelect == 1 ? "true" : "false" : null,
-                    maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString(): null,
-                    minFee:  filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
-                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                        ? null
-                        : filterWatch.sortBySelectedItem == 'PRICE'
-                        ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                        ? 'ASC'
-                        : 'DESC'
-                        : null,
-                    topicIds: selectedTopicId,
-                    userId: SharedPrefHelper.getUserId)
-            );
+                      gender:
+                          filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
+                      instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                          ? filterWatch.isCallSelect == 1
+                              ? "true"
+                              : "false"
+                          : null,
+                      maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
+                      minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
+                      feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                          ? null
+                          : filterWatch.sortBySelectedItem == 'PRICE'
+                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                  ? 'ASC'
+                                  : 'DESC'
+                              : null,
+                      topicIds: selectedTopicId,
+                      userId: SharedPrefHelper.getUserId));
+            }
+          }
+          else {
+            FlutterToast().showToast(msg: "Please select any filter.");
           }
         },
       ).addPaddingXY(paddingX: 50, paddingY: 10),
@@ -271,13 +286,17 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
       labelColor: ColorConstants.bottomTextColor,
       enabledBorderColor: ColorConstants.dropDownBorderColor,
       labelTextFontFamily: FontWeightEnum.w700.toInter,
-      textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      textStyle: Theme.of(context)
+          .textTheme
+          .bodyMedium
+          ?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       suffixIcon: Icon(
         size: 18,
         Icons.keyboard_arrow_down_rounded,
         color: ColorConstants.dropDownBorderColor,
       ),
-      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       onTap: OnTap,
     );
   }

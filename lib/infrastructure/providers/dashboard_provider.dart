@@ -1,6 +1,6 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
+import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
@@ -23,9 +23,9 @@ class DashboardProvider extends ChangeNotifier {
       },
       children: const <Widget>[
         HomeScreen(),
-        //ExploreScreen(),
-        //BlockUserScreen(),
-        BlockUserListScreen(),
+        ExploreScreen(),
+        // BlockUserScreen(),
+        //BlockUserListScreen(),
         //ExpertCallHistoryScreen(),
         NotificationScreen(),
         ExpertProfileScreen(),

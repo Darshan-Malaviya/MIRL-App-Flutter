@@ -9,7 +9,6 @@ import 'package:mirl/infrastructure/models/response/un_block_user_response_model
 import 'package:mirl/infrastructure/models/response/user_block_response_model.dart';
 
 class AuthRepository extends ApiResponseHandler {
-
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
   /// login
@@ -38,20 +37,31 @@ class AuthRepository extends ApiResponseHandler {
   Future<ApiHttpResult> userBlockApi({required Object requestModel}) async {
     final uri = ApiConstants.endpointUri(path: ApiConstants.userBlock);
 
-    APIResponse result =
-        await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), body: requestModel);
+    APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), body: requestModel);
 
     return responseHandler(result: result, json: UserBlockResponseModel.parseInfo);
   }
 
-///  un block user
+  ///  un block user
 
   Future<ApiHttpResult> unBlockUserApi({required int userBlockId}) async {
     final uri = ApiConstants.endpointUri(path: '${ApiConstants.unBlockUser}/$userBlockId');
 
     APIResponse result =
-        await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(),apiType: APIType.put);
+        await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.put);
 
     return responseHandler(result: result, json: UnBlockUserResponseModel.parseInfo);
+  }
+
+  ///   get all block list
+
+  Future<ApiHttpResult> getAllBlockListApi({required int page, required int limit}) async {
+    final uri = ApiConstants.endpointUri(
+        path: ApiConstants.userBlock, queryParameters: {"page": page.toString(), "limit": limit.toString()});
+
+    APIResponse result =
+        await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.get);
+
+    return responseHandler(result: result, json: UserBlockResponseModel.parseInfo);
   }
 }
