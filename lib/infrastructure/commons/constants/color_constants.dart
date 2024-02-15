@@ -43,7 +43,7 @@ class ColorConstants {
 
   static Color overAllRatingColor = const Color(0xFF393737);
   static Color topicColor = const Color(0x66D97CF0);
-  static Color yellowLightColor = const Color(0x66FFCF5A);
+  static Color yellowLightColor = const Color(0xffF3D58C);
   static Color topicShoeColorColor = const Color(0x33000000);
   static Color certificatedBoxShadowColor = const Color(0x19000000);
   static Color callsPausedColor = const Color(0xFFBD3B28);

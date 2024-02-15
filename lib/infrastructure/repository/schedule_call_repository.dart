@@ -9,6 +9,7 @@ import 'package:mirl/infrastructure/models/response/appointment_response_model.d
 import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
+import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 
 class ScheduleCallRepository extends ApiResponseHandler {
@@ -56,6 +57,6 @@ class ScheduleCallRepository extends ApiResponseHandler {
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.get);
 
-    return responseHandler(result: result, json: CancelAppointmentResponseModel.parseInfo);
+    return responseHandler(result: result, json: UpcomingAppointmentResponseModel.parseInfo);
   }
 }

@@ -2,7 +2,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class LoginRequestModel {
   String? email;
-  String? loginType;
+  int? loginType;
   String? deviceType;
   String? socialId;
   String? deviceToken;
