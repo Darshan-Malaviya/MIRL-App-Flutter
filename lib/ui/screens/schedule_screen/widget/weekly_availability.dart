@@ -53,6 +53,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
             scheduleProviderRead.getSelectedDate(selectedDay);
           },
           selectedDay: scheduleProviderWatch.selectedDate,
+          fromUpcomingAppointment: false,
         ),
         22.0.spaceY,
         BodyMediumText(

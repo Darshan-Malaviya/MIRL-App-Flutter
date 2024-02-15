@@ -3,6 +3,7 @@ import 'package:mirl/infrastructure/providers/add_your_area_expertise_provider.d
 import 'package:mirl/infrastructure/providers/auth_provider.dart';
 import 'package:mirl/infrastructure/providers/block_provider.dart';
 import 'package:mirl/infrastructure/providers/call_provider.dart';
+import 'package:mirl/infrastructure/providers/cancel_appointment_provider.dart';
 import 'package:mirl/infrastructure/providers/common_app_provider.dart';
 import 'package:mirl/infrastructure/providers/dashboard_provider.dart';
 import 'package:mirl/infrastructure/providers/edit_expert_provider.dart';
@@ -12,7 +13,7 @@ import 'package:mirl/infrastructure/providers/home_provider.dart';
 import 'package:mirl/infrastructure/providers/multi_connect_provider.dart';
 import 'package:mirl/infrastructure/providers/report_user_provider.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
-import 'package:mirl/infrastructure/providers/view_upcoming_appointment_provider.dart';
+import 'package:mirl/infrastructure/providers/upcoming_appointment_provider.dart';
 
 // final authProvider = ChangeNotifierProvider.autoDispose((ref) => AuthProvider());
 final loginScreenProvider = ChangeNotifierProvider.autoDispose((_) => AuthProvider());
@@ -30,4 +31,5 @@ final callProvider = ChangeNotifierProvider.autoDispose((_) => CallProvider());
 final blockUserProvider = ChangeNotifierProvider.autoDispose((_) => BlockProvider());
 final multiConnectProvider = ChangeNotifierProvider.autoDispose((_) => MultiConnectProvider());
 final viewUpcomingAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => ViewUpcomingAppointmentProvider());
+final cancelAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => CancelAppointmentProvider());
 

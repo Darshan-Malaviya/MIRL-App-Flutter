@@ -4,7 +4,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class CanceledAppointmentScreen extends StatelessWidget {
-  final AppointmentArgs args;
+  final CancelArgs args;
 
   const CanceledAppointmentScreen({super.key, required this.args});
 
@@ -51,10 +51,10 @@ class CanceledAppointmentScreen extends StatelessWidget {
                         softWrap: true,
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: '${args.fromUser ? LocaleKeys.expert.tr() : LocaleKeys.user.tr()}: ',
+                          text: '${args.fromUser ?? false ? LocaleKeys.expert.tr() : LocaleKeys.user.tr()}: ',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
-                            TextSpan(text: args.cancelData?.name ?? '', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                            TextSpan(text: args.cancelData?.name ?? 'Anonymous', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                           ],
                         ),
                       ),
@@ -77,11 +77,11 @@ class CanceledAppointmentScreen extends StatelessWidget {
                         softWrap: true,
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: '${LocaleKeys.duration.tr()}: ',
+                          text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
                             TextSpan(
-                                text: ' ${args.cancelData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
+                                text: '${args.cancelData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                           ],
                         ),
@@ -119,12 +119,10 @@ class CanceledAppointmentScreen extends StatelessWidget {
               titleColor: ColorConstants.buttonTextColor,
             ),
             20.0.spaceY,
-            if (args.fromUser) ...[
+            if (args.fromUser ?? false) ...[
               PrimaryButton(
                 title: LocaleKeys.goTONotification.tr(),
-                onPressed: () {
-                  context.toPushNamed(RoutesConstants.notificationScreen);
-                },
+                onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
                 fontSize: 15,
               ),
               100.0.spaceY,
@@ -145,19 +143,24 @@ class CanceledAppointmentScreen extends StatelessWidget {
             ] else ...[
               PrimaryButton(
                 title: LocaleKeys.backCalenderAppointment.tr(),
-                onPressed: () {},
+                onPressed: () {
+                  context.toPop();
+                  context.toPop();
+                  context.toPushReplacementNamed(RoutesConstants.viewCalendarAppointment);
+                },
                 fontSize: 15,
+                titleColor: ColorConstants.textColor,
               ),
               30.0.spaceY,
-              InkWell(
-                onTap: () {
-                  context.toPushNamed(RoutesConstants.blockUserListScreen);
-                },
-                child: BodySmallText(
-                  title: LocaleKeys.blockedUser.tr(),
-                  fontFamily: FontWeightEnum.w400.toInter,
-                  titleColor: ColorConstants.callsPausedColor,
-                  titleTextAlign: TextAlign.center,
+              Center(
+                child: InkWell(
+                  onTap: () => context.toPushNamed(RoutesConstants.blockUserListScreen),
+                  child: BodySmallText(
+                    title: LocaleKeys.blockedUser.tr(),
+                    fontFamily: FontWeightEnum.w400.toInter,
+                    titleColor: ColorConstants.callsPausedColor,
+                    titleTextAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ]

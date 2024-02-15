@@ -5,7 +5,6 @@ import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
 import 'package:mirl/ui/screens/block_user/block_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
-import 'package:mirl/ui/screens/calendar_and_appointment_screen/calendar_and_appointment_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/add_your_areas_of_expertise_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/certifications_and_experience_screen.dart';
@@ -40,6 +39,7 @@ import 'package:mirl/ui/screens/schedule_screen/schedule_appointment_screen.dart
 import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
+import 'package:mirl/ui/screens/upcoming_appointment_screen/upcoming_appointment_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
@@ -121,9 +121,9 @@ class RouterConstant {
       case RoutesConstants.scheduleAppointmentScreen:
         return MaterialPageRoute(builder: (_) => const ScheduleAppointmentScreen());
       case RoutesConstants.canceledAppointmentScreen:
-        return MaterialPageRoute(builder: (_) => CanceledAppointmentScreen(args: settings.arguments as AppointmentArgs));
+        return MaterialPageRoute(builder: (_) => CanceledAppointmentScreen(args: settings.arguments as CancelArgs));
       case RoutesConstants.canceledAppointmentOptionScreen:
-        return MaterialPageRoute(builder: (_) => const CanceledAppointmentOptionScreen());
+        return MaterialPageRoute(builder: (_) => CanceledAppointmentOptionScreen(args: settings.arguments as CancelArgs));
       case RoutesConstants.blockUserListScreen:
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
       case RoutesConstants.reportUserScreen:
@@ -141,7 +141,7 @@ class RouterConstant {
       case RoutesConstants.multiConnectFilterScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
-        return MaterialPageRoute(builder: (_) => ViewCalendarAppointment());
+        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
