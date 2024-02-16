@@ -83,7 +83,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
           titleColor: ColorConstants.emptyTextColor,
           fontFamily: FontWeightEnum.w400.toInter,
           maxLine: 4,
-          title: 'No category found',
+          title: LocaleKeys.noCategoryFound.tr(),
         ),
       ]
     ]);

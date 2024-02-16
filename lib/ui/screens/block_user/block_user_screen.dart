@@ -15,6 +15,8 @@ class BlockUserScreen extends ConsumerStatefulWidget {
 class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
   @override
   Widget build(BuildContext context) {
+    final blockUserRead = ref.read(blockUserProvider);
+
     return Scaffold(
       appBar: AppBarWidget(
         preferSize: 40,
@@ -127,7 +129,10 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                         ),
                         30.0.spaceY,
                         InkWell(
-                          onTap: () => context.toPop(),
+                          onTap: () {
+                            blockUserRead.userBlockRequestCall(Status: 1);
+                            context.toPop();
+                          },
                           child: Center(
                               child: BodyLargeText(
                             title: 'OK',
@@ -155,7 +160,8 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
             PrimaryButton(
               title: LocaleKeys.permanentBlock.tr(),
               onPressed: () {
-                context.toPushNamed(RoutesConstants.blockUserListScreen);
+                // context.toPushNamed(RoutesConstants.blockUserListScreen);
+                blockUserRead.userBlockRequestCall(Status: 2);
               },
               fontSize: 13,
             ),

@@ -1,15 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
+import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
+import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
+import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
+import 'package:mirl/ui/screens/filter_screen/widget/all_category_list_bottom_view.dart';
+import 'package:mirl/ui/screens/filter_screen/widget/filter_bottomsheet_widget.dart';
+import 'package:mirl/ui/screens/filter_screen/widget/topic_list_by_category_bottom_view.dart';
 
 class MultiConnectFilterScreen extends ConsumerStatefulWidget {
-  final FilterArgs args;
+  final bool? fromMultiConnectMainScreen;
 
-  const MultiConnectFilterScreen({super.key, required this.args});
+  const MultiConnectFilterScreen({super.key, required this.fromMultiConnectMainScreen});
 
   @override
   ConsumerState createState() => _MultiConnectFilterScreenState();
@@ -18,125 +24,257 @@ class MultiConnectFilterScreen extends ConsumerStatefulWidget {
 class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScreen> {
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref
-          .read(multiConnectProvider)
-          .getSingleCategoryApiCall(categoryId: widget.args.categoryId ?? '', context: context, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId));
+      ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final multiProviderWatch = ref.watch(multiConnectProvider);
+    final filterWatch = ref.watch(filterProvider);
+    final filterRead = ref.read(filterProvider);
     final multiProviderRead = ref.read(multiConnectProvider);
 
     return Scaffold(
-      backgroundColor: ColorConstants.grayLightColor,
       appBar: AppBarWidget(
-        appBarColor: ColorConstants.grayLightColor,
-        preferSize: 40,
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
+          onTap: () {
+            if (widget.fromMultiConnectMainScreen!) {
+              if (filterWatch.commonSelectionModel.isNotEmpty) {
+                context.toPushNamed(RoutesConstants.multiConnectSelectedCategoryScreen,
+                    args: FilterArgs(
+                      fromMultiConnectFilterBack: true,
+                    ));
+              } else {
+                context.toPop();
+              }
+            } else {
+              context.toPop();
+            }
+          },
         ),
       ),
-      body: multiProviderWatch.isLoading
-          ? Center(
-              child: CupertinoActivityIndicator(
-                animating: true,
-                color: ColorConstants.primaryColor,
-                radius: 16,
-              ),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ShadowContainer(
-                  shadowColor: ColorConstants.categoryListBorder,
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: NetworkImageWidget(
-                          boxFit: BoxFit.cover,
-                          imageURL: multiProviderWatch.singleCategoryData?.categoryData?.image ?? '',
-                          isNetworkImage: true,
-                          height: 50,
-                          width: 50,
-                        ),
-                      ),
-                      4.0.spaceY,
-                      LabelSmallText(
-                        fontSize: 9,
-                        title: multiProviderWatch.singleCategoryData?.categoryData?.name ?? '',
-                        titleColor: ColorConstants.blackColor,
-                        fontFamily: FontWeightEnum.w700.toInter,
-                        titleTextAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                  height: 90,
-                  width: 90,
-                  isShadow: true,
-                ),
-                20.0.spaceY,
-                if (multiProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: ColorConstants.scaffoldBg,
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0, 0),
-                          color: ColorConstants.blackColor.withOpacity(0.1),
-                          spreadRadius: 2.0,
-                          blurRadius: 2.0,
-                        ),
-                      ],
-                    ),
-                    child: Wrap(
-                      children: List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
-                        final data = multiProviderWatch.singleCategoryData?.categoryData?.topic?[index];
-                        int topicIndex = multiProviderWatch.allTopic.indexWhere((element) => element.id == data?.id);
-                        return OnScaleTap(
-                          onPress: () {},
-                          child: ShadowContainer(
-                            shadowColor: (topicIndex != -1 && (multiProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
-                                ? ColorConstants.primaryColor
-                                : ColorConstants.blackColor.withOpacity(0.1),
-                            backgroundColor: ColorConstants.whiteColor,
-                            isShadow: true,
-                            spreadRadius: 1,
-                            blurRadius: 2,
-                            margin: EdgeInsets.only(bottom: 10, right: 10),
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                            child: BodyMediumText(
-                              title: data?.name ?? '',
-                              fontFamily: FontWeightEnum.w500.toInter,
-                              maxLine: 5,
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
-                  20.0.spaceY,
-                  BodyMediumText(
-                    title: StringConstants.topicText,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                  ),
-                ],
-                BodyMediumText(
-                  title: StringConstants.descriptionText,
-                  fontFamily: FontWeightEnum.w400.toInter,
-                  maxLine: 5,
-                  titleTextAlign: TextAlign.center,
-                ).addPaddingX(20),
-                20.0.spaceY,
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TitleLargeText(
+              title: LocaleKeys.multiConnectFilter.tr(),
+              maxLine: 2,
+              titleTextAlign: TextAlign.center,
             ),
+            20.0.spaceY,
+            buildTextFormFieldWidget(filterWatch.categoryController, context, () {
+              CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: AllCategoryListBottomView());
+            }, StringConstants.pickCategory),
+            30.0.spaceY,
+            buildTextFormFieldWidget(filterWatch.topicController, context, () {
+              if (filterWatch.categoryController.text.isNotEmpty) {
+                CommonBottomSheet.bottomSheet(
+                    context: context,
+                    isDismissible: false,
+                    child: TopicListByCategoryBottomView(
+                      isFromExploreExpert: true,
+                      categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                    ));
+              } else {
+                FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCategoryFirst.tr());
+              }
+            }, StringConstants.pickTopicFromTheAbove),
+            30.0.spaceY,
+            buildTextFormFieldWidget(filterWatch.instantCallAvailabilityController, context, () {
+              CommonBottomSheet.bottomSheet(
+                  context: context,
+                  child: FilterBottomSheetWidget(
+                      itemList: filterWatch.yesNoSelectionList.map((e) => e).toList(),
+                      title: LocaleKeys.selectCallAvailability.tr().toUpperCase(),
+                      onTapItem: (item) {
+                        filterRead.setValueOfCall(item);
+                        context.toPop();
+                      }),
+                  isDismissible: true);
+            }, StringConstants.instantCallsAvailability),
+            30.0.spaceY,
+            buildTextFormFieldWidget(filterWatch.ratingController, context, () {
+              CommonBottomSheet.bottomSheet(
+                  context: context,
+                  child: FilterBottomSheetWidget(
+                      itemList: filterWatch.ratingList.map((e) => e).toList(),
+                      title: LocaleKeys.pickRating.tr().toUpperCase(),
+                      onTapItem: (item) {
+                        filterRead.setRating(item);
+                        context.toPop();
+                      }),
+                  isDismissible: true);
+            }, StringConstants.overAllRatingText),
+            30.0.spaceY,
+            buildTextFormFieldWidget(filterWatch.genderController, context, () {
+              CommonBottomSheet.bottomSheet(
+                  context: context,
+                  child: FilterBottomSheetWidget(
+                    itemList: filterWatch.genderList.map((e) => e.title).toList(),
+                    title: LocaleKeys.pickGender.tr().toUpperCase(),
+                    onTapItem: (item) {
+                      filterRead.setGender(item);
+                      context.toPop();
+                    },
+                  ),
+                  isDismissible: true);
+            }, StringConstants.genderText),
+            30.0.spaceY,
+            buildTextFormFieldWidget(filterWatch.countryNameController, context, () {
+              CommonBottomSheet.bottomSheet(
+                  context: context,
+                  child: CountryListBottomView(
+                    onTapItem: (item) {
+                      filterRead.setSelectedCountry(value: item);
+                      context.toPop();
+                    },
+                    clearSearchTap: () => filterRead.clearSearchCountryController(),
+                    searchController: filterWatch.searchCountryController,
+                  ),
+                  isDismissible: true);
+            }, StringConstants.countryText),
+            30.0.spaceY,
+            buildTextFormFieldWidget(filterWatch.cityNameController, context, () {
+              CommonBottomSheet.bottomSheet(
+                  context: context,
+                  isDismissible: true,
+                  child: CityListBottomView(
+                    onTapItem: (item) {
+                      filterRead.setCity(value: item);
+                      context.toPop();
+                    },
+                    clearSearchTap: () => filterRead.clearSearchCityController(),
+                    searchController: filterWatch.searchCityController,
+                    countryId: filterWatch.selectedCountryModel?.id ?? '',
+                  ));
+            }, StringConstants.cityText),
+            30.0.spaceY,
+            SortExpertDropDown(),
+            30.0.spaceY,
+            BodySmallText(
+              title: StringConstants.feeRange,
+              titleColor: ColorConstants.bottomTextColor,
+            ),
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
+              child: RangeSlider(
+                values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
+                activeColor: ColorConstants.yellowButtonColor,
+                inactiveColor: ColorConstants.lineColor,
+                divisions: 25,
+                onChanged: filterRead.setRange,
+                min: 0,
+                max: 100,
+              ),
+            ),
+            if (filterWatch.start != null && filterWatch.end != null) ...[
+              BodySmallText(
+                title: '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}',
+                titleColor: ColorConstants.bottomTextColor,
+              ),
+              50.0.spaceY,
+            ]
+          ],
+        ).addPaddingX(20),
+      ),
+      bottomNavigationBar: PrimaryButton(
+          title: StringConstants.applyFilter,
+          height: 55,
+          onPressed: () async {
+            String? selectedTopicId;
+            if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
+              selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+            }
+            double endFeeRange = filterWatch.end ?? 0;
+            double startFeeRange = filterWatch.start ?? 0;
+
+            if (widget.fromMultiConnectMainScreen ?? false) {
+              filterRead.clearExploreExpertSearchData();
+              filterRead.clearExploreController();
+              await multiProviderRead.exploreExpertUserAndCategoryApiCall(
+                  context: context,
+                  isFromFilter: true,
+                  requestModel: ExpertDataRequestModel(
+                      userId: SharedPrefHelper.getUserId,
+                      categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
+                      city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                      country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                      gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
+                      instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                          ? filterWatch.isCallSelect == 1
+                              ? "true"
+                              : "false"
+                          : null,
+                      maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
+                      minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
+                      feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                          ? null
+                          : filterWatch.sortBySelectedItem == 'PRICE'
+                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                  ? 'ASC'
+                                  : 'DESC'
+                              : null,
+                      topicIds: selectedTopicId));
+            } else {
+              filterRead.clearSingleCategoryData();
+
+              await multiProviderRead.getSingleCategoryApiCall(
+                  categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                  context: context,
+                  isFromFilter: true,
+                  requestModel: ExpertDataRequestModel(
+                    multiConnectRequest: 'true',
+                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
+                    topicIds: selectedTopicId,
+                    userId: SharedPrefHelper.getUserId,
+                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                    country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
+                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                        ? filterWatch.isCallSelect == 1
+                            ? "true"
+                            : "false"
+                        : null,
+                    maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
+                    minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
+                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                        ? null
+                        : filterWatch.sortBySelectedItem == 'PRICE'
+                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                ? 'ASC'
+                                : 'DESC'
+                            : null,
+                  ));
+            }
+          }).addPaddingXY(paddingX: 50, paddingY: 10),
+    );
+  }
+
+  TextFormFieldWidget buildTextFormFieldWidget(
+    TextEditingController controller,
+    BuildContext context,
+    VoidCallback OnTap,
+    String labelText,
+  ) {
+    return TextFormFieldWidget(
+      isReadOnly: true,
+      hintText: StringConstants.selectOnrOrLeave,
+      controller: controller,
+      labelText: labelText,
+      labelColor: ColorConstants.bottomTextColor,
+      enabledBorderColor: ColorConstants.dropDownBorderColor,
+      labelTextFontFamily: FontWeightEnum.w700.toInter,
+      textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      suffixIcon: Icon(
+        size: 18,
+        Icons.keyboard_arrow_down_rounded,
+        color: ColorConstants.dropDownBorderColor,
+      ),
+      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      onTap: OnTap,
     );
   }
 }

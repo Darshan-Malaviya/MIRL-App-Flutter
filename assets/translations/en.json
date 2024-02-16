@@ -177,5 +177,7 @@
   "calendarAndAppointment": "CALENDAR AND APPOINTMENTS",
   "checkYourAppComingAppointment": "Check out your scheduled appointments over the next 30 days.",
   "upcomingAppointment": "UPCOMING APPOINTMENTS",
-  "cancelAppointment": "CANCEL APPOINTMENT"
+  "cancelAppointment": "CANCEL APPOINTMENT",
+  "noCategoryFound": "No category found",
+  "multiConnectFilter": "MULTIPLE CONNECT FILTER"
 }

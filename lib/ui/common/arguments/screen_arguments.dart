@@ -5,10 +5,11 @@ import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 
 class FilterArgs {
   final bool? fromExploreExpert;
+  final bool? fromMultiConnectFilterBack;
   final List<Topic>? list;
   final String? categoryId;
 
-  FilterArgs({this.fromExploreExpert, this.list, this.categoryId});
+  FilterArgs({this.fromExploreExpert, this.list, this.categoryId, this.fromMultiConnectFilterBack = false});
 }
 
 class CallArgs {
@@ -25,3 +26,4 @@ class CancelArgs {
 
   CancelArgs({this.appointmentData, this.role, this.cancelData, this.fromUser = false});
 }
+

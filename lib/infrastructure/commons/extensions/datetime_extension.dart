@@ -57,7 +57,6 @@ extension DateTimeFormatter on String {
     try {
       DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
       var output = DateFormat('hh:mm a').format(localTime);
-
       return output;
     } catch (e) {
       Logger().d("Exception occurred on toLocalTimeFromUtc : $e");
@@ -70,7 +69,7 @@ extension DateTimeFormatter on String {
     try {
       int intValue = int.parse(this);
       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue, isUtc: true);
-      return dateTime.toString();
+      return dateTime.toIso8601String();
     } catch (e) {
       Logger().d("Exception occurred on toUTCDateTimeFormat : $e");
     }

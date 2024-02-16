@@ -19,14 +19,14 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     if(widget.isFromExploreExpert){
-      if(ref.watch(filterProvider).allTopic.isEmpty){
+      // if(ref.watch(filterProvider).allTopic.isEmpty){
         ref.read(filterProvider).clearSearchTopicController();
         ref.read(filterProvider).clearTopicPaginationData();
         ref.read(filterProvider).topicListByCategory(
           isFullScreenLoader: true,
           categoryId: widget.categoryId,
         );
-      }
+      // }
     }
     });
     scrollController.addListener(() async {
