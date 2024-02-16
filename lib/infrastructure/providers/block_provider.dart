@@ -49,7 +49,7 @@ class BlockProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> unBlockUserApiCall({required int userBlockId}) async {
+  Future<void> unBlockUserApiCall({required int userBlockId,required int index}) async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _authRepository.unBlockUserApi(userBlockId: userBlockId);
     CustomLoading.progressDialog(isLoading: false);
@@ -57,6 +57,7 @@ class BlockProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is UnBlockUserResponseModel) {
           UnBlockUserResponseModel unBlockUserResponseModel = response.data;
+          blockUserDetails.removeAt(index);
           Logger().d("Successfully user block");
           FlutterToast().showToast(msg: unBlockUserResponseModel.message ?? '');
         }

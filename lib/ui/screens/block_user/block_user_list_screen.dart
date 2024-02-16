@@ -141,7 +141,7 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                           20.0.spaceY,
                           InkWell(
                             onTap: () {
-                              blockUserRead.unBlockUserApiCall(userBlockId: blockUserWatch.blockUserDetails[index].id ?? 0);
+                              blockUserRead.unBlockUserApiCall(userBlockId: blockUserWatch.blockUserDetails[index].id ?? 0, index: index);
                             },
                             child: BodySmallText(
                               title: 'UNBLOCK USER',
@@ -179,6 +179,7 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                                 blurRadius: 2),
                           ], shape: BoxShape.circle),
                           child: CircleNetworkImageWidget(
+                            radius: 50,
                               imageURL: blockUserWatch.blockUserDetails[index].userDetail?.userProfile ?? '',
                               isNetworkImage: true,
                               key: UniqueKey())),
