@@ -26,3 +26,4 @@ class CancelArgs {
 
   CancelArgs({this.appointmentData, this.role, this.cancelData, this.fromUser = false});
 }
+

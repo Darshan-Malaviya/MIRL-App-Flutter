@@ -2,8 +2,10 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/auth_screen/login_screen.dart';
 import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
 import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
+import 'package:mirl/ui/screens/block_user/block_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
+import 'package:mirl/ui/screens/cms_screen/cms_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/add_your_areas_of_expertise_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/certifications_and_experience_screen.dart';
@@ -134,6 +136,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
       case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+      case RoutesConstants.blockUserScreen:
+        return MaterialPageRoute(builder: (_) => const BlockUserScreen());
       case RoutesConstants.multiConnectScreen:
         return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
       case RoutesConstants.multiConnectFilterScreen:
@@ -142,6 +146,11 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
         return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen());
+      case RoutesConstants.cmsScreen:
+        return MaterialPageRoute(
+            builder: (_) => CmsScreen(title: settings.arguments as String, name: settings.arguments as String));
+      // case RoutesConstants.cmsScreen:
+      //   return MaterialPageRoute(builder: (_) => ViewReceiptScreen(title: settings.arguments as String, name: settings.arguments as String,));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

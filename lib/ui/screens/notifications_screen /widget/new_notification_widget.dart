@@ -1,15 +1,24 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 
-class NewNotificationWidget extends StatefulWidget {
+class NewNotificationWidget extends ConsumerStatefulWidget {
   const NewNotificationWidget({super.key});
 
   @override
-  State<NewNotificationWidget> createState() => _NewNotificationWidgetState();
+  ConsumerState<NewNotificationWidget> createState() => _NewNotificationWidgetState();
 }
 
-class _NewNotificationWidgetState extends State<NewNotificationWidget> {
+class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(notificationProvider).startTimer();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final notificationProviderWatch = ref.watch(notificationProvider);
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -49,18 +58,71 @@ class _NewNotificationWidgetState extends State<NewNotificationWidget> {
                 children: [
                   Image.asset(ImageConstants.star),
                   6.0.spaceX,
-                  BodyMediumText(
-                    title: '02:00',
-                    titleColor: ColorConstants.notificationTimerColor,
-                    titleTextAlign: TextAlign.center,
+                  BodySmallText(
+                    title: Duration(seconds: notificationProviderWatch.secondsRemaining).toTimeString(),
+                    fontSize: 10,
                   ),
+                  // BodyMediumText(
+                  //   title: '02:00',
+                  //   titleColor: ColorConstants.notificationTimerColor,
+                  //   titleTextAlign: TextAlign.center,
+                  // ),
                 ],
               ),
-              BodySmallText(
-                title: '02:04 PM',
-                titleColor: ColorConstants.notificationTimeColor,
-                titleTextAlign: TextAlign.center,
-                fontFamily: FontWeightEnum.w400.toInter,
+              InkWell(
+                onTap: () {
+                  CommonAlertDialog.dialog(
+                      context: context,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          BodyLargeText(
+                            title: 'Notification Timed Out!',
+                            fontFamily: FontWeightEnum.w600.toInter,
+                            titleColor: ColorConstants.bottomTextColor,
+                            fontSize: 17,
+                            titleTextAlign: TextAlign.center,
+                          ),
+                          20.0.spaceY,
+                          BodyLargeText(
+                            title: 'Boo!\nThis notification is now a ghost.\nSpooky how time flies!',
+                            maxLine: 4,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                            titleColor: ColorConstants.blackColor,
+                            titleTextAlign: TextAlign.center,
+                          ),
+                          30.0.spaceY,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              BodyMediumText(
+                                title: 'Learn more',
+                                fontFamily: FontWeightEnum.w500.toInter,
+                                titleColor: ColorConstants.bottomTextColor,
+                                fontSize: 17,
+                                titleTextAlign: TextAlign.center,
+                              ),
+                              InkWell(
+                                onTap: () => context.toPop(),
+                                child: BodyMediumText(
+                                  title: 'Back',
+                                  fontFamily: FontWeightEnum.w500.toInter,
+                                  titleColor: ColorConstants.bottomTextColor,
+                                  fontSize: 17,
+                                  titleTextAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ).addPaddingX(10)
+                        ],
+                      ));
+                },
+                child: BodySmallText(
+                  title: '02:04 PM',
+                  titleColor: ColorConstants.notificationTimeColor,
+                  titleTextAlign: TextAlign.center,
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
               ),
             ],
           )
