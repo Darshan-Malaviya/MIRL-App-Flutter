@@ -16,7 +16,7 @@ class ExpertCategoryResponseModel {
     if (json['data'] != null) {
       data = <CategoryListData>[];
       json['data'].forEach((v) {
-        data!.add(new CategoryListData.fromJson(v));
+        data?.add(new CategoryListData.fromJson(v));
       });
     }
   }
@@ -26,10 +26,10 @@ class ExpertCategoryResponseModel {
     data['status'] = this.status;
     data['message'] = this.message;
     if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+      data['pagination'] = this.pagination?.toJson();
     }
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
     return data;
   }

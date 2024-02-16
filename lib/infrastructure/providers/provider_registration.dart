@@ -25,13 +25,12 @@ final addYourAreaExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => A
 final expertDetailProvider = ChangeNotifierProvider.autoDispose((_) => ExpertDetailProvider());
 final filterProvider = ChangeNotifierProvider<FilterProvider>((ref) => FilterProvider(ref));
 final scheduleCallProvider = ChangeNotifierProvider.autoDispose((_) => ScheduleCallProvider());
-// final cityCountryProvider = ChangeNotifierProvider<CityCountryProvider>((ref) => CityCountryProvider());
 final commonAppProvider = ChangeNotifierProvider<CommonAppProvider>((_) => CommonAppProvider());
 final reportUserProvider = ChangeNotifierProvider.autoDispose((_) => ReportUserProvider());
 final callProvider = ChangeNotifierProvider.autoDispose((_) => CallProvider());
 final blockUserProvider = ChangeNotifierProvider.autoDispose((_) => BlockProvider());
 final multiConnectProvider = ChangeNotifierProvider.autoDispose((_) => MultiConnectProvider());
-final viewUpcomingAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => ViewUpcomingAppointmentProvider());
+final upcomingAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => UpcomingAppointmentProvider());
 final cancelAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => CancelAppointmentProvider());
 final notificationProvider = ChangeNotifierProvider.autoDispose((_) => NotificationProvider());
 

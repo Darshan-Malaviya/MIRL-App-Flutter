@@ -17,9 +17,9 @@ class FilterProvider extends ChangeNotifier {
   ChangeNotifierProviderRef<FilterProvider> ref;
 
   FilterProvider(this.ref);
+
   final _expertCategoryRepo = ExpertCategoryRepo();
   final _commonRepository = CommonRepository();
-
 
   TextEditingController instantCallAvailabilityController = TextEditingController();
   TextEditingController genderController = TextEditingController();
@@ -54,16 +54,16 @@ class FilterProvider extends ChangeNotifier {
   List<String> sortByItems = ['SORT BY', 'PRICE', 'REVIEW SCORE', 'EXPERIENCE'];
   List<String> orderFilterList = ['HIGH TO LOW', ' LOW TO HIGH'];
 
-
   List<String> get ratingList => _ratingList;
   List<String> _ratingList = ['SELECT ONE OR LEAVE AS IS', '1', '2', '3', '4', '5'];
 
   int? _isCallSelect;
+
   int? get isCallSelect => _isCallSelect;
 
   int? _selectGender;
-  int? get selectGender => _selectGender;
 
+  int? get selectGender => _selectGender;
 
   List<CategoryIdNameCommonModel> get allCategory => _allCategory;
   List<CategoryIdNameCommonModel> _allCategory = [];
@@ -102,7 +102,8 @@ class FilterProvider extends ChangeNotifier {
   CategoryIdNameCommonModel? selectedCategory;
 
   List<CategoryIdNameCommonModel>? _selectedTopicList = [];
-  List<CategoryIdNameCommonModel>?  get selectedTopicList => _selectedTopicList;
+
+  List<CategoryIdNameCommonModel>? get selectedTopicList => _selectedTopicList;
 
   //String? selectedTopic;
 
@@ -129,11 +130,7 @@ class FilterProvider extends ChangeNotifier {
   CategoryAndExpertUser? get categoryList => _categoryList;
   CategoryAndExpertUser? _categoryList;
 
-  Future<void> removeFilter(
-      {required int index,
-      bool isFromExploreExpert = false,
-      required BuildContext context,
-      String? singleCategoryId}) async {
+  Future<void> removeFilter({required int index, bool isFromExploreExpert = false, required BuildContext context, String? singleCategoryId}) async {
     String? selectedTopicId;
     if (commonSelectionModel[index].title == FilterType.Topic.name) {
       _selectedTopicList = null;
@@ -212,8 +209,8 @@ class FilterProvider extends ChangeNotifier {
       start = null;
       end = null;
     } else if (commonSelectionModel[index].title == FilterType.SortBy.name) {
-       sortBySelectedItem = 'SORT BY';
-       sortBySelectedOrder = 'HIGH TO LOW';
+      sortBySelectedItem = 'SORT BY';
+      sortBySelectedOrder = 'HIGH TO LOW';
     } else if (commonSelectionModel[index].title == FilterType.Category.name) {
       int index = _allCategory.indexWhere((element) => element.id == (selectedCategory?.id ?? -1));
       if (index != -1) {
@@ -245,7 +242,7 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clearAllFilter(){
+  void clearAllFilter() {
     commonSelectionModel = [];
     instantCallAvailabilityController.clear();
     genderController.clear();
@@ -265,7 +262,7 @@ class FilterProvider extends ChangeNotifier {
     selectedCategory = null;
     selectedCountryModel = null;
     start = null;
-    end  = null;
+    end = null;
     sortBySelectedItem = 'SORT BY';
     sortBySelectedOrder = 'HIGH TO LOW';
     _allCategory = [];
@@ -277,7 +274,7 @@ class FilterProvider extends ChangeNotifier {
     _selectedTopicList = [];
     _selectGender = null;
     _selectRating = null;
-   _ratingList = ['SELECT ONE OR LEAVE AS IS', '1', '2', '3', '4', '5'];
+    _ratingList = ['SELECT ONE OR LEAVE AS IS', '1', '2', '3', '4', '5'];
     _yesNoSelectionList = ['SELECT ONE OR LEAVE AS IS', 'Yes', 'No'];
     _genderList = [
       CommonSelectionModel(title: 'SELECT ONE OR LEAVE AS IS', isSelected: false, selectType: 1),
@@ -289,8 +286,7 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  void setOtherCategoryValueFalse(){
+  void setOtherCategoryValueFalse() {
     _allCategory.forEach((element) {
       element.isCategorySelected = false;
     });
@@ -312,15 +308,12 @@ class FilterProvider extends ChangeNotifier {
   void setTopicByCategory() {
     _selectedTopicList = [];
     _allTopic.forEach((element) {
-      if(element.isCategorySelected ?? false){
-        _selectedTopicList?.add(CategoryIdNameCommonModel(
-            isCategorySelected: true,
-            name: element.name ?? '',
-            id: element.id ?? 0));
+      if (element.isCategorySelected ?? false) {
+        _selectedTopicList?.add(CategoryIdNameCommonModel(isCategorySelected: true, name: element.name ?? '', id: element.id ?? 0));
       }
     });
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Topic.name);
-    String selectedTopicName = _selectedTopicList?.map((e) => e.name).join(",") ??'';
+    String selectedTopicName = _selectedTopicList?.map((e) => e.name).join(",") ?? '';
     topicController.text = selectedTopicName;
     if (index == -1) {
       commonSelectionModel.add(CommonSelectionModel(title: FilterType.Topic.name, value: selectedTopicName));
@@ -335,31 +328,33 @@ class FilterProvider extends ChangeNotifier {
     selectedCategory = _allCategory[selectionIndex];
     notifyListeners();
     categoryController.text = selectedCategory?.name ?? '';
-     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Category.name);
-     if (index == -1) {
-       commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: _allCategory[selectionIndex].name));
-     } else {
-       commonSelectionModel[index].value = _allCategory[selectionIndex].name;
-     }
-     notifyListeners();
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Category.name);
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: _allCategory[selectionIndex].name));
+    } else {
+      commonSelectionModel[index].value = _allCategory[selectionIndex].name;
+    }
+    notifyListeners();
+  }
+
+  void setCategoryWhenFromMultiConnect(CategoryData? categoryData) {
+    selectedCategory = CategoryIdNameCommonModel(name: categoryData?.name ?? '', isCategorySelected: true, id: categoryData?.id);
+    categoryController.text = selectedCategory?.name ?? '';
+    notifyListeners();
   }
 
   void getSelectedCategory() {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Category.name);
-    selectedCategory = CategoryIdNameCommonModel(
-        name: _singleCategoryData?.categoryData?.name.toString() ?? '',
-        isCategorySelected: true,
-        id: _singleCategoryData?.categoryData?.id);
+    selectedCategory =
+        CategoryIdNameCommonModel(name: _singleCategoryData?.categoryData?.name.toString() ?? '', isCategorySelected: true, id: _singleCategoryData?.categoryData?.id);
     categoryController.text = selectedCategory?.name ?? '';
     if (index == -1) {
-      commonSelectionModel
-          .add(CommonSelectionModel(title: FilterType.Category.name, value: selectedCategory?.name ?? ''));
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: selectedCategory?.name ?? ''));
     } else {
       commonSelectionModel[index].value = selectedCategory?.name ?? '';
     }
     notifyListeners();
   }
-
 
   void setValueOfCall(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.InstantCall.name);
@@ -459,13 +454,22 @@ class FilterProvider extends ChangeNotifier {
   }
 
   void setSortByPriceValue({required String order, required String sortByValue}) {
-    sortBySelectedOrder = order /*?? 'SORT BY'*/;
-    sortBySelectedItem = sortByValue /*?? 'HIGH TO LOW'*/;
-    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.SortBy.name);
-    if (index == -1) {
-      commonSelectionModel.add(CommonSelectionModel(title:FilterType.SortBy.name, value: '$sortBySelectedItem - $sortBySelectedOrder'));
+    if (sortByValue == 'SORT BY') {
+      sortBySelectedItem = sortByValue;
+      FlutterToast().showToast(msg: 'Please select sort by value first');
+      int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.SortBy.name);
+      if (index != -1) {
+        commonSelectionModel.removeAt(index);
+      }
     } else {
-      commonSelectionModel[index].value = '$sortBySelectedItem - $sortBySelectedOrder';
+      sortBySelectedOrder = order /*?? 'SORT BY'*/;
+      sortBySelectedItem = sortByValue /*?? 'HIGH TO LOW'*/;
+      int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.SortBy.name);
+      if (index == -1) {
+        commonSelectionModel.add(CommonSelectionModel(title: FilterType.SortBy.name, value: '$sortBySelectedItem - $sortBySelectedOrder'));
+      } else {
+        commonSelectionModel[index].value = '$sortBySelectedItem - $sortBySelectedOrder';
+      }
     }
     notifyListeners();
   }
@@ -491,18 +495,16 @@ class FilterProvider extends ChangeNotifier {
   }
 
   void clearExploreExpertSearchData() {
-     _categoryList = null;
-     _exploreExpertPageNo = 1;
-     _reachedExploreExpertLastPage = false;
+    _categoryList = null;
+    _exploreExpertPageNo = 1;
+    _reachedExploreExpertLastPage = false;
     notifyListeners();
   }
 
-  void clearExploreController(){
-     exploreExpertController.clear();
+  void clearExploreController() {
+    exploreExpertController.clear();
     notifyListeners();
   }
-
-
 
   void clearCategoryPaginationData() {
     _categoryPageNo = 1;
@@ -526,12 +528,12 @@ class FilterProvider extends ChangeNotifier {
       _isSearchCategoryBottomSheetLoading = true;
       notifyListeners();
     }
-    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _categoryPageNo.toString(),limit: "40",search: searchName);
+    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _categoryPageNo.toString(), limit: "40", search: searchName);
 
     ApiHttpResult response = await _commonRepository.allCategoryLIstService(requestModel: model.toNullFreeJson());
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
-    }  else {
+    } else {
       _isSearchCategoryBottomSheetLoading = false;
       notifyListeners();
     }
@@ -557,19 +559,16 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> topicListByCategory(
-      {bool isFullScreenLoader = false, String? searchName, required String categoryId}) async {
+  Future<void> topicListByCategory({bool isFullScreenLoader = false, String? searchName, required String categoryId}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
     } else {
       _isSearchTopicBottomSheetLoading = true;
       notifyListeners();
     }
-    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(
-        page: _topicPageNo.toString(), limit: '40', search: searchName, categoryId: categoryId);
+    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _topicPageNo.toString(), limit: '40', search: searchName, categoryId: categoryId);
 
-    ApiHttpResult response =
-    await _commonRepository.allTopicListByCategoryService(requestModel: model.toNullFreeJson());
+    ApiHttpResult response = await _commonRepository.allTopicListByCategoryService(requestModel: model.toNullFreeJson());
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     } else {
@@ -599,12 +598,8 @@ class FilterProvider extends ChangeNotifier {
   }
 
   Future<void> getSingleCategoryApiCall(
-      {required String categoryId,
-      ExpertDataRequestModel? requestModel,
-      bool isFromFilter = false,
-      bool isPaginating = false,
-      required BuildContext context}) async {
-    if(isFromFilter){
+      {required String categoryId, ExpertDataRequestModel? requestModel, bool isFromFilter = false, bool isPaginating = false, required BuildContext context}) async {
+    if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: true);
     } else {
       if (!isPaginating) {
@@ -614,12 +609,11 @@ class FilterProvider extends ChangeNotifier {
     }
 
     requestModel?.page = _oneCategoryScreenPageNo.toString();
-    requestModel?.limit = '2';
+    requestModel?.limit = '10';
 
-    ApiHttpResult response = await _expertCategoryRepo.getSingleCategoryApi(categoryId: categoryId,
-    requestModel: requestModel?.toNullFreeJson());
+    ApiHttpResult response = await _expertCategoryRepo.getSingleCategoryApi(categoryId: categoryId, requestModel: requestModel?.toNullFreeJson());
 
-    if(isFromFilter){
+    if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: false);
     } else {
       if (!isPaginating) {
@@ -632,9 +626,9 @@ class FilterProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is GetSingleCategoryResponseModel) {
           GetSingleCategoryResponseModel responseModel = response.data;
-          if(_oneCategoryScreenPageNo == 1){
+          if (_oneCategoryScreenPageNo == 1) {
             _singleCategoryData = responseModel.data;
-          } else{
+          } else {
             _singleCategoryData?.expertData?.addAll(responseModel.data?.expertData ?? []);
           }
           if (_oneCategoryScreenPageNo == responseModel.pagination?.pageCount) {
@@ -643,7 +637,7 @@ class FilterProvider extends ChangeNotifier {
             _oneCategoryScreenPageNo = _oneCategoryScreenPageNo + 1;
             _reachedOneCategoryScreenLastPage = false;
           }
-          if(isFromFilter){
+          if (isFromFilter) {
             Navigator.pop(context);
           }
           notifyListeners();
@@ -656,22 +650,20 @@ class FilterProvider extends ChangeNotifier {
     }
   }
 
-
-  Future<void> exploreExpertUserAndCategoryApiCall({ExpertDataRequestModel? requestModel,
-    required BuildContext context,
-    bool isFromFilter = false,
-    bool isPaginating = false,}) async {
-    if(isFromFilter){
+  Future<void> exploreExpertUserAndCategoryApiCall(
+      {ExpertDataRequestModel? requestModel, required BuildContext context, bool isFromFilter = false, bool isPaginating = false}) async {
+    if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: true);
     } else {
       if (!isPaginating) {
+        commonSelectionModel.clear();
         _isLoading = true;
         notifyListeners();
       }
     }
     ExpertDataRequestModel data = ExpertDataRequestModel(
-        page: _exploreExpertPageNo.toString(),
-        limit: '10',
+      page: _exploreExpertPageNo.toString(),
+      limit: '10',
       search: exploreExpertController.text.isNotEmpty ? exploreExpertController.text : null,
       city: requestModel?.city,
       country: requestModel?.country,
@@ -680,17 +672,16 @@ class FilterProvider extends ChangeNotifier {
       gender: requestModel?.gender,
       instantCallAvailable: requestModel?.instantCallAvailable,
       maxFee: double.parse(requestModel?.maxFee ?? '0').toStringAsFixed(2),
-      minFee:  double.parse(requestModel?.minFee ?? '0').toStringAsFixed(2),
+      minFee: double.parse(requestModel?.minFee ?? '0').toStringAsFixed(2),
       reviewOrder: requestModel?.reviewOrder,
       topicIds: requestModel?.topicIds,
       categoryId: requestModel?.categoryId,
       userId: SharedPrefHelper.getUserId,
     );
 
-    ApiHttpResult response =
-        await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: data.toNullFreeJson());
+    ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: data.toNullFreeJson());
 
-    if(isFromFilter){
+    if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: false);
     } else {
       if (!isPaginating) {
@@ -703,9 +694,9 @@ class FilterProvider extends ChangeNotifier {
         if (response.data != null && response.data is ExploreExpertCategoryAndUserResponseModel) {
           ExploreExpertCategoryAndUserResponseModel responseModel = response.data;
           Logger().d("explore expert data  API call successfully${response.data}");
-          if(_exploreExpertPageNo == 1){
+          if (_exploreExpertPageNo == 1) {
             _categoryList = responseModel.data;
-          } else{
+          } else {
             _categoryList?.expertData?.addAll(responseModel.data?.expertData ?? []);
           }
           if (_exploreExpertPageNo == responseModel.pagination?.pageCount) {
@@ -714,7 +705,7 @@ class FilterProvider extends ChangeNotifier {
             _exploreExpertPageNo = _exploreExpertPageNo + 1;
             _reachedExploreExpertLastPage = false;
           }
-          if(isFromFilter){
+          if (isFromFilter) {
             Navigator.pop(context);
           }
           notifyListeners();
