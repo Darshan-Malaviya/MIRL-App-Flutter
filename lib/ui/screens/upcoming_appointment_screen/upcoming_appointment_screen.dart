@@ -19,14 +19,14 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(viewUpcomingAppointmentProvider).upcomingAppointmentApiCall(showLoader: true, showListLoader: false);
+      ref.read(upcomingAppointmentProvider).upcomingAppointmentApiCall(showLoader: true, showListLoader: false);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final upcomingWatch = ref.watch(viewUpcomingAppointmentProvider);
-    final upcomingRead = ref.read(viewUpcomingAppointmentProvider);
+    final upcomingWatch = ref.watch(upcomingAppointmentProvider);
+    final upcomingRead = ref.read(upcomingAppointmentProvider);
 
     return Scaffold(
       appBar: AppBarWidget(

@@ -6,6 +6,7 @@ import 'package:mirl/infrastructure/models/request/expert_data_request_model.dar
 import 'package:mirl/infrastructure/models/request/search_pagination_common_request_model.dart';
 import 'package:mirl/infrastructure/models/response/all_category_response_model.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
+import 'package:mirl/infrastructure/models/response/explore_expert_category_and_user_response.dart';
 import 'package:mirl/infrastructure/models/response/get_single_category_response_model.dart';
 import 'package:mirl/infrastructure/repository/add_your_area_expertise_repo.dart';
 import 'package:mirl/infrastructure/repository/common_repo.dart';
@@ -40,11 +41,11 @@ class MultiConnectProvider extends ChangeNotifier {
   bool get reachedCategoryLastPage => _reachedCategoryLastPage;
   bool _reachedCategoryLastPage = false;
 
-  bool get reachedAllCategoryLastPage => _reachedAllCategoryLastPage;
-  bool _reachedAllCategoryLastPage = false;
+  bool get reachedAllExpertLastPage => _reachedAllExpertLastPage;
+  bool _reachedAllExpertLastPage = false;
 
-  int get allCategoryPageNo => _allCategoryPageNo;
-  int _allCategoryPageNo = 1;
+  int get allExpertPageNo => _allExpertPageNo;
+  int _allExpertPageNo = 1;
 
   bool get reachedTopicLastPage => _reachedTopicLastPage;
   bool _reachedTopicLastPage = false;
@@ -96,9 +97,8 @@ class MultiConnectProvider extends ChangeNotifier {
         notifyListeners();
       }
     }
-
-/*    requestModel?.page = _oneCategoryScreenPageNo.toString();
-    requestModel?.limit = '2';*/
+    requestModel?.page = _allExpertPageNo.toString();
+    requestModel?.limit = '10';
 
     ApiHttpResult response = await _expertCategoryRepo.getSingleCategoryApi(categoryId: categoryId, requestModel: requestModel?.toNullFreeJson());
 
@@ -115,22 +115,25 @@ class MultiConnectProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is GetSingleCategoryResponseModel) {
           GetSingleCategoryResponseModel responseModel = response.data;
-          _singleCategoryData = responseModel.data;
-/*          if(_oneCategoryScreenPageNo == 1){
+          if (_allExpertPageNo == 1) {
             _singleCategoryData = responseModel.data;
-          } else{
-            _singleCategoryData?.expertData?.addAll(responseModel.data?.expertData ?? []);
-          }
-          if (_oneCategoryScreenPageNo == responseModel.pagination?.pageCount) {
-            _reachedOneCategoryScreenLastPage = true;
           } else {
-            _oneCategoryScreenPageNo = _oneCategoryScreenPageNo + 1;
-            _reachedOneCategoryScreenLastPage = false;
+            if (!isPaginating) {
+              _singleCategoryData?.expertData?.clear();
+            } else {
+              _singleCategoryData?.expertData?.addAll(responseModel.data?.expertData ?? []);
+            }
           }
-          if(isFromFilter){
+          if (_allExpertPageNo == responseModel.pagination?.pageCount) {
+            _reachedAllExpertLastPage = true;
+          } else {
+            _allExpertPageNo = _allExpertPageNo + 1;
+            _reachedAllExpertLastPage = false;
+          }
+          if (isFromFilter) {
             Navigator.pop(context);
           }
-          notifyListeners();*/
+          notifyListeners();
         }
         break;
       case APIStatus.failure:
@@ -140,77 +143,72 @@ class MultiConnectProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> allCategoryListApi({bool isFullScreenLoader = false, String? searchName}) async {
-    if (isFullScreenLoader) {
+  Future<void> exploreExpertUserAndCategoryApiCall(
+      {ExpertDataRequestModel? requestModel, required BuildContext context, bool isFromFilter = false, bool isPaginating = false}) async {
+    if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: true);
     } else {
-      // _isSearchCategoryBottomSheetLoading = true;
-      notifyListeners();
+      if (!isPaginating) {
+        _isLoading = true;
+        notifyListeners();
+      }
     }
-    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _allCategoryPageNo.toString(), limit: "40", search: searchName);
+    ExpertDataRequestModel data = ExpertDataRequestModel(
+      page: _allExpertPageNo.toString(),
+      limit: '10',
+      multiConnectRequest: 'true',
+      city: requestModel?.city,
+      country: requestModel?.country,
+      experienceOder: requestModel?.experienceOder,
+      feeOrder: requestModel?.feeOrder,
+      gender: requestModel?.gender,
+      instantCallAvailable: requestModel?.instantCallAvailable,
+      maxFee: double.parse(requestModel?.maxFee ?? '0').toStringAsFixed(2),
+      minFee: double.parse(requestModel?.minFee ?? '0').toStringAsFixed(2),
+      reviewOrder: requestModel?.reviewOrder,
+      topicIds: requestModel?.topicIds,
+      categoryId: requestModel?.categoryId,
+      userId: SharedPrefHelper.getUserId,
+    );
 
-    ApiHttpResult response = await _commonRepository.allCategoryLIstService(requestModel: model.toNullFreeJson());
-    if (isFullScreenLoader) {
+    ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: data.toNullFreeJson());
+
+    if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: false);
     } else {
-      // _isSearchCategoryBottomSheetLoading = false;
-      notifyListeners();
+      if (!isPaginating) {
+        _isLoading = false;
+        notifyListeners();
+      }
     }
     switch (response.status) {
       case APIStatus.success:
-        if (response.data != null && response.data is AllCategoryListResponseModel) {
-          AllCategoryListResponseModel categoryResponseModel = response.data;
-          _allCategory.addAll(categoryResponseModel.data ?? []);
-          if (_allCategoryPageNo == categoryResponseModel.pagination?.pageCount) {
-            _reachedAllCategoryLastPage = true;
+        if (response.data != null && response.data is ExploreExpertCategoryAndUserResponseModel) {
+          ExploreExpertCategoryAndUserResponseModel responseModel = response.data;
+          Logger().d("explore expert data  API call successfully${response.data}");
+
+          _singleCategoryData?.expertData?.addAll(responseModel.data?.expertData ?? []);
+
+          if (_allExpertPageNo == responseModel.pagination?.pageCount) {
+            _reachedAllExpertLastPage = true;
           } else {
-            _allCategoryPageNo = _allCategoryPageNo + 1;
-            _reachedAllCategoryLastPage = false;
+            _allExpertPageNo = _allExpertPageNo + 1;
+            _reachedAllExpertLastPage = false;
+          }
+          if (isFromFilter) {
+            Navigator.pop(context);
           }
           notifyListeners();
         }
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on category list call Api ${response.data}");
+        Logger().d("API fail exploreExpertUserAndCategory call Api ${response.data}");
         break;
     }
   }
 
-  Future<void> topicListByCategory({bool isFullScreenLoader = false, String? searchName, required String categoryId}) async {
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
-    } else {
-      // _isSearchTopicBottomSheetLoading = true;
-      notifyListeners();
-    }
-    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _topicPageNo.toString(), limit: '40', search: searchName, categoryId: categoryId);
-
-    ApiHttpResult response = await _commonRepository.allTopicListByCategoryService(requestModel: model.toNullFreeJson());
-    if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
-    } else {
-      // _isSearchTopicBottomSheetLoading = false;
-      notifyListeners();
-    }
-    switch (response.status) {
-      case APIStatus.success:
-        if (response.data != null && response.data is AllCategoryListResponseModel) {
-          AllCategoryListResponseModel categoryResponseModel = response.data;
-          _allTopic.addAll(categoryResponseModel.data ?? []);
-          if (_topicPageNo == categoryResponseModel.pagination?.pageCount) {
-            _reachedTopicLastPage = true;
-          } else {
-            _topicPageNo = _topicPageNo + 1;
-            _reachedTopicLastPage = false;
-          }
-          notifyListeners();
-        }
-        break;
-      case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on topic list call Api ${response.data}");
-        break;
-    }
+  void clearVariable() {
+    _singleCategoryData = null;
   }
 }

@@ -7,11 +7,8 @@ class SortExpertDropDown extends ConsumerStatefulWidget {
 }
 
 class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
-
-
   @override
   Widget build(BuildContext context) {
-
     final filterProviderWatch = ref.watch(filterProvider);
     final filterProviderRead = ref.read(filterProvider);
 
@@ -59,6 +56,7 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                           elevation: 0,
                           value: filterProviderWatch.sortBySelectedItem,
                           padding: EdgeInsets.zero,
+                          enableFeedback: true,
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             size: 20,
@@ -75,10 +73,10 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState(() {
+                            /*       setState(() {
                               filterProviderWatch.sortBySelectedItem = newValue!;
-                            });
-                            filterProviderRead.setSortByPriceValue(order: filterProviderWatch.sortBySelectedOrder, sortByValue: newValue ??'');
+                            });*/
+                            filterProviderRead.setSortByPriceValue(sortByValue: newValue ?? '', order: filterProviderWatch.sortBySelectedOrder);
                           },
                         ),
                       ),
@@ -113,6 +111,8 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                           elevation: 0,
                           value: filterProviderWatch.sortBySelectedOrder,
                           padding: EdgeInsets.zero,
+                          focusNode: FocusNode(),
+                          enableFeedback: true,
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             size: 20,
@@ -129,10 +129,10 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState(() {
+                            /*       setState(() {
                               filterProviderWatch.sortBySelectedOrder = newValue!;
-                            });
-                            filterProviderRead.setSortByPriceValue(sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ??'');
+                            });*/
+                            filterProviderRead.setSortByPriceValue(sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ?? '');
                           },
                         ),
                       ),

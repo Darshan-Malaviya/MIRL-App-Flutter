@@ -22,8 +22,6 @@ class _MultiConnectScreenState extends ConsumerState<MultiConnectScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await ref.read(multiConnectProvider).categoryListApiCall(isLoaderVisible: true);
-/*      ref.read(addYourAreaExpertiseProvider).clearSelectChildId();
-      ref.read(addYourAreaExpertiseProvider).setCategoryChildDefaultData();*/
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
@@ -74,7 +72,7 @@ class _MultiConnectScreenState extends ConsumerState<MultiConnectScreen> {
             titleColor: ColorConstants.blackColor,
             margin: EdgeInsets.symmetric(horizontal: 20),
             onPressed: () {
-              context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
+              context.toPushNamed(RoutesConstants.multiConnectFilterScreen,args: true);
             },
             prefixIcon: ImageConstants.filter,
             prefixIconPadding: 10,
