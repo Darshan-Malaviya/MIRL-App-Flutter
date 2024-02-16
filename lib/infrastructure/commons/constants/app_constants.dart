@@ -15,4 +15,9 @@ class AppConstants {
   static const requestCallEmit = 'requestCall';
   static const requestCallSend = 'requestCallSend';
   static const requestCallReceived = 'requestCallReceived';
+
+  /// cms name
+
+  static const termsAndConditions = 'Terms and Conditions';
+  static const privacyPolicy = 'Privacy Policy';
 }

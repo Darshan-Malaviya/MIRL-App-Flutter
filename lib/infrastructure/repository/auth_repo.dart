@@ -4,6 +4,7 @@ import 'package:mirl/infrastructure/commons/enums/enum.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
+import 'package:mirl/infrastructure/models/response/cms_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/models/response/user_block_response_model.dart';
@@ -64,4 +65,16 @@ class AuthRepository extends ApiResponseHandler {
 
     return responseHandler(result: result, json: UserBlockResponseModel.parseInfo);
   }
+
+  /// cms API
+
+  Future<ApiHttpResult> cmsApi({required String searchKeyword}) async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.cms, queryParameters: {"search": searchKeyword});
+
+    APIResponse result =
+        await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithOutToken(), apiType: APIType.get);
+
+    return responseHandler(result: result, json: CMSResponseModel.parseInfo);
+  }
+
 }

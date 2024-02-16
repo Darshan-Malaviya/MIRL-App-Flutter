@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/widget/expert_notification_widget.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/widget/general_notification_widget.dart';

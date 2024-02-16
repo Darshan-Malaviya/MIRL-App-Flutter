@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/cms_screen/cms_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -123,25 +124,39 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         text: TextSpan(text: StringConstants.signingUp, style: textStyle(context: context), children: [
                           const TextSpan(text: ' '),
                           TextSpan(
-                              text: StringConstants.termsAndCondition,
-                              style: textStyle(context: context, textColor: ColorConstants.primaryColor),
-                              recognizer: TapGestureRecognizer()
-                              // ..onTap = () {
-                              //   privacyPolicy();
-                              // },
-                              ),
+                            text: StringConstants.termsAndCondition,
+                            style: textStyle(context: context, textColor: ColorConstants.primaryColor),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                //context.toPushNamed(RoutesConstants.cmsScreen, args: AppConstants.termsAndConditions);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const CmsScreen(
+                                              name: 'terms_conditions',
+                                              title: AppConstants.termsAndConditions,
+                                            )));
+                              },
+                          ),
                           TextSpan(
                             text: " ${StringConstants.acknowledge} ",
                             style: textStyle(context: context),
                           ),
                           TextSpan(
-                              text: StringConstants.privacyPolicy,
-                              style: textStyle(context: context, textColor: ColorConstants.primaryColor),
-                              recognizer: TapGestureRecognizer()
-                              // ..onTap = () {
-                              //   termsOfUse();
-                              // },
-                              ),
+                            text: StringConstants.privacyPolicy,
+                            style: textStyle(context: context, textColor: ColorConstants.primaryColor),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // context.toPushNamed(RoutesConstants.cmsScreen, args: AppConstants.privacyPolicy);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const CmsScreen(
+                                              name: 'privacy_policy',
+                                              title: AppConstants.privacyPolicy,
+                                            )));
+                              },
+                          ),
                         ]),
                       ).addPaddingX(16),
                       30.0.spaceY,
