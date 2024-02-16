@@ -69,7 +69,6 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                   8.0.spaceX,
                   Flexible(
                     child: TextFormFieldWidget(
-                      // maxLines: 2,
                       textAlign: TextAlign.start,
                       suffixIcon: filterProviderWatch.exploreExpertController.text.isNotEmpty
                           ? InkWell(
@@ -113,6 +112,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        5.0.spaceY,
                         if (filterProviderWatch.isLoading) ...[
                           CategoryListShimmerWidget()
                         ] else ...[

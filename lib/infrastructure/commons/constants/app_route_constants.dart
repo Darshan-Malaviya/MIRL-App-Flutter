@@ -29,6 +29,7 @@ import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_filter_screen.dart';
+import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/booking_screen.dart';
@@ -136,7 +137,9 @@ class RouterConstant {
       case RoutesConstants.multiConnectScreen:
         return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
       case RoutesConstants.multiConnectFilterScreen:
-        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen(args: settings.arguments as FilterArgs));
+        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen(fromMultiConnectMainScreen: settings.arguments as bool));
+      case RoutesConstants.multiConnectSelectedCategoryScreen:
+        return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
         return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen());
       default:

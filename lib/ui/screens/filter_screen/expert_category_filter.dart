@@ -68,10 +68,10 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                   BodyMediumText(
                     title:filterWatch.selectedCategory?.name ?? '',
                   ),
-                  30.0.spaceY,
                 ],
               ).addVisibility(!(widget.args.fromExploreExpert ?? false)),
             ],
+            widget.args.fromExploreExpert ?? false ? 20.0.spaceY : 0.0.spaceY,
             buildTextFormFieldWidget(filterWatch.categoryController, context, () {
               CommonBottomSheet.bottomSheet(
                   context: context,
@@ -185,7 +185,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                 title: '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}',
                 titleColor: ColorConstants.bottomTextColor,
               ),
-              30.0.spaceY,
+              50.0.spaceY,
             ]
           ],
         ).addPaddingX(20),

@@ -71,11 +71,8 @@ class ScheduleCallProvider extends ChangeNotifier {
   void getSelectedDate(DateTime dateTime) {
     final now = DateTime.now().toLocal();
     selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second);
-    _selectedUTCDate = selectedDate?.toUtc().toString() ?? '';
+    _selectedUTCDate = selectedDate?.toIso8601String() ?? '';
     print(_selectedUTCDate);
-
-    String getDate = _selectedUTCDate.to12HourTimeFormat();
-    print(getDate);
     getSlotsApi();
     notifyListeners();
   }

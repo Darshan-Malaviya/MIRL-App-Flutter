@@ -17,7 +17,6 @@ class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
 class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfExpertiseScreen> {
   ScrollController scrollController = ScrollController();
 
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -51,7 +50,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
         ),
         trailingIcon: InkWell(
           onTap: () async {
-           await addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
+            await addYourAreaExpertiseProviderRead.childUpdateApiCall(context: context);
             ref.read(editExpertProvider).getUserData();
             context.toPop();
           },
@@ -79,15 +78,12 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
           Expanded(
             child: addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                 ? GridView.builder(
-                  controller: scrollController,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
-                    itemCount: ((addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0)
-                        + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1)),
+                    controller: scrollController,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                    itemCount: ((addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0) + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1)),
                     itemBuilder: (context, index) {
-                      if (index == addYourAreaExpertiseProviderWatch.categoryList?.length
-                          && (addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false)) {
-                      /*  return Padding(
+                      if (index == addYourAreaExpertiseProviderWatch.categoryList?.length && (addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false)) {
+                        /*  return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
                         );*/
@@ -115,7 +111,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                 shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
                                     ? ColorConstants.categoryListBorder
                                     : ColorConstants.blackColor.withOpacity(0.1),
-                                offset: Offset(0,2),
+                                offset: Offset(0, 2),
                                 spreadRadius: 0,
                                 blurRadius: 3,
                                 child: Column(
@@ -124,8 +120,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                       borderRadius: BorderRadius.circular(20.0),
                                       child: NetworkImageWidget(
                                         boxFit: BoxFit.cover,
-                                        imageURL:
-                                        addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
+                                        imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
                                         isNetworkImage: true,
                                         height: 50,
                                         width: 50,
@@ -163,7 +158,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                           ],
                         );
                       }
-
+                      return SizedBox.shrink();
                     })
                 : Center(
                     child: BodyLargeText(
