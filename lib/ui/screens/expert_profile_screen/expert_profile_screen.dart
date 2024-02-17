@@ -48,37 +48,48 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          BodySmallText(
-                            title: LocaleKeys.overAllRating.tr(),
-                            fontFamily: FontWeightEnum.w400.toInter,
-                            titleTextAlign: TextAlign.center,
-                          ),
-                          10.0.spaceX,
-                          HeadlineMediumText(
-                            fontSize: 30,
-                            title: '-',
-                            titleColor: ColorConstants.overallRatingColor,
-                            shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
-                          ),
-                        ],
+                      Flexible(
+                        child: Row(
+                          children: [
+                            BodySmallText(
+                              title: LocaleKeys.overAllRating.tr(),
+                              fontFamily: FontWeightEnum.w400.toInter,
+                              titleTextAlign: TextAlign.center,
+                            ),
+                            10.0.spaceX,
+                            HeadlineMediumText(
+                              fontSize: 30,
+                              title: '-',
+                              titleColor: ColorConstants.overallRatingColor,
+                              shadow: [
+                                Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      Row(
-                        children: [
-                          BodySmallText(
-                            title: LocaleKeys.feesPerMinute.tr(),
-                            fontFamily: FontWeightEnum.w400.toInter,
-                            titleTextAlign: TextAlign.center,
-                          ),
-                          10.0.spaceX,
-                          HeadlineMediumText(
-                            fontSize: 30,
-                            title: '\$${expertWatch.countController.text}',
-                            titleColor: ColorConstants.overallRatingColor,
-                            shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
-                          ),
-                        ],
+                      Flexible(
+                        child: Row(
+                          children: [
+                            BodySmallText(
+                              title: LocaleKeys.feesPerMinute.tr(),
+                              fontFamily: FontWeightEnum.w400.toInter,
+                              titleTextAlign: TextAlign.center,
+                            ),
+                            10.0.spaceX,
+                            Flexible(
+                              child: HeadlineMediumText(
+                                fontSize: 30,
+                                maxLine: 4,
+                                title: '\$${expertWatch.countController.text}',
+                                titleColor: ColorConstants.overallRatingColor,
+                                shadow: [
+                                  Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

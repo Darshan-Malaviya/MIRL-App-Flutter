@@ -33,6 +33,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
+      // ref.read(reportUserProvider).changeReportAndThanksScreen();
     });
     super.initState();
   }
@@ -51,7 +52,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         ),
         trailingIcon: InkWell(
                 onTap: () {
-                  context.toPushNamed(RoutesConstants.reportExpertScreen);
+                  //ReportThisUserWidget();
+                  context.toPushNamed(RoutesConstants.reportExpertScreen, args: 1);
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),
@@ -137,21 +139,29 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    BodySmallText(
-                      title: LocaleKeys.feesPerMinute.tr(),
-                      fontFamily: FontWeightEnum.w400.toInter,
-                      titleTextAlign: TextAlign.center,
-                    ),
-                    10.0.spaceX,
-                    HeadlineMediumText(
-                      fontSize: 30,
-                      title: fee != null ? '\$${fee}' : "",
-                      titleColor: ColorConstants.overallRatingColor,
-                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
-                    ),
-                  ],
+                40.0.spaceX,
+                Flexible(
+                  child: Row(
+                    children: [
+                      BodySmallText(
+                        title: LocaleKeys.feesPerMinute.tr(),
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        titleTextAlign: TextAlign.center,
+                      ),
+                      10.0.spaceX,
+                      Flexible(
+                        child: HeadlineMediumText(
+                          fontSize: 30,
+                          maxLine: 4,
+                          title: fee != null ? '\$${fee}' : "",
+                          titleColor: ColorConstants.overallRatingColor,
+                          shadow: [
+                            Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -326,19 +336,19 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             26.0.spaceY,
             OverallRatingWidget(name: RatingEnum.EXPERTISE.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.COMMUNICATION.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.HELPFULNESS.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.EMPATHY.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.PROFESSIONALISM.name, value: 5),
-            60.0.spaceY,
+            OverallRatingWidget(name: RatingEnum.COMMUNICATION.name, value: 5),
+            OverallRatingWidget(name: RatingEnum.HELPFULNESS.name, value: 5),
+            OverallRatingWidget(name: RatingEnum.EMPATHY.name, value: 5),
+            OverallRatingWidget(name: RatingEnum.PROFESSIONALISM.name, value: 5),
+            40.0.spaceY,
             ReviewsAndRatingWidget(
               title: StringConstants.reviews,
               buttonColor: ColorConstants.yellowButtonColor,
               child: SizedBox.shrink(),
             ),
-            30.0.spaceY,
+            20.0.spaceY,
             ShortReviewWidget(dropdownValue: 'Highest to Lowest'),
-            40.0.spaceY,
+            30.0.spaceY,
             ReviewsWidget(),
             20.0.spaceY,
           ],

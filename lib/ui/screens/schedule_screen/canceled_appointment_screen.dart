@@ -1,22 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
-class CanceledAppointmentScreen extends ConsumerWidget {
-  const CanceledAppointmentScreen({super.key});
+class CanceledAppointmentScreen extends StatelessWidget {
+  final CancelArgs args;
+
+  const CanceledAppointmentScreen({super.key, required this.args});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final scheduleWatch = ref.watch(scheduleCallProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
         preferSize: 40,
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
-        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -55,12 +51,10 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                         softWrap: true,
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: '${LocaleKeys.expert.tr()}: ',
+                          text: '${args.fromUser ?? false ? LocaleKeys.expert.tr() : LocaleKeys.user.tr()}: ',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
-                            TextSpan(
-                                text: scheduleWatch.appointmentData?.expertDetail?.expertName ?? '',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                            TextSpan(text: args.cancelData?.name ?? 'Anonymous', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                           ],
                         ),
                       ),
@@ -73,8 +67,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
                             TextSpan(
-                                text:
-                                    '${scheduleWatch.appointmentData?.startTime?.to12HourTimeFormat() ?? ''} - ${scheduleWatch.appointmentData?.endTime?.to12HourTimeFormat() ?? ''}',
+                                text: '${args.cancelData?.startTime?.to12HourTimeFormat() ?? ''} - ${args.cancelData?.endTime?.to12HourTimeFormat() ?? ''}',
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                           ],
                         ),
@@ -84,11 +77,11 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                         softWrap: true,
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: '${LocaleKeys.duration.tr()}: ',
+                          text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
                             TextSpan(
-                                text: ' ${scheduleWatch.appointmentData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
+                                text: '${args.cancelData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                           ],
                         ),
@@ -102,8 +95,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
                       child: NetworkImageWidget(
-                        imageURL:
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                        imageURL: args.cancelData?.profileImage ?? '',
                         boxFit: BoxFit.cover,
                         height: 100,
                         width: 100,
@@ -120,35 +112,58 @@ class CanceledAppointmentScreen extends ConsumerWidget {
             ),
             10.0.spaceY,
             BodyMediumText(
-              title: 'The reason for cancellation will be listed and written down here.',
+              title: args.cancelData?.reason ?? '',
               fontFamily: FontWeightEnum.w400.toInter,
               fontStyle: FontStyle.italic,
               maxLine: 10,
               titleColor: ColorConstants.buttonTextColor,
             ),
             20.0.spaceY,
-            PrimaryButton(
-              title: LocaleKeys.goTONotification.tr(),
-              onPressed: () {
-                context.toPushNamed(RoutesConstants.notificationScreen);
-              },
-              fontSize: 15,
-            ),
-            100.0.spaceY,
-            Center(
-              child: BodySmallText(
-                title: LocaleKeys.refundStatus.tr(),
-                titleColor: ColorConstants.buttonTextColor,
+            if (args.fromUser ?? false) ...[
+              PrimaryButton(
+                title: LocaleKeys.goTONotification.tr(),
+                onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
+                fontSize: 15,
               ),
-            ),
-            10.0.spaceY,
-            BodySmallText(
-              title: LocaleKeys.refundDescription.tr(),
-              fontFamily: FontWeightEnum.w400.toInter,
-              titleColor: ColorConstants.buttonTextColor,
-              maxLine: 3,
-              titleTextAlign: TextAlign.center,
-            ),
+              100.0.spaceY,
+              Center(
+                child: BodySmallText(
+                  title: LocaleKeys.refundStatus.tr(),
+                  titleColor: ColorConstants.buttonTextColor,
+                ),
+              ),
+              10.0.spaceY,
+              BodySmallText(
+                title: LocaleKeys.refundDescription.tr(),
+                fontFamily: FontWeightEnum.w400.toInter,
+                titleColor: ColorConstants.buttonTextColor,
+                maxLine: 3,
+                titleTextAlign: TextAlign.center,
+              ),
+            ] else ...[
+              PrimaryButton(
+                title: LocaleKeys.backCalenderAppointment.tr(),
+                onPressed: () {
+                  context.toPop();
+                  context.toPop();
+                  context.toPushReplacementNamed(RoutesConstants.viewCalendarAppointment);
+                },
+                fontSize: 15,
+                titleColor: ColorConstants.textColor,
+              ),
+              30.0.spaceY,
+              Center(
+                child: InkWell(
+                  onTap: () => context.toPushNamed(RoutesConstants.blockUserListScreen),
+                  child: BodySmallText(
+                    title: LocaleKeys.blockedUser.tr(),
+                    fontFamily: FontWeightEnum.w400.toInter,
+                    titleColor: ColorConstants.callsPausedColor,
+                    titleTextAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ]
           ],
         ).addPaddingX(20),
       ),

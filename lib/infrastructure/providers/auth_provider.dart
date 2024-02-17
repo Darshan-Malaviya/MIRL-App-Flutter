@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/login_request_model.dart';
 import 'package:mirl/infrastructure/models/request/otp_verify_request_model.dart';
+import 'package:mirl/infrastructure/models/response/cms_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/repository/auth_repo.dart';
 import 'package:mirl/infrastructure/services/agora_service.dart';
@@ -20,6 +21,9 @@ class AuthProvider with ChangeNotifier {
   int get secondsRemaining => _secondsRemaining;
   int _secondsRemaining = 120;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
   bool get enableResend => _enableResend;
   bool _enableResend = false;
   Timer? timer;
@@ -30,6 +34,15 @@ class AuthProvider with ChangeNotifier {
 
   bool isResend = false;
   int start = 60;
+
+  List<CmsData> _cmsData = [];
+
+  List<CmsData> get cmsData => _cmsData;
+
+  void changeIsLoading(bool val) {
+    _isLoading = val;
+    notifyListeners();
+  }
 
   GoogleSignInAccount? _currentUser;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -195,4 +208,33 @@ class AuthProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  /// cms API call
+
+  Future<void> cmsApiCall(String name) async {
+
+    ApiHttpResult response = await _authRepository.cmsApi(searchKeyword: name);
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is CMSResponseModel) {
+          CMSResponseModel responseModel = response.data;
+          Logger().d("Cms API call successfully${response.data}");
+          if (response.data != null && response.data is CMSResponseModel) {
+            _cmsData.addAll(responseModel.data ?? []);
+          }
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on cms Api ${response.data}");
+        break;
+    }
+    notifyListeners();
+  }
+
+// Future<void> getAboutUsHtmlContent(String url) async {
+//   _aboutUs = await _authRepository.getHtmlContent(url);
+//   changeIsLoading(false);
+// }
 }

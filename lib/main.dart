@@ -4,9 +4,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/mirl_app.dart';
-import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
-import 'ui/screens/schedule_screen/schedule_call_screen.dart';
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);
@@ -48,7 +46,7 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             onGenerateRoute: RouterConstant.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
-            // home: ScheduleCallScreen(callArgs: CallArgs()),
+            // home: ViewCalendarAppointment(),
           );
         },
       ),

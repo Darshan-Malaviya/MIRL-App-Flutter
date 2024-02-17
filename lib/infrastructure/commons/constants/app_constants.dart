@@ -41,4 +41,9 @@ class AppConstants {
   static const timeReceived = 'timeReceived';
 
 
+
+  /// cms name
+
+  static const termsAndConditions = 'Terms and Conditions';
+  static const privacyPolicy = 'Privacy Policy';
 }

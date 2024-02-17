@@ -52,12 +52,11 @@ extension DateTimeFormatter on String {
     return '';
   }
 
-  /// 5:20
+  /// 5:20 from UTC
   String toLocalTimeFromUtc() {
     try {
       DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
       var output = DateFormat('hh:mm a').format(localTime);
-
       return output;
     } catch (e) {
       Logger().d("Exception occurred on toLocalTimeFromUtc : $e");
@@ -70,7 +69,7 @@ extension DateTimeFormatter on String {
     try {
       int intValue = int.parse(this);
       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue, isUtc: true);
-      return dateTime.toString();
+      return dateTime.toIso8601String();
     } catch (e) {
       Logger().d("Exception occurred on toUTCDateTimeFormat : $e");
     }
@@ -92,6 +91,7 @@ extension DateTimeFormatter on String {
     return '';
   }
 
+  /// full date time format in local -  01/06/2023 12:15 PM
   DateTime? toLocaleFromUtc() {
     try {
       DateTime now = DateTime.now();
@@ -118,5 +118,47 @@ extension DateTimeFormatter on String {
       Logger().d("Exception on toLocaleFromStringUtc : $e");
     }
     return null;
+  }
+
+  /// local date 2024-2-21
+  String? toLocalDate() {
+    try {
+      DateTime localTime = DateFormat('yyyy-MM-dd').parse(this, true).toLocal();
+      return DateFormat('yyyy-MM-dd').format(localTime);
+    } catch (e) {
+      Logger().d("Exception on toLocalDate : $e");
+    }
+    return null;
+  }
+
+  /// 15TH NOVEMBER 2023
+  String? toLocalFullDate() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat('d MMMM yyyy').format(localTime);
+      formattedDate = formattedDate.replaceFirstMapped(RegExp(r'\b(\d{1,2})\b'), (match) => '${match.group(1)}${getDaySuffix(int.parse(match.group(1)!))}');
+
+      String finalDate = '$formattedDate';
+      return finalDate.toUpperCase();
+    } catch (e) {
+      Logger().d("Exception on toLocalFullDate : $e");
+    }
+    return null;
+  }
+}
+
+String getDaySuffix(int day) {
+  if (day >= 11 && day <= 13) {
+    return 'TH';
+  }
+  switch (day % 10) {
+    case 1:
+      return 'ST';
+    case 2:
+      return 'ND';
+    case 3:
+      return 'RD';
+    default:
+      return 'TH';
   }
 }

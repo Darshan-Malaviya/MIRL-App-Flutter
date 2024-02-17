@@ -10,8 +10,10 @@ final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
 class TableCalenderRangeWidget extends StatefulWidget {
   final Function(DateTime selectedDay, DateTime focusedDay) onDateSelected;
   final DateTime? selectedDay;
+  final List<String>? scheduleDateList;
+  final bool fromUpcomingAppointment;
 
-  TableCalenderRangeWidget({super.key, required this.onDateSelected, required this.selectedDay});
+  TableCalenderRangeWidget({super.key, required this.onDateSelected, required this.selectedDay, this.scheduleDateList, required this.fromUpcomingAppointment});
 
   @override
   _TableCalenderRangeWidgetState createState() => _TableCalenderRangeWidgetState();
@@ -32,7 +34,18 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
       firstDay: kFirstDay,
       lastDay: kToday.add(Duration(days: 30)),
       focusedDay: _focusedDay,
-      selectedDayPredicate: (day) => isSameDay(widget.selectedDay, day),
+      selectedDayPredicate: (day) {
+        if (widget.fromUpcomingAppointment) {
+          for (var element in widget.scheduleDateList ?? []) {
+            if (day.toString().toLocalDate() == element) {
+              return true;
+            }
+          }
+        } else {
+          return isSameDay(widget.selectedDay, day);
+        }
+        return false;
+      },
       rangeStartDay: _rangeStart,
       rangeEndDay: _rangeEnd,
       availableGestures: AvailableGestures.horizontalSwipe,
@@ -49,28 +62,18 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
       ),
       headerStyle: HeaderStyle(rightChevronVisible: false, leftChevronVisible: false, formatButtonVisible: false, titleCentered: true),
       calendarBuilders: CalendarBuilders(
-        rangeHighlightBuilder: (context, day, isWithinRange) {
-          if ((_rangeStart != day && _rangeEnd != day) && isWithinRange) {
-            return rangeTextContainer(day: day);
-          } else {
-            return Container(
-              decoration: BoxDecoration(
-                color: ColorConstants.transparentColor,
-              ),
-            );
+        defaultBuilder: (context, day, focusedDay) {
+          if (widget.fromUpcomingAppointment) {
+            if (!(widget.scheduleDateList?.contains(day.toString().toLocalDate()) ?? false)) {
+              return Center(
+                child: BodyMediumText(
+                  title: day.day.toString(),
+                  titleColor: Color(0xFFBFBFBF),
+                ),
+              );
+            }
           }
-        },
-        rangeEndBuilder: (context, day, focusedDay) {
-          return rangeTextContainer(
-            day: day,
-            borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
-          );
-        },
-        rangeStartBuilder: (context, day, focusedDay) {
-          return rangeTextContainer(
-            day: day,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
-          );
+          return null;
         },
         headerTitleBuilder: (context, day) {
           return Row(
@@ -130,6 +133,25 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           );
         },
         selectedBuilder: (context, day, event) {
+          if (widget.scheduleDateList != null && (day.day == widget.selectedDay?.day)) {
+            return Center(
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: ColorConstants.primaryColor.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                  boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
+                ),
+                child: Center(
+                  child: BodyMediumText(
+                    title: day.day.toString(),
+                    titleColor: ColorConstants.buttonTextColor,
+                  ),
+                ),
+              ),
+            );
+          }
           return Center(
             child: Container(
               height: 40,
@@ -149,6 +171,16 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           );
         },
         todayBuilder: (context, day, focusedDay) {
+          if (widget.fromUpcomingAppointment) {
+            if (!(widget.scheduleDateList?.contains(day.day) ?? false)) {
+              return Center(
+                child: BodyMediumText(
+                  title: day.day.toString(),
+                  titleColor: Color(0xFFBFBFBF),
+                ),
+              );
+            }
+          }
           return Center(
             child: Container(
               height: 40,
@@ -167,6 +199,29 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
             ),
           );
         },
+        rangeHighlightBuilder: (context, day, isWithinRange) {
+          if ((_rangeStart != day && _rangeEnd != day) && isWithinRange) {
+            return rangeTextContainer(day: day);
+          } else {
+            return Container(
+              decoration: BoxDecoration(
+                color: ColorConstants.transparentColor,
+              ),
+            );
+          }
+        },
+        rangeEndBuilder: (context, day, focusedDay) {
+          return rangeTextContainer(
+            day: day,
+            borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
+          );
+        },
+        rangeStartBuilder: (context, day, focusedDay) {
+          return rangeTextContainer(
+            day: day,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
+          );
+        },
       ),
       calendarFormat: _calendarFormat,
       rangeSelectionMode: _rangeSelectionMode,
@@ -176,8 +231,8 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         weekdayStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
         weekendStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
       ),
-      onDaySelected: widget
-          .onDateSelected /*(selectedDay, focusedDay) {
+      onDaySelected: widget.onDateSelected,
+      /*(selectedDay, focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {
           setState(() {
             _selectedDay = selectedDay;
@@ -188,7 +243,6 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           });
         }
       }*/
-      ,
       onRangeSelected: (start, end, focusedDay) {
         setState(() {
           // widget.selectedDay = null;

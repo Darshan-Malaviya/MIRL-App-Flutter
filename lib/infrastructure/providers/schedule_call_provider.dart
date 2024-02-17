@@ -1,8 +1,10 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/schedule_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/slots_request_model.dart';
 import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
+import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
@@ -37,12 +39,12 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   int? oldIndex;
 
+  AppointmentData? get appointmentData => _appointmentData;
+  AppointmentData? _appointmentData;
+
   UserData? expertData;
 
   double? totalPayAmount;
-
-  AppointmentData? get appointmentData => _appointmentData;
-  AppointmentData? _appointmentData;
 
   void incrementCallDuration() {
     _callDuration += 10;
@@ -69,11 +71,8 @@ class ScheduleCallProvider extends ChangeNotifier {
   void getSelectedDate(DateTime dateTime) {
     final now = DateTime.now().toLocal();
     selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second);
-    _selectedUTCDate = selectedDate?.toUtc().toString() ?? '';
+    _selectedUTCDate = selectedDate?.toIso8601String() ?? '';
     print(_selectedUTCDate);
-
-    String getDate = _selectedUTCDate.to12HourTimeFormat();
-    print(getDate);
     getSlotsApi();
     notifyListeners();
   }

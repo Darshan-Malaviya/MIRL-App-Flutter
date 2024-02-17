@@ -75,7 +75,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     onTap: () {
                       context.toPushNamed(RoutesConstants.exploreExpertScreen);
                     },
-                    child: Container(
+                    child: Container(height: 205,
                         decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
@@ -88,12 +88,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           children: [
                             BodySmallText(
                               title: LocaleKeys.exploreExperts.tr().toUpperCase(),
+                              maxLine: 2,
                             ),
                             10.0.spaceY,
                             Image.asset(
                               ImageConstants.expert,
-                              height: 100,
-                              width: 100,
+                              height: 80,
+                              width: 80,
                             ),
                             10.0.spaceY,
                             BodySmallText(
@@ -109,8 +110,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 40.0.spaceX,
                 Flexible(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                     child: Container(
+                      height: 205,
                         decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
@@ -123,12 +125,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           children: [
                             BodySmallText(
                               title: LocaleKeys.multipleConnect.tr().toUpperCase(),
+                              maxLine: 2,
+                              titleTextAlign: TextAlign.center,
                             ),
                             10.0.spaceY,
                             Image.asset(
                               ImageConstants.multipleConnect,
-                              height: 100,
-                              width: 100,
+                              height: 80,
+                              width: 80,
                             ),
                             10.0.spaceY,
                             BodySmallText(

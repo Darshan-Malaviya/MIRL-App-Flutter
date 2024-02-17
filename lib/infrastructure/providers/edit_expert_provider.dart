@@ -392,13 +392,13 @@ class EditExpertProvider extends ChangeNotifier {
 
   void increaseFees() {
     double plusValue = double.parse(countController.text.trim());
-    countController.text = (plusValue + 1).toString();
+    countController.text = (plusValue + 1).toStringAsFixed(2);
     notifyListeners();
   }
 
   void decreaseFees() {
     double minusValue = double.parse(countController.text.trim());
-    countController.text = (minusValue - 1).toString();
+    countController.text = (minusValue - 1).toStringAsFixed(2);
     notifyListeners();
   }
 
@@ -444,7 +444,6 @@ class EditExpertProvider extends ChangeNotifier {
   void updateFeesApi() {
     int feesValue = (double.parse(countController.text) * 100).toInt();
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      feeFlag: true,
       fee: feesValue.toString(),
     );
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonFees());
@@ -452,7 +451,6 @@ class EditExpertProvider extends ChangeNotifier {
 
   void updateAboutApi() {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      aboutFlag: true,
       about: aboutMeController.text.trim(),
     );
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonAbout());

@@ -11,8 +11,6 @@ class UpdateExpertProfileRequestModel {
   String? fee;
   String? userProfile;
   String? expertProfile;
-  bool? aboutFlag;
-  bool? feeFlag;
   bool? instantCallAvailable;
   String? phone;
   bool? isLocationVisible;
@@ -32,8 +30,6 @@ class UpdateExpertProfileRequestModel {
       this.fee,
       this.userProfile,
       this.expertProfile,
-      this.aboutFlag,
-      this.feeFlag,
       this.instantCallAvailable,
       this.phone,
       this.isLocationVisible,
@@ -53,8 +49,6 @@ class UpdateExpertProfileRequestModel {
     fee = json['fee'];
     userProfile = json['userProfile'];
     expertProfile = json['expertProfile'];
-    aboutFlag = json['aboutFlag'];
-    feeFlag = json['feeFlag'];
     instantCallAvailable = json['instantCallAvailable'];
     phone = json['phone'];
     isLocationVisible = json['isLocationVisible'];
@@ -74,7 +68,6 @@ class UpdateExpertProfileRequestModel {
 
   FormData toJsonFees() {
     FormData formData = FormData.fromMap({
-      'feeFlag': feeFlag,
       'fee': fee,
     });
     return formData;
@@ -123,7 +116,6 @@ class UpdateExpertProfileRequestModel {
 
   FormData toJsonAbout() {
     FormData formData = FormData.fromMap({
-      'aboutFlag': aboutFlag,
       'about': about,
     });
     return formData;
