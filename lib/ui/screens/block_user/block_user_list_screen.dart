@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -12,10 +14,22 @@ class BlockUserListScreen extends ConsumerStatefulWidget {
 }
 
 class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(blockUserProvider).getAllBlockListApiCall();
+    });
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        bool isLoading = ref.watch(blockUserProvider).reachedCategoryLastPage;
+        if (!isLoading) {
+          await ref.read(blockUserProvider).getAllBlockListApiCall();
+        } else {
+          log('reach last page on get block user list api');
+        }
+      }
     });
     super.initState();
   }
@@ -92,7 +106,7 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                                   color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 11),
                               children: [
                                 TextSpan(
-                                    text: blockUserWatch.blockUserDetails[index].firstCreated ?? '',
+                                    text: blockUserWatch.blockUserDetails[index].firstCreated?.toLocalFullDate() ?? '',
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                           fontSize: 11,
                                           color: ColorConstants.buttonTextColor,
@@ -120,28 +134,11 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                               ],
                             ),
                           ),
-                          // Row(
-                          //   children: [
-                          //     BodySmallText(
-                          //       title: 'STATUS:',
-                          //       titleColor: ColorConstants.buttonTextColor,
-                          //       titleTextAlign: TextAlign.center,
-                          //       fontSize: 13,
-                          //     ),
-                          //     5.0.spaceX,
-                          //     BodySmallText(
-                          //       title: 'PERMANENT / TEMPORARY',
-                          //       maxLine: 2,
-                          //       titleColor: ColorConstants.buttonTextColor,
-                          //       titleTextAlign: TextAlign.center,
-                          //       fontSize: 13,
-                          //     ),
-                          //   ],
-                          // ),
                           20.0.spaceY,
                           InkWell(
                             onTap: () {
-                              blockUserRead.unBlockUserApiCall(userBlockId: blockUserWatch.blockUserDetails[index].id ?? 0, index: index);
+                              blockUserRead.unBlockUserApiCall(
+                                  userBlockId: blockUserWatch.blockUserDetails[index].id ?? 0, index: index);
                             },
                             child: BodySmallText(
                               title: 'UNBLOCK USER',
@@ -152,24 +149,6 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                           ),
                         ],
                       ),
-                      // Container(
-                      //   decoration: BoxDecoration(boxShadow: [
-                      //     BoxShadow(
-                      //         offset: Offset(2, 4),
-                      //         color: ColorConstants.blackColor.withOpacity(0.3),
-                      //         spreadRadius: 0,
-                      //         blurRadius: 2),
-                      //   ], shape: BoxShape.circle),
-                      //   child: ClipRRect(
-                      //     borderRadius: BorderRadius.circular(50),
-                      //     child: NetworkImageWidget(
-                      //       imageURL: blockUserWatch.blockUserDetails[index].userDetail?.userProfile ?? '',
-                      //       boxFit: BoxFit.cover,
-                      //       height: 90,
-                      //       width: 90,
-                      //     ),
-                      //   ),
-                      // ),
                       Container(
                           decoration: BoxDecoration(boxShadow: [
                             BoxShadow(
@@ -179,7 +158,7 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                                 blurRadius: 2),
                           ], shape: BoxShape.circle),
                           child: CircleNetworkImageWidget(
-                            radius: 50,
+                              radius: 50,
                               imageURL: blockUserWatch.blockUserDetails[index].userDetail?.userProfile ?? '',
                               isNetworkImage: true,
                               key: UniqueKey())),

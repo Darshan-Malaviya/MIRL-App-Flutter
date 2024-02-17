@@ -12,8 +12,13 @@ class BlockProvider extends ChangeNotifier {
 
   List<BlockDetail> get blockUserDetails => _blockUserDetails;
 
-  // BlockDetail? _blockDetail;
-  // BlockDetail? get blockDetail => _blockDetail;
+  bool get reachedCategoryLastPage => _reachedCategoryLastPage;
+  bool _reachedCategoryLastPage = false;
+
+  int get blockUserListPageNo => _blockUserListPageNo;
+  int _blockUserListPageNo = 1;
+
+  DateTime? selectedDate;
 
   String? userStatus(int index) {
     if (_blockUserDetails[index].status == 1) {
@@ -24,8 +29,8 @@ class BlockProvider extends ChangeNotifier {
     return null;
   }
 
-  void userBlockRequestCall({required int Status}) {
-    UserBlockRequestModel userBlockRequestModel = UserBlockRequestModel(status: Status, userBlockId: 1);
+  void userBlockRequestCall({required int Status,required int UserBlockId}) {
+    UserBlockRequestModel userBlockRequestModel = UserBlockRequestModel(status: Status, userBlockId: UserBlockId);
     userBlockApiCall(requestModel: userBlockRequestModel.prepareRequest());
   }
 
@@ -46,10 +51,10 @@ class BlockProvider extends ChangeNotifier {
         Logger().d("API fail on user block api call ${response.data}");
         break;
     }
-    notifyListeners();
+  //  notifyListeners();
   }
 
-  Future<void> unBlockUserApiCall({required int userBlockId,required int index}) async {
+  Future<void> unBlockUserApiCall({required int userBlockId, required int index}) async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _authRepository.unBlockUserApi(userBlockId: userBlockId);
     CustomLoading.progressDialog(isLoading: false);
@@ -72,13 +77,20 @@ class BlockProvider extends ChangeNotifier {
 
   Future<void> getAllBlockListApiCall() async {
     CustomLoading.progressDialog(isLoading: true);
-    ApiHttpResult response = await _authRepository.getAllBlockListApi(limit: 10, page: 1);
+    ApiHttpResult response = await _authRepository.getAllBlockListApi(limit: 10, page: _blockUserListPageNo);
     CustomLoading.progressDialog(isLoading: false);
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is UserBlockResponseModel) {
           UserBlockResponseModel userBlockResponseModel = response.data;
           _blockUserDetails.addAll(userBlockResponseModel.data ?? []);
+          if (_blockUserListPageNo == userBlockResponseModel.pagination?.itemCount) {
+            _reachedCategoryLastPage = true;
+          } else {
+            _blockUserListPageNo = _blockUserListPageNo + 1;
+            _reachedCategoryLastPage = false;
+          }
+
           Logger().d("Successfully get all block details");
           FlutterToast().showToast(msg: userBlockResponseModel.message ?? '');
         }

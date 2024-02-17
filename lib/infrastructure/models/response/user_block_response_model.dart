@@ -5,8 +5,6 @@ class UserBlockResponseModel {
   int? status;
   String? message;
   Pagination? pagination;
-
-  // BlockDetail? data;
   List<BlockDetail>? data;
 
   UserBlockResponseModel({this.status, this.message, this.pagination, this.data});

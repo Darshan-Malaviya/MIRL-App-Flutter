@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -5,17 +6,39 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class ReportUserWidget extends ConsumerStatefulWidget {
   final String reportName;
+  final int roleId;
 
-  const ReportUserWidget({super.key, this.reportName = 'REPORT THIS USER'});
+  const ReportUserWidget({super.key, required this.reportName, required this.roleId});
 
   @override
   ConsumerState<ReportUserWidget> createState() => _ReportUserWidgetState();
 }
 
 class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
+  ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.roleId);
+    });
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        bool isLoading = ref.watch(reportUserProvider).reachedCategoryLastPage;
+        if (!isLoading) {
+          await ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.roleId);
+        } else {
+          log('reach last page on get report list api');
+        }
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final reportUserRead = ref.read(reportUserProvider);
+    final reportUserWatch = ref.watch(reportUserProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,7 +61,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
         20.0.spaceY,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(2, (index) {
+          children: List.generate(reportUserWatch.reportListDetails.length, (index) {
             return InkWell(
               onTap: () {
                 reportUserRead.reportUser();
@@ -51,7 +74,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: BodySmallText(
-                            title: 'ABUSIVE OR DISRESPECTFUL BEHAVIOR',
+                            title: reportUserWatch.reportListDetails[index].title ?? '',
                             titleColor: ColorConstants.blackColor,
                             titleTextAlign: TextAlign.start,
                             maxLine: 3,
@@ -60,7 +83,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                         ),
                         20.0.spaceY,
                         BodySmallText(
-                          title: 'Engaging in any form of verbal abuse, harassment, or showing disrespect towards the expert.',
+                          title: reportUserWatch.reportListDetails[index].description ?? '',
                           titleColor: ColorConstants.blackColor,
                           titleTextAlign: TextAlign.start,
                           fontFamily: FontWeightEnum.w400.toInter,
