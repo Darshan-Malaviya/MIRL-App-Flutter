@@ -28,8 +28,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
-     // ref.read(reportUserProvider).changeReportAndThanksScreen();
-
+      // ref.read(reportUserProvider).changeReportAndThanksScreen();
     });
     super.initState();
   }
@@ -49,7 +48,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         trailingIcon: InkWell(
                 onTap: () {
                   //ReportThisUserWidget();
-                   context.toPushNamed(RoutesConstants.reportExpertScreen);
+                  context.toPushNamed(RoutesConstants.reportExpertScreen, args: 1);
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),
@@ -148,10 +147,12 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       Flexible(
                         child: HeadlineMediumText(
                           fontSize: 30,
-                         maxLine: 4,
+                          maxLine: 4,
                           title: fee != null ? '\$${fee}' : "",
                           titleColor: ColorConstants.overallRatingColor,
-                          shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                          shadow: [
+                            Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                          ],
                         ),
                       ),
                     ],
@@ -294,10 +295,10 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             26.0.spaceY,
             OverallRatingWidget(name: RatingEnum.EXPERTISE.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.COMMUNICATION.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.HELPFULNESS.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.EMPATHY.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.PROFESSIONALISM.name, value: 5),
+            OverallRatingWidget(name: RatingEnum.COMMUNICATION.name, value: 5),
+            OverallRatingWidget(name: RatingEnum.HELPFULNESS.name, value: 5),
+            OverallRatingWidget(name: RatingEnum.EMPATHY.name, value: 5),
+            OverallRatingWidget(name: RatingEnum.PROFESSIONALISM.name, value: 5),
             40.0.spaceY,
             ReviewsAndRatingWidget(
               title: StringConstants.reviews,

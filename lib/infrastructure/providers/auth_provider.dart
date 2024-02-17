@@ -212,13 +212,8 @@ class AuthProvider with ChangeNotifier {
   /// cms API call
 
   Future<void> cmsApiCall(String name) async {
-    // _isHomeSearchLoading = true;
-    // notifyListeners();
 
     ApiHttpResult response = await _authRepository.cmsApi(searchKeyword: name);
-
-    // _isHomeSearchLoading = false;
-    // notifyListeners();
 
     switch (response.status) {
       case APIStatus.success:

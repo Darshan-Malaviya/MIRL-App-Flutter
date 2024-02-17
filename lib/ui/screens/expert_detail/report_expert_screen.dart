@@ -3,13 +3,17 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/block_user/widget/report_this_user_widget.dart';
 
 class ReportExpertScreen extends ConsumerStatefulWidget {
-  const ReportExpertScreen({super.key});
+  //final int roleId;
+
+  const ReportExpertScreen({super.key, /*required this.roleId*/});
 
   @override
   ConsumerState<ReportExpertScreen> createState() => _ReportExpertScreenState();
 }
 
 class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
