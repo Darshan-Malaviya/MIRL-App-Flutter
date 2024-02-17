@@ -6,6 +6,7 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
@@ -23,19 +24,36 @@ class InstantCallRequestDialog extends ConsumerStatefulWidget {
 }
 
 class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> {
-  Timer? _timer;
+
+  Future<void> instanceRequestTimerFunction() async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (instanceRequestTimerNotifier.value != 0 && instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting) {
+      instanceRequestTimerNotifier.value =  instanceRequestTimerNotifier.value - 1;
+
+      if(widget.args.userID == SharedPrefHelper.getUserId) {
+        ref.read(socketProvider).timerEmit(userId: int.parse((widget.args.userID.toString())),expertId: int.parse((widget.args.expertId.toString())),
+          callRoleEnum: CallRoleEnum.user, timer:instanceRequestTimerNotifier.value, timerType: CallTimerEnum.request, );
+      }
+      instanceRequestTimerFunction();
+    } else {
+      instanceRequestTimerNotifier.value = -1;
+      instanceCallEnumNotifier.removeListener(() {});
+    }
+  }
 
   @override
   void initState() {
-    bgCallEndTrigger.addListener(() {
-      if (bgCallEndTrigger.value > 1) {
-        startTimer();
-      }
-      if(instanceCallEnumNotifier.value == CallTypeEnum.callRequest
-          || instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
-          || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested){
-        if( bgCallEndTrigger.value == 0){
-          _timer?.cancel();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+      instanceRequestTimerNotifier.addListener(() {
+        if (instanceRequestTimerNotifier.value == 120) {
+          instanceRequestTimerFunction();
+        }
+      });
+      if((instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting && widget.args.userID == SharedPrefHelper.getUserId)
+          || (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)){
+        if (instanceRequestTimerNotifier.value == 0) {
+          instanceCallEnumNotifier.value = CallTypeEnum.requestTimeout;
           ref.read(socketProvider).updateRequestStatusEmit(
               expertId: widget.args.expertId,
               userId: widget.args.userID,
@@ -43,34 +61,17 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
               callRoleEnum: widget.args.expertId == SharedPrefHelper.getUserId.toString()
                   ? CallRoleEnum.expert
                   : CallRoleEnum.user);
-          instanceCallEnumNotifier.value = CallTypeEnum.requestTimeout;
+
         }
       }
     });
     super.initState();
   }
 
-  void startTimer() {
-    _timer?.cancel();
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-          (Timer timer) {
-        if (bgCallEndTrigger.value == 0) {
-          timer.cancel();
-          _timer?.cancel();
-         // bgCallEndTrigger.value = 20;
-        } else {
-          bgCallEndTrigger.value--;
-        }
-      },
-    );
-  }
-
   @override
   void dispose() {
-    _timer?.cancel();
-    bgCallEndTrigger.value = 20;
+    instanceRequestTimerNotifier.value = -1;
+    instanceCallEnumNotifier.removeListener(() {});
     super.dispose();
   }
 
@@ -103,16 +104,17 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                     titleColor: ColorConstants.primaryColor,
                   ),
                   10.0.spaceY,
-                  if(bgCallEndTrigger.value > 1)...[
                     ValueListenableBuilder(
-                        valueListenable: bgCallEndTrigger,
+                        valueListenable: instanceRequestTimerNotifier,
                         builder: (BuildContext context, int value, Widget? child) {
-                          return DisplayLargeText(
-                              title: Duration(seconds: value).toTimeString(),
-                              fontSize: 65,
-                              titleColor: ColorConstants.primaryColor);
+                          if(instanceRequestTimerNotifier.value >= 1) {
+                            return DisplayLargeText(
+                                title: Duration(seconds: instanceRequestTimerNotifier.value).toTimeString(),
+                                fontSize: 65,
+                                titleColor: ColorConstants.primaryColor);
+                          }
+                         return SizedBox.shrink();
                         }),
-                  ]
                 ] else ... [
                   TitleLargeText(
                     title: instanceCallEnumNotifier.value.titleName,
@@ -163,14 +165,16 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                                 boxFit: BoxFit.cover,
                               ),
                             ),
-                            10.0.spaceY,
-                            BodyMediumText(
-                              title: widget.args.name ?? '',
-                              fontFamily: FontWeightEnum.w600.toInter,
-                              titleColor: ColorConstants.textColor,
-                              titleTextAlign: TextAlign.center,
-                              maxLine: 2,
-                            )
+                            if( (widget.args.name?.isNotEmpty ?? false) && (widget.args.name != 'null'))...[
+                              10.0.spaceY,
+                              BodyMediumText(
+                                title: widget.args.name ?? '',
+                                fontFamily: FontWeightEnum.w600.toInter,
+                                titleColor: ColorConstants.textColor,
+                                titleTextAlign: TextAlign.center,
+                                maxLine: 2,
+                              ),
+                            ],
                           ],
                         ).addPaddingXY(paddingX: 16, paddingY: 16),
                       ),

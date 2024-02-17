@@ -30,6 +30,8 @@ class AgoraService {
     Function(RtcConnection connection, LocalAudioStreamState state, LocalAudioStreamError error)? onLocalAudioStateChanged,
     Function(RtcConnection connection, int remoteUid, RemoteVideoState state, RemoteVideoStateReason reason, int elapsed)? onRemoteVideoStateChanged,
     Function(RtcConnection connection, String token)? onTokenPrivilegeWillExpire,
+    Function(RtcConnection, int, RemoteAudioState, RemoteAudioStateReason, int)? onRemoteAudioStateChanged,
+    Function(VideoSourceType, LocalVideoStreamState, LocalVideoStreamError)? onLocalVideoStateChanged
   }) async {
     if (isFromAudio) {
       await [Permission.microphone].request();
@@ -51,7 +53,10 @@ class AgoraService {
         onUserOffline: onUserOffline,
         onTokenPrivilegeWillExpire: onTokenPrivilegeWillExpire,
         onLocalAudioStateChanged: onLocalAudioStateChanged,
-        onRemoteVideoStateChanged:onRemoteVideoStateChanged
+        onRemoteVideoStateChanged:onRemoteVideoStateChanged,
+        onRemoteAudioStateChanged:onRemoteAudioStateChanged ,
+        onLocalVideoStateChanged: onLocalVideoStateChanged
+
     ));
 
     audioVideoCallFunction();

@@ -59,7 +59,7 @@ class AuthProvider with ChangeNotifier {
         socialId: _socialId,
         deviceToken: SharedPrefHelper.getFirebaseToken,
         timezone: await CommonMethods.getCurrentTimeZone(),
-        loginType: loginType.toString(),
+        loginType: loginType,
         voIpToken: await AgoraService.singleton.getVoipToken());
     loginApiCall(
         requestModel: emailController.text.trim().isNotEmpty

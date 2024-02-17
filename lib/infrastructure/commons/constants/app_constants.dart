@@ -14,6 +14,7 @@ class AppConstants {
   static const callHistoryId = 'callHistoryId';
   static const uuid = 'uuid';
   static const isVideo = 'isVideo';
+  static const timerType = 'timerType';
 
   /// Socket Request and Response name
   static const updateSocketId = 'updateSocketId';
@@ -34,6 +35,10 @@ class AppConstants {
   static const updateConnectCallStatus = 'updateConnectCallStatus';
   static const updateConnectCallStatusSent = 'updateConnectCallStatusSent';
   static const updateConnectCallStatusReceived = 'updateConnectCallStatusReceived';
+
+  static const getTime = 'getTime';
+  static const timeSend = 'timeSend';
+  static const timeReceived = 'timeReceived';
 
 
 }

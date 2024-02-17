@@ -183,35 +183,41 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : "ZEN MODE : CALL PAUSED",
               buttonColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.requestCallNowColor : ColorConstants.redLightColor ,
               onTap: () {
-                instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
-                context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
-                args: InstanceCallDialogArguments(
-                  name: expertDetailWatch.userData?.userName ?? "Name",
-                  //callTypeEnum: CallTypeEnum.callRequest,
-                 // title: LocaleKeys.instantCallRequest.tr().toUpperCase(),
-                //  desc: "${LocaleKeys.instantCallRequest.tr().toUpperCase()}${expertDetailWatch.userData?.expertName?.toUpperCase() ?? "USERNAME"}?",
-                  //secondBtnTile: LocaleKeys.goBack.tr().toUpperCase(),
-                  //firstBTnTitle:LocaleKeys.requestCall.tr().toUpperCase(),
-                  onFirstBtnTap: () {
-                    ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
-                  },
-                  onSecondBtnTap: () {
-                    if(instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
-                      context.toPop();
-                    } else if(instanceCallEnumNotifier.value == CallTypeEnum.requestApproved){
-                      ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
-                      ///context.toPop();
-                    }
-                    else {
-                      ref.read(socketProvider).updateRequestStatusEmit(expertId: widget.expertId, callStatusEnum: CallStatusEnum.cancel,
-                          callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
-                      context.toPop();
-                    }
-                  },
-                  image: expertDetailWatch.userData?.userProfile ?? "",
-                  expertId: expertDetailWatch.userData?.id.toString() ??'',
-                  userID: SharedPrefHelper.getUserId.toString(),
-                ));
+                if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
+                    (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+                  instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
+                  /// THis is call sender (User) side
+                  context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
+                      args: InstanceCallDialogArguments(
+                        name: expertDetailWatch.userData?.userName ?? "",
+                        onFirstBtnTap: () {
+                          if((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1') ){
+                            ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                          } else {
+                            FlutterToast().showToast(msg: "Expert not available.");
+                          }
+                        },
+                        onSecondBtnTap: () {
+                          if(instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                            context.toPop();
+                          } else if(instanceCallEnumNotifier.value == CallTypeEnum.requestApproved){
+                            ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
+                            ///context.toPop();
+                          }
+                          else {
+                            ref.read(socketProvider).updateRequestStatusEmit(expertId: widget.expertId, callStatusEnum: CallStatusEnum.cancel,
+                                callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
+                            context.toPop();
+                          }
+                        },
+                        image: expertDetailWatch.userData?.userProfile ?? "",
+                        expertId: expertDetailWatch.userData?.id.toString() ??'',
+                        userID: SharedPrefHelper.getUserId.toString(),
+                      ));
+                } else {
+                  FlutterToast().showToast(msg: "Expert not available.");
+                }
+
               },
             ),
             24.0.spaceY,

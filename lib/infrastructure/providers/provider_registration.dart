@@ -24,7 +24,7 @@ final scheduleCallProvider = ChangeNotifierProvider.autoDispose((_) => ScheduleC
 // final cityCountryProvider = ChangeNotifierProvider<CityCountryProvider>((ref) => CityCountryProvider());
 final commonAppProvider = ChangeNotifierProvider<CommonAppProvider>((_) => CommonAppProvider());
 final reportUserProvider = ChangeNotifierProvider.autoDispose((_) => ReportUserProvider());
-final callProvider = ChangeNotifierProvider.autoDispose((_) => CallProvider());
+final callProvider = ChangeNotifierProvider<CallProvider>((ref) => CallProvider(ref));
 final socketProvider = ChangeNotifierProvider<SocketProvider>((ref) => SocketProvider(ref));
 
 
