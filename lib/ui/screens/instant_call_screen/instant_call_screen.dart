@@ -11,6 +11,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 
 
@@ -140,7 +141,9 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                     children: [
                       20.0.spaceY,
                       BodySmallText(
-                        title: instanceCallEnumNotifier.value.descriptionName,
+                        title: instanceCallEnumNotifier.value == CallTypeEnum.callRequest
+                            ? "${instanceCallEnumNotifier.value.descriptionName} ${widget.args.name?.toUpperCase()}"
+                            : "${instanceCallEnumNotifier.value.descriptionName}",
                         titleColor: ColorConstants.textColor,
                         titleTextAlign: TextAlign.center,
                         maxLine: 10,
@@ -239,10 +242,20 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                   replacement: SizedBox.shrink(),
                   child: Align(
                     alignment: Alignment.bottomRight,
-                    child: TitleSmallText(
-                      title: LocaleKeys.blockUser.tr(),
-                      fontFamily: FontWeightEnum.w400.toInter,
-                      titleColor: ColorConstants.callsPausedColor,
+                    child: InkWell(
+                      onTap: (){
+                        NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
+                            args: BlockUserArgs(userName: widget.args.name ?? '',
+                                imageURL: widget.args.image ?? '',
+                                userId: int.parse(widget.args.userID ?? ''),
+                                userRole: 2)
+                        );
+                      },
+                      child: TitleSmallText(
+                        title: LocaleKeys.blockUser.tr(),
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        titleColor: ColorConstants.callsPausedColor,
+                      ),
                     ),
                   ),
                 ),

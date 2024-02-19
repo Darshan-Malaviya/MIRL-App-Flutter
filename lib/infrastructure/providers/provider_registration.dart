@@ -30,8 +30,6 @@ final commonAppProvider = ChangeNotifierProvider<CommonAppProvider>((_) => Commo
 final reportUserProvider = ChangeNotifierProvider.autoDispose((_) => ReportUserProvider());
 final callProvider = ChangeNotifierProvider<CallProvider>((ref) => CallProvider(ref));
 final socketProvider = ChangeNotifierProvider<SocketProvider>((ref) => SocketProvider(ref));
-
-final callProvider = ChangeNotifierProvider.autoDispose((_) => CallProvider());
 final blockUserProvider = ChangeNotifierProvider.autoDispose((_) => BlockProvider());
 final multiConnectProvider = ChangeNotifierProvider.autoDispose((_) => MultiConnectProvider());
 final upcomingAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => UpcomingAppointmentProvider());

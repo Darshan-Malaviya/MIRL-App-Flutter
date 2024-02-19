@@ -12,6 +12,7 @@ import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
+import 'package:mirl/infrastructure/models/common/instance_call_emits_response_model.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:uuid/uuid.dart';
@@ -153,7 +154,8 @@ class SocketProvider extends ChangeNotifier {
         Logger().d('instanceCallResponse=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
-            SharedPrefHelper.saveCallRequestId(data['data']['callRequestId'].toString());
+            InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
+            SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
             instanceCallEnumNotifier.value = CallTypeEnum.requestWaiting;
             instanceRequestTimerNotifier.value = 120;
           } else {
@@ -176,26 +178,27 @@ class SocketProvider extends ChangeNotifier {
               instanceCallEnumNotifier.value = CallTypeEnum.receiverRequested;
               //bgCallEndTrigger.value = 20;
               //instanceRequestTimerNotifier.value = 120;
-
+              InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
+              SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
 
               /// This is call receiver (Expert) side.
               NavigationService.context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
                   args: InstanceCallDialogArguments(
-                    name: data['data']['userDetails']['userName'].toString(),
+                    name: model.data?.userDetails?.userName.toString(),
                    secondBtnColor: ColorConstants.yellowButtonColor,
                     onFirstBtnTap: () {
-                      updateRequestStatusEmit(userId: data['data']['userDetails']['id'].toString(), callStatusEnum: CallStatusEnum.accept,
-                          callRoleEnum: CallRoleEnum.expert, expertId: data['data']['expertId'].toString());
+                      updateRequestStatusEmit(userId: model.data?.userDetails?.id.toString() ?? '', callStatusEnum: CallStatusEnum.accept,
+                          callRoleEnum: CallRoleEnum.expert, expertId: model.data?.expertDetails?.id.toString() ?? '');
                       NavigationService.context.toPop();
                       },
                     onSecondBtnTap: (){
-                      updateRequestStatusEmit(expertId: data['data']['expertId'].toString(), callStatusEnum: CallStatusEnum.decline,
-                          callRoleEnum: CallRoleEnum.expert, userId: data['data']['userDetails']['id'].toString());
+                      updateRequestStatusEmit(expertId: model.data?.expertDetails?.id.toString() ?? '', callStatusEnum: CallStatusEnum.decline,
+                          callRoleEnum: CallRoleEnum.expert, userId: model.data?.userDetails?.id.toString() ?? '');
                       NavigationService.context.toPop();
                     },
-                    image: data['data']['userDetails']['userProfile'].toString(),
-                    expertId: data['data']['expertId'].toString(),
-                    userID: data['data']['userDetails']['id'].toString(),
+                    image: model.data?.userDetails?.userProfile.toString(),
+                    expertId: model.data?.expertDetails?.id.toString() ?? '',
+                    userID: model.data?.userDetails?.id.toString() ?? '',
                   ));
             }
           }
@@ -233,7 +236,11 @@ class SocketProvider extends ChangeNotifier {
         Logger().d('updateRequestStatusResponse=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
-
+            InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
+            if(model.data?.status.toString() == '4'){
+              /// time out status
+            NavigationService.context.toPop();
+            }
           }
         }
       });
@@ -248,6 +255,7 @@ class SocketProvider extends ChangeNotifier {
       socket?.on(AppConstants.updateRequestReceived, (data) {
         Logger().d('updateRequestStatusListener=====${data.toString()}');
         if (data.toString().isNotEmpty) {
+          InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
           if (data['statusCode'].toString() == '200') {
             if(data['data']['userId'].toString() == SharedPrefHelper.getUserId.toString()){
               if(data['data']['status'].toString() == '2'){

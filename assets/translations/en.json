@@ -179,5 +179,14 @@
   "upcomingAppointment": "UPCOMING APPOINTMENTS",
   "cancelAppointment": "CANCEL APPOINTMENT",
   "noCategoryFound": "No category found",
-  "multiConnectFilter": "MULTIPLE CONNECT FILTER"
+  "multiConnectFilter": "MULTIPLE CONNECT FILTER",
+  "userTemporarilyBlocked" : "User Temporarily Blocked!",
+  "theUserHasBeenSuccessfullyBlockedFromContacting" : "The user has been successfully blocked from contacting you, as per your request.",
+  "ok" : "OK",
+  "soFarYouHaveNotBlockedAnyUsers" : "So far, you haven't blocked any users.",
+  "userWith" : "USER:",
+  "blockedOn" : "BLOCKED ON:",
+  "status" : "STATUS:",
+  "unblockUser" : "UNBLOCK USER"
+
 }
