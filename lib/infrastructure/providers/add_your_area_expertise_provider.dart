@@ -33,14 +33,17 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   }
 
   Future<void> areaCategoryListApiCall({bool isLoaderVisible = false}) async {
-    // if(isLoaderVisible){
-    //   CustomLoading.progressDialog(isLoading: true);
-    // }
+    //changeLoading(true);
+    if(isLoaderVisible){
+      CustomLoading.progressDialog(isLoading: true);
+    }
 
     ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo);
-    // if(isLoaderVisible){
-    //   CustomLoading.progressDialog(isLoading: false);
-    // }
+    if(isLoaderVisible){
+      CustomLoading.progressDialog(isLoading: false);
+    }
+   // changeLoading(false);
+
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is ExpertCategoryResponseModel) {
