@@ -138,11 +138,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             30.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.checkNotification.tr(),
-              onPressed: () async {
-                // context.toPushNamed(RoutesConstants.notificationScreen);
-                List<String> data = await FlutterTimezone.getAvailableTimezones();
-                print(data);
-              },
+              onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,
             ),

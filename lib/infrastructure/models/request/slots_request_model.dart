@@ -2,7 +2,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class SlotsRequestModel {
   String? date;
-  String? expertId;
+  int? expertId;
   String? duration;
 
   SlotsRequestModel({this.date, this.expertId, this.duration});

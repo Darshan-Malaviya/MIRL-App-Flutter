@@ -74,9 +74,11 @@ class PushNotificationService {
           RemoteNotification? notification = message?.notification;
           AndroidNotification? android = message?.notification?.android;
 
-          if (message?.data['key'] == 'connectAndroidCall') {
+          if (message?.data['key'] == NotificationTypeEnum.connectAndroidCall.name) {
             ExtraResponseModel extraResponseModel = ExtraResponseModel.fromJson(message?.data ?? {});
-             // showCallkitIncoming(uuid: const Uuid().v4(), extraResponseModel: extraResponseModel);
+            // showCallkitIncoming(uuid: const Uuid().v4(), extraResponseModel: extraResponseModel);
+          } else if (message?.data['key'] == NotificationTypeEnum.autoLogout.name) {
+            CommonMethods.autoLogout();
           } else {
             if (notification != null && android != null) {
               flutterLocalNotificationsPlugin.show(

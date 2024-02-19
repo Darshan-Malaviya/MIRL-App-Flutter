@@ -20,7 +20,9 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage? message) async {
   // make sure you call `initializeApp` before using other Firebase services.
 
   log('Back Message: ${message?.notification?.title}, body: ${message?.notification?.body}, data: ${message?.data}');
-
+  if (message?.data['key'] == NotificationTypeEnum.autoLogout.name) {
+    CommonMethods.autoLogout();
+  }
 }
 
 class MirlApp {

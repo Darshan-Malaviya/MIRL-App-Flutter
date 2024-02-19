@@ -108,7 +108,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                     ],
                   )
                 ],
-              ).addMarginXY(paddingX: 20, paddingY: 10),
+              ).addMarginXY(marginX: 20, marginY: 10),
             )
           ],
         ).addAllPadding(20),

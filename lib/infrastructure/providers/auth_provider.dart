@@ -12,6 +12,11 @@ import 'package:mirl/infrastructure/services/agora_service.dart';
 import 'package:mirl/mirl_app.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+GoogleSignIn? googleSignIn = GoogleSignIn(
+  clientId: Platform.isIOS ? flavorConfig?.iosClientId : "",
+  // scopes: <String>['email', 'profile'],
+);
+
 class AuthProvider with ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController otpController = TextEditingController();
@@ -32,10 +37,6 @@ class AuthProvider with ChangeNotifier {
   int start = 60;
 
   GoogleSignInAccount? _currentUser;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: Platform.isIOS ? flavorConfig?.iosClientId : "",
-    // scopes: <String>['email', 'profile'],
-  );
 
   startTimer() {
     _secondsRemaining = 120;
@@ -101,7 +102,7 @@ class AuthProvider with ChangeNotifier {
   /// google login
   void signInGoogle() async {
     try {
-      _currentUser = await _googleSignIn.signIn();
+      _currentUser = await googleSignIn?.signIn();
       if (_currentUser?.id != null) {
         _socialId = _currentUser?.id ?? '';
         // userName = _currentUser?.displayName ?? '';

@@ -171,7 +171,7 @@
   "noSlotAvailable": "No slot available",
   "pleaseSelectSlot": "You have select slot for scheduling appointment",
   "backCalenderAppointment": "BACK TO CALENDAR AND APPOINTMENTS",
-  "user": "USER",
+  "user": "User",
   "filterFromTopicAndCategories": "FILTER CATEGORIES AND TOPICS",
   "instantlyConnectWithLiveExpert": "INSTANTLY CONNECT WITH  LIVE EXPERTS  IN MINUTES!",
   "calendarAndAppointment": "CALENDAR AND APPOINTMENTS",
@@ -179,5 +179,15 @@
   "upcomingAppointment": "UPCOMING APPOINTMENTS",
   "cancelAppointment": "CANCEL APPOINTMENT",
   "noCategoryFound": "No category found",
-  "multiConnectFilter": "MULTIPLE CONNECT FILTER"
+  "multiConnectFilter": "MULTIPLE CONNECT FILTER",
+  "reviewAndRatingScreen": "YOUR REVIEWS AND RATINGS",
+  "shortByReview": "SORT REVIEWS BY:",
+  "shortByExpert": "SORT EXPERTS BY:",
+  "earningReport": "EARNING REPORT",
+  "weekly": "WEEKLY",
+  "weeklyEarning": "WEEKLY EARNINGS",
+  "earning": "EARNINGS",
+  "noUpcomingAppointment": "No upcoming appointment",
+  "clickToSelect": "Click to select",
+  "selected": "selected!"
 }

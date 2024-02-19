@@ -39,7 +39,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final homeProviderWatch = ref.watch(homeProvider);
     return Scaffold(
-      backgroundColor: ColorConstants.grayLightColor,
+      backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
         preferSize: 0,
       ),

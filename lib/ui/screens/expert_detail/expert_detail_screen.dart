@@ -5,12 +5,12 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
+import 'package:mirl/ui/screens/expert_detail/widget/rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/request_call_button_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/certifications_and_experience_widget.dart';
-import 'package:mirl/ui/screens/expert_detail/widget/droup_down_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_widget.dart';
-import 'package:mirl/ui/screens/expert_detail/widget/reviews_widget.dart';
+import 'package:mirl/ui/screens/rating_and_review_screen/widget/reviews_list_widget.dart';
 
 ValueNotifier<bool> isFavorite = ValueNotifier(false);
 
@@ -28,8 +28,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
-     // ref.read(reportUserProvider).changeReportAndThanksScreen();
-
+      // ref.read(reportUserProvider).changeReportAndThanksScreen();
     });
     super.initState();
   }
@@ -49,7 +48,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         trailingIcon: InkWell(
                 onTap: () {
                   //ReportThisUserWidget();
-                   context.toPushNamed(RoutesConstants.reportExpertScreen);
+                  context.toPushNamed(RoutesConstants.reportExpertScreen);
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),
@@ -100,7 +99,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-        color: ColorConstants.grayLightColor,
+        color: ColorConstants.greyLightColor,
       ),
       child: SingleChildScrollView(
         controller: controller,
@@ -148,7 +147,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       Flexible(
                         child: HeadlineMediumText(
                           fontSize: 30,
-                         maxLine: 4,
+                          maxLine: 4,
                           title: fee != null ? '\$${fee}' : "",
                           titleColor: ColorConstants.overallRatingColor,
                           shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
@@ -177,6 +176,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 trimCollapsedText: LocaleKeys.readMore.tr(),
                 trimExpandedText: LocaleKeys.readLess.tr(),
                 moreStyle: TextStyle(fontSize: 18, color: ColorConstants.blackColor),
+                lessStyle: TextStyle(fontSize: 18, color: ColorConstants.blackColor),
               ),
               36.0.spaceY,
             ],
@@ -254,10 +254,19 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ],
             Center(child: Image.asset(ImageConstants.line)),
             40.0.spaceY,
-            TitleMediumText(
-              title: StringConstants.reviewsAndRatting,
-              titleTextAlign: TextAlign.start,
-              titleColor: ColorConstants.blueColor,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TitleMediumText(
+                  title: StringConstants.reviewsAndRatting,
+                  titleTextAlign: TextAlign.start,
+                  titleColor: ColorConstants.blueColor,
+                ),
+                OnScaleTap(
+                  onPress: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
+                  child: TitleSmallText(title: 'see all', titleColor: ColorConstants.greyColor),
+                )
+              ],
             ),
             26.0.spaceY,
             ReviewsAndRatingWidget(
@@ -293,21 +302,23 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               ),
             ),
             26.0.spaceY,
-            OverallRatingWidget(name: RatingEnum.EXPERTISE.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.COMMUNICATION.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.HELPFULNESS.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.EMPATHY.name, value: 5),
-            OverallRatingWidget(name:  RatingEnum.PROFESSIONALISM.name, value: 5),
-            40.0.spaceY,
-            ReviewsAndRatingWidget(
-              title: StringConstants.reviews,
-              buttonColor: ColorConstants.yellowButtonColor,
-              child: SizedBox.shrink(),
-            ),
-            20.0.spaceY,
-            ShortReviewWidget(dropdownValue: 'Highest to Lowest'),
-            30.0.spaceY,
-            ReviewsWidget(),
+            if (expertDetailWatch.userData?.ratingCriteria?.isNotEmpty ?? false) ...[
+              OverallRatingWidget(name: RatingEnum.EXPERTISE.name, value: expertDetailWatch.userData?.ratingCriteria?[0].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.COMMUNICATION.name, value: expertDetailWatch.userData?.ratingCriteria?[1].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.HELPFULNESS.name, value: expertDetailWatch.userData?.ratingCriteria?[2].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.EMPATHY.name, value: expertDetailWatch.userData?.ratingCriteria?[3].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.PROFESSIONALISM.name, value: expertDetailWatch.userData?.ratingCriteria?[4].rating ?? 0),
+            ],
+            if (expertDetailWatch.userData?.expertReviews?.isNotEmpty ?? false) ...[
+              40.0.spaceY,
+              ReviewsAndRatingWidget(
+                title: StringConstants.reviews,
+                buttonColor: ColorConstants.yellowButtonColor,
+                child: SizedBox.shrink(),
+              ),
+              30.0.spaceY,
+              ReviewWidget(reviews: expertDetailWatch.userData?.expertReviews ?? []),
+            ],
             20.0.spaceY,
           ],
         ),

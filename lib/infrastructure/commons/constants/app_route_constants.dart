@@ -5,6 +5,7 @@ import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
 import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:mirl/ui/screens/earning_report_screen/earning_report_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/add_your_areas_of_expertise_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/certifications_and_experience_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/edit_your_expert_profile_screen.dart';
@@ -32,6 +33,7 @@ import 'package:mirl/ui/screens/multi_call_screen/multi_connect_filter_screen.da
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
+import 'package:mirl/ui/screens/rating_and_review_screen/rating_and_review_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/booking_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_option_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_screen.dart';
@@ -137,11 +139,15 @@ class RouterConstant {
       case RoutesConstants.multiConnectScreen:
         return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
       case RoutesConstants.multiConnectFilterScreen:
-        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen(fromMultiConnectMainScreen: settings.arguments as bool));
+        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen());
       case RoutesConstants.multiConnectSelectedCategoryScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
         return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen());
+        case RoutesConstants.ratingAndReviewScreen:
+        return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
+        case RoutesConstants.earningReportScreen:
+        return MaterialPageRoute(builder: (_) => EarningReportScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

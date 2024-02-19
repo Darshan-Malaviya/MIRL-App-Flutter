@@ -90,7 +90,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                   ),
                   child: Center(
                     child: BodyMediumText(
-                      title: DateFormat.MMMM().format(DateTime(day.year, day.month - 1, day.day)),
+                      title: DateFormat.MMMM().format(DateTime(day.year, day.month - 1, day.day)).toUpperCase(),
                       titleColor: ColorConstants.buttonTextColor,
                     ),
                   ),
@@ -107,7 +107,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                 ),
                 child: Center(
                   child: BodyMediumText(
-                    title: DateFormat.MMMM().format(day),
+                    title: DateFormat.MMMM().format(day).toUpperCase(),
                     titleColor: ColorConstants.buttonTextColor,
                   ),
                 ),
@@ -123,7 +123,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                   ),
                   child: Center(
                     child: BodyMediumText(
-                      title: DateFormat.MMMM().format(DateTime(day.year, day.month + 1, day.day)),
+                      title: DateFormat.MMMM().format(DateTime(day.year, day.month + 1, day.day)).toUpperCase(),
                       titleColor: ColorConstants.buttonTextColor,
                     ),
                   ),

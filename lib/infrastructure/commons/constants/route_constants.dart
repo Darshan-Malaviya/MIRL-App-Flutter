@@ -40,4 +40,6 @@ class RoutesConstants {
   static const String multiConnectFilterScreen = '/multiConnectFilterScreen';
   static const String multiConnectSelectedCategoryScreen = '/multiConnectSelectedCategoryScreen';
   static const String viewCalendarAppointment = '/viewCalendarAppointment';
+  static const String ratingAndReviewScreen = '/ratingAndReviewScreen';
+  static const String earningReportScreen = '/earningReportScreen';
 }

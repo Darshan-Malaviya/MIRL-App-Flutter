@@ -43,13 +43,10 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    ApiHttpResult response = await _scheduleCallRepository.viewUpcomingAppointment(queryParameters: {
-      'page': _pageNo.toString(),
-      'limit': '10',
-      'role': '2',
-      'userId': SharedPrefHelper.getUserId,
-      'date': selectedDate?.toUtc().toString().split(' ').first,
-    });
+    ApiHttpResult response = await _scheduleCallRepository.viewUpcomingAppointment(
+        queryParameters: selectedDate != null
+            ? {'page': _pageNo.toString(), 'limit': '10', 'role': '2', 'userId': SharedPrefHelper.getUserId, 'date': selectedDate?.toUtc().toString().split(' ').first}
+            : {'page': _pageNo.toString(), 'limit': '10', 'role': '2', 'userId': SharedPrefHelper.getUserId});
 
     if (showLoader) {
       _isLoading = false;

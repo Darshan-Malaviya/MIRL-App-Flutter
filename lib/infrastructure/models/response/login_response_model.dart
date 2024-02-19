@@ -66,6 +66,8 @@ class UserData {
   List<CertificationData>? certification;
   List<WeeklyAvailableData>? expertAvailability;
   List<AreasOfExpertise>? areaOfExpertise;
+  List<RatingCriteria>? ratingCriteria;
+  List<ExpertReviews>? expertReviews;
 
   UserData(
       {this.id,
@@ -92,7 +94,9 @@ class UserData {
       this.certification,
       this.isFavorite,
       this.expertAvailability,
-      this.areaOfExpertise});
+      this.areaOfExpertise,
+      this.expertReviews,
+      this.ratingCriteria});
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -135,6 +139,18 @@ class UserData {
         areaOfExpertise?.add(new AreasOfExpertise.fromJson(v));
       });
     }
+    if (json['ratingCriteria'] != null) {
+      ratingCriteria = <RatingCriteria>[];
+      json['ratingCriteria'].forEach((v) {
+        ratingCriteria?.add(new RatingCriteria.fromJson(v));
+      });
+    }
+    if (json['expertReviews'] != null) {
+      expertReviews = <ExpertReviews>[];
+      json['expertReviews'].forEach((v) {
+        expertReviews?.add(new ExpertReviews.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -169,6 +185,12 @@ class UserData {
     }
     if (this.areaOfExpertise != null) {
       data['areaOfExpertise'] = this.areaOfExpertise?.map((v) => v.toJson()).toList();
+    }
+    if (this.ratingCriteria != null) {
+      data['ratingCriteria'] = this.ratingCriteria?.map((v) => v.toJson()).toList();
+    }
+    if (this.expertReviews != null) {
+      data['expertReviews'] = this.expertReviews?.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -278,6 +300,53 @@ class AreasOfExpertise {
     if (this.topic != null) {
       data['topic'] = this.topic?.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class RatingCriteria {
+  int? ratingCategory;
+  int? rating;
+
+  RatingCriteria({this.ratingCategory, this.rating});
+
+  RatingCriteria.fromJson(Map<String, dynamic> json) {
+    ratingCategory = json['ratingCategory'];
+    rating = json['rating'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ratingCategory'] = this.ratingCategory;
+    data['rating'] = this.rating;
+    return data;
+  }
+}
+
+class ExpertReviews {
+  int? id;
+  int? rating;
+  String? review;
+  String? firstCreated;
+  String? userName;
+
+  ExpertReviews({this.id, this.rating, this.review, this.firstCreated, this.userName});
+
+  ExpertReviews.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    rating = json['rating'];
+    review = json['review'];
+    firstCreated = json['firstCreated'];
+    userName = json['userName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['rating'] = this.rating;
+    data['review'] = this.review;
+    data['firstCreated'] = this.firstCreated;
+    data['userName'] = this.userName;
     return data;
   }
 }
