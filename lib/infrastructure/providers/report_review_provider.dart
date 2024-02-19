@@ -41,12 +41,22 @@ class ReportReviewProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    ApiHttpResult response = await _reportRepository.reviewAndRateListApi(paras: {
-      "firstCreatedOrder": sortByReview == sortByReviewItem[2] ? 'DESC' : sortByReview == sortByReviewItem[3] ? 'ASC' : null,
-      "ratingOrder": sortByReview == sortByReviewItem[0] ? 'DESC' : sortByReview == sortByReviewItem[1] ? 'ASC' : null,
-      'page': _pageNo.toString(),
-      "limit": '10',
-    });
+    ApiHttpResult response = await _reportRepository.reviewAndRateListApi(
+      paras: {
+        "firstCreatedOrder": sortByReview == sortByReviewItem[2]
+            ? 'DESC'
+            : sortByReview == sortByReviewItem[3]
+                ? 'ASC'
+                : 'DESC',
+        "ratingOrder": sortByReview == sortByReviewItem[0]
+            ? 'DESC'
+            : sortByReview == sortByReviewItem[1]
+                ? 'ASC'
+                : 'DESC',
+        'page': _pageNo.toString(),
+        "limit": '10'
+      },
+    );
 
     if (isLoading) {
       _isLoading = false;
