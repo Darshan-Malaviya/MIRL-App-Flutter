@@ -40,9 +40,9 @@ class AuthProvider with ChangeNotifier {
   bool isResend = false;
   int start = 60;
 
-  List<CmsData> _cmsData = [];
+  CmsData? _cmsData;
 
-  List<CmsData> get cmsData => _cmsData;
+  CmsData? get cmsData => _cmsData;
 
   void changeIsLoading(bool val) {
     _isLoading = val;
@@ -213,8 +213,9 @@ class AuthProvider with ChangeNotifier {
   /// cms API call
 
   Future<void> cmsApiCall(String name) async {
-
-    ApiHttpResult response = await _authRepository.cmsApi(searchKeyword: name);
+    CustomLoading.progressDialog(isLoading: true);
+    ApiHttpResult response = await _authRepository.cmsApi(cmsKey: name);
+    CustomLoading.progressDialog(isLoading: false);
 
     switch (response.status) {
       case APIStatus.success:
@@ -222,7 +223,7 @@ class AuthProvider with ChangeNotifier {
           CMSResponseModel responseModel = response.data;
           Logger().d("Cms API call successfully${response.data}");
           if (response.data != null && response.data is CMSResponseModel) {
-            _cmsData.addAll(responseModel.data ?? []);
+            _cmsData = responseModel.data;
           }
         }
         break;

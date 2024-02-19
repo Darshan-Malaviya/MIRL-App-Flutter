@@ -36,29 +36,27 @@ class _CmsScreenState extends ConsumerState<CmsScreen> {
           titleColor: ColorConstants.bottomTextColor,
         ),
       ),
-      body: loginScreenProviderWatch.isLoading
-          ? CustomLoading.progressDialog(isLoading: true)
-          : loginScreenProviderWatch.cmsData.isNotEmpty
+      body: loginScreenProviderWatch.cmsData?.content?.isNotEmpty ?? false
           ? SingleChildScrollView(
-        child: Center(
-          child: Html(
-            data: loginScreenProviderWatch.cmsData.first.content ?? '',
-            style: {
-              'html': Style(textAlign: TextAlign.center),
-            },
-          ),
-        ),
-      ).addAllPadding(20)
+              child: Center(
+                child: Html(
+                  data: loginScreenProviderWatch.cmsData?.content ?? '',
+                  style: {
+                    'html': Style(textAlign: TextAlign.center),
+                  },
+                ),
+              ),
+            ).addAllPadding(20)
           : const Center(
-        child: Text(
-          "No Data Found",
-          style: TextStyle(
-            fontSize: 20,
-            color: ColorConstants.blackColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+              child: Text(
+                "No Data Found",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: ColorConstants.blackColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
     );
   }
 }

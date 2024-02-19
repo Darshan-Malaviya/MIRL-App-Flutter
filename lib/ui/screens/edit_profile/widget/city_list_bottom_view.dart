@@ -9,14 +9,14 @@ class CityListBottomView extends ConsumerStatefulWidget {
   final Function(CityModel item) onTapItem;
   final TextEditingController searchController;
   final VoidCallback clearSearchTap;
-  final String countryId;
+  final String countryName;
 
   const CityListBottomView(
       {super.key,
       required this.onTapItem,
       required this.searchController,
       required this.clearSearchTap,
-      required this.countryId});
+      required this.countryName});
 
   @override
   ConsumerState<CityListBottomView> createState() => _CityListBottomViewState();
@@ -29,13 +29,13 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.clearSearchTap();
-      ref.read(commonAppProvider).cityListApiCall(isFullScreenLoader: true, id: widget.countryId);
+      ref.read(commonAppProvider).cityListApiCall(isFullScreenLoader: true, countryName: widget.countryName);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(commonAppProvider).reachedCityLastPage;
         if (!isLoading) {
-          ref.read(commonAppProvider).cityListApiCall(id: widget.countryId);
+          ref.read(commonAppProvider).cityListApiCall(countryName: widget.countryName);
         } else {
           log('reach last page on city list api');
         }
@@ -65,14 +65,14 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
                       onTap: () {
                         commonRead.clearCityPaginationData();
                         widget.clearSearchTap();
-                        commonRead.cityListApiCall(id: widget.countryId);
+                        commonRead.cityListApiCall(countryName: widget.countryName);
                       },
                       child: Icon(Icons.close))
                   : SizedBox.shrink(),
               onFieldSubmitted: (value) {
                 context.unFocusKeyboard();
                 commonRead.clearCityPaginationData();
-                commonRead.cityListApiCall(searchName: value.trim(), id: widget.countryId);
+                commonRead.cityListApiCall(searchName: value.trim(), countryName: widget.countryName);
               },
               height: 40,
               controller: widget.searchController,
