@@ -45,8 +45,8 @@ class CityResponseModel {
 }
 
 class CityModel {
-  String? id;
-  String? countryId;
+  int? id;
+  int? countryId;
   String? city;
 
   CityModel({this.id, this.countryId, this.city});

@@ -8,6 +8,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/request_call_button_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/certifications_and_experience_widget.dart';
@@ -53,7 +54,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         trailingIcon: InkWell(
                 onTap: () {
                   //ReportThisUserWidget();
-                  context.toPushNamed(RoutesConstants.reportExpertScreen, args: 1);
+                  context.toPushNamed(RoutesConstants.reportExpertScreen, args: BlockUserArgs(reportName: 'REPORT THIS EXPERT',userRole: 1));
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),

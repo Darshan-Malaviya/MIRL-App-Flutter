@@ -148,7 +148,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                     },
                     clearSearchTap: () => filterRead.clearSearchCityController(),
                     searchController: filterWatch.searchCityController,
-                    countryId: filterWatch.selectedCountryModel?.id ?? '',
+                    countryName: filterWatch.selectedCountryModel?.country ?? '',
                   ));
             }, StringConstants.cityText),
             30.0.spaceY,

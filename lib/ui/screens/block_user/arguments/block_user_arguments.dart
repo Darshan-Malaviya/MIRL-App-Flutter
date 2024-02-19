@@ -1,8 +1,9 @@
 class BlockUserArgs {
-  final String userName;
-  final String imageURL;
-  final int userId;
-  final int userRole;
+  final String? userName;
+  final String? imageURL;
+  final int? userId;
+  final int? userRole;
+  final String? reportName;
 
-  BlockUserArgs({required this.userName, required this.imageURL, required this.userId,required this.userRole});
+  BlockUserArgs({this.userName, this.imageURL, this.userId, required this.userRole, required this.reportName});
 }

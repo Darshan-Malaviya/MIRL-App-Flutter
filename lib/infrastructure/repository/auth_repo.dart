@@ -68,13 +68,12 @@ class AuthRepository extends ApiResponseHandler {
 
   /// cms API
 
-  Future<ApiHttpResult> cmsApi({required String searchKeyword}) async {
-    final uri = ApiConstants.endpointUri(path: ApiConstants.cms, queryParameters: {"search": searchKeyword});
+  Future<ApiHttpResult> cmsApi({required String cmsKey}) async {
+    final uri = ApiConstants.endpointUri(path: '${ApiConstants.cms}/$cmsKey');
 
     APIResponse result =
         await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithOutToken(), apiType: APIType.get);
 
     return responseHandler(result: result, json: CMSResponseModel.parseInfo);
   }
-
 }

@@ -3,12 +3,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
 class ReportUserWidget extends ConsumerStatefulWidget {
-  final String reportName;
-  final int roleId;
+  final BlockUserArgs args;
 
-  const ReportUserWidget({super.key, required this.reportName, required this.roleId});
+  const ReportUserWidget({super.key, required this.args});
 
   @override
   ConsumerState<ReportUserWidget> createState() => _ReportUserWidgetState();
@@ -20,13 +20,13 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.roleId);
+      ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.args.userRole ?? 0);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(reportUserProvider).reachedCategoryLastPage;
         if (!isLoading) {
-          await ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.roleId);
+          ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.args.userRole ?? 0);
         } else {
           log('reach last page on get report list api');
         }
@@ -46,7 +46,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
         30.0.spaceY,
         TitleLargeText(
           // title: LocaleKeys.reportThisUser.tr(),
-          title: widget.reportName,
+          title: widget.args.reportName ?? '',
           titleColor: ColorConstants.bottomTextColor,
           titleTextAlign: TextAlign.center,
         ),

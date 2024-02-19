@@ -134,15 +134,23 @@ class RouterConstant {
       case RoutesConstants.blockUserListScreen:
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
       case RoutesConstants.reportUserScreen:
-        return MaterialPageRoute(builder: (_) => const ReportUserScreen());
+        return MaterialPageRoute(
+            builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
       case RoutesConstants.reportExpertScreen:
-        return MaterialPageRoute(builder: (_) =>  ReportExpertScreen(/*roleId: settings.arguments as int*/));
+        return MaterialPageRoute(
+            builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.videoCallScreen:
-        return MaterialPageRoute(builder: (_) =>  VideoCallScreen(arguments: settings.arguments as VideoCallArguments,));
-        case RoutesConstants.instantCallRequestDialogScreen:
-        return MaterialPageRoute(builder: (_) =>  InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments,));
+        return MaterialPageRoute(
+            builder: (_) => VideoCallScreen(
+                  arguments: settings.arguments as VideoCallArguments,
+                ));
+      case RoutesConstants.instantCallRequestDialogScreen:
+        return MaterialPageRoute(
+            builder: (_) => InstantCallRequestDialog(
+                  args: settings.arguments as InstanceCallDialogArguments,
+                ));
       case RoutesConstants.blockUserScreen:
         return MaterialPageRoute(builder: (_) => BlockUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.multiConnectScreen:

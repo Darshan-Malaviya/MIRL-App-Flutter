@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/block_user/widget/report_this_user_widget.dart';
 
 class ReportExpertScreen extends ConsumerStatefulWidget {
-  //final int roleId;
+  final BlockUserArgs args;
 
-  const ReportExpertScreen({super.key, /*required this.roleId*/});
+
+  const ReportExpertScreen({super.key, required this.args});
 
   @override
   ConsumerState<ReportExpertScreen> createState() => _ReportExpertScreenState();
@@ -55,7 +57,7 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
       ),
       child: SingleChildScrollView(
         controller: controller,
-        child: ReportThisUserWidget(),
+        child: ReportThisUserWidget(args:BlockUserArgs(userRole: widget.args.userRole,reportName: widget.args.reportName) ),
       ),
     );
   }

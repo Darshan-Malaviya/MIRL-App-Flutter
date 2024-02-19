@@ -15,10 +15,10 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
 
     return Scaffold(
       appBar: AppBarWidget(
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
-        ),
+        // leading: InkWell(
+        //   child: Image.asset(ImageConstants.backIcon),
+        //   onTap: () => context.toPop(),
+        // ),
         trailingIcon: InkWell(
           onTap: () {},
           child: TitleMediumText(
