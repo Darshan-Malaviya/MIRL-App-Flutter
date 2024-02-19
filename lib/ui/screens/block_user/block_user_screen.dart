@@ -93,7 +93,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                             blurRadius: 2),
                       ], shape: BoxShape.circle),
                       child: CircleNetworkImageWidget(
-                          radius: 50, imageURL: widget.args.imageURL, isNetworkImage: true, key: UniqueKey())),
+                          radius: 50, imageURL: widget.args.imageURL ?? '', isNetworkImage: true, key: UniqueKey())),
                 ],
               ),
             ),
@@ -125,7 +125,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                         30.0.spaceY,
                         InkWell(
                           onTap: () {
-                            blockUserRead.userBlockRequestCall(Status: 1, UserBlockId: widget.args.userId);
+                            blockUserRead.userBlockRequestCall(Status: 1, UserBlockId: widget.args.userId ?? 0);
                             context.toPop();
                           },
                           child: Center(
@@ -156,7 +156,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
               title: LocaleKeys.permanentBlock.tr(),
               onPressed: () {
                 // context.toPushNamed(RoutesConstants.blockUserListScreen);
-                blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.userId);
+                blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.userId ?? 0);
               },
               fontSize: 13,
             ),
@@ -171,7 +171,8 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
             50.0.spaceY,
             InkWell(
               onTap: () {
-                context.toPushNamed(RoutesConstants.reportUserScreen);
+                context.toPushNamed(RoutesConstants.reportUserScreen,
+                    args: BlockUserArgs(userRole: 2, reportName: 'REPORT THIS USER'));
               },
               child: BodySmallText(
                 title: LocaleKeys.reportUser.tr(),

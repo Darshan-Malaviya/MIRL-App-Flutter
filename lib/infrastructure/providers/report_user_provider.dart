@@ -2,6 +2,7 @@ import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/report_list_response_model.dart';
 import 'package:mirl/infrastructure/repository/report_repo.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/block_user/widget/report_user_widget.dart';
 import 'package:mirl/ui/screens/block_user/widget/thanks_widget.dart';
 
@@ -34,9 +35,9 @@ class ReportUserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeReportAndThanksScreen() {
+  void changeReportAndThanksScreen({required int roleId, required String reportName}) {
     _pages = [
-      ReportUserWidget(roleId: 1, reportName: ''),
+      ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName)),
       ThanksWidget(reportName: 'BACK TO PROFILE'),
     ];
   }
