@@ -61,7 +61,7 @@ class _UserOlderNotificationWidgetState extends State<UserOlderNotificationWidge
                 ],
               )
             ],
-          ).addMarginXY(paddingX: 20, paddingY: 10),
+          ).addMarginXY(marginX: 20, marginY: 10),
         ],
       ),
     );

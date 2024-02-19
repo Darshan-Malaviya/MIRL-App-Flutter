@@ -97,8 +97,8 @@ class UserData {
       this.expertAvailability,
       this.areaOfExpertise,
       this.expertReviews,
-      this.ratingCriteria});
-      this.areaOfExpertise,this.onlineStatus});
+      this.ratingCriteria,
+      this.onlineStatus});
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
