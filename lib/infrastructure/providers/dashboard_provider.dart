@@ -21,7 +21,7 @@ class DashboardProvider extends ChangeNotifier {
       onPageChanged: (index) {
         pageChanged(index);
       },
-      children: const <Widget>[
+      children: <Widget>[
         HomeScreen(),
         ExploreScreen(),
         // BlockUserScreen(),
@@ -30,7 +30,7 @@ class DashboardProvider extends ChangeNotifier {
         NotificationScreen(),
         ExpertProfileScreen(),
         UserSettingScreen(),
-        // BlockUserScreen()
+        //BlockUserScreen(args: BlockUserArgs(reportName:  'vaidehi', userRole: 0))
       ],
     );
   }

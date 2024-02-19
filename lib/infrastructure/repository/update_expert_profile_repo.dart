@@ -56,17 +56,17 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
   Future<ApiHttpResult> cityApiCall({
     required int page,
     required int limit,
-    required String countryId,
+    required String countryName,
     String? searchName,
   }) async {
     final uri;
     if(searchName == null) {
        uri = ApiConstants.endpointUri(
-          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId,
+          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryName": countryName,
          "order" :"ASC"});
     } else {
        uri = ApiConstants.endpointUri(
-          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryId": countryId, "search" : searchName,
+          path: ApiConstants.city, queryParameters: {"page": page.toString(), "limit": limit.toString(), "countryName": countryName, "search" : searchName,
          "order" :"ASC"});
     }
 

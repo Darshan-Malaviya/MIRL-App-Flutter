@@ -12,6 +12,8 @@ class SetYourLocationScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
+  final _loginPassKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -32,7 +34,9 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
           ),
           trailingIcon: InkWell(
             onTap: () {
-              expertRead.updateYourLocationApi();
+              if (_loginPassKey.currentState?.validate() ?? false) {
+                expertRead.updateYourLocationApi();
+              }
             },
             child: TitleMediumText(
               title: StringConstants.done,
@@ -40,86 +44,103 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
             ).addPaddingRight(14),
           )),
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              TitleLargeText(
-                title: StringConstants.setYourLocation,
-                titleColor: ColorConstants.bottomTextColor,
-                fontFamily: FontWeightEnum.w700.toInter,
-              ),
-              20.0.spaceY,
-              TitleMediumText(
-                title: StringConstants.visibleOnYourProfile,
-                titleColor: ColorConstants.blackColor,
-                fontFamily: FontWeightEnum.w700.toInter,
-                titleTextAlign: TextAlign.center,
-                fontSize: 15,
-              ),
-              20.0.spaceY,
-              DropdownMenuWidget(
-                hintText: StringConstants.theDropDown,
-                controller: expertWatch.locationController,
-                dropdownList: expertWatch.locations.map((String item) => dropdownMenuEntry(context: context, value: item, label: item)).toList(),
-                onSelect: (String value) {
-                  expertWatch.locationSelect(value);
-                },
-              ),
-              20.0.spaceY,
-              TitleSmallText(
-                fontFamily: FontWeightEnum.w400.toInter,
-                title: StringConstants.specificCityOrCountry,
-                titleTextAlign: TextAlign.center,
-                maxLine: 4,
-              ),
-              40.0.spaceY,
-              TextFormFieldWidget(
-                isReadOnly: true,
-                hintText: StringConstants.nearestLandmark,
-                controller: expertWatch.countryNameController,
-                onTap: () {
-                  CommonBottomSheet.bottomSheet(
-                      context: context,
-                      child: CountryListBottomView(
-                        onTapItem: (item) {
-                          expertRead.setSelectedCountry(value: item);
-                          Navigator.pop(context);
-                        },
-                        clearSearchTap: () => expertRead.clearSearchCountryController(),
-                        searchController: expertWatch.searchCountryController,
-                      ),
-                      isDismissible: true);
-                },
-              ),
-              20.0.spaceY,
-              TitleSmallText(
-                fontFamily: FontWeightEnum.w400.toInter,
-                title: StringConstants.filterExperts,
-                titleTextAlign: TextAlign.center,
-                maxLine: 3,
-              ),
-              20.0.spaceY,
-              TextFormFieldWidget(
-                isReadOnly: true,
-                hintText: StringConstants.nearestLandmark,
-                controller: expertWatch.cityNameController,
-                onTap: () {
-                  CommonBottomSheet.bottomSheet(
-                      context: context,
-                      isDismissible: true,
-                      child: CityListBottomView(
-                        onTapItem: (item) {
-                          expertRead.displayCity(value: item);
-                          Navigator.pop(context);
-                        },
-                        clearSearchTap: () => expertRead.clearSearchCityController(),
-                        searchController: expertWatch.searchCityController,
-                        countryId: expertWatch.selectedCountryModel?.id ?? '',
-                      ));
-                },
-              ),
-            ],
-          ).addAllPadding(20),
+        child: Form(
+          key: _loginPassKey,
+          child: Center(
+            child: Column(
+              children: [
+                TitleLargeText(
+                  title: StringConstants.setYourLocation,
+                  titleColor: ColorConstants.bottomTextColor,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                ),
+                20.0.spaceY,
+                TitleMediumText(
+                  title: StringConstants.visibleOnYourProfile,
+                  titleColor: ColorConstants.blackColor,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                  titleTextAlign: TextAlign.center,
+                  fontSize: 15,
+                ),
+                20.0.spaceY,
+                DropdownMenuWidget(
+                  hintText: StringConstants.theDropDown,
+                  controller: expertWatch.locationController,
+                  dropdownList: expertWatch.locations
+                      .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
+                      .toList(),
+                  onSelect: (String value) {
+                    expertWatch.locationSelect(value);
+                  },
+                ),
+                20.0.spaceY,
+                TitleSmallText(
+                  fontFamily: FontWeightEnum.w400.toInter,
+                  title: StringConstants.specificCityOrCountry,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 4,
+                ),
+                40.0.spaceY,
+                TextFormFieldWidget(
+                  isReadOnly: true,
+                  hintText: StringConstants.nearestLandmark,
+                  controller: expertWatch.countryNameController,
+                  onTap: () {
+                    CommonBottomSheet.bottomSheet(
+                        context: context,
+                        child: CountryListBottomView(
+                          onTapItem: (item) {
+                            expertRead.setSelectedCountry(value: item);
+                            Navigator.pop(context);
+                          },
+                          clearSearchTap: () => expertRead.clearSearchCountryController(),
+                          searchController: expertWatch.searchCountryController,
+                        ),
+                        isDismissible: true);
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please select country";
+                    }
+                    return null;
+                  },
+                ),
+                20.0.spaceY,
+                TitleSmallText(
+                  fontFamily: FontWeightEnum.w400.toInter,
+                  title: StringConstants.filterExperts,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 3,
+                ),
+                20.0.spaceY,
+                TextFormFieldWidget(
+                  isReadOnly: true,
+                  hintText: StringConstants.nearestLandmark,
+                  controller: expertWatch.cityNameController,
+                  onTap: () {
+                    CommonBottomSheet.bottomSheet(
+                        context: context,
+                        isDismissible: true,
+                        child: CityListBottomView(
+                          onTapItem: (item) {
+                            expertRead.displayCity(value: item);
+                            Navigator.pop(context);
+                          },
+                          clearSearchTap: () => expertRead.clearSearchCityController(),
+                          searchController: expertWatch.searchCityController,
+                          countryName: expertWatch.selectedCountryModel?.country ?? '',
+                        ));
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please select city";
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ).addAllPadding(20),
+          ),
         ),
       ),
     );

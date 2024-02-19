@@ -24,16 +24,23 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   bool get reachedCategoryLastPage => _reachedCategoryLastPage;
   bool _reachedCategoryLastPage = false;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
+  void changeLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   Future<void> areaCategoryListApiCall({bool isLoaderVisible = false}) async {
-    if(isLoaderVisible){
-      CustomLoading.progressDialog(isLoading: true);
-    }
+    // if(isLoaderVisible){
+    //   CustomLoading.progressDialog(isLoading: true);
+    // }
 
     ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo);
-    if(isLoaderVisible){
-      CustomLoading.progressDialog(isLoading: false);
-    }
-
+    // if(isLoaderVisible){
+    //   CustomLoading.progressDialog(isLoading: false);
+    // }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is ExpertCategoryResponseModel) {
