@@ -64,7 +64,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         20.0.spaceY,
         durationWidget(scheduleProviderWatch),
         10.0.spaceY,
-        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} ${scheduleProviderWatch.callDuration} ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
+        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
         23.0.spaceY,
         generateSlotTime(scheduleProviderWatch),
         11.0.spaceY,

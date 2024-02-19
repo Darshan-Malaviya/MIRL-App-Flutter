@@ -82,7 +82,13 @@ class NetworkImageWidget extends StatelessWidget {
         );
       }
     } else {
-      return Center(child: emptyImageWidget ?? Icon(Icons.person_2_outlined));
+      return Center(
+        child: SizedBox(
+          height: 80,
+          width: 80,
+          child: emptyImageWidget ?? Icon(Icons.person_2_outlined),
+        ),
+      );
     }
   }
 }

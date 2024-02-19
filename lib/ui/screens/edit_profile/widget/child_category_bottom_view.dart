@@ -75,7 +75,7 @@ class _ChildCategoryBottomViewState extends ConsumerState<ChildCategoryBottomVie
             ),
           ),
         ],
-      ).addMarginXY(paddingX: 20, paddingY: 20),
+      ).addMarginXY(marginX: 20, marginY: 20),
     );
   }
 }

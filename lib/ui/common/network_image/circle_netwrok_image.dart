@@ -30,7 +30,7 @@ class CircleNetworkImageWidget extends StatelessWidget {
                   radius: radius ?? 37.5,
                   child: Center(child: SpinKitThreeBounce(color: ColorConstants.primaryColor, size: 20)),
                 ),
-              LoadState.completed => CircleAvatar(radius: radius ?? 37.5, backgroundImage: NetworkImage(imageURL), backgroundColor: ColorConstants.grayLightColor),
+              LoadState.completed => CircleAvatar(radius: radius ?? 37.5, backgroundImage: NetworkImage(imageURL), backgroundColor: ColorConstants.greyLightColor),
               LoadState.failed => CircleAvatar(radius: radius ?? 37.5, child: Center(child: Icon(Icons.person_2_outlined))),
             };
           },
@@ -46,7 +46,7 @@ class CircleNetworkImageWidget extends StatelessWidget {
                   radius: radius ?? 37.5,
                   child: Center(child: SpinKitThreeBounce(color: ColorConstants.primaryColor, size: 20)),
                 ),
-              LoadState.completed => CircleAvatar(radius: radius ?? 37.5, backgroundImage: FileImage(File(imageURL)), backgroundColor: ColorConstants.grayLightColor),
+              LoadState.completed => CircleAvatar(radius: radius ?? 37.5, backgroundImage: FileImage(File(imageURL)), backgroundColor: ColorConstants.greyLightColor),
               LoadState.failed => CircleAvatar(radius: radius ?? 37.5, child: Icon(Icons.person_2_outlined)),
             };
           },

@@ -99,7 +99,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     _isLoadingAvailable = true;
     notifyListeners();
 
-    ApiHttpResult response = await _scheduleCallRepository.getExpertAvailabilityApi(expertData?.id.toString() ?? '');
+    ApiHttpResult response = await _scheduleCallRepository.getExpertAvailabilityApi(expertData?.id ?? 0);
 
     _isLoadingAvailable = false;
     notifyListeners();
@@ -124,7 +124,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     notifyListeners();
 
     ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(
-      request: SlotsRequestModel(expertId: expertData?.id.toString(), date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
+      request: SlotsRequestModel(expertId: expertData?.id, date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
     );
 
     _isLoadingSlot = false;

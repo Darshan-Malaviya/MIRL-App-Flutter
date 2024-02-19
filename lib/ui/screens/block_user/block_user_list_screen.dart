@@ -122,7 +122,7 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                                 children: [
                                   WidgetSpan(child: 2.0.spaceX),
                                   TextSpan(
-                                      text: blockUserWatch.blockUserDetails[index].firstCreated?.toLocalFullDate() ?? '',
+                                      text: blockUserWatch.blockUserDetails[index].firstCreated?.toLocalFullDateWithoutSuffix() ?? '',
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         fontSize: 11,
                                         color: ColorConstants.buttonTextColor,

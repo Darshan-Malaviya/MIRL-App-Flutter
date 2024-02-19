@@ -4,7 +4,7 @@ import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
-class OverallRatingWidget extends StatefulWidget {
+class OverallRatingWidget extends StatelessWidget {
   final String name;
   final int? value;
 
@@ -14,22 +14,16 @@ class OverallRatingWidget extends StatefulWidget {
     required this.value,
   }) : super(key: key);
 
-  @override
-  State<OverallRatingWidget> createState() => _OverallRatingWidgetState();
-}
-
-class _OverallRatingWidgetState extends State<OverallRatingWidget> {
-  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TitleSmallText(
           fontSize: 13,
-          title: widget.name,
+          title: name,
           titleColor: ColorConstants.blueColor,
           titleTextAlign: TextAlign.start,
-        ).addMarginX(12),
+        ),
         Row(
             children: List.generate(5, (index) {
           return Container(
@@ -37,7 +31,7 @@ class _OverallRatingWidgetState extends State<OverallRatingWidget> {
             height: 12,
             margin: EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
-              color: ColorConstants.primaryColor,
+              color: index + 1 <= value! ? ColorConstants.primaryColor : ColorConstants.ratingColor,
               boxShadow: [
                 BoxShadow(
                   color: Color(0x4C000000),
@@ -50,6 +44,6 @@ class _OverallRatingWidgetState extends State<OverallRatingWidget> {
           );
         })),
       ],
-    ).addMarginXY(paddingY: 6,paddingX: 10);
+    ).addMarginXY(marginY: 6, marginX: 14);
   }
 }
