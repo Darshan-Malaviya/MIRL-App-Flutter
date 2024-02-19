@@ -6,6 +6,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
 import 'package:mirl/infrastructure/services/call_kit_service.dart';
 import 'package:mirl/mirl_app.dart';
+import 'package:uuid/uuid.dart';
 
 class PushNotificationService {
   static final PushNotificationService singleton = PushNotificationService._internal();
@@ -76,7 +77,7 @@ class PushNotificationService {
 
           if (message?.data['key'] == NotificationTypeEnum.connectAndroidCall.name) {
             ExtraResponseModel extraResponseModel = ExtraResponseModel.fromJson(message?.data ?? {});
-            // showCallkitIncoming(uuid: const Uuid().v4(), extraResponseModel: extraResponseModel);
+             showCallkitIncoming(uuid: const Uuid().v4().toString(), extraResponseModel: extraResponseModel);
           } else if (message?.data['key'] == NotificationTypeEnum.autoLogout.name) {
             CommonMethods.autoLogout();
           } else {

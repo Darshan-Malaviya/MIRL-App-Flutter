@@ -1,13 +1,13 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class NotificationTypeNameWidget extends StatefulWidget {
-  const NotificationTypeNameWidget({super.key});
+class AllNotificationTypeNameWidget extends StatefulWidget {
+  const AllNotificationTypeNameWidget({super.key});
 
   @override
-  State<NotificationTypeNameWidget> createState() => _NotificationTypeNameWidgetState();
+  State<AllNotificationTypeNameWidget> createState() => _AllNotificationTypeNameWidgetState();
 }
 
-class _NotificationTypeNameWidgetState extends State<NotificationTypeNameWidget> {
+class _AllNotificationTypeNameWidgetState extends State<AllNotificationTypeNameWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(

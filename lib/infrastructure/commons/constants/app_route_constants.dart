@@ -1,9 +1,13 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/auth_screen/login_screen.dart';
 import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
+import 'package:mirl/ui/screens/block_user/block_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
+import 'package:mirl/ui/screens/cms_screen/arguments/cms_arguments.dart';
+import 'package:mirl/ui/screens/cms_screen/cms_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:mirl/ui/screens/earning_report_screen/earning_report_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/add_your_areas_of_expertise_screen.dart';
@@ -29,6 +33,8 @@ import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
+import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
+import 'package:mirl/ui/screens/instant_call_screen/instant_call_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_filter_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_screen.dart';
@@ -43,6 +49,7 @@ import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/upcoming_appointment_screen/upcoming_appointment_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
+import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
 ///use this service for provide global context to widgets
@@ -133,13 +140,18 @@ class RouterConstant {
       case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
       case RoutesConstants.reportExpertScreen:
-        return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
+        return MaterialPageRoute(builder: (_) =>  ReportExpertScreen(/*roleId: settings.arguments as int*/));
       case RoutesConstants.videoCallScreen:
-        return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+        return MaterialPageRoute(builder: (_) =>  VideoCallScreen(arguments: settings.arguments as VideoCallArguments,));
+        case RoutesConstants.instantCallRequestDialogScreen:
+        return MaterialPageRoute(builder: (_) =>  InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments,));
+      case RoutesConstants.blockUserScreen:
+        return MaterialPageRoute(builder: (_) => BlockUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.multiConnectScreen:
         return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
       case RoutesConstants.multiConnectFilterScreen:
-        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen());
+        return MaterialPageRoute(
+            builder: (_) => MultiConnectFilterScreen());
       case RoutesConstants.multiConnectSelectedCategoryScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
@@ -148,6 +160,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
         case RoutesConstants.earningReportScreen:
         return MaterialPageRoute(builder: (_) => EarningReportScreen());
+      case RoutesConstants.cmsScreen:
+        return MaterialPageRoute(builder: (_) => CmsScreen(args: settings.arguments as CmsArgs));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

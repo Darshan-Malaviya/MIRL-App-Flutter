@@ -167,7 +167,8 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               titleColor: ColorConstants.bottomTextColor,
             ),
             SliderTheme(
-              data: SliderTheme.of(context).copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
+              data: SliderTheme.of(context)
+                  .copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
               child: RangeSlider(
                 values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
                 activeColor: ColorConstants.yellowButtonColor,
@@ -192,7 +193,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
         title: StringConstants.applyFilter,
         height: 55,
         onPressed: () async {
-          String? selectedTopicId;
+          if (filterWatch.commonSelectionModel.isNotEmpty) {String? selectedTopicId;
           if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
             selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
           }
@@ -217,7 +218,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                         : null,
                     /*  experienceOder: "ASC",
                   reviewOrder: "ASC",*/
-                    maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
+                      maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
                     minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
                     feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
                         ? null
@@ -256,6 +257,10 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                             : null,
                     topicIds: selectedTopicId,
                     userId: SharedPrefHelper.getUserId));
+            }
+          }
+          else {
+            FlutterToast().showToast(msg: "Please select any filter.");
           }
         },
       ).addPaddingXY(paddingX: 50, paddingY: 10),
@@ -276,13 +281,17 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
       labelColor: ColorConstants.bottomTextColor,
       enabledBorderColor: ColorConstants.dropDownBorderColor,
       labelTextFontFamily: FontWeightEnum.w700.toInter,
-      textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      textStyle: Theme.of(context)
+          .textTheme
+          .bodyMedium
+          ?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       suffixIcon: Icon(
         size: 18,
         Icons.keyboard_arrow_down_rounded,
         color: ColorConstants.dropDownBorderColor,
       ),
-      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       onTap: OnTap,
     );
   }

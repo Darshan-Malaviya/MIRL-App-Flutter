@@ -78,7 +78,8 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             /*       setState(() {
                               filterProviderWatch.sortBySelectedItem = newValue!;
                             });*/
-                            filterProviderRead.setSortByPriceValue(sortByValue: newValue ?? '', order: filterProviderWatch.sortBySelectedOrder);
+                            filterProviderRead.setSortByPriceValue(
+                                sortByValue: newValue ?? '', order: filterProviderWatch.sortBySelectedOrder);
                           },
                         ),
                       ),
@@ -134,7 +135,8 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             /*       setState(() {
                               filterProviderWatch.sortBySelectedOrder = newValue!;
                             });*/
-                            filterProviderRead.setSortByPriceValue(sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ?? '');
+                            filterProviderRead.setSortByPriceValue(
+                                sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ?? '');
                           },
                         ),
                       ),

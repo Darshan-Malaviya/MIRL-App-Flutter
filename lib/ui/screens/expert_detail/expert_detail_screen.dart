@@ -1,7 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
@@ -11,6 +15,7 @@ import 'package:mirl/ui/screens/expert_detail/widget/certifications_and_experien
 import 'package:mirl/ui/screens/expert_detail/widget/overall_rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_widget.dart';
 import 'package:mirl/ui/screens/rating_and_review_screen/widget/reviews_list_widget.dart';
+import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 
 ValueNotifier<bool> isFavorite = ValueNotifier(false);
 
@@ -28,7 +33,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
-      // ref.read(reportUserProvider).changeReportAndThanksScreen();
     });
     super.initState();
   }
@@ -48,7 +52,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         trailingIcon: InkWell(
                 onTap: () {
                   //ReportThisUserWidget();
-                  context.toPushNamed(RoutesConstants.reportExpertScreen);
+                  context.toPushNamed(RoutesConstants.reportExpertScreen, args: 1);
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),
@@ -150,7 +154,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                           maxLine: 4,
                           title: fee != null ? '\$${fee}' : "",
                           titleColor: ColorConstants.overallRatingColor,
-                          shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                          shadow: [
+                            Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                          ],
                         ),
                       ),
                     ],
@@ -182,10 +188,46 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ],
             AreaOfExpertiseWidget(),
             ExpertDetailsButtonWidget(
-              title: StringConstants.requestCallNow,
-              buttonColor: ColorConstants.requestCallNowColor,
+
+              titleColor:  expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.buttonTextColor : ColorConstants.overAllRatingColor,
+              title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : "ZEN MODE : CALL PAUSED",
+              buttonColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.requestCallNowColor : ColorConstants.redLightColor ,
               onTap: () {
-                context.toPushNamed(RoutesConstants.videoCallScreen);
+                if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
+                    (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+                  instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
+                  /// THis is call sender (User) side
+                  context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
+                      args: InstanceCallDialogArguments(
+                        name: expertDetailWatch.userData?.userName ?? "",
+                        onFirstBtnTap: () {
+                          if((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1') ){
+                            ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                          } else {
+                            FlutterToast().showToast(msg: "Expert not available.");
+                          }
+                        },
+                        onSecondBtnTap: () {
+                          if(instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                            context.toPop();
+                          } else if(instanceCallEnumNotifier.value == CallTypeEnum.requestApproved){
+                            ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
+                            ///context.toPop();
+                          }
+                          else {
+                            ref.read(socketProvider).updateRequestStatusEmit(expertId: widget.expertId, callStatusEnum: CallStatusEnum.cancel,
+                                callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
+                            context.toPop();
+                          }
+                        },
+                        image: expertDetailWatch.userData?.userProfile ?? "",
+                        expertId: expertDetailWatch.userData?.id.toString() ??'',
+                        userID: SharedPrefHelper.getUserId.toString(),
+                      ));
+                } else {
+                  FlutterToast().showToast(msg: "Expert not available.");
+                }
+
               },
             ),
             24.0.spaceY,
