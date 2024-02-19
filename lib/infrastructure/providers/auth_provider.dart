@@ -76,10 +76,7 @@ class AuthProvider with ChangeNotifier {
         loginType: loginType,
         voIpToken: await AgoraService.singleton.getVoipToken());
     loginApiCall(
-        requestModel: emailController.text.trim().isNotEmpty
-            ? loginRequestModel.prepareRequest()
-            : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
-        loginType: loginType);
+        requestModel: emailController.text.trim().isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(), loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -213,9 +210,9 @@ class AuthProvider with ChangeNotifier {
   /// cms API call
 
   Future<void> cmsApiCall(String name) async {
-    CustomLoading.progressDialog(isLoading: true);
+    changeIsLoading(true);
     ApiHttpResult response = await _authRepository.cmsApi(cmsKey: name);
-    CustomLoading.progressDialog(isLoading: false);
+    changeIsLoading(false);
 
     switch (response.status) {
       case APIStatus.success:
