@@ -29,9 +29,7 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
       body: Center(
           child: PrimaryButton(
         onPressed: () {
-          // context.toPushNamed(RoutesConstants.blockUserScreen,
-          //     args: BlockUserArgs(userName: 'Vaidehi', imageURL: '', UserBlockId: 1));
-           //ref.read(callProvider).callRequestEmit();
+          //ref.read(callProvider).callRequestEmit();
         },
         title: 'Tap',
       ) /*PageView(

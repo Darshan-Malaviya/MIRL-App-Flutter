@@ -46,127 +46,145 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
             child: Image.asset(ImageConstants.backIcon),
             onTap: () => context.toPop(),
           ),
-          trailingIcon: InkWell(
+        /*  trailingIcon: InkWell(
             // onTap: () => expertRead.updateGenderApi(),
             child: TitleMediumText(
               title: StringConstants.done,
             ).addPaddingRight(14),
-          )),
+          )*/
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             30.0.spaceY,
-            TitleLargeText(
-              title: LocaleKeys.blockedUserList.tr(),
-              titleColor: ColorConstants.bottomTextColor,
-              titleTextAlign: TextAlign.center,
-            ),
-            40.0.spaceY,
-            Column(
-              children: List.generate(blockUserWatch.blockUserDetails.length, (index) {
-                return ShadowContainer(
-                  isShadow: false,
-                  borderColor: ColorConstants.borderColor,
-                  backgroundColor: ColorConstants.yellowButtonColor,
-                  border: 5,
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          15.0.spaceY,
-                          RichText(
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: 'USER: ',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 13),
-                              children: [
-                                TextSpan(
-                                    text: blockUserWatch.blockUserDetails[index].userDetail?.userName ?? '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(color: ColorConstants.buttonTextColor, fontSize: 13)),
-                              ],
+            if(blockUserWatch.blockUserDetails.isNotEmpty)...[
+              TitleLargeText(
+                title: LocaleKeys.blockedUserList.tr(),
+                titleColor: ColorConstants.bottomTextColor,
+                titleTextAlign: TextAlign.center,
+              ),
+            ],
+            if(blockUserWatch.blockUserDetails.length == 0)...[
+              Center(
+                child: TitleMediumText(
+                  title: LocaleKeys.soFarYouHaveNotBlockedAnyUsers.tr(),
+                  titleColor: ColorConstants.blackColor,
+                  titleTextAlign: TextAlign.center,
+                  fontWeight: FontWeight.w400,
+                  maxLine: 3,
+                ),
+              ),
+            ] else ...[
+              40.0.spaceY,
+              Column(
+                children: List.generate(
+                    blockUserWatch.blockUserDetails.length, (index) {
+                  return ShadowContainer(
+                    isShadow: false,
+                    borderColor: ColorConstants.borderColor,
+                    backgroundColor: ColorConstants.yellowButtonColor,
+                    border: 5,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            15.0.spaceY,
+                            RichText(
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: LocaleKeys.userWith.tr(),
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 13),
+                                children: [
+                                  TextSpan(
+                                      text: blockUserWatch.blockUserDetails[index].userDetail?.userName ?? '',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(color: ColorConstants.buttonTextColor, fontSize: 13)),
+                                ],
+                              ),
                             ),
-                          ),
-                          5.0.spaceY,
-                          RichText(
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: 'BLOCKED ON: ',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 11),
-                              children: [
-                                TextSpan(
-                                    text: blockUserWatch.blockUserDetails[index].firstCreated?.toLocalFullDate() ?? '',
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          fontSize: 11,
-                                          color: ColorConstants.buttonTextColor,
-                                          fontFamily: FontWeightEnum.w400.toInter,
-                                          overflow: TextOverflow.ellipsis,
-                                        )),
-                              ],
-                            ),
-                          ),
-                          5.0.spaceY,
-                          RichText(
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: 'STATUS: ',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 11),
-                              children: [
-                                TextSpan(
-                                    text: blockUserRead.userStatus(index),
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            5.0.spaceY,
+                            RichText(
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: LocaleKeys.blockedOn.tr(),
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 11),
+                                children: [
+                                  WidgetSpan(child: 2.0.spaceX),
+                                  TextSpan(
+                                      text: blockUserWatch.blockUserDetails[index].firstCreated?.toLocalFullDate() ?? '',
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        fontSize: 11,
                                         color: ColorConstants.buttonTextColor,
                                         fontFamily: FontWeightEnum.w400.toInter,
-                                        fontSize: 11)),
-                              ],
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
+                                ],
+                              ),
                             ),
-                          ),
-                          20.0.spaceY,
-                          InkWell(
-                            onTap: () {
-                              blockUserRead.unBlockUserApiCall(
-                                  userBlockId: blockUserWatch.blockUserDetails[index].id ?? 0, index: index);
-                            },
-                            child: BodySmallText(
-                              title: 'UNBLOCK USER',
-                              titleColor: ColorConstants.buttonTextColor,
-                              titleTextAlign: TextAlign.center,
-                              fontSize: 13,
+                            5.0.spaceY,
+                            RichText(
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: LocaleKeys.status.tr(),
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 11),
+                                children: [
+                                  WidgetSpan(child: 2.0.spaceX),
+                                  TextSpan(
+                                      text: blockUserRead.userStatus(index),
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          color: ColorConstants.buttonTextColor,
+                                          fontFamily: FontWeightEnum.w400.toInter,
+                                          fontSize: 11)),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                offset: Offset(2, 4),
-                                color: ColorConstants.blackColor.withOpacity(0.3),
-                                spreadRadius: 0,
-                                blurRadius: 2),
-                          ], shape: BoxShape.circle),
-                          child: CircleNetworkImageWidget(
-                              radius: 50,
-                              imageURL: blockUserWatch.blockUserDetails[index].userDetail?.userProfile ?? '',
-                              isNetworkImage: true,
-                              key: UniqueKey())),
-                    ],
-                  ),
-                ).addMarginY(20);
-              }),
-            )
+                            20.0.spaceY,
+                            InkWell(
+                              onTap: () {
+                                blockUserRead.unBlockUserApiCall(
+                                    userBlockId: blockUserWatch.blockUserDetails[index].id ?? 0, index: index);
+                              },
+                              child: BodySmallText(
+                                title: LocaleKeys.unblockUser.tr(),
+                                titleColor: ColorConstants.buttonTextColor,
+                                titleTextAlign: TextAlign.center,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                            decoration: BoxDecoration(boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(2, 4),
+                                  color: ColorConstants.blackColor.withOpacity(0.3),
+                                  spreadRadius: 0,
+                                  blurRadius: 2),
+                            ], shape: BoxShape.circle),
+                            child: CircleNetworkImageWidget(
+                                radius: 50,
+                                imageURL: blockUserWatch.blockUserDetails[index].userDetail?.userProfile ?? '',
+                                isNetworkImage: true,
+                                key: UniqueKey())),
+                      ],
+                    ),
+                  ).addMarginY(20);
+                }),
+              )
+            ]
           ],
         ).addPaddingX(20),
       ),

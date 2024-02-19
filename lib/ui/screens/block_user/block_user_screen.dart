@@ -54,7 +54,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
             40.0.spaceY,
             ShadowContainer(
               isShadow: false,
-              borderColor: ColorConstants.borderColor,
+              borderColor: ColorConstants.dropDownBorderColor,
               backgroundColor: ColorConstants.yellowButtonColor,
               border: 5,
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
@@ -103,11 +103,12 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
               onPressed: () {
                 CommonAlertDialog.dialog(
                     context: context,
+                    width: 300,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         BodyLargeText(
-                          title: 'User Temporarily Blocked!',
+                          title: LocaleKeys.userTemporarilyBlocked.tr(),
                           fontFamily: FontWeightEnum.w600.toInter,
                           titleColor: ColorConstants.bottomTextColor,
                           fontSize: 17,
@@ -115,7 +116,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                         ),
                         20.0.spaceY,
                         BodyLargeText(
-                          title: 'The user has been successfully blocked from contacting you, as per your request.',
+                          title: LocaleKeys.theUserHasBeenSuccessfullyBlockedFromContacting.tr(),
                           maxLine: 5,
                           fontFamily: FontWeightEnum.w400.toInter,
                           titleColor: ColorConstants.blackColor,
@@ -124,12 +125,12 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                         30.0.spaceY,
                         InkWell(
                           onTap: () {
-                            blockUserRead.userBlockRequestCall(Status: 1, UserBlockId: widget.args.UserId);
+                            blockUserRead.userBlockRequestCall(Status: 1, UserBlockId: widget.args.userId);
                             context.toPop();
                           },
                           child: Center(
                               child: BodyLargeText(
-                            title: 'OK',
+                            title: LocaleKeys.ok.tr(),
                             fontFamily: FontWeightEnum.w500.toInter,
                             titleColor: ColorConstants.bottomTextColor,
                             fontSize: 17,
@@ -155,7 +156,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
               title: LocaleKeys.permanentBlock.tr(),
               onPressed: () {
                 // context.toPushNamed(RoutesConstants.blockUserListScreen);
-                blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.UserId);
+                blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.userId);
               },
               fontSize: 13,
             ),

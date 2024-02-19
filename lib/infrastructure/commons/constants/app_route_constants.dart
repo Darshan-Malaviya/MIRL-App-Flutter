@@ -32,6 +32,8 @@ import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
+import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
+import 'package:mirl/ui/screens/instant_call_screen/instant_call_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_filter_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_screen.dart';
@@ -45,6 +47,7 @@ import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/upcoming_appointment_screen/upcoming_appointment_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
+import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
 ///use this service for provide global context to widgets
@@ -137,7 +140,9 @@ class RouterConstant {
       case RoutesConstants.reportExpertScreen:
         return MaterialPageRoute(builder: (_) =>  ReportExpertScreen(/*roleId: settings.arguments as int*/));
       case RoutesConstants.videoCallScreen:
-        return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+        return MaterialPageRoute(builder: (_) =>  VideoCallScreen(arguments: settings.arguments as VideoCallArguments,));
+        case RoutesConstants.instantCallRequestDialogScreen:
+        return MaterialPageRoute(builder: (_) =>  InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments,));
       case RoutesConstants.blockUserScreen:
         return MaterialPageRoute(builder: (_) => BlockUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.multiConnectScreen:
