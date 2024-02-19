@@ -20,13 +20,13 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.roleId);
+      ref.read(reportUserProvider).getAllReportListApiCall(role: widget.roleId);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(reportUserProvider).reachedCategoryLastPage;
         if (!isLoading) {
-          await ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.roleId);
+          await ref.read(reportUserProvider).getAllReportListApiCall(role: widget.roleId);
         } else {
           log('reach last page on get report list api');
         }

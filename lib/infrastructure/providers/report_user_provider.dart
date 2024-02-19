@@ -41,7 +41,7 @@ class ReportUserProvider extends ChangeNotifier {
     ];
   }
 
-  Future<void> getAllBlockListApiCall({required int role}) async {
+  Future<void> getAllReportListApiCall({required int role}) async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _reportRepository.reportListApi(limit: 10, page: _reportUserListPageNo, role: role);
     CustomLoading.progressDialog(isLoading: false);
@@ -56,9 +56,6 @@ class ReportUserProvider extends ChangeNotifier {
             _reportUserListPageNo = _reportUserListPageNo + 1;
             _reachedCategoryLastPage = false;
           }
-
-          Logger().d("Successfully get all block details");
-          FlutterToast().showToast(msg: responseModel.message ?? '');
         }
         break;
       case APIStatus.failure:
