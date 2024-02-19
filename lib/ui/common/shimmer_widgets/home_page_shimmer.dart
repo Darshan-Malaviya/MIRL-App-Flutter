@@ -31,7 +31,7 @@ class CategoryListShimmerWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20.0),
                           child:  Shimmer.fromColors(
                             baseColor: ColorConstants.whiteColor,
-                            highlightColor: ColorConstants.grayLightColor,
+                            highlightColor: ColorConstants.greyLightColor,
                             child: const ShadowContainer(
                               height: 60,
                               width: 50,
@@ -56,7 +56,7 @@ class CategoryListShimmerWidget extends StatelessWidget {
         Center(
           child: Shimmer.fromColors(
             baseColor: ColorConstants.whiteColor,
-            highlightColor: ColorConstants.grayLightColor,
+            highlightColor: ColorConstants.greyLightColor,
             child: const ShadowContainer(
               height: 16,
               width: 240,

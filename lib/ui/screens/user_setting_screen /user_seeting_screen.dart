@@ -14,34 +14,24 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
     final providerWatch = ref.watch(callProvider);
 
     return Scaffold(
-      appBar: AppBarWidget(
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
-        ),
-        trailingIcon: InkWell(
-          onTap: () {},
-          child: TitleMediumText(
-            title: StringConstants.done,
-          ).addPaddingRight(14),
-        ),
-      ),
-      body: Center(
+      appBar: AppBarWidget(),
+     /* body: Center(
           child: PrimaryButton(
         onPressed: () {
           //ref.read(callProvider).callRequestEmit();
         },
         title: 'Tap',
-      ) /*PageView(
+      )
+          PageView(
 
           children: [
-       */ /*     RatingWidget(
+             RatingWidget(
               onRatingChanged: (value) {},
-            )*/ /*
+            )
             ReviewSlider(onChange: (value){})
           ],
-        ),*/
-          ),
+        ),
+          ),*/
     );
   }
 }

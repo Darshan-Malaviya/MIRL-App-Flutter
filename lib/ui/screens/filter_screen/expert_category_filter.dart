@@ -193,75 +193,70 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
         title: StringConstants.applyFilter,
         height: 55,
         onPressed: () async {
-          if (filterWatch.commonSelectionModel.isNotEmpty) {
-            String? selectedTopicId;
-            if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
-              selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
-            }
-            double endFeeRange = filterWatch.end ?? 0;
-            double startFeeRange = filterWatch.start ?? 0;
-            if (widget.args.fromExploreExpert ?? false) {
-              filterRead.clearExploreExpertSearchData();
-              filterRead.clearExploreController();
-              await filterRead.exploreExpertUserAndCategoryApiCall(
-                  context: context,
-                  isFromFilter: true,
-                  requestModel: ExpertDataRequestModel(
-                      userId: SharedPrefHelper.getUserId,
-                      categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false)
-                          ? filterWatch.selectedCategory?.id.toString()
-                          : null,
-                      city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                      country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                      gender:
-                          filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
-                      instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
-                          ? filterWatch.isCallSelect == 1
-                              ? "true"
-                              : "false"
-                          : null,
-                      /*  experienceOder: "ASC",
+          if (filterWatch.commonSelectionModel.isNotEmpty) {String? selectedTopicId;
+          if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
+            selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+          }
+          double endFeeRange = filterWatch.end ?? 0;
+          double startFeeRange = filterWatch.start ?? 0;
+          if (widget.args.fromExploreExpert ?? false) {
+            filterRead.clearExploreExpertSearchData();
+            filterRead.clearExploreController();
+            await filterRead.exploreExpertUserAndCategoryApiCall(
+                context: context,
+                isFromFilter: true,
+                requestModel: ExpertDataRequestModel(
+                    userId: SharedPrefHelper.getUserId,
+                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
+                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                    country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
+                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                        ? filterWatch.isCallSelect == 1
+                            ? "true"
+                            : "false"
+                        : null,
+                    /*  experienceOder: "ASC",
                   reviewOrder: "ASC",*/
-                      maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
-                      minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
-                      feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                          ? null
-                          : filterWatch.sortBySelectedItem == 'PRICE'
-                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                  ? 'ASC'
-                                  : 'DESC'
-                              : null,
-                      topicIds: selectedTopicId));
-            } else {
-              filterRead.clearSingleCategoryData();
-              await filterRead.getSingleCategoryApiCall(
-                  categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
-                  context: context,
-                  isFromFilter: true,
-                  requestModel: ExpertDataRequestModel(
-                      city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                      country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                      /*  experienceOder: "ASC",
+                      maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
+                    minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
+                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                        ? null
+                        : filterWatch.sortBySelectedItem == 'PRICE'
+                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                ? 'ASC'
+                                : 'DESC'
+                            : null,
+                    topicIds: selectedTopicId));
+          } else {
+            filterRead.clearSingleCategoryData();
+            await filterRead.getSingleCategoryApiCall(
+                categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                context: context,
+                isFromFilter: true,
+                requestModel: ExpertDataRequestModel(
+                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                    country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                    /*  experienceOder: "ASC",
                     feeOrder: "ASC",
                     reviewOrder: "ASC",*/
-                      gender:
-                          filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
-                      instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
-                          ? filterWatch.isCallSelect == 1
-                              ? "true"
-                              : "false"
-                          : null,
-                      maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
-                      minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
-                      feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                          ? null
-                          : filterWatch.sortBySelectedItem == 'PRICE'
-                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                  ? 'ASC'
-                                  : 'DESC'
-                              : null,
-                      topicIds: selectedTopicId,
-                      userId: SharedPrefHelper.getUserId));
+                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
+                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                        ? filterWatch.isCallSelect == 1
+                            ? "true"
+                            : "false"
+                        : null,
+                    maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
+                    minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
+                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                        ? null
+                        : filterWatch.sortBySelectedItem == 'PRICE'
+                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                ? 'ASC'
+                                : 'DESC'
+                            : null,
+                    topicIds: selectedTopicId,
+                    userId: SharedPrefHelper.getUserId));
             }
           }
           else {

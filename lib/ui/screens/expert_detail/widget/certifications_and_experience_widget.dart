@@ -79,7 +79,7 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
                         titleColor: ColorConstants.blueColor,
                       ),
                     ],
-                  ).addMarginXY(paddingX: 24, paddingY: 18),
+                  ).addMarginXY(marginX: 24, marginY: 18),
                 ),
               ],
             );

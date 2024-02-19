@@ -5,6 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/mirl_app.dart';
 
+import 'ui/screens/earning_report_screen/earning_report_screen.dart';
+import 'ui/screens/rating_and_review_screen/rating_and_review_screen.dart';
+
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);
@@ -46,7 +49,7 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             onGenerateRoute: RouterConstant.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
-            // home: ViewCalendarAppointment(),
+            // home: EarningReportScreen(),
           );
         },
       ),
