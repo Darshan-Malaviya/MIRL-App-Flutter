@@ -1,5 +1,5 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
+import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 
 class UserBlockResponseModel {
   int? status;
