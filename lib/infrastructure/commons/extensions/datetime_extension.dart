@@ -132,7 +132,7 @@ extension DateTimeFormatter on String {
   }
 
   /// 15TH NOVEMBER 2023
-  String? toLocalFullDate() {
+  String? toLocalFullDateWithSuffix() {
     try {
       DateTime localTime = DateTime.parse(this).toLocal();
       String formattedDate = DateFormat('d MMMM yyyy').format(localTime);
@@ -141,7 +141,31 @@ extension DateTimeFormatter on String {
       String finalDate = '$formattedDate';
       return finalDate.toUpperCase();
     } catch (e) {
-      Logger().d("Exception on toLocalFullDate : $e");
+      Logger().d("Exception on toLocalFullDateWithSuffix : $e");
+    }
+    return null;
+  }
+
+  /// 15 NOVEMBER 2023
+  String? toLocalFullDateWithoutSuffix() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat('dd MMMM yyyy').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");
+    }
+    return null;
+  }
+
+  /// nov 26 2023
+  String? toLocalEarningDate() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat(' MMM dd yyyy').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      Logger().d("Exception on toLocalEarningDate : $e");
     }
     return null;
   }

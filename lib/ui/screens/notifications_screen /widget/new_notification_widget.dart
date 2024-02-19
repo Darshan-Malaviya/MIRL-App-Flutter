@@ -127,7 +127,7 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
             ],
           )
         ],
-      ).addMarginXY(paddingX: 20, paddingY: 10),
+      ).addMarginXY(marginX: 20, marginY: 10),
     );
   }
 }

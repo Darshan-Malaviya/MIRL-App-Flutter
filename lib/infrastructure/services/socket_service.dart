@@ -5,6 +5,7 @@ import 'package:mirl/mirl_app.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 IO.Socket? socket;
+bool isSocketConnected = false;
 
 class SocketApi {
   // A static private instance to access _socketApi from inside class only
@@ -40,6 +41,7 @@ class SocketApi {
     socket?.connect();
     socket?.onConnect((_) {
       log('Connection established');
+      isSocketConnected = true;
       updateSocketId(id);
       userOnlineStatus(id);
       onListenMethod(true);

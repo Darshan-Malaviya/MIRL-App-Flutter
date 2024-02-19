@@ -248,7 +248,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                   ),
                 ),
               ],
-            ).addMarginXY(paddingX: 14, paddingY: 18)),
+            ).addMarginXY(marginX: 14, marginY: 18)),
       ],
     );
   }

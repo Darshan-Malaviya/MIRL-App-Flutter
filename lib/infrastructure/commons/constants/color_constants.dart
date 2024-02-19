@@ -6,11 +6,11 @@ class ColorConstants {
   static const blackColor = Color(0xff000000);
 
   static const greyColor = Color(0xff6D7A8B);
-  static const greyLightColor = Color(0xffE7EAF0);
   static const borderColor = Color(0xff828C99);
   static const borderLightColor = Color(0xffE8E4E4);
   static const disableColor = Color(0xffBCC1C7);
-  static const grayLightColor = Color(0xffF8F8F8);
+  static const greyLightColor = Color(0xffF8F8F8);
+  static const ratingColor = Color(0xffE8EEDB);
   static const textColor = Color(0xff2C323A);
   static const dropDownBorderColor = Color(0xffCAC9C9);
   static const categoryListBorder = Color(0xFFD87CEF);
@@ -34,6 +34,7 @@ class ColorConstants {
   static Color requestCallNowColor = const Color(0xFFC7F84D);
   static Color lightPurpleColor = const Color(0xFFF9F0FB);
   static Color darkRedColor = const Color(0xFFFF3131);
+  static Color redLightColor = const Color(0xFFEC4E62);
   static Color notificationTextColor = const Color(0xFF1E1D1D);
   static Color notificationTimeColor = const Color(0xFF535353);
   static Color notificationTimerColor = const Color(0xFFFF2305);

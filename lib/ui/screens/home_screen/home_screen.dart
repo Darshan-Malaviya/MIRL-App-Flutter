@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
@@ -20,7 +19,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   void initState() {
-    _listener = AppLifecycleListener(
+ /*   _listener = AppLifecycleListener(
       onDetach: () => Logger().d('onDetach'),
       onHide: () => Logger().d('onHide'),
       onInactive: () => Logger().d('onInactive'),
@@ -28,7 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       onRestart: () => Logger().d('onRestart'),
       onResume: () => Logger().d('onResume'),
       onShow: () => Logger().d('onShow'),
-    );
+    );*/
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(homeProvider).homePageApi();
     });
@@ -39,7 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final homeProviderWatch = ref.watch(homeProvider);
     return Scaffold(
-      backgroundColor: ColorConstants.grayLightColor,
+      backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
         preferSize: 0,
       ),

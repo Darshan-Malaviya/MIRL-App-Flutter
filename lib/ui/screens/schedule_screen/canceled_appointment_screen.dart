@@ -51,7 +51,7 @@ class CanceledAppointmentScreen extends StatelessWidget {
                         softWrap: true,
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: '${args.fromUser ?? false ? LocaleKeys.expert.tr() : LocaleKeys.user.tr()}: ',
+                          text: '${args.fromUser ?? false ? LocaleKeys.expert.tr() : LocaleKeys.user.tr().toUpperCase()}: ',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
                             TextSpan(text: args.cancelData?.name ?? 'Anonymous', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),

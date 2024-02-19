@@ -44,7 +44,7 @@ class _GeneralNewNotificationWidgetState extends State<GeneralNewNotificationWid
             fontFamily: FontWeightEnum.w400.toInter,
           ),
         ],
-      ).addMarginXY(paddingX: 20, paddingY: 10),
+      ).addMarginXY(marginX: 20, marginY: 10),
     );
   }
 }

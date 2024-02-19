@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
-import 'package:mirl/ui/screens/instant_call_screen/instant_call_screen.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 
 class MultiConnectCallRequest extends ConsumerStatefulWidget {
   final String title, desc;

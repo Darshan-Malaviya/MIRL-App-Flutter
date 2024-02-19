@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class AllCategoryListBottomView extends ConsumerStatefulWidget {
-  const AllCategoryListBottomView(
-      {super.key});
+  const AllCategoryListBottomView({super.key});
 
   @override
   ConsumerState<AllCategoryListBottomView> createState() => _AllCategoryListBottomViewState();
@@ -16,12 +15,10 @@ class _AllCategoryListBottomViewState extends ConsumerState<AllCategoryListBotto
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if(ref.read(filterProvider).allCategory.isEmpty){
+      if (ref.read(filterProvider).allCategory.isEmpty) {
         ref.read(filterProvider).clearSearchCategoryController();
         ref.read(filterProvider).clearCategoryPaginationData();
-        ref.read(filterProvider).allCategoryListApi(
-          isFullScreenLoader: true,
-        );
+        ref.read(filterProvider).allCategoryListApi(isFullScreenLoader: true);
       }
     });
     scrollController.addListener(() async {
@@ -80,41 +77,39 @@ class _AllCategoryListBottomViewState extends ConsumerState<AllCategoryListBotto
                       child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
                     )
                   : filterProviderWatch.allCategory.isNotEmpty
-                  ? ListView.builder(
-                      controller: scrollController,
-                      itemCount: filterProviderWatch.allCategory.length + (filterProviderWatch.reachedCategoryLastPage ? 0 : 1),
-                      itemBuilder: (context, index) {
-                        if (index == filterProviderWatch.allCategory.length && filterProviderWatch.allCategory.isNotEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
-                          );
-                        }
-                        return InkWell(
-                          onTap: () {
-                            filterProviderWatch.setCategory(selectionIndex: index);
-                            context.toPop();
+                      ? ListView.builder(
+                          controller: scrollController,
+                          itemCount: filterProviderWatch.allCategory.length + (filterProviderWatch.reachedCategoryLastPage ? 0 : 1),
+                          itemBuilder: (context, index) {
+                            if (index == filterProviderWatch.allCategory.length && filterProviderWatch.allCategory.isNotEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                              );
+                            }
+                            return InkWell(
+                              onTap: () {
+                                filterProviderWatch.setCategory(selectionIndex: index);
+                                context.toPop();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  color: (index == filterProviderWatch.categorySelectionIndex) ? ColorConstants.bottomTextColor.withOpacity(0.1) : ColorConstants.scaffoldColor,
+                                ),
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                child: BodyMediumText(
+                                    title: filterProviderWatch.allCategory[index].name ?? '',
+                                    maxLine: 3,
+                                    titleTextAlign: TextAlign.center,
+                                    titleColor: ColorConstants.bottomTextColor),
+                              ),
+                            );
                           },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5.0),
-                              color: (index == filterProviderWatch.categorySelectionIndex)
-                                  ? ColorConstants.bottomTextColor.withOpacity(0.1)
-                                  : ColorConstants.scaffoldColor,
-                            ),
-                            margin: const EdgeInsets.symmetric(vertical: 5),
-                            child: BodyMediumText(
-                                title: filterProviderWatch.allCategory[index].name ?? '',
-                                maxLine: 3,
-                                titleTextAlign: TextAlign.center,
-                                titleColor: ColorConstants.bottomTextColor),
-                          ),
-                        );
-                      },
-                    )
-                  : Padding(
+                        )
+                      : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: Center(
                             child: BodyLargeText(
