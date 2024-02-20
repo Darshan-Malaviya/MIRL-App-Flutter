@@ -28,9 +28,9 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
           BoxShadow(offset: Offset(0, 0), color: ColorConstants.whiteColor.withOpacity(0.25), spreadRadius: 1, blurRadius: 1),
         ],
         borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
+          bottomRight: Radius.circular(15),
+          bottomLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
         ),
       ),
       child: Column(
@@ -43,8 +43,7 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
           ).addMarginTop(10),
           20.0.spaceY,
           TitleMediumText(
-            title:
-                'Yay! A user has picked you among others for a Multiple Connect Call! Click here to be the chosen one or decline the request now.',
+            title: 'Yay! A user has picked you among others for a Multiple Connect Call! Click here to be the chosen one or decline the request now.',
             titleColor: ColorConstants.blackColor,
             maxLine: 10,
             titleTextAlign: TextAlign.start,
@@ -55,18 +54,14 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(ImageConstants.star),
+                  Image.asset(ImageConstants.timer),
                   6.0.spaceX,
-                  BodySmallText(
+                  BodyMediumText(
                     title: Duration(seconds: notificationProviderWatch.secondsRemaining).toTimeString(),
-                    fontSize: 10,
+                    titleColor: ColorConstants.notificationTimerColor,
                   ),
-                  // BodyMediumText(
-                  //   title: '02:00',
-                  //   titleColor: ColorConstants.notificationTimerColor,
-                  //   titleTextAlign: TextAlign.center,
-                  // ),
                 ],
               ),
               InkWell(
@@ -118,7 +113,7 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
                       ));
                 },
                 child: BodySmallText(
-                  title: '02:04 PM',
+                  title: '2023-04-27 04:31:00.000Z'.to12HourTimeFormat().toUpperCase(),
                   titleColor: ColorConstants.notificationTimeColor,
                   titleTextAlign: TextAlign.center,
                   fontFamily: FontWeightEnum.w400.toInter,

@@ -4,20 +4,15 @@ import 'package:mirl/infrastructure/models/common/category_id_name_common_model.
 import 'package:mirl/infrastructure/models/common/expert_data_model.dart';
 import 'package:mirl/infrastructure/models/request/child_update_request.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
-import 'package:mirl/infrastructure/models/request/search_pagination_common_request_model.dart';
-import 'package:mirl/infrastructure/models/response/all_category_response_model.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
-import 'package:mirl/infrastructure/models/response/explore_expert_category_and_user_response.dart';
 import 'package:mirl/infrastructure/models/response/get_single_category_response_model.dart';
 import 'package:mirl/infrastructure/repository/add_your_area_expertise_repo.dart';
 import 'package:mirl/infrastructure/repository/common_repo.dart';
 import 'package:mirl/infrastructure/repository/expert_category_repo.dart';
-import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class MultiConnectProvider extends ChangeNotifier {
   final _addYourAreaExpertiseRepository = AddYourAreaExpertiseRepository();
   final _expertCategoryRepo = ExpertCategoryRepo();
-  final _commonRepository = CommonRepository();
 
   List<CategoryListData>? get categoryList => _categoryList;
   final List<CategoryListData> _categoryList = [];
@@ -55,9 +50,8 @@ class MultiConnectProvider extends ChangeNotifier {
   int get topicPageNo => _topicPageNo;
   int _topicPageNo = 1;
 
-  //generate integerlist
-  List<int> get expertIds => _expertIds;
-  List<int> _expertIds = [];
+  List<ExpertData> get selectedExperts => _selectedExperts;
+  List<ExpertData> _selectedExperts = [];
 
   Future<void> categoryListApiCall({bool isLoaderVisible = false}) async {
     if (isLoaderVisible) {
@@ -158,15 +152,15 @@ class MultiConnectProvider extends ChangeNotifier {
   void setSelectedExpert(int index) {
     _expertData[index].selectedForMultiConnect = !_expertData[index].selectedForMultiConnect!;
     if (_expertData[index].selectedForMultiConnect!) {
-      _expertIds.add(_expertData[index].id!);
+      _selectedExperts.add(_expertData[index]);
     } else {
-      _expertIds.remove(_expertData[index].id);
+      _selectedExperts.remove(_expertData[index]);
     }
     notifyListeners();
   }
 
   void clearExpertIds() {
-    _expertIds.clear();
+    _selectedExperts.clear();
     _expertData.forEach((element) {
       element.selectedForMultiConnect = false;
     });
