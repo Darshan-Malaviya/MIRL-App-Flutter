@@ -384,8 +384,8 @@ class SocketProvider extends ChangeNotifier {
              extraResponseModel = ExtraResponseModel.fromJson(data['data']);
              extraResponseModel?.callRoleEnum = CallRoleEnum.user;
               NavigationService.context.toPushNamed(RoutesConstants.videoCallScreen,
-                  args: VideoCallArguments(agoraChannelId: data['data']['channelCode'].toString(),
-                      agoraToken: data['data']['agoraToken'].toString()));
+                  args: VideoCallArguments(agoraChannelId: extraResponseModel?.channelCode.toString() ?? '',
+                      agoraToken: extraResponseModel?.agoraToken.toString() ?? ''));
 
             }
 
