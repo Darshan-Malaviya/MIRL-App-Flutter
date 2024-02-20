@@ -15,7 +15,7 @@ class ThanksScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: ThanksWidget(),
+        child: ThanksWidget(reportName: 'BACK TO PROFILE'),
       ),
     );
   }

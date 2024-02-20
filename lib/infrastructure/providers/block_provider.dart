@@ -1,7 +1,5 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/request/user_block_request_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/models/response/user_block_response_model.dart';
@@ -31,20 +29,21 @@ class BlockProvider extends ChangeNotifier {
     return null;
   }
 
-  Future<void> checkTimeOut({required BuildContext context}) async {
-    if(instanceCallEnumNotifier.value  == CallTypeEnum.requestTimeout) {
-      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
-    } else {
-      context.toPop();
-    }
-  }
-
-  void userBlockRequestCall({required int Status,required int UserBlockId}) {
+  void userBlockRequestCall({
+    required int Status,
+    required int UserBlockId,
+    required BuildContext context,
+    bool isFromInstatCall = false,
+  }) {
     UserBlockRequestModel userBlockRequestModel = UserBlockRequestModel(status: Status, userBlockId: UserBlockId);
-    userBlockApiCall(requestModel: userBlockRequestModel.prepareRequest());
+    userBlockApiCall(requestModel: userBlockRequestModel.prepareRequest(), context: context, isFromInstatCall: isFromInstatCall);
   }
 
-  Future<void> userBlockApiCall({required Object requestModel}) async {
+  Future<void> userBlockApiCall({
+    required Object requestModel,
+    required BuildContext context,
+    bool isFromInstatCall = false,
+  }) async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _authRepository.userBlockApi(requestModel: requestModel);
     CustomLoading.progressDialog(isLoading: false);
@@ -53,6 +52,11 @@ class BlockProvider extends ChangeNotifier {
         if (response.data != null && response.data is UserBlockResponseModel) {
           UserBlockResponseModel userBlockResponseModel = response.data;
           Logger().d("Successfully user block");
+          if (isFromInstatCall) {
+            context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
+          } else {
+            context.toPop();
+          }
           FlutterToast().showToast(msg: userBlockResponseModel.message ?? '');
         }
         break;
@@ -61,7 +65,7 @@ class BlockProvider extends ChangeNotifier {
         Logger().d("API fail on user block api call ${response.data}");
         break;
     }
-  //  notifyListeners();
+    //  notifyListeners();
   }
 
   Future<void> unBlockUserApiCall({required int userBlockId, required int index}) async {

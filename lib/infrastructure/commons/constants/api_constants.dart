@@ -71,5 +71,6 @@ class ApiConstants {
   static const String unBlockUser = '/userBlock';
   static const String cms = '/cms';
   static const String reportList = '/reportList';
+  static const String userReport = '/userReport';
   static const String rateExpert = '/rateExpert';
 }

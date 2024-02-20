@@ -63,8 +63,11 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(reportUserWatch.reportListDetails.length, (index) {
             return InkWell(
-              onTap: () {
-                reportUserRead.reportUser();
+              onTap: () async {
+                reportUserRead.userReportRequestCall(
+                    reportListId: reportUserWatch.reportListDetails[index].id ?? 0,
+                    reportToId: int.parse(widget.args.expertId ?? ''));
+                await reportUserRead.reportUser();
               },
               child: Row(
                 children: [

@@ -24,9 +24,6 @@ class DashboardProvider extends ChangeNotifier {
       children: <Widget>[
         HomeScreen(),
         ExploreScreen(),
-        // BlockUserScreen(),
-        //BlockUserListScreen(),
-        //ExpertCallHistoryScreen(),
         NotificationScreen(),
         ExpertProfileScreen(),
         UserSettingScreen(),

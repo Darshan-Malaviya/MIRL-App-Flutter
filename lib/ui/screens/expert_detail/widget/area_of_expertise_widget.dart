@@ -81,7 +81,7 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                         maxLine: 3,
                         title: expertDetailWatch.userData?.areaOfExpertise?[index].topic?[i].name ?? '',
                         fontFamily: FontWeightEnum.w500.toInter,
-                        titleTextAlign: TextAlign.center,
+                        titleTextAlign: TextAlign.start,
                       ),
                       decoration: ShapeDecoration(
                         color: index % 2 == 0 ? ColorConstants.primaryColor.withOpacity(0.40) : ColorConstants.yellowButtonColor.withOpacity(0.4),

@@ -254,7 +254,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                             args: BlockUserArgs(userName: widget.args.name ?? '',
                                 imageURL: widget.args.image ?? '',
                                 userId: int.parse(widget.args.userID ?? ''),
-                                userRole: 2,reportName: '')
+                                userRole: 2,reportName: '',isFromInstantCall: true)
                         );
                       },
                       child: TitleSmallText(

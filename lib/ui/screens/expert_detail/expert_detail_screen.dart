@@ -15,7 +15,6 @@ import 'package:mirl/ui/screens/expert_detail/widget/request_call_button_widget.
 import 'package:mirl/ui/screens/expert_detail/widget/certifications_and_experience_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_widget.dart';
-import 'package:mirl/ui/screens/rating_and_review_screen/widget/reviews_list_widget.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 
 ValueNotifier<bool> isFavorite = ValueNotifier(false);
@@ -53,7 +52,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         trailingIcon: InkWell(
                 onTap: () {
                   //ReportThisUserWidget();
-                  context.toPushNamed(RoutesConstants.reportExpertScreen, args: BlockUserArgs(reportName: 'REPORT THIS EXPERT',userRole: 1));
+                  context.toPushNamed(RoutesConstants.reportExpertScreen,
+                      args: BlockUserArgs(reportName: 'REPORT THIS EXPERT', userRole: 1, expertId: widget.expertId));
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),
@@ -234,7 +234,6 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 } else {
                   FlutterToast().showToast(msg: "Expert not available.");
                 }
-
               },
             ),
             24.0.spaceY,
@@ -352,11 +351,16 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             26.0.spaceY,
             if (expertDetailWatch.userData?.ratingCriteria?.isNotEmpty ?? false) ...[
-              OverallRatingWidget(name: RatingEnum.EXPERTISE.name, value: expertDetailWatch.userData?.ratingCriteria?[0].rating ?? 0),
-              OverallRatingWidget(name: RatingEnum.COMMUNICATION.name, value: expertDetailWatch.userData?.ratingCriteria?[1].rating ?? 0),
-              OverallRatingWidget(name: RatingEnum.HELPFULNESS.name, value: expertDetailWatch.userData?.ratingCriteria?[2].rating ?? 0),
-              OverallRatingWidget(name: RatingEnum.EMPATHY.name, value: expertDetailWatch.userData?.ratingCriteria?[3].rating ?? 0),
-              OverallRatingWidget(name: RatingEnum.PROFESSIONALISM.name, value: expertDetailWatch.userData?.ratingCriteria?[4].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.EXPERTISE.name, value: expertDetailWatch.userData?.ratingCriteria?[0].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.COMMUNICATION.name, value: expertDetailWatch.userData?.ratingCriteria?[1].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.HELPFULNESS.name, value: expertDetailWatch.userData?.ratingCriteria?[2].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.EMPATHY.name, value: expertDetailWatch.userData?.ratingCriteria?[3].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.PROFESSIONALISM.name, value: expertDetailWatch.userData?.ratingCriteria?[4].rating ?? 0),
             ],
             if (expertDetailWatch.userData?.expertReviews?.isNotEmpty ?? false) ...[
               40.0.spaceY,

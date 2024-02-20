@@ -5,6 +5,7 @@ class FlutterToast {
   FToast fToast = FToast();
 
   Future showToast({required dynamic msg}) async {
+    if (msg?.isEmpty ?? false) return;
     fToast.init(NavigationService.context);
     List<String> messageList = [];
     if (msg is List) {
@@ -50,7 +51,7 @@ class FlutterToast {
                 )),
       ),
     );
-
+    cancelToast();
     fToast.showToast(child: toast, toastDuration: const Duration(seconds: 2), gravity: ToastGravity.BOTTOM);
   }
 
