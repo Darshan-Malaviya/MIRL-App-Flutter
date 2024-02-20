@@ -91,25 +91,19 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                           titleTextAlign: TextAlign.start,
                           fontFamily: FontWeightEnum.w400.toInter,
                           fontSize: 13,
-                          maxLine: 3,
+                          maxLine: 10,
                         ),
                       ],
-                    ).addMarginTop(20),
+                    ).addMarginTop(30),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      size: 36,
-                      color: ColorConstants.redColor,
-                    ),
-                  )
+                  10.0.spaceX,
+                  Align(alignment: Alignment.centerRight, child: Image.asset(ImageConstants.arrow))
                 ],
               ),
             );
           }),
         )
       ],
-    ).addAllPadding(20);
+    ).addAllPadding(30);
   }
 }

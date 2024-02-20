@@ -32,8 +32,11 @@ class ReportUserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void thanks() {
+  void thanks(BuildContext context) {
     _currentView = 0;
+    //  context.toPop(RoutesConstants.expertDetailScreen);
+    context.toPop();
+    context.toPop();
     notifyListeners();
   }
 

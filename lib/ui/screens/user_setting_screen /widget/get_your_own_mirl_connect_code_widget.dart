@@ -1,0 +1,62 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+
+class GetYourOwnMirlConnectCodeWidget extends ConsumerStatefulWidget {
+  const GetYourOwnMirlConnectCodeWidget({super.key});
+
+  @override
+  ConsumerState<GetYourOwnMirlConnectCodeWidget> createState() => _GetYourOwnMirlConnectCodeWidgetState();
+}
+
+class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirlConnectCodeWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        40.0.spaceY,
+        TitleSmallText(
+          title: LocaleKeys.friendReferralCode.tr().toUpperCase(),
+          fontFamily: FontWeightEnum.w600.toInter,
+          maxLine: 2,
+          titleTextAlign: TextAlign.center,
+          titleColor: ColorConstants.blackColor,
+        ),
+        20.0.spaceY,
+        TextFormFieldWidget(
+          labelTextSpace: 0.0,
+          enabledBorderColor: ColorConstants.borderLightColor,
+          onTap: () {},
+          height: 45,
+          hintText: LocaleKeys.friendReferralCode.tr(),
+          alignment: Alignment.centerLeft,
+        ),
+        20.0.spaceY,
+        PrimaryButton(
+          buttonColor: ColorConstants.primaryColor,
+          title: LocaleKeys.mirlConnectCode.tr(),
+          titleColor: ColorConstants.textColor,
+          onPressed: () {},
+          //  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
+        ),
+        40.0.spaceY,
+        LabelSmallText(
+          title: LocaleKeys.inaugural.tr(),
+          titleColor: ColorConstants.primaryColor,
+          titleTextAlign: TextAlign.center,
+          maxLine: 2,
+          fontSize: 10,
+        ),
+        60.0.spaceY,
+        TitleSmallText(
+          fontFamily: FontWeightEnum.w500.toInter,
+          title: LocaleKeys.referralCode.tr(),
+          titleColor: ColorConstants.blackColor,
+          titleTextAlign: TextAlign.center,
+          maxLine: 10,
+        ),
+      ],
+    );
+  }
+}

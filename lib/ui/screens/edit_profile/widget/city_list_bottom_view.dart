@@ -29,7 +29,7 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.clearSearchTap();
-      ref.read(commonAppProvider).clearCountryPaginationData();
+      ref.read(commonAppProvider).clearCityPaginationData();
       ref.read(commonAppProvider).cityListApiCall(isFullScreenLoader: true, countryName: widget.countryName);
     });
     scrollController.addListener(() async {
