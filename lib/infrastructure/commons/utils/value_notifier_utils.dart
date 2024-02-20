@@ -10,5 +10,6 @@ ValueNotifier<int> instanceRequestTimerNotifier = ValueNotifier<int>(-1);
 ValueNotifier<CallTypeEnum> instanceCallEnumNotifier = ValueNotifier<CallTypeEnum>(CallTypeEnum.callRequest);
 ValueNotifier<CallConnectStatusEnum> callConnectNotifier = ValueNotifier<CallConnectStatusEnum>(CallConnectStatusEnum.ringing);
 ValueNotifier<bool> changeVideoCallView = ValueNotifier<bool>(true);
+ValueNotifier<String> activeRoute = ValueNotifier<String>("/");
 
 

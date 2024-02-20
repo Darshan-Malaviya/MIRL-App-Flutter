@@ -198,6 +198,7 @@
   "blockedOn" : "BLOCKED ON:",
   "status" : "STATUS:",
   "unblockUser" : "UNBLOCK USER",
+  "expertNotResponding"  : "Expert not responding!",
   "noReviewFound" : "No review found"
 
 }

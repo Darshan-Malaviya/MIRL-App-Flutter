@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/screens/auth_screen/login_screen.dart';
 import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
@@ -62,7 +65,10 @@ class NavigationService {
 /// on generate route
 class RouterConstant {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
+     activeRoute.value = settings.name ?? '';
+    log('Active route: ${activeRoute.value}');
+
+  switch (settings.name) {
       /// normal page routing
       case RoutesConstants.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());

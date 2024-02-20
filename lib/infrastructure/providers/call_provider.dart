@@ -5,6 +5,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/enums/call_connect_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/services/agora_service.dart';
@@ -157,7 +158,7 @@ class CallProvider extends ChangeNotifier {
                     SharedPrefHelper.getUserId.toString())) {
               /// expert kill app so completed call emit trigger from user side
               ref.read(socketProvider).updateCallStatusEmit(
-                  status: 6,
+                  status: CallStatusEnum.completedCall,
                   callRoleEnum: CallRoleEnum.user,
                   callHistoryId: ref.read(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
             } else {
@@ -166,7 +167,7 @@ class CallProvider extends ChangeNotifier {
                       SharedPrefHelper.getUserId.toString()))) {
                 /// user kill app so completed call emit trigger from expert side
                 ref.read(socketProvider).updateCallStatusEmit(
-                    status: 6,
+                    status: CallStatusEnum.completedCall,
                     callRoleEnum: CallRoleEnum.expert,
                     callHistoryId: ref.read(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
               }

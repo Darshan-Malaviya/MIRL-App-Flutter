@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
-import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
@@ -189,48 +189,46 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ],
             AreaOfExpertiseWidget(),
             ExpertDetailsButtonWidget(
-              titleColor: expertDetailWatch.userData?.onlineStatus == 1
-                  ? ColorConstants.buttonTextColor
-                  : ColorConstants.overAllRatingColor,
+
+              titleColor:  expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.buttonTextColor : ColorConstants.overAllRatingColor,
               title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : "ZEN MODE : CALL PAUSED",
-              buttonColor: expertDetailWatch.userData?.onlineStatus == 1
-                  ? ColorConstants.requestCallNowColor
-                  : ColorConstants.redLightColor,
+              buttonColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.requestCallNowColor : ColorConstants.redLightColor ,
               onTap: () {
                 if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
                     (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                   instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
-
                   /// THis is call sender (User) side
                   context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
                       args: InstanceCallDialogArguments(
                         name: expertDetailWatch.userData?.userName ?? "",
                         onFirstBtnTap: () {
-                          if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
-                              (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
-                            ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                          if (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout) {
+                            ref.read(socketProvider).manageTimeOutStatus(
+                                userData: expertDetailWatch.userData, expertId: widget.expertId, context: context);
                           } else {
-                            FlutterToast().showToast(msg: "Expert not available.");
+                            if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
+                                (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+                              ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                            } else {
+                              FlutterToast().showToast(msg: "Expert not available.");
+                            }
                           }
                         },
                         onSecondBtnTap: () {
-                          if (instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                          if(instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                             context.toPop();
-                          } else if (instanceCallEnumNotifier.value == CallTypeEnum.requestApproved) {
+                          } else if(instanceCallEnumNotifier.value == CallTypeEnum.requestApproved){
                             ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
-
                             ///context.toPop();
-                          } else {
-                            ref.read(socketProvider).updateRequestStatusEmit(
-                                expertId: widget.expertId,
-                                callStatusEnum: CallStatusEnum.cancel,
-                                callRoleEnum: CallRoleEnum.user,
-                                userId: SharedPrefHelper.getUserId.toString());
+                          }
+                          else {
+                            ref.read(socketProvider).updateRequestStatusEmit(expertId: widget.expertId, callStatusEnum: CallRequestStatusEnum.cancel,
+                                callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
                             context.toPop();
                           }
                         },
                         image: expertDetailWatch.userData?.userProfile ?? "",
-                        expertId: expertDetailWatch.userData?.id.toString() ?? '',
+                        expertId: expertDetailWatch.userData?.id.toString() ??'',
                         userID: SharedPrefHelper.getUserId.toString(),
                       ));
                 } else {
