@@ -61,7 +61,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
           fontSize: 15,
           titleColor: ColorConstants.blueColor,
         ),
-        14.0.spaceY,
+        16.0.spaceY,
         durationWidget(scheduleProviderWatch),
         10.0.spaceY,
         BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
