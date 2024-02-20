@@ -188,6 +188,18 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                         ).addPaddingXY(paddingX: 16, paddingY: 16),
                       ),
                       20.0.spaceY,
+                      Visibility(
+                        visible: instanceCallDurationNotifier.value != 0 && (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
+                            || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested),
+                        replacement: SizedBox.shrink(),
+                        child: TitleSmallText(
+                          title: "${LocaleKeys.duration.tr()} : ${(instanceCallDurationNotifier.value / 60).toString()} minutes",
+                          fontFamily: FontWeightEnum.w400.toInter,
+                          titleTextAlign: TextAlign.center,
+                          titleColor: ColorConstants.textColor,
+                        ),
+                      ),
+                      20.0.spaceY,
                       (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
                           || instanceCallEnumNotifier.value == CallTypeEnum.requestApproved
                        || instanceCallEnumNotifier.value == CallTypeEnum.requestDeclined)
@@ -253,7 +265,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                         NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
                             args: BlockUserArgs(userName: widget.args.name ?? '',
                                 imageURL: widget.args.image ?? '',
-                                userId: int.parse(widget.args.userID ?? ''),
+                                userId: int.parse(widget.args.userID),
                                 userRole: 2,reportName: '',isFromInstantCall: true)
                         );
                       },

@@ -199,6 +199,7 @@
   "status" : "STATUS:",
   "unblockUser" : "UNBLOCK USER",
   "expertNotResponding"  : "Expert not responding!",
-  "noReviewFound" : "No review found"
+  "noReviewFound" : "No review found",
+  "areYouReady" : "Are you Ready?"
 
 }

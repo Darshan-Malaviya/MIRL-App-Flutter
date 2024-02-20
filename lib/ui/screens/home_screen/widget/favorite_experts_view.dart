@@ -17,8 +17,9 @@ class FavoriteExpertsView extends ConsumerWidget {
         BodySmallText(
           title: LocaleKeys.yourFavoriteExperts.tr(),
         ),
-        20.0.spaceY,
+
         if ((homeProviderWatch.homeData?.userFavorites?.isNotEmpty ?? false) && homeProviderWatch.homeData?.userFavorites != null) ...[
+          20.0.spaceY,
           SizedBox(
             height: 120,
             child: ListView.builder(
@@ -33,6 +34,12 @@ class FavoriteExpertsView extends ConsumerWidget {
                     child: ShadowContainer(
                       padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
                       shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                      width: 96,
+                      height: 116,
+                      isShadow: true,
+                      offset: Offset(0,2),
+                      spreadRadius: 0,
+                      blurRadius: 3,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -48,9 +55,7 @@ class FavoriteExpertsView extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      width: 96,
-                      height: 116,
-                      isShadow: true,
+
                     ).addPaddingLeft(10),
                   );
                 }),
@@ -64,6 +69,7 @@ class FavoriteExpertsView extends ConsumerWidget {
             ),
           ),
         ] else ...[
+          10.0.spaceY,
           BodySmallText(
             titleColor: ColorConstants.emptyTextColor,
             fontFamily: FontWeightEnum.w400.toInter,

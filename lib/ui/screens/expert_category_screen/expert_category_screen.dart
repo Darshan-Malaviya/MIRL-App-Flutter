@@ -30,7 +30,9 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
     final addYourAreaExpertiseProviderRead = ref.read(addYourAreaExpertiseProvider);
 
     return Scaffold(
+        backgroundColor: ColorConstants.greyLightColor,
         appBar: AppBarWidget(
+          appBarColor: ColorConstants.greyLightColor,
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
             onTap: () => context.toPop(),
@@ -83,6 +85,12 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                                       shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
                                           ? ColorConstants.categoryListBorder
                                           : ColorConstants.blackColor.withOpacity(0.1),
+                                      height: 100,
+                                      width: 100,
+                                      isShadow: true,
+                                      offset: Offset(0,2),
+                                      spreadRadius: 0,
+                                      blurRadius: 3,
                                       child: Column(
                                         children: [
                                           ClipRRect(
@@ -95,16 +103,14 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                                               width: 50,
                                             ),
                                           ),
-                                          4.0.spaceY,
+                                          10.0.spaceY,
                                           LabelSmallText(
                                             fontSize: 9,
-                                            title: element?.name ?? '',
+                                            title: element?.name?.toUpperCase() ?? '',
                                           ),
                                         ],
                                       ),
-                                      height: 90,
-                                      width: 90,
-                                      isShadow: true,
+
                                     ),
                                   ),
                                 ],
