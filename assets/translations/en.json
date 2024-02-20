@@ -197,6 +197,7 @@
   "userWith" : "USER:",
   "blockedOn" : "BLOCKED ON:",
   "status" : "STATUS:",
-  "unblockUser" : "UNBLOCK USER"
+  "unblockUser" : "UNBLOCK USER",
+  "noReviewFound" : "No review found"
 
 }

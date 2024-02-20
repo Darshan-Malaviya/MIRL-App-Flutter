@@ -59,9 +59,6 @@ class ReportUserProvider extends ChangeNotifier {
             _reportUserListPageNo = _reportUserListPageNo + 1;
             _reachedCategoryLastPage = false;
           }
-
-          Logger().d("Successfully get all block details");
-          FlutterToast().showToast(msg: responseModel.message ?? '');
         }
         break;
       case APIStatus.failure:
