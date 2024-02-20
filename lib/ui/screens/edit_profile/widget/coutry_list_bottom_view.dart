@@ -24,6 +24,7 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.clearSearchTap();
+      ref.read(commonAppProvider).clearCountryPaginationData();
       ref.read(commonAppProvider).CountryListApiCall(isFullScreenLoader: true);
     });
     scrollController.addListener(() async {

@@ -45,4 +45,5 @@ class RoutesConstants {
   static const String ratingAndReviewScreen = '/ratingAndReviewScreen';
   static const String earningReportScreen = '/earningReportScreen';
   static const String cmsScreen = '/cmsScreen';
+  static const String mirlConnectScreen = '/mirlConnectScreen';
 }
