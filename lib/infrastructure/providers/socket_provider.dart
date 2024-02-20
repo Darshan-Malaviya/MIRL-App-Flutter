@@ -43,6 +43,8 @@ class SocketProvider extends ChangeNotifier {
     updateCallStatusResponse();
     timerResponse();
     timerListener();
+    multiConnectRequestResponse();
+    multiConnectRequestListener();
     socketListen.value = true;
   }
 
@@ -589,5 +591,51 @@ class SocketProvider extends ChangeNotifier {
   }
 
 
+
+
+  void multiConnectRequestEmit({required List<int> expertIdsList}) {
+    try {
+      Logger().d('multiConnectRequestEmit ==== Success');
+      String userId = SharedPrefHelper.getUserId.toString();
+      socket?.emit(AppConstants.multiConnectRequest, {
+        AppConstants.expertId: expertIdsList,
+        AppConstants.userId: userId,
+        AppConstants.time: DateTime.now().toUtc().toString()
+      });
+    } catch (e) {
+      Logger().d('multiConnectRequestEmit====$e');
+    }
+  }
+
+
+  void multiConnectRequestResponse() {
+    try {
+      socket?.on(AppConstants.multiConnectRequestSent, (data) {
+        Logger().d('multiConnectRequestResponse=====${data.toString()}');
+        if (data.toString().isNotEmpty) {
+          if (data['statusCode'].toString() == '200') {
+
+          }
+        }
+      });
+    } catch (e) {
+      Logger().d('multiConnectRequestSent====$e');
+    }
+  }
+
+  void multiConnectRequestListener() {
+    try {
+      socket?.on(AppConstants.multiConnectRequestReceived, (data) {
+        Logger().d('multiConnectRequestReceived=====${data.toString()}');
+        if (data.toString().isNotEmpty) {
+          if (data['statusCode'].toString() == '200') {
+
+          }
+        }
+      });
+    } catch (e) {
+      Logger().d('multiConnectRequestReceived====$e');
+    }
+  }
 
 }

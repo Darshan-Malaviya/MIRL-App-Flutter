@@ -182,20 +182,63 @@ class ExpertDetails {
   int? id;
   String? expertProfile;
   String? expertName;
+  int? fee;
+  int? overAllRating;
 
-  ExpertDetails({this.id, this.expertProfile, this.expertName});
+
+  ExpertDetails({this.id, this.expertProfile, this.expertName,this.fee,this.overAllRating});
 
   ExpertDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    expertProfile = json['expertProfile'];
-    expertName = json['expertName'];
+    if (json['id'] != null) {
+      if (json['id'] is String) {
+        id = int.parse(json['id']);
+      } else {
+        id = json['id'];
+      }
+    }
+    if(json['expertProfile'] != null){
+      expertProfile = json['expertProfile'].toString();
+    }
+    if(json['expertName'] != null){
+      expertName = json['expertName'].toString();
+    }
+
+
+   if(json['overAllRating'] != null){
+     if (json['overAllRating'] is String) {
+       overAllRating = int.parse(json['overAllRating']);
+     } else {
+       overAllRating = json['overAllRating'];
+     }
+   }
+
+   if (json['fee'] != null) {
+      if (json['fee'] is String) {
+        fee = int.parse(json['fee']);
+      } else {
+        fee = json['fee'];
+      }
+    }
+
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['expertProfile'] = this.expertProfile;
-    data['expertName'] = this.expertName;
+    if(this.id != null){
+      data['id'] = this.id;
+    }
+    if(this.expertProfile != null){
+      data['expertProfile'] = this.expertProfile;
+    }
+    if(this.expertName != null){
+      data['expertName'] = this.expertName;
+    }
+    if(this.fee != null){
+      data['fee'] = this.fee;
+    }
+    if(this.overAllRating != null){
+      data['overAllRating'] = this.overAllRating;
+    }
     return data;
   }
 }

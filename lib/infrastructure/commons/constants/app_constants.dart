@@ -36,6 +36,14 @@ class AppConstants {
   static const updateConnectCallStatusSent = 'updateConnectCallStatusSent';
   static const updateConnectCallStatusReceived = 'updateConnectCallStatusReceived';
 
+  static const multiConnectRequest = 'multiConnectRequest';
+  static const multiConnectRequestSent = 'multiConnectRequestSent';
+  static const multiConnectRequestReceived = 'multiConnectRequestReceived';
+
+  static const multiConnectUpdateStatus = 'multiConnectUpdateStatus';
+  static const multiConnectStatusSend = 'multiConnectStatusSend';
+  static const multiConnectStatusReceived = 'multiConnectStatusReceived';
+
   static const getTime = 'getTime';
   static const timeSend = 'timeSend';
   static const timeReceived = 'timeReceived';
