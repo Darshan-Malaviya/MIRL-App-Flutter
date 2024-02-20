@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/table_calender_widget/table_border.dart';
@@ -28,6 +30,8 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+    PageController _pageController = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
@@ -42,6 +46,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
             }
           }
         } else {
+          log(day.toString());
           return isSameDay(widget.selectedDay, day);
         }
         return false;
@@ -60,6 +65,10 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         disabledTextStyle: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 12, color: ColorConstants.disableColor),
         weekendTextStyle: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 12, color: ColorConstants.buttonTextColor),
       ),
+      onCalendarCreated: (pageController) {
+        _pageController = pageController;
+      },
+
       headerStyle: HeaderStyle(rightChevronVisible: false, leftChevronVisible: false, formatButtonVisible: false, titleCentered: true),
       calendarBuilders: CalendarBuilders(
         defaultBuilder: (context, day, focusedDay) {
@@ -76,23 +85,35 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           }
           return null;
         },
+        outsideBuilder: (context, day, focusedDay) {
+          return Center(
+            child: BodySmallText(
+              title: day.day.toString().padLeft(0, '0'),
+              titleColor: ColorConstants.buttonTextColor,
+              fontFamily: FontWeightEnum.w400.toInter,
+            ),
+          );
+        },
         headerTitleBuilder: (context, day) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
-                child: Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: ColorConstants.yellowButtonColor.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: ColorConstants.dropDownBorderColor),
-                  ),
-                  child: Center(
-                    child: BodySmallText(
-                      title: DateFormat.MMMM().format(DateTime(day.year, day.month - 1, day.day)).toUpperCase(),
-                      titleColor: ColorConstants.buttonTextColor,
+                child: InkWell(
+                  onTap: () =>   _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+                  child: Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: ColorConstants.yellowButtonColor.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: ColorConstants.dropDownBorderColor),
+                    ),
+                    child: Center(
+                      child: BodySmallText(
+                        title: DateFormat.MMMM().format(DateTime(day.year, day.month - 1, day.day)).toUpperCase(),
+                        titleColor: ColorConstants.buttonTextColor,
+                      ),
                     ),
                   ),
                 ),
@@ -115,17 +136,20 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
               ),
               5.0.spaceX,
               Expanded(
-                child: Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: ColorConstants.yellowButtonColor.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: ColorConstants.dropDownBorderColor),
-                  ),
-                  child: Center(
-                    child: BodySmallText(
-                      title: DateFormat.MMMM().format(DateTime(day.year, day.month + 1, day.day)).toUpperCase(),
-                      titleColor: ColorConstants.buttonTextColor,
+                child: InkWell(
+                  onTap: () =>   _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+                  child: Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: ColorConstants.yellowButtonColor.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: ColorConstants.dropDownBorderColor),
+                    ),
+                    child: Center(
+                      child: BodySmallText(
+                        title: DateFormat.MMMM().format(DateTime(day.year, day.month + 1, day.day)).toUpperCase(),
+                        titleColor: ColorConstants.buttonTextColor,
+                      ),
                     ),
                   ),
                 ),

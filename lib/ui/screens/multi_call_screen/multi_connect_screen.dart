@@ -4,8 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
+import 'package:mirl/ui/common/shimmer_widgets/multiconnect_shimmer.dart';
 import 'package:mirl/ui/screens/multi_call_screen/widget/multi_connect_category_widget.dart';
 
 class MultiConnectScreen extends ConsumerStatefulWidget {
@@ -74,11 +74,11 @@ class _MultiConnectScreenState extends ConsumerState<MultiConnectScreen> {
           ),
           30.0.spaceY,
           if (multiProviderWatch.isLoading) ...[
-            CategoryListShimmerWidget(),
+            MultiConnectShimmerWidget(),
             20.0.spaceY,
-            CategoryListShimmerWidget(),
+            MultiConnectShimmerWidget(),
             20.0.spaceY,
-            CategoryListShimmerWidget()
+            MultiConnectShimmerWidget()
           ] else ...[
             Expanded(child: MultiConnectCategoryWidget()),
           ]
