@@ -46,14 +46,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PrimaryButton(
-              title: StringConstants.logOut,
-              onPressed: () async {
-                SharedPrefHelper.clearPrefs();
-                context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-              },
-            ),
-            10.0.spaceY,
+            // PrimaryButton(
+            //   title: StringConstants.logOut,
+            //   onPressed: () async {
+            //     SharedPrefHelper.clearPrefs();
+            //     context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+            //   },
+            // ),
+            // 10.0.spaceY,
             InkWell(
               onTap: () {
                 context.toPushNamed(RoutesConstants.searchScreen);

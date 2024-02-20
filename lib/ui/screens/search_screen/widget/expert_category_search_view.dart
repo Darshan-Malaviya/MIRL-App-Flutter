@@ -40,7 +40,9 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                       onTap: () {},
                       child: ShadowContainer(
                         shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                        offset: Offset(0,2),
+                        height: 110,
+                        width: 90,
+                        offset: Offset(0, 2),
                         blurRadius: 2,
                         spreadRadius: 0,
                         child: Column(
@@ -53,7 +55,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                                 imageURL: homeProviderWatch.homeSearchData?.categories?[index].image ?? '',
                                 isNetworkImage: true,
                                 height: 60,
-                                width: 55,
+                                width: 50,
                               ),
                             ),
                             4.0.spaceY,
@@ -66,7 +68,6 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                             ),
                           ],
                         ),
-                        width: 90,
                         isShadow: true,
                       ),
                     ),

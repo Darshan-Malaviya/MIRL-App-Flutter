@@ -57,7 +57,7 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
       ),
       child: SingleChildScrollView(
         controller: controller,
-        child: ReportThisUserWidget(args:BlockUserArgs(userRole: widget.args.userRole,reportName: widget.args.reportName) ),
+        child: ReportThisUserWidget(args:BlockUserArgs(userRole: widget.args.userRole,reportName: widget.args.reportName,expertId: widget.args.expertId) ),
       ),
     );
   }

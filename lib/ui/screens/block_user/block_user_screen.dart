@@ -125,8 +125,11 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                         30.0.spaceY,
                         InkWell(
                           onTap: () {
-                            blockUserRead.userBlockRequestCall(Status: 1, UserBlockId: widget.args.userId ?? 0);
-                            context.toPop();
+                            blockUserRead.userBlockRequestCall(
+                                context: context,
+                                Status: 1,
+                                UserBlockId: widget.args.userId ?? 0,
+                                isFromInstatCall: widget.args.isFromInstantCall);
                           },
                           child: Center(
                               child: BodyLargeText(
@@ -156,7 +159,11 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
               title: LocaleKeys.permanentBlock.tr(),
               onPressed: () {
                 // context.toPushNamed(RoutesConstants.blockUserListScreen);
-                blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.userId ?? 0);
+                blockUserRead.userBlockRequestCall(
+                    Status: 2,
+                    UserBlockId: widget.args.userId ?? 0,
+                    isFromInstatCall: widget.args.isFromInstantCall,
+                    context: context);
               },
               fontSize: 13,
             ),
@@ -172,7 +179,10 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
             InkWell(
               onTap: () {
                 context.toPushNamed(RoutesConstants.reportUserScreen,
-                    args: BlockUserArgs(userRole: 2, reportName: 'REPORT THIS USER'));
+                    args: BlockUserArgs(
+                      userRole: 2,
+                      reportName: 'REPORT THIS USER',
+                    ));
               },
               child: BodySmallText(
                 title: LocaleKeys.reportUser.tr(),

@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/request/search_pagination_common_request_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/repository/update_expert_profile_repo.dart';
@@ -39,8 +40,7 @@ class CommonAppProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    ApiHttpResult response =
-        await _updateUserDetailsRepository.countryApiCall(limit: 30, page: _pageNo, searchName: searchName);
+    ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(limit: 30, page: _pageNo, searchName: searchName);
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     } else {
@@ -76,8 +76,10 @@ class CommonAppProvider extends ChangeNotifier {
       _isSearchCityBottomSheetLoading = true;
       notifyListeners();
     }
-    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
-        limit: 30, page: _cityPageNo, countryName: countryName, searchName: searchName);
+
+    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(
+        page: _cityPageNo.toString(), limit: "30", search: searchName, countryName: countryName);
+    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(requestModel: model.toNullFreeJson());
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     } else {
