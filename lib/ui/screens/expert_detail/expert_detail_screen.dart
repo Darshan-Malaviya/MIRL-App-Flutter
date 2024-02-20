@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
-import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
@@ -201,10 +201,16 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       args: InstanceCallDialogArguments(
                         name: expertDetailWatch.userData?.userName ?? "",
                         onFirstBtnTap: () {
-                          if((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1') ){
-                            ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                          if (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout) {
+                            ref.read(socketProvider).manageTimeOutStatus(
+                                userData: expertDetailWatch.userData, expertId: widget.expertId, context: context);
                           } else {
-                            FlutterToast().showToast(msg: "Expert not available.");
+                            if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
+                                (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+                              ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                            } else {
+                              FlutterToast().showToast(msg: "Expert not available.");
+                            }
                           }
                         },
                         onSecondBtnTap: () {
@@ -215,7 +221,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                             ///context.toPop();
                           }
                           else {
-                            ref.read(socketProvider).updateRequestStatusEmit(expertId: widget.expertId, callStatusEnum: CallStatusEnum.cancel,
+                            ref.read(socketProvider).updateRequestStatusEmit(expertId: widget.expertId, callStatusEnum: CallRequestStatusEnum.cancel,
                                 callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
                             context.toPop();
                           }

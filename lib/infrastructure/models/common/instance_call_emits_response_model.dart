@@ -46,7 +46,7 @@ class InstanceCallEmitsData {
       this.role,
       this.timerType,
       this.callHistoryId,
-        this.requestType});
+      this.requestType});
 
   InstanceCallEmitsData.fromJson(Map<String, dynamic> json) {
     userDetails = json['userDetails'] != null ? UserDetails.fromJson(json['userDetails']) : null;
@@ -196,6 +196,28 @@ class ExpertDetails {
     data['id'] = this.id;
     data['expertProfile'] = this.expertProfile;
     data['expertName'] = this.expertName;
+    return data;
+  }
+}
+
+class InstanceCallErrorModel {
+  int? statusCode;
+  List<String>? message;
+  String? error;
+
+  InstanceCallErrorModel({this.statusCode, this.message, this.error});
+
+  InstanceCallErrorModel.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    message = json['message'].cast<String>();
+    error = json['error'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['statusCode'] = this.statusCode;
+    data['message'] = this.message;
+    data['error'] = this.error;
     return data;
   }
 }

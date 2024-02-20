@@ -187,6 +187,7 @@
   "userWith" : "USER:",
   "blockedOn" : "BLOCKED ON:",
   "status" : "STATUS:",
-  "unblockUser" : "UNBLOCK USER"
+  "unblockUser" : "UNBLOCK USER",
+  "expertNotResponding"  : "Expert not responding!"
 
 }
