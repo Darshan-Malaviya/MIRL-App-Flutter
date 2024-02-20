@@ -39,12 +39,11 @@ class _MultiConnectScreenState extends ConsumerState<MultiConnectScreen> {
   @override
   Widget build(BuildContext context) {
     final multiProviderWatch = ref.watch(multiConnectProvider);
-    final multiProviderRead = ref.read(multiConnectProvider);
 
     return Scaffold(
-      backgroundColor: ColorConstants.grayLightColor,
+      backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
-        appBarColor: ColorConstants.grayLightColor,
+        appBarColor: ColorConstants.greyLightColor,
         preferSize: 40,
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
@@ -65,17 +64,6 @@ class _MultiConnectScreenState extends ConsumerState<MultiConnectScreen> {
             fontFamily: FontWeightEnum.w400.toInter,
             titleTextAlign: TextAlign.center,
             maxLine: 10,
-          ),
-          30.0.spaceY,
-          PrimaryButton(
-            title: LocaleKeys.filterFromTopicAndCategories.tr(),
-            titleColor: ColorConstants.blackColor,
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            onPressed: () {
-              context.toPushNamed(RoutesConstants.multiConnectFilterScreen,args: true);
-            },
-            prefixIcon: ImageConstants.filter,
-            prefixIconPadding: 10,
           ),
           30.0.spaceY,
           BodySmallText(

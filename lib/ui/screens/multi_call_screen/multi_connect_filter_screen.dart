@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
-import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
 import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
@@ -13,9 +12,7 @@ import 'package:mirl/ui/screens/filter_screen/widget/filter_bottomsheet_widget.d
 import 'package:mirl/ui/screens/filter_screen/widget/topic_list_by_category_bottom_view.dart';
 
 class MultiConnectFilterScreen extends ConsumerStatefulWidget {
-  final bool? fromMultiConnectMainScreen;
-
-  const MultiConnectFilterScreen({super.key, required this.fromMultiConnectMainScreen});
+  const MultiConnectFilterScreen({super.key});
 
   @override
   ConsumerState createState() => _MultiConnectFilterScreenState();
@@ -25,7 +22,6 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
     });
     super.initState();
   }
@@ -41,18 +37,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
           onTap: () {
-            if (widget.fromMultiConnectMainScreen!) {
-              if (filterWatch.commonSelectionModel.isNotEmpty) {
-                context.toPushNamed(RoutesConstants.multiConnectSelectedCategoryScreen,
-                    args: FilterArgs(
-                      fromMultiConnectFilterBack: true,
-                    ));
-              } else {
-                context.toPop();
-              }
-            } else {
-              context.toPop();
-            }
+            context.toPop();
           },
         ),
       ),
@@ -148,7 +133,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                     },
                     clearSearchTap: () => filterRead.clearSearchCityController(),
                     searchController: filterWatch.searchCityController,
-                    countryId: filterWatch.selectedCountryModel?.id ?? '',
+                    countryName: filterWatch.selectedCountryModel?.country ?? '',
                   ));
             }, StringConstants.cityText),
             30.0.spaceY,
@@ -191,34 +176,6 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             double endFeeRange = filterWatch.end ?? 0;
             double startFeeRange = filterWatch.start ?? 0;
 
-            if (widget.fromMultiConnectMainScreen ?? false) {
-              filterRead.clearExploreExpertSearchData();
-              filterRead.clearExploreController();
-              await multiProviderRead.exploreExpertUserAndCategoryApiCall(
-                  context: context,
-                  isFromFilter: true,
-                  requestModel: ExpertDataRequestModel(
-                      userId: SharedPrefHelper.getUserId,
-                      categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
-                      city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                      country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                      gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
-                      instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
-                          ? filterWatch.isCallSelect == 1
-                              ? "true"
-                              : "false"
-                          : null,
-                      maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
-                      minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
-                      feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                          ? null
-                          : filterWatch.sortBySelectedItem == 'PRICE'
-                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                  ? 'ASC'
-                                  : 'DESC'
-                              : null,
-                      topicIds: selectedTopicId));
-            } else {
               filterRead.clearSingleCategoryData();
 
               await multiProviderRead.getSingleCategoryApiCall(
@@ -238,8 +195,8 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                             ? "true"
                             : "false"
                         : null,
-                    maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
-                    minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
+                    maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
+                    minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
                     feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
                         ? null
                         : filterWatch.sortBySelectedItem == 'PRICE'
@@ -248,7 +205,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                                 : 'DESC'
                             : null,
                   ));
-            }
+
           }).addPaddingXY(paddingX: 50, paddingY: 10),
     );
   }

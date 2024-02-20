@@ -7,9 +7,10 @@ class ExpertData {
   int? fee;
   String? about;
   String? overAllRating;
+  bool? selectedForMultiConnect;
   List<ExpertCategory>? expertCategory;
 
-  ExpertData({this.id, this.expertName, this.expertProfile, this.fee, this.about, this.overAllRating, this.expertCategory});
+  ExpertData({this.id, this.expertName, this.expertProfile, this.fee, this.about, this.overAllRating, this.expertCategory, this.selectedForMultiConnect});
 
   ExpertData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -21,9 +22,10 @@ class ExpertData {
     if (json['expertCategory'] != null) {
       expertCategory = <ExpertCategory>[];
       json['expertCategory'].forEach((v) {
-        expertCategory!.add(new ExpertCategory.fromJson(v));
+        expertCategory?.add(new ExpertCategory.fromJson(v));
       });
     }
+    selectedForMultiConnect = false;
   }
 
   Map<String, dynamic> toJson() {

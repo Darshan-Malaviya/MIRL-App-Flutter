@@ -29,7 +29,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final homeProviderRead = ref.read(homeProvider);
 
     return Scaffold(
-      backgroundColor: ColorConstants.grayLightColor,
+      backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
         preferSize: 0,
       ),

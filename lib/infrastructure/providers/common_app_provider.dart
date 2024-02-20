@@ -69,7 +69,7 @@ class CommonAppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName, required String id}) async {
+  Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName, required String countryName}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
     } else {
@@ -77,7 +77,7 @@ class CommonAppProvider extends ChangeNotifier {
       notifyListeners();
     }
     ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
-        limit: 30, page: _cityPageNo, countryId: id, searchName: searchName);
+        limit: 30, page: _cityPageNo, countryName: countryName, searchName: searchName);
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
     } else {

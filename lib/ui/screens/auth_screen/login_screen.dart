@@ -130,7 +130,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ..onTap = () {
                                 context.toPushNamed(RoutesConstants.cmsScreen,
                                     args: CmsArgs(
-                                      name: 'terms_conditions',
+                                      name: 'termsConditions',
                                       title: AppConstants.termsAndConditions,
                                     ));
                               },
@@ -145,7 +145,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 context.toPushNamed(RoutesConstants.cmsScreen,
-                                    args: CmsArgs(title: AppConstants.privacyPolicy, name: "privacy_policy"));
+                                    args: CmsArgs(title: AppConstants.privacyPolicy, name: "privacyPolicy"));
                               },
                           ),
                         ]),

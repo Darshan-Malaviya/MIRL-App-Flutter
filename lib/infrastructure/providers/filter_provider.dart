@@ -10,6 +10,7 @@ import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/models/response/explore_expert_category_and_user_response.dart';
 import 'package:mirl/infrastructure/models/response/get_single_category_response_model.dart';
+import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 import 'package:mirl/infrastructure/repository/common_repo.dart';
 import 'package:mirl/infrastructure/repository/expert_category_repo.dart';
 
@@ -130,7 +131,13 @@ class FilterProvider extends ChangeNotifier {
   CategoryAndExpertUser? get categoryList => _categoryList;
   CategoryAndExpertUser? _categoryList;
 
-  Future<void> removeFilter({required int index, bool isFromExploreExpert = false, required BuildContext context, String? singleCategoryId}) async {
+  Future<void> removeFilter(
+      {required int index,
+      bool isFromExploreExpert = false,
+      bool isFromMultiConnect = false,
+      required BuildContext context,
+      String? singleCategoryId,
+      String multiConnectRequest = 'false'}) async {
     String? selectedTopicId;
     if (commonSelectionModel[index].title == FilterType.Topic.name) {
       _selectedTopicList = null;
@@ -148,6 +155,7 @@ class FilterProvider extends ChangeNotifier {
 
     ExpertDataRequestModel data = ExpertDataRequestModel(
         page: _exploreExpertPageNo.toString(),
+        multiConnectRequest: multiConnectRequest,
         limit: '10',
         city: commonSelectionModel[index].title == FilterType.City.name
             ? null
@@ -182,9 +190,9 @@ class FilterProvider extends ChangeNotifier {
                     : null,
         // experienceOder: requestModel?.experienceOder,
         // feeOrder: requestModel?.feeOrder,
-        // maxFee: requestModel?.maxFee,
-        //minFee: requestModel?.minFee,
         // reviewOrder: requestModel?.reviewOrder,
+        maxFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : end?.toStringAsFixed(2),
+        minFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : start?.toStringAsFixed(2),
         topicIds: selectedTopicId,
         categoryId: isFromExploreExpert
             ? (commonSelectionModel[index].title == FilterType.Category.name)
@@ -230,7 +238,11 @@ class FilterProvider extends ChangeNotifier {
       exploreExpertUserAndCategoryApiCall(context: context);
     } else {
       clearSingleCategoryData();
-      await getSingleCategoryApiCall(categoryId: singleCategoryId ?? "", requestModel: data, context: context);
+      if (isFromMultiConnect) {
+        ref.read(multiConnectProvider).getSingleCategoryApiCall(categoryId: singleCategoryId ?? '', context: context, requestModel: data);
+      } else {
+        await getSingleCategoryApiCall(categoryId: singleCategoryId ?? "", requestModel: data, context: context);
+      }
     }
     notifyListeners();
   }
@@ -242,15 +254,25 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clearAllFilter() {
-    commonSelectionModel = [];
+  void clearAllFilter({bool selectedCategoryClearAll = false}) {
+    if (selectedCategoryClearAll) {
+      List<CommonSelectionModel> model = [];
+      commonSelectionModel.forEach((element) {
+        element.title != FilterType.Category.name ? model.add(element) : null;
+      });
+      commonSelectionModel.removeWhere((element) => model.contains(element));
+    } else {
+      commonSelectionModel = [];
+      categoryController.clear();
+      _categorySelectionIndex = -1;
+      selectedCategory = null;
+    }
     instantCallAvailabilityController.clear();
     genderController.clear();
     countryNameController.clear();
     searchCategoryController.clear();
     topicController.clear();
     searchTopicController.clear();
-    categoryController.clear();
     ratingController.clear();
     cityNameController.clear();
     searchCityController.clear();
@@ -259,7 +281,6 @@ class FilterProvider extends ChangeNotifier {
     feeOrderController.clear();
     experienceOrderController.clear();
     reviewOrderController.clear();
-    selectedCategory = null;
     selectedCountryModel = null;
     start = null;
     end = null;
@@ -282,7 +303,6 @@ class FilterProvider extends ChangeNotifier {
       CommonSelectionModel(title: 'Female', isSelected: false, selectType: 3),
       CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 4),
     ];
-    _categorySelectionIndex = -1;
     notifyListeners();
   }
 
@@ -318,7 +338,11 @@ class FilterProvider extends ChangeNotifier {
     if (index == -1) {
       commonSelectionModel.add(CommonSelectionModel(title: FilterType.Topic.name, value: selectedTopicName));
     } else {
-      commonSelectionModel[index].value = selectedTopicName;
+      if (selectedTopicName.isNotEmpty) {
+        commonSelectionModel[index].value = selectedTopicName;
+      } else {
+        commonSelectionModel.removeAt(index);
+      }
     }
     notifyListeners();
   }
@@ -339,6 +363,7 @@ class FilterProvider extends ChangeNotifier {
 
   void setCategoryWhenFromMultiConnect(CategoryData? categoryData) {
     selectedCategory = CategoryIdNameCommonModel(name: categoryData?.name ?? '', isCategorySelected: true, id: categoryData?.id);
+    commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: categoryData?.name ?? ''));
     categoryController.text = selectedCategory?.name ?? '';
     notifyListeners();
   }
@@ -482,6 +507,14 @@ class FilterProvider extends ChangeNotifier {
   void clearSearchTopicController() {
     searchTopicController.clear();
     notifyListeners();
+  }
+
+  void removeTopicFromSelectedList() {
+    int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Topic.name);
+    if (index != -1) {
+      commonSelectionModel.removeAt(index);
+      notifyListeners();
+    }
   }
 
   void clearSearchCityController() {
@@ -671,8 +704,8 @@ class FilterProvider extends ChangeNotifier {
       feeOrder: requestModel?.feeOrder,
       gender: requestModel?.gender,
       instantCallAvailable: requestModel?.instantCallAvailable,
-      maxFee: double.parse(requestModel?.maxFee ?? '0').toStringAsFixed(2),
-      minFee: double.parse(requestModel?.minFee ?? '0').toStringAsFixed(2),
+      maxFee: requestModel?.maxFee != null ? requestModel?.maxFee : null,
+      minFee: requestModel?.minFee != null ? requestModel?.minFee : null,
       reviewOrder: requestModel?.reviewOrder,
       topicIds: requestModel?.topicIds,
       categoryId: requestModel?.categoryId,

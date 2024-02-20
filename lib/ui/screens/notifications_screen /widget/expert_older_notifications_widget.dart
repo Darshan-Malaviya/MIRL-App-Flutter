@@ -53,7 +53,7 @@ class _ExpertOlderNotificationWidgetState extends State<ExpertOlderNotificationW
             ],
           )
         ],
-      ).addMarginXY(paddingX: 20, paddingY: 10),
+      ).addMarginXY(marginX: 20, marginY: 10),
     );
   }
 }

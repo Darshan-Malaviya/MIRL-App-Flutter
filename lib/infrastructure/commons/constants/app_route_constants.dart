@@ -12,6 +12,7 @@ import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
 import 'package:mirl/ui/screens/cms_screen/arguments/cms_arguments.dart';
 import 'package:mirl/ui/screens/cms_screen/cms_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:mirl/ui/screens/earning_report_screen/earning_report_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/add_your_areas_of_expertise_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/certifications_and_experience_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/edit_your_expert_profile_screen.dart';
@@ -41,6 +42,7 @@ import 'package:mirl/ui/screens/multi_call_screen/multi_connect_filter_screen.da
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
+import 'package:mirl/ui/screens/rating_and_review_screen/rating_and_review_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/booking_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_option_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_screen.dart';
@@ -140,26 +142,38 @@ class RouterConstant {
       case RoutesConstants.blockUserListScreen:
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
       case RoutesConstants.reportUserScreen:
-        return MaterialPageRoute(builder: (_) => const ReportUserScreen());
+        return MaterialPageRoute(
+            builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
       case RoutesConstants.reportExpertScreen:
-        return MaterialPageRoute(builder: (_) =>  ReportExpertScreen(/*roleId: settings.arguments as int*/));
+        return MaterialPageRoute(
+            builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.videoCallScreen:
-        return MaterialPageRoute(builder: (_) =>  VideoCallScreen(arguments: settings.arguments as VideoCallArguments,));
-        case RoutesConstants.instantCallRequestDialogScreen:
-        return MaterialPageRoute(builder: (_) =>  InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments,));
+        return MaterialPageRoute(
+            builder: (_) => VideoCallScreen(
+                  arguments: settings.arguments as VideoCallArguments,
+                ));
+      case RoutesConstants.instantCallRequestDialogScreen:
+        return MaterialPageRoute(
+            builder: (_) => InstantCallRequestDialog(
+                  args: settings.arguments as InstanceCallDialogArguments,
+                ));
       case RoutesConstants.blockUserScreen:
         return MaterialPageRoute(builder: (_) => BlockUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.multiConnectScreen:
         return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
       case RoutesConstants.multiConnectFilterScreen:
         return MaterialPageRoute(
-            builder: (_) => MultiConnectFilterScreen(fromMultiConnectMainScreen: settings.arguments as bool));
+            builder: (_) => MultiConnectFilterScreen());
       case RoutesConstants.multiConnectSelectedCategoryScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
         return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen());
+        case RoutesConstants.ratingAndReviewScreen:
+        return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
+        case RoutesConstants.earningReportScreen:
+        return MaterialPageRoute(builder: (_) => EarningReportScreen());
       case RoutesConstants.cmsScreen:
         return MaterialPageRoute(builder: (_) => CmsScreen(args: settings.arguments as CmsArgs));
       default:

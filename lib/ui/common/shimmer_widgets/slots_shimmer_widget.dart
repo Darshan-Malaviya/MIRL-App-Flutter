@@ -21,7 +21,7 @@ class SlotsShimmer extends StatelessWidget {
               child: SizedBox.shrink(),
             ),
             baseColor: ColorConstants.primaryColor.withOpacity(0.25),
-            highlightColor: ColorConstants.grayLightColor,
+            highlightColor: ColorConstants.greyLightColor,
           );
         },
         separatorBuilder: (BuildContext context, int index) => 20.0.spaceX,

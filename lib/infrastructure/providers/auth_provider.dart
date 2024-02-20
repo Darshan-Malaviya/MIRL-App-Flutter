@@ -13,6 +13,11 @@ import 'package:mirl/infrastructure/services/agora_service.dart';
 import 'package:mirl/mirl_app.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+GoogleSignIn? googleSignIn = GoogleSignIn(
+  clientId: Platform.isIOS ? flavorConfig?.iosClientId : "",
+  // scopes: <String>['email', 'profile'],
+);
+
 class AuthProvider with ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController otpController = TextEditingController();
@@ -35,9 +40,9 @@ class AuthProvider with ChangeNotifier {
   bool isResend = false;
   int start = 60;
 
-  List<CmsData> _cmsData = [];
+  CmsData? _cmsData;
 
-  List<CmsData> get cmsData => _cmsData;
+  CmsData? get cmsData => _cmsData;
 
   void changeIsLoading(bool val) {
     _isLoading = val;
@@ -45,10 +50,6 @@ class AuthProvider with ChangeNotifier {
   }
 
   GoogleSignInAccount? _currentUser;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: Platform.isIOS ? flavorConfig?.iosClientId : "",
-    // scopes: <String>['email', 'profile'],
-  );
 
   startTimer() {
     _secondsRemaining = 120;
@@ -75,10 +76,7 @@ class AuthProvider with ChangeNotifier {
         loginType: loginType,
         voIpToken: await AgoraService.singleton.getVoipToken());
     loginApiCall(
-        requestModel: emailController.text.trim().isNotEmpty
-            ? loginRequestModel.prepareRequest()
-            : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
-        loginType: loginType);
+        requestModel: emailController.text.trim().isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(), loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -114,7 +112,7 @@ class AuthProvider with ChangeNotifier {
   /// google login
   void signInGoogle() async {
     try {
-      _currentUser = await _googleSignIn.signIn();
+      _currentUser = await googleSignIn?.signIn();
       if (_currentUser?.id != null) {
         _socialId = _currentUser?.id ?? '';
         // userName = _currentUser?.displayName ?? '';
@@ -212,8 +210,9 @@ class AuthProvider with ChangeNotifier {
   /// cms API call
 
   Future<void> cmsApiCall(String name) async {
-
-    ApiHttpResult response = await _authRepository.cmsApi(searchKeyword: name);
+    changeIsLoading(true);
+    ApiHttpResult response = await _authRepository.cmsApi(cmsKey: name);
+    changeIsLoading(false);
 
     switch (response.status) {
       case APIStatus.success:
@@ -221,7 +220,7 @@ class AuthProvider with ChangeNotifier {
           CMSResponseModel responseModel = response.data;
           Logger().d("Cms API call successfully${response.data}");
           if (response.data != null && response.data is CMSResponseModel) {
-            _cmsData.addAll(responseModel.data ?? []);
+            _cmsData = responseModel.data;
           }
         }
         break;

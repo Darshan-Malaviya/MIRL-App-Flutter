@@ -1,8 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
 class ReportThisUserWidget extends ConsumerStatefulWidget {
-  const ReportThisUserWidget({super.key});
+  final BlockUserArgs args;
+
+
+  const ReportThisUserWidget({super.key, required this.args});
 
   @override
   ConsumerState<ReportThisUserWidget> createState() => _ReportThisUserWidgetState();
@@ -11,7 +15,7 @@ class ReportThisUserWidget extends ConsumerStatefulWidget {
 class _ReportThisUserWidgetState extends ConsumerState<ReportThisUserWidget> {
   @override
   void initState() {
-    ref.read(reportUserProvider).changeReportAndThanksScreen();
+    ref.read(reportUserProvider).changeReportAndThanksScreen(roleId: widget.args.userRole ?? 0,reportName: widget.args.reportName ?? '');
     super.initState();
   }
 

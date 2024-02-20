@@ -20,7 +20,7 @@ class AvailableTimeShimmer extends StatelessWidget {
                 child: SizedBox.shrink(),
               ),
               baseColor: ColorConstants.primaryColor.withOpacity(0.25),
-              highlightColor: ColorConstants.grayLightColor,
+              highlightColor: ColorConstants.greyLightColor,
             ),
             Shimmer.fromColors(
               child: Container(
@@ -30,7 +30,7 @@ class AvailableTimeShimmer extends StatelessWidget {
                 child: SizedBox.shrink(),
               ),
               baseColor: ColorConstants.primaryColor.withOpacity(0.25),
-              highlightColor: ColorConstants.grayLightColor,
+              highlightColor: ColorConstants.greyLightColor,
             ),
           ],
         ).addMarginY(10),

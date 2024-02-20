@@ -234,10 +234,10 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                               ),
                               InkWell(
                                   onTap: () {
-                                    filterProviderRead.clearAllFilter();
+                                    filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
                                     filterProviderRead.getSingleCategoryApiCall(
                                         context: context, categoryId: widget.args.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId));
-                                    filterProviderRead.getSelectedCategory();
+                                    // filterProviderRead.getSelectedCategory();
                                   },
                                   child: BodySmallText(
                                     title: LocaleKeys.clearAll.tr(),

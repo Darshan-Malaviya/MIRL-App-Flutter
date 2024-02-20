@@ -61,10 +61,10 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
           fontSize: 15,
           titleColor: ColorConstants.blueColor,
         ),
-        20.0.spaceY,
+        14.0.spaceY,
         durationWidget(scheduleProviderWatch),
         10.0.spaceY,
-        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} ${scheduleProviderWatch.callDuration} ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
+        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
         23.0.spaceY,
         generateSlotTime(scheduleProviderWatch),
         11.0.spaceY,
@@ -144,9 +144,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FeesActionButtonWidget(
-          onTap: () {
-            scheduleCallProvider.decrementCallDuration();
-          },
+          onTap: () =>  scheduleCallProvider.decrementCallDuration(),
           icons: ImageConstants.minus,
           isDisable: scheduleCallProvider.callDuration == 10,
         ),
@@ -160,9 +158,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         ),
         20.0.spaceX,
         FeesActionButtonWidget(
-          onTap: () {
-            scheduleCallProvider.incrementCallDuration();
-          },
+          onTap: () =>scheduleCallProvider.incrementCallDuration(),
           icons: ImageConstants.plus,
           isDisable: scheduleCallProvider.callDuration == 30,
         ),

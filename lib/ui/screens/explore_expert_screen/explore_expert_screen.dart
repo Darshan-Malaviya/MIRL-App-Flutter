@@ -18,7 +18,6 @@ class ExploreExpertScreen extends ConsumerStatefulWidget {
 }
 
 class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
-
   ScrollController scrollController = ScrollController();
 
   @override
@@ -32,7 +31,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(filterProvider).reachedExploreExpertLastPage;
         if (!isLoading) {
-          await ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context,  isPaginating: true,);
+          await ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isPaginating: true);
         } else {
           log('reach last page on explore export data list api');
         }
@@ -45,15 +44,17 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
   Widget build(BuildContext context) {
     final filterProviderWatch = ref.watch(filterProvider);
     final filterProviderRead = ref.read(filterProvider);
+
     return PopScope(
       canPop: true,
-      onPopInvoked: (value){
+      onPopInvoked: (value) {
         filterProviderRead.clearAllFilter();
       },
       child: Scaffold(
-          backgroundColor: ColorConstants.grayLightColor,
+          backgroundColor: ColorConstants.greyLightColor,
           appBar: AppBarWidget(
             preferSize: 0,
+            appBarColor: ColorConstants.greyLightColor,
           ),
           body: Column(
             mainAxisSize: MainAxisSize.min,
@@ -61,7 +62,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
               Row(
                 children: [
                   InkWell(
-                    child: Image.asset(ImageConstants.backIcon),
+                      child: Image.asset(ImageConstants.backIcon),
                       onTap: () {
                         filterProviderRead.clearAllFilter();
                         context.toPop();
@@ -86,7 +87,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                       onChanged: (value) {
                         if (filterProviderWatch.exploreExpertController.text.isNotEmpty) {
                           filterProviderRead.clearExploreExpertSearchData();
-                          filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context,);
+                          filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
                         }
                       },
                       textInputAction: TextInputAction.done,
@@ -96,8 +97,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                     ),
                   ),
                 ],
-              ),
-              10.0.spaceY,
+              ).addMarginXY(marginX: 20, marginY: 10),
               if (filterProviderWatch.isLoading) ...[
                 Center(
                     child: CupertinoActivityIndicator(
@@ -120,14 +120,14 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                         ],
                         PrimaryButton(
                           title: LocaleKeys.filterExperts.tr(),
+                          margin: EdgeInsets.symmetric(horizontal: 20),
                           onPressed: () {
-                            context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
-                                args: FilterArgs(fromExploreExpert: true));
+                            context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
                           },
                           prefixIcon: ImageConstants.filter,
                           prefixIconPadding: 10,
                         ),
-                        if(filterProviderWatch.commonSelectionModel.isNotEmpty)...[
+                        if (filterProviderWatch.commonSelectionModel.isNotEmpty) ...[
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -136,7 +136,9 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  BodySmallText(title: LocaleKeys.appliedFilters.tr(),),
+                                  BodySmallText(
+                                    title: LocaleKeys.appliedFilters.tr(),
+                                  ),
                                   InkWell(
                                       onTap: () {
                                         filterProviderRead.clearAllFilter();
@@ -159,7 +161,11 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                                     children: [
                                       OnScaleTap(
                                         onPress: () {
-                                          filterProviderRead.removeFilter(index: index, context: context,isFromExploreExpert: true,);
+                                          filterProviderRead.removeFilter(
+                                            index: index,
+                                            context: context,
+                                            isFromExploreExpert: true,
+                                          );
                                         },
                                         child: ShadowContainer(
                                           border: 20,
@@ -187,17 +193,16 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                                 }),
                               ),
                             ],
-                          ).addPaddingXY(paddingX: 16,paddingY: 10)
+                          ).addPaddingXY(paddingX: 16, paddingY: 10)
                         ],
-                        40.0.spaceY,
+                        20.0.spaceY,
                         if (filterProviderWatch.categoryList?.expertData?.isNotEmpty ?? false) ...[
                           ListView.separated(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              //  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                              padding: EdgeInsets.all(20),
                               itemBuilder: (context, i) {
-                                if (i == (filterProviderWatch.categoryList?.expertData?.length ?? 0) &&
-                                    (filterProviderWatch.categoryList?.expertData?.isNotEmpty ?? false)) {
+                                if (i == (filterProviderWatch.categoryList?.expertData?.length ?? 0) && (filterProviderWatch.categoryList?.expertData?.isNotEmpty ?? false)) {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 12),
                                     child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
@@ -224,7 +229,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                 ),
               ]
             ],
-          ).addAllPadding(20)),
+          )),
     );
   }
 }

@@ -1,41 +1,28 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
+import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 
 class CMSResponseModel {
   int? status;
   String? message;
-  Pagination? pagination;
-  List<CmsData>? data;
+  CmsData? data;
 
-  CMSResponseModel({this.status, this.message, this.pagination, this.data});
+  CMSResponseModel({this.status, this.message, this.data});
 
   CMSResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
-        : null;
-    if (json['data'] != null) {
-      data = <CmsData>[];
-      json['data'].forEach((v) {
-        data!.add(new CmsData.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new CmsData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     data['message'] = this.message;
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
-    }
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
-
 
   static Future<CMSResponseModel?> parseInfo(Map<String, dynamic>? json) async {
     try {
@@ -55,13 +42,7 @@ class CmsData {
   String? firstCreated;
   String? lastModified;
 
-  CmsData(
-      {this.id,
-        this.pageKey,
-        this.pageTitle,
-        this.content,
-        this.firstCreated,
-        this.lastModified});
+  CmsData({this.id, this.pageKey, this.pageTitle, this.content, this.firstCreated, this.lastModified});
 
   CmsData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

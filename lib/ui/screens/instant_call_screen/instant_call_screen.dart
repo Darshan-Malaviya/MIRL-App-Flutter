@@ -253,8 +253,8 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                         NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
                             args: BlockUserArgs(userName: widget.args.name ?? '',
                                 imageURL: widget.args.image ?? '',
-                                userId: int.parse(widget.args.userID),
-                                userRole: 2)
+                                userId: int.parse(widget.args.userID ?? ''),
+                                userRole: 2,reportName: '')
                         );
                       },
                       child: TitleSmallText(

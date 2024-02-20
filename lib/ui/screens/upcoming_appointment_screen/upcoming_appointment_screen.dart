@@ -73,16 +73,16 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                     title: LocaleKeys.upcomingAppointment.tr(),
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     onPressed: () {},
-                    titleColor: ColorConstants.textColor,
+                    titleColor: ColorConstants.buttonTextColor,
                   ),
                   20.0.spaceY,
                   Align(
                     alignment: Alignment.centerLeft,
                     child: BodySmallText(
                       title:
-                          upcomingWatch.selectedDate != null ? upcomingWatch.selectedDate.toString().toLocalFullDate() ?? '' :
-                          upcomingWatch.dateList.isNotEmpty ? upcomingWatch.dateList.first.toLocalFullDate() ?? '' : '',
-                      titleColor: ColorConstants.textColor,
+                          upcomingWatch.selectedDate != null ? upcomingWatch.selectedDate.toString().toLocalFullDateWithSuffix() ?? '' :
+                          upcomingWatch.dateList.isNotEmpty ? upcomingWatch.dateList.first.toLocalFullDateWithSuffix() ?? '' : '',
+                      titleColor: ColorConstants.buttonTextColor,
                     ),
                   ).addPaddingX(20),
                   20.0.spaceY,
@@ -114,7 +114,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                       softWrap: true,
                                       textAlign: TextAlign.center,
                                       text: TextSpan(
-                                        text: '${LocaleKeys.user.tr()}: ',
+                                        text: '${LocaleKeys.user.tr().toUpperCase()}: ',
                                         style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                                         children: [
                                           TextSpan(text: data.detail?.name ?? '', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
@@ -186,10 +186,9 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                     ]
                   ] else ...[
                     BodySmallText(
-                        title: 'No Upcoming Appointment',
+                        title: LocaleKeys.noUpcomingAppointment.tr(),
                         titleColor: ColorConstants.textColor,
                         titleTextAlign: TextAlign.center,
-                        maxLine: 2,
                         fontFamily: FontWeightEnum.w400.toInter)
                   ]
                 ],

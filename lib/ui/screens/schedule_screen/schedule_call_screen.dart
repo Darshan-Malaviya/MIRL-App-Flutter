@@ -38,7 +38,7 @@ class _ScheduleCallScreenState extends ConsumerState<ScheduleCallScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TitleLargeText(title: LocaleKeys.scheduleCall.tr(), fontSize: 20, fontWeight: FontWeight.w700),
+            TitleLargeText(title: LocaleKeys.scheduleCall.tr(), fontSize: 20),
             22.0.spaceY,
             //NoWeeklyAvailability(),
             WeeklyAvailability()

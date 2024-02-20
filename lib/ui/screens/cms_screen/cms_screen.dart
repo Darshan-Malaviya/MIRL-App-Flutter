@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -37,28 +38,28 @@ class _CmsScreenState extends ConsumerState<CmsScreen> {
         ),
       ),
       body: loginScreenProviderWatch.isLoading
-          ? CustomLoading.progressDialog(isLoading: true)
-          : loginScreenProviderWatch.cmsData.isNotEmpty
-          ? SingleChildScrollView(
-        child: Center(
-          child: Html(
-            data: loginScreenProviderWatch.cmsData.first.content ?? '',
-            style: {
-              'html': Style(textAlign: TextAlign.center),
-            },
-          ),
-        ),
-      ).addAllPadding(20)
-          : const Center(
-        child: Text(
-          "No Data Found",
-          style: TextStyle(
-            fontSize: 20,
-            color: ColorConstants.blackColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+          ? Center(child: CupertinoActivityIndicator(color: ColorConstants.primaryColor))
+          : loginScreenProviderWatch.cmsData?.content?.isNotEmpty ?? false
+              ? SingleChildScrollView(
+                  child: Center(
+                    child: Html(
+                      data: loginScreenProviderWatch.cmsData?.content ?? '',
+                      style: {
+                        'html': Style(textAlign: TextAlign.center),
+                      },
+                    ),
+                  ),
+                ).addAllPadding(20)
+              : const Center(
+                  child: Text(
+                    "No Data Found",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: ColorConstants.blackColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
     );
   }
 }

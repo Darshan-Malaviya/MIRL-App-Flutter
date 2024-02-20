@@ -15,6 +15,20 @@ abstract class LoginType {
   static const facebook = 3;
 }
 
+///over all rating type  code
+abstract class OverAllRatingType {
+  static const EXPERTISE = 1;
+  static const COMMUNICATION = 2;
+  static const HELPFULNESS = 3;
+  static const EMPATHY = 4;
+  static const PROFESSIONALISM = 5;
+}
+
 enum CallHistoryEnum { InstantCall, MultipleConnect, Appointment }
 
-enum RatingEnum { EXPERTISE, COMMUNICATION, HELPFULNESS,EMPATHY,PROFESSIONALISM }
+enum RatingEnum { EXPERTISE, COMMUNICATION, HELPFULNESS, EMPATHY, PROFESSIONALISM }
+
+enum NotificationTypeEnum {
+  connectAndroidCall,
+  autoLogout,
+}
