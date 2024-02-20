@@ -33,11 +33,15 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   }
 
   Future<void> areaCategoryListApiCall({bool isLoaderVisible = false}) async {
-    changeLoading(true);
+    if (isLoaderVisible) {
+      changeLoading(true);
+    }
 
     ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo);
 
-    changeLoading(false);
+    if (isLoaderVisible) {
+      changeLoading(false);
+    }
 
     switch (response.status) {
       case APIStatus.success:

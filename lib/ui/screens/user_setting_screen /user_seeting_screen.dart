@@ -15,7 +15,16 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
 
     return Scaffold(
       appBar: AppBarWidget(),
-     /* body: Center(
+      body: Center(
+        child: PrimaryButton(
+          title: StringConstants.logOut,
+          onPressed: () async {
+            SharedPrefHelper.clearPrefs();
+            context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+          },
+        ),
+      ).addAllPadding(20),
+      /* body: Center(
           child: PrimaryButton(
         onPressed: () {
           //ref.read(callProvider).callRequestEmit();
