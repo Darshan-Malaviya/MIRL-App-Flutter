@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
@@ -27,7 +29,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
             onTap: () async {
-             await blockUserRead.checkTimeOut(context: context);
+              await blockUserRead.checkTimeOut(context: context, isFromInstantCall: widget.args.isFromInstantCall);
             },
           ),
         ),
@@ -69,7 +71,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if(((widget.args.userName?.isNotEmpty ?? false)) && widget.args.userName != 'null')...[
+                        if (((widget.args.userName?.isNotEmpty ?? false)) && widget.args.userName != 'null') ...[
                           RichText(
                             softWrap: true,
                             textAlign: TextAlign.center,
@@ -131,7 +133,8 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                           30.0.spaceY,
                           InkWell(
                             onTap: () {
-                              blockUserRead.userBlockRequestCall(Status: 1, UserBlockId: widget.args.userId ?? 0, context: context);
+                              blockUserRead.userBlockRequestCall(
+                                  Status: 1, UserBlockId: widget.args.userId ?? 0, context: context);
                               context.toPop();
                             },
                             child: Center(
@@ -178,7 +181,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
               InkWell(
                 onTap: () {
                   context.toPushNamed(RoutesConstants.reportUserScreen,
-                    args: BlockUserArgs(userRole: 2, reportName: 'REPORT THIS USER'));
+                      args: BlockUserArgs(userRole: 2, reportName: 'REPORT THIS USER', expertId: SharedPrefHelper.getUserId));
                 },
                 child: BodySmallText(
                   title: LocaleKeys.reportUser.tr(),
