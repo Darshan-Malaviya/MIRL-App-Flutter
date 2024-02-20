@@ -60,10 +60,10 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       ref.read(callProvider).clearAllValue();
       ref.read(callProvider).getCallDuration();
       ref.read(callProvider).initVideoCallAgora(channelId: widget.arguments.agoraChannelId, token: widget.arguments.agoraToken);
-      bool isLocalUserJoin = ref.read(callProvider).localUserJoined;
-      bool isUser = (ref.read(socketProvider).extraResponseModel?.callRoleEnum == CallRoleEnum.user);
+      bool isLocalUserJoin = ref.watch(callProvider).localUserJoined;
+      bool isUser = (ref.watch(socketProvider).extraResponseModel?.callRoleEnum == CallRoleEnum.user);
       instanceCallDurationNotifier.addListener(() {
-        if(isLocalUserJoin){
+        if(ref.read(callProvider).localUserJoined){
           if(isUser){
             if(instanceCallDurationNotifier.value == 0) {
               instanceCallTimerFunction();

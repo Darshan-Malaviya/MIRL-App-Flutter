@@ -20,17 +20,14 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
     final blockUserRead = ref.read(blockUserProvider);
 
     return PopScope(
-      canPop: true,
-      onPopInvoked: (value) async {
-        blockUserRead.checkTimeOut(context: context);
-      },
+      canPop: false,
       child: Scaffold(
         appBar: AppBarWidget(
           preferSize: 40,
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
             onTap: () async {
-              blockUserRead.checkTimeOut(context: context);
+             await blockUserRead.checkTimeOut(context: context);
             },
           ),
         ),
@@ -72,23 +69,25 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: 'USER: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 13),
-                            children: [
-                              TextSpan(
-                                  text: widget.args.userName,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(color: ColorConstants.buttonTextColor, fontSize: 13)),
-                            ],
+                        if(((widget.args.userName?.isNotEmpty ?? false)) && widget.args.userName != 'null')...[
+                          RichText(
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: LocaleKeys.userWith.tr(),
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 13),
+                              children: [
+                                TextSpan(
+                                    text: widget.args.userName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(color: ColorConstants.buttonTextColor, fontSize: 13)),
+                              ],
+                            ),
                           ),
-                        ),
+                        ]
                       ],
                     ),
                     Container(
