@@ -15,7 +15,6 @@ import 'package:mirl/ui/screens/expert_detail/widget/request_call_button_widget.
 import 'package:mirl/ui/screens/expert_detail/widget/certifications_and_experience_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_widget.dart';
-import 'package:mirl/ui/screens/rating_and_review_screen/widget/reviews_list_widget.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 
 ValueNotifier<bool> isFavorite = ValueNotifier(false);
@@ -53,7 +52,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         trailingIcon: InkWell(
                 onTap: () {
                   //ReportThisUserWidget();
-                  context.toPushNamed(RoutesConstants.reportExpertScreen, args: BlockUserArgs(reportName: 'REPORT THIS EXPERT',userRole: 1));
+                  context.toPushNamed(RoutesConstants.reportExpertScreen,
+                      args: BlockUserArgs(reportName: 'REPORT THIS EXPERT', userRole: 1, expertId: widget.expertId));
                 },
                 child: Icon(Icons.more_horiz))
             .addPaddingRight(14),
@@ -189,46 +189,53 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ],
             AreaOfExpertiseWidget(),
             ExpertDetailsButtonWidget(
-
-              titleColor:  expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.buttonTextColor : ColorConstants.overAllRatingColor,
+              titleColor: expertDetailWatch.userData?.onlineStatus == 1
+                  ? ColorConstants.buttonTextColor
+                  : ColorConstants.overAllRatingColor,
               title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : "ZEN MODE : CALL PAUSED",
-              buttonColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.requestCallNowColor : ColorConstants.redLightColor ,
+              buttonColor: expertDetailWatch.userData?.onlineStatus == 1
+                  ? ColorConstants.requestCallNowColor
+                  : ColorConstants.redLightColor,
               onTap: () {
                 if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
                     (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                   instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
+
                   /// THis is call sender (User) side
                   context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
                       args: InstanceCallDialogArguments(
                         name: expertDetailWatch.userData?.userName ?? "",
                         onFirstBtnTap: () {
-                          if((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1') ){
+                          if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
+                              (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                             ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
                           } else {
                             FlutterToast().showToast(msg: "Expert not available.");
                           }
                         },
                         onSecondBtnTap: () {
-                          if(instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                          if (instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                             context.toPop();
-                          } else if(instanceCallEnumNotifier.value == CallTypeEnum.requestApproved){
+                          } else if (instanceCallEnumNotifier.value == CallTypeEnum.requestApproved) {
                             ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
+
                             ///context.toPop();
-                          }
-                          else {
-                            ref.read(socketProvider).updateRequestStatusEmit(expertId: widget.expertId, callStatusEnum: CallStatusEnum.cancel,
-                                callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
+                          } else {
+                            ref.read(socketProvider).updateRequestStatusEmit(
+                                expertId: widget.expertId,
+                                callStatusEnum: CallStatusEnum.cancel,
+                                callRoleEnum: CallRoleEnum.user,
+                                userId: SharedPrefHelper.getUserId.toString());
                             context.toPop();
                           }
                         },
                         image: expertDetailWatch.userData?.userProfile ?? "",
-                        expertId: expertDetailWatch.userData?.id.toString() ??'',
+                        expertId: expertDetailWatch.userData?.id.toString() ?? '',
                         userID: SharedPrefHelper.getUserId.toString(),
                       ));
                 } else {
                   FlutterToast().showToast(msg: "Expert not available.");
                 }
-
               },
             ),
             24.0.spaceY,
@@ -346,11 +353,16 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             26.0.spaceY,
             if (expertDetailWatch.userData?.ratingCriteria?.isNotEmpty ?? false) ...[
-              OverallRatingWidget(name: RatingEnum.EXPERTISE.name, value: expertDetailWatch.userData?.ratingCriteria?[0].rating ?? 0),
-              OverallRatingWidget(name: RatingEnum.COMMUNICATION.name, value: expertDetailWatch.userData?.ratingCriteria?[1].rating ?? 0),
-              OverallRatingWidget(name: RatingEnum.HELPFULNESS.name, value: expertDetailWatch.userData?.ratingCriteria?[2].rating ?? 0),
-              OverallRatingWidget(name: RatingEnum.EMPATHY.name, value: expertDetailWatch.userData?.ratingCriteria?[3].rating ?? 0),
-              OverallRatingWidget(name: RatingEnum.PROFESSIONALISM.name, value: expertDetailWatch.userData?.ratingCriteria?[4].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.EXPERTISE.name, value: expertDetailWatch.userData?.ratingCriteria?[0].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.COMMUNICATION.name, value: expertDetailWatch.userData?.ratingCriteria?[1].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.HELPFULNESS.name, value: expertDetailWatch.userData?.ratingCriteria?[2].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.EMPATHY.name, value: expertDetailWatch.userData?.ratingCriteria?[3].rating ?? 0),
+              OverallRatingWidget(
+                  name: RatingEnum.PROFESSIONALISM.name, value: expertDetailWatch.userData?.ratingCriteria?[4].rating ?? 0),
             ],
             if (expertDetailWatch.userData?.expertReviews?.isNotEmpty ?? false) ...[
               40.0.spaceY,
