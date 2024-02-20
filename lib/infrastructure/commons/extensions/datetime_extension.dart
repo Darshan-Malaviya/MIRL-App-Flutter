@@ -169,6 +169,41 @@ extension DateTimeFormatter on String {
     }
     return null;
   }
+
+ /* String timeAgo({bool numericDates = true}) {
+    final date2 = DateTime.now();
+    final difference = date2.difference(this);
+    final years = difference.inDays ~/ 365;
+    print((difference.inDays - (years * 365)) ~/ 30);
+
+    if ((difference.inDays / 7).floor() >= 5) {
+      return '5w';
+    } else if ((difference.inDays / 7).floor() >= 4) {
+      return '4w';
+    } else if ((difference.inDays / 7).floor() >= 3) {
+      return '3w';
+    } else if ((difference.inDays / 7).floor() >= 2) {
+      return '2w';
+    } else if ((difference.inDays / 7).floor() >= 1) {
+      return '1w';
+    } else if (difference.inDays >= 2) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inDays >= 1) {
+      return 'Yesterday';
+    } else if (difference.inHours >= 2) {
+      return '${difference.inHours} hr ago';
+    } else if (difference.inHours >= 1) {
+      return (numericDates) ? '1 hr ago' : 'An hr ago';
+    } else if (difference.inMinutes >= 2) {
+      return '${difference.inMinutes} mins ago';
+    } else if (difference.inMinutes >= 1) {
+      return (numericDates) ? '1 mins ago' : 'A mins ago';
+    } else if (difference.inSeconds >= 3) {
+      return '${difference.inSeconds} sec ago';
+    } else {
+      return 'Just now';
+    }
+  }*/
 }
 
 String getDaySuffix(int day) {

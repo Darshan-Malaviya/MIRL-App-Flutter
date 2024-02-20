@@ -78,12 +78,12 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
             ),
             trailingIcon: InkWell(
               onTap: () {
-                FlutterToast().showToast(msg: 'You have chosen ${multiProviderWatch.expertIds.length} experts for multi connect.');
+                FlutterToast().showToast(msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.');
               },
               child: TitleMediumText(
                 title: StringConstants.done,
               ).addPaddingRight(14),
-            ).addVisibility(multiProviderWatch.expertIds.isNotEmpty)),
+            ).addVisibility(multiProviderWatch.selectedExperts.isNotEmpty)),
         body: multiProviderWatch.isLoading
             ? Center(
                 child: CupertinoActivityIndicator(
