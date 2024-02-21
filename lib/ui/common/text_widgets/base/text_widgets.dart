@@ -32,7 +32,8 @@ class LabelSmallText extends StatelessWidget {
       this.fontHeight,
       this.lineHeight,
       this.fontFamily,
-      this.isUnderline = false})
+      this.isUnderline = false,
+      this.shadow})
       : super(key: key);
 
   final String title;
@@ -48,6 +49,7 @@ class LabelSmallText extends StatelessWidget {
   final bool? isUnderline;
   final double? lineHeight;
   final String? fontFamily;
+  final List<Shadow>? shadow;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,7 @@ class LabelSmallText extends StatelessWidget {
           decoration: isUnderline == true ? TextDecoration.underline : null,
           height: lineHeight,
           fontSize: fontSize,
+          shadows: shadow,
           fontFamily: fontFamily),
       textAlign: titleTextAlign,
       maxLines: maxLine,

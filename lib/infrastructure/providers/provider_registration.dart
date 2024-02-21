@@ -17,6 +17,7 @@ import 'package:mirl/infrastructure/providers/report_user_provider.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/infrastructure/providers/socket_provider.dart';
 import 'package:mirl/infrastructure/providers/upcoming_appointment_provider.dart';
+import 'package:mirl/infrastructure/providers/user_setting_provider.dart';
 
 // final authProvider = ChangeNotifierProvider.autoDispose((ref) => AuthProvider());
 final loginScreenProvider = ChangeNotifierProvider.autoDispose((_) => AuthProvider());
@@ -37,4 +38,5 @@ final upcomingAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => Up
 final cancelAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => CancelAppointmentProvider());
 final reportReviewProvider = ChangeNotifierProvider.autoDispose((_) => ReportReviewProvider());
 final notificationProvider = ChangeNotifierProvider.autoDispose((_) => NotificationProvider());
+final userSettingProvider = ChangeNotifierProvider.autoDispose((_) => UserSettingProvider());
 

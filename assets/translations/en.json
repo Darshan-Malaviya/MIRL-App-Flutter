@@ -212,5 +212,25 @@
   "referralCode": "No one referred you here? Click here to get your very own referral code within 24 hours!",
   "mirlMagic": "Share the MIRL Magic!",
   "yourMirlConnectCode": "YOUR MIRL CONNECT CODE",
-  "inviteYourFriend": "Invite your friends and share this code!"
+  "inviteYourFriend": "Invite your friends and share this code!",
+  "helpTerms": "HELP & TERMS",
+  "information": "Need any help with calls or information? Or are you looking for information to master MIRL? We’re here to help!",
+  "useMirl": "HOW TO USE MIRL",
+  "mustKnows": "FAQs & MUST-KNOWS",
+  "accountHelp": "EXPERT ACCOUNT HELP",
+  "referralsHelp": "MIRL CONNECT REFERRALS HELP",
+  "callsAndPayments": "HELP WITH CALLS AND PAYMENTS",
+  "privacyAndTerms": "PRIVACY POLICY AND TERMS",
+  "deleteAccount": "DELETE ACCOUNT",
+  "rateUs": "HOW WOULD YOU RATE US?",
+  "preferredCurrency": "YOUR PREFERRED CURRENCY",
+  "theDropdown": "PICK ONE FROM THE DROPDOWN",
+  "experiencing": "Experiencing an issue with MIRL? Please share the details below and we’ll get back to you ASAP!",
+  "issueDropdown": "SELECT THE ISSUE FROM THE DROPDOWN ",
+  "tellUsMore": "TELL US MORE",
+  "planned": "Something didn’t go as planned? Let us in on what happened and let’s fix this together! ",
+  "paymentDetails": "PAYMENT DETAILS",
+  "reportIssue": "REPORT THE ISSUE",
+  "seekerCallHistory": "SEEKER CALL HISTORY"
+
 }

@@ -21,8 +21,14 @@ class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-
             Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
+            Align(
+              alignment: AlignmentDirectional.topStart,
+              child: InkWell(
+                child: Image.asset(ImageConstants.backIcon, color: Colors.white),
+                onTap: () => context.toPop(),
+              ),
+            ),
             Container(
               decoration: BoxDecoration(
                 color: ColorConstants.whiteColor,
@@ -45,7 +51,7 @@ class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
                     fontFamily: FontWeightEnum.w600.toInter,
                   ),
                   //ActivateYourMirlConnectCodeWidget(),
-              //    GetYourOwnMirlConnectCodeWidget(),
+                  //    GetYourOwnMirlConnectCodeWidget(),
                   YourMirlConnectCodeWidget(),
                   20.0.spaceY,
                 ],

@@ -51,7 +51,12 @@ import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/upcoming_appointment_screen/upcoming_appointment_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/help_and_terms_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/screens/mirl_connect_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/notification_and_preferences_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/payment_details_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/report_an_issue_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/seekar_call_history_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
@@ -66,10 +71,10 @@ class NavigationService {
 /// on generate route
 class RouterConstant {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-     activeRoute.value = settings.name ?? '';
+    activeRoute.value = settings.name ?? '';
     log('Active route: ${activeRoute.value}');
 
-  switch (settings.name) {
+    switch (settings.name) {
       /// normal page routing
       case RoutesConstants.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
@@ -143,13 +148,11 @@ class RouterConstant {
       case RoutesConstants.blockUserListScreen:
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
       case RoutesConstants.reportUserScreen:
-        return MaterialPageRoute(
-            builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
+        return MaterialPageRoute(builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
       case RoutesConstants.reportExpertScreen:
-        return MaterialPageRoute(
-            builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
+        return MaterialPageRoute(builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(
             builder: (_) => VideoCallScreen(
@@ -165,20 +168,29 @@ class RouterConstant {
       case RoutesConstants.multiConnectScreen:
         return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
       case RoutesConstants.multiConnectFilterScreen:
-        return MaterialPageRoute(
-            builder: (_) => MultiConnectFilterScreen());
+        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen());
       case RoutesConstants.multiConnectSelectedCategoryScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
         return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen());
-        case RoutesConstants.ratingAndReviewScreen:
+      case RoutesConstants.ratingAndReviewScreen:
         return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
-        case RoutesConstants.earningReportScreen:
+      case RoutesConstants.earningReportScreen:
         return MaterialPageRoute(builder: (_) => EarningReportScreen());
       case RoutesConstants.cmsScreen:
         return MaterialPageRoute(builder: (_) => CmsScreen(args: settings.arguments as CmsArgs));
-        case RoutesConstants.mirlConnectScreen:
+      case RoutesConstants.mirlConnectScreen:
         return MaterialPageRoute(builder: (_) => MirlConnectScreen());
+      case RoutesConstants.helpAndTermsScreen:
+        return MaterialPageRoute(builder: (_) => HelpAndTermsScreen());
+        case RoutesConstants.notificationAndPreferencesScreen:
+        return MaterialPageRoute(builder: (_) => NotificationAndPreferencesScreen());
+        case RoutesConstants.reportAnIssueScreen:
+        return MaterialPageRoute(builder: (_) => ReportAnIssueScreen());
+        case RoutesConstants.paymentDetailsScreen:
+        return MaterialPageRoute(builder: (_) => PaymentDetailsScreen());
+        case RoutesConstants.seekerCallHistoryScreen:
+        return MaterialPageRoute(builder: (_) => SeekerCallHistoryScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

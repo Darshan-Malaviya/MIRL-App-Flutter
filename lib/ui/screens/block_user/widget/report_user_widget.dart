@@ -20,7 +20,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0);
+      ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0, isFullScreenLoader: true);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
@@ -59,49 +59,72 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
           maxLine: 3,
         ),
         20.0.spaceY,
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(reportUserWatch.reportListDetails.length, (index) {
-            return InkWell(
-              onTap: () async {
-                reportUserRead.userReportRequestCall(
-                    reportListId: reportUserWatch.reportListDetails[index].id ?? 0,
-                    reportToId: int.parse(widget.args.expertId ?? ''));
-                await reportUserRead.reportUser();
-              },
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: BodySmallText(
-                            title: reportUserWatch.reportListDetails[index].title ?? '',
-                            titleColor: ColorConstants.blackColor,
-                            titleTextAlign: TextAlign.start,
-                            maxLine: 3,
-                            fontSize: 13,
+        Expanded(
+          child: reportUserWatch.isLoading
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                )
+              : reportUserWatch.reportListDetails.isNotEmpty
+                  ? ListView.builder(
+                      controller: scrollController,
+                      itemCount: (reportUserWatch.reportListDetails.length) + (reportUserWatch.reachedCategoryLastPage ? 0 : 1),
+                      itemBuilder: (context, index) {
+                        if (index == reportUserWatch.reportListDetails.length && reportUserWatch.reportListDetails.isNotEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                          );
+                        }
+                        return InkWell(
+                          onTap: () async {
+                            reportUserRead.userReportRequestCall(
+                                reportListId: reportUserWatch.reportListDetails[index].id ?? 0,
+                                reportToId: int.parse(widget.args.expertId ?? ''));
+                            await reportUserRead.reportUser();
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: BodySmallText(
+                                        title: reportUserWatch.reportListDetails[index].title ?? '',
+                                        titleColor: ColorConstants.blackColor,
+                                        titleTextAlign: TextAlign.start,
+                                        maxLine: 3,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    20.0.spaceY,
+                                    BodySmallText(
+                                      title: reportUserWatch.reportListDetails[index].description ?? '',
+                                      titleColor: ColorConstants.blackColor,
+                                      titleTextAlign: TextAlign.start,
+                                      fontFamily: FontWeightEnum.w400.toInter,
+                                      fontSize: 13,
+                                      maxLine: 10,
+                                    ),
+                                  ],
+                                ).addMarginTop(30),
+                              ),
+                              10.0.spaceX,
+                              Align(alignment: Alignment.centerRight, child: Image.asset(ImageConstants.arrow))
+                            ],
                           ),
+                        );
+                      })
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Center(
+                        child: BodyLargeText(
+                          title: StringConstants.noDataFound,
+                          fontFamily: FontWeightEnum.w600.toInter,
                         ),
-                        20.0.spaceY,
-                        BodySmallText(
-                          title: reportUserWatch.reportListDetails[index].description ?? '',
-                          titleColor: ColorConstants.blackColor,
-                          titleTextAlign: TextAlign.start,
-                          fontFamily: FontWeightEnum.w400.toInter,
-                          fontSize: 13,
-                          maxLine: 10,
-                        ),
-                      ],
-                    ).addMarginTop(30),
-                  ),
-                  10.0.spaceX,
-                  Align(alignment: Alignment.centerRight, child: Image.asset(ImageConstants.arrow))
-                ],
-              ),
-            );
-          }),
+                      ),
+                    ),
         )
       ],
     ).addAllPadding(30);

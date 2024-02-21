@@ -26,11 +26,9 @@ class _ReportUserScreenState extends ConsumerState<ReportUserScreen> {
           onTap: () => context.toPop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: ReportThisUserWidget(
-            args: BlockUserArgs(
-                userRole: widget.args.userRole, reportName: widget.args.reportName, expertId: widget.args.expertId)),
-      ),
+      body: ReportThisUserWidget(
+          args: BlockUserArgs(
+              userRole: widget.args.userRole, reportName: widget.args.reportName, expertId: widget.args.expertId)),
     );
   }
 }

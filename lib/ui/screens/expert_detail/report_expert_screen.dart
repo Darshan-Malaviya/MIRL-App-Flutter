@@ -52,12 +52,9 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
         borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
         color: ColorConstants.whiteColor,
       ),
-      child: SingleChildScrollView(
-        controller: controller,
-        child: ReportThisUserWidget(
-            args: BlockUserArgs(
-                userRole: widget.args.userRole, reportName: widget.args.reportName, expertId: widget.args.expertId)),
-      ),
+      child: ReportThisUserWidget(
+          args:
+              BlockUserArgs(userRole: widget.args.userRole, reportName: widget.args.reportName, expertId: widget.args.expertId)),
     );
   }
 }

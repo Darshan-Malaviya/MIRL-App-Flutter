@@ -52,6 +52,7 @@ class ColorConstants {
   static Color certificatedBorderColor = const Color(0xFFD8D5D5);
   static Color certificatedBgColor = const Color(0xFFF0F0F0);
   static Color purpleDarkColor = const Color(0xFF773a79);
+  static Color mirlConnectColor = const Color(0xFFDB70FE);
 
   static Color successColor = const Color(0xff12805C);
   static Color warningColor = const Color(0xffCB6F10);
