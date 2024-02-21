@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -32,7 +33,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
         if (index == reportReviewWatch.reviewAndRatingData?.expertReviews?.length && reportReviewWatch.reviewAndRatingData?.expertReviews?.isNotEmpty == true) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Center(child: CircularProgressIndicator(color: ColorConstants.primaryColor)),
+            child: Center(child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
           );
         }
         return Container(

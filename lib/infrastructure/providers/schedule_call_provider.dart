@@ -162,7 +162,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     CustomLoading.progressDialog(isLoading: true);
 
     ScheduleAppointmentRequestModel requestModel = ScheduleAppointmentRequestModel(
-      duration: _callDuration.toString(),
+      duration: _callDuration,
       expertId: expertData?.id,
       endTime: selectedSlotData?.endTimeUTC ?? '',
       startTime: selectedSlotData?.startTimeUTC ?? '',
