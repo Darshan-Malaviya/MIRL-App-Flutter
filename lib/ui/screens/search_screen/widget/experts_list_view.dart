@@ -25,8 +25,8 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
           title: LocaleKeys.experts.tr(),
           titleTextAlign: TextAlign.start,
         ),
-        20.0.spaceY,
         if (homeProviderWatch.homeSearchData?.users?.isNotEmpty ?? false) ...[
+          20.0.spaceY,
           ListView.builder(
               itemCount: homeProviderWatch.homeSearchData?.users?.length ?? 0,
               padding: EdgeInsets.zero,
@@ -81,6 +81,7 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
                 );
               })
         ] else ...[
+          10.0.spaceY,
           BodySmallText(
             fontFamily: FontWeightEnum.w400.toInter,
             titleTextAlign: TextAlign.start,

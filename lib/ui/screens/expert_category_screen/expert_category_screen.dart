@@ -93,11 +93,16 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                             ),
                           ),
               ),
-              LabelSmallText(
-                title: LocaleKeys.suggestNewCategoriesAndTopicsToAdd.tr(),
-                titleTextAlign: TextAlign.center,
-                fontFamily: FontWeightEnum.w700.toInter,
-                maxLine: 2,
+              InkWell(
+                onTap: (){
+                  context.toPushNamed(RoutesConstants.suggestNewExpertiseScreen);
+                },
+                child: LabelSmallText(
+                  title: LocaleKeys.suggestNewCategoriesAndTopicsToAdd.tr(),
+                  titleTextAlign: TextAlign.center,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                  maxLine: 2,
+                ),
               ),
               20.0.spaceY
             ],

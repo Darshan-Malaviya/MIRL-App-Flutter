@@ -25,10 +25,10 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
           title: LocaleKeys.expertCategories.tr(),
           titleTextAlign: TextAlign.start,
         ),
-        20.0.spaceY,
         if (homeProviderWatch.homeSearchData?.categories?.isNotEmpty ?? false) ...[
+          20.0.spaceY,
           SizedBox(
-            height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 220,
+            height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 240,
             child: GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               itemCount: homeProviderWatch.homeSearchData?.categories?.length ?? 0,
@@ -46,6 +46,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
             ),
           ),
         ] else ...[
+          10.0.spaceY,
           BodySmallText(
             titleTextAlign: TextAlign.start,
             fontFamily: FontWeightEnum.w400.toInter,

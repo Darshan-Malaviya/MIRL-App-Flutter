@@ -26,8 +26,8 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
           title: LocaleKeys.topicsWithCategories.tr(),
           titleTextAlign: TextAlign.start,
         ),
-        20.0.spaceY,
         if (homeProviderWatch.homeSearchData?.topics?.isNotEmpty ?? false) ...[
+          20.0.spaceY,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(homeProviderWatch.homeSearchData?.topics?.length ?? 0, (index) {
@@ -59,6 +59,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
           ),
           30.0.spaceY,
           ]  else ...[
+          10.0.spaceY,
           BodySmallText(
             titleTextAlign: TextAlign.start,
             fontFamily: FontWeightEnum.w400.toInter,

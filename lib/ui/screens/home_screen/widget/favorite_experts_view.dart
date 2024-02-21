@@ -32,10 +32,10 @@ class FavoriteExpertsView extends ConsumerWidget {
                       context.toPushNamed(RoutesConstants.expertDetailScreen, args: homeProviderWatch.homeData?.userFavorites?[index].id.toString());
                     },
                     child: ShadowContainer(
-                      padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
+                      padding: EdgeInsets.only(bottom: 8, top: 1, left: 8, right: 8),
                       shadowColor: ColorConstants.blackColor.withOpacity(0.1),
                       width: 96,
-                      height: 116,
+                      height: 120,
                       isShadow: true,
                       offset: Offset(0,2),
                       spreadRadius: 0,
@@ -45,13 +45,27 @@ class FavoriteExpertsView extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CircleNetworkImageWidget(imageURL: homeProviderWatch.homeData?.userFavorites?[index].expertProfile ?? '', isNetworkImage: true, key: UniqueKey()),
-                          10.0.spaceY,
-                          LabelSmallText(
-                            fontSize: 9,
-                            title: (homeProviderWatch.homeData?.userFavorites?[index].expertName ?? 'name').toString().toCapitalizeAllWord(),
-                            maxLine: 2,
-                            titleTextAlign: TextAlign.center,
+                          Container(
+                            height: 80,
+                            width: 75,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                    top: 2,
+                                    child: CircleAvatar(radius: 37.5,backgroundColor: ColorConstants.blackColor.withOpacity(0.1),)),
+                                CircleNetworkImageWidget(imageURL: homeProviderWatch.homeData?.userFavorites?[index].expertProfile ?? '', isNetworkImage: true, key: UniqueKey()),
+
+                              ],
+                            ),
+                          ),
+                          6.0.spaceY,
+                          Flexible(
+                            child: LabelSmallText(
+                              fontSize: 9,
+                              title: (homeProviderWatch.homeData?.userFavorites?[index].expertName ?? '').toString().toCapitalizeAllWord(),
+                              maxLine: 10,
+                              titleTextAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),
