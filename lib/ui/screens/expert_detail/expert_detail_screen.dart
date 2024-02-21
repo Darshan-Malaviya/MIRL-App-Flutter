@@ -104,7 +104,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-        color: ColorConstants.greyLightColor,
+        color: ColorConstants.whiteColor,
       ),
       child: SingleChildScrollView(
         controller: controller,
@@ -115,7 +115,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             Center(
               child: HeadlineMediumText(
                 title: expertDetailWatch.userData?.expertName ?? '',
-                fontSize: 30,
+                fontSize: 28,
                 titleColor: ColorConstants.bottomTextColor,
               ),
             ),
@@ -132,7 +132,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     ),
                     10.0.spaceX,
                     HeadlineMediumText(
-                      fontSize: 30,
+                      fontSize: 28,
                       title: '-',
                       titleColor: ColorConstants.overallRatingColor,
                       shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
@@ -142,6 +142,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 40.0.spaceX,
                 Flexible(
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       BodySmallText(
                         title: LocaleKeys.feesPerMinute.tr(),
@@ -151,7 +153,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       10.0.spaceX,
                       Flexible(
                         child: HeadlineMediumText(
-                          fontSize: 30,
+                          fontSize: 28,
                           maxLine: 4,
                           title: fee != null ? '\$${fee}' : "",
                           titleColor: ColorConstants.overallRatingColor,

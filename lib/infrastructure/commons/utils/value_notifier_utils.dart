@@ -6,6 +6,7 @@ import '../exports/common_exports.dart';
 ValueNotifier<bool> socketListen = ValueNotifier(false);
 ValueNotifier<int> bgCallEndTrigger = ValueNotifier<int>(0);
 ValueNotifier<int> instanceCallDurationNotifier = ValueNotifier<int>(-1);
+ValueNotifier<int> allCallDurationNotifier = ValueNotifier<int>(0);
 ValueNotifier<int> instanceRequestTimerNotifier = ValueNotifier<int>(-1);
 ValueNotifier<CallTypeEnum> instanceCallEnumNotifier = ValueNotifier<CallTypeEnum>(CallTypeEnum.callRequest);
 ValueNotifier<CallConnectStatusEnum> callConnectNotifier = ValueNotifier<CallConnectStatusEnum>(CallConnectStatusEnum.ringing);

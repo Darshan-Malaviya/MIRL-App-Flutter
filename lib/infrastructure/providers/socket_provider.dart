@@ -210,7 +210,7 @@ class SocketProvider extends ChangeNotifier {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
             SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
-            instanceCallDurationNotifier.value = model.data?.instantCallSeconds ?? -1;
+            allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
             instanceCallEnumNotifier.value = CallTypeEnum.requestWaiting;
             instanceRequestTimerNotifier.value = 120;
           } else {
@@ -236,7 +236,7 @@ class SocketProvider extends ChangeNotifier {
               //instanceRequestTimerNotifier.value = 120;
               InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
               SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
-              instanceCallDurationNotifier.value = model.data?.instantCallSeconds ?? -1;
+              allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
 
               /// This is call receiver (Expert) side.
               NavigationService.context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,

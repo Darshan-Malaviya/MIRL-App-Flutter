@@ -15,19 +15,9 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late final AppLifecycleListener _listener;
 
   @override
   void initState() {
- /*   _listener = AppLifecycleListener(
-      onDetach: () => Logger().d('onDetach'),
-      onHide: () => Logger().d('onHide'),
-      onInactive: () => Logger().d('onInactive'),
-      onPause: () => Logger().d('onPause'),
-      onRestart: () => Logger().d('onRestart'),
-      onResume: () => Logger().d('onResume'),
-      onShow: () => Logger().d('onShow'),
-    );*/
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(homeProvider).homePageApi();
     });
@@ -46,14 +36,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // PrimaryButton(
-            //   title: StringConstants.logOut,
-            //   onPressed: () async {
-            //     SharedPrefHelper.clearPrefs();
-            //     context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-            //   },
-            // ),
-            // 10.0.spaceY,
             InkWell(
               onTap: () {
                 context.toPushNamed(RoutesConstants.searchScreen);
@@ -80,8 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     },
                     child: Container(
                         height: 178,
-                        width: 178,
-                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
                             blurRadius: 2,
@@ -118,7 +99,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                     child: Container(
                       height: 178,
-                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
                             blurRadius: 2,

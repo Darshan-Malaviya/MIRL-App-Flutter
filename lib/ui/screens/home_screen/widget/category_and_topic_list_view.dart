@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
+import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 
 class CategoryAndTopicListView extends ConsumerStatefulWidget {
@@ -19,7 +20,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
     return Column(children: [
       if ((homeProviderWatch.homeData?.categories?.isNotEmpty ?? false) && homeProviderWatch.homeData?.categories != null) ...[
         SizedBox(
-          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 120 : 235,
+          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 220,
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,
@@ -28,45 +29,15 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10),
             itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () {
+              return CategoryCommonView(
+                onTap: (){
                   context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
                       args: SelectedCategoryArgument(
                           categoryId: homeProviderWatch.homeData?.categories?[index].id.toString() ?? '',
                           isFromExploreExpert: false));
                 },
-                child: ShadowContainer(
-                  shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                  height: 100,
-                  width: 100,
-                  offset: Offset(0,2),
-                  spreadRadius: 0,
-                  blurRadius: 3,
-                  isShadow: true,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: NetworkImageWidget(
-                          boxFit: BoxFit.cover,
-                          imageURL: homeProviderWatch.homeData?.categories?[index].image ?? '',
-                          isNetworkImage: true,
-                          height: 60,
-                          width: 50,
-                        ),
-                      ),
-                      8.0.spaceY,
-                      LabelSmallText(
-                        fontSize: 9,
-                        title: homeProviderWatch.homeData?.categories?[index].name?.toUpperCase() ?? '',
-                        maxLine: 1,
-                        titleTextAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-
-                ),
+                categoryName: homeProviderWatch.homeData?.categories?[index].name?.toUpperCase() ?? '',
+                imageUrl: homeProviderWatch.homeData?.categories?[index].image ?? '',
               );
             },
           ),

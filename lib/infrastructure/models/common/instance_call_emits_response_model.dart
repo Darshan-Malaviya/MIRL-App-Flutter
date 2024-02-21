@@ -47,7 +47,8 @@ class InstanceCallEmitsData {
       this.role,
       this.timerType,
       this.callHistoryId,
-      this.requestType,this.instantCallSeconds});
+      this.requestType,
+        this.instantCallSeconds});
 
   InstanceCallEmitsData.fromJson(Map<String, dynamic> json) {
     userDetails = json['userDetails'] != null ? UserDetails.fromJson(json['userDetails']) : null;
@@ -94,6 +95,7 @@ class InstanceCallEmitsData {
       } else {
         role = json['role'];
       }
+    }
       if (json['timerType'] != null) {
         if (json['timerType'] is String) {
           timerType = json['timerType'];
@@ -122,7 +124,7 @@ class InstanceCallEmitsData {
           instantCallSeconds = json['instantCallSeconds'];
         }
       }
-    }
+
   }
 
   Map<String, dynamic> toJson() {
