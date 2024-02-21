@@ -71,24 +71,20 @@ class PrimaryButton extends StatelessWidget {
                   size: 24,
                 )
               : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
-                        ? Padding(
-                            padding: EdgeInsets.only(right: prefixIconPadding ?? 0.0,
-                            ),child: Image.asset(prefixIcon ?? ''),
-                          )
-                        : const SizedBox.shrink(),
-                    Flexible(
-                child:BodyMediumText(
-                      title: title,
-                      fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
-                      titleColor: titleColor ?? ColorConstants.buttonTextColor,
-                      titleTextAlign: TextAlign.center,
-                      fontSize: fontSize ?? 13,
-                      maxLine: 3,
-                ),
+                    if ((prefixIcon?.isNotEmpty ?? false) && prefixIcon != null) Image.asset(prefixIcon ?? '').addMarginRight(prefixIconPadding ?? 20),
+                    Expanded(
+                      child: Align(
+                        alignment: (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null ? Alignment.centerLeft : Alignment.center,
+                        child: BodyMediumText(
+                          title: title,
+                          fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
+                          titleColor: titleColor ?? ColorConstants.buttonTextColor,
+                          titleTextAlign: TextAlign.center,
+                          fontSize: fontSize ?? 13,
+                          maxLine: 2,
+                        ),
+                      ),
                     ),
                   ],
                 ),

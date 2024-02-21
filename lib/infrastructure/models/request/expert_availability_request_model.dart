@@ -1,7 +1,6 @@
-import 'dart:convert';
 
 class ExpertAvailabilityRequestModel {
-  String? scheduleType;
+  int? scheduleType;
   List<WorkDays>? workDays;
 
   ExpertAvailabilityRequestModel({this.scheduleType, this.workDays});
@@ -24,8 +23,6 @@ class ExpertAvailabilityRequestModel {
     }
     return data;
   }
-
-  String get prepareRequest => jsonEncode(toJson());
 }
 
 class WorkDays {

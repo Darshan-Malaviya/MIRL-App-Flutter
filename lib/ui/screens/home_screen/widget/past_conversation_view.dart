@@ -17,7 +17,7 @@ class PastConversationsView extends ConsumerWidget {
         BodySmallText(
           title: LocaleKeys.yourPastConversations.tr(),
         ),
-        20.0.spaceY,
+        10.0.spaceY,
         BodySmallText(
           titleColor: ColorConstants.emptyTextColor,
           fontFamily: FontWeightEnum.w400.toInter,

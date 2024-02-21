@@ -78,7 +78,9 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
             ),
             trailingIcon: InkWell(
               onTap: () {
+                List<int> data = multiProviderWatch.selectedExperts.map((e) => e.id ?? 0).toList();
                 FlutterToast().showToast(msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.');
+                ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
               },
               child: TitleMediumText(
                 title: StringConstants.done,
@@ -183,7 +185,9 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                       margin: EdgeInsets.symmetric(horizontal: 20),
                       onPressed: () => context.toPushNamed(RoutesConstants.multiConnectFilterScreen),
                       prefixIcon: ImageConstants.filter,
+                      buttonTextFontFamily: FontWeightEnum.w400.toInter,
                       prefixIconPadding: 10,
+                      padding: EdgeInsets.symmetric(horizontal: 50),
                     ),
                     20.0.spaceY,
                     if (filterWatch.commonSelectionModel.isNotEmpty) ...[
@@ -259,7 +263,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                             }),
                           ),
                         ],
-                      ).addPaddingXY(paddingX: 16, paddingY: 10)
+                      ).addPaddingXY(paddingX: 20, paddingY: 10)
                     ],
                     if (multiProviderWatch.expertData?.isNotEmpty ?? false) ...[
                       ListView.separated(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
@@ -136,7 +137,12 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       Flexible(
                         child: InkWell(
                           onTap: () {
-                            loginScreenProviderWatch.enableResend ? loginScreenProviderRead.loginRequestCall(loginType: 0) : null;
+                            loginScreenProviderWatch.enableResend
+                                ? loginScreenProviderRead.loginRequestCall(
+                                    loginType: 0,
+                                    email: loginScreenProviderWatch.emailController.text.trim(),
+                                  )
+                                : null;
                           },
                           child: BodySmallText(
                             title: 'Resend',

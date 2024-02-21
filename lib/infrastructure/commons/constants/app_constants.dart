@@ -6,6 +6,7 @@ class AppConstants {
   /// socket request variables
   static const userId = 'userId';
   static const expertId = 'expertId';
+  static const expertIds = 'expertIds';
   static const requestType = 'requestType';
   static const time = 'time';
   static const callRequestId = 'callRequestId';

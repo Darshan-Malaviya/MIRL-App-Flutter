@@ -34,40 +34,46 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return Scaffold(
       backgroundColor: ColorConstants.whiteColor,
       body: dashboardProviderRead.buildPageView(),
-      bottomNavigationBar: ClipRRect(
-        child: Container(
-          decoration: BoxDecoration(
-            color: ColorConstants.whiteColor,
-          ),
-          child: BottomNavigationBar(
-            currentIndex: dashboardProviderWatch.selectedIndex,
-            onTap: (index) {
-              dashboardProviderRead.bottomTapped(index);
-            },
-            useLegacyColorScheme: false,
-            backgroundColor: ColorConstants.transparentColor,
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            elevation: 0,
-            selectedFontSize: 7,
-            unselectedFontSize: 7,
-            selectedLabelStyle:
-                TextStyle(color: ColorConstants.bottomTextColor, fontFamily: FontWeightEnum.w400.toInter),
-            unselectedLabelStyle: TextStyle(color: ColorConstants.blackColor, fontFamily: FontWeightEnum.w400.toInter),
-            selectedItemColor: ColorConstants.blackColor,
-            items: List.generate(
-              5,
-              (index) => BottomNavigationBarItem(
-                icon: dashboardProviderWatch.selectedIndex == index
-                    ? Image.asset(
-                        color: ColorConstants.bottomTextColor,
-                        dashboardProviderRead.getImage(index),
-                      )
-                    : Image.asset(
-                        dashboardProviderRead.getImage(index),
-                      ),
-                label: dashboardProviderRead.getText(index),
-              ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: ColorConstants.whiteColor,
+            boxShadow: [
+              BoxShadow(
+                color: ColorConstants.blackColor.withOpacity(0.1),
+                blurRadius: 10,
+                offset: Offset(0, -5),
+                spreadRadius: 1,
+              )
+            ]
+        ),
+        child: BottomNavigationBar(
+          currentIndex: dashboardProviderWatch.selectedIndex,
+          onTap: (index) {
+            dashboardProviderRead.bottomTapped(index);
+          },
+          useLegacyColorScheme: false,
+          backgroundColor: ColorConstants.transparentColor,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          elevation: 0,
+          selectedFontSize: 7,
+          unselectedFontSize: 7,
+          selectedLabelStyle:
+              TextStyle(color: ColorConstants.bottomTextColor, fontFamily: FontWeightEnum.w400.toInter),
+          unselectedLabelStyle: TextStyle(color: ColorConstants.blackColor, fontFamily: FontWeightEnum.w400.toInter),
+          selectedItemColor: ColorConstants.blackColor,
+          items: List.generate(
+            5,
+            (index) => BottomNavigationBarItem(
+              icon: dashboardProviderWatch.selectedIndex == index
+                  ? Image.asset(
+                      color: ColorConstants.bottomTextColor,
+                      dashboardProviderRead.getImage(index),
+                    )
+                  : Image.asset(
+                      dashboardProviderRead.getImage(index),
+                    ),
+              label: dashboardProviderRead.getText(index),
             ),
           ),
         ),

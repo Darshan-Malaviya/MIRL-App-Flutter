@@ -160,9 +160,9 @@ class EditExpertProvider extends ChangeNotifier {
       _userData?.expertAvailability?.forEach((element) {
         _weekScheduleModel.add(WeekScheduleModel(
           dayName: element.dayOfWeek?.substring(0, 3).toUpperCase(),
-          startTime: double.parse(element.startTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ??
+          startTime: double.parse(element.startTime?.toLocaleFromUtcStart()?.millisecondsSinceEpoch.toString() ??
               lowerValue.millisecondsSinceEpoch.toString()),
-          endTime: double.parse(element.endTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ??
+          endTime: double.parse(element.endTime?.toLocaleFromUtcForEnd(element.startTime ?? '')?.millisecondsSinceEpoch.toString() ??
               upperValue.millisecondsSinceEpoch.toString()),
           isAvailable: element.isAvailable ?? false,
         ));
@@ -343,7 +343,7 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> expertAvailabilityApi(BuildContext context, String scheduleType) async {
+  Future<void> expertAvailabilityApi(BuildContext context, int scheduleType) async {
     getSelectedWeekDays();
     CustomLoading.progressDialog(isLoading: true);
 

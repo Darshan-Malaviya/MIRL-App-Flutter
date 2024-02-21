@@ -78,7 +78,7 @@ class _MultiConnectCallRequestState extends ConsumerState<MultiConnectCallReques
       mainAxisSize: MainAxisSize.min,
       children: [
         HeadlineLargeText(
-          title: 'Are you Ready?',
+          title: LocaleKeys.areYouReady.tr(),
           fontSize: 30,
           titleColor: ColorConstants.primaryColor,
         ),
