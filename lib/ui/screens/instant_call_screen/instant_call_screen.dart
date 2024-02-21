@@ -1,11 +1,10 @@
 import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
-import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
@@ -42,6 +41,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
     }
   }
 
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -49,22 +49,23 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
       instanceRequestTimerNotifier.addListener(() {
         if (instanceRequestTimerNotifier.value == 120) {
           instanceRequestTimerFunction();
+        } else {
+          if((instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting && widget.args.userID == SharedPrefHelper.getUserId)
+          // || (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)
+          ) {
+            if (instanceRequestTimerNotifier.value == 0 && widget.args.userID == SharedPrefHelper.getUserId.toString()) {
+              instanceCallEnumNotifier.value = CallTypeEnum.requestTimeout;
+              ref.read(socketProvider).updateRequestStatusEmit(
+                  expertId: widget.args.expertId,
+                  userId: widget.args.userID,
+                  callStatusEnum: CallRequestStatusEnum.timeout,
+                  callRoleEnum: CallRoleEnum.user);
+
+            }
+          }
         }
       });
-      if((instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting && widget.args.userID == SharedPrefHelper.getUserId)
-          || (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)){
-        if (instanceRequestTimerNotifier.value == 0) {
-          instanceCallEnumNotifier.value = CallTypeEnum.requestTimeout;
-          ref.read(socketProvider).updateRequestStatusEmit(
-              expertId: widget.args.expertId,
-              userId: widget.args.userID,
-              callStatusEnum: CallStatusEnum.timeout,
-              callRoleEnum: widget.args.expertId == SharedPrefHelper.getUserId.toString()
-                  ? CallRoleEnum.expert
-                  : CallRoleEnum.user);
 
-        }
-      }
     });
     super.initState();
   }
@@ -182,6 +183,23 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                         ).addPaddingXY(paddingX: 16, paddingY: 16),
                       ),
                       20.0.spaceY,
+                      ValueListenableBuilder(
+                       valueListenable: allCallDurationNotifier,
+                        builder: (BuildContext context, int value, Widget? child) {
+                          return Visibility(
+                            visible: allCallDurationNotifier.value != 0 && (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
+                                || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested),
+                            replacement: SizedBox.shrink(),
+                            child: TitleSmallText(
+                              title: "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
+                              fontFamily: FontWeightEnum.w400.toInter,
+                              titleTextAlign: TextAlign.center,
+                              titleColor: ColorConstants.textColor,
+                            ),
+                          );
+                        }
+                      ),
+                      20.0.spaceY,
                       (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
                           || instanceCallEnumNotifier.value == CallTypeEnum.requestApproved
                        || instanceCallEnumNotifier.value == CallTypeEnum.requestDeclined)
@@ -247,7 +265,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                         NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
                             args: BlockUserArgs(userName: widget.args.name ?? '',
                                 imageURL: widget.args.image ?? '',
-                                userId: int.parse(widget.args.userID ?? ''),
+                                userId: int.parse(widget.args.userID),
                                 userRole: 2,reportName: '',isFromInstantCall: true)
                         );
                       },

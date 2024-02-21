@@ -78,7 +78,9 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
             ),
             trailingIcon: InkWell(
               onTap: () {
+                List<int> data = multiProviderWatch.selectedExperts.map((e) => e.id ?? 0).toList();
                 FlutterToast().showToast(msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.');
+                ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
               },
               child: TitleMediumText(
                 title: StringConstants.done,

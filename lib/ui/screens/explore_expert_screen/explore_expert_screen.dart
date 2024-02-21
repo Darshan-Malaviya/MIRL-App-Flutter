@@ -11,7 +11,8 @@ import 'package:mirl/ui/screens/explore_expert_screen/widget/category_image_and_
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
-  const ExploreExpertScreen({super.key});
+  final bool isFromHomePage;
+  const ExploreExpertScreen({super.key, required this.isFromHomePage});
 
   @override
   ConsumerState<ExploreExpertScreen> createState() => _ExploreExpertScreenState();
@@ -46,7 +47,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
     final filterProviderRead = ref.read(filterProvider);
 
     return PopScope(
-      canPop: true,
+      canPop: widget.isFromHomePage ? false : true,
       onPopInvoked: (value) {
         filterProviderRead.clearAllFilter();
       },
@@ -61,13 +62,15 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
             children: [
               Row(
                 children: [
-                  InkWell(
-                      child: Image.asset(ImageConstants.backIcon),
-                      onTap: () {
-                        filterProviderRead.clearAllFilter();
-                        context.toPop();
-                      }),
-                  8.0.spaceX,
+                  if(!widget.isFromHomePage)...[
+                    InkWell(
+                        child: Image.asset(ImageConstants.backIcon),
+                        onTap: () {
+                          filterProviderRead.clearAllFilter();
+                          context.toPop();
+                        }),
+                    8.0.spaceX,
+                  ],
                   Flexible(
                     child: TextFormFieldWidget(
                       textAlign: TextAlign.start,

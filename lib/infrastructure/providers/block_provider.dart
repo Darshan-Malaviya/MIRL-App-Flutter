@@ -1,5 +1,7 @@
 import 'package:logger/logger.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/request/user_block_request_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/models/response/user_block_response_model.dart';
@@ -27,6 +29,14 @@ class BlockProvider extends ChangeNotifier {
       return 'TEMPORARY';
     }
     return null;
+  }
+
+  Future<void> checkTimeOut({required BuildContext context, required bool isFromInstantCall}) async {
+    if (isFromInstantCall && (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout)) {
+      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
+    } else {
+      context.toPop();
+    }
   }
 
   void userBlockRequestCall({

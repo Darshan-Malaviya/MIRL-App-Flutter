@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/filter_provider.dart';
+import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 
 class CategoryNameAndImageListView extends ConsumerStatefulWidget {
@@ -48,41 +49,17 @@ class _CategoryNameAndImageListViewState extends ConsumerState<CategoryNameAndIm
           scrollDirection: Axis.horizontal,
           itemCount: filterProviderWatch.categoryList?.category?.length ?? 0,
           itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                    args: SelectedCategoryArgument(categoryId: filterProviderWatch.categoryList?.category?[index].id.toString() ?? '', isFromExploreExpert: true));
-              },
-              child: ShadowContainer(
-                shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                height: 110,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: NetworkImageWidget(
-                        boxFit: BoxFit.cover,
-                        imageURL: filterProviderWatch.categoryList?.category?[index].image ?? '',
-                        isNetworkImage: true,
-                        height: 60,
-                        width: 50,
-                      ),
-                    ),
-                    4.0.spaceY,
-                    LabelSmallText(
-                      fontSize: 9,
-                      title: filterProviderWatch.categoryList?.category?[index].name ?? '',
-                      maxLine: 2,
-                      titleTextAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-                width: 90,
-                isShadow: true,
-              ).addMarginX(6),
-            );
-          });
+            return CategoryCommonView(
+                    onTap: () {
+                      context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
+                          args: SelectedCategoryArgument(
+                              categoryId: filterProviderWatch.categoryList?.category?[index].id.toString() ?? '',
+                              isFromExploreExpert: true));
+                    },
+                    categoryName: filterProviderWatch.categoryList?.category?[index].name ?? '',
+                    imageUrl: filterProviderWatch.categoryList?.category?[index].image ?? '')
+                .addMarginX(6);
+          }).addMarginXY(marginX: 10, marginY: 10);
     } else {
       return Center(
         child: BodySmallText(

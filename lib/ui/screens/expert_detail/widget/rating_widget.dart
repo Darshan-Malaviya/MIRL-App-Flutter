@@ -84,7 +84,7 @@ class ReviewWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-              )),
+              ).addPaddingBottom(20)),
     ).addMarginX(14);
   }
 }

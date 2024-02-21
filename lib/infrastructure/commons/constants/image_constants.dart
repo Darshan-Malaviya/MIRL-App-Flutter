@@ -37,7 +37,9 @@ class ImageConstants {
   static const videoOff = '${imagePath}video_off.png';
   static const voiceOff = '${imagePath}voice_off.png';
   static const videoCall = '${imagePath}video_call.png';
+  static const suggestNewExpertise = '${imagePath}suggest_new_experties.png';
   static const timer = '${imagePath}timer.png';
+  static const arrow = '${imagePath}arrow.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';

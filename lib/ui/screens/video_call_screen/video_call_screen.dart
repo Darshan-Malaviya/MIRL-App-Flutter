@@ -4,6 +4,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/enums/call_connect_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
@@ -42,11 +43,11 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       }
       instanceCallTimerFunction();
     } else {
-      if(callConnectNotifier.value != CallConnectStatusEnum.timeout){
+      if(callConnectNotifier.value != CallConnectStatusEnum.completed){
         if(instanceCallDurationNotifier.value >= (ref.read(callProvider).callDuration ?? 0)) {
-          callConnectNotifier.value = CallConnectStatusEnum.timeout;
+          callConnectNotifier.value = CallConnectStatusEnum.completed;
           ref.read(socketProvider).updateCallStatusEmit(
-              status: 4, callRoleEnum: CallRoleEnum.user, callHistoryId: model?.callHistoryId ?? '');
+              status: CallStatusEnum.completedCall, callRoleEnum: CallRoleEnum.user, callHistoryId: model?.callHistoryId ?? '');
         }
       }
     }
@@ -59,9 +60,11 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       ref.read(callProvider).clearAllValue();
       ref.read(callProvider).getCallDuration();
       ref.read(callProvider).initVideoCallAgora(channelId: widget.arguments.agoraChannelId, token: widget.arguments.agoraToken);
+      bool isLocalUserJoin = ref.watch(callProvider).localUserJoined;
+      bool isUser = (ref.watch(socketProvider).extraResponseModel?.callRoleEnum == CallRoleEnum.user);
       instanceCallDurationNotifier.addListener(() {
         if(ref.read(callProvider).localUserJoined){
-          if(ref.read(socketProvider).extraResponseModel?.callRoleEnum == CallRoleEnum.user){
+          if(isUser){
             if(instanceCallDurationNotifier.value == 0) {
               instanceCallTimerFunction();
             }

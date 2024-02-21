@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
+import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 
 class ExpertCategoryScreen extends ConsumerStatefulWidget {
@@ -41,7 +42,6 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final addYourAreaExpertiseProviderWatch = ref.watch(addYourAreaExpertiseProvider);
-    final addYourAreaExpertiseProviderRead = ref.read(addYourAreaExpertiseProvider);
 
     return Scaffold(
         backgroundColor: ColorConstants.greyLightColor,
@@ -79,52 +79,25 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                     ? CupertinoActivityIndicator(color: ColorConstants.primaryColor)
                     : addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                         ? GridView.builder(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.only(top: 10),
                             controller: scrollController,
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 25),
                             itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0 + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1),
                             itemBuilder: (context, index) {
                               CategoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
 
-                              return Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
-                                      context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                                          args: SelectedCategoryArgument(categoryId: element?.id.toString() ?? '', isFromExploreExpert: true));
-                                    },
-                                    child: ShadowContainer(
-                                      shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
-                                          ? ColorConstants.categoryListBorder
-                                          : ColorConstants.blackColor.withOpacity(0.1),
-                                      child: Column(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(20.0),
-                                            child: NetworkImageWidget(
-                                              boxFit: BoxFit.cover,
-                                              imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
-                                              isNetworkImage: true,
-                                              height: 60,
-                                              width: 50,
-                                            ),
-                                          ),
-                                          10.0.spaceY,
-                                          LabelSmallText(
-                                            fontSize: 9,
-                                            title: element?.name ?? '',
-                                            maxLine: 2,
-                                            titleTextAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      ),
-                                      height: 120,
-                                      width: 100,
-                                      isShadow: true,
-                                    ),
-                                  ),
-                                ],
+                              return CategoryCommonView(
+                                onTap: (){
+                                  addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
+                                  context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
+                                      args: SelectedCategoryArgument(
+                                          categoryId: element?.id.toString() ?? '', isFromExploreExpert: true));
+                                },
+                                categoryName: addYourAreaExpertiseProviderWatch.categoryList?[index].name ?? '',
+                                imageUrl:  addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
+                                isSelectedShadow: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false),
+                                blurRadius: 8,
+                                spreadRadius: 1,
                               );
                             })
                         : Center(
@@ -134,11 +107,16 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                             ),
                           ),
               ),
-              10.0.spaceY,
-              LabelSmallText(
-                title: LocaleKeys.suggestNewCategoriesAndTopicsToAdd.tr(),
-                titleTextAlign: TextAlign.center,
-                maxLine: 2,
+              InkWell(
+                onTap: (){
+                  context.toPushNamed(RoutesConstants.suggestNewExpertiseScreen);
+                },
+                child: LabelSmallText(
+                  title: LocaleKeys.suggestNewCategoriesAndTopicsToAdd.tr(),
+                  titleTextAlign: TextAlign.center,
+                  fontFamily: FontWeightEnum.w700.toInter,
+                  maxLine: 2,
+                ),
               ),
               20.0.spaceY
             ],
