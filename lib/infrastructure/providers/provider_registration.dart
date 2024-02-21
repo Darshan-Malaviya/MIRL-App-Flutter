@@ -9,6 +9,7 @@ import 'package:mirl/infrastructure/providers/expert_detail_provider.dart';
 import 'package:mirl/infrastructure/providers/home_provider.dart';
 import 'package:mirl/infrastructure/providers/report_user_provider.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
+import 'package:mirl/infrastructure/providers/suggest_new_experties_provider.dart';
 import 'package:mirl/infrastructure/providers/video_call_provider.dart';
 
 // final authProvider = ChangeNotifierProvider.autoDispose((ref) => AuthProvider());
@@ -24,4 +25,5 @@ final scheduleCallProvider = ChangeNotifierProvider.autoDispose((_) => ScheduleC
 final commonAppProvider = ChangeNotifierProvider<CommonAppProvider>((_) => CommonAppProvider());
 final reportUserProvider = ChangeNotifierProvider.autoDispose((_) => ReportUserProvider());
 final videoCallProvider = ChangeNotifierProvider.autoDispose((_) => VideoCallProvider());
+final suggestNewExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => SuggestNewExpertiseProvider());
 

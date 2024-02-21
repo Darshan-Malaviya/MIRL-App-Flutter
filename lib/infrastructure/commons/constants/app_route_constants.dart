@@ -35,6 +35,7 @@ import 'package:mirl/ui/screens/schedule_screen/schedule_appointment_screen.dart
 import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
+import 'package:mirl/ui/screens/suggestion/thanks_giving_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
@@ -132,6 +133,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const ReportExpertScreen());
         case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+      case RoutesConstants.thanksGivingScreen:
+        return MaterialPageRoute(builder: (_) => const ThanksGivingScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -185,6 +185,8 @@ class TextFormFieldWidget extends StatelessWidget {
 
   final bool? setFormatter;
 
+  final BoxShadow? boxShadow;
+
   const TextFormFieldWidget(
       {this.textFormFieldKey,
       this.controller,
@@ -253,7 +255,7 @@ class TextFormFieldWidget extends StatelessWidget {
       this.borderColor,
       this.initialValue,
       this.alignment,
-      this.setFormatter})
+      this.setFormatter, this.boxShadow})
       : super(key: textFormFieldKey);
 
   @override
@@ -323,30 +325,30 @@ class TextFormFieldWidget extends StatelessWidget {
                   enabledBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
                       borderSide: BorderSide(color: enabledBorderColor ?? ColorConstants.borderColor),
-                      borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
+                      borderRadius: BorderRadius.circular(borderRadius??RadiusConstant.commonRadius),
                     ),
-                    shadow: buildBoxShadow(),
+                    shadow: boxShadow ?? buildBoxShadow(),
                   ),
                   focusedBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
                       borderSide: const BorderSide(color: ColorConstants.borderColor),
-                      borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
+                      borderRadius: BorderRadius.circular(borderRadius??RadiusConstant.commonRadius),
                     ),
-                    shadow: buildBoxShadow(),
+                    shadow: boxShadow ?? buildBoxShadow(),
                   ),
                   errorBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
                       borderSide: BorderSide(color: ColorConstants.secondaryColor),
-                      borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
+                      borderRadius: BorderRadius.circular(borderRadius??RadiusConstant.commonRadius),
                     ),
-                    shadow: buildBoxShadow(),
+                    shadow: boxShadow ?? buildBoxShadow(),
                   ),
                   focusedErrorBorder: DecoratedInputBorder(
                     child: OutlineInputBorder(
                       borderSide: BorderSide(color: ColorConstants.secondaryColor),
-                      borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
+                      borderRadius: BorderRadius.circular(borderRadius??RadiusConstant.commonRadius),
                     ),
-                    shadow: buildBoxShadow(),
+                    shadow: boxShadow ?? buildBoxShadow(),
                   ),
                   errorMaxLines: errorLines ?? 3,
                 ),
