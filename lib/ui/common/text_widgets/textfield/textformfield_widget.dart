@@ -81,7 +81,6 @@ class TextFormFieldWidget extends StatelessWidget {
   /// Defines focus border color
 
   final Color? focusedBorderColor;
-  final Color? borderColor;
 
   /// Defines error border color
   final Color? errorBorderColor;
@@ -183,9 +182,9 @@ class TextFormFieldWidget extends StatelessWidget {
 
   final bool? setFormatter;
 
-  final BoxShadow? boxShadow;
-
   final bool? canRequestFocus;
+
+  final bool? enableShadow;
 
   const TextFormFieldWidget(
       {this.textFormFieldKey,
@@ -251,12 +250,11 @@ class TextFormFieldWidget extends StatelessWidget {
       this.suffixIconWidgetConstraints,
       this.labelText,
       this.labelColor,
-      this.borderColor,
       this.initialValue,
       this.alignment,
       this.setFormatter,
       this.canRequestFocus,
-      this.boxShadow})
+      this.enableShadow})
       : super(key: textFormFieldKey);
 
   @override
@@ -276,155 +274,162 @@ class TextFormFieldWidget extends StatelessWidget {
                 ),
               )
             : const SizedBox.shrink(),
-        (labelText?.isNotEmpty ?? false) && labelText != null
-            ? (labelTextSpace?.spaceY ?? 6.0.spaceY)
-            : const SizedBox.shrink(),
+        (labelText?.isNotEmpty ?? false) && labelText != null ? (labelTextSpace?.spaceY ?? 6.0.spaceY) : const SizedBox.shrink(),
         SizedBox(
           height: height,
           width: width,
-          child: TextFormField(
-            textAlign: textAlign ?? TextAlign.left,
-            inputFormatters: setFormatter ?? true
-                ? [
-                    ...?inputFormatters,
-                    FilteringTextInputFormatter.deny(RegExp(r"^\s*")),
-                    FilteringTextInputFormatter.deny(RegExp(RegexConstants.emojiRegex)),
-                  ]
+          child: Container(
+            decoration: enableShadow == true
+                ? BoxDecoration(
+                    borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        offset: const Offset(-2, -2),
+                      ),
+                      BoxShadow(
+                        color: ColorConstants.whiteColor,
+                        spreadRadius: -1.0,
+                        blurRadius: 10.0,
+                        offset: const Offset(2, 2),
+                      ),
+                    ],
+                  )
                 : null,
-            validator: validator,
-            focusNode: focusNode,
-            maxLines: maxLines ?? 1,
-            minLines: minLines ?? 1,
-            maxLength: maxLength,
-            textInputAction: textInputAction ?? TextInputAction.next,
-            readOnly: isReadOnly ?? false,
-            style: textStyle ??
-                TextStyle(
-                    color: ColorConstants.blackColor,
-                    fontSize: 14 / scaleFactor,
-                    fontFamily: textFontFamily ?? FontWeightEnum.w400.toInter),
-            keyboardType: textInputType ?? TextInputType.text,
-            controller: controller,
-            initialValue: initialValue,
-            decoration: decoration ??
-                InputDecoration(
-                  counterText: '',
-                  prefixIconConstraints: prefixIconWidgetConstraints,
-                  suffixIconConstraints: suffixIconWidgetConstraints,
-                  prefixIcon: prefixIconWidget,
-                  prefix: prefixWidget ?? const SizedBox.shrink(),
-                  errorText: errorText != null && (errorText?.isNotEmpty ?? false) ? errorText : null,
-                  suffixIcon: suffixIcon,
-                  hintStyle: hintStyle ??
-                      TextStyle(
-                          color: ColorConstants.greyColor,
-                          fontSize: 12 / scaleFactor,
-                          fontFamily: fontFamily ?? FontWeightEnum.w400.toInter),
-                  hintText: hintText ?? '',
-                  border: border ?? InputBorder.none,
-                  contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                  fillColor: fillColor ?? Colors.white,
-                  filled: true,
-                  errorStyle: TextStyle(
-                      color: ColorConstants.secondaryColor, fontSize: 12 / scaleFactor, fontWeight: FontWeight.w600),
+            child: TextFormField(
+              textAlign: textAlign ?? TextAlign.left,
+              inputFormatters: setFormatter ?? true
+                  ? [
+                      ...?inputFormatters,
+                      FilteringTextInputFormatter.deny(RegExp(r"^\s*")),
+                      FilteringTextInputFormatter.deny(RegExp(RegexConstants.emojiRegex)),
+                    ]
+                  : null,
+              validator: validator,
+              focusNode: focusNode,
+              maxLines: maxLines ?? 1,
+              minLines: minLines ?? 1,
+              maxLength: maxLength,
+              textInputAction: textInputAction ?? TextInputAction.next,
+              readOnly: isReadOnly ?? false,
+              style: textStyle ?? TextStyle(color: ColorConstants.blackColor, fontSize: 14 / scaleFactor, fontFamily: textFontFamily ?? FontWeightEnum.w400.toInter),
+              keyboardType: textInputType ?? TextInputType.text,
+              controller: controller,
+              initialValue: initialValue,
+              decoration: decoration ??
+                  InputDecoration(
+                    counterText: '',
+                    prefixIconConstraints: prefixIconWidgetConstraints,
+                    suffixIconConstraints: suffixIconWidgetConstraints,
+                    prefixIcon: prefixIconWidget,
+                    prefix: prefixWidget ?? const SizedBox.shrink(),
+                    errorText: errorText != null && (errorText?.isNotEmpty ?? false) ? errorText : null,
+                    suffixIcon: suffixIcon,
+                    hintStyle: hintStyle ?? TextStyle(color: hintTextColor ?? ColorConstants.greyColor, fontSize: 12 / scaleFactor, fontFamily: fontFamily ?? FontWeightEnum.w400.toInter),
+                    hintText: hintText ?? '',
+                    border: border ?? InputBorder.none,
+                    contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    fillColor: fillColor ?? Colors.white,
+                    filled: true,
+                    errorStyle: TextStyle(color: ColorConstants.secondaryColor, fontSize: 12 / scaleFactor, fontWeight: FontWeight.w600),
 
-                  ///text field with shadow
-                  enabledBorder: DecoratedInputBorder(
-                    child: OutlineInputBorder(
-                      borderSide: BorderSide(color: enabledBorderColor ?? ColorConstants.borderColor),
-                      borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                    ///text field with shadow
+                    enabledBorder: DecoratedInputBorder(
+                      child: OutlineInputBorder(
+                        borderSide: BorderSide(color: enabledBorderColor ?? ColorConstants.borderColor, width: 0),
+                        borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                      ),
+                      shadow: buildBoxShadow(),
                     ),
-                    shadow: boxShadow ?? buildBoxShadow(),
-                  ),
-                  focusedBorder: DecoratedInputBorder(
-                    child: OutlineInputBorder(
-                      borderSide: const BorderSide(color: ColorConstants.borderColor),
-                      borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                    focusedBorder: DecoratedInputBorder(
+                      child: OutlineInputBorder(
+                        borderSide: BorderSide(color: focusedBorderColor ?? ColorConstants.borderColor, width: 0),
+                        borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                      ),
+                      shadow: buildBoxShadow(),
                     ),
-                    shadow: boxShadow ?? buildBoxShadow(),
-                  ),
-                  errorBorder: DecoratedInputBorder(
-                    child: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorConstants.borderColor),
-                      borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                    errorBorder: DecoratedInputBorder(
+                      child: OutlineInputBorder(
+                        borderSide: BorderSide(color: errorBorderColor ?? ColorConstants.borderColor),
+                        borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                      ),
+                      shadow: buildBoxShadow(),
                     ),
-                    shadow: boxShadow ?? buildBoxShadow(),
-                  ),
-                  focusedErrorBorder: DecoratedInputBorder(
-                    child: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorConstants.borderColor),
-                      borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
+                    focusedErrorBorder: DecoratedInputBorder(
+                      child: OutlineInputBorder(
+                        borderSide: BorderSide(color: focusedErrorBorderColor ?? ColorConstants.borderColor),
+                        borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
+                      ),
+                      shadow: buildBoxShadow(),
                     ),
-                    shadow: buildBoxShadow(),
-                  ),
-                  disabledBorder: DecoratedInputBorder(
-                    child: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorConstants.borderColor),
-                      borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                    disabledBorder: DecoratedInputBorder(
+                      child: OutlineInputBorder(
+                        borderSide: BorderSide(color: ColorConstants.borderColor),
+                        borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
+                      ),
+                      shadow: buildBoxShadow(),
                     ),
-                    shadow: boxShadow ?? buildBoxShadow(),
+                    errorMaxLines: errorLines ?? 3,
                   ),
-                  errorMaxLines: errorLines ?? 3,
-                ),
-            onChanged: onChanged,
-            autofillHints: autofillHints,
-            onFieldSubmitted: onFieldSubmitted,
-            onTap: onTap ?? () {},
-            autocorrect: false,
-            autofocus: autofocus ?? false,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            cursorColor: ColorConstants.greyColor,
-            cursorRadius: const Radius.circular(100),
-            cursorHeight: 24,
-            enabled: canRequestFocus ?? true,
-            enableIMEPersonalizedLearning: true,
-            enableInteractiveSelection: true,
-            enableSuggestions: true,
-            expands: expands ?? false,
-            keyboardAppearance: keyboardAppearance ?? Brightness.light,
-            obscureText: obscureText ?? false,
-            obscuringCharacter: '●',
-            onEditingComplete: onEditingComplete ?? () {},
-            onSaved: onSaved ?? (val) {},
-            textAlignVertical: textAlignVertical ?? TextAlignVertical.center,
-            textCapitalization: textCapitalization ?? TextCapitalization.none,
-            textDirection: textDirection ?? TextDirection.ltr,
-            contextMenuBuilder: (context, editableTextState) {
-              ///refer this link
-              ///https://docs.flutter.dev/release/breaking-changes/context-menus
-              final List<ContextMenuButtonItem> buttonItems = [
-                ContextMenuButtonItem(
-                    onPressed: () {
-                      editableTextState.cutSelection(SelectionChangedCause.longPress);
-                    },
-                    type: ContextMenuButtonType.cut),
-                ContextMenuButtonItem(
-                    onPressed: () {
-                      editableTextState.pasteText(SelectionChangedCause.longPress);
-                    },
-                    type: ContextMenuButtonType.paste),
-                ContextMenuButtonItem(
-                    onPressed: () {
-                      editableTextState.copySelection(SelectionChangedCause.longPress);
-                    },
-                    type: ContextMenuButtonType.copy),
-                ContextMenuButtonItem(
-                    onPressed: () {
-                      editableTextState.selectAll(SelectionChangedCause.longPress);
-                    },
-                    type: ContextMenuButtonType.selectAll),
-              ];
-              return AdaptiveTextSelectionToolbar.buttonItems(
-                anchors: editableTextState.contextMenuAnchors,
-                buttonItems: (obscureText ?? false) ? [] : buttonItems,
-              );
-            },
+              onChanged: onChanged,
+              autofillHints: autofillHints,
+              onFieldSubmitted: onFieldSubmitted,
+              onTap: onTap ?? () {},
+              autocorrect: false,
+              autofocus: autofocus ?? false,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              cursorColor: ColorConstants.greyColor,
+              cursorRadius: const Radius.circular(100),
+              cursorHeight: 24,
+              enabled: canRequestFocus ?? true,
+              enableIMEPersonalizedLearning: true,
+              enableInteractiveSelection: true,
+              enableSuggestions: true,
+              expands: expands ?? false,
+              keyboardAppearance: keyboardAppearance ?? Brightness.light,
+              obscureText: obscureText ?? false,
+              obscuringCharacter: '●',
+              onEditingComplete: onEditingComplete ?? () {},
+              onSaved: onSaved ?? (val) {},
+              textAlignVertical: textAlignVertical ?? TextAlignVertical.center,
+              textCapitalization: textCapitalization ?? TextCapitalization.none,
+              textDirection: textDirection ?? TextDirection.ltr,
+              contextMenuBuilder: (context, editableTextState) {
+                ///refer this link
+                ///https://docs.flutter.dev/release/breaking-changes/context-menus
+                final List<ContextMenuButtonItem> buttonItems = [
+                  ContextMenuButtonItem(
+                      onPressed: () {
+                        editableTextState.cutSelection(SelectionChangedCause.longPress);
+                      },
+                      type: ContextMenuButtonType.cut),
+                  ContextMenuButtonItem(
+                      onPressed: () {
+                        editableTextState.pasteText(SelectionChangedCause.longPress);
+                      },
+                      type: ContextMenuButtonType.paste),
+                  ContextMenuButtonItem(
+                      onPressed: () {
+                        editableTextState.copySelection(SelectionChangedCause.longPress);
+                      },
+                      type: ContextMenuButtonType.copy),
+                  ContextMenuButtonItem(
+                      onPressed: () {
+                        editableTextState.selectAll(SelectionChangedCause.longPress);
+                      },
+                      type: ContextMenuButtonType.selectAll),
+                ];
+                return AdaptiveTextSelectionToolbar.buttonItems(
+                  anchors: editableTextState.contextMenuAnchors,
+                  buttonItems: (obscureText ?? false) ? [] : buttonItems,
+                );
+              },
+            ),
           ),
         ),
       ],
     );
   }
 
-  BoxShadow buildBoxShadow() =>
-      BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.1), blurRadius: 6, offset: const Offset(0, 0));
+  BoxShadow buildBoxShadow() => BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.1), blurRadius: 6, offset: const Offset(0, 0));
 }

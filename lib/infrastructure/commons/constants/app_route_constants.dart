@@ -169,7 +169,7 @@ class RouterConstant {
       case RoutesConstants.multiConnectSelectedCategoryScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
-        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen(role: settings.arguments as String));
+        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen(role: settings.arguments as int));
       case RoutesConstants.ratingAndReviewScreen:
         return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
       case RoutesConstants.earningReportScreen:

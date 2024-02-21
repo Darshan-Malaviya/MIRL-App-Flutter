@@ -211,7 +211,7 @@ class WeeklyAvailableData {
   String? startTime;
   String? endTime;
   bool? isAvailable;
-  String? scheduleType;
+  int? scheduleType;
   String? firstCreated;
   String? lastModified;
 

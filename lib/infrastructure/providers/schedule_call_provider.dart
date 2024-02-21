@@ -130,7 +130,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     notifyListeners();
 
     ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(
-      request: SlotsRequestModel(expertId: expertData?.id, date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
+      request: SlotsRequestModel(expertId: expertData?.id, date: _selectedUTCDate, duration: _callDuration).prepareRequest(),
     );
 
     _isLoadingSlot = false;

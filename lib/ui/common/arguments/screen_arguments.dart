@@ -20,10 +20,10 @@ class CallArgs {
 
 class CancelArgs {
   final AppointmentData? appointmentData;
-  final String? role;
+  final int? role;
   final CancelAppointmentData? cancelData;
-  final bool? fromUser;
+  final bool? fromScheduled;
 
-  CancelArgs({this.appointmentData, this.role, this.cancelData, this.fromUser = false});
+  CancelArgs({this.appointmentData, this.role, this.cancelData, this.fromScheduled = false});
 }
 

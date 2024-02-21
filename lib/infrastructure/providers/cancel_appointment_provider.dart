@@ -21,7 +21,7 @@ class CancelAppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> cancelAppointmentApiCall({required BuildContext context, required AppointmentData? appointmentData, required String role, required bool fromUser}) async {
+  Future<void> cancelAppointmentApiCall({required BuildContext context, required AppointmentData? appointmentData, required int role, required bool fromScheduled}) async {
     _isLoadingReason = true;
     notifyListeners();
 
@@ -41,7 +41,7 @@ class CancelAppointmentProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is CancelAppointmentResponseModel) {
           CancelAppointmentResponseModel responseModel = response.data;
-          context.toPushNamed(RoutesConstants.canceledAppointmentScreen, args: CancelArgs(cancelData: responseModel.data, fromUser: fromUser));
+          context.toPushNamed(RoutesConstants.canceledAppointmentScreen, args: CancelArgs(cancelData: responseModel.data, fromScheduled: fromScheduled));
         }
         break;
       case APIStatus.failure:

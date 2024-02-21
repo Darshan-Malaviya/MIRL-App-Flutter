@@ -343,7 +343,7 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> expertAvailabilityApi(BuildContext context, String scheduleType) async {
+  Future<void> expertAvailabilityApi(BuildContext context, int scheduleType) async {
     getSelectedWeekDays();
     CustomLoading.progressDialog(isLoading: true);
 

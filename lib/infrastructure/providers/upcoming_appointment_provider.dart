@@ -26,13 +26,13 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
   List<String> get dateList => _dateList;
   List<String> _dateList = [];
 
-  void getSelectedDate(DateTime dateTime,  String role) {
+  void getSelectedDate(DateTime dateTime, int role) {
     selectedDate = dateTime;
-    upcomingAppointmentApiCall(showLoader: false, showListLoader: true,role: role);
+    upcomingAppointmentApiCall(showLoader: false, showListLoader: true, role: role);
     notifyListeners();
   }
 
-  Future<void> upcomingAppointmentApiCall({required bool showLoader, required bool showListLoader, required String role}) async {
+  Future<void> upcomingAppointmentApiCall({required bool showLoader, required bool showListLoader, required int role}) async {
     if (showLoader) {
       _isLoading = true;
       notifyListeners();

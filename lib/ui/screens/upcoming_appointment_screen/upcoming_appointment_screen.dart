@@ -10,7 +10,7 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/table_calender_widget/table_calender.dart';
 
 class UpcomingAppointmentScreen extends ConsumerStatefulWidget {
-  final String role;
+  final int role;
 
   const UpcomingAppointmentScreen({super.key, required this.role});
 
@@ -173,7 +173,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                             style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                                             children: [
                                               TextSpan(
-                                                  text: ' ${upcomingWatch.upcomingAppointment[index].duration.toString()} ${LocaleKeys.minutes.tr()}',
+                                                  text: '${upcomingWatch.upcomingAppointment[index].duration.toString()} ${LocaleKeys.minutes.tr()}',
                                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                                             ],
                                           ),
@@ -200,15 +200,18 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                 12.0.spaceY,
                                 Row(
                                   children: [
-                                    PrimaryButton(
-                                      title: LocaleKeys.startCall.tr(),
-                                      width: 150,
-                                      onPressed: () {},
-                                      fontSize: 10,
-                                      titleColor: ColorConstants.textColor,
-                                      buttonColor: ColorConstants.yellowLightColor,
+                                    Visibility(
+                                      visible: widget.role == '1',
+                                      replacement: SizedBox.shrink(),
+                                      child: PrimaryButton(
+                                        title: LocaleKeys.startCall.tr(),
+                                        width: 150,
+                                        onPressed: () {},
+                                        fontSize: 10,
+                                        titleColor: ColorConstants.textColor,
+                                        buttonColor: ColorConstants.yellowLightColor,
+                                      ).addMarginLeft(14),
                                     ),
-                                    14.0.spaceX,
                                     PrimaryButton(
                                       title: LocaleKeys.cancelAppointment.tr(),
                                       width: 150,
@@ -218,7 +221,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                             appointmentData: AppointmentData(
                                                 id: upcomingWatch.upcomingAppointment[index].id, expertDetail: ExpertDetail(id: upcomingWatch.upcomingAppointment[index].expertId)),
                                             role: widget.role,
-                                            fromUser: widget.role == '1' ? true : false),
+                                            fromScheduled: false),
                                       ),
                                       fontSize: 10,
                                       titleColor: ColorConstants.textColor,

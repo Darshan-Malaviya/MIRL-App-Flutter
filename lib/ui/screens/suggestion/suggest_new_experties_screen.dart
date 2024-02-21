@@ -20,7 +20,9 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
     final suggestNewExpertiseWatch = ref.watch(suggestNewExpertiseProvider);
     final suggestNewExpertiseRead = ref.read(suggestNewExpertiseProvider);
     return Scaffold(
+      backgroundColor: ColorConstants.greyLightColor,
         appBar: AppBarWidget(
+          appBarColor: ColorConstants.greyLightColor,
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
             onTap: () => context.toPop(),
@@ -61,6 +63,8 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               TextFormFieldWidget(
                 hintText: LocaleKeys.newExpertisePlaceHolder.tr(),
                 controller: suggestNewExpertiseWatch.expertCategoryController,
+                enabledBorderColor: ColorConstants.dropDownBorderColor,
+                hintTextColor: ColorConstants.buttonTextColor,
                 /* inputFormatters: [
               LengthLimitingTextInputFormatter(50),
             ],*/
@@ -82,24 +86,10 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               Stack(
                 alignment: Alignment.bottomRight,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          color: ColorConstants.blackColor.withOpacity(0.25),
-                        ),
-                        BoxShadow(
-                          color: ColorConstants.whiteColor,
-                          spreadRadius: 0.0,
-                          blurRadius: 4.0,
-                          offset: Offset(4, 4),
-                        ),
-                      ],
-                    ),
-                  ),
                   TextFormFieldWidget(
                     onChanged: suggestNewExpertiseRead.newTopicCounterValue,
+                    hintText: LocaleKeys.suggestNewExpertCategoryNote.tr(),
+                    hintTextColor: ColorConstants.buttonTextColor,
                     maxLines: 10,
                     maxLength: 500,
                     minLines: 8,
@@ -108,17 +98,9 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                     textInputAction: TextInputAction.newline,
                     contentPadding: EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 30),
                     borderRadius: 25,
-                    focusedErrorBorderColor: ColorConstants.whiteColor,
-                    errorBorderColor: ColorConstants.whiteColor,
-                    borderColor: ColorConstants.whiteColor,
-                    enabledBorderColor: ColorConstants.whiteColor,
-                    focusedBorderColor: ColorConstants.whiteColor,
-                    boxShadow: BoxShadow(
-                      color: ColorConstants.blackColor.withOpacity(0.20),
-                      spreadRadius: 0.0,
-                      blurRadius: 4.0,
-                      offset: Offset(-4, -4),
-                    ),
+                    enabledBorderColor: ColorConstants.transparentColor,
+                    fillColor: ColorConstants.transparentColor,
+                    enableShadow: true,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8, right: 12),
