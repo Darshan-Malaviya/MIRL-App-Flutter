@@ -15,8 +15,19 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late final AppLifecycleListener _listener;
+
   @override
   void initState() {
+ /*   _listener = AppLifecycleListener(
+      onDetach: () => Logger().d('onDetach'),
+      onHide: () => Logger().d('onHide'),
+      onInactive: () => Logger().d('onInactive'),
+      onPause: () => Logger().d('onPause'),
+      onRestart: () => Logger().d('onRestart'),
+      onResume: () => Logger().d('onResume'),
+      onShow: () => Logger().d('onShow'),
+    );*/
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(homeProvider).homePageApi();
     });
@@ -27,21 +38,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final homeProviderWatch = ref.watch(homeProvider);
     return Scaffold(
-      backgroundColor: ColorConstants.grayLightColor,
+      backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
         preferSize: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PrimaryButton(
-              title: StringConstants.logOut,
-              onPressed: () async {
-                SharedPrefHelper.clearPrefs();
-                context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-              },
-            ),
-            10.0.spaceY,
+            // PrimaryButton(
+            //   title: StringConstants.logOut,
+            //   onPressed: () async {
+            //     SharedPrefHelper.clearPrefs();
+            //     context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+            //   },
+            // ),
+            // 10.0.spaceY,
             InkWell(
               onTap: () {
                 context.toPushNamed(RoutesConstants.searchScreen);
@@ -60,10 +72,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Flexible(
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       context.toPushNamed(RoutesConstants.exploreExpertScreen);
                     },
-                    child: Container(
+                    child: Container(height: 205,
                         decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
@@ -75,20 +87,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: Column(
                           children: [
                             BodySmallText(
-                              fontWeight: FontWeight.w700,
                               title: LocaleKeys.exploreExperts.tr().toUpperCase(),
+                              maxLine: 2,
                             ),
                             10.0.spaceY,
                             Image.asset(
                               ImageConstants.expert,
-                              height: 100,
-                              width: 100,
+                              height: 80,
+                              width: 80,
                             ),
                             10.0.spaceY,
                             BodySmallText(
                               title: LocaleKeys.browseExpertsFields.tr(),
                               titleTextAlign: TextAlign.center,
                               maxLine: 3,
+                              fontFamily: FontWeightEnum.w400.toInter,
                             ),
                           ],
                         ).addAllMargin(12)),
@@ -97,8 +110,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 40.0.spaceX,
                 Flexible(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                     child: Container(
+                      height: 205,
                         decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
@@ -110,19 +124,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: Column(
                           children: [
                             BodySmallText(
-                              fontWeight: FontWeight.w700,
                               title: LocaleKeys.multipleConnect.tr().toUpperCase(),
+                              maxLine: 2,
+                              titleTextAlign: TextAlign.center,
                             ),
                             10.0.spaceY,
                             Image.asset(
                               ImageConstants.multipleConnect,
-                              height: 100,
-                              width: 100,
+                              height: 80,
+                              width: 80,
                             ),
                             10.0.spaceY,
                             BodySmallText(
                               title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
                               titleTextAlign: TextAlign.center,
+                              fontFamily: FontWeightEnum.w400.toInter,
                               maxLine: 3,
                             ),
                           ],
@@ -136,15 +152,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               CategoryListShimmerWidget(),
               20.0.spaceY,
               CategoryListShimmerWidget()
-            ] else
-              ...[
-                CategoryAndTopicListView(),
-                20.0.spaceY,
-                FavoriteExpertsView(),
-                20.0.spaceY,
-                PastConversationsView(),
-                20.0.spaceY,
-              ]
+            ] else ...[
+              CategoryAndTopicListView(),
+              20.0.spaceY,
+              FavoriteExpertsView(),
+              20.0.spaceY,
+              PastConversationsView(),
+              20.0.spaceY,
+            ]
           ],
         ).addPaddingXY(paddingX: 16, paddingY: 16),
       ),

@@ -29,6 +29,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final homeProviderRead = ref.read(homeProvider);
 
     return Scaffold(
+      backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
         preferSize: 0,
       ),
@@ -39,12 +40,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           SliverToBoxAdapter(
             child: Row(
               children: [
-                InkWell(
-                    onTap: () => context.toPop(),
-                    child: Icon(
-                      Icons.keyboard_arrow_left_outlined,
-                      size: 28,
-                    )),
                 8.0.spaceX,
                 Flexible(
                   child: TextFormFieldWidget(
@@ -68,6 +63,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     hintText: LocaleKeys.typeSomethingHere.tr(),
                   ),
                 ),
+                8.0.spaceX,
+                OnScaleTap(onPress: () => context.toPop(), child: BodySmallText(title: LocaleKeys.cancel.tr())).addMarginY(5)
               ],
             ),
           ),

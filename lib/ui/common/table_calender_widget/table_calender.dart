@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/table_calender_widget/table_border.dart';
@@ -10,8 +12,10 @@ final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
 class TableCalenderRangeWidget extends StatefulWidget {
   final Function(DateTime selectedDay, DateTime focusedDay) onDateSelected;
   final DateTime? selectedDay;
+  final List<String>? scheduleDateList;
+  final bool fromUpcomingAppointment;
 
-  TableCalenderRangeWidget({super.key, required this.onDateSelected, required this.selectedDay});
+  TableCalenderRangeWidget({super.key, required this.onDateSelected, required this.selectedDay, this.scheduleDateList, required this.fromUpcomingAppointment});
 
   @override
   _TableCalenderRangeWidgetState createState() => _TableCalenderRangeWidgetState();
@@ -26,13 +30,27 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+    PageController _pageController = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
       firstDay: kFirstDay,
       lastDay: kToday.add(Duration(days: 30)),
       focusedDay: _focusedDay,
-      selectedDayPredicate: (day) => isSameDay(widget.selectedDay, day),
+      selectedDayPredicate: (day) {
+        if (widget.fromUpcomingAppointment) {
+          for (var element in widget.scheduleDateList ?? []) {
+            if (day.toString().toLocalDate() == element) {
+              return true;
+            }
+          }
+        } else {
+          log(day.toString());
+          return isSameDay(widget.selectedDay, day);
+        }
+        return false;
+      },
       rangeStartDay: _rangeStart,
       rangeEndDay: _rangeEnd,
       availableGestures: AvailableGestures.horizontalSwipe,
@@ -43,12 +61,173 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         outsideDecoration: BoxDecoration(
           borderRadius: BorderRadius.only(topRight: Radius.circular(25), topLeft: Radius.circular(25)),
         ),
-        defaultTextStyle: TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.buttonTextColor),
-        disabledTextStyle: TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.disableColor),
-        weekendTextStyle: TextStyle(fontFamily: FontWeightEnum.w700.toInter, fontSize: 14, color: ColorConstants.buttonTextColor),
+        defaultTextStyle: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 12, color: ColorConstants.buttonTextColor),
+        disabledTextStyle: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 12, color: ColorConstants.disableColor),
+        weekendTextStyle: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 12, color: ColorConstants.buttonTextColor),
       ),
+      onCalendarCreated: (pageController) {
+        _pageController = pageController;
+      },
+
       headerStyle: HeaderStyle(rightChevronVisible: false, leftChevronVisible: false, formatButtonVisible: false, titleCentered: true),
       calendarBuilders: CalendarBuilders(
+        defaultBuilder: (context, day, focusedDay) {
+          if (widget.fromUpcomingAppointment) {
+            if (!(widget.scheduleDateList?.contains(day.toString().toLocalDate()) ?? false)) {
+              return Center(
+                child: BodySmallText(
+                  title: day.day.toString(),
+                  titleColor: Color(0xFFBFBFBF),
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
+              );
+            }
+          }
+          return null;
+        },
+        outsideBuilder: (context, day, focusedDay) {
+          return Center(
+            child: BodySmallText(
+              title: day.day.toString().padLeft(0, '0'),
+              titleColor: ColorConstants.buttonTextColor,
+              fontFamily: FontWeightEnum.w400.toInter,
+            ),
+          );
+        },
+        headerTitleBuilder: (context, day) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () =>   _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+                  child: Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: ColorConstants.yellowButtonColor.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: ColorConstants.dropDownBorderColor),
+                    ),
+                    child: Center(
+                      child: BodySmallText(
+                        title: DateFormat.MMMM().format(DateTime(day.year, day.month - 1, day.day)).toUpperCase(),
+                        titleColor: ColorConstants.buttonTextColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              5.0.spaceX,
+              Container(
+                height: 60,
+                width: 160,
+                decoration: BoxDecoration(
+                  color: ColorConstants.yellowButtonColor,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: ColorConstants.dropDownBorderColor),
+                ),
+                child: Center(
+                  child: BodySmallText(
+                    title: DateFormat.MMMM().format(day).toUpperCase(),
+                    titleColor: ColorConstants.buttonTextColor,
+                  ),
+                ),
+              ),
+              5.0.spaceX,
+              Expanded(
+                child: InkWell(
+                  onTap: () =>   _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+                  child: Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: ColorConstants.yellowButtonColor.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: ColorConstants.dropDownBorderColor),
+                    ),
+                    child: Center(
+                      child: BodySmallText(
+                        title: DateFormat.MMMM().format(DateTime(day.year, day.month + 1, day.day)).toUpperCase(),
+                        titleColor: ColorConstants.buttonTextColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+        selectedBuilder: (context, day, event) {
+          if (widget.scheduleDateList != null && (day.day == widget.selectedDay?.day)) {
+            return Center(
+              child: Container(
+                height: 35,
+                width: 35,
+                decoration: BoxDecoration(
+                  color: ColorConstants.primaryColor.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                  boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
+                ),
+                child: Center(
+                  child: BodySmallText(
+                    title: day.day.toString(),
+                    titleColor: ColorConstants.buttonTextColor,
+                    fontFamily: FontWeightEnum.w400.toInter,
+                  ),
+                ),
+              ),
+            );
+          }
+          return Center(
+            child: Container(
+              height: 35,
+              width: 35,
+              decoration: BoxDecoration(
+                color: ColorConstants.yellowButtonColor,
+                shape: BoxShape.circle,
+                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
+              ),
+              child: Center(
+                child: BodySmallText(
+                  title: day.day.toString(),
+                  titleColor: ColorConstants.buttonTextColor,
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
+              ),
+            ),
+          );
+        },
+        todayBuilder: (context, day, focusedDay) {
+          if (widget.fromUpcomingAppointment) {
+            if (!(widget.scheduleDateList?.contains(day.day) ?? false)) {
+              return Center(
+                child: BodySmallText(
+                  title: day.day.toString(),
+                  titleColor: Color(0xFFBFBFBF),
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
+              );
+            }
+          }
+          return Center(
+            child: Container(
+              height: 35,
+              width: 35,
+              decoration: BoxDecoration(
+                color: ColorConstants.primaryColor.withOpacity(0.5),
+                shape: BoxShape.circle,
+                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
+              ),
+              child: Center(
+                child: BodySmallText(
+                  title: day.day.toString(),
+                  titleColor: ColorConstants.buttonTextColor,
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
+              ),
+            ),
+          );
+        },
         rangeHighlightBuilder: (context, day, isWithinRange) {
           if ((_rangeStart != day && _rangeEnd != day) && isWithinRange) {
             return rangeTextContainer(day: day);
@@ -72,112 +251,20 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
             borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
           );
         },
-        headerTitleBuilder: (context, day) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: ColorConstants.yellowButtonColor.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: ColorConstants.dropDownBorderColor),
-                  ),
-                  child: Center(
-                    child: BodyMediumText(
-                      title: DateFormat.MMMM().format(DateTime(day.year, day.month - 1, day.day)),
-                      titleColor: ColorConstants.buttonTextColor,
-                    ),
-                  ),
-                ),
-              ),
-              5.0.spaceX,
-              Container(
-                height: 60,
-                width: 160,
-                decoration: BoxDecoration(
-                  color: ColorConstants.yellowButtonColor,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: ColorConstants.dropDownBorderColor),
-                ),
-                child: Center(
-                  child: BodyMediumText(
-                    title: DateFormat.MMMM().format(day),
-                    titleColor: ColorConstants.buttonTextColor,
-                  ),
-                ),
-              ),
-              5.0.spaceX,
-              Expanded(
-                child: Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: ColorConstants.yellowButtonColor.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: ColorConstants.dropDownBorderColor),
-                  ),
-                  child: Center(
-                    child: BodyMediumText(
-                      title: DateFormat.MMMM().format(DateTime(day.year, day.month + 1, day.day)),
-                      titleColor: ColorConstants.buttonTextColor,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-        selectedBuilder: (context, day, event) {
-          return Center(
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                color: ColorConstants.yellowButtonColor,
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
-              ),
-              child: Center(
-                child: BodyMediumText(
-                  title: day.day.toString(),
-                  titleColor: ColorConstants.buttonTextColor,
-                ),
-              ),
-            ),
-          );
-        },
-        todayBuilder: (context, day, focusedDay) {
-          return Center(
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                color: ColorConstants.primaryColor.withOpacity(0.5),
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
-              ),
-              child: Center(
-                child: BodyMediumText(
-                  title: day.day.toString(),
-                  titleColor: ColorConstants.buttonTextColor,
-                ),
-              ),
-            ),
-          );
-        },
       ),
       calendarFormat: _calendarFormat,
       rangeSelectionMode: _rangeSelectionMode,
       daysOfWeekHeight: 50,
       startingDayOfWeek: StartingDayOfWeek.monday,
       daysOfWeekStyle: DaysOfWeekStyle(
-        weekdayStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
-        weekendStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 16),
+        weekdayStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 12),
+        weekendStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 12),
+        dowTextFormatter: (date, locale) {
+          return DateFormat.E(locale).format(date).toUpperCase();
+        },
       ),
-      onDaySelected: widget
-          .onDateSelected /*(selectedDay, focusedDay) {
+      onDaySelected: widget.onDateSelected,
+      /*(selectedDay, focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {
           setState(() {
             _selectedDay = selectedDay;
@@ -188,7 +275,6 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           });
         }
       }*/
-      ,
       onRangeSelected: (start, end, focusedDay) {
         setState(() {
           // widget.selectedDay = null;
@@ -218,7 +304,12 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         borderRadius: borderRadius,
         color: ColorConstants.primaryColor.withOpacity(0.5),
       ),
-      child: Center(child: BodyMediumText(title: day.day.toString(), titleColor: ColorConstants.buttonTextColor)),
+      child: Center(
+          child: BodySmallText(
+        title: day.day.toString(),
+        titleColor: ColorConstants.buttonTextColor,
+        fontFamily: FontWeightEnum.w400.toInter,
+      )),
     );
   }
 }

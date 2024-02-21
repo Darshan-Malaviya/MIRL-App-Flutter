@@ -33,7 +33,8 @@ class ApiConstants {
     Map<String, String> headerData = {
       'Authorization': SharedPrefHelper.getAuthToken,
       'Content-Type': 'application/json',
-      'mirlAppToken': 'Bearer 9e03fddc477f8dddf89ca6b608d1c6cccdc882ccd104dbafcdb02ff8edd419296937b1b6562db403c0be150a0a432f70c5e13csdsj232sdbb3438cbdf'
+      'mirlAppToken':
+          'Bearer 9e03fddc477f8dddf89ca6b608d1c6cccdc882ccd104dbafcdb02ff8edd419296937b1b6562db403c0be150a0a432f70c5e13csdsj232sdbb3438cbdf'
     };
     return headerData;
   }
@@ -41,7 +42,8 @@ class ApiConstants {
   static Map<String, String> headerWithOutToken() {
     Map<String, String> headerData = {
       'Content-Type': 'application/json',
-      'mirlAppToken': 'Bearer 9e03fddc477f8dddf89ca6b608d1c6cccdc882ccd104dbafcdb02ff8edd419296937b1b6562db403c0be150a0a432f70c5e13csdsj232sdbb3438cbdf'
+      'mirlAppToken':
+          'Bearer 9e03fddc477f8dddf89ca6b608d1c6cccdc882ccd104dbafcdb02ff8edd419296937b1b6562db403c0be150a0a432f70c5e13csdsj232sdbb3438cbdf'
     };
     return headerData;
   }
@@ -63,5 +65,13 @@ class ApiConstants {
   static const String homepageSearch = '/homePage/search/';
   static const String allCategoryList = '/category/list/all';
   static const String topicByCategory = '/topic/list/all';
-  static const String timeSlots = '/timeSlots';
+  static const String timeSlots = '/appointment/timeSlots';
+  static const String appointment = '/appointment';
+  static String userBlockList = '/userBlock/${SharedPrefHelper.getUserId}';
+  static const String userBlock = '/userBlock';
+  static const String unBlockUser = '/userBlock';
+  static const String cms = '/cms';
+  static const String reportList = '/reportList';
+  static const String userReport = '/userReport';
+  static const String rateExpert = '/rateExpert';
 }

@@ -6,11 +6,17 @@ import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/login_request_model.dart';
 import 'package:mirl/infrastructure/models/request/otp_verify_request_model.dart';
+import 'package:mirl/infrastructure/models/response/cms_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/repository/auth_repo.dart';
 import 'package:mirl/infrastructure/services/agora_service.dart';
 import 'package:mirl/mirl_app.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
+GoogleSignIn? googleSignIn = GoogleSignIn(
+  clientId: Platform.isIOS ? flavorConfig?.iosClientId : "",
+  // scopes: <String>['email', 'profile'],
+);
 
 class AuthProvider with ChangeNotifier {
   TextEditingController emailController = TextEditingController();
@@ -19,6 +25,9 @@ class AuthProvider with ChangeNotifier {
 
   int get secondsRemaining => _secondsRemaining;
   int _secondsRemaining = 120;
+
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
 
   bool get enableResend => _enableResend;
   bool _enableResend = false;
@@ -31,11 +40,16 @@ class AuthProvider with ChangeNotifier {
   bool isResend = false;
   int start = 60;
 
+  CmsData? _cmsData;
+
+  CmsData? get cmsData => _cmsData;
+
+  void changeIsLoading(bool val) {
+    _isLoading = val;
+    notifyListeners();
+  }
+
   GoogleSignInAccount? _currentUser;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: Platform.isIOS ? flavorConfig?.iosClientId : "",
-    // scopes: <String>['email', 'profile'],
-  );
 
   startTimer() {
     _secondsRemaining = 120;
@@ -59,13 +73,10 @@ class AuthProvider with ChangeNotifier {
         socialId: _socialId,
         deviceToken: SharedPrefHelper.getFirebaseToken,
         timezone: await CommonMethods.getCurrentTimeZone(),
-        loginType: loginType.toString(),
+        loginType: loginType,
         voIpToken: await AgoraService.singleton.getVoipToken());
     loginApiCall(
-        requestModel: emailController.text.trim().isNotEmpty
-            ? loginRequestModel.prepareRequest()
-            : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
-        loginType: loginType);
+        requestModel: emailController.text.trim().isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(), loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -101,7 +112,7 @@ class AuthProvider with ChangeNotifier {
   /// google login
   void signInGoogle() async {
     try {
-      _currentUser = await _googleSignIn.signIn();
+      _currentUser = await googleSignIn?.signIn();
       if (_currentUser?.id != null) {
         _socialId = _currentUser?.id ?? '';
         // userName = _currentUser?.displayName ?? '';
@@ -195,4 +206,34 @@ class AuthProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  /// cms API call
+
+  Future<void> cmsApiCall(String name) async {
+    changeIsLoading(true);
+    ApiHttpResult response = await _authRepository.cmsApi(cmsKey: name);
+    changeIsLoading(false);
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is CMSResponseModel) {
+          CMSResponseModel responseModel = response.data;
+          Logger().d("Cms API call successfully${response.data}");
+          if (response.data != null && response.data is CMSResponseModel) {
+            _cmsData = responseModel.data;
+          }
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on cms Api ${response.data}");
+        break;
+    }
+    notifyListeners();
+  }
+
+// Future<void> getAboutUsHtmlContent(String url) async {
+//   _aboutUs = await _authRepository.getHtmlContent(url);
+//   changeIsLoading(false);
+// }
 }

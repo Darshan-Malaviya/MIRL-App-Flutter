@@ -28,8 +28,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
       body: Stack(
         children: [
           NetworkImageWidget(
-            imageURL:
-                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            imageURL: scheduleWatch.expertData?.expertProfile ?? '',
             isNetworkImage: true,
             boxFit: BoxFit.cover,
           ),
@@ -59,7 +58,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             HeadlineMediumText(
-              title: 'Preeti Tewari Serai',
+              title: scheduleWatch.expertData?.expertName ?? '',
               fontSize: 30,
               titleColor: ColorConstants.bottomTextColor,
             ),
@@ -93,7 +92,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                     10.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '\$${(int.parse('0') / 100).toString()}',
+                      title: '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toString()}',
                       titleColor: ColorConstants.overallRatingColor,
                       shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                     ),
@@ -111,14 +110,14 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
             PrimaryButton(
               height: 45,
               width: 148,
-              title: '${20} ${LocaleKeys.minutes.tr()}',
+              title: '${scheduleWatch.callDuration} ${LocaleKeys.minutes.tr()}',
               onPressed: () {},
               buttonColor: ColorConstants.buttonColor,
             ),
             20.0.spaceY,
             PrimaryButton(
               height: 45,
-              title: '02:15pm, December 21, 2023',
+              title: '${scheduleWatch.selectedSlotData?.startTimeUTC?.to12HourTimeFormat() ?? ''},${scheduleWatch.selectedSlotData?.startTimeUTC?.toDisplayDateWithMonth()}',
               margin: EdgeInsets.symmetric(horizontal: 40),
               onPressed: () {},
               buttonColor: ColorConstants.buttonColor,
@@ -126,18 +125,19 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
             20.0.spaceY,
             PrimaryButton(
               height: 55,
-              title: 'PAY \$40',
+              title: 'PAY \$${scheduleWatch.totalPayAmount}',
               margin: EdgeInsets.symmetric(horizontal: 10),
               fontSize: 18,
               onPressed: () {
-                context.toPushNamed(RoutesConstants.bookingConfirmScreen);
+                ref.read(scheduleCallProvider).scheduleAppointmentApiCall(context: context);
               },
             ),
             10.0.spaceY,
             BodyMediumText(
-              title: '${LocaleKeys.scheduleDescription.tr()} expert name here',
+              title: '${LocaleKeys.scheduleDescription.tr()} ${scheduleWatch.expertData?.userName ?? ''}',
               fontFamily: FontWeightEnum.w500.toInter,
               titleColor: ColorConstants.buttonTextColor,
+              titleTextAlign: TextAlign.center,
             )
           ],
         ),

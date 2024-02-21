@@ -1,4 +1,5 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/loader/three_bounce.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String title;
@@ -14,9 +15,10 @@ class PrimaryButton extends StatelessWidget {
   final Color? buttonColor;
   final String? buttonTextFontFamily;
   final double? fontSize;
+  final bool? isLoading;
 
-    const PrimaryButton({
-      Key? key,
+  const PrimaryButton(
+      {Key? key,
       required this.title,
       this.height,
       this.width,
@@ -29,8 +31,9 @@ class PrimaryButton extends StatelessWidget {
       this.titleColor,
       this.buttonColor,
       this.buttonTextFontFamily,
-      this.fontSize
-    }) : super(key: key);
+      this.fontSize,
+      this.isLoading})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,25 +65,33 @@ class PrimaryButton extends StatelessWidget {
             ),
           ),
           onPressed: onPressed,
-          child: Row(
-            //mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
-                  ? Padding(
-                      padding: EdgeInsets.only(right: prefixIconPadding ?? 0.0),
-                      child: Image.asset(prefixIcon ?? ''),
-                    )
-                  : const SizedBox.shrink(),
-              BodyMediumText(
-                title: title,
-                fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
-                titleColor: titleColor ?? ColorConstants.buttonTextColor,
-                titleTextAlign: TextAlign.center,
-                fontSize: fontSize ?? 13,
-              ),
-            ],
-          ),
+          child: (isLoading ?? false)
+              ? SpinKitThreeBounce(
+                  color: ColorConstants.whiteColor,
+                  size: 24,
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null
+                        ? Padding(
+                            padding: EdgeInsets.only(right: prefixIconPadding ?? 0.0,
+                            ),child: Image.asset(prefixIcon ?? ''),
+                          )
+                        : const SizedBox.shrink(),
+                    Flexible(
+                child:BodyMediumText(
+                      title: title,
+                      fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,
+                      titleColor: titleColor ?? ColorConstants.buttonTextColor,
+                      titleTextAlign: TextAlign.center,
+                      fontSize: fontSize ?? 13,
+                      maxLine: 3,
+                ),
+                    ),
+                  ],
+                ),
         ));
   }
 }

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class SortExpertDropDown extends ConsumerStatefulWidget {
@@ -7,11 +9,8 @@ class SortExpertDropDown extends ConsumerStatefulWidget {
 }
 
 class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
-
-
   @override
   Widget build(BuildContext context) {
-
     final filterProviderWatch = ref.watch(filterProvider);
     final filterProviderRead = ref.read(filterProvider);
 
@@ -22,7 +21,7 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             BodySmallText(
-              title: StringConstants.sortExpert,
+              title: LocaleKeys.shortByExpert.tr(),
               fontFamily: FontWeightEnum.w400.toInter,
               titleColor: ColorConstants.buttonTextColor,
             ),
@@ -55,9 +54,11 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
-                          //isExpanded: true,
+                          isExpanded: true,
                           elevation: 0,
                           value: filterProviderWatch.sortBySelectedItem,
+                          padding: EdgeInsets.zero,
+                          enableFeedback: true,
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             size: 20,
@@ -74,9 +75,11 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState(() {
+                            /*       setState(() {
                               filterProviderWatch.sortBySelectedItem = newValue!;
-                            });
+                            });*/
+                            filterProviderRead.setSortByPriceValue(
+                                sortByValue: newValue ?? '', order: filterProviderWatch.sortBySelectedOrder);
                           },
                         ),
                       ),
@@ -107,10 +110,12 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
-                          // isExpanded: true,
+                          isExpanded: true,
                           elevation: 0,
                           value: filterProviderWatch.sortBySelectedOrder,
                           padding: EdgeInsets.zero,
+                          focusNode: FocusNode(),
+                          enableFeedback: true,
                           icon: Icon(
                             Icons.keyboard_arrow_down_sharp,
                             size: 20,
@@ -127,9 +132,11 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState(() {
+                            /*       setState(() {
                               filterProviderWatch.sortBySelectedOrder = newValue!;
-                            });
+                            });*/
+                            filterProviderRead.setSortByPriceValue(
+                                sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ?? '');
                           },
                         ),
                       ),

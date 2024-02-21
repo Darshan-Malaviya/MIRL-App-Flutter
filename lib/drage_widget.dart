@@ -14,12 +14,12 @@ class ReviewSlider extends StatefulWidget {
     this.width,
     this.circleDiameter = 60,
   })  : assert(
-          initialValue >= 0 && initialValue <= 4,
+          initialValue >= 0 && initialValue <= 9,
           'Initial value should be between 0 and 4',
         ),
         assert(
           options.length == 10,
-          'Reviews options should be 5',
+          'Reviews options should be 10',
         ),
         super(key: key);
 

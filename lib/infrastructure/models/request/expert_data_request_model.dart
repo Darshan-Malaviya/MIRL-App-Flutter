@@ -1,4 +1,3 @@
-
 class ExpertDataRequestModel {
   String? userId;
   String? page;
@@ -15,25 +14,25 @@ class ExpertDataRequestModel {
   String? maxFee;
   String? topicIds;
   String? categoryId;
-
+  String? multiConnectRequest;
 
   ExpertDataRequestModel(
-      {
-        this.userId,
+      {this.userId,
       this.page,
-        this.limit,
-        this.feeOrder,
-        this.reviewOrder,
-        this.experienceOder,
-        this.search,
-        this.gender,
-        this.instantCallAvailable,
-        this.country,
-        this.city,
-        this.minFee,
-        this.maxFee,
-        this.topicIds,
-      this.categoryId});
+      this.limit,
+      this.feeOrder,
+      this.reviewOrder,
+      this.experienceOder,
+      this.search,
+      this.gender,
+      this.instantCallAvailable,
+      this.country,
+      this.city,
+      this.minFee,
+      this.maxFee,
+      this.topicIds,
+      this.categoryId,
+      this.multiConnectRequest});
 
   ExpertDataRequestModel.fromJson(Map<String, dynamic> json) {
     if (json['search'] != null) {
@@ -56,6 +55,7 @@ class ExpertDataRequestModel {
     maxFee = json['maxFee'];
     topicIds = json['topicIds'];
     categoryId = json['categoryId'];
+    multiConnectRequest = json['multiConnectRequest'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,6 +78,7 @@ class ExpertDataRequestModel {
     data['maxFee'] = this.maxFee;
     data['topicIds'] = this.topicIds;
     data['categoryId'] = this.categoryId;
+    data['multiConnectRequest'] = this.multiConnectRequest;
     return data;
   }
 
@@ -86,6 +87,4 @@ class ExpertDataRequestModel {
     json.removeWhere((key, value) => value == null);
     return json;
   }
-
 }
-

@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class BookingConfirmScreen extends ConsumerStatefulWidget {
   const BookingConfirmScreen({super.key});
@@ -66,7 +68,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             ),
             22.0.spaceY,
             BodyLargeText(
-              title: '${LocaleKeys.bookingDescription.tr()} Expert Name here',
+              title: '${LocaleKeys.bookingDescription.tr()} ${scheduleWatch.appointmentData?.expertDetail?.expertName ?? ''}',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
               maxLine: 5,
@@ -89,7 +91,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
               backgroundColor: ColorConstants.buttonColor,
               child: Center(
                 child: BodyMediumText(
-                  title: 'December 21, 2023',
+                  title: scheduleWatch.appointmentData?.date?.toDisplayDateWithMonth() ?? '',
                   fontSize: 15,
                   titleColor: ColorConstants.buttonTextColor,
                 ),
@@ -108,13 +110,13 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BodySmallText(
-                    title: '03:00pm - 03:20pm',
+                    title: '${scheduleWatch.appointmentData?.startTime?.to12HourTimeFormat() ?? ''} - ${scheduleWatch.appointmentData?.endTime?.to12HourTimeFormat() ?? ''}',
                     fontSize: 13,
                     titleColor: ColorConstants.buttonTextColor,
                   ),
                   8.0.spaceY,
                   BodySmallText(
-                    title: '${LocaleKeys.duration.tr()}: 20 minutes',
+                    title: '${LocaleKeys.duration.tr()}: ${scheduleWatch.appointmentData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
                     fontSize: 13,
                     titleColor: ColorConstants.buttonTextColor,
                   ),
@@ -129,16 +131,14 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             ),
             10.0.spaceY,
             LabelSmallText(
-              title: '${LocaleKeys.expertTimeZone.tr()}:CENTRAL TIME (UTC -6:00',
+              title: '${LocaleKeys.expertTimeZone.tr()}:CENTRAL TIME (UTC -6:00)',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
             ),
             30.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.checkNotification.tr(),
-              onPressed: () {
-                context.toPushNamed(RoutesConstants.notificationScreen);
-              },
+              onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,
             ),
@@ -146,7 +146,10 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             PrimaryButton(
               title: LocaleKeys.cancelBooking.tr(),
               onPressed: () {
-                context.toPushNamed(RoutesConstants.canceledAppointmentOptionScreen);
+                context.toPushNamed(
+                  RoutesConstants.canceledAppointmentOptionScreen,
+                  args: CancelArgs(appointmentData: scheduleWatch.appointmentData, role: '1', fromUser: true),
+                );
               },
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,

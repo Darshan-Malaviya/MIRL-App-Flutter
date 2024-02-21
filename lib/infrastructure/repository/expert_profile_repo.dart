@@ -14,7 +14,7 @@ class ExpertProfileRepo extends ApiResponseHandler {
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,
-      body: request,
+      body: jsonEncode(request),
       headers: ApiConstants.headerWithToken(),
     );
 
@@ -26,7 +26,7 @@ class ExpertProfileRepo extends ApiResponseHandler {
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,
-      body: request,
+      body: jsonEncode(request),
       headers: ApiConstants.headerWithToken(),
     );
 

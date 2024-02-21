@@ -27,7 +27,7 @@ class ImageConstants {
   static const filter = '${imagePath}filter.png';
   static const expertDetail = '${imagePath}expert_detail.png';
   static const rating = '${imagePath}rating.png';
-  static const starFill = '${imagePath}star_fill.png';
+  static const star = '${imagePath}star.png';
   static const like = '${imagePath}like.png';
   static const dislike = '${imagePath}dislike.png';
   static const cancel = '${imagePath}cancel.png';
@@ -38,6 +38,8 @@ class ImageConstants {
   static const voiceOff = '${imagePath}voice_off.png';
   static const videoCall = '${imagePath}video_call.png';
   static const suggestNewExpertise = '${imagePath}suggest_new_experties.png';
+  static const timer = '${imagePath}timer.png';
+  static const arrow = '${imagePath}arrow.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';

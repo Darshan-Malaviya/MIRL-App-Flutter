@@ -11,9 +11,8 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   List<CategoryListData>? get categoryList => _categoryList;
   final List<CategoryListData> _categoryList = [];
 
-  List<CategoryIds> _childCategoryIds = [];
-
   List<CategoryIds> get childCategoryIds => _childCategoryIds;
+  List<CategoryIds> _childCategoryIds = [];
 
   List<int> updateChild = [];
 
@@ -25,14 +24,23 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   bool get reachedCategoryLastPage => _reachedCategoryLastPage;
   bool _reachedCategoryLastPage = false;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
+  void changeLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   Future<void> areaCategoryListApiCall({bool isLoaderVisible = false}) async {
-    if(isLoaderVisible){
-      CustomLoading.progressDialog(isLoading: true);
+    if (isLoaderVisible) {
+      changeLoading(true);
     }
 
     ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo);
-    if(isLoaderVisible){
-      CustomLoading.progressDialog(isLoading: false);
+
+    if (isLoaderVisible) {
+      changeLoading(false);
     }
 
     switch (response.status) {
@@ -67,9 +75,12 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is ChildUpdateResponseModel) {
           ChildUpdateResponseModel childUpdateResponseModel = response.data;
-          SharedPrefHelper.saveAreaOfExpertise(jsonEncode(childUpdateResponseModel.data ?? []));
+          if (childUpdateResponseModel.data?.isNotEmpty ?? false) {
+            SharedPrefHelper.saveAreaOfExpertise(jsonEncode(childUpdateResponseModel.data ?? []));
+          } else {
+            SharedPrefHelper.saveAreaOfExpertise('');
+          }
           Logger().d("Successfully childUpdateApiCall");
-          context.toPop();
           FlutterToast().showToast(msg: childUpdateResponseModel.message ?? '');
         }
         break;
@@ -90,7 +101,7 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectAllChildCategory({required  bool isSelectAll, required int parentId}) {
+  void selectAllChildCategory({required bool isSelectAll, required int parentId}) {
     int parentListIndex = _categoryList.indexWhere((element) => element.id == parentId);
     if (parentListIndex != -1) {
       if (_categoryList[parentListIndex].topic?.isNotEmpty ?? false) {

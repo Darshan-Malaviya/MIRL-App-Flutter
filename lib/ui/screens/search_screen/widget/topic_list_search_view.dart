@@ -25,7 +25,6 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
         BodySmallText(
           title: LocaleKeys.topicsWithCategories.tr(),
           titleTextAlign: TextAlign.start,
-          fontFamily: FontWeightEnum.w700.toInter,
         ),
         20.0.spaceY,
         if (homeProviderWatch.homeSearchData?.topics?.isNotEmpty ?? false) ...[
@@ -33,6 +32,8 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(homeProviderWatch.homeSearchData?.topics?.length ?? 0, (index) {
               return Container(
+                margin: EdgeInsets.all( 6),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                 decoration: ShapeDecoration(
                   color: ColorConstants.whiteColor,
                   shape: RoundedRectangleBorder(
@@ -52,18 +53,16 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
                   softWrap: true,
                   title: homeProviderWatch.homeSearchData?.topics?[index].name?.toLowerCase().toCapitalizeAllWord() ?? '',
                   fontFamily: FontWeightEnum.w500.toInter,
-                ).addPaddingXY(paddingX: 10, paddingY: 2),
-              ).addPaddingXY(paddingX: 6, paddingY: 6);
+                ),
+              );
             }),
           ),
           30.0.spaceY,
           ]  else ...[
           BodySmallText(
-            fontWeight: FontWeight.w400,
             titleTextAlign: TextAlign.start,
-            fontFamily: AppConstants.fontFamily,
+            fontFamily: FontWeightEnum.w400.toInter,
             maxLine: 4,
-            fontSize: 12,
             title: LocaleKeys.noResultsFoundTypeSomethingElse.tr(),
           ),
         ]

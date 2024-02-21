@@ -186,7 +186,8 @@ class BodySmallText extends StatelessWidget {
       this.fontFamily,
       this.lineHeight,
       this.shadows,
-      this.isUnderline = false})
+      this.isUnderline = false,
+      this.letterSpacing})
       : super(key: key);
 
   final String title;
@@ -203,6 +204,7 @@ class BodySmallText extends StatelessWidget {
   final String? fontFamily;
   final double? lineHeight;
   final List<Shadow>? shadows;
+  final double? letterSpacing;
 
   @override
   Widget build(BuildContext context) {
@@ -214,6 +216,7 @@ class BodySmallText extends StatelessWidget {
             fontWeight: fontWeight,
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
+            letterSpacing: letterSpacing,
             fontFamily: fontFamily,
             shadows: shadows ?? null,
             fontSize: fontSize,

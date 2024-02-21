@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 import 'package:mirl/infrastructure/providers/provider_registration.dart';
+import 'package:mirl/infrastructure/services/socket_service.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -12,6 +13,20 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    ref.read(socketProvider).listenerEvent();
+      SocketApi.singleTone.init(onListenMethod: (value) {
+        if (value) {
+          ref.read(socketProvider).listenAllMethods(context);
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboardProviderWatch = ref.watch(dashboardProvider);

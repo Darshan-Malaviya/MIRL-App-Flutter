@@ -1,8 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/common/week_availability_model.dart';
+import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
+import 'package:mirl/infrastructure/models/request/schedule_appointment_request_model.dart';
+import 'package:mirl/infrastructure/models/request/slots_request_model.dart';
+import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
+import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
+import 'package:mirl/infrastructure/models/response/login_response_model.dart';
+import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
 
 class ScheduleCallProvider extends ChangeNotifier {
@@ -10,15 +15,8 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   TextEditingController reasonController = TextEditingController();
 
-  List<weeklyAvailabilityModel> weekAvailability = [
-    weeklyAvailabilityModel(weekDay: 'MONDAY', dayTime: '9:00AM  - 5:00PM'),
-    weeklyAvailabilityModel(weekDay: 'TUESDAY', dayTime: '9:00AM  - 5:00PM'),
-    weeklyAvailabilityModel(weekDay: 'WEDNESDAY', dayTime: '9:00AM  - 5:00PM'),
-    weeklyAvailabilityModel(weekDay: 'THURSDAY', dayTime: '9:00AM  - 5:00PM'),
-    weeklyAvailabilityModel(weekDay: 'FRIDAY', dayTime: '9:00AM  - 5:00PM'),
-    weeklyAvailabilityModel(weekDay: 'SATURDAY', dayTime: '9:00AM  - 5:00PM'),
-    weeklyAvailabilityModel(weekDay: 'SUNDAY', dayTime: '9:00AM  - 5:00PM'),
-  ];
+  List<WeeklyAvailableData> get weekAvailability => _weekAvailability;
+  List<WeeklyAvailableData> _weekAvailability = [];
 
   int _callDuration = 20;
 
@@ -34,32 +32,101 @@ class ScheduleCallProvider extends ChangeNotifier {
   bool get isLoadingSlot => _isLoadingSlot;
   bool _isLoadingSlot = false;
 
+  bool get isLoadingAvailable => _isLoadingAvailable;
+  bool _isLoadingAvailable = false;
+
+  SlotsData? selectedSlotData;
+
+  int? oldIndex;
+
+  AppointmentData? get appointmentData => _appointmentData;
+  AppointmentData? _appointmentData;
+
+  UserData? expertData;
+
+  double? totalPayAmount;
+
   void incrementCallDuration() {
     _callDuration += 10;
+    getSlotsApi();
     notifyListeners();
   }
 
   void decrementCallDuration() {
     _callDuration -= 10;
+    getSlotsApi();
+    notifyListeners();
+  }
+
+  void getExpertData(UserData? data) {
+    expertData = data;
+    notifyListeners();
+  }
+
+  void getPayValue() {
+    totalPayAmount = ((expertData?.fee ?? 0) / 100 * _callDuration);
     notifyListeners();
   }
 
   void getSelectedDate(DateTime dateTime) {
     final now = DateTime.now().toLocal();
     selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second);
-    _selectedUTCDate = selectedDate?.toUtc().toIso8601String() ?? '';
+    _selectedUTCDate = selectedDate?.toIso8601String() ?? '';
     print(_selectedUTCDate);
-
-    String getDate = _selectedUTCDate.to12HourTimeFormat();
-    print(getDate);
-
+    getSlotsApi();
     notifyListeners();
   }
 
-  Future<void> getSlotsApi(BuildContext context) async {
+  void getSelectedSlotData(SlotsData value, int index) {
+    if (oldIndex == index) {
+      if (_slotList[index].isSelected ?? false) {
+        selectedSlotData = null;
+        _slotList[index].isSelected = false;
+        oldIndex = null;
+      }
+    } else {
+      _slotList.forEach((element) {
+        element.isSelected = false;
+      });
+      _slotList[index].isSelected = true;
+      oldIndex = index;
+      selectedSlotData = value;
+    }
+    notifyListeners();
+  }
+
+  Future<void> expertAvailabilityApi() async {
+    _isLoadingAvailable = true;
+    notifyListeners();
+
+    ApiHttpResult response = await _scheduleCallRepository.getExpertAvailabilityApi(expertData?.id ?? 0);
+
+    _isLoadingAvailable = false;
+    notifyListeners();
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is WeekAvailabilityResponseModel) {
+          WeekAvailabilityResponseModel responseModel = response.data;
+          _weekAvailability.addAll(responseModel.data ?? []);
+          notifyListeners();
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on get expert availability Api ${response.data}");
+        break;
+    }
+  }
+
+  Future<void> getSlotsApi() async {
     _isLoadingSlot = true;
     notifyListeners();
-    ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(date: _selectedUTCDate, duration: _callDuration.toString(), expertId: '');
+
+    ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(
+      request: SlotsRequestModel(expertId: expertData?.id, date: _selectedUTCDate, duration: _callDuration.toString()).prepareRequest(),
+    );
+
     _isLoadingSlot = false;
     notifyListeners();
 
@@ -67,15 +134,55 @@ class ScheduleCallProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is GetSlotsResponseModel) {
           GetSlotsResponseModel responseModel = response.data;
-          if (responseModel.data?.isNotEmpty ?? false) {
-            _slotList.addAll(responseModel.data ?? []);
-          }
+          _slotList.clear();
+          selectedSlotData = null;
+          oldIndex = null;
+          _slotList.addAll(responseModel.data ?? []);
           notifyListeners();
         }
         break;
       case APIStatus.failure:
+        _slotList.clear();
+        selectedSlotData = null;
+        oldIndex = null;
+        notifyListeners();
         FlutterToast().showToast(msg: response.failure?.message ?? '');
         Logger().d("API fail on get slots Api ${response.data}");
+        break;
+    }
+  }
+
+  Future<void> scheduleAppointmentApiCall({required BuildContext context}) async {
+    CustomLoading.progressDialog(isLoading: true);
+
+    ScheduleAppointmentRequestModel requestModel = ScheduleAppointmentRequestModel(
+      duration: _callDuration.toString(),
+      expertId: expertData?.id,
+      endTime: selectedSlotData?.endTimeUTC ?? '',
+      startTime: selectedSlotData?.startTimeUTC ?? '',
+      status: '0',
+      amount: ((totalPayAmount ?? 0) * 100).toInt(),
+    );
+
+    ApiHttpResult response = await _scheduleCallRepository.bookAppointment(request: requestModel.prepareRequest());
+
+    CustomLoading.progressDialog(isLoading: false);
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is AppointmentResponseModel) {
+          AppointmentResponseModel responseModel = response.data;
+          _appointmentData = responseModel.data;
+          context.toPushNamed(RoutesConstants.bookingConfirmScreen);
+          notifyListeners();
+        }
+        break;
+      case APIStatus.failure:
+        if (response.failure?.statusCode == 302) {
+          context.toPop(result: 'callApi');
+        }
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on scheduleAppointmentApiCall Api ${response.data}");
         break;
     }
   }

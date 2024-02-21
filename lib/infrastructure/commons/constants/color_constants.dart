@@ -6,11 +6,11 @@ class ColorConstants {
   static const blackColor = Color(0xff000000);
 
   static const greyColor = Color(0xff6D7A8B);
-  static const greyLightColor = Color(0xffE7EAF0);
   static const borderColor = Color(0xff828C99);
   static const borderLightColor = Color(0xffE8E4E4);
   static const disableColor = Color(0xffBCC1C7);
-  static const grayLightColor = Color(0xffF8F8F8);
+  static const greyLightColor = Color(0xffF8F8F8);
+  static const ratingColor = Color(0xffE8EEDB);
   static const textColor = Color(0xff2C323A);
   static const dropDownBorderColor = Color(0xffCAC9C9);
   static const categoryListBorder = Color(0xFFD87CEF);
@@ -34,13 +34,18 @@ class ColorConstants {
   static Color requestCallNowColor = const Color(0xFFC7F84D);
   static Color lightPurpleColor = const Color(0xFFF9F0FB);
   static Color darkRedColor = const Color(0xFFFF3131);
+  static Color redLightColor = const Color(0xFFEC4E62);
+  static Color notificationTextColor = const Color(0xFF1E1D1D);
+  static Color notificationTimeColor = const Color(0xFF535353);
+  static Color notificationTimerColor = const Color(0xFFFF2305);
+  static Color notificationBgColor = const Color(0xffF4BEFF);
 
   //static Color greenColor = const Color(0xFFABDF75);
   static Color textGreenColor = const Color(0xFF65C106);
 
   static Color overAllRatingColor = const Color(0xFF393737);
   static Color topicColor = const Color(0x66D97CF0);
-  static Color yellowLightColor = const Color(0x66FFCF5A);
+  static Color yellowLightColor = const Color(0xffF3D58C);
   static Color topicShoeColorColor = const Color(0x33000000);
   static Color certificatedBoxShadowColor = const Color(0x19000000);
   static Color callsPausedColor = const Color(0xFFBD3B28);

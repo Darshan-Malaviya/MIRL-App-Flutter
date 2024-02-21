@@ -4,7 +4,7 @@ import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
-class OverallRatingWidget extends StatefulWidget {
+class OverallRatingWidget extends StatelessWidget {
   final String name;
   final int? value;
 
@@ -14,46 +14,36 @@ class OverallRatingWidget extends StatefulWidget {
     required this.value,
   }) : super(key: key);
 
-  @override
-  State<OverallRatingWidget> createState() => _OverallRatingWidgetState();
-}
-
-class _OverallRatingWidgetState extends State<OverallRatingWidget> {
-  @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        TitleSmallText(
+          fontSize: 13,
+          title: name,
+          titleColor: ColorConstants.blueColor,
+          titleTextAlign: TextAlign.start,
+        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TitleSmallText(
-              fontSize: 13,
-              title: widget.name,
-              fontFamily: FontWeightEnum.w600.toInter,
-              titleTextAlign: TextAlign.start,
-              titleColor: ColorConstants.blackColor,
-            ).addMarginX(12),
-            Row(
-                children: List.generate(5, (index) {
-              return Container(
-                width: 18,
-                height: 12,
-                decoration: BoxDecoration(
-                  color: ColorConstants.categoryListBorder,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x4C000000),
-                      blurRadius: 3,
-                      offset: Offset(0, 3),
-                      spreadRadius: 0,
-                    )
-                  ],
-                ),
-              ).addMarginX(4);
-            })),
-          ],
-        ).addMarginY(6),
+            children: List.generate(5, (index) {
+          return Container(
+            width: 18,
+            height: 12,
+            margin: EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              color: index + 1 <= value! ? ColorConstants.primaryColor : ColorConstants.ratingColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x4C000000),
+                  blurRadius: 3,
+                  offset: Offset(0, 3),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+          );
+        })),
       ],
-    );
+    ).addMarginXY(marginY: 6, marginX: 14);
   }
 }

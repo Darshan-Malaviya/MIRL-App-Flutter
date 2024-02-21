@@ -43,6 +43,7 @@ class ExpertDetailProvider extends ChangeNotifier {
         if (response.data != null && response.data is ExpertDetailResponseModel) {
           ExpertDetailResponseModel expertDetailResponseModel = response.data;
           _userData = expertDetailResponseModel.data;
+          notifyListeners();
           Logger().d("Successfully expert detail");
         }
         break;
@@ -51,7 +52,6 @@ class ExpertDetailProvider extends ChangeNotifier {
         Logger().d("API fail on expert detail call Api ${response.data}");
         break;
     }
-    notifyListeners();
   }
 
   Future<void> favoriteRequestCall(int expertId) async {

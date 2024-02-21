@@ -47,7 +47,7 @@ class SingleCategoryData {
   SingleCategoryData({this.categoryData, this.expertData});
 
   SingleCategoryData.fromJson(Map<String, dynamic> json) {
-    categoryData = json['categoryData'] != null ? new CategoryData.fromJson(json['categoryData']) : null;
+    categoryData = json['category'] != null ? new CategoryData.fromJson(json['category']) : null;
     if (json['expertData'] != null) {
       expertData = <ExpertData>[];
       json['expertData'].forEach((v) {
@@ -59,7 +59,7 @@ class SingleCategoryData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.categoryData != null) {
-      data['categoryData'] = this.categoryData?.toJson();
+      data['category'] = this.categoryData?.toJson();
     }
     if (this.expertData != null) {
       data['expertData'] = this.expertData?.map((v) => v.toJson()).toList();

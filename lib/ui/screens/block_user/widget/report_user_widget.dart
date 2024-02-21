@@ -1,21 +1,44 @@
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
 class ReportUserWidget extends ConsumerStatefulWidget {
-  final String reportName;
+  final BlockUserArgs args;
 
-  const ReportUserWidget({super.key, this.reportName = 'REPORT THIS USER'});
+  const ReportUserWidget({super.key, required this.args});
 
   @override
   ConsumerState<ReportUserWidget> createState() => _ReportUserWidgetState();
 }
 
 class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
+  ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0);
+    });
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        bool isLoading = ref.watch(reportUserProvider).reachedCategoryLastPage;
+        if (!isLoading) {
+          ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0);
+        } else {
+          log('reach last page on get report list api');
+        }
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final reportUserRead = ref.read(reportUserProvider);
+    final reportUserWatch = ref.watch(reportUserProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -23,7 +46,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
         30.0.spaceY,
         TitleLargeText(
           // title: LocaleKeys.reportThisUser.tr(),
-          title: widget.reportName,
+          title: widget.args.reportName ?? '',
           titleColor: ColorConstants.bottomTextColor,
           titleTextAlign: TextAlign.center,
         ),
@@ -38,10 +61,13 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
         20.0.spaceY,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(2, (index) {
+          children: List.generate(reportUserWatch.reportListDetails.length, (index) {
             return InkWell(
-              onTap: () {
-                reportUserRead.reportUser();
+              onTap: () async {
+                reportUserRead.userReportRequestCall(
+                    reportListId: reportUserWatch.reportListDetails[index].id ?? 0,
+                    reportToId: int.parse(widget.args.expertId ?? ''));
+                await reportUserRead.reportUser();
               },
               child: Row(
                 children: [
@@ -51,7 +77,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: BodySmallText(
-                            title: 'ABUSIVE OR DISRESPECTFUL BEHAVIOR',
+                            title: reportUserWatch.reportListDetails[index].title ?? '',
                             titleColor: ColorConstants.blackColor,
                             titleTextAlign: TextAlign.start,
                             maxLine: 3,
@@ -60,30 +86,24 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                         ),
                         20.0.spaceY,
                         BodySmallText(
-                          title: 'Engaging in any form of verbal abuse, harassment, or showing disrespect towards the expert.',
+                          title: reportUserWatch.reportListDetails[index].description ?? '',
                           titleColor: ColorConstants.blackColor,
                           titleTextAlign: TextAlign.start,
                           fontFamily: FontWeightEnum.w400.toInter,
                           fontSize: 13,
-                          maxLine: 3,
+                          maxLine: 10,
                         ),
                       ],
-                    ).addMarginTop(20),
+                    ).addMarginTop(30),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      size: 36,
-                      color: ColorConstants.redColor,
-                    ),
-                  )
+                  10.0.spaceX,
+                  Align(alignment: Alignment.centerRight, child: Image.asset(ImageConstants.arrow))
                 ],
               ),
             );
           }),
         )
       ],
-    ).addAllPadding(20);
+    ).addAllPadding(30);
   }
 }

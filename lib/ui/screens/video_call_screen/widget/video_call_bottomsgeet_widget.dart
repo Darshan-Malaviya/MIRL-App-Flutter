@@ -1,5 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
+import 'package:tap_debouncer/tap_debouncer.dart';
 
 class VideoCallWidget extends ConsumerStatefulWidget {
   const VideoCallWidget({super.key});
@@ -11,8 +16,9 @@ class VideoCallWidget extends ConsumerStatefulWidget {
 class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
   @override
   Widget build(BuildContext context) {
-    final videoCallWatch = ref.watch(videoCallProvider);
-    final videoCallRead = ref.read(videoCallProvider);
+    final callWatch = ref.watch(callProvider);
+    final callRead = ref.read(callProvider);
+
     return Container(
       decoration: BoxDecoration(
         color: ColorConstants.whiteColor.withOpacity(0.35),
@@ -27,14 +33,13 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
             children: [
               InkWell(
                 onTap: () {
-                  videoCallRead.changeCameraColor();
+                  callRead.onCameraSwitch();
                 },
                 child: Container(
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                      // ref.watch(videoCallProvider)
-                      color: videoCallWatch.cameraOn
+                      color: callWatch.isFrontCameraOn
                           ? ColorConstants.whiteColor.withOpacity(0.25)
                           : ColorConstants.whiteColor.withOpacity(0.7),
                       boxShadow: [
@@ -50,13 +55,14 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
               ),
               InkWell(
                 onTap: () {
-                  videoCallRead.changeVideoColor();
+                  callRead.changeLocalVideo();
+                  //engine.enableLocalVideo(callWatch.videoOn);
                 },
                 child: Container(
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                      color: videoCallWatch.videoOn
+                      color: callWatch.isLocalVideoOn
                           ? ColorConstants.whiteColor.withOpacity(0.25)
                           : ColorConstants.whiteColor.withOpacity(0.7),
                       boxShadow: [
@@ -72,13 +78,13 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
               ),
               InkWell(
                 onTap: () {
-                  videoCallRead.changeVoiceColor();
+                  callRead.changeLocalMic();
                 },
                 child: Container(
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                      color: videoCallWatch.voiceOn
+                      color: callWatch.isLocalMicOn
                           ? ColorConstants.whiteColor.withOpacity(0.25)
                           : ColorConstants.whiteColor.withOpacity(0.7),
                       boxShadow: [
@@ -92,75 +98,80 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
                   child: Image.asset(ImageConstants.voiceOff),
                 ),
               ),
-              Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                    color: ColorConstants.whiteColor.withOpacity(0.2),
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(0, 0),
-                          color: ColorConstants.whiteColor.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 4),
-                    ],
-                    shape: BoxShape.circle),
-                child: Image.asset(ImageConstants.callCut),
-              )
+              TapDebouncer(
+                  cooldown: const Duration(milliseconds: 2500),
+                  onTap: () async {
+                    if(callWatch.remoteUid == null && (instanceCallDurationNotifier.value <= 0)
+                      && ((ref.watch(socketProvider).extraResponseModel?.userId.toString() ?? '') == SharedPrefHelper.getUserId.toString())){
+                      await ref.read(socketProvider).updateCallStatusEmit(
+                          status: CallStatusEnum.cancelCall,
+                          callRoleEnum: CallRoleEnum.user,
+                          callHistoryId: ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
+
+                    } else {
+                      bool isUser =  ref.read(socketProvider).extraResponseModel?.userId.toString() == SharedPrefHelper.getUserId.toString();
+                      print("isUser here $isUser");
+                      print(ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
+                      await ref.read(socketProvider).updateCallStatusEmit(
+                          status: CallStatusEnum.completedCall,
+                          callRoleEnum: isUser ? CallRoleEnum.user : CallRoleEnum.expert,
+                          callHistoryId: ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
+                    }
+                  },
+                  builder: (BuildContext context, Future<void> Function()? onTap) {
+                    return InkWell(
+                      onTap: onTap,
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                            color: ColorConstants.whiteColor.withOpacity(0.2),
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(0, 0),
+                                  color: ColorConstants.whiteColor.withOpacity(0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 4),
+                            ],
+                            shape: BoxShape.circle),
+                        child: Image.asset(ImageConstants.callCut),
+                      ),
+                    );
+                  }),
             ],
           ),
           30.0.spaceY,
-          ShadowContainer(
-            height: 42,
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            isShadow: false,
-            offset: Offset(0, 0),
-            backgroundColor: ColorConstants.whiteColor.withOpacity(0.2),
-            shadowColor: ColorConstants.whiteColor.withOpacity(0.2),
-            blurRadius: 4,
-            spreadRadius: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.watch_later_outlined),
-                6.0.spaceX,
-                TitleLargeText(
-                  title: '18:35',
-                  fontFamily: FontWeightEnum.w400.toInter,
-                  titleTextAlign: TextAlign.center,
-                  titleColor: ColorConstants.blackColor,
-                  fontSize: 20,
+          ValueListenableBuilder(
+              valueListenable: instanceCallDurationNotifier,
+              builder: (BuildContext context, int value, Widget? child) {
+              return ShadowContainer(
+                height: 42,
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
+                isShadow: false,
+                offset: Offset(0, 0),
+                backgroundColor: ColorConstants.whiteColor.withOpacity(0.2),
+                shadowColor: ColorConstants.whiteColor.withOpacity(0.2),
+                blurRadius: 4,
+                spreadRadius: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.watch_later_outlined),
+                    6.0.spaceX,
+                    TitleLargeText(
+                      title: Duration(seconds: instanceCallDurationNotifier.value).toTimeString(),
+                      fontFamily: FontWeightEnum.w400.toInter,
+                      titleTextAlign: TextAlign.center,
+                      titleColor: ColorConstants.blackColor,
+                      fontSize: 20,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            }
           ),
-          // Container(
-          //   height: 42,
-          //   width: double.infinity,
-          //   decoration: BoxDecoration(
-          //     color: Color(0xffFFFFFF).withOpacity(0.3),
-          //     borderRadius: BorderRadius.circular(15),
-          //     boxShadow: [
-          //       BoxShadow(offset: Offset(0, 0), color: Color(0xff000000).withOpacity(0.1), spreadRadius: 1, blurRadius: 4),
-          //     ],
-          //   ),
-          //   padding: const EdgeInsets.all(10),
-          //   margin: const EdgeInsets.all(10),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       Icon(Icons.watch_later_outlined),
-          //       4.0.spaceX,
-          //       const Text(
-          //         '18:35',
-          //         textAlign: TextAlign.center,
-          //         style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ).addAllPadding(20),
     );

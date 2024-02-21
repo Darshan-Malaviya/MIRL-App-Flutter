@@ -1,3 +1,4 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
@@ -40,7 +41,6 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
           TitleLargeText(
             title: StringConstants.setYourFee,
             titleColor: ColorConstants.bottomTextColor,
-            fontFamily: FontWeightEnum.w700.toInter,
           ),
           30.0.spaceY,
           Row(
@@ -67,7 +67,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
               ).addAllPadding(16),
               FeesActionButtonWidget(
                 icons: ImageConstants.minus,
-                isDisable: expertWatch.countController.text == '0.0' || expertWatch.countController.text == '0',
+                isDisable: double.parse(expertWatch.countController.text) <= 0.99,
                 onTap: () {
                   expertRead.decreaseFees();
                 },
@@ -102,7 +102,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   titleColor: ColorConstants.buttonTextColor,
                 ),
                 BodyMediumText(
-                  title: '\$${expertWatch.countController.text}',
+                  title: '\$${double.parse(expertWatch.countController.text) + 20}',
                   titleColor: ColorConstants.buttonTextColor,
                 )
               ],

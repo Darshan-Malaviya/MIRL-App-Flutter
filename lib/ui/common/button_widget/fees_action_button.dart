@@ -15,9 +15,7 @@ class FeesActionButtonWidget extends StatelessWidget {
         child: Container(
           height: 20,
           width: 20,
-          child: Image.asset(
-            icons,
-          ),
+          child: Image.asset(icons),
           decoration: ShapeDecoration(
             color: isDisable ? ColorConstants.greyLightColor : ColorConstants.yellowButtonColor,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),

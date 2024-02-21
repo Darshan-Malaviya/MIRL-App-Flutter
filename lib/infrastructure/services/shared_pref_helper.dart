@@ -42,6 +42,15 @@ class SharedPrefHelper {
     return _prefsInstance?.getString(StorageConstants.userData) ?? '';
   }
 
+  static Future<bool> saveCallRequestId(String? userData) async {
+    return await _prefsInstance?.setString(StorageConstants.instanceCallRequestId, userData ?? '') ?? false;
+  }
+
+  static String get getCallRequestId {
+    return _prefsInstance?.getString(StorageConstants.instanceCallRequestId) ?? '';
+  }
+
+
   static Future<bool> saveAreaOfExpertise(String? userData) async {
     return await _prefsInstance?.setString(StorageConstants.areaOfExpertise, userData ?? '') ?? false;
   }
@@ -52,6 +61,10 @@ class SharedPrefHelper {
 
   static clearPrefs() async {
     await _prefsInstance?.remove(StorageConstants.userData);
+    await _prefsInstance?.remove(StorageConstants.userId);
+    await _prefsInstance?.remove(StorageConstants.areaOfExpertise);
+    await _prefsInstance?.remove(StorageConstants.searchHistory);
+    await _prefsInstance?.remove(StorageConstants.authToken);
   }
 
   static Future<bool> saveUserId(String? id) async {

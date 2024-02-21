@@ -52,12 +52,24 @@ extension DateTimeFormatter on String {
     return '';
   }
 
+  /// 5:20 from UTC
+  String toLocalTimeFromUtc() {
+    try {
+      DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
+      var output = DateFormat('hh:mm a').format(localTime);
+      return output;
+    } catch (e) {
+      Logger().d("Exception occurred on toLocalTimeFromUtc : $e");
+    }
+    return '';
+  }
+
   /// UTC time format
   String toUTCDateTimeFormat() {
     try {
       int intValue = int.parse(this);
       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue, isUtc: true);
-      return dateTime.toString();
+      return dateTime.toIso8601String();
     } catch (e) {
       Logger().d("Exception occurred on toUTCDateTimeFormat : $e");
     }
@@ -79,10 +91,11 @@ extension DateTimeFormatter on String {
     return '';
   }
 
+  /// full date time format in local -  01/06/2023 12:15 PM
   DateTime? toLocaleFromUtc() {
     try {
       DateTime now = DateTime.now();
-      DateTime localTime = DateFormat('HH:mm:ss').parse(this,true).toLocal();
+      DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
       debugPrint('localTime=====================${localTime}');
       debugPrint('this=====================$this');
       DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, localTime.hour, localTime.minute);
@@ -93,5 +106,118 @@ extension DateTimeFormatter on String {
       Logger().d("Exception on toLocaleFromStringUtc : $e");
     }
     return null;
+  }
+
+  ///December 21, 2023
+  String? toDisplayDateWithMonth() {
+    try {
+      DateTime localTime = DateFormat('yyyy-mm-dd').parse(this, true).toLocal();
+      String date = DateFormat.yMMMMd().format(localTime);
+      return date;
+    } catch (e) {
+      Logger().d("Exception on toLocaleFromStringUtc : $e");
+    }
+    return null;
+  }
+
+  /// local date 2024-2-21
+  String? toLocalDate() {
+    try {
+      DateTime localTime = DateFormat('yyyy-MM-dd').parse(this, true).toLocal();
+      return DateFormat('yyyy-MM-dd').format(localTime);
+    } catch (e) {
+      Logger().d("Exception on toLocalDate : $e");
+    }
+    return null;
+  }
+
+  /// 15TH NOVEMBER 2023
+  String? toLocalFullDateWithSuffix() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat('d MMMM yyyy').format(localTime);
+      formattedDate = formattedDate.replaceFirstMapped(RegExp(r'\b(\d{1,2})\b'), (match) => '${match.group(1)}${getDaySuffix(int.parse(match.group(1)!))}');
+
+      String finalDate = '$formattedDate';
+      return finalDate.toUpperCase();
+    } catch (e) {
+      Logger().d("Exception on toLocalFullDateWithSuffix : $e");
+    }
+    return null;
+  }
+
+  /// 15 NOVEMBER 2023
+  String? toLocalFullDateWithoutSuffix() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat('dd MMMM yyyy').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");
+    }
+    return null;
+  }
+
+  /// nov 26 2023
+  String? toLocalEarningDate() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat(' MMM dd yyyy').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      Logger().d("Exception on toLocalEarningDate : $e");
+    }
+    return null;
+  }
+
+ /* String timeAgo({bool numericDates = true}) {
+    final date2 = DateTime.now();
+    final difference = date2.difference(this);
+    final years = difference.inDays ~/ 365;
+    print((difference.inDays - (years * 365)) ~/ 30);
+
+    if ((difference.inDays / 7).floor() >= 5) {
+      return '5w';
+    } else if ((difference.inDays / 7).floor() >= 4) {
+      return '4w';
+    } else if ((difference.inDays / 7).floor() >= 3) {
+      return '3w';
+    } else if ((difference.inDays / 7).floor() >= 2) {
+      return '2w';
+    } else if ((difference.inDays / 7).floor() >= 1) {
+      return '1w';
+    } else if (difference.inDays >= 2) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inDays >= 1) {
+      return 'Yesterday';
+    } else if (difference.inHours >= 2) {
+      return '${difference.inHours} hr ago';
+    } else if (difference.inHours >= 1) {
+      return (numericDates) ? '1 hr ago' : 'An hr ago';
+    } else if (difference.inMinutes >= 2) {
+      return '${difference.inMinutes} mins ago';
+    } else if (difference.inMinutes >= 1) {
+      return (numericDates) ? '1 mins ago' : 'A mins ago';
+    } else if (difference.inSeconds >= 3) {
+      return '${difference.inSeconds} sec ago';
+    } else {
+      return 'Just now';
+    }
+  }*/
+}
+
+String getDaySuffix(int day) {
+  if (day >= 11 && day <= 13) {
+    return 'TH';
+  }
+  switch (day % 10) {
+    case 1:
+      return 'ST';
+    case 2:
+      return 'ND';
+    case 3:
+      return 'RD';
+    default:
+      return 'TH';
   }
 }

@@ -5,6 +5,7 @@ class FlutterToast {
   FToast fToast = FToast();
 
   Future showToast({required dynamic msg}) async {
+    if (msg?.isEmpty ?? false) return;
     fToast.init(NavigationService.context);
     List<String> messageList = [];
     if (msg is List) {
@@ -18,7 +19,7 @@ class FlutterToast {
       decoration: BoxDecoration(
         color: ColorConstants.primaryColor,
         borderRadius: const BorderRadius.all(
-          Radius.circular(100),
+          Radius.circular(10),
         ),
       ),
       child: Column(
@@ -34,6 +35,7 @@ class FlutterToast {
                       BodySmallText(
                         title: bulletPoint,
                         maxLine: 10,
+                        titleColor: ColorConstants.whiteColor,
                       ),
                     if (bulletPoint.isNotEmpty) 4.0.spaceX,
                     Expanded(
@@ -49,7 +51,7 @@ class FlutterToast {
                 )),
       ),
     );
-
+    cancelToast();
     fToast.showToast(child: toast, toastDuration: const Duration(seconds: 2), gravity: ToastGravity.BOTTOM);
   }
 
