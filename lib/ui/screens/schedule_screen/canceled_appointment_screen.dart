@@ -146,7 +146,7 @@ class CanceledAppointmentScreen extends StatelessWidget {
                 onPressed: () {
                   context.toPop();
                   context.toPop();
-                  context.toPushReplacementNamed(RoutesConstants.viewCalendarAppointment);
+                  context.toPushReplacementNamed(RoutesConstants.viewCalendarAppointment,args: args.role ?? '');
                 },
                 fontSize: 15,
                 titleColor: ColorConstants.textColor,

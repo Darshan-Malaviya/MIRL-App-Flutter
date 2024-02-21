@@ -136,13 +136,11 @@ class RouterConstant {
       case RoutesConstants.blockUserListScreen:
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
       case RoutesConstants.reportUserScreen:
-        return MaterialPageRoute(
-            builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
+        return MaterialPageRoute(builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
       case RoutesConstants.reportExpertScreen:
-        return MaterialPageRoute(
-            builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
+        return MaterialPageRoute(builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(
             builder: (_) => VideoCallScreen(
@@ -158,15 +156,14 @@ class RouterConstant {
       case RoutesConstants.multiConnectScreen:
         return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
       case RoutesConstants.multiConnectFilterScreen:
-        return MaterialPageRoute(
-            builder: (_) => MultiConnectFilterScreen());
+        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen());
       case RoutesConstants.multiConnectSelectedCategoryScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
-        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen());
-        case RoutesConstants.ratingAndReviewScreen:
+        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen(role: settings.arguments as String));
+      case RoutesConstants.ratingAndReviewScreen:
         return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
-        case RoutesConstants.earningReportScreen:
+      case RoutesConstants.earningReportScreen:
         return MaterialPageRoute(builder: (_) => EarningReportScreen());
       case RoutesConstants.cmsScreen:
         return MaterialPageRoute(builder: (_) => CmsScreen(args: settings.arguments as CmsArgs));

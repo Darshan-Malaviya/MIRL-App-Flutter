@@ -64,7 +64,13 @@ class ScheduleCallProvider extends ChangeNotifier {
   }
 
   void getPayValue() {
-    totalPayAmount = ((expertData?.fee ?? 0) / 100 * _callDuration);
+    totalPayAmount = ((expertData?.fee ?? 0) /
+        100 *
+        (_callDuration == 20
+            ? 2
+            : _callDuration == 30
+                ? 3
+                : 1));
     notifyListeners();
   }
 

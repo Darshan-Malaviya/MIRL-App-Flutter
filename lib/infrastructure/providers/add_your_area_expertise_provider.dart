@@ -55,14 +55,14 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
             _categoryPageNo = _categoryPageNo + 1;
             _reachedCategoryLastPage = false;
           }
+          notifyListeners();
         }
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail on Category on add expert areas call Api ${response.data}");
+        Logger().d("API fail on get Category call Api ${response.data}");
         break;
     }
-    notifyListeners();
   }
 
   Future<void> childUpdateApiCall({required BuildContext context}) async {

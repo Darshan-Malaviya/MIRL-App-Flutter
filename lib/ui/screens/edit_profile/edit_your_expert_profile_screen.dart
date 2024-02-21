@@ -177,7 +177,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment),
+                  onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment,args: '2'),
                 ),
                 50.0.spaceY,
                 PrimaryButton(

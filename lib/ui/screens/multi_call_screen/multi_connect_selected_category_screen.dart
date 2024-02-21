@@ -183,7 +183,9 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                       margin: EdgeInsets.symmetric(horizontal: 20),
                       onPressed: () => context.toPushNamed(RoutesConstants.multiConnectFilterScreen),
                       prefixIcon: ImageConstants.filter,
+                      buttonTextFontFamily: FontWeightEnum.w400.toInter,
                       prefixIconPadding: 10,
+                      padding: EdgeInsets.symmetric(horizontal: 50),
                     ),
                     20.0.spaceY,
                     if (filterWatch.commonSelectionModel.isNotEmpty) ...[
@@ -259,7 +261,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                             }),
                           ),
                         ],
-                      ).addPaddingXY(paddingX: 16, paddingY: 10)
+                      ).addPaddingXY(paddingX: 20, paddingY: 10)
                     ],
                     if (multiProviderWatch.expertData?.isNotEmpty ?? false) ...[
                       ListView.separated(

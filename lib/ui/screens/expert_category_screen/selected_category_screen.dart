@@ -219,6 +219,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       },
                       prefixIcon: ImageConstants.filter,
                       prefixIconPadding: 10,
+                      buttonTextFontFamily: FontWeightEnum.w400.toInter,
+                      padding: EdgeInsets.symmetric(horizontal: 30),
                     ),
                     if (filterProviderWatch.commonSelectionModel.isNotEmpty) ...[
                       Column(

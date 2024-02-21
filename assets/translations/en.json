@@ -198,6 +198,10 @@
   "blockedOn" : "BLOCKED ON:",
   "status" : "STATUS:",
   "unblockUser" : "UNBLOCK USER",
-  "noReviewFound" : "No review found"
+  "noReviewFound" : "No review found",
+  "seeAll": "See all",
+  "expertNotAvailable": "Expert not available.",
+  "anonymous": "Anonymous",
+  "startCall": "START CALL"
 
 }

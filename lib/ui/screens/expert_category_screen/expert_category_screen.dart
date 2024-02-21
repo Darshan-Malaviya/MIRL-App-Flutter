@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,12 +16,24 @@ class ExpertCategoryScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall(isLoaderVisible: true);
       ref.read(addYourAreaExpertiseProvider).clearSelectChildId();
       ref.read(addYourAreaExpertiseProvider).setCategoryChildDefaultData();
+    });
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        bool isLoading = ref.watch(addYourAreaExpertiseProvider).reachedCategoryLastPage;
+        if (!isLoading) {
+          await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall(isLoaderVisible: false);
+        } else {
+          log('reach last page on all category list api');
+        }
+      }
     });
     super.initState();
   }
@@ -30,7 +44,9 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
     final addYourAreaExpertiseProviderRead = ref.read(addYourAreaExpertiseProvider);
 
     return Scaffold(
+        backgroundColor: ColorConstants.greyLightColor,
         appBar: AppBarWidget(
+          appBarColor: ColorConstants.greyLightColor,
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
             onTap: () => context.toPop(),
@@ -64,9 +80,9 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                     : addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                         ? GridView.builder(
                             padding: EdgeInsets.zero,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
-                            itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0,
+                            controller: scrollController,
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 25),
+                            itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0 + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1),
                             itemBuilder: (context, index) {
                               CategoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
 
@@ -76,8 +92,7 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                                     onTap: () {
                                       addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
                                       context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                                          args: SelectedCategoryArgument(
-                                              categoryId: element?.id.toString() ?? '', isFromExploreExpert: true));
+                                          args: SelectedCategoryArgument(categoryId: element?.id.toString() ?? '', isFromExploreExpert: true));
                                     },
                                     child: ShadowContainer(
                                       shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
@@ -91,19 +106,21 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                                               boxFit: BoxFit.cover,
                                               imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
                                               isNetworkImage: true,
-                                              height: 50,
+                                              height: 60,
                                               width: 50,
                                             ),
                                           ),
-                                          4.0.spaceY,
+                                          10.0.spaceY,
                                           LabelSmallText(
                                             fontSize: 9,
                                             title: element?.name ?? '',
+                                            maxLine: 2,
+                                            titleTextAlign: TextAlign.center,
                                           ),
                                         ],
                                       ),
-                                      height: 90,
-                                      width: 90,
+                                      height: 120,
+                                      width: 100,
                                       isShadow: true,
                                     ),
                                   ),
@@ -117,10 +134,10 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                             ),
                           ),
               ),
+              10.0.spaceY,
               LabelSmallText(
                 title: LocaleKeys.suggestNewCategoriesAndTopicsToAdd.tr(),
                 titleTextAlign: TextAlign.center,
-                fontFamily: FontWeightEnum.w700.toInter,
                 maxLine: 2,
               ),
               20.0.spaceY

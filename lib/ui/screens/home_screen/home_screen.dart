@@ -63,6 +63,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: BodySmallText(
                   maxLine: 2,
                   title: LocaleKeys.searchTypeAnyKeyword.tr(),
+                  fontFamily: FontWeightEnum.w400.toInter,
                 ).addAllMargin(12),
               ),
             ),
@@ -75,7 +76,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     onTap: () {
                       context.toPushNamed(RoutesConstants.exploreExpertScreen);
                     },
-                    child: Container(height: 205,
+                    child: Container(
+                        height: 205,
                         decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
