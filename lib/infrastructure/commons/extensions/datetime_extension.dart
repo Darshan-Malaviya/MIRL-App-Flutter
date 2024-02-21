@@ -55,7 +55,7 @@ extension DateTimeFormatter on String {
   /// 5:20 from UTC
   String toLocalTimeFromUtc() {
     try {
-      DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
+      DateTime localTime = DateTime.parse(this).toLocal();
       var output = DateFormat('hh:mm a').format(localTime);
       return output;
     } catch (e) {

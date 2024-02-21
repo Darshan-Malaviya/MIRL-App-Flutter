@@ -35,7 +35,7 @@ class ReportReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getRatingAndReviewApiCall({required bool isLoading}) async {
+  Future<void> getRatingAndReviewApiCall({required bool isLoading, required int id}) async {
     if (isLoading) {
       _isLoading = true;
       notifyListeners();
@@ -56,6 +56,7 @@ class ReportReviewProvider extends ChangeNotifier {
         'page': _pageNo.toString(),
         "limit": '10'
       },
+      id: id,
     );
 
     if (isLoading) {

@@ -68,10 +68,10 @@ class NavigationService {
 /// on generate route
 class RouterConstant {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-     activeRoute.value = settings.name ?? '';
+    activeRoute.value = settings.name ?? '';
     log('Active route: ${activeRoute.value}');
 
-  switch (settings.name) {
+    switch (settings.name) {
       /// normal page routing
       case RoutesConstants.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
@@ -127,7 +127,10 @@ class RouterConstant {
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.exploreExpertScreen:
-        return MaterialPageRoute(builder: (_) =>  ExploreExpertScreen(isFromHomePage: settings.arguments as bool,));
+        return MaterialPageRoute(
+            builder: (_) => ExploreExpertScreen(
+                  isFromHomePage: settings.arguments as bool,
+                ));
       case RoutesConstants.selectedExpertCategoryScreen:
         return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(args: settings.arguments as SelectedCategoryArgument));
       case RoutesConstants.expertCategoryFilterScreen:
@@ -171,16 +174,16 @@ class RouterConstant {
       case RoutesConstants.viewCalendarAppointment:
         return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen(role: settings.arguments as int));
       case RoutesConstants.ratingAndReviewScreen:
-        return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
+        return MaterialPageRoute(builder: (_) => RatingAndReviewScreen(id: settings.arguments as int));
       case RoutesConstants.earningReportScreen:
         return MaterialPageRoute(builder: (_) => EarningReportScreen());
       case RoutesConstants.cmsScreen:
         return MaterialPageRoute(builder: (_) => CmsScreen(args: settings.arguments as CmsArgs));
-        case RoutesConstants.mirlConnectScreen:
+      case RoutesConstants.mirlConnectScreen:
         return MaterialPageRoute(builder: (_) => MirlConnectScreen());
       case RoutesConstants.thanksGivingScreen:
         return MaterialPageRoute(builder: (_) => const ThanksGivingScreen());
-        case RoutesConstants.suggestNewExpertiseScreen:
+      case RoutesConstants.suggestNewExpertiseScreen:
         return MaterialPageRoute(builder: (_) => const SuggestNewExpertiseScreen());
       default:
         return MaterialPageRoute(

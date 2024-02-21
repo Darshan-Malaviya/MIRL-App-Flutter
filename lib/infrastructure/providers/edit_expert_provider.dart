@@ -156,7 +156,7 @@ class EditExpertProvider extends ChangeNotifier {
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
     if (_userData?.expertAvailability?.isNotEmpty ?? false) {
-      _tabIndex = (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1' ? 0 : 1;
+      _tabIndex = (_userData?.expertAvailability?.first.scheduleType ?? 1) == 1 ? 0 : 1;
       _userData?.expertAvailability?.forEach((element) {
         _weekScheduleModel.add(WeekScheduleModel(
           dayName: element.dayOfWeek?.substring(0, 3).toUpperCase(),
@@ -212,7 +212,7 @@ class EditExpertProvider extends ChangeNotifier {
   void redirectSelectedButton(BuildContext context, int index) {
     if (index == 2) {
       _tabIndex = (_userData?.expertAvailability?.isNotEmpty ?? false)
-          ? (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1'
+          ? (_userData?.expertAvailability?.first.scheduleType ?? 1) == 1
               ? 0
               : 1
           : 0;

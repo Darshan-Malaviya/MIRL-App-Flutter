@@ -17,7 +17,7 @@ class AppointmentResponseModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data?.toJson();
     }
     data['message'] = this.message;
     return data;
@@ -36,7 +36,7 @@ class AppointmentResponseModel {
 class AppointmentData {
   int? id;
   String? date;
-  String? duration;
+  int? duration;
   String? startTime;
   String? endTime;
   String? status;
@@ -73,13 +73,15 @@ class ExpertDetail {
   int? id;
   String? userName;
   String? expertName;
+  String? expertProfile;
 
-  ExpertDetail({this.id, this.userName, this.expertName});
+  ExpertDetail({this.id, this.userName, this.expertName,this.expertProfile});
 
   ExpertDetail.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
     expertName = json['expertName'];
+    expertProfile = json['expertProfile'];
   }
 
   Map<String, dynamic> toJson() {
@@ -87,6 +89,7 @@ class ExpertDetail {
     data['id'] = this.id;
     data['userName'] = this.userName;
     data['expertName'] = this.expertName;
+    data['expertProfile'] = this.expertProfile;
     return data;
   }
 }
