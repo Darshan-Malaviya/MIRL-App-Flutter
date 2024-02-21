@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
 import 'package:mirl/ui/common/shimmer_widgets/multiconnect_shimmer.dart';
 import 'package:mirl/ui/screens/multi_call_screen/widget/multi_connect_category_widget.dart';
 
@@ -50,40 +49,43 @@ class _MultiConnectScreenState extends ConsumerState<MultiConnectScreen> {
           onTap: () => context.toPop(),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TitleLargeText(
-            title: LocaleKeys.multipleConnect.tr(),
-            maxLine: 2,
-            titleTextAlign: TextAlign.center,
-          ),
-          20.0.spaceY,
-          TitleSmallText(
-            title: LocaleKeys.multiConnectScreenDesc.tr(),
-            fontFamily: FontWeightEnum.w400.toInter,
-            titleTextAlign: TextAlign.center,
-            maxLine: 10,
-          ),
-          30.0.spaceY,
-          BodySmallText(
-            title: LocaleKeys.instantlyConnectWithLiveExpert.tr(),
-            titleTextAlign: TextAlign.center,
-            maxLine: 2,
-            letterSpacing: 1.1,
-          ),
-          30.0.spaceY,
-          if (multiProviderWatch.isLoading) ...[
-            MultiConnectShimmerWidget(),
+      body: SingleChildScrollView(
+        controller: scrollController,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TitleLargeText(
+              title: LocaleKeys.multipleConnect.tr(),
+              maxLine: 2,
+              titleTextAlign: TextAlign.center,
+            ),
             20.0.spaceY,
-            MultiConnectShimmerWidget(),
-            20.0.spaceY,
-            MultiConnectShimmerWidget()
-          ] else ...[
-            Expanded(child: MultiConnectCategoryWidget()),
-          ]
-        ],
-      ).addPaddingX(20),
+            TitleSmallText(
+              title: LocaleKeys.multiConnectScreenDesc.tr(),
+              fontFamily: FontWeightEnum.w400.toInter,
+              titleTextAlign: TextAlign.center,
+              maxLine: 10,
+            ),
+            30.0.spaceY,
+            BodySmallText(
+              title: LocaleKeys.instantlyConnectWithLiveExpert.tr(),
+              titleTextAlign: TextAlign.center,
+              maxLine: 2,
+              letterSpacing: 1.1,
+            ),
+            30.0.spaceY,
+            if (multiProviderWatch.isLoading) ...[
+              MultiConnectShimmerWidget(),
+              20.0.spaceY,
+              MultiConnectShimmerWidget(),
+              20.0.spaceY,
+              MultiConnectShimmerWidget()
+            ] else ...[
+              MultiConnectCategoryWidget(),
+            ]
+          ],
+        ).addPaddingX(20),
+      ),
     );
   }
 }

@@ -148,7 +148,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
               onPressed: () {
                 context.toPushNamed(
                   RoutesConstants.canceledAppointmentOptionScreen,
-                  args: CancelArgs(appointmentData: scheduleWatch.appointmentData, role: '1', fromUser: true),
+                  args: CancelArgs(appointmentData: scheduleWatch.appointmentData, role: 1, fromScheduled: true),
                 );
               },
               buttonColor: ColorConstants.yellowButtonColor,

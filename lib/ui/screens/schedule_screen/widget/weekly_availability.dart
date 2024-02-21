@@ -104,6 +104,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
             child: Center(
               child: BodySmallText(
                 title: dayText,
+                titleColor: ColorConstants.buttonTextColor,
                 /*      shadows: [
                   Shadow(
                     blurRadius: 8.0,
@@ -133,7 +134,11 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
               ],*/
             ),
             child: Center(
-              child: BodySmallText(title: dayTimeText, fontFamily: FontWeightEnum.w600.toInter),
+              child: BodySmallText(
+                title: dayTimeText,
+                fontFamily: FontWeightEnum.w600.toInter,
+                titleColor: ColorConstants.blackColor,
+              ),
             )),
       ],
     );
@@ -144,7 +149,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FeesActionButtonWidget(
-          onTap: () =>  scheduleCallProvider.decrementCallDuration(),
+          onTap: () => scheduleCallProvider.decrementCallDuration(),
           icons: ImageConstants.minus,
           isDisable: scheduleCallProvider.callDuration == 10,
         ),
@@ -158,7 +163,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         ),
         20.0.spaceX,
         FeesActionButtonWidget(
-          onTap: () =>scheduleCallProvider.incrementCallDuration(),
+          onTap: () => scheduleCallProvider.incrementCallDuration(),
           icons: ImageConstants.plus,
           isDisable: scheduleCallProvider.callDuration == 30,
         ),

@@ -3,7 +3,7 @@ import 'dart:convert';
 class CancelAppointmentRequestModel {
   int? expertId;
   int? userId;
-  String? role;
+  int? role;
   String? reason;
 
   CancelAppointmentRequestModel({this.expertId, this.userId, this.role, this.reason});

@@ -46,7 +46,7 @@ class _DetYourWeeklyAvailabilityScreenState extends ConsumerState<SetYourWeeklyA
           ),
           trailingIcon: InkWell(
             onTap: () {
-              expertRead.expertAvailabilityApi(context, _tabController?.index == 0 ? '1' : '2');
+              expertRead.expertAvailabilityApi(context, _tabController?.index == 0 ? 1 : 2);
             },
             child: TitleMediumText(
               title: StringConstants.done,

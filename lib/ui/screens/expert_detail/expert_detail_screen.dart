@@ -212,7 +212,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                                 (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                               ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
                             } else {
-                              FlutterToast().showToast(msg: "Expert not available.");
+                              FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
                             }
                           }
                         },
@@ -314,7 +314,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 ),
                 OnScaleTap(
                   onPress: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
-                  child: TitleSmallText(title: 'see all', titleColor: ColorConstants.greyColor),
+                  child: TitleSmallText(title: LocaleKeys.seeAll.tr(), titleColor: ColorConstants.greyColor),
                 )
               ],
             ),
@@ -328,7 +328,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '0',
+                        text: expertDetailWatch.userData?.overAllRating?.toString() ?? '0',
                         style: TextStyle(
                           color: ColorConstants.overAllRatingColor,
                           fontSize: 30,

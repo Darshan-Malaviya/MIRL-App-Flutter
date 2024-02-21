@@ -36,7 +36,7 @@ class CanceledAppointmentScreen extends StatelessWidget {
             20.0.spaceY,
             ShadowContainer(
               isShadow: false,
-              borderColor: ColorConstants.borderColor,
+              borderColor: ColorConstants.dropDownBorderColor,
               backgroundColor: ColorConstants.yellowButtonColor,
               border: 5,
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -51,7 +51,7 @@ class CanceledAppointmentScreen extends StatelessWidget {
                         softWrap: true,
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: '${args.fromUser ?? false ? LocaleKeys.expert.tr() : LocaleKeys.user.tr().toUpperCase()}: ',
+                          text: '${args.fromScheduled ?? false ? LocaleKeys.expert.tr() : LocaleKeys.user.tr().toUpperCase()}: ',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                           children: [
                             TextSpan(text: args.cancelData?.name ?? 'Anonymous', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
@@ -119,7 +119,7 @@ class CanceledAppointmentScreen extends StatelessWidget {
               titleColor: ColorConstants.buttonTextColor,
             ),
             20.0.spaceY,
-            if (args.fromUser ?? false) ...[
+            if (args.fromScheduled ?? false) ...[
               PrimaryButton(
                 title: LocaleKeys.goTONotification.tr(),
                 onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
@@ -132,21 +132,21 @@ class CanceledAppointmentScreen extends StatelessWidget {
                   titleColor: ColorConstants.buttonTextColor,
                 ),
               ),
-              10.0.spaceY,
+              5.0.spaceY,
               BodySmallText(
                 title: LocaleKeys.refundDescription.tr(),
                 fontFamily: FontWeightEnum.w400.toInter,
                 titleColor: ColorConstants.buttonTextColor,
                 maxLine: 3,
                 titleTextAlign: TextAlign.center,
-              ),
+              ).addMarginX(20),
             ] else ...[
               PrimaryButton(
                 title: LocaleKeys.backCalenderAppointment.tr(),
                 onPressed: () {
                   context.toPop();
                   context.toPop();
-                  context.toPushReplacementNamed(RoutesConstants.viewCalendarAppointment);
+                  context.toPushReplacementNamed(RoutesConstants.viewCalendarAppointment, args: args.role ?? 1);
                 },
                 fontSize: 15,
                 titleColor: ColorConstants.textColor,
@@ -154,7 +154,7 @@ class CanceledAppointmentScreen extends StatelessWidget {
               30.0.spaceY,
               Center(
                 child: InkWell(
-                  onTap: () => context.toPushNamed(RoutesConstants.blockUserListScreen),
+                  onTap: () => context.toPushNamed(RoutesConstants.blockUserScreen),
                   child: BodySmallText(
                     title: LocaleKeys.blockedUser.tr(),
                     fontFamily: FontWeightEnum.w400.toInter,

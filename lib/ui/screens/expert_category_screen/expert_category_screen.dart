@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,12 +17,24 @@ class ExpertCategoryScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall(isLoaderVisible: true);
       ref.read(addYourAreaExpertiseProvider).clearSelectChildId();
       ref.read(addYourAreaExpertiseProvider).setCategoryChildDefaultData();
+    });
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        bool isLoading = ref.watch(addYourAreaExpertiseProvider).reachedCategoryLastPage;
+        if (!isLoading) {
+          await ref.read(addYourAreaExpertiseProvider).areaCategoryListApiCall(isLoaderVisible: false);
+        } else {
+          log('reach last page on all category list api');
+        }
+      }
     });
     super.initState();
   }
@@ -66,9 +80,9 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                     : addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                         ? GridView.builder(
                             padding: EdgeInsets.only(top: 10),
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
-                            itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0,
+                            controller: scrollController,
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 25),
+                            itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0 + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1),
                             itemBuilder: (context, index) {
                               CategoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
 
