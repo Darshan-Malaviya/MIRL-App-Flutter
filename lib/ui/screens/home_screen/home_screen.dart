@@ -15,19 +15,9 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late final AppLifecycleListener _listener;
 
   @override
   void initState() {
- /*   _listener = AppLifecycleListener(
-      onDetach: () => Logger().d('onDetach'),
-      onHide: () => Logger().d('onHide'),
-      onInactive: () => Logger().d('onInactive'),
-      onPause: () => Logger().d('onPause'),
-      onRestart: () => Logger().d('onRestart'),
-      onResume: () => Logger().d('onResume'),
-      onShow: () => Logger().d('onShow'),
-    );*/
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(homeProvider).homePageApi();
     });
@@ -46,23 +36,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // PrimaryButton(
-            //   title: StringConstants.logOut,
-            //   onPressed: () async {
-            //     SharedPrefHelper.clearPrefs();
-            //     context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-            //   },
-            // ),
-            // 10.0.spaceY,
             InkWell(
               onTap: () {
                 context.toPushNamed(RoutesConstants.searchScreen);
               },
               child: Container(
+                width: double.infinity,
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
                 child: BodySmallText(
-                  maxLine: 2,
+                  maxLine: 1,
+                  fontFamily: FontWeightEnum.w400.toInter,
                   title: LocaleKeys.searchTypeAnyKeyword.tr(),
+                  titleColor: ColorConstants.blackColor,
                 ).addAllMargin(12),
               ),
             ),
@@ -73,10 +58,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Flexible(
                   child: GestureDetector(
                     onTap: () {
-                      context.toPushNamed(RoutesConstants.exploreExpertScreen);
+                      context.toPushNamed(RoutesConstants.exploreExpertScreen,args: false);
                     },
-                    child: Container(height: 205,
-                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                    child: Container(
+                        height: 178,
+                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
                             blurRadius: 2,
@@ -100,7 +86,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             BodySmallText(
                               title: LocaleKeys.browseExpertsFields.tr(),
                               titleTextAlign: TextAlign.center,
-                              maxLine: 3,
+                              maxLine: 2,
                               fontFamily: FontWeightEnum.w400.toInter,
                             ),
                           ],
@@ -112,8 +98,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: GestureDetector(
                     onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                     child: Container(
-                      height: 205,
-                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(6.0), boxShadow: [
+                      height: 178,
+                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),
                             blurRadius: 2,
@@ -139,7 +125,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               title: LocaleKeys.inviteMultipleExpertsAndSelectOne.tr(),
                               titleTextAlign: TextAlign.center,
                               fontFamily: FontWeightEnum.w400.toInter,
-                              maxLine: 3,
+                              maxLine: 2,
                             ),
                           ],
                         ).addAllMargin(12)),

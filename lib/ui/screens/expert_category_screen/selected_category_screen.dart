@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
+import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
@@ -114,34 +115,13 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       titleTextAlign: TextAlign.center,
                     ).addPaddingX(20),
                     20.0.spaceY,
-                    ShadowContainer(
-                      shadowColor: ColorConstants.categoryListBorder,
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: NetworkImageWidget(
-                              boxFit: BoxFit.cover,
-                              imageURL: filterProviderWatch.singleCategoryData?.categoryData?.image ?? '',
-                              isNetworkImage: true,
-                              height: 50,
-                              width: 50,
-                            ),
-                          ),
-                          4.0.spaceY,
-                          LabelSmallText(
-                            fontSize: 9,
-                            title: filterProviderWatch.singleCategoryData?.categoryData?.name ?? '',
-                            titleColor: ColorConstants.blackColor,
-                            fontFamily: FontWeightEnum.w700.toInter,
-                            titleTextAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                      height: 90,
-                      width: 90,
-                      isShadow: true,
-                    ),
+                    CategoryCommonView(
+                      onTap: () {},
+                      categoryName: filterProviderWatch.singleCategoryData?.categoryData?.name ?? '',
+                      imageUrl: filterProviderWatch.singleCategoryData?.categoryData?.image ?? '',
+                      isSelectedShadow: true,
+                      blurRadius: 8,
+                      spreadRadius: 1,),
                     20.0.spaceY,
                     if (filterProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
                       Container(
