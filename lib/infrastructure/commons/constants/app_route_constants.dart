@@ -50,6 +50,7 @@ import 'package:mirl/ui/screens/schedule_screen/schedule_appointment_screen.dart
 import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
+import 'package:mirl/ui/screens/suggestion/thanks_giving_screen.dart';
 import 'package:mirl/ui/screens/upcoming_appointment_screen/upcoming_appointment_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/screens/mirl_connect_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
@@ -179,6 +180,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => CmsScreen(args: settings.arguments as CmsArgs));
         case RoutesConstants.mirlConnectScreen:
         return MaterialPageRoute(builder: (_) => MirlConnectScreen());
+      case RoutesConstants.thanksGivingScreen:
+        return MaterialPageRoute(builder: (_) => const ThanksGivingScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
