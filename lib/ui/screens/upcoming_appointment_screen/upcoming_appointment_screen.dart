@@ -201,7 +201,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                 Row(
                                   children: [
                                     Visibility(
-                                      visible: widget.role == '1',
+                                      visible: widget.role == 1,
                                       replacement: SizedBox.shrink(),
                                       child: PrimaryButton(
                                         title: LocaleKeys.startCall.tr(),
@@ -238,10 +238,11 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                     ]
                   ] else ...[
                     BodySmallText(
-                        title: LocaleKeys.noUpcomingAppointment.tr(),
-                        titleColor: ColorConstants.textColor,
-                        titleTextAlign: TextAlign.center,
-                        fontFamily: FontWeightEnum.w400.toInter)
+                            title: LocaleKeys.noUpcomingAppointment.tr(),
+                            titleColor: ColorConstants.textColor,
+                            titleTextAlign: TextAlign.center,
+                            fontFamily: FontWeightEnum.w400.toInter)
+                        .addMarginTop(30)
                   ]
                 ],
               ),

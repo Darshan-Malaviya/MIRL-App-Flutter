@@ -138,7 +138,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             30.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.checkNotification.tr(),
-              onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
+              onPressed: ()=>context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 2),
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,
             ),

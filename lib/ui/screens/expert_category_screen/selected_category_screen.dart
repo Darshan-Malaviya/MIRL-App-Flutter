@@ -91,7 +91,6 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                 child: CupertinoActivityIndicator(
                   animating: true,
                   color: ColorConstants.primaryColor,
-                  radius: 16,
                 ),
               )
             : SingleChildScrollView(
