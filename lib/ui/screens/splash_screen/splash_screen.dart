@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     Future.delayed(const Duration(milliseconds: 5000)).then((value) {
       var isLoginIn = SharedPrefHelper.getUserData;
       if (isLoginIn.isNotEmpty) {
-        context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
+        context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
       } else {
         context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
       }
