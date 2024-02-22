@@ -12,7 +12,8 @@ class MultiConnectCategoryWidget extends ConsumerWidget {
     final multiProviderWatch = ref.watch(multiConnectProvider);
     if (multiProviderWatch.categoryList?.isNotEmpty ?? false) {
       return GridView.builder(
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
         itemCount: (multiProviderWatch.categoryList?.length ?? 0) + (multiProviderWatch.reachedCategoryLastPage ? 0 : 1),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,crossAxisSpacing: 10, mainAxisSpacing: 10),
         padding: EdgeInsets.zero,

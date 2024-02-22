@@ -3,7 +3,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 class ScheduleAppointmentRequestModel {
   int? expertId;
   int? amount;
-  String? duration;
+  int? duration;
   String? startTime;
   String? endTime;
   String? status;

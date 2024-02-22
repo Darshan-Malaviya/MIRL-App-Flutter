@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class CanceledAppointmentOptionScreen extends ConsumerStatefulWidget {
@@ -57,14 +56,14 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
                 title: LocaleKeys.reasonForCanceledAppointment.tr(),
                 titleColor: ColorConstants.buttonTextColor,
               ),
-              10.0.spaceY,
+              5.0.spaceY,
               BodyMediumText(
                 title: LocaleKeys.cancelReasonDescription.tr(),
                 titleColor: ColorConstants.buttonTextColor,
                 fontFamily: FontWeightEnum.w400.toInter,
                 maxLine: 3,
                 titleTextAlign: TextAlign.center,
-              ),
+              ).addMarginX(20),
               20.0.spaceY,
               Stack(
                 alignment: Alignment.bottomRight,
@@ -79,8 +78,9 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
                     textInputAction: TextInputAction.newline,
                     canRequestFocus: !(cancelWatch.isLoadingReason ?? false),
                     contentPadding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 30),
+                    borderRadius: 25,
                     validator: (value) {
-                      return value?.toEmptyStringValidation(msg: 'Reason is required');
+                      return value?.toEmptyStringValidation(msg: LocaleKeys.reasonRequired.tr());
                     },
                   ),
                   Padding(
@@ -103,8 +103,8 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
                     cancelRead.cancelAppointmentApiCall(
                       context: context,
                       appointmentData: widget.args.appointmentData,
-                      role: widget.args.role ?? '1',
-                      fromUser: widget.args.fromUser ?? false,
+                      role: widget.args.role ?? 1,
+                      fromScheduled: widget.args.fromScheduled ?? false,
                     );
                   }
                 },

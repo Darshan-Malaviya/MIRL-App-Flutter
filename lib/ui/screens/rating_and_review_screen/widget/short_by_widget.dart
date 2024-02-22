@@ -49,7 +49,7 @@ class ShortByReview extends StatelessWidget {
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton(
-                  isExpanded: false,
+                  isExpanded: true,
                   elevation: 0,
                   value: value,
                   padding: EdgeInsets.zero,

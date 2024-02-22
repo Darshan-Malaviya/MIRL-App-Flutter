@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -29,11 +30,10 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
       physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 14),
       itemBuilder: (context, index) {
-        final data = reportReviewWatch.reviewAndRatingData?.expertReviews?[index];
         if (index == reportReviewWatch.reviewAndRatingData?.expertReviews?.length && reportReviewWatch.reviewAndRatingData?.expertReviews?.isNotEmpty == true) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Center(child: CircularProgressIndicator(color: ColorConstants.primaryColor)),
+            child: Center(child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
           );
         }
         return Container(
@@ -59,7 +59,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
             children: [
               StarRating(
                 onRatingChanged: (value) {},
-                rating: data?.rating?.toDouble() ?? 0,
+                rating: reportReviewWatch.reviewAndRatingData?.expertReviews?[index].rating?.toDouble() ?? 0,
               ),
               14.0.spaceY,
               Row(
@@ -76,7 +76,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
                               fontFamily: FontWeightEnum.w400.toInter,
                             )),
                         TextSpan(
-                            text: data?.userName ?? '',
+                            text: reportReviewWatch.reviewAndRatingData?.expertReviews?[index].userName ?? '',
                             style: TextStyle(
                               color: ColorConstants.buttonTextColor,
                               fontFamily: FontWeightEnum.w700.toInter,
@@ -86,7 +86,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
                     textAlign: TextAlign.center,
                   ),
                   BodySmallText(
-                    title: data?.firstCreated?.toLocalFullDateWithoutSuffix() ?? '',
+                    title: reportReviewWatch.reviewAndRatingData?.expertReviews?[index].firstCreated?.toLocalFullDateWithoutSuffix() ?? '',
                     fontFamily: FontWeightEnum.w400.toInter,
                     titleColor: ColorConstants.buttonTextColor,
                   ),
@@ -95,7 +95,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
               18.0.spaceY,
               ReadMoreText(
                 style: TextStyle(fontSize: 14, fontFamily: FontWeightEnum.w400.toInter),
-                data?.review ?? '',
+                reportReviewWatch.reviewAndRatingData?.expertReviews?[index].review ?? '',
                 trimLines: 5,
                 trimMode: TrimMode.Line,
                 trimCollapsedText: LocaleKeys.readMore.tr(),

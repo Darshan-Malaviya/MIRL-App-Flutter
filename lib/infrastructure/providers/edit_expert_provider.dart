@@ -156,13 +156,13 @@ class EditExpertProvider extends ChangeNotifier {
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
     if (_userData?.expertAvailability?.isNotEmpty ?? false) {
-      _tabIndex = (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1' ? 0 : 1;
+      _tabIndex = (_userData?.expertAvailability?.first.scheduleType ?? 1) == 1 ? 0 : 1;
       _userData?.expertAvailability?.forEach((element) {
         _weekScheduleModel.add(WeekScheduleModel(
           dayName: element.dayOfWeek?.substring(0, 3).toUpperCase(),
-          startTime: double.parse(element.startTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ??
+          startTime: double.parse(element.startTime?.toLocaleFromUtcStart()?.millisecondsSinceEpoch.toString() ??
               lowerValue.millisecondsSinceEpoch.toString()),
-          endTime: double.parse(element.endTime?.toLocaleFromUtc()?.millisecondsSinceEpoch.toString() ??
+          endTime: double.parse(element.endTime?.toLocaleFromUtcForEnd(element.startTime ?? '')?.millisecondsSinceEpoch.toString() ??
               upperValue.millisecondsSinceEpoch.toString()),
           isAvailable: element.isAvailable ?? false,
         ));
@@ -212,7 +212,7 @@ class EditExpertProvider extends ChangeNotifier {
   void redirectSelectedButton(BuildContext context, int index) {
     if (index == 2) {
       _tabIndex = (_userData?.expertAvailability?.isNotEmpty ?? false)
-          ? (_userData?.expertAvailability?.first.scheduleType ?? '1') == '1'
+          ? (_userData?.expertAvailability?.first.scheduleType ?? 1) == 1
               ? 0
               : 1
           : 0;
@@ -343,7 +343,7 @@ class EditExpertProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> expertAvailabilityApi(BuildContext context, String scheduleType) async {
+  Future<void> expertAvailabilityApi(BuildContext context, int scheduleType) async {
     getSelectedWeekDays();
     CustomLoading.progressDialog(isLoading: true);
 

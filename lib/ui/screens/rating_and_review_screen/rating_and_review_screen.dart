@@ -11,7 +11,9 @@ import 'package:mirl/ui/screens/rating_and_review_screen/widget/reviews_list_wid
 import 'package:mirl/ui/screens/rating_and_review_screen/widget/short_by_widget.dart';
 
 class RatingAndReviewScreen extends ConsumerStatefulWidget {
-  const RatingAndReviewScreen({super.key});
+  final int id;
+
+  const RatingAndReviewScreen({super.key, required this.id});
 
   @override
   ConsumerState createState() => _RatingAndReviewScreenState();
@@ -23,13 +25,13 @@ class _RatingAndReviewScreenState extends ConsumerState<RatingAndReviewScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(reportReviewProvider).getRatingAndReviewApiCall(isLoading: true);
+      ref.read(reportReviewProvider).getRatingAndReviewApiCall(isLoading: true, id: widget.id);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(reportReviewProvider).reachedLastPage;
         if (!isLoading) {
-          ref.read(reportReviewProvider).getRatingAndReviewApiCall(isLoading: false);
+          ref.read(reportReviewProvider).getRatingAndReviewApiCall(isLoading: false, id: widget.id);
         } else {
           log('reach last page on review list api');
         }
@@ -61,6 +63,8 @@ class _RatingAndReviewScreenState extends ConsumerState<RatingAndReviewScreen> {
                   TitleLargeText(
                     title: LocaleKeys.reviewAndRatingScreen.tr(),
                     titleColor: ColorConstants.bottomTextColor,
+                    titleTextAlign: TextAlign.center,
+                    maxLine: 2,
                   ),
                   30.0.spaceY,
                   if (reportReviewWatch.reviewAndRatingData?.ratingCriteria?.isNotEmpty ?? false) ...[

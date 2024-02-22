@@ -128,7 +128,9 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                             context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
                           },
                           prefixIcon: ImageConstants.filter,
+                          buttonTextFontFamily: FontWeightEnum.w400.toInter,
                           prefixIconPadding: 10,
+                          padding: EdgeInsets.symmetric(horizontal: 100),
                         ),
                         if (filterProviderWatch.commonSelectionModel.isNotEmpty) ...[
                           Column(

@@ -104,6 +104,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
             child: Center(
               child: BodySmallText(
                 title: dayText,
+                titleColor: ColorConstants.buttonTextColor,
                 /*      shadows: [
                   Shadow(
                     blurRadius: 8.0,
@@ -113,28 +114,35 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                 ],*/
               ),
             )),
-        Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-            decoration: BoxDecoration(
-              color: ColorConstants.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: ColorConstants.dropDownBorderColor),
-              /*         boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.25),
+        20.0.spaceX,
+        Expanded(
+          child: Container(
+              width: 200,
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              decoration: BoxDecoration(
+                color: ColorConstants.primaryColor,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: ColorConstants.dropDownBorderColor),
+                /*         boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.25),
+                  ),
+                  BoxShadow(
+                    color: ColorConstants.blackColor.withOpacity(0.3),
+                    spreadRadius: 0.0,
+                    blurRadius: 4.0,
+                    offset: Offset(0, 0),
+                  ),
+                ],*/
+              ),
+              child: Center(
+                child: BodySmallText(
+                  title: dayTimeText,
+                  fontFamily: FontWeightEnum.w600.toInter,
+                  titleColor: ColorConstants.blackColor,
                 ),
-                BoxShadow(
-                  color: ColorConstants.blackColor.withOpacity(0.3),
-                  spreadRadius: 0.0,
-                  blurRadius: 4.0,
-                  offset: Offset(0, 0),
-                ),
-              ],*/
-            ),
-            child: Center(
-              child: BodySmallText(title: dayTimeText, fontFamily: FontWeightEnum.w600.toInter),
-            )),
+              )),
+        ),
       ],
     );
   }
@@ -144,7 +152,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FeesActionButtonWidget(
-          onTap: () =>  scheduleCallProvider.decrementCallDuration(),
+          onTap: () => scheduleCallProvider.decrementCallDuration(),
           icons: ImageConstants.minus,
           isDisable: scheduleCallProvider.callDuration == 10,
         ),
@@ -158,7 +166,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         ),
         20.0.spaceX,
         FeesActionButtonWidget(
-          onTap: () =>scheduleCallProvider.incrementCallDuration(),
+          onTap: () => scheduleCallProvider.incrementCallDuration(),
           icons: ImageConstants.plus,
           isDisable: scheduleCallProvider.callDuration == 30,
         ),

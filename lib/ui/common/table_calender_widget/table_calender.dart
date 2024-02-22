@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/table_calender_widget/table_border.dart';
@@ -30,7 +28,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-    PageController _pageController = PageController(initialPage: 0);
+  PageController _pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +44,6 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
             }
           }
         } else {
-          log(day.toString());
           return isSameDay(widget.selectedDay, day);
         }
         return false;
@@ -68,7 +65,6 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
       onCalendarCreated: (pageController) {
         _pageController = pageController;
       },
-
       headerStyle: HeaderStyle(rightChevronVisible: false, leftChevronVisible: false, formatButtonVisible: false, titleCentered: true),
       calendarBuilders: CalendarBuilders(
         defaultBuilder: (context, day, focusedDay) {
@@ -86,9 +82,18 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           return null;
         },
         outsideBuilder: (context, day, focusedDay) {
+          if (widget.fromUpcomingAppointment) {
+            return Center(
+              child: BodySmallText(
+                title: day.day.toString(),
+                titleColor: Color(0xFFBFBFBF),
+                fontFamily: FontWeightEnum.w400.toInter,
+              ),
+            );
+          }
           return Center(
             child: BodySmallText(
-              title: day.day.toString().padLeft(0, '0'),
+              title: day.day.toString(),
               titleColor: ColorConstants.buttonTextColor,
               fontFamily: FontWeightEnum.w400.toInter,
             ),
@@ -101,7 +106,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () =>   _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+                  onTap: () => _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
                   child: Container(
                     height: 45,
                     decoration: BoxDecoration(
@@ -137,7 +142,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
               5.0.spaceX,
               Expanded(
                 child: InkWell(
-                  onTap: () =>   _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+                  onTap: () => _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
                   child: Container(
                     height: 45,
                     decoration: BoxDecoration(
@@ -253,7 +258,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         },
       ),
       calendarFormat: _calendarFormat,
-      rangeSelectionMode: _rangeSelectionMode,
+      // rangeSelectionMode: _rangeSelectionMode,
       daysOfWeekHeight: 50,
       startingDayOfWeek: StartingDayOfWeek.monday,
       daysOfWeekStyle: DaysOfWeekStyle(
@@ -275,7 +280,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           });
         }
       }*/
-      onRangeSelected: (start, end, focusedDay) {
+/*      onRangeSelected: (start, end, focusedDay) {
         setState(() {
           // widget.selectedDay = null;
           _focusedDay = focusedDay;
@@ -283,7 +288,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           _rangeEnd = end;
           _rangeSelectionMode = RangeSelectionMode.toggledOn;
         });
-      },
+      },*/
       onFormatChanged: (format) {
         if (_calendarFormat != format) {
           setState(() {

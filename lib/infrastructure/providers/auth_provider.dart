@@ -65,19 +65,19 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  Future<void> loginRequestCall({required int loginType}) async {
+  Future<void> loginRequestCall({required int loginType, required String email}) async {
     debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
     debugPrint('getVoipToken=================${await AgoraService.singleton.getVoipToken()}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
         deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
-        email: emailController.text.trim(),
+        email: email,
         socialId: _socialId,
         deviceToken: SharedPrefHelper.getFirebaseToken,
         timezone: await CommonMethods.getCurrentTimeZone(),
         loginType: loginType,
         voIpToken: await AgoraService.singleton.getVoipToken());
     loginApiCall(
-        requestModel: emailController.text.trim().isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(), loginType: loginType);
+        requestModel: email.isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(), loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -98,7 +98,7 @@ class AuthProvider with ChangeNotifier {
             SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
             SharedPrefHelper.saveAuthToken(loginResponseModel.token);
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
-            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
+            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
           }
         }
         break;
@@ -117,10 +117,10 @@ class AuthProvider with ChangeNotifier {
       if (_currentUser?.id != null) {
         _socialId = _currentUser?.id ?? '';
         // userName = _currentUser?.displayName ?? '';
-        emailController.text = _currentUser?.email ?? '';
+        // emailController.text = _currentUser?.email ?? '';
         // profilePic = _currentUser?.photoUrl;
         // isNetwork = false;
-        loginRequestCall(loginType: LoginType.google);
+        loginRequestCall(loginType: LoginType.google,email: _currentUser?.email ?? '');
         log(_currentUser.toString());
       }
     } catch (error) {
@@ -139,12 +139,12 @@ class AuthProvider with ChangeNotifier {
       if (credential.userIdentifier != null) {
         _socialId = credential.userIdentifier ?? '';
         if (credential.email != null) {
-          emailController.text = credential.email ?? '';
+          // emailController.text = credential.email ?? '';
           if (emailController.text.split('@').last == 'privatelay.appleid.com') {
             emailController.text = '';
           }
         }
-        loginRequestCall(loginType: LoginType.apple);
+        loginRequestCall(loginType: LoginType.apple,email: credential.email ?? '');
       }
     } catch (error) {
       // CustomLoading.loadingDialog(false, NavigationService.context);
@@ -161,8 +161,8 @@ class AuthProvider with ChangeNotifier {
         Map<String, dynamic>? _fbData = userData;
         _socialId = _fbData['id'];
         //userName = _fbData['name'];
-        emailController.text = _fbData['email'];
-        loginRequestCall(loginType: LoginType.facebook);
+        // emailController.text = _fbData['email'];
+        loginRequestCall(loginType: LoginType.facebook,email: _fbData['email']);
       } else {
         // CustomLoading.loadingDialog(false, NavigationService.context);
       }
@@ -196,7 +196,7 @@ class AuthProvider with ChangeNotifier {
           SharedPrefHelper.saveAreaOfExpertise(jsonEncode(jsonEncode(loginResponseModel.data?.areaOfExpertise)));
           SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
           SharedPrefHelper.saveAuthToken(loginResponseModel.token);
-          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
+          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }
         break;

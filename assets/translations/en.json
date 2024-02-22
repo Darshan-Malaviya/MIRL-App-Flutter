@@ -77,7 +77,7 @@
   "yesGoToCanceled": "YES! GO AHEAD AND CANCEL IT",
   "cancelReasonDescription": "Can you please tell us why so we can share this with the Expert?",
   "retainAppointment": "NO, RETAIN MY APPOINTMENT!",
-  "sureYouWantCancel": "Are you sure you want to cancel your \nappointment?",
+  "sureYouWantCancel": "Are you sure you want to cancel your appointment?",
   "characters": "characters",
   "requestCallDesc": "WOULD YOU LIKE TO REQUEST AN \nINSTANT CALL WITH",
   "goBack": "GO BACK",
@@ -197,6 +197,10 @@
   "blockedOn" : "BLOCKED ON:",
   "status" : "STATUS:",
   "unblockUser" : "UNBLOCK USER",
+  "seeAll": "See all",
+  "expertNotAvailable": "Expert not available.",
+  "anonymous": "Anonymous",
+  "startCall": "START CALL",
   "expertNotResponding"  : "Expert not responding!",
   "noReviewFound" : "No review found",
   "areYouReady" : "Are you Ready?",
@@ -224,5 +228,7 @@
   "shareSuggestion": "SHARE SUGGESTION",
   "whyNotThinkOfThat": "Ah, why didn’t we think of that?!",
   "thanksNote": "Thanks a ton for your suggestions, we really appreciate your help in making MIRL more inclusive and helpful to everyone in the world.",
-  "backToExpertCategories": "BACK TO EXPERT CATEGORIES"
+  "backToExpertCategories": "BACK TO EXPERT CATEGORIES",
+  "reasonRequired": "Reason is required",
+  "suggestNewExpertCategoryNote": "Please type your suggested topic name, and describe it for us to understand your idea better."
 }
