@@ -67,6 +67,7 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> loginRequestCall({required int loginType, required String email}) async {
     debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
+    debugPrint('getVoipToken=================${await AgoraService.singleton.getVoipToken()}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
         deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
         email: email,

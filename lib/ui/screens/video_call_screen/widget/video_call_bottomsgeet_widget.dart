@@ -103,8 +103,7 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
                   onTap: () async {
                     if(callWatch.remoteUid == null && (instanceCallDurationNotifier.value <= 0)
                       && ((ref.watch(socketProvider).extraResponseModel?.userId.toString() ?? '') == SharedPrefHelper.getUserId.toString())){
-                      await ref.read(socketProvider).updateCallStatusEmit(
-                          status: CallStatusEnum.cancelCall,
+                      await ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.cancelCall,
                           callRoleEnum: CallRoleEnum.user,
                           callHistoryId: ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
 
@@ -112,8 +111,7 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
                       bool isUser =  ref.read(socketProvider).extraResponseModel?.userId.toString() == SharedPrefHelper.getUserId.toString();
                       print("isUser here $isUser");
                       print(ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
-                      await ref.read(socketProvider).updateCallStatusEmit(
-                          status: CallStatusEnum.completedCall,
+                      await ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.completedCall,
                           callRoleEnum: isUser ? CallRoleEnum.user : CallRoleEnum.expert,
                           callHistoryId: ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
                     }
