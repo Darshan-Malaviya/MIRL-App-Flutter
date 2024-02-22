@@ -5,14 +5,16 @@ class SearchPaginationCommonRequestModel {
   String? limit;
   String? search;
   String? categoryId;
+  String? countryName;
 
-  SearchPaginationCommonRequestModel({this.page, this.limit, this.search,this.categoryId});
+  SearchPaginationCommonRequestModel({this.page, this.limit, this.search,this.categoryId,this.countryName});
 
   SearchPaginationCommonRequestModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     limit = json['limit'];
     search = json['search'];
     categoryId = json['categoryId'];
+    countryName = json['countryName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,6 +23,7 @@ class SearchPaginationCommonRequestModel {
     data['limit'] = this.limit;
     data['search'] = this.search;
     data['categoryId'] = this.categoryId;
+    data['countryName'] = this.countryName;
 
     return data;
   }

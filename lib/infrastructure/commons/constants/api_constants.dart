@@ -67,8 +67,11 @@ class ApiConstants {
   static const String topicByCategory = '/topic/list/all';
   static const String timeSlots = '/appointment/timeSlots';
   static const String appointment = '/appointment';
+  static String userBlockList = '/userBlock/${SharedPrefHelper.getUserId}';
   static const String userBlock = '/userBlock';
   static const String unBlockUser = '/userBlock';
   static const String cms = '/cms';
   static const String reportList = '/reportList';
+  static const String userReport = '/userReport';
+  static const String rateExpert = '/rateExpert';
 }

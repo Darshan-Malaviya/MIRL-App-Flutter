@@ -54,12 +54,8 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 );
               },
               child: Container(
-                height: MediaQuery
-                    .sizeOf(context)
-                    .height * 0.45,
-                width: MediaQuery
-                    .sizeOf(context)
-                    .width * 0.7,
+                height: MediaQuery.sizeOf(context).height * 0.45,
+                width: MediaQuery.sizeOf(context).width * 0.7,
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -76,34 +72,34 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 ),
                 child: (expertWatch.pickedImage.isNotEmpty)
                     ? ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: NetworkImageWidget(
-                    imageURL: expertWatch.pickedImage,
-                    isNetworkImage: expertWatch.pickedImage.contains('https'),
-                    boxFit: BoxFit.cover,
-                  ),
-                )
+                        borderRadius: BorderRadius.circular(10),
+                        child: NetworkImageWidget(
+                          imageURL: expertWatch.pickedImage,
+                          isNetworkImage: expertWatch.pickedImage.contains('https'),
+                          boxFit: BoxFit.cover,
+                        ),
+                      )
                     : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BodySmallText(
-                      title: StringConstants.expertProfilePhoto,
-                      fontFamily: FontWeightEnum.w400.toInter,
-                    ),
-                    20.0.spaceY,
-                    BodySmallText(
-                      title: StringConstants.highQualityProfile,
-                      titleTextAlign: TextAlign.center,
-                      fontFamily: FontWeightEnum.w400.toInter,
-                      maxLine: 5,
-                    ),
-                    20.0.spaceY,
-                    BodySmallText(
-                      title: StringConstants.yourFavoriteOne,
-                      fontFamily: FontWeightEnum.w400.toInter,
-                    ),
-                  ],
-                ),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BodySmallText(
+                            title: StringConstants.expertProfilePhoto,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                          ),
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: StringConstants.highQualityProfile,
+                            titleTextAlign: TextAlign.center,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                            maxLine: 5,
+                          ),
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: StringConstants.yourFavoriteOne,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                          ),
+                        ],
+                      ),
               ),
             ),
             5.0.spaceY,
@@ -177,14 +173,14 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment),
+                  onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: 2),
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.reviewsAndRatings,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
+                  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen, args: int.parse(SharedPrefHelper.getUserId)),
                 ),
                 50.0.spaceY,
                 PrimaryButton(

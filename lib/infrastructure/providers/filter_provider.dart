@@ -704,8 +704,6 @@ class FilterProvider extends ChangeNotifier {
       feeOrder: requestModel?.feeOrder,
       gender: requestModel?.gender,
       instantCallAvailable: requestModel?.instantCallAvailable,
-      /*     maxFee: requestModel?.maxFee != null ? double.parse(requestModel?.maxFee ?? '0').toStringAsFixed(2) : null,
-      minFee: requestModel?.minFee != null ? double.parse(requestModel?.minFee ?? '0').toStringAsFixed(2) : null,  */
       maxFee: requestModel?.maxFee != null ? requestModel?.maxFee : null,
       minFee: requestModel?.minFee != null ? requestModel?.minFee : null,
       reviewOrder: requestModel?.reviewOrder,

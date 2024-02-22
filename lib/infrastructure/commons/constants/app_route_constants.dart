@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/screens/auth_screen/login_screen.dart';
 import 'package:mirl/ui/screens/auth_screen/otp_screen.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
@@ -47,7 +50,10 @@ import 'package:mirl/ui/screens/schedule_screen/schedule_appointment_screen.dart
 import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
+import 'package:mirl/ui/screens/suggestion/suggest_new_experties_screen.dart';
+import 'package:mirl/ui/screens/suggestion/thanks_giving_screen.dart';
 import 'package:mirl/ui/screens/upcoming_appointment_screen/upcoming_appointment_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/mirl_connect_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
@@ -62,6 +68,9 @@ class NavigationService {
 /// on generate route
 class RouterConstant {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    activeRoute.value = settings.name ?? '';
+    log('Active route: ${activeRoute.value}');
+
     switch (settings.name) {
       /// normal page routing
       case RoutesConstants.splashScreen:
@@ -75,7 +84,7 @@ class RouterConstant {
       case RoutesConstants.homeScreen:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case RoutesConstants.dashBoardScreen:
-        return MaterialPageRoute(builder: (_) => const DashboardScreen());
+        return MaterialPageRoute(builder: (_) => DashboardScreen(index: settings.arguments as int));
       case RoutesConstants.expertProfileScreen:
         return MaterialPageRoute(builder: (_) => const ExpertProfileScreen());
       case RoutesConstants.exploreScreen:
@@ -95,10 +104,7 @@ class RouterConstant {
       case RoutesConstants.setYourGenderScreen:
         return MaterialPageRoute(builder: (_) => const SetYourGenderScreen());
       case RoutesConstants.setWeeklyAvailability:
-        return MaterialPageRoute(
-            builder: (_) => SetYourWeeklyAvailabilityScreen(
-                  initialIndex: settings.arguments as int,
-                ));
+        return MaterialPageRoute(builder: (_) => SetYourWeeklyAvailabilityScreen(initialIndex: settings.arguments as int));
       case RoutesConstants.certificationsAndExperienceScreen:
         return MaterialPageRoute(builder: (_) => const CertificationsAndExperienceScreen());
       case RoutesConstants.yourBankAccountDetailsScreen:
@@ -118,7 +124,7 @@ class RouterConstant {
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.exploreExpertScreen:
-        return MaterialPageRoute(builder: (_) => const ExploreExpertScreen());
+        return MaterialPageRoute(builder: (_) => ExploreExpertScreen(isFromHomePage: settings.arguments as bool));
       case RoutesConstants.selectedExpertCategoryScreen:
         return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(args: settings.arguments as SelectedCategoryArgument));
       case RoutesConstants.expertCategoryFilterScreen:
@@ -136,40 +142,37 @@ class RouterConstant {
       case RoutesConstants.blockUserListScreen:
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
       case RoutesConstants.reportUserScreen:
-        return MaterialPageRoute(
-            builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
+        return MaterialPageRoute(builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
       case RoutesConstants.reportExpertScreen:
-        return MaterialPageRoute(
-            builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
+        return MaterialPageRoute(builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.videoCallScreen:
-        return MaterialPageRoute(
-            builder: (_) => VideoCallScreen(
-                  arguments: settings.arguments as VideoCallArguments,
-                ));
+        return MaterialPageRoute(builder: (_) => VideoCallScreen(arguments: settings.arguments as VideoCallArguments));
       case RoutesConstants.instantCallRequestDialogScreen:
-        return MaterialPageRoute(
-            builder: (_) => InstantCallRequestDialog(
-                  args: settings.arguments as InstanceCallDialogArguments,
-                ));
+        return MaterialPageRoute(builder: (_) => InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments));
       case RoutesConstants.blockUserScreen:
         return MaterialPageRoute(builder: (_) => BlockUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.multiConnectScreen:
         return MaterialPageRoute(builder: (_) => const MultiConnectScreen());
       case RoutesConstants.multiConnectFilterScreen:
-        return MaterialPageRoute(
-            builder: (_) => MultiConnectFilterScreen());
+        return MaterialPageRoute(builder: (_) => MultiConnectFilterScreen());
       case RoutesConstants.multiConnectSelectedCategoryScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
-        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen());
-        case RoutesConstants.ratingAndReviewScreen:
-        return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
-        case RoutesConstants.earningReportScreen:
+        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen(role: settings.arguments as int));
+      case RoutesConstants.ratingAndReviewScreen:
+        return MaterialPageRoute(builder: (_) => RatingAndReviewScreen(id: settings.arguments as int));
+      case RoutesConstants.earningReportScreen:
         return MaterialPageRoute(builder: (_) => EarningReportScreen());
       case RoutesConstants.cmsScreen:
         return MaterialPageRoute(builder: (_) => CmsScreen(args: settings.arguments as CmsArgs));
+      case RoutesConstants.mirlConnectScreen:
+        return MaterialPageRoute(builder: (_) => MirlConnectScreen());
+      case RoutesConstants.thanksGivingScreen:
+        return MaterialPageRoute(builder: (_) => const ThanksGivingScreen());
+      case RoutesConstants.suggestNewExpertiseScreen:
+        return MaterialPageRoute(builder: (_) => const SuggestNewExpertiseScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

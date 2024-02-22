@@ -20,13 +20,13 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.args.userRole ?? 0);
+      ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(reportUserProvider).reachedCategoryLastPage;
         if (!isLoading) {
-          ref.read(reportUserProvider).getAllBlockListApiCall(role: widget.args.userRole ?? 0);
+          ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0);
         } else {
           log('reach last page on get report list api');
         }
@@ -63,8 +63,11 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(reportUserWatch.reportListDetails.length, (index) {
             return InkWell(
-              onTap: () {
-                reportUserRead.reportUser();
+              onTap: () async {
+                reportUserRead.userReportRequestCall(
+                    reportListId: reportUserWatch.reportListDetails[index].id ?? 0,
+                    reportToId: int.parse(widget.args.expertId ?? ''));
+                await reportUserRead.reportUser();
               },
               child: Row(
                 children: [
@@ -88,25 +91,19 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                           titleTextAlign: TextAlign.start,
                           fontFamily: FontWeightEnum.w400.toInter,
                           fontSize: 13,
-                          maxLine: 3,
+                          maxLine: 10,
                         ),
                       ],
-                    ).addMarginTop(20),
+                    ).addMarginTop(30),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      size: 36,
-                      color: ColorConstants.redColor,
-                    ),
-                  )
+                  10.0.spaceX,
+                  Align(alignment: Alignment.centerRight, child: Image.asset(ImageConstants.arrow))
                 ],
               ),
             );
           }),
         )
       ],
-    ).addAllPadding(20);
+    ).addAllPadding(30);
   }
 }

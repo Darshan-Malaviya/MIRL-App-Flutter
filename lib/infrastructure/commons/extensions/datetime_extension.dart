@@ -55,7 +55,7 @@ extension DateTimeFormatter on String {
   /// 5:20 from UTC
   String toLocalTimeFromUtc() {
     try {
-      DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
+      DateTime localTime = DateTime.parse(this).toLocal();
       var output = DateFormat('hh:mm a').format(localTime);
       return output;
     } catch (e) {
@@ -91,19 +91,40 @@ extension DateTimeFormatter on String {
     return '';
   }
 
-  /// full date time format in local -  01/06/2023 12:15 PM
-  DateTime? toLocaleFromUtc() {
+  /// local date from Utc 2024-04-01 03:30:00.000
+  DateTime? toLocaleFromUtcStart() {
     try {
       DateTime now = DateTime.now();
-      DateTime localTime = DateFormat('HH:mm:ss').parse(this, true).toLocal();
-      debugPrint('localTime=====================${localTime}');
-      debugPrint('this=====================$this');
+      DateTime localTime = DateTime.parse(this).toLocal();
+      // debugPrint('localTime=====================${localTime}');
+      // debugPrint('this=====================$this');
       DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, localTime.hour, localTime.minute);
-      debugPrint('setTimeOfDay=====================$setTimeOfDay');
+      // debugPrint('setTimeOfDay=====================$setTimeOfDay');
 
       return setTimeOfDay;
     } catch (e) {
-      Logger().d("Exception on toLocaleFromStringUtc : $e");
+      Logger().d("Exception on toLocaleFromUtcStart : $e");
+    }
+    return null;
+  }
+
+  /// local date from Utc 2024-04-01 03:30:00.000
+  DateTime? toLocaleFromUtcForEnd(String startTime) {
+    try {
+      DateTime now = DateTime.now();
+      DateTime endLocalTime = DateTime.parse(this).toLocal();
+      DateTime startLocalTime = DateTime.parse(startTime).toLocal();
+      String value1 = DateFormat('HH:mm:ss').format(endLocalTime);
+      String value2 = DateFormat('HH:mm:ss').format(startLocalTime);
+      if (value1 == value2) {
+        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute);
+        return setTimeOfDay;
+      } else {
+        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, endLocalTime.hour, endLocalTime.minute);
+        return setTimeOfDay;
+      }
+    } catch (e) {
+      Logger().d("Exception on toLocaleFromUtcForEnd : $e");
     }
     return null;
   }
@@ -169,6 +190,41 @@ extension DateTimeFormatter on String {
     }
     return null;
   }
+
+/* String timeAgo({bool numericDates = true}) {
+    final date2 = DateTime.now();
+    final difference = date2.difference(this);
+    final years = difference.inDays ~/ 365;
+    print((difference.inDays - (years * 365)) ~/ 30);
+
+    if ((difference.inDays / 7).floor() >= 5) {
+      return '5w';
+    } else if ((difference.inDays / 7).floor() >= 4) {
+      return '4w';
+    } else if ((difference.inDays / 7).floor() >= 3) {
+      return '3w';
+    } else if ((difference.inDays / 7).floor() >= 2) {
+      return '2w';
+    } else if ((difference.inDays / 7).floor() >= 1) {
+      return '1w';
+    } else if (difference.inDays >= 2) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inDays >= 1) {
+      return 'Yesterday';
+    } else if (difference.inHours >= 2) {
+      return '${difference.inHours} hr ago';
+    } else if (difference.inHours >= 1) {
+      return (numericDates) ? '1 hr ago' : 'An hr ago';
+    } else if (difference.inMinutes >= 2) {
+      return '${difference.inMinutes} mins ago';
+    } else if (difference.inMinutes >= 1) {
+      return (numericDates) ? '1 mins ago' : 'A mins ago';
+    } else if (difference.inSeconds >= 3) {
+      return '${difference.inSeconds} sec ago';
+    } else {
+      return 'Just now';
+    }
+  }*/
 }
 
 String getDaySuffix(int day) {

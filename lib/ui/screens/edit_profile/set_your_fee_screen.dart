@@ -67,7 +67,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
               ).addAllPadding(16),
               FeesActionButtonWidget(
                 icons: ImageConstants.minus,
-                isDisable: expertWatch.countController.text == '0.0' || expertWatch.countController.text == '0',
+                isDisable: double.parse(expertWatch.countController.text) <= 0.99,
                 onTap: () {
                   expertRead.decreaseFees();
                 },
@@ -102,7 +102,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   titleColor: ColorConstants.buttonTextColor,
                 ),
                 BodyMediumText(
-                  title: '\$${expertWatch.countController.text}',
+                  title: '\$${double.parse(expertWatch.countController.text) + 20}',
                   titleColor: ColorConstants.buttonTextColor,
                 )
               ],

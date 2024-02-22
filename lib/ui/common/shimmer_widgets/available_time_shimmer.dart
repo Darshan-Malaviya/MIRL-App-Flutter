@@ -12,25 +12,30 @@ class AvailableTimeShimmer extends StatelessWidget {
         (index) => Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Shimmer.fromColors(
-              child: Container(
-                height: 30,
-                width: 130,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: ColorConstants.whiteColor),
-                child: SizedBox.shrink(),
+            Expanded(
+              child: Shimmer.fromColors(
+                child: Container(
+                  height: 30,
+                  width: 130,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: ColorConstants.whiteColor),
+                  child: SizedBox.shrink(),
+                ),
+                baseColor: ColorConstants.primaryColor.withOpacity(0.25),
+                highlightColor: ColorConstants.greyLightColor,
               ),
-              baseColor: ColorConstants.primaryColor.withOpacity(0.25),
-              highlightColor: ColorConstants.greyLightColor,
             ),
-            Shimmer.fromColors(
-              child: Container(
-                height: 30,
-                width: 200,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: ColorConstants.whiteColor),
-                child: SizedBox.shrink(),
+            10.0.spaceX,
+            Expanded(
+              child: Shimmer.fromColors(
+                child: Container(
+                  height: 30,
+                  width: 200,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: ColorConstants.whiteColor),
+                  child: SizedBox.shrink(),
+                ),
+                baseColor: ColorConstants.primaryColor.withOpacity(0.25),
+                highlightColor: ColorConstants.greyLightColor,
               ),
-              baseColor: ColorConstants.primaryColor.withOpacity(0.25),
-              highlightColor: ColorConstants.greyLightColor,
             ),
           ],
         ).addMarginY(10),

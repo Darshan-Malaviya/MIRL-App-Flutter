@@ -3,7 +3,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 class SlotsRequestModel {
   String? date;
   int? expertId;
-  String? duration;
+  int? duration;
 
   SlotsRequestModel({this.date, this.expertId, this.duration});
 
@@ -22,7 +22,5 @@ class SlotsRequestModel {
     return data;
   }
 
-  String prepareRequest() {
-    return jsonEncode(toJson());
-  }
+  String prepareRequest() => jsonEncode(toJson());
 }

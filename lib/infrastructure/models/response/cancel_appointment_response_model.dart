@@ -38,7 +38,7 @@ class CancelAppointmentData {
   String? name;
   String? profileImage;
   String? date;
-  String? duration;
+  int? duration;
   String? startTime;
   String? endTime;
   String? reason;

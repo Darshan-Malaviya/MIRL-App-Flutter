@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/request/search_pagination_common_request_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/repository/update_expert_profile_repo.dart';
@@ -32,20 +33,38 @@ class CommonAppProvider extends ChangeNotifier {
   int _cityPageNo = 1;
 
   Future<void> CountryListApiCall({bool isFullScreenLoader = false, String? searchName}) async {
+    // if (isFullScreenLoader) {
+    //   CustomLoading.progressDialog(isLoading: true);
+    // } else {
+    //   _isSearchCountryBottomSheetLoading = true;
+    //   notifyListeners();
+    // }
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
-    } else {
+      notifyListeners();
+    } else if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: true);
       _isSearchCountryBottomSheetLoading = true;
       notifyListeners();
+    } else {
+      _isSearchCountryBottomSheetLoading = true;
     }
 
-    ApiHttpResult response =
-        await _updateUserDetailsRepository.countryApiCall(limit: 30, page: _pageNo, searchName: searchName);
+    ApiHttpResult response = await _updateUserDetailsRepository.countryApiCall(limit: 30, page: _pageNo, searchName: searchName);
+    // if (isFullScreenLoader) {
+    //   CustomLoading.progressDialog(isLoading: false);
+    // } else {
+    //   _isSearchCountryBottomSheetLoading = false;
+    //   notifyListeners();
+    // }
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
-    } else {
+    } else if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: false);
       _isSearchCountryBottomSheetLoading = false;
       notifyListeners();
+    } else {
+      _isSearchCountryBottomSheetLoading = false;
     }
     switch (response.status) {
       case APIStatus.success:
@@ -72,18 +91,39 @@ class CommonAppProvider extends ChangeNotifier {
   Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName, required String countryName}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
-    } else {
+    } else if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: true);
       _isSearchCityBottomSheetLoading = true;
       notifyListeners();
+    } else {
+      _isSearchCityBottomSheetLoading = true;
     }
-    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(
-        limit: 30, page: _cityPageNo, countryName: countryName, searchName: searchName);
+    // if (isFullScreenLoader) {
+    //   _isSearchCityBottomSheetLoading = true;
+    //   notifyListeners();
+    // } else {
+    //   CustomLoading.progressDialog(isLoading: true);
+    // }
+
+    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(
+        page: _cityPageNo.toString(), limit: "30", search: searchName, countryName: countryName);
+    ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(requestModel: model.toNullFreeJson());
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
-    } else {
+    } else if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: false);
+
       _isSearchCityBottomSheetLoading = false;
       notifyListeners();
+    } else {
+      _isSearchCityBottomSheetLoading = false;
     }
+    // if (isFullScreenLoader) {
+    //   _isSearchCityBottomSheetLoading = false;
+    //   notifyListeners();
+    // } else {
+    //   CustomLoading.progressDialog(isLoading: false);
+    // }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is CityResponseModel) {

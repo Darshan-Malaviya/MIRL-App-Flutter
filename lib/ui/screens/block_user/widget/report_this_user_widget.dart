@@ -5,7 +5,6 @@ import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 class ReportThisUserWidget extends ConsumerStatefulWidget {
   final BlockUserArgs args;
 
-
   const ReportThisUserWidget({super.key, required this.args});
 
   @override
@@ -15,7 +14,9 @@ class ReportThisUserWidget extends ConsumerStatefulWidget {
 class _ReportThisUserWidgetState extends ConsumerState<ReportThisUserWidget> {
   @override
   void initState() {
-    ref.read(reportUserProvider).changeReportAndThanksScreen(roleId: widget.args.userRole ?? 0,reportName: widget.args.reportName ?? '');
+    ref
+        .read(reportUserProvider)
+        .changeReportAndThanksScreen(roleId: widget.args.userRole ?? 0, reportName: widget.args.reportName ?? '',expertId: widget.args.expertId ?? '');
     super.initState();
   }
 

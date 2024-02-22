@@ -6,7 +6,6 @@ import 'package:mirl/ui/screens/block_user/widget/report_this_user_widget.dart';
 class ReportExpertScreen extends ConsumerStatefulWidget {
   final BlockUserArgs args;
 
-
   const ReportExpertScreen({super.key, required this.args});
 
   @override
@@ -14,8 +13,6 @@ class ReportExpertScreen extends ConsumerStatefulWidget {
 }
 
 class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +22,13 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
         ),
-        trailingIcon: InkWell(onTap: () {}, child: Icon(Icons.more_horiz)).addPaddingRight(14),
+        //  trailingIcon: InkWell(onTap: () {}, child: Icon(Icons.more_horiz)).addPaddingRight(14),
       ),
       body: Stack(
         children: [
           NetworkImageWidget(
-            imageURL:
-                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            imageURL: widget.args.imageURL ?? '',
+            // 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             isNetworkImage: true,
             boxFit: BoxFit.cover,
           ),
@@ -57,7 +54,9 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
       ),
       child: SingleChildScrollView(
         controller: controller,
-        child: ReportThisUserWidget(args:BlockUserArgs(userRole: widget.args.userRole,reportName: widget.args.reportName) ),
+        child: ReportThisUserWidget(
+            args: BlockUserArgs(
+                userRole: widget.args.userRole, reportName: widget.args.reportName, expertId: widget.args.expertId)),
       ),
     );
   }

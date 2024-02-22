@@ -128,7 +128,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                           },
                           clearSearchTap: () => expertRead.clearSearchCityController(),
                           searchController: expertWatch.searchCityController,
-                          countryName: expertWatch.selectedCountryModel?.country ?? '',
+                          countryName: expertWatch.countryNameController.text,
                         ));
                   },
                   validator: (value) {

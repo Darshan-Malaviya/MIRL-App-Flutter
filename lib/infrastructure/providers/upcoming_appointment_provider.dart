@@ -26,27 +26,29 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
   List<String> get dateList => _dateList;
   List<String> _dateList = [];
 
-  void getSelectedDate(DateTime dateTime) {
+  void getSelectedDate(DateTime dateTime, int role) {
     selectedDate = dateTime;
-    upcomingAppointmentApiCall(showLoader: false, showListLoader: true);
+    upcomingAppointmentApiCall(showLoader: false, showListLoader: true, role: role);
     notifyListeners();
   }
 
-  Future<void> upcomingAppointmentApiCall({required bool showLoader, required bool showListLoader}) async {
+  Future<void> upcomingAppointmentApiCall({required bool showLoader, required bool showListLoader, required int role}) async {
     if (showLoader) {
       _isLoading = true;
       notifyListeners();
     }
 
     if (showListLoader) {
+      _pageNo = 1;
+      _reachedLastPage = false;
       _isListLoading = true;
       notifyListeners();
     }
 
     ApiHttpResult response = await _scheduleCallRepository.viewUpcomingAppointment(
         queryParameters: selectedDate != null
-            ? {'page': _pageNo.toString(), 'limit': '10', 'role': '2', 'userId': SharedPrefHelper.getUserId, 'date': selectedDate?.toUtc().toString().split(' ').first}
-            : {'page': _pageNo.toString(), 'limit': '10', 'role': '2', 'userId': SharedPrefHelper.getUserId});
+            ? {'page': _pageNo.toString(), 'limit': '10', 'role': role.toString(), 'userId': SharedPrefHelper.getUserId, 'date': selectedDate?.toUtc().toString().split(' ').first}
+            : {'page': _pageNo.toString(), 'limit': '10', 'role': role.toString(), 'userId': SharedPrefHelper.getUserId});
 
     if (showLoader) {
       _isLoading = false;
@@ -62,7 +64,9 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is UpcomingAppointmentResponseModel) {
           UpcomingAppointmentResponseModel responseModel = response.data;
-          _upcomingAppointment.clear();
+          if (_pageNo == 1) {
+            _upcomingAppointment.clear();
+          }
           _upcomingAppointment.addAll(responseModel.data?.getUpcomingAppointment ?? []);
           if (responseModel.data?.dateLists?.isNotEmpty ?? false) {
             _dateList.clear();
@@ -70,8 +74,13 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
               _dateList.add(element.date?.toLocalDate() ?? '');
             });
           }
-          print(_dateList);
 
+          if (_pageNo == responseModel.pagination?.itemCount) {
+            _reachedLastPage = true;
+          } else {
+            _pageNo = _pageNo + 1;
+            _reachedLastPage = false;
+          }
           notifyListeners();
         }
         break;

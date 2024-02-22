@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
@@ -102,21 +103,20 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
                   onTap: () async {
                     if(callWatch.remoteUid == null && (instanceCallDurationNotifier.value <= 0)
                       && ((ref.watch(socketProvider).extraResponseModel?.userId.toString() ?? '') == SharedPrefHelper.getUserId.toString())){
-                      await ref.read(socketProvider).updateCallStatusEmit(
-                          status: 5,
+                      await ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.cancelCall,
                           callRoleEnum: CallRoleEnum.user,
                           callHistoryId: ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
 
                     } else {
-                      await ref.read(socketProvider).updateCallStatusEmit(
-                          status: 6,
-                          callRoleEnum: ref.read(socketProvider).extraResponseModel?.userId.toString() == SharedPrefHelper.getUserId.toString()
-                              ? CallRoleEnum.user
-                              : CallRoleEnum.expert,
+                      bool isUser =  ref.read(socketProvider).extraResponseModel?.userId.toString() == SharedPrefHelper.getUserId.toString();
+                      print("isUser here $isUser");
+                      print(ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
+                      await ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.completedCall,
+                          callRoleEnum: isUser ? CallRoleEnum.user : CallRoleEnum.expert,
                           callHistoryId: ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
                     }
                   },
-                  builder: (BuildContext context, TapDebouncerFunc? onTap) {
+                  builder: (BuildContext context, Future<void> Function()? onTap) {
                     return InkWell(
                       onTap: onTap,
                       child: Container(

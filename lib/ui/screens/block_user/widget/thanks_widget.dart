@@ -6,7 +6,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 class ThanksWidget extends ConsumerStatefulWidget {
   final String reportName;
 
-  const ThanksWidget({super.key, this.reportName = 'BACK'});
+  const ThanksWidget({super.key, this.reportName = 'BACK TO PROFILE'});
 
   @override
   ConsumerState<ThanksWidget> createState() => _ThanksWidgetState();
@@ -46,7 +46,8 @@ class _ThanksWidgetState extends ConsumerState<ThanksWidget> {
           title: LocaleKeys.back.tr(),
           titleColor: ColorConstants.buttonTextColor,
           onPressed: () {
-            reportUserRead.thanks();
+          //  context.toPushNamedAndRemoveUntil(RoutesConstants.expertDetailScreen);
+            reportUserRead.thanks(context);
           },
         ),
       ],

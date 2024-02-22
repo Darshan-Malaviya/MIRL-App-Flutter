@@ -6,7 +6,7 @@ class ExpertData {
   String? expertProfile;
   int? fee;
   String? about;
-  String? overAllRating;
+  int? overAllRating;
   bool? selectedForMultiConnect;
   List<ExpertCategory>? expertCategory;
 
