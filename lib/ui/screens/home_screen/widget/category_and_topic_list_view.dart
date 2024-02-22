@@ -20,7 +20,7 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
     return Column(children: [
       if ((homeProviderWatch.homeData?.categories?.isNotEmpty ?? false) && homeProviderWatch.homeData?.categories != null) ...[
         SizedBox(
-          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 220,
+          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 235,
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,

@@ -157,8 +157,7 @@ class CallProvider extends ChangeNotifier {
                 (ref.read(socketProvider).extraResponseModel?.userId.toString() ==
                     SharedPrefHelper.getUserId.toString())) {
               /// expert kill app so completed call emit trigger from user side
-              ref.read(socketProvider).updateCallStatusEmit(
-                  status: CallStatusEnum.completedCall,
+              ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.completedCall,
                   callRoleEnum: CallRoleEnum.user,
                   callHistoryId: ref.read(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
             } else {
@@ -166,8 +165,7 @@ class CallProvider extends ChangeNotifier {
                   (ref.read(socketProvider).extraResponseModel?.expertId.toString() ==
                       SharedPrefHelper.getUserId.toString()))) {
                 /// user kill app so completed call emit trigger from expert side
-                ref.read(socketProvider).updateCallStatusEmit(
-                    status: CallStatusEnum.completedCall,
+                ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.completedCall,
                     callRoleEnum: CallRoleEnum.expert,
                     callHistoryId: ref.read(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
               }

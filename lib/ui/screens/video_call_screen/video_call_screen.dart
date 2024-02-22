@@ -46,8 +46,8 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       if(callConnectNotifier.value != CallConnectStatusEnum.completed){
         if(instanceCallDurationNotifier.value >= (ref.read(callProvider).callDuration ?? 0)) {
           callConnectNotifier.value = CallConnectStatusEnum.completed;
-          ref.read(socketProvider).updateCallStatusEmit(
-              status: CallStatusEnum.completedCall, callRoleEnum: CallRoleEnum.user, callHistoryId: model?.callHistoryId ?? '');
+          ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.completedCall,
+              callRoleEnum: CallRoleEnum.user, callHistoryId: model?.callHistoryId ?? '');
         }
       }
     }
