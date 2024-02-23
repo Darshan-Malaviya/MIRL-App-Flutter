@@ -68,24 +68,11 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
               }
             }, StringConstants.pickTopicFromTheAbove),
             30.0.spaceY,
-            buildTextFormFieldWidget(filterWatch.instantCallAvailabilityController, context, () {
-              CommonBottomSheet.bottomSheet(
-                  context: context,
-                  child: FilterBottomSheetWidget(
-                      itemList: filterWatch.yesNoSelectionList.map((e) => e).toList(),
-                      title: LocaleKeys.selectCallAvailability.tr().toUpperCase(),
-                      onTapItem: (item) {
-                        filterRead.setValueOfCall(item);
-                        context.toPop();
-                      }),
-                  isDismissible: true);
-            }, StringConstants.instantCallsAvailability),
-            30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.ratingController, context, () {
               CommonBottomSheet.bottomSheet(
                   context: context,
                   child: FilterBottomSheetWidget(
-                      itemList: filterWatch.ratingList.map((e) => e).toList(),
+                      itemList: filterWatch.ratingList.map((e) => e.title).toList(),
                       title: LocaleKeys.pickRating.tr().toUpperCase(),
                       onTapItem: (item) {
                         filterRead.setRating(item);
@@ -194,11 +181,6 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                   city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
                   country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
                   gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
-                  instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
-                      ? filterWatch.isCallSelect == 1
-                          ? "true"
-                          : "false"
-                      : null,
                   maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
                   minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
                   feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
@@ -208,7 +190,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                               ? 'ASC'
                               : 'DESC'
                           : null,
-                  overAllRating: filterWatch.ratingController.text.isNotEmpty ? filterWatch.ratingController.text : null,
+                  overAllRating: filterWatch.selectedRating != null? filterWatch.selectedRating.toString() : null,
                   ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
                       ? null
                       : filterWatch.sortBySelectedItem == 'REVIEW SCORE'

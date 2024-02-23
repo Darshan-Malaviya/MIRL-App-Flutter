@@ -50,8 +50,8 @@
   "minutes": "minutes",
   "maxCallDuration": "maximum call duration of",
   "scheduleAppointment": "SCHEDULE  APPOINTMENT",
-  "readMore": "Read more",
-  "readLess": "Read less",
+  "readMore": "[read more]",
+  "readLess": "[read less]",
   "location": "LOCATION: ",
   "gender": "GENDER: ",
   "expertOnline": "EXPERT\nONLINE!",
@@ -233,5 +233,9 @@
   "suggestNewExpertCategoryNote": "Please type your suggested topic name, and describe it for us to understand your idea better.",
   "pleaseSelectCountryFirst": "Select a country to filter by city",
   "noResultFound": "WHOOPS! SORRY, NO RESULTS FOUND!",
-  "tryWideningYourSearch": "TRY WIDENING YOUR SEARCH BY CHANGING YOUR FILTER SETTINGS, OR REMOVING ANY FILTERS."
+  "tryWideningYourSearch": "TRY WIDENING YOUR SEARCH BY CHANGING YOUR FILTER SETTINGS, OR REMOVING ANY FILTERS.",
+  "typeAnyCategoryHint": "Type any category, topic, or name here",
+  "selectSortByValueFirst": "Please select sort by value first",
+  "availableForInstantCall": "Available for instant calls right now",
+  "scheduleCallOnly": "Scheduled appointments only"
 }

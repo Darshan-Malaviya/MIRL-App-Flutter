@@ -50,7 +50,7 @@ class ExpertDetailWidget extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        BodyMediumText(title: expertData?.expertName ?? ''),
+                        BodyMediumText(title: expertData?.expertName?.toUpperCase() ?? ''),
                         8.0.spaceY,
                         if (expertData?.expertCategory?.isNotEmpty ?? false) ...[
                           Wrap(
@@ -66,7 +66,7 @@ class ExpertDetailWidget extends StatelessWidget {
                                 margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                                 child: BodyMediumText(
                                   title: expertData?.expertCategory?[i].name ?? '',
-                                  fontFamily: FontWeightEnum.w400.toInter,
+                                  fontFamily: FontWeightEnum.w500.toInter,
                                 ),
                               );
                             }),
@@ -131,7 +131,7 @@ class ExpertDetailWidget extends StatelessWidget {
                   trimMode: TrimMode.Line,
                   textAlign: TextAlign.start,
                   trimCollapsedText: LocaleKeys.readMore.tr(),
-                  trimExpandedText: LocaleKeys.readLess.tr(),
+                  trimExpandedText: ' ${LocaleKeys.readLess.tr()}',
                   moreStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor),
                   lessStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor),
                 ),

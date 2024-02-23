@@ -14,7 +14,6 @@ class TopicSearchView extends ConsumerStatefulWidget {
 class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
   @override
   Widget build(BuildContext context) {
-
     final homeProviderWatch = ref.watch(homeProvider);
 
     return Column(
@@ -32,7 +31,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(homeProviderWatch.homeSearchData?.topics?.length ?? 0, (index) {
               return Container(
-                margin: EdgeInsets.all( 6),
+                margin: EdgeInsets.all(10),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                 decoration: ShapeDecoration(
                   color: ColorConstants.whiteColor,
@@ -58,7 +57,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
             }),
           ),
           30.0.spaceY,
-          ]  else ...[
+        ] else ...[
           10.0.spaceY,
           BodySmallText(
             titleTextAlign: TextAlign.start,
@@ -67,7 +66,6 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
             title: LocaleKeys.noResultsFoundTypeSomethingElse.tr(),
           ),
         ]
-
       ],
     );
   }

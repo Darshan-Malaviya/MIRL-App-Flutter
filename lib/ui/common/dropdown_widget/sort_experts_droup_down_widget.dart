@@ -48,8 +48,8 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                           )
                         ],
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 1.5, color: ColorConstants.dropDownBorderColor),
-                          borderRadius: BorderRadius.circular(5),
+                          side: BorderSide(color: ColorConstants.dropDownBorderColor),
+                          borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                         ),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -60,8 +60,9 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                           padding: EdgeInsets.zero,
                           enableFeedback: true,
                           icon: Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            size: 20,
+                            size: 18,
+                            Icons.keyboard_arrow_down_rounded,
+                            color: ColorConstants.dropDownBorderColor,
                           ),
                           items: filterProviderWatch.sortByItems.map((String items) {
                             return DropdownMenuItem(
@@ -101,8 +102,8 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                           )
                         ],
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 1.5, color: ColorConstants.dropDownBorderColor),
-                          borderRadius: BorderRadius.circular(5),
+                          side: BorderSide(color: ColorConstants.dropDownBorderColor),
+                          borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                         ),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -114,8 +115,9 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                           focusNode: FocusNode(),
                           enableFeedback: true,
                           icon: Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            size: 20,
+                            size: 18,
+                            Icons.keyboard_arrow_down_rounded,
+                            color: ColorConstants.dropDownBorderColor,
                           ),
                           items: filterProviderWatch.orderFilterList.map((String item) {
                             return DropdownMenuItem(

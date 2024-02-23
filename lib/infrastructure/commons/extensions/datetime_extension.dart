@@ -96,12 +96,14 @@ extension DateTimeFormatter on String {
     try {
       DateTime now = DateTime.now();
       DateTime localTime = DateTime.parse(this).toLocal();
-      // debugPrint('localTime=====================${localTime}');
-      // debugPrint('this=====================$this');
-      DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, localTime.hour, localTime.minute);
-      // debugPrint('setTimeOfDay=====================$setTimeOfDay');
-
-      return setTimeOfDay;
+      String time = DateFormat('h:mm').format(localTime);
+      if (localTime.hour == 0 && localTime.minute == 0) {
+        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, 0, 0);
+        return setTimeOfDay;
+      } else {
+        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, int.parse(time.split(':').first), int.parse(time.split(':').last));
+        return setTimeOfDay;
+      }
     } catch (e) {
       Logger().d("Exception on toLocaleFromUtcStart : $e");
     }
@@ -114,14 +116,28 @@ extension DateTimeFormatter on String {
       DateTime now = DateTime.now();
       DateTime endLocalTime = DateTime.parse(this).toLocal();
       DateTime startLocalTime = DateTime.parse(startTime).toLocal();
-      String value1 = DateFormat('HH:mm:ss').format(endLocalTime);
-      String value2 = DateFormat('HH:mm:ss').format(startLocalTime);
+      String value1 = DateFormat('h:mm').format(endLocalTime);
+      String value2 = DateFormat('h:mm').format(startLocalTime);
       if (value1 == value2) {
-        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute);
-        return setTimeOfDay;
+        if (endLocalTime.hour == 0 && endLocalTime.minute == 0) {
+          DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, 0, 0);
+          return setTimeOfDay;
+        } else {
+          DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, int.parse(value1.split(':').first), int.parse(value1.split(':').last));
+          return setTimeOfDay;
+        }
       } else {
-        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, endLocalTime.hour, endLocalTime.minute);
-        return setTimeOfDay;
+        if (endLocalTime.hour == 0 && endLocalTime.minute == 0) {
+          DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, 0, 0);
+          return setTimeOfDay;
+        } else {
+          print(int.parse(value1.split(':').first));
+          print(int.parse(value1.split(':').last));
+          DateTime setTimeOfDay = DateTime(now.year, now.month, now.day);
+          DateTime data = setTimeOfDay.add(Duration(hours: int.parse(value1.split(':').first), minutes: int.parse(value1.split(':').last)));
+          print(setTimeOfDay.add(Duration(hours: int.parse(value1.split(':').first), minutes: int.parse(value1.split(':').last))));
+          return data;
+        }
       }
     } catch (e) {
       Logger().d("Exception on toLocaleFromUtcForEnd : $e");
@@ -132,7 +148,7 @@ extension DateTimeFormatter on String {
   ///December 21, 2023
   String? toDisplayDateWithMonth() {
     try {
-      DateTime localTime = DateFormat('yyyy-MM-dd').parse(this,true).toLocal();
+      DateTime localTime = DateFormat('yyyy-MM-dd').parse(this, true).toLocal();
       String date = DateFormat(' MMMM d, yyyy').format(localTime);
       return date;
     } catch (e) {
