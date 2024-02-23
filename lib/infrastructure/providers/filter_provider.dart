@@ -1,4 +1,3 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -39,14 +38,13 @@ class FilterProvider extends ChangeNotifier {
   TextEditingController reviewOrderController = TextEditingController();
 
   List<String> get yesNoSelectionList => _yesNoSelectionList;
-  List<String> _yesNoSelectionList = ['SELECT ONE OR LEAVE AS IS', 'Yes', 'No'];
+  List<String> _yesNoSelectionList = ['Yes', 'No'];
 
   List<CommonSelectionModel> get genderList => _genderList;
   List<CommonSelectionModel> _genderList = [
-    CommonSelectionModel(title: 'SELECT ONE OR LEAVE AS IS', isSelected: false, selectType: 1),
-    CommonSelectionModel(title: 'Male', isSelected: false, selectType: 2),
-    CommonSelectionModel(title: 'Female', isSelected: false, selectType: 3),
-    CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 4),
+    CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
+    CommonSelectionModel(title: 'Female', isSelected: false, selectType: 2),
+    CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 3),
   ];
 
   String sortBySelectedItem = 'SORT BY';
@@ -56,7 +54,7 @@ class FilterProvider extends ChangeNotifier {
   List<String> orderFilterList = ['HIGH TO LOW', ' LOW TO HIGH'];
 
   List<String> get ratingList => _ratingList;
-  List<String> _ratingList = ['SELECT ONE OR LEAVE AS IS', '1', '2', '3', '4', '5'];
+  List<String> _ratingList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
   int? _isCallSelect;
 
@@ -95,8 +93,6 @@ class FilterProvider extends ChangeNotifier {
 
   int get topicPageNo => _topicPageNo;
   int _topicPageNo = 1;
-
-  String? _selectRating;
 
   CountryModel? selectedCountryModel;
 
@@ -170,7 +166,7 @@ class FilterProvider extends ChangeNotifier {
         gender: commonSelectionModel[index].title == FilterType.Gender.name
             ? null
             : genderController.text.isNotEmpty
-                ? ((selectGender ?? 0) - 1).toString()
+                ? (selectGender ?? 0).toString()
                 : null,
         instantCallAvailable: commonSelectionModel[index].title == FilterType.InstantCall.name
             ? null
@@ -191,6 +187,20 @@ class FilterProvider extends ChangeNotifier {
         // experienceOder: requestModel?.experienceOder,
         // feeOrder: requestModel?.feeOrder,
         // reviewOrder: requestModel?.reviewOrder,
+        overAllRating: commonSelectionModel[index].title == FilterType.OverAllRating.name
+            ? null
+            : ratingController.text.isNotEmpty
+                ? ratingController.text
+                : null,
+        ratingOrder: commonSelectionModel[index].title == FilterType.SortBy.name
+            ? null
+            : sortBySelectedItem == 'SORT BY'
+                ? null
+                : sortBySelectedItem == 'REVIEW SCORE'
+                    ? sortBySelectedOrder == 'HIGH TO LOW'
+                        ? 'DESC'
+                        : 'ASC'
+                    : null,
         maxFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : end?.toStringAsFixed(2),
         minFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : start?.toStringAsFixed(2),
         topicIds: selectedTopicId,
@@ -228,7 +238,6 @@ class FilterProvider extends ChangeNotifier {
       selectedCategory = null;
       categoryController.clear();
     } else if (commonSelectionModel[index].title == FilterType.OverAllRating.name) {
-      _selectRating = null;
       ratingController.clear();
     }
     commonSelectionModel.removeAt(index);
@@ -294,14 +303,12 @@ class FilterProvider extends ChangeNotifier {
     _topicPageNo = 1;
     _selectedTopicList = [];
     _selectGender = null;
-    _selectRating = null;
-    _ratingList = ['SELECT ONE OR LEAVE AS IS', '1', '2', '3', '4', '5'];
-    _yesNoSelectionList = ['SELECT ONE OR LEAVE AS IS', 'Yes', 'No'];
+    _ratingList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+    _yesNoSelectionList = ['Yes', 'No'];
     _genderList = [
-      CommonSelectionModel(title: 'SELECT ONE OR LEAVE AS IS', isSelected: false, selectType: 1),
-      CommonSelectionModel(title: 'Male', isSelected: false, selectType: 2),
-      CommonSelectionModel(title: 'Female', isSelected: false, selectType: 3),
-      CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 4),
+      CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
+      CommonSelectionModel(title: 'Female', isSelected: false, selectType: 2),
+      CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 3),
     ];
     notifyListeners();
   }
@@ -329,7 +336,7 @@ class FilterProvider extends ChangeNotifier {
     _selectedTopicList = [];
     _allTopic.forEach((element) {
       if (element.isCategorySelected ?? false) {
-        _selectedTopicList?.add(CategoryIdNameCommonModel(isCategorySelected: true, name: element.name ?? '', id: element.id ?? 0));
+        _selectedTopicList?.add(CategoryIdNameCommonModel(isCategorySelected: true, name: element.name ?? '', id: element.id ?? 0, image: element.image));
       }
     });
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Topic.name);
@@ -362,7 +369,7 @@ class FilterProvider extends ChangeNotifier {
   }
 
   void setCategoryWhenFromMultiConnect(CategoryData? categoryData) {
-    selectedCategory = CategoryIdNameCommonModel(name: categoryData?.name ?? '', isCategorySelected: true, id: categoryData?.id);
+    selectedCategory = CategoryIdNameCommonModel(name: categoryData?.name ?? '', isCategorySelected: true, id: categoryData?.id, image: categoryData?.image);
     commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: categoryData?.name ?? ''));
     categoryController.text = selectedCategory?.name ?? '';
     notifyListeners();
@@ -370,8 +377,11 @@ class FilterProvider extends ChangeNotifier {
 
   void getSelectedCategory() {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Category.name);
-    selectedCategory =
-        CategoryIdNameCommonModel(name: _singleCategoryData?.categoryData?.name.toString() ?? '', isCategorySelected: true, id: _singleCategoryData?.categoryData?.id);
+    selectedCategory = CategoryIdNameCommonModel(
+        name: _singleCategoryData?.categoryData?.name.toString() ?? '',
+        isCategorySelected: true,
+        id: _singleCategoryData?.categoryData?.id,
+        image: _singleCategoryData?.categoryData?.image);
     categoryController.text = selectedCategory?.name ?? '';
     if (index == -1) {
       commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: selectedCategory?.name ?? ''));
@@ -383,62 +393,38 @@ class FilterProvider extends ChangeNotifier {
 
   void setValueOfCall(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.InstantCall.name);
-    if (value != _yesNoSelectionList.first) {
-      _isCallSelect = (value == 'Yes') ? 1 : 0;
-      instantCallAvailabilityController.text = value;
-      if (index == -1) {
-        commonSelectionModel.add(CommonSelectionModel(title: FilterType.InstantCall.name, value: value));
-      } else {
-        commonSelectionModel[index].value = value;
-      }
+    _isCallSelect = (value == 'Yes') ? 1 : 0;
+    instantCallAvailabilityController.text = value;
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.InstantCall.name, value: value));
     } else {
-      _isCallSelect = null;
-      instantCallAvailabilityController.text = '';
-      if (index != -1) {
-        commonSelectionModel.removeAt(index);
-      }
+      commonSelectionModel[index].value = value;
     }
+
     notifyListeners();
   }
 
   void setGender(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Gender.name);
-    if (value != _genderList.first.title) {
-      CommonSelectionModel data = _genderList.firstWhere((element) => element.title == value);
-      _selectGender = data.selectType ?? 1;
-      data.isSelected = true;
-      genderController.text = data.title ?? '';
-      if (index == -1) {
-        commonSelectionModel.add(CommonSelectionModel(title: FilterType.Gender.name, value: value));
-      } else {
-        commonSelectionModel[index].value = value;
-      }
+    CommonSelectionModel data = _genderList.firstWhere((element) => element.title == value);
+    _selectGender = data.selectType ?? 1;
+    data.isSelected = true;
+    genderController.text = data.title ?? '';
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.Gender.name, value: value));
     } else {
-      _selectGender = null;
-      genderController.text = '';
-      if (index != -1) {
-        commonSelectionModel.removeAt(index);
-      }
+      commonSelectionModel[index].value = value;
     }
     notifyListeners();
   }
 
   void setRating(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.OverAllRating.name);
-    if (value != _ratingList.first) {
-      _selectRating = value;
-      ratingController.text = value;
-      if (index == -1) {
-        commonSelectionModel.add(CommonSelectionModel(title: FilterType.OverAllRating.name, value: value));
-      } else {
-        commonSelectionModel[index].value = value;
-      }
+    ratingController.text = value;
+    if (index == -1) {
+      commonSelectionModel.add(CommonSelectionModel(title: FilterType.OverAllRating.name, value: value));
     } else {
-      _selectRating = null;
-      ratingController.text = '';
-      if (index != -1) {
-        commonSelectionModel.removeAt(index);
-      }
+      commonSelectionModel[index].value = value;
     }
     notifyListeners();
   }
@@ -710,6 +696,8 @@ class FilterProvider extends ChangeNotifier {
       topicIds: requestModel?.topicIds,
       categoryId: requestModel?.categoryId,
       userId: SharedPrefHelper.getUserId,
+      overAllRating: requestModel?.overAllRating,
+      ratingOrder: requestModel?.ratingOrder,
     );
 
     ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: data.toNullFreeJson());

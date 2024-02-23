@@ -102,7 +102,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+        borderRadius: BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
         color: ColorConstants.whiteColor,
       ),
       child: SingleChildScrollView(
@@ -132,9 +132,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     10.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 28,
-                      title: '-',
+                      title: expertDetailWatch.userData?.overAllRating.toString() ?? '0',
                       titleColor: ColorConstants.overallRatingColor,
-                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
                     ),
                   ],
                 ),
@@ -156,7 +156,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                           maxLine: 4,
                           title: fee != null ? '\$${fee}' : "",
                           titleColor: ColorConstants.overallRatingColor,
-                          shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                          shadow: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
                         ),
                       ),
                     ],

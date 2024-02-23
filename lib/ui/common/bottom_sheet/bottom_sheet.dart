@@ -50,7 +50,7 @@ class CommonBottomSheet {
                     backgroundColor: ColorConstants.greyColor,
                     child: 10.0.spaceX,
                   ),
-                  child,
+                  Flexible(child: child),
                 ],
               ),
             ),

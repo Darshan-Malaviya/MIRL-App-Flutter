@@ -15,7 +15,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -30,6 +29,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
+        appBarColor: ColorConstants.greyLightColor,
         preferSize: 0,
       ),
       body: SingleChildScrollView(
@@ -37,18 +37,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InkWell(
-              onTap: () {
-                context.toPushNamed(RoutesConstants.searchScreen);
-              },
+              onTap: () => context.toPushNamed(RoutesConstants.searchScreen),
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: ColorConstants.dropDownBorderColor),
+                  color: ColorConstants.whiteColor,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: BodySmallText(
                   maxLine: 1,
                   fontFamily: FontWeightEnum.w400.toInter,
                   title: LocaleKeys.searchTypeAnyKeyword.tr(),
                   titleColor: ColorConstants.blackColor,
-                ).addAllMargin(12),
+                ),
               ),
             ),
             30.0.spaceY,
@@ -58,7 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Flexible(
                   child: GestureDetector(
                     onTap: () {
-                      context.toPushNamed(RoutesConstants.exploreExpertScreen,args: false);
+                      context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
                     },
                     child: Container(
                         height: 178,
@@ -98,7 +101,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: GestureDetector(
                     onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                     child: Container(
-                      height: 178,
+                        height: 178,
                         decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
                           BoxShadow(
                             color: Color(0x33000000),

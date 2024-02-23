@@ -71,15 +71,12 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                                 title: items,
                                 fontSize: 8,
                                 fontFamily: FontWeightEnum.w400.toInter,
+                                titleColor: ColorConstants.buttonTextColor,
                               ).addMarginX(6),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            /*       setState(() {
-                              filterProviderWatch.sortBySelectedItem = newValue!;
-                            });*/
-                            filterProviderRead.setSortByPriceValue(
-                                sortByValue: newValue ?? '', order: filterProviderWatch.sortBySelectedOrder);
+                            filterProviderRead.setSortByPriceValue(sortByValue: newValue ?? '', order: filterProviderWatch.sortBySelectedOrder);
                           },
                         ),
                       ),
@@ -128,15 +125,12 @@ class _SortExpertDropDownState extends ConsumerState<SortExpertDropDown> {
                                 title: item,
                                 fontSize: 8,
                                 fontFamily: FontWeightEnum.w400.toInter,
+                                titleColor: ColorConstants.buttonTextColor,
                               ).addMarginX(6),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            /*       setState(() {
-                              filterProviderWatch.sortBySelectedOrder = newValue!;
-                            });*/
-                            filterProviderRead.setSortByPriceValue(
-                                sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ?? '');
+                            filterProviderRead.setSortByPriceValue(sortByValue: filterProviderWatch.sortBySelectedItem, order: newValue ?? '');
                           },
                         ),
                       ),

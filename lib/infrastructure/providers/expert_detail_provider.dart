@@ -73,7 +73,6 @@ class ExpertDetailProvider extends ChangeNotifier {
           _userData?.isFavorite = !(_userData?.isFavorite ?? false);
           notifyListeners();
           FlutterToast().showToast(msg: favoriteResponseModel.message ?? '');
-          Logger().d("User favorite successfully");
         }
         break;
       case APIStatus.failure:

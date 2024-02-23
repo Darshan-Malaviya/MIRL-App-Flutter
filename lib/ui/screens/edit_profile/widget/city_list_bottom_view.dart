@@ -11,12 +11,7 @@ class CityListBottomView extends ConsumerStatefulWidget {
   final VoidCallback clearSearchTap;
   final String countryName;
 
-  const CityListBottomView(
-      {super.key,
-      required this.onTapItem,
-      required this.searchController,
-      required this.clearSearchTap,
-      required this.countryName});
+  const CityListBottomView({super.key, required this.onTapItem, required this.searchController, required this.clearSearchTap, required this.countryName});
 
   @override
   ConsumerState<CityListBottomView> createState() => _CityListBottomViewState();
@@ -72,6 +67,8 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
                   : SizedBox.shrink(),
               onFieldSubmitted: (value) {
                 context.unFocusKeyboard();
+              },
+              onChanged: (value) {
                 commonRead.clearCityPaginationData();
                 commonRead.cityListApiCall(searchName: value.trim(), countryName: widget.countryName);
               },
@@ -104,9 +101,7 @@ class _CityListBottomViewState extends ConsumerState<CityListBottomView> {
                                 padding: const EdgeInsets.all(8),
                                 alignment: Alignment.center,
                                 margin: const EdgeInsets.symmetric(vertical: 5),
-                                child: BodyMediumText(
-                                    title: commonWatch.city[index].city ?? '',
-                                    titleColor: ColorConstants.bottomTextColor),
+                                child: BodyMediumText(title: commonWatch.city[index].city ?? '', titleColor: ColorConstants.bottomTextColor),
                               ),
                             );
                           },

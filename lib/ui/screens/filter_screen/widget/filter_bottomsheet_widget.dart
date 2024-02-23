@@ -9,13 +9,13 @@ class FilterBottomSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          TitleMediumText(title: title, titleColor: ColorConstants.sheetTitleColor),
-          20.0.spaceY,
-          SizedBox(
-            height: itemList.length * 50,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TitleMediumText(title: title, titleColor: ColorConstants.sheetTitleColor),
+        20.0.spaceY,
+        Flexible(
+          child: SingleChildScrollView(
             child: Column(
               children: List.generate(
                   itemList.length,
@@ -31,9 +31,9 @@ class FilterBottomSheetWidget extends StatelessWidget {
                         ),
                       )),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }
