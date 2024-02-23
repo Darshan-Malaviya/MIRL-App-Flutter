@@ -132,8 +132,8 @@ extension DateTimeFormatter on String {
   ///December 21, 2023
   String? toDisplayDateWithMonth() {
     try {
-      DateTime localTime = DateFormat('yyyy-mm-dd').parse(this, true).toLocal();
-      String date = DateFormat.yMMMMd().format(localTime);
+      DateTime localTime = DateFormat('yyyy-MM-dd').parse(this,true).toLocal();
+      String date = DateFormat(' MMMM d, yyyy').format(localTime);
       return date;
     } catch (e) {
       Logger().d("Exception on toLocaleFromStringUtc : $e");

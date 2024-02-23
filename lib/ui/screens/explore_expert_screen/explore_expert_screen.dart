@@ -85,7 +85,9 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                             )
                           : SizedBox.shrink(),
                       hintText: LocaleKeys.searchCategory.tr(),
-                      fontFamily: FontWeightEnum.w400.toInter,
+                      hintTextColor: ColorConstants.blackColor,
+                      enabledBorderColor: ColorConstants.dropDownBorderColor,
+                      focusedBorderColor: ColorConstants.dropDownBorderColor,
                       controller: filterProviderWatch.exploreExpertController,
                       onChanged: (value) {
                         if (filterProviderWatch.exploreExpertController.text.isNotEmpty) {
@@ -220,13 +222,21 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                               separatorBuilder: (context, index) => 20.0.spaceY,
                               itemCount: (filterProviderWatch.categoryList?.expertData?.length ?? 0) + (filterProviderWatch.reachedExploreExpertLastPage ? 0 : 1)),
                         ] else ...[
-                          Center(
-                            child: BodyLargeText(
-                              title: LocaleKeys.thereWasNoExpertDataAvailable.tr(),
-                              fontFamily: FontWeightEnum.w600.toInter,
-                              maxLine: 2,
-                            ),
-                          ),
+                          Column(
+                            children: [
+                              BodySmallText(
+                                title: LocaleKeys.noResultFound.tr(),
+                                fontFamily: FontWeightEnum.w600.toInter,
+                              ),
+                              20.0.spaceY,
+                              BodySmallText(
+                                title: LocaleKeys.tryWideningYourSearch.tr(),
+                                fontFamily: FontWeightEnum.w400.toInter,
+                                titleTextAlign: TextAlign.center,
+                                maxLine: 5,
+                              ),
+                            ],
+                          ).addMarginX(40),
                         ]
                       ],
                     ),

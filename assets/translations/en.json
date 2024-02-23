@@ -163,7 +163,7 @@
   "pickGender": "Pick a Gender",
   "pickRating": "Pick a Rating",
   "selectCallAvailability": "Select Call Availability",
-  "pleaseSelectCategoryFirst": "Please select category first",
+  "pleaseSelectCategoryFirst": "Select a category to filter by topics",
   "searchHere": "Search here",
   "selectCity": "Select City",
   "selectCountry": "Select Country",
@@ -230,5 +230,8 @@
   "thanksNote": "Thanks a ton for your suggestions, we really appreciate your help in making MIRL more inclusive and helpful to everyone in the world.",
   "backToExpertCategories": "BACK TO EXPERT CATEGORIES",
   "reasonRequired": "Reason is required",
-  "suggestNewExpertCategoryNote": "Please type your suggested topic name, and describe it for us to understand your idea better."
+  "suggestNewExpertCategoryNote": "Please type your suggested topic name, and describe it for us to understand your idea better.",
+  "pleaseSelectCountryFirst": "Select a country to filter by city",
+  "noResultFound": "WHOOPS! SORRY, NO RESULTS FOUND!",
+  "tryWideningYourSearch": "TRY WIDENING YOUR SEARCH BY CHANGING YOUR FILTER SETTINGS, OR REMOVING ANY FILTERS."
 }

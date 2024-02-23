@@ -31,6 +31,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     return Scaffold(
       backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
+        appBarColor: ColorConstants.greyLightColor,
         preferSize: 0,
       ),
       body: CustomScrollView(
@@ -51,6 +52,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           )
                         : SizedBox.shrink(),
                     controller: homeProviderWatch.homeSearchController,
+                    hintTextColor: ColorConstants.blackColor,
+                    enabledBorderColor: ColorConstants.dropDownBorderColor,
+                    focusedBorderColor: ColorConstants.dropDownBorderColor,
                     onChanged: (value) {
                       if (homeProviderWatch.homeSearchController.text.isNotEmpty) {
                         homeProviderRead.homeSearchApi();
@@ -64,7 +68,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
                 8.0.spaceX,
-                OnScaleTap(onPress: () => context.toPop(), child: BodySmallText(title: LocaleKeys.cancel.tr())).addMarginY(5)
+                OnScaleTap(
+                    onPress: () => context.toPop(),
+                    child: BodySmallText(
+                      title: LocaleKeys.cancel.tr().toUpperCase(),
+                      fontFamily: FontWeightEnum.w500.toInter,
+                    )).addMarginY(5)
               ],
             ),
           ),

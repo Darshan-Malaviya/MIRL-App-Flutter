@@ -90,7 +90,7 @@ class ExpertDetailWidget extends StatelessWidget {
                         10.0.spaceX,
                         HeadlineMediumText(
                           fontSize: 30,
-                          title: '-',
+                          title: expertData?.overAllRating?.toString() ?? "0",
                           titleColor: ColorConstants.bottomTextColor,
                         ),
                       ],
