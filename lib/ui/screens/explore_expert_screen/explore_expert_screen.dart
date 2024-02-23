@@ -84,7 +84,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                               child: Icon(Icons.close),
                             )
                           : SizedBox.shrink(),
-                      hintText: LocaleKeys.searchCategory.tr(),
+                      hintText: LocaleKeys.typeAnyCategoryHint.tr(),
                       hintTextColor: ColorConstants.blackColor,
                       enabledBorderColor: ColorConstants.dropDownBorderColor,
                       focusedBorderColor: ColorConstants.dropDownBorderColor,
@@ -130,6 +130,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                             context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
                           },
                           prefixIcon: ImageConstants.filter,
+                          titleColor: ColorConstants.blackColor,
                           buttonTextFontFamily: FontWeightEnum.w400.toInter,
                           prefixIconPadding: 10,
                           padding: EdgeInsets.symmetric(horizontal: 100),

@@ -59,7 +59,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                             10.0.spaceX,
                             HeadlineMediumText(
                               fontSize: 30,
-                              title: '-',
+                              title: expertWatch.overAllRating,
                               titleColor: ColorConstants.overallRatingColor,
                               shadow: [
                                 Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))

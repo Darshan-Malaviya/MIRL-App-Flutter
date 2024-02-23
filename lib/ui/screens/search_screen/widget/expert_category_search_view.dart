@@ -28,7 +28,7 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
         if (homeProviderWatch.homeSearchData?.categories?.isNotEmpty ?? false) ...[
           20.0.spaceY,
           SizedBox(
-            height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 240,
+            height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 265,
             child: GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               itemCount: homeProviderWatch.homeSearchData?.categories?.length ?? 0,
