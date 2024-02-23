@@ -26,8 +26,12 @@ class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirl
         20.0.spaceY,
         TextFormFieldWidget(
           labelTextSpace: 0.0,
-          enabledBorderColor: ColorConstants.borderLightColor,
+          borderWidth:1,
           onTap: () {},
+          textInputAction: TextInputAction.done,
+          onFieldSubmitted: (value){
+            context.unFocusKeyboard();
+          },
           height: 45,
           hintText: LocaleKeys.friendReferralCode.tr(),
           alignment: Alignment.centerLeft,
@@ -37,8 +41,7 @@ class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirl
           buttonColor: ColorConstants.primaryColor,
           title: LocaleKeys.mirlConnectCode.tr(),
           titleColor: ColorConstants.textColor,
-          onPressed: () {},
-          //  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
+          onPressed: () => mirlConnectView.value = 2,
         ),
         40.0.spaceY,
         LabelSmallText(

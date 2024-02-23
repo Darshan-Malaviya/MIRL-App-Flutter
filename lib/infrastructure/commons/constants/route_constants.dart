@@ -25,6 +25,7 @@ class RoutesConstants {
   static const String expertCategoryFilterScreen = '/expertCategoryFilterScreen';
   static const String searchScreen = '/searchScreen';
   static const String expertDetailScreen = '/expertDetailScreen';
+  static const String reportExpertDetailScreen = '/reportExpertDetailScreen';
   static const String scheduleCallScreen = '/scheduleCallScreen';
   static const String exploreExpertScreen = '/exploreExpertScreen';
   static const String bookingConfirmScreen = '/bookingConfirmScreen';
@@ -53,4 +54,8 @@ class RoutesConstants {
   static const String reportAnIssueScreen = '/reportAnIssueScreen';
   static const String paymentDetailsScreen = '/paymentDetailsScreen';
   static const String seekerCallHistoryScreen = '/seekerCallHistoryScreen';
+  static const String editYourNameScreen = '/editYourNameScreen';
+  static const String editYourEmailIdScreen = '/editYourEmailIdScreen';
+  static const String editYourPhoneNumberScreen = '/editYourPhoneNumberScreen';
+  static const String expertCallHistoryScreen = '/expertCallHistoryScreen';
 }

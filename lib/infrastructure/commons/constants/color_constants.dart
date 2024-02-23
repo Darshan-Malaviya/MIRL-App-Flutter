@@ -59,4 +59,6 @@ class ColorConstants {
   static Color errorColor = const Color(0xffB33F40);
   static Color lineColor = const Color(0xffFF950A);
   static Color callRequestColor = const Color(0xffFFAD05);
+  static Color demo = const Color(0xff21842);
+  static Color mirlConnectShadowColor = const Color(0xffFD02E0);
 }

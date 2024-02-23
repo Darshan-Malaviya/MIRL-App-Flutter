@@ -50,7 +50,7 @@ class ReportUserProvider extends ChangeNotifier {
 
   void changeReportAndThanksScreen({required int roleId, required String reportName, required String expertId}) {
     _pages = [
-      ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName, expertId: expertId)),
+      ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName, expertId: expertId) ),
       ThanksWidget(reportName: 'BACK TO PROFILE'),
     ];
   }

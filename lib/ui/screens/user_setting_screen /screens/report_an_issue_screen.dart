@@ -73,14 +73,40 @@ class _ReportAnIssueScreenState extends ConsumerState<ReportAnIssueScreen> {
               Stack(
                 alignment: Alignment.bottomRight,
                 children: [
+                  TextFormFieldWidget(
+                    onChanged: userSettingWatch.changeAboutCounterValue,
+                    hintText: LocaleKeys.suggestNewExpertCategoryNote.tr(),
+                    hintTextColor: ColorConstants.buttonTextColor,
+                    maxLines: 10,
+                    maxLength: 500,
+                    minLines: 8,
+                    controller: userSettingWatch.reasonController,
+                    textInputType: TextInputType.multiline,
+                    textInputAction: TextInputAction.newline,
+                    contentPadding: EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 30),
+                    borderRadius: 25,
+                    enabledBorderColor: ColorConstants.transparentColor,
+                    fillColor: ColorConstants.transparentColor,
+                    enableShadow: true,
+                    border: InputBorder.none,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8, right: 12),
+                    child: BodySmallText(
+                      title: '${userSettingWatch.enteredText}/500 ${LocaleKeys.characters.tr()}',
+                      fontFamily: FontWeightEnum.w400.toInter,
+                      titleColor: ColorConstants.buttonTextColor,
+                    ),
+                  ),
+                ],
+              ),
+              20.0.spaceY,
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
                   Container(
                     width: double.infinity,
-                    //padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                     decoration: ShapeDecoration(
-                      color: ColorConstants.whiteColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
                       shadows: [
                         BoxShadow(
                           color: Color(0xff000000).withOpacity(0.25),
@@ -89,19 +115,23 @@ class _ReportAnIssueScreenState extends ConsumerState<ReportAnIssueScreen> {
                           spreadRadius: 0,
                         )
                       ],
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
                     ),
                     child: TextFormFieldWidget(
-                      onChanged: userSettingWatch.changeAboutCounterValue,
-                      maxLines: 10,
-                      maxLength: 500,
-                      minLines: 8,
-                      enabledBorderColor: ColorConstants.transparentColor,
-                      controller: userSettingWatch.reasonController,
-                      textInputType: TextInputType.multiline,
-                      textInputAction: TextInputAction.newline,
-                      setFormatter: false,
-                      contentPadding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 30),
-                    ),
+                        onChanged: userSettingWatch.changeAboutCounterValue,
+                        maxLines: 10,
+                        maxLength: 500,
+                        minLines: 8,
+                        enabledBorderColor: ColorConstants.transparentColor,
+                        controller: userSettingWatch.reasonController,
+                        textInputType: TextInputType.multiline,
+                        textInputAction: TextInputAction.newline,
+                        setFormatter: false,
+                        contentPadding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 30),
+                        borderRadius: 25),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8, right: 12),

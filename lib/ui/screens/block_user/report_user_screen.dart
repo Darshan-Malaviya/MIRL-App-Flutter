@@ -6,9 +6,11 @@ import 'package:mirl/ui/screens/block_user/widget/report_this_user_widget.dart';
 class ReportUserScreen extends ConsumerStatefulWidget {
   final BlockUserArgs args;
 
+
   const ReportUserScreen({
     super.key,
     required this.args,
+
   });
 
   @override

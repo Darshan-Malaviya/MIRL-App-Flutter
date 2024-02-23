@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     });
     super.initState();
 
-    _composition = AssetLottie(ImageConstants.splashScreen).load();
+    //_composition = AssetLottie(ImageConstants.mirlJson).load();
   }
 
   @override
@@ -49,10 +49,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           //   ImageConstants.splashImages,
           // ),
           child: Lottie.asset(
-            ImageConstants.splashScreen,
+            ImageConstants.mirlJson,
             decoder: LottieComposition.decodeGZip,
             frameBuilder: (context, child, composition) => Transform.scale(
-              scale: 1.5,
+              scale: 1.3,
               child: child,
             ),
           ),

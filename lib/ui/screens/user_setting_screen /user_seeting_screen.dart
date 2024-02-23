@@ -199,9 +199,12 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                   ),
                   18.0.spaceY,
                   TextFormFieldWidget(
+                    borderWidth: 1,
                     enabledBorderColor: ColorConstants.borderLightColor,
                     isReadOnly: true,
-                    onTap: () {},
+                    onTap: () {
+                      context.toPushNamed(RoutesConstants.editYourNameScreen);
+                    },
                     height: 30,
                     labelText: LocaleKeys.yourName.tr(),
                     alignment: Alignment.centerLeft,
@@ -209,20 +212,26 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                   ),
                   20.0.spaceY,
                   TextFormFieldWidget(
+                    borderWidth: 1,
                     labelTextSpace: 0.0,
                     enabledBorderColor: ColorConstants.borderLightColor,
                     isReadOnly: true,
-                    onTap: () {},
+                    onTap: () {
+                      context.toPushNamed(RoutesConstants.editYourEmailIdScreen);
+                    },
                     height: 30,
                     labelText: LocaleKeys.emailId.tr(),
                     alignment: Alignment.centerLeft,
                   ),
                   20.0.spaceY,
                   TextFormFieldWidget(
+                    borderWidth: 1,
                     labelTextSpace: 0.0,
                     enabledBorderColor: ColorConstants.borderLightColor,
                     isReadOnly: true,
-                    onTap: () {},
+                    onTap: () {
+                      context.toPushNamed(RoutesConstants.editYourPhoneNumberScreen);
+                    },
                     height: 30,
                     labelText: LocaleKeys.phoneNumber.tr(),
                     alignment: Alignment.centerLeft,

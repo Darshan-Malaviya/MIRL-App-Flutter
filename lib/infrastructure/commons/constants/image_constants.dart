@@ -40,6 +40,7 @@ class ImageConstants {
   static const suggestNewExpertise = '${imagePath}suggest_new_experties.png';
   static const timer = '${imagePath}timer.png';
   static const arrow = '${imagePath}arrow.png';
+  static const mirlConnect = '${imagePath}mirl_connect.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';
@@ -49,6 +50,7 @@ class ImageConstants {
   static const nonRecurringIcon = '${iconPath}non_recurring.png';
 
   /// json
-  static const splashScreen = '${rawPath}splash_screen.json';
+ // static const splashScreen = '${rawPath}splash_screen.json';
+  static const mirlJson = '${rawPath}mirl_json.json';
 
 }

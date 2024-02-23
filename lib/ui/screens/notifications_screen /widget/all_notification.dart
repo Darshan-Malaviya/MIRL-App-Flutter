@@ -1,69 +1,73 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class AllNotificationTypeNameWidget extends StatefulWidget {
-  const AllNotificationTypeNameWidget({super.key});
+class AllNotificationTypeNameWidget extends ConsumerStatefulWidget {
+  final String notificationName;
+ // final int index;
+
+  const AllNotificationTypeNameWidget({super.key, required this.notificationName});
 
   @override
-  State<AllNotificationTypeNameWidget> createState() => _AllNotificationTypeNameWidgetState();
+  ConsumerState<AllNotificationTypeNameWidget> createState() => _AllNotificationTypeNameWidgetState();
 }
 
-class _AllNotificationTypeNameWidgetState extends State<AllNotificationTypeNameWidget> {
+class _AllNotificationTypeNameWidgetState extends ConsumerState<AllNotificationTypeNameWidget> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 120,
-      child: GridView.builder(
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return Stack(
-            children: [
-              ShadowContainer(
-                shadowColor: ColorConstants.categoryListBorder,
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: NetworkImageWidget(
-                        boxFit: BoxFit.cover,
-                        imageURL: ImageConstants.exploreImage,
-                        isNetworkImage: true,
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    4.0.spaceY,
-                    LabelSmallText(
-                      fontSize: 9,
-                      title: "vaidehi",
-                      titleColor: ColorConstants.blackColor,
-                      fontFamily: FontWeightEnum.w700.toInter,
-                      titleTextAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-                height: 90,
-                width: 90,
-                isShadow: true,
-              ).addPaddingTop(5),
-              Positioned(
-                top: 0,
-                right: 15,
-                child: CircleAvatar(
-                  child: TitleMediumText(
-                    title: '0',
-                    fontWeight: FontWeight.w600,
-                    titleColor: ColorConstants.blackColor,
+    final notificationProviderWatch = ref.watch(notificationProvider);
+    final notificationProviderRead = ref.read(notificationProvider);
+
+    return Stack(
+      children: [
+        InkWell(
+          child: ShadowContainer(
+            shadowColor: notificationProviderWatch.isVisible
+                ? ColorConstants.primaryColor
+                : ColorConstants.blackColor.withOpacity(0.1),
+            offset: Offset(0, 2),
+            spreadRadius: 0,
+            blurRadius: 3,
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: NetworkImageWidget(
+                    boxFit: BoxFit.cover,
+                    imageURL: ImageConstants.iconPath,
+                    isNetworkImage: true,
+                    height: 50,
+                    width: 50,
                   ),
-                  radius: 14,
-                  backgroundColor: ColorConstants.primaryColor,
                 ),
-              ),
-            ],
-          );
-        },
-      ),
+                4.0.spaceY,
+                LabelSmallText(
+                  fontSize: 9,
+                  title: widget.notificationName,
+                  titleColor: ColorConstants.blackColor,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 2,
+                ),
+              ],
+            ),
+            height: 100,
+            width: 100,
+            isShadow: true,
+          ).addPaddingTop(5),
+        ),
+        Align(
+          alignment: AlignmentDirectional.topEnd,
+          child: CircleAvatar(
+            child: TitleMediumText(
+              title: '0',
+              fontFamily: FontWeightEnum.w600.toInter,
+              titleColor: ColorConstants.blackColor,
+            ),
+            radius: 14,
+            backgroundColor: ColorConstants.primaryColor,
+          ),
+        )
+        // ]
+      ],
     );
   }
 }
