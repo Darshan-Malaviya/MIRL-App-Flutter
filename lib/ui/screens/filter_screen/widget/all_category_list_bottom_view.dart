@@ -59,12 +59,10 @@ class _AllCategoryListBottomViewState extends ConsumerState<AllCategoryListBotto
                       },
                       child: Icon(Icons.close))
                   : SizedBox.shrink(),
-              onFieldSubmitted: (value) {
-                context.unFocusKeyboard();
+              onFieldSubmitted: (value) =>context.unFocusKeyboard(),
+              onChanged: (value) {
                 filterProviderRead.clearCategoryPaginationData();
-                filterProviderRead.allCategoryListApi(
-                  searchName: value,
-                );
+                filterProviderRead.allCategoryListApi(searchName: value);
               },
               height: 40,
               controller: filterProviderWatch.searchCategoryController,

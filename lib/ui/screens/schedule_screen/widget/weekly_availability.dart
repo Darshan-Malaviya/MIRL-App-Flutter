@@ -114,32 +114,35 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                 ],*/
               ),
             )),
-        Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-            decoration: BoxDecoration(
-              color: ColorConstants.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: ColorConstants.dropDownBorderColor),
-              /*         boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.25),
-                ),
-                BoxShadow(
-                  color: ColorConstants.blackColor.withOpacity(0.3),
-                  spreadRadius: 0.0,
-                  blurRadius: 4.0,
-                  offset: Offset(0, 0),
-                ),
-              ],*/
-            ),
-            child: Center(
-              child: BodySmallText(
-                title: dayTimeText,
-                fontFamily: FontWeightEnum.w600.toInter,
-                titleColor: ColorConstants.blackColor,
+        20.0.spaceX,
+        Expanded(
+          child: Container(
+              width: 200,
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              decoration: BoxDecoration(
+                color: ColorConstants.primaryColor,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: ColorConstants.dropDownBorderColor),
+                /*         boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.25),
+                  ),
+                  BoxShadow(
+                    color: ColorConstants.blackColor.withOpacity(0.3),
+                    spreadRadius: 0.0,
+                    blurRadius: 4.0,
+                    offset: Offset(0, 0),
+                  ),
+                ],*/
               ),
-            )),
+              child: Center(
+                child: BodySmallText(
+                  title: dayTimeText,
+                  fontFamily: FontWeightEnum.w600.toInter,
+                  titleColor: ColorConstants.blackColor,
+                ),
+              )),
+        ),
       ],
     );
   }

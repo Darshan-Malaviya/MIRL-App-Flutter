@@ -52,8 +52,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         trailingIcon: InkWell(
                 onTap: () {
                   //ReportThisUserWidget();
-                  context.toPushNamed(RoutesConstants.reportExpertScreen,
-                      args: BlockUserArgs(
+                  context.toPushNamed(RoutesConstants.reportExpertScreen, args: BlockUserArgs(
                           reportName: 'REPORT THIS EXPERT',
                           userRole: 1,
                           expertId: widget.expertId,
@@ -107,7 +106,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+        borderRadius: BorderRadius.only(topRight: Radius.circular(50), topLeft: Radius.circular(50)),
         color: ColorConstants.whiteColor,
       ),
       child: SingleChildScrollView(
@@ -137,9 +136,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     10.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 28,
-                      title: '-',
+                      title: expertDetailWatch.userData?.overAllRating.toString() ?? '0',
                       titleColor: ColorConstants.overallRatingColor,
-                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
                     ),
                   ],
                 ),
@@ -161,9 +160,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                           maxLine: 4,
                           title: fee != null ? '\$${fee}' : "",
                           titleColor: ColorConstants.overallRatingColor,
-                          shadow: [
-                            Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
-                          ],
+                          shadow: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
                         ),
                       ),
                     ],
@@ -195,16 +192,11 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ],
             AreaOfExpertiseWidget(),
             ExpertDetailsButtonWidget(
-              titleColor: expertDetailWatch.userData?.onlineStatus == 1
-                  ? ColorConstants.buttonTextColor
-                  : ColorConstants.overAllRatingColor,
+              titleColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.buttonTextColor : ColorConstants.overAllRatingColor,
               title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : "ZEN MODE : CALL PAUSED",
-              buttonColor: expertDetailWatch.userData?.onlineStatus == 1
-                  ? ColorConstants.requestCallNowColor
-                  : ColorConstants.redLightColor,
+              buttonColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.requestCallNowColor : ColorConstants.redLightColor,
               onTap: () {
-                if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
-                    (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+                if ((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                   instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
 
                   /// THis is call sender (User) side
@@ -213,11 +205,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                         name: expertDetailWatch.userData?.userName ?? "",
                         onFirstBtnTap: () {
                           if (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout) {
-                            ref.read(socketProvider).manageTimeOutStatus(
-                                userData: expertDetailWatch.userData, expertId: widget.expertId, context: context);
+                            ref.read(socketProvider).manageTimeOutStatus(userData: expertDetailWatch.userData, expertId: widget.expertId, context: context);
                           } else {
-                            if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
-                                (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+                            if ((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                               ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
                             } else {
                               FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
@@ -324,7 +314,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   titleColor: ColorConstants.blueColor,
                 ),
                 OnScaleTap(
-                  onPress: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
+                  onPress: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen, args: expertDetailWatch.userData?.id),
                   child: TitleSmallText(title: LocaleKeys.seeAll.tr(), titleColor: ColorConstants.greyColor),
                 )
               ],
@@ -364,16 +354,11 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             26.0.spaceY,
             if (expertDetailWatch.userData?.ratingCriteria?.isNotEmpty ?? false) ...[
-              OverallRatingWidget(
-                  name: RatingEnum.EXPERTISE.name, value: expertDetailWatch.userData?.ratingCriteria?[0].rating ?? 0),
-              OverallRatingWidget(
-                  name: RatingEnum.COMMUNICATION.name, value: expertDetailWatch.userData?.ratingCriteria?[1].rating ?? 0),
-              OverallRatingWidget(
-                  name: RatingEnum.HELPFULNESS.name, value: expertDetailWatch.userData?.ratingCriteria?[2].rating ?? 0),
-              OverallRatingWidget(
-                  name: RatingEnum.EMPATHY.name, value: expertDetailWatch.userData?.ratingCriteria?[3].rating ?? 0),
-              OverallRatingWidget(
-                  name: RatingEnum.PROFESSIONALISM.name, value: expertDetailWatch.userData?.ratingCriteria?[4].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.EXPERTISE.name, value: expertDetailWatch.userData?.ratingCriteria?[0].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.COMMUNICATION.name, value: expertDetailWatch.userData?.ratingCriteria?[1].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.HELPFULNESS.name, value: expertDetailWatch.userData?.ratingCriteria?[2].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.EMPATHY.name, value: expertDetailWatch.userData?.ratingCriteria?[3].rating ?? 0),
+              OverallRatingWidget(name: RatingEnum.PROFESSIONALISM.name, value: expertDetailWatch.userData?.ratingCriteria?[4].rating ?? 0),
             ],
             if (expertDetailWatch.userData?.expertReviews?.isNotEmpty ?? false) ...[
               40.0.spaceY,

@@ -67,6 +67,7 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> loginRequestCall({required int loginType, required String email}) async {
     debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
+    debugPrint('getVoipToken=================${await AgoraService.singleton.getVoipToken()}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
         deviceType: Platform.isAndroid ? DeviceType.A.name : DeviceType.I.name,
         email: email,
@@ -97,7 +98,7 @@ class AuthProvider with ChangeNotifier {
             SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
             SharedPrefHelper.saveAuthToken(loginResponseModel.token);
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
-            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
+            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
           }
         }
         break;
@@ -195,7 +196,7 @@ class AuthProvider with ChangeNotifier {
           SharedPrefHelper.saveAreaOfExpertise(jsonEncode(jsonEncode(loginResponseModel.data?.areaOfExpertise)));
           SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
           SharedPrefHelper.saveAuthToken(loginResponseModel.token);
-          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen);
+          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }
         break;

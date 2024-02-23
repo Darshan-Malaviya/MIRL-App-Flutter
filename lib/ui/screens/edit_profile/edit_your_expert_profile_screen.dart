@@ -180,7 +180,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.reviewsAndRatings,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
+                  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen, args: int.parse(SharedPrefHelper.getUserId)),
                 ),
                 50.0.spaceY,
                 PrimaryButton(

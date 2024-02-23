@@ -9,8 +9,7 @@ class ReportListRepository extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
   Future<ApiHttpResult> reportListApi({required int page, required int limit, required int role}) async {
-    final uri = ApiConstants.endpointUri(path: ApiConstants.reportList,
-        queryParameters: {"page": page.toString(), "limit": limit.toString(), "role": role.toString()});
+    final uri = ApiConstants.endpointUri(path: ApiConstants.reportList, queryParameters: {"page": page.toString(), "limit": limit.toString(), "role": role.toString()});
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.get);
 
@@ -20,14 +19,13 @@ class ReportListRepository extends ApiResponseHandler {
   Future<ApiHttpResult> userReportApi({required Object requestModel}) async {
     final uri = ApiConstants.endpointUri(path: ApiConstants.userReport);
 
-    APIResponse result = await _apiResponseProvider.requestAPI(uri,
-        headers: ApiConstants.headerWithToken(), apiType: APIType.post, body: requestModel);
+    APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.post, body: requestModel);
 
     return responseHandler(result: result, json: UserReportResponseModel.parseInfo);
   }
 
-  Future<ApiHttpResult> reviewAndRateListApi({required Map<String, dynamic>paras }) async {
-    final uri = ApiConstants.endpointUri(path: '${ApiConstants.rateExpert}/${SharedPrefHelper.getUserId}', queryParameters: paras);
+  Future<ApiHttpResult> reviewAndRateListApi({required Map<String, dynamic> paras, required int id}) async {
+    final uri = ApiConstants.endpointUri(path: '${ApiConstants.rateExpert}/$id', queryParameters: paras);
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.get);
 

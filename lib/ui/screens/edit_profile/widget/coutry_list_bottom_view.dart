@@ -10,8 +10,7 @@ class CountryListBottomView extends ConsumerStatefulWidget {
   final TextEditingController searchController;
   final VoidCallback clearSearchTap;
 
-  const CountryListBottomView(
-      {super.key, required this.onTapItem, required this.searchController, required this.clearSearchTap});
+  const CountryListBottomView({super.key, required this.onTapItem, required this.searchController, required this.clearSearchTap});
 
   @override
   ConsumerState<CountryListBottomView> createState() => _CountryListBottomViewState();
@@ -51,11 +50,11 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
-            TitleMediumText(title:LocaleKeys.selectCountry.tr().toUpperCase(), titleColor: ColorConstants.sheetTitleColor),
+            TitleMediumText(title: LocaleKeys.selectCountry.tr().toUpperCase(), titleColor: ColorConstants.sheetTitleColor),
             16.0.spaceY,
             TextFormFieldWidget(
               isReadOnly: false,
-              hintText:  LocaleKeys.searchHere.tr(),
+              hintText: LocaleKeys.searchHere.tr(),
               suffixIcon: widget.searchController.text.isNotEmpty
                   ? InkWell(
                       onTap: () {
@@ -67,6 +66,8 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
                   : SizedBox.shrink(),
               onFieldSubmitted: (value) {
                 context.unFocusKeyboard();
+              },
+              onChanged: (value) {
                 commonRead.clearCountryPaginationData();
                 commonRead.CountryListApiCall(searchName: value.trim());
               },
@@ -99,9 +100,7 @@ class _CountryListBottomViewState extends ConsumerState<CountryListBottomView> {
                                 padding: const EdgeInsets.all(8),
                                 alignment: Alignment.center,
                                 margin: const EdgeInsets.symmetric(vertical: 5),
-                                child: BodyMediumText(
-                                    title: commonWatch.country[index].country ?? '',
-                                    titleColor: ColorConstants.bottomTextColor),
+                                child: BodyMediumText(title: commonWatch.country[index].country ?? '', titleColor: ColorConstants.bottomTextColor),
                               ),
                             );
                           },

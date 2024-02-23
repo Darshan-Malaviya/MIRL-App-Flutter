@@ -8,7 +8,7 @@ class ExpertCategoryRepo extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
   Future<ApiHttpResult> getSingleCategoryApi({required String categoryId, Map<String,dynamic>? requestModel}) async {
-    final uri = ApiConstants.endpointUri(path: '${ApiConstants.category}/app/$categoryId', queryParameters: requestModel);
+    final uri = ApiConstants.endpointUri(path: '${ApiConstants.getSingleCategory}/$categoryId', queryParameters: requestModel);
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,

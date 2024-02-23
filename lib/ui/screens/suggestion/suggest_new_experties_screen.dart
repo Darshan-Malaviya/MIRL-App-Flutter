@@ -1,11 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
-import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/providers/suggest_new_experties_provider.dart';
-import 'package:mirl/ui/common/appbar/appbar_widget.dart';
 
 class SuggestNewExpertiseScreen extends ConsumerStatefulWidget {
   const SuggestNewExpertiseScreen({super.key});
@@ -98,6 +94,7 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                     textInputAction: TextInputAction.newline,
                     contentPadding: EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 30),
                     borderRadius: 25,
+                    borderWidth: 0,
                     enabledBorderColor: ColorConstants.transparentColor,
                     fillColor: ColorConstants.transparentColor,
                     enableShadow: true,

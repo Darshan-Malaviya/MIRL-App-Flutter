@@ -91,7 +91,6 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                 child: CupertinoActivityIndicator(
                   animating: true,
                   color: ColorConstants.primaryColor,
-                  radius: 16,
                 ),
               )
             : SingleChildScrollView(
@@ -291,13 +290,21 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                           separatorBuilder: (context, index) => 20.0.spaceY,
                           itemCount: (filterProviderWatch.singleCategoryData?.expertData?.length ?? 0) + (filterProviderWatch.reachedOneCategoryScreenLastPage ? 0 : 1))
                     ] else ...[
-                      Center(
-                        child: BodyLargeText(
-                          title: LocaleKeys.thereWasNoExpertDataAvailable.tr(),
-                          fontFamily: FontWeightEnum.w600.toInter,
-                          maxLine: 2,
-                        ),
-                      ),
+                      Column(
+                        children: [
+                          BodySmallText(
+                            title: LocaleKeys.noResultFound.tr(),
+                            fontFamily: FontWeightEnum.w600.toInter,
+                          ),
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: LocaleKeys.tryWideningYourSearch.tr(),
+                            fontFamily: FontWeightEnum.w400.toInter,
+                            titleTextAlign: TextAlign.center,
+                            maxLine: 5,
+                          ),
+                        ],
+                      ).addMarginX(40),
                       40.0.spaceY,
                     ]
                   ],

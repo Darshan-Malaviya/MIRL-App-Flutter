@@ -21,7 +21,7 @@ class FavoriteExpertsView extends ConsumerWidget {
         if ((homeProviderWatch.homeData?.userFavorites?.isNotEmpty ?? false) && homeProviderWatch.homeData?.userFavorites != null) ...[
           20.0.spaceY,
           SizedBox(
-            height: 120,
+            height: 130,
             child: ListView.builder(
                 itemCount: homeProviderWatch.homeData?.userFavorites?.length ?? 0,
                 padding: EdgeInsets.zero,

@@ -1,6 +1,4 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
-import 'package:mirl/ui/screens/block_user/block_user_screen.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
@@ -8,40 +6,12 @@ import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
 
 class DashboardProvider extends ChangeNotifier {
-  String _pageTitle = StringConstants.home;
-  PageController pageController = PageController();
-
-  String get pageTitle => _pageTitle;
 
   int get selectedIndex => _selectedIndex;
   int _selectedIndex = 0;
 
-  Widget buildPageView() {
-    return PageView(
-      physics: const NeverScrollableScrollPhysics(),
-      controller: pageController,
-      onPageChanged: (index) {
-        pageChanged(index);
-      },
-      children: <Widget>[
-        HomeScreen(),
-        ExploreExpertScreen(isFromHomePage: true,),
-        NotificationScreen(),
-        ExpertProfileScreen(),
-        UserSettingScreen(),
-        //  BlockUserScreen(args: BlockUserArgs(reportName:  'vaidehi', userRole: 0))
-      ],
-    );
-  }
-
   void pageChanged(int index) {
     _selectedIndex = index;
-    notifyListeners();
-  }
-
-  void bottomTapped(int index) {
-    _selectedIndex = index;
-    pageController.jumpToPage(index);
     notifyListeners();
   }
 

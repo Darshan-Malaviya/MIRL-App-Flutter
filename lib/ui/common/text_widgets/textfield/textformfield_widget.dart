@@ -312,11 +312,7 @@ class TextFormFieldWidget extends StatelessWidget {
               maxLength: maxLength,
               textInputAction: textInputAction ?? TextInputAction.next,
               readOnly: isReadOnly ?? false,
-              style: textStyle ??
-                  TextStyle(
-                      color: ColorConstants.blackColor,
-                      fontSize: 14 / scaleFactor,
-                      fontFamily: textFontFamily ?? FontWeightEnum.w400.toInter),
+              style: textStyle ?? TextStyle(color: ColorConstants.blackColor, fontSize: 14 / scaleFactor, fontFamily: textFontFamily ?? FontWeightEnum.w400.toInter),
               keyboardType: textInputType ?? TextInputType.text,
               controller: controller,
               initialValue: initialValue,
@@ -329,45 +325,39 @@ class TextFormFieldWidget extends StatelessWidget {
                     prefix: prefixWidget ?? const SizedBox.shrink(),
                     errorText: errorText != null && (errorText?.isNotEmpty ?? false) ? errorText : null,
                     suffixIcon: suffixIcon,
-                    hintStyle: hintStyle ??
-                        TextStyle(
-                            color: hintTextColor ?? ColorConstants.greyColor,
-                            fontSize: 12 / scaleFactor,
-                            fontFamily: fontFamily ?? FontWeightEnum.w400.toInter),
+                    hintStyle: hintStyle ?? TextStyle(color: hintTextColor ?? ColorConstants.greyColor, fontSize: 12 / scaleFactor, fontFamily: fontFamily ?? FontWeightEnum.w400.toInter),
                     hintText: hintText ?? '',
                     border: border ?? InputBorder.none,
                     contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                     fillColor: fillColor ?? Colors.white,
                     filled: true,
-                    errorStyle:
-                        TextStyle(color: ColorConstants.secondaryColor, fontSize: 12 / scaleFactor, fontWeight: FontWeight.w600),
+                    errorStyle: TextStyle(color: ColorConstants.secondaryColor, fontSize: 12 / scaleFactor, fontWeight: FontWeight.w600),
 
                     ///text field with shadow
                     enabledBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
-                        borderSide: BorderSide(color: enabledBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 0),
+                        borderSide: BorderSide(color: enabledBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
                         borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),
                     ),
-                    //  focusedBorder: InputBorder.none,
                     focusedBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
-                        borderSide: BorderSide(color: focusedBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 0),
+                        borderSide: BorderSide(color: focusedBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
                         borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),
                     ),
                     errorBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
-                        borderSide: BorderSide(color: errorBorderColor ?? ColorConstants.borderColor),
+                        borderSide: BorderSide(color: errorBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
                         borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),
                     ),
                     focusedErrorBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
-                        borderSide: BorderSide(color: focusedErrorBorderColor ?? ColorConstants.borderColor),
+                        borderSide: BorderSide(color: focusedErrorBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
                         borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),
@@ -441,6 +431,5 @@ class TextFormFieldWidget extends StatelessWidget {
     );
   }
 
-  BoxShadow buildBoxShadow() =>
-      BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.1), blurRadius: 6, offset: const Offset(0, 0));
+  BoxShadow buildBoxShadow() => BoxShadow(color: ColorConstants.primaryColor.withOpacity(0.1), blurRadius: 6, offset: const Offset(0, 0));
 }

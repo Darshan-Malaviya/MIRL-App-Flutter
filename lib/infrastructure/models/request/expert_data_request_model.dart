@@ -15,6 +15,8 @@ class ExpertDataRequestModel {
   String? topicIds;
   String? categoryId;
   String? multiConnectRequest;
+  String? overAllRating;
+  String? ratingOrder;
 
   ExpertDataRequestModel(
       {this.userId,
@@ -32,7 +34,9 @@ class ExpertDataRequestModel {
       this.maxFee,
       this.topicIds,
       this.categoryId,
-      this.multiConnectRequest});
+      this.multiConnectRequest,
+      this.overAllRating,
+      this.ratingOrder});
 
   ExpertDataRequestModel.fromJson(Map<String, dynamic> json) {
     if (json['search'] != null) {
@@ -56,6 +60,8 @@ class ExpertDataRequestModel {
     topicIds = json['topicIds'];
     categoryId = json['categoryId'];
     multiConnectRequest = json['multiConnectRequest'];
+    overAllRating = json['overAllRating'];
+    ratingOrder = json['ratingOrder'];
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +85,8 @@ class ExpertDataRequestModel {
     data['topicIds'] = this.topicIds;
     data['categoryId'] = this.categoryId;
     data['multiConnectRequest'] = this.multiConnectRequest;
+    data['overAllRating'] = this.overAllRating;
+    data['ratingOrder'] = this.ratingOrder;
     return data;
   }
 

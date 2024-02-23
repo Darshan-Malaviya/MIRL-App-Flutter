@@ -52,6 +52,7 @@ class ApiConstants {
   static const String otpVerify = '/user/verify-otp';
   static String updateUser = '/user/${SharedPrefHelper.getUserId}';
   static String getUserDetail = '/user/';
+  static const String getSingleCategory = '/category/app';
   static const String category = '/category';
   static const String country = '/country';
   static const String city = '/city';

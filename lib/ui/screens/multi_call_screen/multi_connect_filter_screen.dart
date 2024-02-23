@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
 import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
@@ -21,8 +22,7 @@ class MultiConnectFilterScreen extends ConsumerStatefulWidget {
 class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
     super.initState();
   }
 
@@ -61,7 +61,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                     isDismissible: false,
                     child: TopicListByCategoryBottomView(
                       isFromExploreExpert: true,
-                      categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                      category: filterWatch.selectedCategory ?? CategoryIdNameCommonModel(),
                     ));
               } else {
                 FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCategoryFirst.tr());
@@ -123,6 +123,10 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             }, StringConstants.countryText),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.cityNameController, context, () {
+              if(filterWatch.countryNameController.text.isEmpty){
+                FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCountryFirst.tr());
+                return;
+              }
               CommonBottomSheet.bottomSheet(
                   context: context,
                   isDismissible: true,
@@ -176,36 +180,43 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             double endFeeRange = filterWatch.end ?? 0;
             double startFeeRange = filterWatch.start ?? 0;
 
-              filterRead.clearSingleCategoryData();
+            filterRead.clearSingleCategoryData();
 
-              await multiProviderRead.getSingleCategoryApiCall(
-                  categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
-                  context: context,
-                  isFromFilter: true,
-                  requestModel: ExpertDataRequestModel(
-                    multiConnectRequest: 'true',
-                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
-                    topicIds: selectedTopicId,
-                    userId: SharedPrefHelper.getUserId,
-                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                    country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
-                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
-                        ? filterWatch.isCallSelect == 1
-                            ? "true"
-                            : "false"
-                        : null,
-                    maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
-                    minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
-                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                        ? null
-                        : filterWatch.sortBySelectedItem == 'PRICE'
-                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                ? 'ASC'
-                                : 'DESC'
-                            : null,
-                  ));
-
+            await multiProviderRead.getSingleCategoryApiCall(
+                categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                context: context,
+                isFromFilter: true,
+                requestModel: ExpertDataRequestModel(
+                  multiConnectRequest: 'true',
+                  categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
+                  topicIds: selectedTopicId,
+                  userId: SharedPrefHelper.getUserId,
+                  city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                  country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                  gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
+                  instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                      ? filterWatch.isCallSelect == 1
+                          ? "true"
+                          : "false"
+                      : null,
+                  maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
+                  minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
+                  feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                      ? null
+                      : filterWatch.sortBySelectedItem == 'PRICE'
+                          ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                              ? 'ASC'
+                              : 'DESC'
+                          : null,
+                  overAllRating: filterWatch.ratingController.text.isNotEmpty ? filterWatch.ratingController.text : null,
+                  ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                      ? null
+                      : filterWatch.sortBySelectedItem == 'REVIEW SCORE'
+                          ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                              ? 'DESC'
+                              : 'ASC'
+                          : null,
+                ));
           }).addPaddingXY(paddingX: 50, paddingY: 10),
     );
   }

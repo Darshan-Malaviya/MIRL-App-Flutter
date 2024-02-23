@@ -9,7 +9,7 @@ class CommonRepository extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
   Future<ApiHttpResult> allCategoryLIstService({Map<String, dynamic>? requestModel}) async {
-    final uri = ApiConstants.endpointUri(path: ApiConstants.allCategoryList, queryParameters: requestModel);
+    final uri = ApiConstants.endpointUri(path: ApiConstants.category, queryParameters: requestModel);
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,
       apiType: APIType.get,

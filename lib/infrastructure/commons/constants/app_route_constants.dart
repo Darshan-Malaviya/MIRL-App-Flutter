@@ -93,7 +93,7 @@ class RouterConstant {
       case RoutesConstants.homeScreen:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case RoutesConstants.dashBoardScreen:
-        return MaterialPageRoute(builder: (_) => const DashboardScreen());
+        return MaterialPageRoute(builder: (_) => DashboardScreen(index: settings.arguments as int));
       case RoutesConstants.expertProfileScreen:
         return MaterialPageRoute(builder: (_) => const ExpertProfileScreen());
       case RoutesConstants.exploreScreen:
@@ -113,10 +113,7 @@ class RouterConstant {
       case RoutesConstants.setYourGenderScreen:
         return MaterialPageRoute(builder: (_) => const SetYourGenderScreen());
       case RoutesConstants.setWeeklyAvailability:
-        return MaterialPageRoute(
-            builder: (_) => SetYourWeeklyAvailabilityScreen(
-                  initialIndex: settings.arguments as int,
-                ));
+        return MaterialPageRoute(builder: (_) => SetYourWeeklyAvailabilityScreen(initialIndex: settings.arguments as int));
       case RoutesConstants.certificationsAndExperienceScreen:
         return MaterialPageRoute(builder: (_) => const CertificationsAndExperienceScreen());
       case RoutesConstants.yourBankAccountDetailsScreen:
@@ -138,7 +135,7 @@ class RouterConstant {
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.exploreExpertScreen:
-        return MaterialPageRoute(builder: (_) =>  ExploreExpertScreen(isFromHomePage: settings.arguments as bool,));
+        return MaterialPageRoute(builder: (_) => ExploreExpertScreen(isFromHomePage: settings.arguments as bool));
       case RoutesConstants.selectedExpertCategoryScreen:
         return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(args: settings.arguments as SelectedCategoryArgument));
       case RoutesConstants.expertCategoryFilterScreen:
@@ -162,15 +159,9 @@ class RouterConstant {
       case RoutesConstants.reportExpertScreen:
         return MaterialPageRoute(builder: (_) => ReportExpertScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.videoCallScreen:
-        return MaterialPageRoute(
-            builder: (_) => VideoCallScreen(
-                  arguments: settings.arguments as VideoCallArguments,
-                ));
+        return MaterialPageRoute(builder: (_) => VideoCallScreen(arguments: settings.arguments as VideoCallArguments));
       case RoutesConstants.instantCallRequestDialogScreen:
-        return MaterialPageRoute(
-            builder: (_) => InstantCallRequestDialog(
-                  args: settings.arguments as InstanceCallDialogArguments,
-                ));
+        return MaterialPageRoute(builder: (_) => InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments));
       case RoutesConstants.blockUserScreen:
         return MaterialPageRoute(builder: (_) => BlockUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.multiConnectScreen:
@@ -182,7 +173,7 @@ class RouterConstant {
       case RoutesConstants.viewCalendarAppointment:
         return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen(role: settings.arguments as int));
       case RoutesConstants.ratingAndReviewScreen:
-        return MaterialPageRoute(builder: (_) => RatingAndReviewScreen());
+        return MaterialPageRoute(builder: (_) => RatingAndReviewScreen(id: settings.arguments as int));
       case RoutesConstants.earningReportScreen:
         return MaterialPageRoute(builder: (_) => EarningReportScreen());
       case RoutesConstants.cmsScreen:
@@ -201,7 +192,7 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => SeekerCallHistoryScreen());
       case RoutesConstants.thanksGivingScreen:
         return MaterialPageRoute(builder: (_) => const ThanksGivingScreen());
-        case RoutesConstants.suggestNewExpertiseScreen:
+      case RoutesConstants.suggestNewExpertiseScreen:
         return MaterialPageRoute(builder: (_) => const SuggestNewExpertiseScreen());
         case RoutesConstants.editYourNameScreen:
         return MaterialPageRoute(builder: (_) => const EditYourNameScreen());

@@ -31,7 +31,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
         children: [
           NetworkImageWidget(
             imageURL:
-                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                scheduleWatch.appointmentData?.expertDetail?.expertProfile ?? '',
             isNetworkImage: true,
             boxFit: BoxFit.cover,
           ),
@@ -138,7 +138,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             30.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.checkNotification.tr(),
-              onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
+              onPressed: ()=>context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 2),
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,
             ),
@@ -154,6 +154,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,
             ),
+            20.0.spaceY,
           ],
         ),
       ).addAllPadding(28),

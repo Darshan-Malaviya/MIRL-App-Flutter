@@ -95,8 +95,8 @@ class SocketProvider extends ChangeNotifier {
           case Event.actionCallTimeout:
             if (callConnectNotifier.value != CallConnectStatusEnum.timeout) {
               callConnectNotifier.value = CallConnectStatusEnum.timeout;
-              updateCallStatusEmit(
-                  status: CallStatusEnum.timeoutCall, callRoleEnum: CallRoleEnum.expert, callHistoryId: extraResponseModel?.callHistoryId ?? '');
+              updateCallStatusEmit(status: CallStatusEnum.timeoutCall,
+                  callRoleEnum: CallRoleEnum.expert, callHistoryId: extraResponseModel?.callHistoryId ?? '');
             }
             break;
           case Event.actionDidUpdateDevicePushTokenVoip:
@@ -446,16 +446,20 @@ class SocketProvider extends ChangeNotifier {
               instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
               instanceCallDurationNotifier.removeListener(() { });
               if(model.data?.userId.toString().toString() == SharedPrefHelper.getUserId.toString()) {
-                NavigationService.context.toPop();
-                NavigationService.context.toPop();
+                if(activeRoute.value == RoutesConstants.videoCallScreen){
+                  NavigationService.context.toPop();
+                  NavigationService.context.toPop();
+                }
               }
             } if(model.data?.status.toString() == '6') {
               /// completed
                callConnectNotifier.value = CallConnectStatusEnum.completed;
 
               if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()) {
-                NavigationService.context.toPop();
-                NavigationService.context.toPop();
+                if(activeRoute.value == RoutesConstants.videoCallScreen){
+                  NavigationService.context.toPop();
+                  NavigationService.context.toPop();
+                }
               } else {
                 await FlutterCallkitIncoming.endAllCalls();
                 NavigationService.context.toPop();
@@ -496,14 +500,14 @@ class SocketProvider extends ChangeNotifier {
               FlutterToast().showToast(msg: "Call decline by expert");
               instanceRequestTimerNotifier.value = -1;
               instanceRequestTimerNotifier.removeListener(() {});
-              NavigationService.context.toPop();
-              NavigationService.context.toPop();
+              if(activeRoute.value == RoutesConstants.videoCallScreen){
+                NavigationService.context.toPop();
+                NavigationService.context.toPop();
+              }
             } else if (model.data?.status.toString() == '4') {
               /// time out
               FlutterToast().showToast(msg: LocaleKeys.expertNotResponding.tr());
               NavigationService.context.toPop();
-              NavigationService.context.toPop();
-
             }
             if (model.data?.status.toString() == '5') {
               /// cancelled
@@ -521,8 +525,10 @@ class SocketProvider extends ChangeNotifier {
                 NavigationService.context.toPop();
                 await FlutterCallkitIncoming.endAllCalls();
               } else {
-                NavigationService.context.toPop();
-                NavigationService.context.toPop();
+                if(activeRoute.value == RoutesConstants.videoCallScreen){
+                  NavigationService.context.toPop();
+                  NavigationService.context.toPop();
+                }
               }
               instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
               instanceCallDurationNotifier.removeListener(() {});
@@ -556,7 +562,7 @@ class SocketProvider extends ChangeNotifier {
   void timerResponse() {
     try {
       socket?.on(AppConstants.timeSend, (data) {
-        //Logger().d('timerResponse=====${data.toString()}');
+        Logger().d('timerResponse=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
 
@@ -570,8 +576,8 @@ class SocketProvider extends ChangeNotifier {
 
   void timerListener() {
     try {
-      socket?.on(AppConstants.timeReceived, (data) {
-        //Logger().d('timerListener=====${data.toString()}');
+      socket?.on(AppConstants.timeReceived, (data)  async {
+        Logger().d('timerListener=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
