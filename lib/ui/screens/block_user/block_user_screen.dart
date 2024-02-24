@@ -133,7 +133,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                           30.0.spaceY,
                           InkWell(
                             onTap: () {
-                              blockUserRead.userBlockRequestCall(
+                              blockUserRead.userBlockRequestCall(isFromInstatCall: widget.args.isFromInstantCall,
                                   Status: 1, UserBlockId: widget.args.userId ?? 0, context: context);
                               context.toPop();
                             },
@@ -165,7 +165,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                 title: LocaleKeys.permanentBlock.tr(),
                 onPressed: () {
                   // context.toPushNamed(RoutesConstants.blockUserListScreen);
-                  blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.userId ?? 0, context: context);
+                  blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.userId ?? 0, context: context,isFromInstatCall: widget.args.isFromInstantCall);
                 },
                 fontSize: 13,
               ),

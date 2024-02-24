@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
+import 'package:mirl/infrastructure/models/response/block_details_response_model.dart';
 import 'package:mirl/infrastructure/models/response/cms_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
@@ -38,7 +39,7 @@ class AuthRepository extends ApiResponseHandler {
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), body: requestModel);
 
-    return responseHandler(result: result, json: BlockDetail.parseInfo);
+    return responseHandler(result: result, json: BlockDetailsResponseModel.parseInfo);
   }
 
   ///  un block user
