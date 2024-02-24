@@ -293,10 +293,10 @@ class EditExpertProvider extends ChangeNotifier {
       } else {
         _editButtonList[2].isSelected = false;
       }
-      if (SharedPrefHelper.getAreaOfExpertise.isEmpty) {
-        _editButtonList[1].isSelected = false;
-      } else {
+      if (SharedPrefHelper.getAreaOfExpertise) {
         _editButtonList[1].isSelected = true;
+      } else {
+        _editButtonList[1].isSelected = false;
       }
       notifyListeners();
     }
@@ -511,7 +511,7 @@ class EditExpertProvider extends ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
-          SharedPrefHelper.saveAreaOfExpertise(jsonEncode(jsonEncode(loginResponseModel.data?.areaOfExpertise)));
+          SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false)? true : false);
           Logger().d("Successfully updated");
           Logger().d("user data=====${loginResponseModel.toJson()}");
           resetVariable();
