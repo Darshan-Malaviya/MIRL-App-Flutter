@@ -26,7 +26,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
 
   Future<void> multiConnectRequestTimerFunction() async {
     await Future.delayed(const Duration(seconds: 1));
-    if (multiRequestTimerNotifier.value != 0 && instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting) {
+    if (multiRequestTimerNotifier.value != 0 && multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestWaiting) {
       multiRequestTimerNotifier.value =  multiRequestTimerNotifier.value - 1;
 
       if(widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId) {
@@ -41,7 +41,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
       multiConnectRequestTimerFunction();
     } else {
       multiRequestTimerNotifier.value = -1;
-      instanceCallEnumNotifier.removeListener(() {});
+      multiRequestTimerNotifier.removeListener(() {});
     }
   }
 
@@ -61,11 +61,11 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
         if (multiRequestTimerNotifier.value == 120) {
           multiConnectRequestTimerFunction();
         } else {
-          if((instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting && widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId)
-          // || (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)
+          if((multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestWaiting && widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId)
+          // || (multiConnectCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)
           ) {
             if (multiRequestTimerNotifier.value == 0 && widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId) {
-              instanceCallEnumNotifier.value = CallTypeEnum.requestTimeout;
+              multiConnectCallEnumNotifier.value = CallTypeEnum.multiRequestTimeout;
               ref.read(socketProvider).multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.timeout,
                   userId: widget.args.userDetail?.id.toString() ?? '',
                   expertId: widget.args.expertList?.first.id.toString() ?? '',
@@ -83,7 +83,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
   @override
   void dispose() {
     multiRequestTimerNotifier.value = -1;
-    instanceCallEnumNotifier.removeListener(() {});
+    multiRequestTimerNotifier.removeListener(() {});
     super.dispose();
   }
 
@@ -140,8 +140,8 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        width: 330,
-                        height:  360,
+                        width: 340,
+                        height:  380,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(RadiusConstant.alertdialogRadius),
                             color: multiConnectCallEnumNotifier.value.typeName,
@@ -163,16 +163,13 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                             fontFamily: FontWeightEnum.w600.toInter,
                             maxLine: 10,
                           ),
-                          10.0.spaceY,
+
                           if (multiConnectCallEnumNotifier.value == CallTypeEnum.multiReceiverRequested) ...[
                             ShadowContainer(
-                              shadowColor: ColorConstants.blackColor.withOpacity(0.25),
+                              shadowColor: ColorConstants.blackColor.withOpacity(0.5),
                               border: 25,
-                              width: 95,
-                              height: 122,
-                              offset: Offset(0, 4),
-                              blurRadius: 4,
-                              spreadRadius: 3,
+                              width: 136,
+                              height: 180,
                               padding: EdgeInsets.zero,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -203,8 +200,9 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                             ),
                           ] else ...[
                             if (widget.args.expertList?.isNotEmpty ?? false) ...[
+                              10.0.spaceY,
                               SizedBox(
-                                height: 204,
+                                height: 220,
                                 child: ListView.separated(
                                   itemCount: widget.args.expertList?.length ?? 0,
                                   shrinkWrap: true,
@@ -214,13 +212,11 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                     return ValueListenableBuilder(
                                       valueListenable: multiConnectRequestStatusNotifier,
                                         builder: (BuildContext context, CallRequestStatusEnum callRequestStatusEnum, Widget? callRequestStatusEnumChild) {
-                                        print("dfghjkfghjk");
-                                        print(multiConnectRequestStatusNotifier.value.callRequestStatusToString);
                                           return ShadowContainer(
                                             shadowColor: ColorConstants.blackColor.withOpacity(0.25),
                                             border: 25,
-                                            width: 146,
-                                            height: 204,
+                                            width: 150,
+                                            height: 220,
                                             offset: Offset(0, 4),
                                             blurRadius: 4,
                                             spreadRadius: 3,
@@ -250,6 +246,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                 12.0.spaceY,
                                                 SizedBox(
                                                   width: 90,
+                                                  height: 40,
                                                   child: BodyMediumText(
                                                     title: widget.args.expertList?[index].expertName ?? '',
                                                     fontFamily: FontWeightEnum.w600.toInter,
@@ -278,13 +275,13 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                   titleTextAlign: TextAlign.center,
                                                   titleColor: ColorConstants.buttonTextColor,
                                                 ) : SizedBox.shrink(),
-                                                2.0.spaceY,
+                                                4.0.spaceY,
                                                 BodyMediumText(
                                                   title: multiConnectRequestStatusNotifier.value.callRequestStatusToString,
                                                   titleColor: multiConnectRequestStatusNotifier.value.CallReqToStatusColor,
                                                 )
                                               ],
-                                            ).addPaddingXY(paddingX: 20, paddingY: 4),
+                                            ).addPaddingY(4),
                                           );
                                       }
                                     );
@@ -306,8 +303,8 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                               valueListenable: allCallDurationNotifier,
                               builder: (BuildContext context, int value, Widget? child) {
                                 return Visibility(
-                                  visible: allCallDurationNotifier.value != 0 && (multiConnectCallEnumNotifier.value == CallTypeEnum.requestWaiting
-                                      || multiConnectCallEnumNotifier.value == CallTypeEnum.receiverRequested),
+                                  visible: allCallDurationNotifier.value != 0 && (multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestWaiting
+                                      || multiConnectCallEnumNotifier.value == CallTypeEnum.multiReceiverRequested),
                                   replacement: SizedBox.shrink(),
                                   child: TitleSmallText(
                                     title: "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",

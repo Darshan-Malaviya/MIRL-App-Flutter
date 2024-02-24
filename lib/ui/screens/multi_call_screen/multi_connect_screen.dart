@@ -82,7 +82,8 @@ class _MultiConnectScreenState extends ConsumerState<MultiConnectScreen> {
               MultiConnectShimmerWidget()
             ] else ...[
               MultiConnectCategoryWidget(),
-            ]
+            ],
+            30.0.spaceY,
           ],
         ).addPaddingX(20),
       ),
