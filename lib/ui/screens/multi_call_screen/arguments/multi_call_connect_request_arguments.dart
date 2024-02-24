@@ -1,19 +1,13 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/instance_call_emits_response_model.dart';
 
 class MultiConnectDialogArguments {
-  final String? image, name;
-  final String userID;
-  final List<int> expertIds;
+  final List<ExpertDetails>? expertList;
+  final UserDetails? userDetail;
   final VoidCallback? onFirstBtnTap;
   final VoidCallback? onSecondBtnTap;
-  final Color? secondBtnColor;
+
 
   const MultiConnectDialogArguments(
-      {this.name,
-      this.image,
-      required this.expertIds,
-      required this.userID,
-      this.onFirstBtnTap,
-      this.onSecondBtnTap,
-      this.secondBtnColor});
+      {this.expertList, this.userDetail, this.onFirstBtnTap, this.onSecondBtnTap});
 }

@@ -6,7 +6,6 @@ class InstanceCallDialogArguments {
   final String expertId;
   final VoidCallback? onFirstBtnTap;
   final VoidCallback? onSecondBtnTap;
-  final Color? secondBtnColor;
 
   const InstanceCallDialogArguments(
       {this.name,
@@ -14,6 +13,5 @@ class InstanceCallDialogArguments {
       required this.expertId,
       required this.userID,
       this.onFirstBtnTap,
-      this.onSecondBtnTap,
-      this.secondBtnColor});
+      this.onSecondBtnTap});
 }
