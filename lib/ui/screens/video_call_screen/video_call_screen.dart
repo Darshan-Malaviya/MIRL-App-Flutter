@@ -35,7 +35,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       if (model?.callRoleEnum == CallRoleEnum.user) {
         ref.read(socketProvider).timerEmit(
               userId: int.parse((model?.userId.toString() ?? '')),
-              expertId: int.parse((model?.expertId.toString() ?? '')),
+              expertIdList: [int.parse((model?.expertId.toString() ?? ''))],
               callRoleEnum: CallRoleEnum.user,
               timer: instanceCallDurationNotifier.value,
               timerType: CallTimerEnum.call,

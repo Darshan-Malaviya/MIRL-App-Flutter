@@ -39,6 +39,8 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 import 'package:mirl/ui/screens/instant_call_screen/instant_call_screen.dart';
+import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
+import 'package:mirl/ui/screens/multi_call_screen/multi_call_connect_request_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_filter_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_screen.dart';
@@ -161,6 +163,9 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => VideoCallScreen(arguments: settings.arguments as VideoCallArguments));
       case RoutesConstants.instantCallRequestDialogScreen:
         return MaterialPageRoute(builder: (_) => InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments));
+      case RoutesConstants.multiConnectCallDialogScreen:
+        return MaterialPageRoute(
+            builder: (_) => MultiConnectCallDialogScreen(args: settings.arguments as MultiConnectDialogArguments));
       case RoutesConstants.blockUserScreen:
         return MaterialPageRoute(builder: (_) => BlockUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.multiConnectScreen:

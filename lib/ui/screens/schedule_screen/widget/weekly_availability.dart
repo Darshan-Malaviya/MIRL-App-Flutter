@@ -6,6 +6,7 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
+import 'package:mirl/ui/screens/schedule_screen/widget/no_weekly_availability.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../common/shimmer_widgets/slots_shimmer_widget.dart';
@@ -23,70 +24,74 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
     final scheduleProviderWatch = ref.watch(scheduleCallProvider);
     final scheduleProviderRead = ref.read(scheduleCallProvider);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TitleMediumText(title: LocaleKeys.weeklyAvailability.tr(), fontSize: 18, titleColor: ColorConstants.bottomTextColor),
-        27.0.spaceY,
-        scheduleProviderWatch.isLoadingAvailable
-            ? AvailableTimeShimmer().addPaddingX(20)
-            : Column(
-                children: List.generate(scheduleProviderWatch.weekAvailability.length, (index) {
-                  final data = scheduleProviderWatch.weekAvailability[index];
-                  return slotWidget(
-                          dayText: data.dayOfWeek?.toUpperCase() ?? '', dayTimeText: '${data.startTime?.toLocalTimeFromUtc() ?? ''} - ${data.endTime?.toLocalTimeFromUtc() ?? ''}')
-                      .addPaddingY(12);
-                }),
-              ).addPaddingX(20),
-        40.0.spaceY,
-        Image.asset(ImageConstants.line),
-        20.0.spaceY,
-        TitleSmallText(
-          title: LocaleKeys.pickDateAndTime.tr(),
-          titleTextAlign: TextAlign.center,
-          titleColor: ColorConstants.bottomTextColor,
-        ),
-        22.0.spaceY,
-        TableCalenderRangeWidget(
-          onDateSelected: (selectedDay, focusedDay) {
-            scheduleProviderRead.getSelectedDate(selectedDay);
-          },
-          selectedDay: scheduleProviderWatch.selectedDate,
-          fromUpcomingAppointment: false,
-        ),
-        22.0.spaceY,
-        BodyMediumText(
-          title: LocaleKeys.durationOfAppointment.tr(),
-          fontSize: 15,
-          titleColor: ColorConstants.blueColor,
-        ),
-        16.0.spaceY,
-        durationWidget(scheduleProviderWatch),
-        10.0.spaceY,
-        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
-        23.0.spaceY,
-        generateSlotTime(scheduleProviderWatch),
-        11.0.spaceY,
-        PrimaryButton(
-          height: 55,
-          title: LocaleKeys.scheduleAppointment.tr(),
-          onPressed: () async {
-            if (scheduleProviderWatch.selectedSlotData != null) {
-              scheduleProviderRead.getPayValue();
-              final result = await context.toPushNamed(RoutesConstants.scheduleAppointmentScreen);
-              if (result == 'callApi') {
-                scheduleProviderRead.getSlotsApi();
-              }
-            } else {
-              FlutterToast().showToast(msg: LocaleKeys.pleaseSelectSlot.tr());
-            }
-          },
-          fontSize: 15,
-          titleColor: ColorConstants.blueColor,
-        ).addPaddingXY(paddingX: 29, paddingY: 12),
-      ],
-    );
+    return scheduleProviderWatch.isLoadingAvailable
+        ? AvailableTimeShimmer().addPaddingX(20)
+        : scheduleProviderWatch.weekAvailability.isNotEmpty
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TitleMediumText(title: LocaleKeys.weeklyAvailability.tr(), fontSize: 18, titleColor: ColorConstants.bottomTextColor),
+                  27.0.spaceY,
+                  Column(
+                    children: List.generate(scheduleProviderWatch.weekAvailability.length, (index) {
+                      final data = scheduleProviderWatch.weekAvailability[index];
+                      return slotWidget(
+                              dayText: data.dayOfWeek?.toUpperCase() ?? '',
+                              dayTimeText: '${data.startTime?.toLocalTimeFromUtc() ?? ''} - ${data.endTime?.toLocalTimeFromUtc() ?? ''}')
+                          .addPaddingY(12);
+                    }),
+                  ).addPaddingX(20),
+                  40.0.spaceY,
+                  Image.asset(ImageConstants.line),
+                  20.0.spaceY,
+                  TitleSmallText(
+                    title: LocaleKeys.pickDateAndTime.tr(),
+                    titleTextAlign: TextAlign.center,
+                    titleColor: ColorConstants.bottomTextColor,
+                  ),
+                  22.0.spaceY,
+                  TableCalenderRangeWidget(
+                    onDateSelected: (selectedDay, focusedDay) {
+                      scheduleProviderRead.getSelectedDate(selectedDay);
+                      print(selectedDay);
+                    },
+                    selectedDay: scheduleProviderWatch.selectedDate,
+                    fromUpcomingAppointment: false,
+                  ),
+                  22.0.spaceY,
+                  BodyMediumText(
+                    title: LocaleKeys.durationOfAppointment.tr(),
+                    fontSize: 15,
+                    titleColor: ColorConstants.blueColor,
+                  ),
+                  16.0.spaceY,
+                  durationWidget(scheduleProviderWatch),
+                  10.0.spaceY,
+                  BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
+                  23.0.spaceY,
+                  generateSlotTime(scheduleProviderWatch),
+                  11.0.spaceY,
+                  PrimaryButton(
+                    height: 55,
+                    title: LocaleKeys.scheduleAppointment.tr(),
+                    onPressed: () async {
+                      if (scheduleProviderWatch.selectedSlotData != null) {
+                        scheduleProviderRead.getPayValue();
+                        final result = await context.toPushNamed(RoutesConstants.scheduleAppointmentScreen);
+                        if (result == 'callApi') {
+                          scheduleProviderRead.getSlotsApi();
+                        }
+                      } else {
+                        FlutterToast().showToast(msg: LocaleKeys.pleaseSelectSlot.tr());
+                      }
+                    },
+                    fontSize: 15,
+                    titleColor: ColorConstants.blueColor,
+                  ).addPaddingXY(paddingX: 29, paddingY: 12),
+                ],
+              )
+            : NoWeeklyAvailability();
   }
 
   Widget slotWidget({required String dayText, required String dayTimeText}) {
@@ -197,7 +202,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
           ),
         ),
         SizedBox(
-          height: 90,
+          height: 100,
           child: scheduleCallWatch.isLoadingSlot
               ? SlotsShimmer()
               : scheduleCallWatch.slotList.isNotEmpty

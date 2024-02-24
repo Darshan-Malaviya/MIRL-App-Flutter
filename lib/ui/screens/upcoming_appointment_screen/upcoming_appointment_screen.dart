@@ -107,7 +107,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                   ).addPaddingX(20),
                   if (upcomingWatch.upcomingAppointment.isNotEmpty) ...[
                     if (upcomingWatch.isListLoading ?? false) ...[
-                      Center(child: CupertinoActivityIndicator(radius: 12, color: ColorConstants.primaryColor)),
+                      Center(child: CupertinoActivityIndicator(radius: 12, color: ColorConstants.primaryColor)).addMarginTop(50),
                     ] else ...[
                       ListView.separated(
                         shrinkWrap: true,
@@ -197,7 +197,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                     ),
                                   ],
                                 ),
-                                12.0.spaceY,
+                                widget.role == 1 ? 12.0.spaceY : 0.0.spaceY,
                                 Row(
                                   children: [
                                     Visibility(

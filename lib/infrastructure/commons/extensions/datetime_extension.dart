@@ -96,11 +96,7 @@ extension DateTimeFormatter on String {
     try {
       DateTime now = DateTime.now();
       DateTime localTime = DateTime.parse(this).toLocal();
-      // debugPrint('localTime=====================${localTime}');
-      // debugPrint('this=====================$this');
       DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, localTime.hour, localTime.minute);
-      // debugPrint('setTimeOfDay=====================$setTimeOfDay');
-
       return setTimeOfDay;
     } catch (e) {
       Logger().d("Exception on toLocaleFromUtcStart : $e");
@@ -114,8 +110,8 @@ extension DateTimeFormatter on String {
       DateTime now = DateTime.now();
       DateTime endLocalTime = DateTime.parse(this).toLocal();
       DateTime startLocalTime = DateTime.parse(startTime).toLocal();
-      String value1 = DateFormat('HH:mm:ss').format(endLocalTime);
-      String value2 = DateFormat('HH:mm:ss').format(startLocalTime);
+      String value1 = DateFormat('h:mm').format(endLocalTime);
+      String value2 = DateFormat('h:mm').format(startLocalTime);
       if (value1 == value2) {
         DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute);
         return setTimeOfDay;
@@ -132,7 +128,7 @@ extension DateTimeFormatter on String {
   ///December 21, 2023
   String? toDisplayDateWithMonth() {
     try {
-      DateTime localTime = DateFormat('yyyy-MM-dd').parse(this,true).toLocal();
+      DateTime localTime = DateFormat('yyyy-MM-dd').parse(this, true).toLocal();
       String date = DateFormat(' MMMM d, yyyy').format(localTime);
       return date;
     } catch (e) {

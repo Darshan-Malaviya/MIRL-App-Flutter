@@ -26,6 +26,8 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   String _selectedUTCDate = '';
 
+  String userLocalTimeZone = '';
+
   List<SlotsData> get slotList => _slotList;
   List<SlotsData> _slotList = [];
 
@@ -76,10 +78,17 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   void getSelectedDate(DateTime dateTime) {
     final now = DateTime.now().toLocal();
-    selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second);
+    selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second).toUtc();
     _selectedUTCDate = selectedDate?.toIso8601String() ?? '';
     print(_selectedUTCDate);
     getSlotsApi();
+    notifyListeners();
+  }
+
+  void getTimeZone() async {
+    final Duration timeDuration = DateTime.now().timeZoneOffset;
+    final String timeZone = DateTime.now().timeZoneName;
+    userLocalTimeZone = '$timeZone (UTC ${timeDuration.inHours}:${timeDuration.inMinutes})';
     notifyListeners();
   }
 

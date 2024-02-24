@@ -20,21 +20,20 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
     return Column(children: [
       if ((homeProviderWatch.homeData?.categories?.isNotEmpty ?? false) && homeProviderWatch.homeData?.categories != null) ...[
         SizedBox(
-          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 235,
+          height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3)
+              ? 100
+              : ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 6)
+                  ? 265
+                  : 365,
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
             itemBuilder: (BuildContext context, int index) {
               return CategoryCommonView(
-                onTap: (){
+                onTap: () {
                   context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                      args: SelectedCategoryArgument(
-                          categoryId: homeProviderWatch.homeData?.categories?[index].id.toString() ?? '',
-                          isFromExploreExpert: false));
+                      args: SelectedCategoryArgument(categoryId: homeProviderWatch.homeData?.categories?[index].id.toString() ?? '', isFromExploreExpert: false));
                 },
                 categoryName: homeProviderWatch.homeData?.categories?[index].name?.toUpperCase() ?? '',
                 imageUrl: homeProviderWatch.homeData?.categories?[index].image ?? '',

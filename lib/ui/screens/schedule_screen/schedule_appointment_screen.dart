@@ -12,6 +12,7 @@ class ScheduleAppointmentScreen extends ConsumerStatefulWidget {
 }
 
 class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentScreen> {
+
   @override
   Widget build(BuildContext context) {
     final scheduleWatch = ref.watch(scheduleCallProvider);
@@ -76,7 +77,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                     10.0.spaceX,
                     HeadlineMediumText(
                       fontSize: 30,
-                      title: '-',
+                      title: scheduleWatch.expertData?.overAllRating.toString() ?? '0',
                       titleColor: ColorConstants.overallRatingColor,
                       shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                     ),
@@ -134,7 +135,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
             ),
             10.0.spaceY,
             BodyMediumText(
-              title: '${LocaleKeys.scheduleDescription.tr()} ${scheduleWatch.expertData?.userName ?? ''}',
+              title: '${LocaleKeys.scheduleDescription.tr()} ${scheduleWatch.expertData?.userName ?? 'Anonymous'}',
               fontFamily: FontWeightEnum.w500.toInter,
               titleColor: ColorConstants.buttonTextColor,
               titleTextAlign: TextAlign.center,

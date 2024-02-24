@@ -13,6 +13,7 @@ import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 
+
 class InstantCallRequestDialog extends ConsumerStatefulWidget {
   final InstanceCallDialogArguments args;
 
@@ -23,19 +24,15 @@ class InstantCallRequestDialog extends ConsumerStatefulWidget {
 }
 
 class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> {
+
   Future<void> instanceRequestTimerFunction() async {
     await Future.delayed(const Duration(seconds: 1));
     if (instanceRequestTimerNotifier.value != 0 && instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting) {
-      instanceRequestTimerNotifier.value = instanceRequestTimerNotifier.value - 1;
+      instanceRequestTimerNotifier.value =  instanceRequestTimerNotifier.value - 1;
 
-      if (widget.args.userID == SharedPrefHelper.getUserId) {
-        ref.read(socketProvider).timerEmit(
-              userId: int.parse((widget.args.userID.toString())),
-              expertId: int.parse((widget.args.expertId.toString())),
-              callRoleEnum: CallRoleEnum.user,
-              timer: instanceRequestTimerNotifier.value,
-              timerType: CallTimerEnum.request,
-            );
+      if(widget.args.userID == SharedPrefHelper.getUserId) {
+        ref.read(socketProvider).timerEmit(userId: int.parse((widget.args.userID.toString())),expertIdList: [int.parse((widget.args.expertId.toString()))],
+          callRoleEnum: CallRoleEnum.user, timer:instanceRequestTimerNotifier.value, timerType: CallTimerEnum.request, );
       }
       instanceRequestTimerFunction();
     } else {
@@ -44,16 +41,18 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
     }
   }
 
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
       instanceRequestTimerNotifier.addListener(() {
         if (instanceRequestTimerNotifier.value == 120) {
           instanceRequestTimerFunction();
         } else {
-          if ((instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting && widget.args.userID == SharedPrefHelper.getUserId)
-              // || (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)
-              ) {
+          if((instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting && widget.args.userID == SharedPrefHelper.getUserId)
+          // || (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)
+          ) {
             if (instanceRequestTimerNotifier.value == 0 && widget.args.userID == SharedPrefHelper.getUserId.toString()) {
               instanceCallEnumNotifier.value = CallTypeEnum.requestTimeout;
               ref.read(socketProvider).updateRequestStatusEmit(
@@ -61,10 +60,12 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                   userId: widget.args.userID,
                   callStatusEnum: CallRequestStatusEnum.timeout,
                   callRoleEnum: CallRoleEnum.user);
+
             }
           }
         }
       });
+
     });
     super.initState();
   }
@@ -79,7 +80,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
+      canPop: false,
       child: Scaffold(
         appBar: AppBarWidget(
           preferSize: 0,
@@ -94,10 +95,9 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 40.0.spaceY,
-                if ((instanceCallEnumNotifier.value == CallTypeEnum.callRequest ||
-                    instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting ||
-                    instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested ||
-                    instanceCallEnumNotifier.value == CallTypeEnum.multiConnectReceiverRequested)) ...[
+                if( (instanceCallEnumNotifier.value == CallTypeEnum.callRequest
+                    || instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
+                || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested))...[
                   TitleLargeText(
                     title: instanceCallEnumNotifier.value.titleName,
                     fontSize: 20,
@@ -105,18 +105,18 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                     titleColor: ColorConstants.primaryColor,
                   ),
                   10.0.spaceY,
-                  ValueListenableBuilder(
-                      valueListenable: instanceRequestTimerNotifier,
-                      builder: (BuildContext context, int value, Widget? child) {
-                        if (instanceRequestTimerNotifier.value >= 1) {
-                          return DisplayLargeText(
-                              title: Duration(seconds: instanceRequestTimerNotifier.value).toTimeString(),
-                              fontSize: 65,
-                              titleColor: ColorConstants.primaryColor);
-                        }
-                        return SizedBox.shrink();
-                      }),
-                ] else ...[
+                    ValueListenableBuilder(
+                        valueListenable: instanceRequestTimerNotifier,
+                        builder: (BuildContext context, int value, Widget? child) {
+                          if(instanceRequestTimerNotifier.value >= 1) {
+                            return DisplayLargeText(
+                                title: Duration(seconds: instanceRequestTimerNotifier.value).toTimeString(),
+                                fontSize: 65,
+                                titleColor: ColorConstants.primaryColor);
+                          }
+                         return SizedBox.shrink();
+                        }),
+                ] else ... [
                   TitleLargeText(
                     title: instanceCallEnumNotifier.value.titleName,
                     fontSize: 30,
@@ -168,7 +168,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                                 boxFit: BoxFit.cover,
                               ),
                             ),
-                            if ((widget.args.name?.isNotEmpty ?? false) && (widget.args.name != 'null')) ...[
+                            if( (widget.args.name?.isNotEmpty ?? false) && (widget.args.name != 'null'))...[
                               10.0.spaceY,
                               BodyMediumText(
                                 title: widget.args.name ?? '',
@@ -183,32 +183,31 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                       ),
                       20.0.spaceY,
                       ValueListenableBuilder(
-                          valueListenable: allCallDurationNotifier,
-                          builder: (BuildContext context, int value, Widget? child) {
-                            return Visibility(
-                              visible: allCallDurationNotifier.value != 0 &&
-                                  (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting ||
-                                      instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested),
-                              replacement: SizedBox.shrink(),
-                              child: TitleSmallText(
-                                title:
-                                    "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
-                                fontFamily: FontWeightEnum.w400.toInter,
-                                titleTextAlign: TextAlign.center,
-                                titleColor: ColorConstants.textColor,
-                              ),
-                            );
-                          }),
+                       valueListenable: allCallDurationNotifier,
+                        builder: (BuildContext context, int value, Widget? child) {
+                          return Visibility(
+                            visible: allCallDurationNotifier.value != 0 && (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
+                                || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested),
+                            replacement: SizedBox.shrink(),
+                            child: TitleSmallText(
+                              title: "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
+                              fontFamily: FontWeightEnum.w400.toInter,
+                              titleTextAlign: TextAlign.center,
+                              titleColor: ColorConstants.textColor,
+                            ),
+                          );
+                        }
+                      ),
                       20.0.spaceY,
-                      (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting ||
-                              instanceCallEnumNotifier.value == CallTypeEnum.requestApproved ||
-                              instanceCallEnumNotifier.value == CallTypeEnum.requestDeclined)
+                      (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
+                          || instanceCallEnumNotifier.value == CallTypeEnum.requestApproved
+                       || instanceCallEnumNotifier.value == CallTypeEnum.requestDeclined)
                           ? Center(
                               child: PrimaryButton(
                                 title: instanceCallEnumNotifier.value.secondButtonName,
                                 width: 130,
                                 onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                buttonColor: widget.args.secondBtnColor ?? ColorConstants.primaryColor,
+                                buttonColor: ColorConstants.primaryColor,
                                 titleColor: ColorConstants.textColor,
                               ),
                             )
@@ -218,9 +217,10 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                                 Flexible(
                                   child: PrimaryButton(
                                     title: instanceCallEnumNotifier.value.secondButtonName,
-                                    // width: 130,
+                                   // width: 130,
                                     onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                    buttonColor: widget.args.secondBtnColor ?? ColorConstants.primaryColor,
+                                    buttonColor: (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested)
+                                        ? ColorConstants.yellowButtonColor : ColorConstants.primaryColor,
                                     titleColor: ColorConstants.textColor,
                                   ),
                                 ).addVisibility(instanceCallEnumNotifier.value.secondButtonName.isNotEmpty),
@@ -255,21 +255,18 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                 ),
                 20.0.spaceY,
                 Visibility(
-                  visible: instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested ||
-                      instanceCallEnumNotifier.value == CallTypeEnum.multiConnectReceiverRequested,
+                  visible: instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested,
                   replacement: SizedBox.shrink(),
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: InkWell(
-                      onTap: () {
+                      onTap: (){
                         NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
-                            args: BlockUserArgs(
-                                userName: widget.args.name ?? '',
+                            args: BlockUserArgs(userName: widget.args.name ?? '',
                                 imageURL: widget.args.image ?? '',
                                 userId: int.parse(widget.args.userID),
-                                userRole: 2,
-                                reportName: '',
-                                isFromInstantCall: true));
+                                userRole: 2,reportName: '',isFromInstantCall: true)
+                        );
                       },
                       child: TitleSmallText(
                         title: LocaleKeys.blockUser.tr(),

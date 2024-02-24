@@ -17,6 +17,8 @@ class ColorConstants {
   static const categoryList = Color(0xFFF0F0F0);
   static const scaffoldBg = Color(0xFFF4F3F3);
   static const emptyTextColor = Color(0xFF7E7E7E);
+  static const lightPrimaryColor = Color(0xFFF0CBF9);
+  static const lightYellowColor = Color(0xFFFFECBD);
 
   static Color primaryColor = const Color(0xffD97CF0);
   static Color secondaryColor = const Color(0xffED1C22);
@@ -28,6 +30,7 @@ class ColorConstants {
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
   static Color greenColor = const Color(0xFFABDF75);
   static Color redColor = const Color(0xFFFE654F);
+  static Color redMediumColor = const Color(0xFFDA8380);
   static Color sliderColor = const Color(0xFF85C7F2);
   static Color overallRatingColor = const Color(0xFFFF6666);
   static Color blueColor = const Color(0xFF01295F);

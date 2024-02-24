@@ -12,6 +12,7 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   final bool isFromHomePage;
+
   const ExploreExpertScreen({super.key, required this.isFromHomePage});
 
   @override
@@ -26,7 +27,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(filterProvider).clearExploreExpertSearchData();
       ref.read(filterProvider).clearExploreController();
-      ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context);
+      ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
@@ -62,7 +63,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
             children: [
               Row(
                 children: [
-                  if(!widget.isFromHomePage)...[
+                  if (!widget.isFromHomePage) ...[
                     InkWell(
                         child: Image.asset(ImageConstants.backIcon),
                         onTap: () {
@@ -84,7 +85,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                               child: Icon(Icons.close),
                             )
                           : SizedBox.shrink(),
-                      hintText: LocaleKeys.searchCategory.tr(),
+                      hintText: LocaleKeys.typeAnyCategoryHint.tr(),
                       hintTextColor: ColorConstants.blackColor,
                       enabledBorderColor: ColorConstants.dropDownBorderColor,
                       focusedBorderColor: ColorConstants.dropDownBorderColor,
@@ -130,6 +131,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                             context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
                           },
                           prefixIcon: ImageConstants.filter,
+                          titleColor: ColorConstants.blackColor,
                           buttonTextFontFamily: FontWeightEnum.w400.toInter,
                           prefixIconPadding: 10,
                           padding: EdgeInsets.symmetric(horizontal: 100),
