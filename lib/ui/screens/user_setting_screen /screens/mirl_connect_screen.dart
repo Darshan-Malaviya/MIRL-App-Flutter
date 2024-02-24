@@ -15,14 +15,30 @@ class MirlConnectScreen extends ConsumerStatefulWidget {
 
 class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
   @override
+  void initState() {
+    super.initState();
+    mirlConnectView.value = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.purpleDarkColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
-
-            Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
+            Stack(
+              children: [
+                Image.asset(ImageConstants.mirlConnect, fit: BoxFit.fitWidth, width: double.infinity),
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: InkWell(
+                    child: Image.asset(ImageConstants.backIcon, color: Colors.white),
+                    onTap: () => context.toPop(),
+                  ),
+                ).addMarginXY(marginX: 20, marginY: 40),
+              ],
+            ),
             Container(
               decoration: BoxDecoration(
                 color: ColorConstants.whiteColor,
@@ -33,9 +49,13 @@ class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
                 children: [
                   Center(
                     child: HeadlineMediumText(
-                      title: 'MIRL Connect',
+                      title: LocaleKeys.connect.tr(),
                       fontSize: 30,
                       titleColor: ColorConstants.bottomTextColor,
+                      shadow: [
+                        Shadow(
+                            offset: Offset(0, 1), blurRadius: 4, color: ColorConstants.mirlConnectShadowColor.withOpacity(0.50))
+                      ],
                     ),
                   ),
                   20.0.spaceY,
@@ -44,9 +64,17 @@ class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
                     titleColor: ColorConstants.blackColor,
                     fontFamily: FontWeightEnum.w600.toInter,
                   ),
-                  //ActivateYourMirlConnectCodeWidget(),
-              //    GetYourOwnMirlConnectCodeWidget(),
-                  YourMirlConnectCodeWidget(),
+                  ValueListenableBuilder(
+                    valueListenable: mirlConnectView,
+                    builder: (context, value, child) {
+                      if (mirlConnectView.value == 0) {
+                        return ActivateYourMirlConnectCodeWidget();
+                      } else if (mirlConnectView.value == 1) {
+                        return GetYourOwnMirlConnectCodeWidget();
+                      }
+                      return YourMirlConnectCodeWidget();
+                    },
+                  ),
                   20.0.spaceY,
                 ],
               ).addAllPadding(32),

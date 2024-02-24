@@ -23,6 +23,14 @@ class ReportUserProvider extends ChangeNotifier {
   int get reportUserListPageNo => _reportUserListPageNo;
   int _reportUserListPageNo = 1;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
+  // void changeLoading(bool value) {
+  //   _isLoading = value;
+  //   notifyListeners();
+  // }
+
   List<ReportList> _reportListDetails = [];
 
   List<ReportList> get reportListDetails => _reportListDetails;
@@ -42,21 +50,38 @@ class ReportUserProvider extends ChangeNotifier {
 
   void changeReportAndThanksScreen({required int roleId, required String reportName, required String expertId}) {
     _pages = [
-      ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName, expertId: expertId)),
+      ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName, expertId: expertId) ),
       ThanksWidget(reportName: 'BACK TO PROFILE'),
     ];
   }
 
-  Future<void> getAllReportListApiCall({required int role}) async {
-    CustomLoading.progressDialog(isLoading: true);
+  Future<void> getAllReportListApiCall({required int role, bool isFullScreenLoader = false}) async {
+    if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: true);
+    } else if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: true);
+      _isLoading = true;
+      notifyListeners();
+    } else {
+      _isLoading = true;
+    }
+
     ApiHttpResult response = await _reportRepository.reportListApi(limit: 10, page: _reportUserListPageNo, role: role);
-    CustomLoading.progressDialog(isLoading: false);
+    if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: false);
+    } else if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: false);
+      _isLoading = false;
+      notifyListeners();
+    } else {
+      _isLoading = false;
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is ReportListResponseModel) {
           ReportListResponseModel responseModel = response.data;
           _reportListDetails.addAll(responseModel.data ?? []);
-          if (_reportUserListPageNo == responseModel.pagination?.itemCount) {
+          if (_reportUserListPageNo == responseModel.pagination?.pageCount) {
             _reachedCategoryLastPage = true;
           } else {
             _reportUserListPageNo = _reportUserListPageNo + 1;

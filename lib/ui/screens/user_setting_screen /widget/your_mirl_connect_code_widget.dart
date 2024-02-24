@@ -28,16 +28,18 @@ class _YourMirlConnectCodeWidgetState extends ConsumerState<YourMirlConnectCodeW
           buttonColor: ColorConstants.primaryColor,
           title: LocaleKeys.yourMirlConnectCode.tr(),
           titleColor: ColorConstants.textColor,
-          onPressed: () {},
-          //  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
+          onPressed: () => context.toPop(),
         ),
         20.0.spaceY,
         TextFormFieldWidget(
+          borderWidth: 1,
           labelTextSpace: 0.0,
-          enabledBorderColor: ColorConstants.borderLightColor,
-          onTap: () {},
           height: 45,
+          onFieldSubmitted: (value) {
+            context.unFocusKeyboard();
+          },
           alignment: Alignment.center,
+          textInputAction: TextInputAction.done,
         ),
         TitleSmallText(
           title: LocaleKeys.inviteYourFriend.tr(),

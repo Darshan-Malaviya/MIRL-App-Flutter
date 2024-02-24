@@ -26,6 +26,7 @@ class _ScheduleCallScreenState extends ConsumerState<ScheduleCallScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBarWidget(
         leading: InkWell(
@@ -40,8 +41,7 @@ class _ScheduleCallScreenState extends ConsumerState<ScheduleCallScreen> {
           children: [
             TitleLargeText(title: LocaleKeys.scheduleCall.tr(), fontSize: 20),
             22.0.spaceY,
-            //NoWeeklyAvailability(),
-            WeeklyAvailability()
+            WeeklyAvailability(),
           ],
         ),
       ),

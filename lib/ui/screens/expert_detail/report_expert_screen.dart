@@ -1,3 +1,4 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
@@ -13,6 +14,14 @@ class ReportExpertScreen extends ConsumerStatefulWidget {
 }
 
 class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0, isFullScreenLoader: true);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +65,11 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
         controller: controller,
         child: ReportThisUserWidget(
             args: BlockUserArgs(
-                userRole: widget.args.userRole, reportName: widget.args.reportName, expertId: widget.args.expertId)),
+          userRole: widget.args.userRole,
+          reportName: widget.args.reportName,
+          expertId: widget.args.expertId,
+          controller: controller,
+        )),
       ),
     );
   }

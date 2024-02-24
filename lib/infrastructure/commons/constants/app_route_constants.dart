@@ -25,6 +25,7 @@ import 'package:mirl/ui/screens/edit_profile/set_your_weekly_availability_screen
 import 'package:mirl/ui/screens/edit_profile/your_bank_account_details_screen.dart';
 import 'package:mirl/ui/screens/edit_profile/your_expert_profile_name.dart';
 import 'package:mirl/ui/screens/edit_profile/your_mirl_id_update_screen.dart';
+import 'package:mirl/ui/screens/expert_call_history_screen/expert_call_history_screen.dart';
 import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/expert_category_screen.dart';
 import 'package:mirl/ui/screens/expert_category_screen/selected_category_screen.dart';
@@ -55,7 +56,15 @@ import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/suggestion/suggest_new_experties_screen.dart';
 import 'package:mirl/ui/screens/suggestion/thanks_giving_screen.dart';
 import 'package:mirl/ui/screens/upcoming_appointment_screen/upcoming_appointment_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/edit_your_email_id_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/edit_your_name_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/edit_your_phone_number_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/help_and_terms_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/screens/mirl_connect_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/notification_and_preferences_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/payment_details_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/report_an_issue_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen%20/screens/seekar_call_history_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
@@ -145,6 +154,7 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
       case RoutesConstants.reportUserScreen:
         return MaterialPageRoute(builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
+        return MaterialPageRoute(builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());
       case RoutesConstants.reportExpertScreen:
@@ -174,10 +184,28 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => CmsScreen(args: settings.arguments as CmsArgs));
       case RoutesConstants.mirlConnectScreen:
         return MaterialPageRoute(builder: (_) => MirlConnectScreen());
+      case RoutesConstants.helpAndTermsScreen:
+        return MaterialPageRoute(builder: (_) => HelpAndTermsScreen());
+        case RoutesConstants.notificationAndPreferencesScreen:
+        return MaterialPageRoute(builder: (_) => NotificationAndPreferencesScreen());
+        case RoutesConstants.reportAnIssueScreen:
+        return MaterialPageRoute(builder: (_) => ReportAnIssueScreen());
+        case RoutesConstants.paymentDetailsScreen:
+        return MaterialPageRoute(builder: (_) => PaymentDetailsScreen());
+        case RoutesConstants.seekerCallHistoryScreen:
+        return MaterialPageRoute(builder: (_) => SeekerCallHistoryScreen());
       case RoutesConstants.thanksGivingScreen:
         return MaterialPageRoute(builder: (_) => const ThanksGivingScreen());
       case RoutesConstants.suggestNewExpertiseScreen:
         return MaterialPageRoute(builder: (_) => const SuggestNewExpertiseScreen());
+        case RoutesConstants.editYourNameScreen:
+        return MaterialPageRoute(builder: (_) => const EditYourNameScreen());
+        case RoutesConstants.editYourEmailIdScreen:
+        return MaterialPageRoute(builder: (_) => const EditYourEmailIdScreen());
+        case RoutesConstants.editYourPhoneNumberScreen:
+        return MaterialPageRoute(builder: (_) => const EditYourPhoneNumberScreen());
+        case RoutesConstants.expertCallHistoryScreen:
+        return MaterialPageRoute(builder: (_) => const ExpertCallHistoryScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

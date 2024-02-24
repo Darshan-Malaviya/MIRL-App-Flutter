@@ -8,6 +8,9 @@ class NotificationProvider extends ChangeNotifier {
   int get currentView => _currentView;
   int _currentView = 0;
 
+  bool get isVisible => _isVisible;
+  bool _isVisible = false;
+
   List<Widget> get pages => _pages;
   List<Widget> _pages = [];
 
@@ -49,4 +52,10 @@ class NotificationProvider extends ChangeNotifier {
       }
     });
   }
+
+// @override
+// void dispose() {
+//   super.dispose();
+//   timer?.cancel();
+// }
 }

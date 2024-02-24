@@ -70,7 +70,7 @@ class NoWeeklyAvailability extends StatelessWidget {
                 fontFamily: FontWeightEnum.w600.toInter,
                 titleTextAlign: TextAlign.center,
                 titleColor: ColorConstants.buttonTextColor,
-                maxLine: 5,
+                maxLine: 10,
               )
             ],
           ).addPaddingXY(paddingX: 28, paddingY: 24),

@@ -49,4 +49,13 @@ class RoutesConstants {
   static const String earningReportScreen = '/earningReportScreen';
   static const String cmsScreen = '/cmsScreen';
   static const String mirlConnectScreen = '/mirlConnectScreen';
+  static const String helpAndTermsScreen = '/helpAndTermsScreen';
+  static const String notificationAndPreferencesScreen = '/notificationAndPreferencesScreen';
+  static const String reportAnIssueScreen = '/reportAnIssueScreen';
+  static const String paymentDetailsScreen = '/paymentDetailsScreen';
+  static const String seekerCallHistoryScreen = '/seekerCallHistoryScreen';
+  static const String editYourNameScreen = '/editYourNameScreen';
+  static const String editYourEmailIdScreen = '/editYourEmailIdScreen';
+  static const String editYourPhoneNumberScreen = '/editYourPhoneNumberScreen';
+  static const String expertCallHistoryScreen = '/expertCallHistoryScreen';
 }

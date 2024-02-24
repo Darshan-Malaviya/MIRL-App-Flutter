@@ -13,7 +13,7 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
   @override
   void initState() {
     super.initState();
-    ref.read(notificationProvider).startTimer();
+  //  ref.read(notificationProvider).startTimer();
   }
 
   @override
