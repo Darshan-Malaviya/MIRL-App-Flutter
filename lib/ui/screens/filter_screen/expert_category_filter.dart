@@ -97,7 +97,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               CommonBottomSheet.bottomSheet(
                   context: context,
                   child: FilterBottomSheetWidget(
-                      itemList: filterWatch.yesNoSelectionList.map((e) => e).toList(),
+                      itemList: filterWatch.callSelectionList.map((e) => e).toList(),
                       title: LocaleKeys.selectCallAvailability.tr().toUpperCase(),
                       onTapItem: (item) {
                         filterRead.setValueOfCall(item);
@@ -110,7 +110,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               CommonBottomSheet.bottomSheet(
                   context: context,
                   child: FilterBottomSheetWidget(
-                      itemList: filterWatch.ratingList.map((e) => e).toList(),
+                      itemList: filterWatch.ratingList.map((e) => e.title).toList(),
                       title: LocaleKeys.pickRating.tr().toUpperCase(),
                       onTapItem: (item) {
                         filterRead.setRating(item);
@@ -251,7 +251,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                                   ? 'ASC'
                                   : 'DESC'
                               : null,
-                      overAllRating: filterWatch.ratingController.text.isNotEmpty ? filterWatch.ratingController.text : null,
+                      overAllRating: filterWatch.selectedRating != null? filterWatch.selectedRating.toString() : null,
                       ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
                           ? null
                           : filterWatch.sortBySelectedItem == 'REVIEW SCORE'
@@ -287,7 +287,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                                   ? 'ASC'
                                   : 'DESC'
                               : null,
-                      overAllRating: filterWatch.ratingController.text.isNotEmpty ? filterWatch.ratingController.text : null,
+                      overAllRating: filterWatch.selectedRating != null? filterWatch.selectedRating.toString() : null,
                       ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
                           ? null
                           : filterWatch.sortBySelectedItem == 'REVIEW SCORE'

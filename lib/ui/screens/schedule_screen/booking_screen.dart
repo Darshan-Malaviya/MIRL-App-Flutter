@@ -15,6 +15,14 @@ class BookingConfirmScreen extends ConsumerStatefulWidget {
 
 class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(scheduleCallProvider).getTimeZone();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final scheduleWatch = ref.watch(scheduleCallProvider);
     final scheduleRead = ref.read(scheduleCallProvider);
@@ -30,8 +38,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
       body: Stack(
         children: [
           NetworkImageWidget(
-            imageURL:
-                scheduleWatch.appointmentData?.expertDetail?.expertProfile ?? '',
+            imageURL: scheduleWatch.appointmentData?.expertDetail?.expertProfile ?? '',
             isNetworkImage: true,
             boxFit: BoxFit.cover,
           ),
@@ -125,7 +132,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             ),
             20.0.spaceY,
             LabelSmallText(
-              title: '${LocaleKeys.yourTimeZone.tr()}:INDIAN STANDARD TIME (UTC +5:30)',
+              title: '${LocaleKeys.yourTimeZone.tr()}:${scheduleWatch.userLocalTimeZone}',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
             ),
@@ -138,7 +145,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             30.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.checkNotification.tr(),
-              onPressed: ()=>context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 2),
+              onPressed: () => context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 2),
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,
             ),

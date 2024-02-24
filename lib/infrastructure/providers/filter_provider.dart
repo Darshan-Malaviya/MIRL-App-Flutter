@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
@@ -37,13 +39,13 @@ class FilterProvider extends ChangeNotifier {
   TextEditingController experienceOrderController = TextEditingController();
   TextEditingController reviewOrderController = TextEditingController();
 
-  List<String> get yesNoSelectionList => _yesNoSelectionList;
-  List<String> _yesNoSelectionList = ['Yes', 'No'];
+  List<String> get callSelectionList => _callSelectionList;
+  List<String> _callSelectionList = [LocaleKeys.availableForInstantCall.tr(), LocaleKeys.scheduleCallOnly.tr()];
 
   List<CommonSelectionModel> get genderList => _genderList;
   List<CommonSelectionModel> _genderList = [
-    CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
     CommonSelectionModel(title: 'Female', isSelected: false, selectType: 2),
+    CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
     CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 3),
   ];
 
@@ -53,16 +55,22 @@ class FilterProvider extends ChangeNotifier {
   List<String> sortByItems = ['SORT BY', 'PRICE', 'REVIEW SCORE', 'EXPERIENCE'];
   List<String> orderFilterList = ['HIGH TO LOW', ' LOW TO HIGH'];
 
-  List<String> get ratingList => _ratingList;
-  List<String> _ratingList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-
-  int? _isCallSelect;
+  List<CommonSelectionModel> get ratingList => _ratingList;
+  List<CommonSelectionModel> _ratingList = [
+    CommonSelectionModel(title: 'Over 8', isSelected: false, selectType: 8),
+    CommonSelectionModel(title: 'Over 6', isSelected: false, selectType: 6),
+    CommonSelectionModel(title: 'Over 4', isSelected: false, selectType: 4),
+    CommonSelectionModel(title: 'Any rating', isSelected: false, selectType: 0),
+  ];
 
   int? get isCallSelect => _isCallSelect;
-
-  int? _selectGender;
+  int? _isCallSelect;
 
   int? get selectGender => _selectGender;
+  int? _selectGender;
+
+  int? get selectedRating => _selectedRating;
+  int? _selectedRating;
 
   List<CategoryIdNameCommonModel> get allCategory => _allCategory;
   List<CategoryIdNameCommonModel> _allCategory = [];
@@ -239,6 +247,7 @@ class FilterProvider extends ChangeNotifier {
       categoryController.clear();
     } else if (commonSelectionModel[index].title == FilterType.OverAllRating.name) {
       ratingController.clear();
+      _selectedRating = null;
     }
     commonSelectionModel.removeAt(index);
     if (isFromExploreExpert) {
@@ -303,11 +312,17 @@ class FilterProvider extends ChangeNotifier {
     _topicPageNo = 1;
     _selectedTopicList = [];
     _selectGender = null;
-    _ratingList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    _yesNoSelectionList = ['Yes', 'No'];
+    _selectedRating = null;
+    _ratingList = [
+      CommonSelectionModel(title: 'Over 8', isSelected: false, selectType: 8),
+      CommonSelectionModel(title: 'Over 6', isSelected: false, selectType: 6),
+      CommonSelectionModel(title: 'Over 4', isSelected: false, selectType: 4),
+      CommonSelectionModel(title: 'Any rating', isSelected: false, selectType: 0),
+    ];
+    _callSelectionList = [LocaleKeys.availableForInstantCall.tr(), LocaleKeys.scheduleCallOnly.tr()];
     _genderList = [
-      CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
       CommonSelectionModel(title: 'Female', isSelected: false, selectType: 2),
+      CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
       CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 3),
     ];
     notifyListeners();
@@ -393,7 +408,7 @@ class FilterProvider extends ChangeNotifier {
 
   void setValueOfCall(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.InstantCall.name);
-    _isCallSelect = (value == 'Yes') ? 1 : 0;
+    _isCallSelect = (value == _callSelectionList.first) ? 1 : 0;
     instantCallAvailabilityController.text = value;
     if (index == -1) {
       commonSelectionModel.add(CommonSelectionModel(title: FilterType.InstantCall.name, value: value));
@@ -420,7 +435,10 @@ class FilterProvider extends ChangeNotifier {
 
   void setRating(String value) {
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.OverAllRating.name);
-    ratingController.text = value;
+    CommonSelectionModel data = _ratingList.firstWhere((element) => element.title == value);
+    ratingController.text = data.title ?? '';
+    _selectedRating = data.selectType ?? 0;
+    data.isSelected = true;
     if (index == -1) {
       commonSelectionModel.add(CommonSelectionModel(title: FilterType.OverAllRating.name, value: value));
     } else {
@@ -467,7 +485,7 @@ class FilterProvider extends ChangeNotifier {
   void setSortByPriceValue({required String order, required String sortByValue}) {
     if (sortByValue == 'SORT BY') {
       sortBySelectedItem = sortByValue;
-      FlutterToast().showToast(msg: 'Please select sort by value first');
+      FlutterToast().showToast(msg: LocaleKeys.selectSortByValueFirst.tr());
       int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.SortBy.name);
       if (index != -1) {
         commonSelectionModel.removeAt(index);
@@ -561,6 +579,9 @@ class FilterProvider extends ChangeNotifier {
         if (response.data != null && response.data is AllCategoryListResponseModel) {
           AllCategoryListResponseModel categoryResponseModel = response.data;
           Logger().d("Successfully call category list api");
+          if (_categoryPageNo == 1) {
+            _allCategory.clear();
+          }
           _allCategory.addAll(categoryResponseModel.data ?? []);
           if (_categoryPageNo == categoryResponseModel.pagination?.pageCount) {
             _reachedCategoryLastPage = true;
@@ -599,6 +620,9 @@ class FilterProvider extends ChangeNotifier {
         if (response.data != null && response.data is AllCategoryListResponseModel) {
           AllCategoryListResponseModel categoryResponseModel = response.data;
           Logger().d("Successfully call topic list api");
+          if (_topicPageNo == 1) {
+            _allTopic.clear();
+          }
           _allTopic.addAll(categoryResponseModel.data ?? []);
           if (_topicPageNo == categoryResponseModel.pagination?.pageCount) {
             _reachedTopicLastPage = true;

@@ -51,6 +51,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
         TableCalenderRangeWidget(
           onDateSelected: (selectedDay, focusedDay) {
             scheduleProviderRead.getSelectedDate(selectedDay);
+            print(selectedDay);
           },
           selectedDay: scheduleProviderWatch.selectedDate,
           fromUpcomingAppointment: false,
@@ -197,7 +198,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
           ),
         ),
         SizedBox(
-          height: 90,
+          height: 100,
           child: scheduleCallWatch.isLoadingSlot
               ? SlotsShimmer()
               : scheduleCallWatch.slotList.isNotEmpty
@@ -230,9 +231,17 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                                 ),
                               ],
                             ),
-                            child: TitleSmallText(
-                              title: data.startTimeUTC?.to12HourTimeFormat() ?? '',
-                              fontSize: 15,
+                            child: Column(
+                              children: [
+                                TitleSmallText(
+                                  title: index.toString(),
+                                  fontSize: 15,
+                                ),
+                                TitleSmallText(
+                                  title: data.startTimeUTC?.to12HourTimeFormat() ?? '',
+                                  fontSize: 15,
+                                ),
+                              ],
                             ),
                           ),
                         );
