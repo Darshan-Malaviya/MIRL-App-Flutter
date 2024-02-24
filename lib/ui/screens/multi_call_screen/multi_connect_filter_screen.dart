@@ -180,7 +180,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                   userId: SharedPrefHelper.getUserId,
                   city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
                   country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                  gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
+                  gender: filterWatch.genderController.text.isNotEmpty ? (filterWatch.selectGender ?? 0).toString() : null,
                   maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
                   minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
                   feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
