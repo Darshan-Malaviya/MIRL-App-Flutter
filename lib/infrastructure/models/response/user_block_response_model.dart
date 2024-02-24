@@ -75,6 +75,15 @@ class BlockDetail {
     }
     return data;
   }
+
+  static Future<BlockDetail?> parseInfo(Map<String, dynamic>? json) async {
+    try {
+      return BlockDetail.fromJson(json ?? {});
+    } catch (e) {
+      Logger().e("BlockDetail exception : $e");
+      return null;
+    }
+  }
 }
 
 class UserDetail {

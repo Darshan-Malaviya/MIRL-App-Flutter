@@ -7,17 +7,24 @@ import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 class ReportThisUserWidget extends ConsumerStatefulWidget {
   final BlockUserArgs args;
 
-
-  const   ReportThisUserWidget({super.key, required this.args});
+  const ReportThisUserWidget({super.key, required this.args});
 
   @override
   ConsumerState<ReportThisUserWidget> createState() => _ReportThisUserWidgetState();
 }
 
 class _ReportThisUserWidgetState extends ConsumerState<ReportThisUserWidget> {
+  // @override
+  // void initState() {
+  //   ref.read(reportUserProvider).changeReportAndThanksScreen(
+  //       roleId: widget.args.userRole ?? 0, reportName: widget.args.reportName ?? '', expertId: widget.args.expertId ?? '');
+  //   super.initState();
+  // }
 
-  @override
   void initState() {
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    //   ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0, isFullScreenLoader: true);
+    // });
     ref.read(reportUserProvider).changeReportAndThanksScreen(
         roleId: widget.args.userRole ?? 0, reportName: widget.args.reportName ?? '', expertId: widget.args.expertId ?? '');
     if (widget.args.controller != null) {

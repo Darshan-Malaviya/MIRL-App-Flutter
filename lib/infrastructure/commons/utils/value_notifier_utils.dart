@@ -12,6 +12,7 @@ ValueNotifier<CallTypeEnum> instanceCallEnumNotifier = ValueNotifier<CallTypeEnu
 ValueNotifier<CallConnectStatusEnum> callConnectNotifier = ValueNotifier<CallConnectStatusEnum>(CallConnectStatusEnum.ringing);
 ValueNotifier<bool> changeVideoCallView = ValueNotifier<bool>(true);
 ValueNotifier<int> mirlConnectView = ValueNotifier<int>(0);
+ValueNotifier<int> reportView = ValueNotifier<int>(0);
 ValueNotifier<String> activeRoute = ValueNotifier<String>("/");
 
 

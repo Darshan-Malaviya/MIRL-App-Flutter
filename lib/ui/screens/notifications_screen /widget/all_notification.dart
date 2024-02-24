@@ -3,9 +3,11 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class AllNotificationTypeNameWidget extends ConsumerStatefulWidget {
   final String notificationName;
- // final int index;
 
-  const AllNotificationTypeNameWidget({super.key, required this.notificationName});
+  // final int index;
+  final bool isSelectedShadow;
+
+  const AllNotificationTypeNameWidget({super.key, required this.notificationName, required this.isSelectedShadow});
 
   @override
   ConsumerState<AllNotificationTypeNameWidget> createState() => _AllNotificationTypeNameWidgetState();
@@ -21,12 +23,12 @@ class _AllNotificationTypeNameWidgetState extends ConsumerState<AllNotificationT
       children: [
         InkWell(
           child: ShadowContainer(
-            shadowColor: notificationProviderWatch.isVisible
-                ? ColorConstants.primaryColor
-                : ColorConstants.blackColor.withOpacity(0.1),
-            offset: Offset(0, 2),
-            spreadRadius: 0,
-            blurRadius: 3,
+            shadowColor: widget.isSelectedShadow ? ColorConstants.primaryColor : ColorConstants.blackColor.withOpacity(0.25),
+            offset: widget.isSelectedShadow ? Offset(0, 1) : Offset(0, 0),
+            spreadRadius: widget.isSelectedShadow ? 1 : 0,
+            blurRadius: widget.isSelectedShadow ? 8 : 2,
+            borderWidth: 1,
+            borderColor: ColorConstants.greyLightColor,
             child: Column(
               children: [
                 ClipRRect(

@@ -15,6 +15,7 @@ class ShadowContainer extends StatelessWidget {
   final Offset? offset;
   final double? spreadRadius;
   final double? blurRadius;
+  final double? borderWidth;
 
   const ShadowContainer(
       {Key? key,
@@ -31,7 +32,7 @@ class ShadowContainer extends StatelessWidget {
       this.shadowColor,
       this.offset,
       this.spreadRadius,
-      this.blurRadius})
+      this.blurRadius,this.borderWidth})
       : super(key: key);
 
   @override
@@ -46,7 +47,7 @@ class ShadowContainer extends StatelessWidget {
           padding: padding ?? const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(border ?? 20),
-            border: Border.all(color: borderColor ?? ColorConstants.transparentColor),
+            border: Border.all(color: borderColor ?? ColorConstants.transparentColor,width:borderWidth ?? 0),
             color: backgroundColor ?? ColorConstants.whiteColor,
             boxShadow: (isShadow ?? false)
                 ? [

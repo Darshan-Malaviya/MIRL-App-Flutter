@@ -130,8 +130,6 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const SearchScreen());
       case RoutesConstants.expertDetailScreen:
         return MaterialPageRoute(builder: (_) => ExpertDetailScreen(expertId: settings.arguments as String));
-      // case RoutesConstants.reportExpertDetailScreen:
-      //   return MaterialPageRoute(builder: (_) => ReportExpertDetailScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.exploreExpertScreen:
@@ -153,6 +151,7 @@ class RouterConstant {
       case RoutesConstants.blockUserListScreen:
         return MaterialPageRoute(builder: (_) => const BlockUserListScreen());
       case RoutesConstants.reportUserScreen:
+        return MaterialPageRoute(builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
         return MaterialPageRoute(builder: (_) => ReportUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.thanksScreen:
         return MaterialPageRoute(builder: (_) => const ThanksScreen());

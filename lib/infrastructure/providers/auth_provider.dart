@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -77,7 +78,9 @@ class AuthProvider with ChangeNotifier {
         loginType: loginType,
         voIpToken: await AgoraService.singleton.getVoipToken());
     loginApiCall(
-        requestModel: email.isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(), loginType: loginType);
+        requestModel:
+            email.isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
+        loginType: loginType);
   }
 
   Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
@@ -90,7 +93,15 @@ class AuthProvider with ChangeNotifier {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
           if (loginType == 0) {
-            FlutterToast().showToast(msg: loginResponseModel.message ?? '');
+            // Fluttertoast.showToast(
+            //   msg: loginResponseModel.message ?? '',
+            //  // toastLength: Toast.LENGTH_SHORT,
+            //  // timeInSecForIosWeb: 1,
+            //   backgroundColor: ColorConstants.primaryColor,
+            //   textColor: ColorConstants.whiteColor,
+            //   fontSize: 12,
+            // );
+             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
@@ -98,7 +109,7 @@ class AuthProvider with ChangeNotifier {
             SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
             SharedPrefHelper.saveAuthToken(loginResponseModel.token);
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
-            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
+            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
           }
         }
         break;
@@ -120,7 +131,7 @@ class AuthProvider with ChangeNotifier {
         // emailController.text = _currentUser?.email ?? '';
         // profilePic = _currentUser?.photoUrl;
         // isNetwork = false;
-        loginRequestCall(loginType: LoginType.google,email: _currentUser?.email ?? '');
+        loginRequestCall(loginType: LoginType.google, email: _currentUser?.email ?? '');
         log(_currentUser.toString());
       }
     } catch (error) {
@@ -144,7 +155,7 @@ class AuthProvider with ChangeNotifier {
             emailController.text = '';
           }
         }
-        loginRequestCall(loginType: LoginType.apple,email: credential.email ?? '');
+        loginRequestCall(loginType: LoginType.apple, email: credential.email ?? '');
       }
     } catch (error) {
       // CustomLoading.loadingDialog(false, NavigationService.context);
@@ -162,7 +173,7 @@ class AuthProvider with ChangeNotifier {
         _socialId = _fbData['id'];
         //userName = _fbData['name'];
         // emailController.text = _fbData['email'];
-        loginRequestCall(loginType: LoginType.facebook,email: _fbData['email']);
+        loginRequestCall(loginType: LoginType.facebook, email: _fbData['email']);
       } else {
         // CustomLoading.loadingDialog(false, NavigationService.context);
       }
@@ -196,7 +207,7 @@ class AuthProvider with ChangeNotifier {
           SharedPrefHelper.saveAreaOfExpertise(jsonEncode(jsonEncode(loginResponseModel.data?.areaOfExpertise)));
           SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
           SharedPrefHelper.saveAuthToken(loginResponseModel.token);
-          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
+          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }
         break;

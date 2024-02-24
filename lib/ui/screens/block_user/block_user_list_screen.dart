@@ -85,8 +85,7 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                   : blockUserWatch.blockUserDetails.isNotEmpty
                       ? ListView.builder(
                           controller: scrollController,
-                          itemCount:
-                              (blockUserWatch.blockUserDetails.length) + (blockUserWatch.reachedCategoryLastPage ? 0 : 1),
+                          itemCount: (blockUserWatch.blockUserDetails.length) + (blockUserWatch.reachedCategoryLastPage ? 0 : 1),
                           itemBuilder: (context, index) {
                             if (index == blockUserWatch.blockUserDetails.length && blockUserWatch.blockUserDetails.isNotEmpty) {
                               return Padding(
@@ -177,7 +176,8 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                                       InkWell(
                                         onTap: () {
                                           blockUserRead.unBlockUserApiCall(
-                                              userBlockId: blockUserWatch.blockUserDetails[index].id ?? 0, index: index);
+                                              userBlockId: blockUserWatch.blockUserDetails[index].userDetail?.id ?? 0,
+                                              index: index);
                                         },
                                         child: BodySmallText(
                                           title: LocaleKeys.unblockUser.tr(),

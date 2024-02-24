@@ -38,7 +38,7 @@ class AuthRepository extends ApiResponseHandler {
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), body: requestModel);
 
-    return responseHandler(result: result, json: UserBlockResponseModel.parseInfo);
+    return responseHandler(result: result, json: BlockDetail.parseInfo);
   }
 
   ///  un block user

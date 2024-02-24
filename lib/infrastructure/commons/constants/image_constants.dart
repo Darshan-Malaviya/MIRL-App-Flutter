@@ -41,6 +41,7 @@ class ImageConstants {
   static const timer = '${imagePath}timer.png';
   static const arrow = '${imagePath}arrow.png';
   static const mirlConnect = '${imagePath}mirl_connect.png';
+  static const unlockSuggest = '${imagePath}unlock_suggest.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';

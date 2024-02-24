@@ -45,8 +45,8 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
             initialChildSize: 0.45,
             minChildSize: 0.45,
             maxChildSize: 0.86,
-            builder: (BuildContext context, controller) {
-              return bottomSheetView(controller: controller);
+            builder: (BuildContext context, myScrollController) {
+              return bottomSheetView(controller: myScrollController);
             },
           ),
         ],

@@ -18,11 +18,20 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this);
+    tabController?.addListener(_handleTabSelection);
+
     super.initState();
+  }
+
+  void _handleTabSelection() {
+    setState(() {
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final notificationProviderWatch = ref.watch(notificationProvider);
+    final notificationProviderRead = ref.read(notificationProvider);
     return Scaffold(
       appBar: AppBarWidget(
         preferSize: 0,
@@ -45,10 +54,10 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
             dividerColor: ColorConstants.transparentColor,
             //indicatorSize: TabBarIndicatorSize.label,
             //unselectedLabelColor: Colors.black,
-            tabs: const [
-              AllNotificationTypeNameWidget(notificationName: "EXPERT",),
-              AllNotificationTypeNameWidget(notificationName: "USER"),
-              AllNotificationTypeNameWidget(notificationName: "GENERAL"),
+            tabs: [
+              AllNotificationTypeNameWidget(notificationName: "EXPERT", isSelectedShadow: tabController?.index == 0 ? true : false),
+              AllNotificationTypeNameWidget(notificationName: "USER", isSelectedShadow: tabController?.index == 1 ? true : false),
+              AllNotificationTypeNameWidget(notificationName: "GENERAL", isSelectedShadow: tabController?.index == 2 ? true : false),
             ],
             controller: tabController,
           ),

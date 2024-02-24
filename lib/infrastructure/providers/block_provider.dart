@@ -36,7 +36,7 @@ class BlockProvider extends ChangeNotifier {
 
   Future<void> checkTimeOut({required BuildContext context, required bool isFromInstantCall}) async {
     if (isFromInstantCall && (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout)) {
-      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
+      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
     } else {
       context.toPop();
     }
@@ -71,6 +71,7 @@ class BlockProvider extends ChangeNotifier {
             context.toPop();
           }
           FlutterToast().showToast(msg: userBlockResponseModel.message ?? '');
+        //  context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen, args: 0);
         }
         break;
       case APIStatus.failure:

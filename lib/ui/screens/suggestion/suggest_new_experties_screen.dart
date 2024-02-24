@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
+import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
 
 class SuggestNewExpertiseScreen extends ConsumerStatefulWidget {
   const SuggestNewExpertiseScreen({super.key});
@@ -11,12 +13,16 @@ class SuggestNewExpertiseScreen extends ConsumerStatefulWidget {
 }
 
 class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseScreen> {
+  List<String> _locations = ["Yes", "No"];
+
+  List<String> get locations => _locations;
+
   @override
   Widget build(BuildContext context) {
     final suggestNewExpertiseWatch = ref.watch(suggestNewExpertiseProvider);
     final suggestNewExpertiseRead = ref.read(suggestNewExpertiseProvider);
     return Scaffold(
-      backgroundColor: ColorConstants.greyLightColor,
+        backgroundColor: ColorConstants.greyLightColor,
         appBar: AppBarWidget(
           appBarColor: ColorConstants.greyLightColor,
           leading: InkWell(
@@ -47,7 +53,43 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                 titleTextAlign: TextAlign.center,
                 maxLine: 4,
               ),
-              250.0.spaceY,
+              10.0.spaceY,
+              CategoryCommonView(
+                onTap: () {},
+                categoryName: 'UNLOCK!',
+                imageUrl: ImageConstants.unlockSuggest,
+                isSelectedShadow: true,
+                blurRadius: 8,
+                spreadRadius: 1,
+                offset: Offset(0, 0),
+              ),
+              20.0.spaceY,
+              TitleSmallText(
+                title: LocaleKeys.selectExpertCategory.tr(),
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                titleTextAlign: TextAlign.center,
+                titleColor: ColorConstants.bottomTextColor,
+              ),
+              20.0.spaceY,
+              DropdownMenuWidget(
+                hintText: LocaleKeys.selectExistingCategory.tr(),
+                // controller: expertWatch.locationController,
+                dropdownList:
+                    locations.map((String item) => dropdownMenuEntry(context: context, value: item, label: item)).toList(),
+                onSelect: (String value) {
+                  //   expertWatch.locationSelect(value);
+                },
+              ),
+              20.0.spaceY,
+              TitleSmallText(
+                title: LocaleKeys.or.tr(),
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                titleTextAlign: TextAlign.center,
+                titleColor: ColorConstants.bottomTextColor,
+              ),
+              20.0.spaceY,
               TitleSmallText(
                 title: LocaleKeys.suggestNewExpertCategory.tr(),
                 fontSize: 15,

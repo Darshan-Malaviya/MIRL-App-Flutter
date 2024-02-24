@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class UserSettingScreen extends ConsumerStatefulWidget {
@@ -263,6 +264,8 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                     title: LocaleKeys.signOut.tr(),
                     titleColor: ColorConstants.buttonTextColor,
                     onPressed: () {
+                      // NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
+                      //     args: BlockUserArgs(reportName: 'vaidehi', userRole: 2, expertId: SharedPrefHelper.getUserId));
                       SharedPrefHelper.clearPrefs();
                       context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
                     },
