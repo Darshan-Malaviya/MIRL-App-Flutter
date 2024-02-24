@@ -22,6 +22,9 @@ class BlockProvider extends ChangeNotifier {
 
   DateTime? selectedDate;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
   String? userStatus(int index) {
     if (_blockUserDetails[index].status == 1) {
       return 'PERMANENT';
@@ -33,7 +36,7 @@ class BlockProvider extends ChangeNotifier {
 
   Future<void> checkTimeOut({required BuildContext context, required bool isFromInstantCall}) async {
     if (isFromInstantCall && (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout)) {
-      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
+      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
     } else {
       context.toPop();
     }
@@ -68,6 +71,7 @@ class BlockProvider extends ChangeNotifier {
             context.toPop();
           }
           FlutterToast().showToast(msg: userBlockResponseModel.message ?? '');
+        //  context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen, args: 0);
         }
         break;
       case APIStatus.failure:
@@ -99,16 +103,32 @@ class BlockProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getAllBlockListApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
+  Future<void> getAllBlockListApiCall({bool isFullScreenLoader = false}) async {
+    if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: true);
+    } else if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: true);
+      _isLoading = true;
+      notifyListeners();
+    } else {
+      _isLoading = true;
+    }
     ApiHttpResult response = await _authRepository.getAllBlockListApi(limit: 10, page: _blockUserListPageNo);
-    CustomLoading.progressDialog(isLoading: false);
+    if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: false);
+    } else if (isFullScreenLoader) {
+      CustomLoading.progressDialog(isLoading: false);
+      _isLoading = false;
+      notifyListeners();
+    } else {
+      _isLoading = false;
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is UserBlockResponseModel) {
           UserBlockResponseModel userBlockResponseModel = response.data;
           _blockUserDetails.addAll(userBlockResponseModel.data ?? []);
-          if (_blockUserListPageNo == userBlockResponseModel.pagination?.itemCount) {
+          if (_blockUserListPageNo == userBlockResponseModel.pagination?.pageCount) {
             _reachedCategoryLastPage = true;
           } else {
             _blockUserListPageNo = _blockUserListPageNo + 1;

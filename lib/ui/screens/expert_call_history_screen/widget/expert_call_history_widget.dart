@@ -1,5 +1,4 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
 
 class ExpertCallHistoryWidget extends StatelessWidget {
   final String userTitle;
@@ -77,26 +76,54 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                               ),
                             ),
                             14.0.spaceX,
-                            ShadowContainer(
-                                shadowColor: ColorConstants.dropDownBorderColor,
-                                height: 25,
-                                padding: EdgeInsets.zero,
+                            Container(
+                                // shadowColor: ColorConstants.dropDownBorderColor,
+                                // backgroundColor: ColorConstants.greenColor,
+                                // offset: Offset(1,2),
+                                // blurRadius: 5,
+                                // spreadRadius: 0,
+                                // height: 25,
+                                // padding: EdgeInsets.zero,
+                                // border: 10,
+                                alignment: Alignment.center,
+                                decoration: ShapeDecoration(
+                                  //color: ColorConstants.greenColor,
+                                  shadows: [
+                                    BoxShadow(color: Colors.black, blurRadius: 1, spreadRadius: 0),
+                                    BoxShadow(color: Colors.white, blurRadius: 10, spreadRadius: 8,offset: Offset(1, 2),),
+                                  ],
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 1,
+                                        strokeAlign: BorderSide.strokeAlignCenter,
+                                        color: Color(0xFFCAC9C9),
+                                      ),
+                                    borderRadius: BorderRadius.circular(10),
+
+
+                                    ),
+                                ),
                                 // decoration: ShapeDecoration(
-                                //   color: ColorConstants.greenColor,
+                                //     shadows: [
+                                //       BoxShadow(
+                                //         color: ColorConstants.dropDownBorderColor,
+                                //         blurRadius: 5,
+                                //         offset: Offset(-1, -2),
+                                //         spreadRadius: 0,
+                                //       )
+                                //     ],
+                                //   color: Color(0xFFABDF75),
                                 //   shape: RoundedRectangleBorder(
-                                //     borderRadius: BorderRadius.circular(20),
+                                //     side: BorderSide(
+                                //       width: 1,
+                                //       strokeAlign: BorderSide.strokeAlignCenter,
+                                //       color: Color(0xFFCAC9C9),
+                                //     ),
+                                //     borderRadius: BorderRadius.circular(10),
                                 //   ),
-                                //   shadows: [
-                                //     BoxShadow(
-                                //       color: ColorConstants.dropDownBorderColor,
-                                //       blurRadius: 5,
-                                //       offset: Offset(1, 2),
-                                //       spreadRadius: 0,
-                                //     )
-                                //   ],
                                 // ),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(right: 40, left: 40),
+                                  padding: const EdgeInsets.only(right: 30, left: 30,top: 5,bottom: 5),
                                   child: Center(
                                     child: BodySmallText(
                                       title: callTitle,
@@ -134,7 +161,33 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        14.0.spaceY,
+                        10.0.spaceY,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(fontSize: 12),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: 'FEE PER 10 MINUTES: ',
+                                      style: TextStyle(
+                                        color: ColorConstants.buttonTextColor,
+                                        fontFamily: FontWeightEnum.w400.toInter,
+                                      )),
+                                  TextSpan(
+                                      text: 'INR 500',
+                                      style: TextStyle(
+                                        color: ColorConstants.buttonTextColor,
+                                        fontFamily: FontWeightEnum.w700.toInter,
+                                      ))
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        10.0.spaceY,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -160,7 +213,33 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        6.0.spaceY,
+                        10.0.spaceY,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(fontSize: 12),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: 'TOTAL PAYMENT: ',
+                                      style: TextStyle(
+                                        color: ColorConstants.buttonTextColor,
+                                        fontFamily: FontWeightEnum.w400.toInter,
+                                      )),
+                                  TextSpan(
+                                      text: 'INR 500',
+                                      style: TextStyle(
+                                        color: ColorConstants.buttonTextColor,
+                                        fontFamily: FontWeightEnum.w700.toInter,
+                                      ))
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        10.0.spaceY,
                         Column(
                           children: List.generate(3, (index) {
                             return Row(
@@ -175,7 +254,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                     children: <InlineSpan>[
                                       WidgetSpan(
                                           child: SizedBox(
-                                        width: 20,
+                                        width: 14,
                                       )),
                                       TextSpan(
                                         text: callTime,
@@ -188,10 +267,10 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                   ),
                                 )
                               ],
-                            ).addMarginY(4);
+                            ).addMarginY(6);
                           }),
                         ),
-                        6.0.spaceY,
+                        10.0.spaceY,
                         Row(
                           children: [
                             RichText(
@@ -200,7 +279,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                 style: TextStyle(
                                     color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 12),
                                 children: <InlineSpan>[
-                                  WidgetSpan(child: SizedBox(width: 20)),
+                                  WidgetSpan(child: SizedBox(width: 10)),
                                   TextSpan(
                                       text: status,
                                       style: TextStyle(
@@ -218,9 +297,9 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(boxShadow: [
                         BoxShadow(
-                            offset: Offset(2, 5),
+                            offset: Offset(2, 4),
                             color: ColorConstants.blackColor.withOpacity(0.3),
-                            spreadRadius: 2,
+                            spreadRadius: 0,
                             blurRadius: 2),
                       ], shape: BoxShape.circle),
                       child: ClipRRect(
@@ -248,7 +327,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                   ),
                 ),
               ],
-            ).addMarginXY(marginX: 14, marginY: 18)),
+            ).addMarginXY(marginX: 20, marginY: 20)),
       ],
     );
   }

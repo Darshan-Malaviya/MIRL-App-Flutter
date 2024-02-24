@@ -15,7 +15,7 @@ class _ActivateYourMirlConnectCodeWidgetState extends ConsumerState<ActivateYour
   Widget build(BuildContext context) {
     return Column(
       children: [
-        12.0.spaceY,
+        20.0.spaceY,
         TitleSmallText(
           title: LocaleKeys.share.tr(),
           fontFamily: FontWeightEnum.w400.toInter,
@@ -35,8 +35,7 @@ class _ActivateYourMirlConnectCodeWidgetState extends ConsumerState<ActivateYour
           buttonColor: ColorConstants.primaryColor,
           title: LocaleKeys.activateMirlConnectCode.tr(),
           titleColor: ColorConstants.textColor,
-          onPressed: () {},
-          //  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen),
+          onPressed: () => mirlConnectView.value = 1,
         ),
         20.0.spaceY,
         TitleSmallText(
