@@ -107,8 +107,6 @@ class ScheduleCallProvider extends ChangeNotifier {
       oldIndex = index;
       selectedSlotData = value;
     }
-    print(selectedSlotData?.startTimeUTC.toString());
-    print(selectedSlotData?.endTimeUTC.toString());
     notifyListeners();
   }
 

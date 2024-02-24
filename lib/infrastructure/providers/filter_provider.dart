@@ -197,8 +197,8 @@ class FilterProvider extends ChangeNotifier {
         // reviewOrder: requestModel?.reviewOrder,
         overAllRating: commonSelectionModel[index].title == FilterType.OverAllRating.name
             ? null
-            : ratingController.text.isNotEmpty
-                ? ratingController.text
+            : selectedRating != null
+                ? selectedRating.toString()
                 : null,
         ratingOrder: commonSelectionModel[index].title == FilterType.SortBy.name
             ? null
@@ -253,7 +253,7 @@ class FilterProvider extends ChangeNotifier {
     if (isFromExploreExpert) {
       clearExploreExpertSearchData();
       clearExploreController();
-      exploreExpertUserAndCategoryApiCall(context: context);
+      exploreExpertUserAndCategoryApiCall(context: context, requestModel: data);
     } else {
       clearSingleCategoryData();
       if (isFromMultiConnect) {
@@ -694,12 +694,14 @@ class FilterProvider extends ChangeNotifier {
   }
 
   Future<void> exploreExpertUserAndCategoryApiCall(
-      {ExpertDataRequestModel? requestModel, required BuildContext context, bool isFromFilter = false, bool isPaginating = false}) async {
+      {ExpertDataRequestModel? requestModel, required BuildContext context, bool isFromFilter = false, bool isPaginating = false, bool clearFilter = false}) async {
+    if (clearFilter) {
+      commonSelectionModel.clear();
+    }
     if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: true);
     } else {
       if (!isPaginating) {
-        commonSelectionModel.clear();
         _isLoading = true;
         notifyListeners();
       }
