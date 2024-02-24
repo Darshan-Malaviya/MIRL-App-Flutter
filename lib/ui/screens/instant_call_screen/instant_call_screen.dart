@@ -31,7 +31,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
       instanceRequestTimerNotifier.value =  instanceRequestTimerNotifier.value - 1;
 
       if(widget.args.userID == SharedPrefHelper.getUserId) {
-        ref.read(socketProvider).timerEmit(userId: int.parse((widget.args.userID.toString())),expertId: int.parse((widget.args.expertId.toString())),
+        ref.read(socketProvider).timerEmit(userId: int.parse((widget.args.userID.toString())),expertIdList: [int.parse((widget.args.expertId.toString()))],
           callRoleEnum: CallRoleEnum.user, timer:instanceRequestTimerNotifier.value, timerType: CallTimerEnum.request, );
       }
       instanceRequestTimerFunction();
@@ -80,7 +80,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
+      canPop: false,
       child: Scaffold(
         appBar: AppBarWidget(
           preferSize: 0,
@@ -97,8 +97,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                 40.0.spaceY,
                 if( (instanceCallEnumNotifier.value == CallTypeEnum.callRequest
                     || instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
-                || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested
-                    || instanceCallEnumNotifier.value == CallTypeEnum.multiConnectReceiverRequested))...[
+                || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested))...[
                   TitleLargeText(
                     title: instanceCallEnumNotifier.value.titleName,
                     fontSize: 20,
@@ -208,7 +207,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                                 title: instanceCallEnumNotifier.value.secondButtonName,
                                 width: 130,
                                 onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                buttonColor: widget.args.secondBtnColor ?? ColorConstants.primaryColor,
+                                buttonColor: ColorConstants.primaryColor,
                                 titleColor: ColorConstants.textColor,
                               ),
                             )
@@ -220,7 +219,8 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                                     title: instanceCallEnumNotifier.value.secondButtonName,
                                    // width: 130,
                                     onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                    buttonColor: widget.args.secondBtnColor ?? ColorConstants.primaryColor,
+                                    buttonColor: (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested)
+                                        ? ColorConstants.yellowButtonColor : ColorConstants.primaryColor,
                                     titleColor: ColorConstants.textColor,
                                   ),
                                 ).addVisibility(instanceCallEnumNotifier.value.secondButtonName.isNotEmpty),
@@ -255,8 +255,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                 ),
                 20.0.spaceY,
                 Visibility(
-                  visible: instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested ||
-                      instanceCallEnumNotifier.value == CallTypeEnum.multiConnectReceiverRequested,
+                  visible: instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested,
                   replacement: SizedBox.shrink(),
                   child: Align(
                     alignment: Alignment.bottomRight,

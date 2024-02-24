@@ -4,11 +4,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
+import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 
 class MultiConnectSelectedCategoryScreen extends ConsumerStatefulWidget {
   final FilterArgs args;
@@ -26,6 +31,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      ref.read(multiConnectProvider).getLoggedUserData();
       await ref.read(multiConnectProvider).getSingleCategoryApiCall(
           categoryId: widget.args.categoryId ?? '', context: context, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
       ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
@@ -77,10 +83,43 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
               },
             ),
             trailingIcon: InkWell(
-              onTap: () {
-                List<int> data = multiProviderWatch.selectedExperts.map((e) => e.id ?? 0).toList();
+              onTap: () async {
+
+                await multiProviderRead.setExpertList();
                 FlutterToast().showToast(msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.');
-                ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
+                multiConnectCallEnumNotifier.value = CallTypeEnum.multiCallRequest;
+                multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
+               /// user side
+                NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
+                    args: MultiConnectDialogArguments(
+                      expertList: multiProviderRead.selectedExpertDetails,
+                      userDetail:  multiProviderRead.loggedUserData,
+                      onFirstBtnTap: () {
+                        List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
+                        ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
+                      },
+                      onSecondBtnTap: (){
+                        /// cancel
+                        if(multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                          context.toPop();
+                        } else if(multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestApproved){
+                        /// chosen
+                        }
+                        else {
+                          /// change expert id here
+
+                          ref.read(socketProvider).multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.cancel,
+                              expertId: SharedPrefHelper.getUserId,
+                              userId: SharedPrefHelper.getUserId,
+                              callRoleEnum: CallRoleEnum.user,
+                              callRequestId: SharedPrefHelper.getCallRequestId.toString());
+
+                          context.toPop();
+                        }
+
+                        NavigationService.context.toPop();
+                      },
+                    ));
               },
               child: TitleMediumText(
                 title: StringConstants.done,
