@@ -76,19 +76,22 @@ class CommonAppProvider extends ChangeNotifier {
   Future<void> cityListApiCall({bool isFullScreenLoader = false, String? searchName, required String countryName}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
-    } else {
       _isSearchCityBottomSheetLoading = true;
       notifyListeners();
+    } else {
+      _isSearchCityBottomSheetLoading = true;
     }
 
-    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(page: _cityPageNo.toString(), limit: "30", search: searchName, countryName: countryName);
+    SearchPaginationCommonRequestModel model = SearchPaginationCommonRequestModel(
+        page: _cityPageNo.toString(), limit: "30", search: searchName, countryName: countryName);
     ApiHttpResult response = await _updateUserDetailsRepository.cityApiCall(requestModel: model.toNullFreeJson());
 
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
-    } else {
       _isSearchCityBottomSheetLoading = false;
       notifyListeners();
+    } else {
+      _isSearchCityBottomSheetLoading = false;
     }
 
     switch (response.status) {

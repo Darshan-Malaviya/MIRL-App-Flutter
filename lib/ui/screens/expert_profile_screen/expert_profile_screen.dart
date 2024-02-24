@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
 class ExpertProfileScreen extends ConsumerStatefulWidget {
   const ExpertProfileScreen({super.key});
@@ -101,7 +102,15 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                           title: StringConstants.editProfile,
                           buttonTextFontFamily: FontWeightEnum.w400.toInter,
                           onPressed: () {
-                            context.toPushNamed(RoutesConstants.editYourExpertProfileScreen);
+                            //context.toPushNamed(RoutesConstants.editYourExpertProfileScreen);
+                            NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
+                                args: BlockUserArgs(
+                                    userName: 'vaidehi',
+                                    imageURL: '',
+                                    userId: 1,
+                                    userRole: 2,
+                                    reportName: '',
+                                    isFromInstantCall: true));
                           },
                         ),
                       ),
