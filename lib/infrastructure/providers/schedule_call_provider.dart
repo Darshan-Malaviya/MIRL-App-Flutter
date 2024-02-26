@@ -24,6 +24,10 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   DateTime? selectedDate;
 
+  late DateTime selectedDateStartTime;
+
+  late DateTime selectedDateEndTime;
+
   String _selectedUTCDate = '';
 
   String userLocalTimeZone = '';
@@ -79,7 +83,12 @@ class ScheduleCallProvider extends ChangeNotifier {
   void getSelectedDate(DateTime dateTime) {
     final now = DateTime.now().toLocal();
     selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second).toUtc();
+    selectedDateStartTime = DateTime(dateTime.year, dateTime.month, dateTime.day,00,00).toUtc();
+    selectedDateEndTime = DateTime(dateTime.year, dateTime.month, dateTime.day,23,59).toUtc();
     _selectedUTCDate = selectedDate?.toIso8601String() ?? '';
+    print(_selectedUTCDate);
+    print(":selectedDateStartTime ${selectedDateStartTime.toIso8601String()}");
+    print(":selectedDateEndTime ${selectedDateEndTime.toIso8601String()}");
     print(_selectedUTCDate);
     getSlotsApi();
     notifyListeners();
@@ -139,7 +148,13 @@ class ScheduleCallProvider extends ChangeNotifier {
     notifyListeners();
 
     ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(
-      request: SlotsRequestModel(expertId: expertData?.id, date: _selectedUTCDate, duration: _callDuration).prepareRequest(),
+      request: SlotsRequestModel(
+              expertId: expertData?.id,
+              date: _selectedUTCDate,
+              duration: _callDuration,
+              endDate: selectedDateEndTime.toIso8601String(),
+              startDate: selectedDateStartTime.toIso8601String())
+          .prepareRequest(),
     );
 
     _isLoadingSlot = false;
