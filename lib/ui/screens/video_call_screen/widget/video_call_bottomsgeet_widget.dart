@@ -109,8 +109,6 @@ class _VideoCallWidgetState extends ConsumerState<VideoCallWidget> {
 
                     } else {
                       bool isUser =  ref.read(socketProvider).extraResponseModel?.userId.toString() == SharedPrefHelper.getUserId.toString();
-                      print("isUser here $isUser");
-                      print(ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
                       await ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.completedCall,
                           callRoleEnum: isUser ? CallRoleEnum.user : CallRoleEnum.expert,
                           callHistoryId: ref.watch(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');

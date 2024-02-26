@@ -379,7 +379,10 @@ class SocketProvider extends ChangeNotifier {
 
                 } else if(( (model.data?.status.toString() == '5')
                     && (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested))) {
-                  NavigationService.context.toPop();
+                  if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
+                    NavigationService.context.toPop();
+                  }
+
                 }
 
               }
@@ -491,17 +494,16 @@ class SocketProvider extends ChangeNotifier {
             } if(model.data?.status.toString() == '6') {
               /// completed
                callConnectNotifier.value = CallConnectStatusEnum.completed;
-
-              if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()) {
-                if(activeRoute.value == RoutesConstants.videoCallScreen){
-                  NavigationService.context.toPop();
-                  NavigationService.context.toPop();
-                }
-              } else {
-                await FlutterCallkitIncoming.endAllCalls();
-                NavigationService.context.toPop();
-              }
-
+               if(activeRoute.value == RoutesConstants.videoCallScreen){
+                 if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()) {
+                   if(activeRoute.value == RoutesConstants.videoCallScreen){
+                     NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen);
+                   }
+                 } else {
+                   await FlutterCallkitIncoming.endAllCalls();
+                   NavigationService.context.toPop();
+                 }
+               }
                instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
                instanceCallDurationNotifier.removeListener(() { });
             }
@@ -543,28 +545,31 @@ class SocketProvider extends ChangeNotifier {
               }
             } else if (model.data?.status.toString() == '4') {
               /// time out
-              FlutterToast().showToast(msg: LocaleKeys.expertNotResponding.tr());
-              NavigationService.context.toPop();
+              if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
+                FlutterToast().showToast(msg: LocaleKeys.expertNotResponding.tr());
+                NavigationService.context.toPop();
+              }
+
             }
             if (model.data?.status.toString() == '5') {
               /// cancelled
-              callConnectNotifier.value = CallConnectStatusEnum.cancelled;
+              if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
+                callConnectNotifier.value = CallConnectStatusEnum.cancelled;
 
-              /// Expert not receive call from call kit and user cut call .
-              await FlutterCallkitIncoming.endAllCalls();
+                /// Expert not receive call from call kit and user cut call .
+                await FlutterCallkitIncoming.endAllCalls();
+              }
             }
             if (model.data?.status.toString() == '6') {
               /// completed
               callConnectNotifier.value = CallConnectStatusEnum.completed;
-
-              if (model.data?.expertId.toString() == SharedPrefHelper.getUserId.toString()) {
-                /// Call cut by user and listen in expert side so pop the screen and cut call kit call also
-                NavigationService.context.toPop();
-                await FlutterCallkitIncoming.endAllCalls();
-              } else {
-                if(activeRoute.value == RoutesConstants.videoCallScreen){
+              if(activeRoute.value == RoutesConstants.videoCallScreen){
+                if (model.data?.expertId.toString() == SharedPrefHelper.getUserId.toString()) {
+                  /// Call cut by user and listen in expert side so pop the screen and cut call kit call also
                   NavigationService.context.toPop();
-                  NavigationService.context.toPop();
+                  await FlutterCallkitIncoming.endAllCalls();
+                } else {
+                  NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen);
                 }
               }
               instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
