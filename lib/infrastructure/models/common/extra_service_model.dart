@@ -45,7 +45,8 @@ class ExtraResponseModel {
     agoraToken = json['agoraToken'];
     callHistoryId = json['callHistoryId'];
     isVideo = json['isVideo'];
-    instantCallSeconds = "60";
+    ///TODO change call duration from here
+    instantCallSeconds = "120";
    // instantCallSeconds = json['instantCallSeconds'];
     callRoleEnum = json['callRoleEnum'];
     key = json['key'];

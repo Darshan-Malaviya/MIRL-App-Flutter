@@ -82,7 +82,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       engine.leaveChannel();
       engine.release();
     }
-    instanceCallDurationNotifier.value = 60;
+    instanceCallDurationNotifier.value = 120;
     instanceCallDurationNotifier.removeListener(() { });
 
     //ref.read(callProvider).disposeCallDuration();

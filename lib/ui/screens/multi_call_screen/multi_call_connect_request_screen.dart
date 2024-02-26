@@ -9,7 +9,6 @@ import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 
@@ -66,9 +65,10 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
           ) {
             if (multiRequestTimerNotifier.value == 0 && widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId) {
               multiConnectCallEnumNotifier.value = CallTypeEnum.multiRequestTimeout;
+              multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.timeout;
               ref.read(socketProvider).multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.timeout,
                   userId: widget.args.userDetail?.id.toString() ?? '',
-                  expertId: widget.args.expertList?.first.id.toString() ?? '',
+                  expertId: null,
                   callRoleEnum: CallRoleEnum.user, callRequestId: SharedPrefHelper.getCallRequestId);
 
             }

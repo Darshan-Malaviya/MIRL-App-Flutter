@@ -9,7 +9,6 @@ import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart'
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
@@ -95,8 +94,18 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                       expertList: multiProviderRead.selectedExpertDetails,
                       userDetail:  multiProviderRead.loggedUserData,
                       onFirstBtnTap: () {
-                        List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
-                        ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
+                        if (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout) {
+                          /// tru again
+                          ref.read(socketProvider).manageTimeOutStatusInMultiConnect(selectedExpertDetails: multiProviderWatch.selectedExpertDetails,
+                          context: context,
+                          loggedUserData: multiProviderWatch.loggedUserData);
+
+
+                        } else {
+                          List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
+                          ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
+                        }
+
                       },
                       onSecondBtnTap: (){
                         /// cancel
@@ -109,15 +118,12 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                           /// change expert id here
 
                           ref.read(socketProvider).multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.cancel,
-                              expertId: SharedPrefHelper.getUserId,
+                              expertId: null,
                               userId: SharedPrefHelper.getUserId,
                               callRoleEnum: CallRoleEnum.user,
                               callRequestId: SharedPrefHelper.getCallRequestId.toString());
-
                           context.toPop();
                         }
-
-                        NavigationService.context.toPop();
                       },
                     ));
               },

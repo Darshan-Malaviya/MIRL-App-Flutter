@@ -13,7 +13,6 @@ import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart'
 import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
 import 'package:mirl/infrastructure/models/common/instance_call_emits_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
@@ -178,6 +177,42 @@ class SocketProvider extends ChangeNotifier {
     } else {
       FlutterToast().showToast(msg: "Expert not available.");
     }
+
+  }
+
+
+
+  void manageTimeOutStatusInMultiConnect({required List<ExpertDetails> selectedExpertDetails,
+    required BuildContext context , required UserDetails? loggedUserData}) {
+
+    multiConnectCallEnumNotifier.value = CallTypeEnum.multiCallRequest;
+    multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
+    /// user side
+    NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
+        args: MultiConnectDialogArguments(
+          expertList: selectedExpertDetails,
+          userDetail:  loggedUserData,
+          onFirstBtnTap: () {
+            List<int> data = selectedExpertDetails.map((e) => e.id ?? 0).toList();
+            ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
+          },
+          onSecondBtnTap: (){
+            if(multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+              context.toPop();
+            } else if(multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestApproved){
+              /// chosen
+            }
+            else {
+              /// cancel from user side after try again
+              multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.cancel,
+                  expertId: null,
+                  userId: SharedPrefHelper.getUserId,
+                  callRoleEnum: CallRoleEnum.user,
+                  callRequestId: SharedPrefHelper.getCallRequestId.toString());
+              context.toPop();
+            }
+          },
+        ));
 
   }
 
@@ -685,7 +720,7 @@ class SocketProvider extends ChangeNotifier {
     }
   }
 
-  void multiConnectStatusEmit({required String expertId,required String userId,
+  void multiConnectStatusEmit({required String? expertId,required String userId,
     required CallRequestStatusEnum callStatusEnum, required CallRoleEnum callRoleEnum, required String callRequestId}) {
     try {
       Logger().d('multiConnectStatusEmit ==== Success');
