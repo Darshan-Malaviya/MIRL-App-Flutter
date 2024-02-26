@@ -5,6 +5,7 @@ class BlockDetailsResponseModel {
   String? message;
   BlockDetails? data;
 
+
   BlockDetailsResponseModel({this.status, this.message, this.data});
 
   BlockDetailsResponseModel.fromJson(Map<String, dynamic> json) {
