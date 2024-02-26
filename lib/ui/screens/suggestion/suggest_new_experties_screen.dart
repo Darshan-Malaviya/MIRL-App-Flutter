@@ -22,9 +22,9 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
     final suggestNewExpertiseWatch = ref.watch(suggestNewExpertiseProvider);
     final suggestNewExpertiseRead = ref.read(suggestNewExpertiseProvider);
     return Scaffold(
-        backgroundColor: ColorConstants.greyLightColor,
+        backgroundColor: ColorConstants.scaffoldBg,
         appBar: AppBarWidget(
-          appBarColor: ColorConstants.greyLightColor,
+          appBarColor: ColorConstants.scaffoldBg,
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
             onTap: () => context.toPop(),
@@ -37,23 +37,23 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               TitleLargeText(
                 title: LocaleKeys.suggestNewExpertise.tr(),
                 fontSize: 20,
-                fontWeight: FontWeight.w700,
               ),
               10.0.spaceY,
               BodySmallText(
                 title: LocaleKeys.suggestNewExpertiseNote.tr(),
-                fontWeight: FontWeight.w400,
+                fontFamily: FontWeightEnum.w400.toInter,
+
                 titleTextAlign: TextAlign.center,
                 maxLine: 3,
               ),
               10.0.spaceY,
               BodySmallText(
                 title: LocaleKeys.suggestNewExpertiseSubNote.tr(),
-                fontWeight: FontWeight.w400,
+                fontFamily: FontWeightEnum.w400.toInter,
                 titleTextAlign: TextAlign.center,
                 maxLine: 4,
               ),
-              10.0.spaceY,
+              20.0.spaceY,
               CategoryCommonView(
                 onTap: () {},
                 categoryName: 'UNLOCK!',
@@ -67,7 +67,6 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               TitleSmallText(
                 title: LocaleKeys.selectExpertCategory.tr(),
                 fontSize: 15,
-                fontWeight: FontWeight.w700,
                 titleTextAlign: TextAlign.center,
                 titleColor: ColorConstants.bottomTextColor,
               ),
@@ -85,15 +84,14 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               TitleSmallText(
                 title: LocaleKeys.or.tr(),
                 fontSize: 15,
-                fontWeight: FontWeight.w700,
+                fontFamily: FontWeightEnum.w400.toInter,
                 titleTextAlign: TextAlign.center,
-                titleColor: ColorConstants.bottomTextColor,
+                titleColor: ColorConstants.buttonTextColor,
               ),
               20.0.spaceY,
               TitleSmallText(
                 title: LocaleKeys.suggestNewExpertCategory.tr(),
                 fontSize: 15,
-                fontWeight: FontWeight.w700,
                 titleTextAlign: TextAlign.center,
                 titleColor: ColorConstants.bottomTextColor,
               ),
@@ -116,7 +114,6 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               TitleSmallText(
                 title: LocaleKeys.suggestNewTopic.tr(),
                 fontSize: 15,
-                fontWeight: FontWeight.w700,
                 titleTextAlign: TextAlign.center,
                 titleColor: ColorConstants.bottomTextColor,
               ),
