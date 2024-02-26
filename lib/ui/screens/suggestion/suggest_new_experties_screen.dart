@@ -4,6 +4,7 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
+import 'package:mirl/ui/screens/filter_screen/widget/all_category_list_bottom_view.dart';
 
 class SuggestNewExpertiseScreen extends ConsumerStatefulWidget {
   const SuggestNewExpertiseScreen({super.key});
@@ -42,7 +43,6 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               BodySmallText(
                 title: LocaleKeys.suggestNewExpertiseNote.tr(),
                 fontFamily: FontWeightEnum.w400.toInter,
-
                 titleTextAlign: TextAlign.center,
                 maxLine: 3,
               ),
@@ -71,15 +71,18 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                 titleColor: ColorConstants.bottomTextColor,
               ),
               20.0.spaceY,
-              DropdownMenuWidget(
-                hintText: LocaleKeys.selectExistingCategory.tr(),
-                // controller: expertWatch.locationController,
-                dropdownList:
-                    locations.map((String item) => dropdownMenuEntry(context: context, value: item, label: item)).toList(),
-                onSelect: (String value) {
-                  //   expertWatch.locationSelect(value);
-                },
-              ),
+              buildTextFormFieldWidget(suggestNewExpertiseWatch.existingCategoryController, context, () {
+                CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: AllCategoryListBottomView());
+              }),
+              // DropdownMenuWidget(
+              //   hintText: LocaleKeys.selectExistingCategory.tr(),
+              //   // controller: expertWatch.locationController,
+              //   dropdownList:
+              //       locations.map((String item) => dropdownMenuEntry(context: context, value: item, label: item)).toList(),
+              //   onSelect: (String value) {
+              //     //   expertWatch.locationSelect(value);
+              //   },
+              // ),
               20.0.spaceY,
               TitleSmallText(
                 title: LocaleKeys.or.tr(),
@@ -153,10 +156,38 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               PrimaryButton(
                   title: LocaleKeys.shareSuggestion.tr(),
                   onPressed: () {
+                    suggestNewExpertiseRead.suggestedCategoryApiCall();
                     context.toPushNamed(RoutesConstants.thanksGivingScreen);
                   })
             ],
           ).addPaddingXY(paddingX: 30, paddingY: 10),
         ));
+  }
+
+  TextFormFieldWidget buildTextFormFieldWidget(
+    TextEditingController controller,
+    BuildContext context,
+    VoidCallback OnTap,
+  ) {
+    return TextFormFieldWidget(
+      isReadOnly: true,
+      hintText: LocaleKeys.selectExistingCategory.tr(),
+      controller: controller,
+      labelColor: ColorConstants.bottomTextColor,
+      enabledBorderColor: ColorConstants.dropDownBorderColor,
+      labelTextFontFamily: FontWeightEnum.w700.toInter,
+      textStyle: Theme.of(context)
+          .textTheme
+          .bodyMedium
+          ?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      suffixIcon: Icon(
+        size: 18,
+        Icons.keyboard_arrow_down_rounded,
+        color: ColorConstants.dropDownBorderColor,
+      ),
+      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      onTap: OnTap,
+    );
   }
 }
