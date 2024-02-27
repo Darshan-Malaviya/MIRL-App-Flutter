@@ -19,6 +19,7 @@ class ColorConstants {
   static const emptyTextColor = Color(0xFF7E7E7E);
   static const lightPrimaryColor = Color(0xFFF0CBF9);
   static const lightYellowColor = Color(0xFFFFECBD);
+  static const emojiBg = Color(0xFFD6D1CA);
 
   static Color primaryColor = const Color(0xffD97CF0);
   static Color secondaryColor = const Color(0xffED1C22);
@@ -28,7 +29,9 @@ class ColorConstants {
   static Color sheetTitleColor = const Color(0xFF64569E);
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
+  static Color yellowMediumColor = const Color(0xFFffcc5c);
   static Color greenColor = const Color(0xFFABDF75);
+  static Color greenDarkColor = const Color(0xFF5DB500);
   static Color redColor = const Color(0xFFFE654F);
   static Color redMediumColor = const Color(0xFFDA8380);
   static Color sliderColor = const Color(0xFF85C7F2);
@@ -47,7 +50,6 @@ class ColorConstants {
   static Color textGreenColor = const Color(0xFF65C106);
 
   static Color overAllRatingColor = const Color(0xFF393737);
-  static Color topicColor = const Color(0x66D97CF0);
   static Color yellowLightColor = const Color(0xffF3D58C);
   static Color topicShoeColorColor = const Color(0x33000000);
   static Color certificatedBoxShadowColor = const Color(0x19000000);

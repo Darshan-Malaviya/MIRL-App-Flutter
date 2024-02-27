@@ -9,7 +9,6 @@ import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 
@@ -27,12 +26,12 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
 
   Future<void> instanceRequestTimerFunction() async {
     await Future.delayed(const Duration(seconds: 1));
-    if (instanceRequestTimerNotifier.value != 0 && instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting) {
+    if (instanceRequestTimerNotifier.value != 0 && instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting) {
       instanceRequestTimerNotifier.value =  instanceRequestTimerNotifier.value - 1;
 
       if(widget.args.userID == SharedPrefHelper.getUserId) {
         ref.read(socketProvider).timerEmit(userId: int.parse((widget.args.userID.toString())),expertIdList: [int.parse((widget.args.expertId.toString()))],
-          callRoleEnum: CallRoleEnum.user, timer:instanceRequestTimerNotifier.value, timerType: CallTimerEnum.request, );
+          callRoleEnum: CallRoleEnum.user, timer:instanceRequestTimerNotifier.value, timerType: CallTimerEnum.request, requestType: 1, );
       }
       instanceRequestTimerFunction();
     } else {
@@ -50,11 +49,11 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
         if (instanceRequestTimerNotifier.value == 120) {
           instanceRequestTimerFunction();
         } else {
-          if((instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting && widget.args.userID == SharedPrefHelper.getUserId)
+          if((instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting && widget.args.userID == SharedPrefHelper.getUserId)
           // || (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)
           ) {
             if (instanceRequestTimerNotifier.value == 0 && widget.args.userID == SharedPrefHelper.getUserId.toString()) {
-              instanceCallEnumNotifier.value = CallTypeEnum.requestTimeout;
+              instanceCallEnumNotifier.value = CallRequestTypeEnum.requestTimeout;
               ref.read(socketProvider).updateRequestStatusEmit(
                   expertId: widget.args.expertId,
                   userId: widget.args.userID,
@@ -88,16 +87,16 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
         backgroundColor: ColorConstants.whiteColor,
         body: ValueListenableBuilder(
           valueListenable: instanceCallEnumNotifier,
-          builder: (BuildContext context, CallTypeEnum value, Widget? child) {
+          builder: (BuildContext context, CallRequestTypeEnum value, Widget? child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 40.0.spaceY,
-                if( (instanceCallEnumNotifier.value == CallTypeEnum.callRequest
-                    || instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
-                || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested))...[
+                if( (instanceCallEnumNotifier.value == CallRequestTypeEnum.callRequest
+                    || instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting
+                || instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested))...[
                   TitleLargeText(
                     title: instanceCallEnumNotifier.value.titleName,
                     fontSize: 20,
@@ -141,7 +140,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                     children: [
                       20.0.spaceY,
                       BodySmallText(
-                        title: instanceCallEnumNotifier.value == CallTypeEnum.callRequest
+                        title: instanceCallEnumNotifier.value == CallRequestTypeEnum.callRequest
                             ? "${instanceCallEnumNotifier.value.descriptionName} ${widget.args.name?.toUpperCase()}"
                             : "${instanceCallEnumNotifier.value.descriptionName}",
                         titleColor: ColorConstants.textColor,
@@ -186,8 +185,8 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                        valueListenable: allCallDurationNotifier,
                         builder: (BuildContext context, int value, Widget? child) {
                           return Visibility(
-                            visible: allCallDurationNotifier.value != 0 && (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
-                                || instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested),
+                            visible: allCallDurationNotifier.value != 0 && (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting
+                                || instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested),
                             replacement: SizedBox.shrink(),
                             child: TitleSmallText(
                               title: "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
@@ -199,9 +198,9 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                         }
                       ),
                       20.0.spaceY,
-                      (instanceCallEnumNotifier.value == CallTypeEnum.requestWaiting
-                          || instanceCallEnumNotifier.value == CallTypeEnum.requestApproved
-                       || instanceCallEnumNotifier.value == CallTypeEnum.requestDeclined)
+                      (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting
+                          || instanceCallEnumNotifier.value == CallRequestTypeEnum.requestApproved
+                       || instanceCallEnumNotifier.value == CallRequestTypeEnum.requestDeclined)
                           ? Center(
                               child: PrimaryButton(
                                 title: instanceCallEnumNotifier.value.secondButtonName,
@@ -219,7 +218,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                                     title: instanceCallEnumNotifier.value.secondButtonName,
                                    // width: 130,
                                     onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                    buttonColor: (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested)
+                                    buttonColor: (instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested)
                                         ? ColorConstants.yellowButtonColor : ColorConstants.primaryColor,
                                     titleColor: ColorConstants.textColor,
                                   ),
@@ -242,9 +241,9 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                 ).addPaddingX(16),
                 30.0.spaceY,
                 Visibility(
-                  visible: instanceCallEnumNotifier.value == CallTypeEnum.requestDeclined ||
-                      instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout ||
-                      instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested,
+                  visible: instanceCallEnumNotifier.value == CallRequestTypeEnum.requestDeclined ||
+                      instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout ||
+                      instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested,
                   replacement: SizedBox.shrink(),
                   child: TitleSmallText(
                     title: LocaleKeys.viewOtherExpert.tr(),
@@ -255,7 +254,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                 ),
                 20.0.spaceY,
                 Visibility(
-                  visible: instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested,
+                  visible: instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested,
                   replacement: SizedBox.shrink(),
                   child: Align(
                     alignment: Alignment.bottomRight,

@@ -1,4 +1,7 @@
-import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
+
 import 'package:vector_math/vector_math.dart' as v_math;
 
 typedef OnChange = void Function(int index);
@@ -7,7 +10,7 @@ class ReviewSlider extends StatefulWidget {
   const ReviewSlider({
     Key? key,
     required this.onChange,
-    this.initialValue = 2,
+    this.initialValue = 0,
     // this.options = const ['Terrible', 'Bad', 'Okay', 'Good', 'Great'],
     this.options = const ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     this.optionStyle,
@@ -51,9 +54,24 @@ class _ReviewSliderState extends State<ReviewSlider> with SingleTickerProviderSt
   late Animation<double> _animation;
   late double _animationValue;
   late double _xOffset;
+  var initValue = 0.0;
 
   late AnimationController _controller;
   late Tween<double> _tween;
+  int selectedValue1 = 0;
+  int selectedValue2 = 0;
+
+  void onChange1(int value) {
+    setState(() {
+      selectedValue1 = value;
+    });
+  }
+
+  void onChange2(int value) {
+    setState(() {
+      selectedValue2 = value;
+    });
+  }
 
   @override
   void dispose() {
@@ -64,7 +82,7 @@ class _ReviewSliderState extends State<ReviewSlider> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    var initValue = widget.initialValue.toDouble();
+    initValue = widget.initialValue.toDouble();
     _controller = AnimationController(
       value: initValue,
       vsync: this,
@@ -87,6 +105,7 @@ class _ReviewSliderState extends State<ReviewSlider> with SingleTickerProviderSt
 
   _afterLayout(_) {
     widget.onChange(widget.initialValue);
+    print("afterlayout :::::: ${widget.initialValue}");
   }
 
   void handleTap(int state) {
@@ -97,6 +116,9 @@ class _ReviewSliderState extends State<ReviewSlider> with SingleTickerProviderSt
     _controller.forward();
 
     widget.onChange(state);
+    print("handleTap ::::::::::: $state");
+    print("tween.begin ::::::::::: ${_tween.end}");
+    print("tween.end ::::::::::: ${state.toDouble()}");
   }
 
   void _onDrag(double dx, innerWidth) {
@@ -120,50 +142,58 @@ class _ReviewSliderState extends State<ReviewSlider> with SingleTickerProviderSt
     // _controller.animateTo(_animationValue);
 
     widget.onChange(_animationValue.round());
+    print("_onDragEnd onchange : ${_animationValue.round()} ");
   }
 
   void _onDragStart(x, width) {
     var oneStepWidth = (width - widget.circleDiameter) / (widget.options.length - 1);
+    print("oneStepWidth ::::::::::: $oneStepWidth");
     _xOffset = x - (oneStepWidth * _animationValue);
+    print("_xOffset ::::::::::: $_xOffset");
   }
 
   _calcAnimatedValueFormDragX(x, innerWidth) {
     x = x - _xOffset;
+    print("_calcAnimatedValueFormDragX : $x");
+    print("_calcAnimatedValueFormDragXfor : ${x / (innerWidth - widget.circleDiameter) * (widget.options.length - 1)}");
     return x / (innerWidth - widget.circleDiameter) * (widget.options.length - 1);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: paddingSize),
-      height: 100,
-      child: LayoutBuilder(
+    print("animation value ::::::: ${_animationValue}");
+    print("initial value ::::::: ${initValue}");
+    return Scaffold(
+      body: LayoutBuilder(
         builder: (context, size) {
-          return Stack(
-            children: <Widget>[
-              MeasureLine(
-                states: widget.options,
-                handleTap: handleTap,
-                animationValue: _animationValue,
-                width: widget.width != null && widget.width! < size.maxWidth ? widget.width! : size.maxWidth,
-                optionStyle: widget.optionStyle,
-                circleDiameter: widget.circleDiameter,
-              ),
-              MyIndicator(
-                circleDiameter: widget.circleDiameter,
-                animationValue: _animationValue,
-                width: widget.width != null && widget.width! < size.maxWidth ? widget.width : size.maxWidth,
-                onDragStart: (details) {
-                  _onDragStart(details.globalPosition.dx, widget.width != null && widget.width! < size.maxWidth ? widget.width : size.maxWidth);
-                  // _controller.animateTo(_animationValue);
-                },
-                onDrag: (details) {
-                  _onDrag(details.globalPosition.dx, widget.width != null && widget.width! < size.maxWidth ? widget.width : size.maxWidth);
-                  // _controller.animateTo(_animationValue);
-                },
-                onDragEnd: _onDragEnd,
-              ),
-            ],
+          return Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                MeasureLine(
+                  states: widget.options,
+                  handleTap: handleTap,
+                  animationValue: _animationValue,
+                  width: widget.width != null && widget.width! < size.maxWidth ? widget.width! : size.maxWidth,
+                  optionStyle: widget.optionStyle,
+                  circleDiameter: widget.circleDiameter,
+                ),
+                MyIndicator(
+                  circleDiameter: widget.circleDiameter,
+                  animationValue: _animationValue,
+                  width: widget.width != null && widget.width! < size.maxWidth ? widget.width : size.maxWidth,
+                  onDragStart: (details) {
+                    _onDragStart(details.globalPosition.dx, widget.width != null && widget.width! < size.maxWidth ? widget.width : size.maxWidth);
+                    //_controller.animateTo(_animationValue);
+                  },
+                  onDrag: (details) {
+                    _onDrag(details.globalPosition.dx, widget.width != null && widget.width! < size.maxWidth ? widget.width : size.maxWidth);
+                    //_controller.animateTo(_animationValue);
+                  },
+                  onDragEnd: _onDragEnd,
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -172,7 +202,7 @@ class _ReviewSliderState extends State<ReviewSlider> with SingleTickerProviderSt
 }
 
 //const double circleDiameter = 30;
-const double paddingSize = 10;
+const double paddingSize = 0;
 
 class MeasureLine extends StatelessWidget {
   MeasureLine({
@@ -194,45 +224,47 @@ class MeasureLine extends StatelessWidget {
   List<Widget> _buildUnits() {
     var res = <Widget>[];
     var animatingUnitIndex = animationValue.round();
-    var unitAnimatingValue = (animationValue * 10 % 10 / 10).abs() * 2;
+    var unitAnimatingValue = (animationValue * 10 % 10 / 10).abs() * 3;
+    print("unitAnimatingValue ::::::::::: $unitAnimatingValue");
 
     states.asMap().forEach((index, text) {
       var paddingTop = 0.0;
       var scale = 0.5;
       var opacity = .3;
-      /*     if (animatingUnitIndex == index) {
-        paddingTop = unitAnimatingValue * 5;
-        scale = (1 - unitAnimatingValue) * 0.7;
+      if (animatingUnitIndex == index) {
+        paddingTop = 0.0;
+        scale = (1 - unitAnimatingValue);
         opacity = 0.3 + unitAnimatingValue * 0.7;
-      }*/
-      res.add(LimitedBox(
+      }
+
+     /* res.add(LimitedBox(
         key: ValueKey(text),
         maxWidth: circleDiameter,
         child: GestureDetector(
           onTap: () {
             handleTap(index);
           },
-          child: Transform.scale(
-              scale: scale,
-              child: Stack(
-                children: [
-          /*                Head(
-                    circleDiameter: circleDiameter,
-                  ),
-                  Face(
-                    circleDiameter: circleDiameter,
-                    color: Colors.white,
-                    animationValue: index.toDouble(),
-                  ),*/
-                  Container(
-                    // margin: EdgeInsets.symmetric(horizontal: 5),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: ColorConstants.primaryColor),
-                    height: 60,
-                    width: 60,
-                    child: Center(child: Text((index + 1).toString())),
-                  )
-                ],
-              )),
+          child: Container(
+            // margin: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: index < animationValue.round() ? Colors.purple : Colors.yellow),
+            height: 30,
+            width: 30,
+            child: Center(child: Text((index + 1).toString(),style: TextStyle(fontSize: 12),)),
+          ),
+        ),
+      ));  */
+
+      res.add(GestureDetector(
+        onTap: () {
+          handleTap(index);
+        },
+        child: Container(
+          key: ValueKey(text),
+          margin: EdgeInsets.symmetric(horizontal: 6),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: index < animationValue.round() ? Colors.purple : Colors.yellow),
+          height: 30,
+          width: 30,
+          child: Center(child: Text((index + 1).toString(),style: TextStyle(fontSize: 12),)),
         ),
       ));
     });
@@ -244,220 +276,8 @@ class MeasureLine extends StatelessWidget {
     return Row(
       children: _buildUnits(),
     );
-    return Container(
-      child: Stack(
-        children: <Widget>[
-/*          Positioned(
-            top: circleDiameter / 2,
-            left: 20,
-            width: width - 40,
-            child: Container(
-              width: width,
-              color: Color(0xFFeceeef),
-              height: 3,
-            ),
-          ),*/
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: _buildUnits(),
-          ),
-        ],
-      ),
-    );
   }
 }
-
-/*class Face extends StatelessWidget {
-  Face({
-    this.color = const Color(0xFF616154),
-    required this.animationValue,
-    required this.circleDiameter,
-  });
-
-  final double animationValue;
-  final Color color;
-  final double circleDiameter;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: circleDiameter,
-      width: circleDiameter,
-      child: CustomPaint(
-        size: Size(300, 300),
-        painter: MyPainter(animationValue, color: color),
-      ),
-    );
-  }
-}*/
-
-/*class MyPainter extends CustomPainter {
-  MyPainter(
-    animationValue, {
-    this.color = const Color(0xFF615f56),
-  })  : activeIndex = animationValue.floor(),
-        unitAnimatingValue = (animationValue * 10 % 10 / 10);
-
-  final int activeIndex;
-  Color color;
-  final double unitAnimatingValue;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    _drawEye(canvas, size);
-    _drawMouth(canvas, size);
-  }
-
-  @override
-  bool shouldRepaint(MyPainter oldDelegate) {
-    return unitAnimatingValue != oldDelegate.unitAnimatingValue || activeIndex != oldDelegate.activeIndex;
-  }
-
-  _drawEye(canvas, size) {
-    var angle = 0.0;
-    var wide = 0.0;
-
-    switch (activeIndex) {
-      case 0:
-        angle = 55 - unitAnimatingValue * 50;
-        wide = 80.0;
-        break;
-      case 1:
-        wide = 80 - unitAnimatingValue * 80;
-        angle = 5;
-        break;
-    }
-    var degree1 = 90 * 3 + angle;
-    var degree2 = 90 * 3 - angle + wide;
-    var x1 = size.width / 2 * 0.65;
-    var x2 = size.width - x1;
-    var y = size.height * 0.41;
-    var eyeRadius = 5.0;
-
-    var paint = Paint()..color = color;
-    canvas.drawArc(
-      Rect.fromCircle(
-        center: Offset(x1, y),
-        radius: eyeRadius,
-      ),
-      v_math.radians(degree1),
-      v_math.radians(360 - wide),
-      false,
-      paint,
-    );
-    canvas.drawArc(
-      Rect.fromCircle(
-        center: Offset(x2, y),
-        radius: eyeRadius,
-      ),
-      v_math.radians(degree2),
-      v_math.radians(360 - wide),
-      false,
-      paint,
-    );
-  }
-
-  _drawMouth(Canvas canvas, size) {
-    var upperY = size.height * 0.70;
-    var lowerY = size.height * 0.77;
-    var middleY = (lowerY - upperY) / 2 + upperY;
-
-    var leftX = size.width / 2 * 0.65;
-    var rightX = size.width - leftX;
-    var middleX = size.width / 2;
-
-    late double y1, y3, x2, y2;
-    Path? path2;
-    switch (activeIndex) {
-      case 0:
-        y1 = lowerY;
-        x2 = middleX;
-        y2 = upperY;
-        y3 = lowerY;
-        break;
-      case 1:
-        y1 = lowerY;
-        x2 = middleX;
-        y2 = unitAnimatingValue * (middleY - upperY) + upperY;
-        y3 = lowerY - unitAnimatingValue * (lowerY - upperY);
-        break;
-      case 2:
-        y1 = unitAnimatingValue * (upperY - lowerY) + lowerY;
-        x2 = middleX;
-        y2 = unitAnimatingValue * (lowerY + 3 - middleY) + middleY;
-        y3 = upperY;
-        break;
-      case 3:
-        y1 = upperY;
-        x2 = middleX;
-        y2 = lowerY + 3;
-        y3 = upperY;
-        path2 = Path()
-          ..moveTo(leftX, y1)
-          ..quadraticBezierTo(
-            x2,
-            y2,
-            upperY - 2.5,
-            y3 - 2.5,
-          )
-          ..quadraticBezierTo(
-            x2,
-            y2 - unitAnimatingValue * (y2 - upperY + 2.5),
-            leftX,
-            upperY - 2.5,
-          )
-          ..close();
-        break;
-      case 4:
-        y1 = upperY;
-        x2 = middleX;
-        y2 = lowerY + 3;
-        y3 = upperY;
-        path2 = Path()
-          ..moveTo(leftX, y1)
-          ..quadraticBezierTo(
-            x2,
-            y2,
-            upperY - 2.5,
-            y3 - 2.5,
-          )
-          ..quadraticBezierTo(
-            x2,
-            upperY - 2.5,
-            leftX,
-            upperY - 2.5,
-          )
-          ..close();
-        break;
-    }
-    var path = Path()
-      ..moveTo(leftX, y1)
-      ..quadraticBezierTo(
-        x2,
-        y2,
-        rightX,
-        y3,
-      );
-
-    canvas.drawPath(
-        path,
-        Paint()
-          ..color = color
-          ..style = PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = 5);
-
-    if (path2 != null) {
-      canvas.drawPath(
-        path2,
-        Paint()
-          ..color = color
-          ..style = PaintingStyle.fill
-          ..strokeCap = StrokeCap.round,
-      );
-    }
-  }
-}*/
 
 class MyIndicator extends StatelessWidget {
   MyIndicator({
@@ -468,7 +288,7 @@ class MyIndicator extends StatelessWidget {
     required this.onDragEnd,
     required this.circleDiameter,
   })  : width = width - circleDiameter,
-        possition = animationValue == 0 ? 0 : animationValue / 8;
+        possition = animationValue == 0 ? 0 : animationValue / 20;
 
   final double animationValue;
   final Function(DragUpdateDetails) onDrag;
@@ -479,21 +299,18 @@ class MyIndicator extends StatelessWidget {
   final double circleDiameter;
 
   _buildIndicator() {
-    var opacityOfYellow = possition > 0.5 ? 1.0 : possition * 2;
     return GestureDetector(
       onHorizontalDragStart: onDragStart,
       onHorizontalDragUpdate: onDrag,
       onHorizontalDragEnd: onDragEnd,
-      child: Container(
-        width: circleDiameter,
-        height: circleDiameter,
-        child: Image.asset(ImageConstants.rating),
-      ),
+      child: const Image(image: AssetImage(ImageConstants.rating)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    print("indicator width ::::::::::: ${width}");
+    print("indicator position ::::::::::: ${possition * 10}");
     return Container(
       child: Positioned(
         top: 0,
@@ -523,7 +340,7 @@ class Head extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: hasShadow
             ? [
-                BoxShadow(
+                const BoxShadow(
                   color: Colors.black26,
                   offset: Offset(0, 2),
                   blurRadius: 5.0,
