@@ -268,5 +268,8 @@
   "availableForInstantCall": "Available for instant calls right now",
   "scheduleCallOnly": "Scheduled appointments only",
   "selectExpertCategory": "SELECT EXPERT CATEGORY",
-  "selectExistingCategory": "SELECT FROM AN EXISTING CATEGORY"
+  "selectExistingCategory": "SELECT FROM AN EXISTING CATEGORY",
+  "yourCallCompleted": "Your Call is Complete!",
+  "doYouWantToRequest": "Do you want to request another",
+  "yourConsultationIsComplete": "with the Expert? If your consultation is complete, then fantastic!"
 }
