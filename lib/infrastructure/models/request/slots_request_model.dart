@@ -4,13 +4,17 @@ class SlotsRequestModel {
   String? date;
   int? expertId;
   int? duration;
+  String? startDate;
+  String? endDate;
 
-  SlotsRequestModel({this.date, this.expertId, this.duration});
+  SlotsRequestModel({this.date, this.expertId, this.duration, this.startDate, this.endDate});
 
   SlotsRequestModel.fromJson(Map<String, dynamic> json) {
     date = json['date'];
     expertId = json['expertId'];
     duration = json['duration'];
+    startDate = json['startDate'];
+    endDate = json['endDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -18,6 +22,8 @@ class SlotsRequestModel {
     data['date'] = this.date;
     data['expertId'] = this.expertId;
     data['duration'] = this.duration;
+    data['startDate'] = this.startDate;
+    data['endDate'] = this.endDate;
 
     return data;
   }
