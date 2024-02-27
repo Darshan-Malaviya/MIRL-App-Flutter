@@ -59,4 +59,5 @@ class RoutesConstants {
   static const String editYourPhoneNumberScreen = '/editYourPhoneNumberScreen';
   static const String expertCallHistoryScreen = '/expertCallHistoryScreen';
   static const String callFeedbackScreen = '/callFeedbackScreen';
+  static const String feedbackSubmittingScreen = '/feedbackSubmittingScreen';
 }

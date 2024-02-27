@@ -4,7 +4,6 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/table_calender_widget/table_calender.dart';
 import 'package:mirl/ui/screens/earning_report_screen/widget/short_report_widget.dart';
-import 'package:mirl/ui/screens/rating_and_review_screen/widget/short_by_widget.dart';
 
 class EarningReportScreen extends ConsumerStatefulWidget {
   const EarningReportScreen({super.key});
