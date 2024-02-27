@@ -166,6 +166,8 @@ class SocketProvider extends ChangeNotifier {
               else {
                 updateRequestStatusEmit(expertId: expertId, callStatusEnum: CallRequestStatusEnum.cancel,
                     callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
+                instanceRequestTimerNotifier.value = -1;
+                instanceCallEnumNotifier.removeListener(() {});
                 context.toPop();
               }
             },
@@ -390,6 +392,8 @@ class SocketProvider extends ChangeNotifier {
             callConnectNotifier.value == CallConnectStatusEnum.ringing;
             if(isSocketConnected){
              extraResponseModel = ExtraResponseModel.fromJson(data['data']);
+             print("in Call response status");
+             print(extraResponseModel?.requestType.toString());
              extraResponseModel?.callRoleEnum = CallRoleEnum.user;
               NavigationService.context.toPushNamed(RoutesConstants.videoCallScreen,
                   args: VideoCallArguments(agoraChannelId: extraResponseModel?.channelCode.toString() ?? '',
@@ -429,6 +433,8 @@ class SocketProvider extends ChangeNotifier {
 
           if (data['statusCode'].toString() == "200") {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
+            print("in update call requestType");
+            print(model.data?.requestType.toString());
 
             if(model.data?.status.toString() == '2'){
               callConnectNotifier.value = CallConnectStatusEnum.accepted;

@@ -215,18 +215,19 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   /// THis is call sender (User) side
                   context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
                       args: InstanceCallDialogArguments(
-                        name: expertDetailWatch.userData?.userName ?? "",
+                        name: expertDetailWatch.userData?.expertName ?? "",
                         onFirstBtnTap: () {
                           if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout) {
                             ref.read(socketProvider).manageTimeOutStatus(
                                 userData: expertDetailWatch.userData, expertId: widget.expertId, context: context);
                           } else {
-                            if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
+                            ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                           /* if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
                                 (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                               ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
                             } else {
                               FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
-                            }
+                            }*/
                           }
                         },
                         onSecondBtnTap: () {
@@ -245,7 +246,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                             context.toPop();
                           }
                         },
-                        image: expertDetailWatch.userData?.userProfile ?? "",
+                        image: expertDetailWatch.userData?.expertProfile ?? "",
                         expertId: expertDetailWatch.userData?.id.toString() ?? '',
                         userID: SharedPrefHelper.getUserId.toString(),
                       ));

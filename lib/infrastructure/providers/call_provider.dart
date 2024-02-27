@@ -196,6 +196,7 @@ class CallProvider extends ChangeNotifier {
                _isRemoteVideoOn = false;
              }
              changeVideoCallView.value = !changeVideoCallView.value;
+             notifyListeners();
           },
         onRemoteAudioStateChanged: (RtcConnection connection, int remoteUid, RemoteAudioState state, RemoteAudioStateReason reason, int elapsed) {
           log("onRemoteAudioStateChanged");
@@ -207,6 +208,7 @@ class CallProvider extends ChangeNotifier {
             _isRemoteMicOn = true;
           }
           changeVideoCallView.value = !changeVideoCallView.value;
+          notifyListeners();
           log(_isRemoteMicOn.toString());
           },
         onLocalVideoStateChanged: (VideoSourceType source, LocalVideoStreamState state, LocalVideoStreamError error) async {
