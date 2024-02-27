@@ -29,14 +29,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Container(
-                  decoration: const BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      color: ColorConstants.borderColor,
-                      //spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, -3),
-                    )
-                  ], color: ColorConstants.whiteColor, borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+                  decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColorConstants.borderColor,
+                          //spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, -3),
+                        )
+                      ],
+                      color: ColorConstants.whiteColor,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -74,7 +77,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           width: 235,
                           onPressed: () {
                             if (_loginPassKey.currentState?.validate() ?? false) {
-                              loginScreenProviderRead.loginRequestCall(loginType: LoginType.normal, email: loginScreenProviderWatch.emailController.text.trim());
+                              loginScreenProviderRead.loginRequestCall(
+                                  loginType: LoginType.normal, email: loginScreenProviderWatch.emailController.text.trim());
                             }
                           }),
                       40.0.spaceY,
@@ -141,7 +145,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             style: textStyle(context: context, textColor: ColorConstants.primaryColor),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                context.toPushNamed(RoutesConstants.cmsScreen, args: CmsArgs(title: AppConstants.privacyPolicy, name: "privacyPolicy"));
+                                context.toPushNamed(RoutesConstants.cmsScreen,
+                                    args: CmsArgs(title: AppConstants.privacyPolicy, name: "privacyPolicy"));
                               },
                           ),
                         ]),

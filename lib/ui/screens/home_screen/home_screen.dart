@@ -65,14 +65,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     },
                     child: Container(
                         height: 178,
-                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
-                          BoxShadow(
-                            color: Color(0x33000000),
-                            blurRadius: 2,
-                            offset: Offset(0, 2),
-                            spreadRadius: 0,
-                          )
-                        ]),
+                        decoration: BoxDecoration(
+                            color: ColorConstants.whiteColor,
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x33000000),
+                                blurRadius: 2,
+                                offset: Offset(0, 2),
+                                spreadRadius: 0,
+                              )
+                            ]),
                         child: Column(
                           children: [
                             BodySmallText(
@@ -102,14 +105,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                     child: Container(
                         height: 178,
-                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
-                          BoxShadow(
-                            color: Color(0x33000000),
-                            blurRadius: 2,
-                            offset: Offset(0, 2),
-                            spreadRadius: 0,
-                          )
-                        ]),
+                        decoration: BoxDecoration(
+                            color: ColorConstants.whiteColor,
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x33000000),
+                                blurRadius: 2,
+                                offset: Offset(0, 2),
+                                spreadRadius: 0,
+                              )
+                            ]),
                         child: Column(
                           children: [
                             BodySmallText(

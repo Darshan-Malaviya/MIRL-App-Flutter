@@ -16,24 +16,24 @@ class ReportUserWidget extends ConsumerStatefulWidget {
 }
 
 class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
-  // ScrollController scrollController = ScrollController();
-  //
-  // void initState() {
-  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-  //     ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0, isFullScreenLoader: true);
-  //   });
-  //   scrollController.addListener(() async {
-  //     if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-  //       bool isLoading = ref.watch(reportUserProvider).reachedCategoryLastPage;
-  //       if (!isLoading) {
-  //         ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0);
-  //       } else {
-  //         log('reach last page on get report list api');
-  //       }
-  //     }
-  //   });
-  //   super.initState();
-  // }
+  ScrollController scrollController = ScrollController();
+
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0, isFullScreenLoader: true);
+    });
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        bool isLoading = ref.watch(reportUserProvider).reachedCategoryLastPage;
+        if (!isLoading) {
+          ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0);
+        } else {
+          log('reach last page on get report list api');
+        }
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +41,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
     final reportUserWatch = ref.watch(reportUserProvider);
 
     return SingleChildScrollView(
+      controller: scrollController,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -66,7 +67,6 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                 )
               : reportUserWatch.reportListDetails.isNotEmpty
                   ? ListView.builder(
-                      //controller: widget.args.controller,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: (reportUserWatch.reportListDetails.length) + (reportUserWatch.reachedCategoryLastPage ? 0 : 1),

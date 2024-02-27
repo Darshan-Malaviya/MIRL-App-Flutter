@@ -4,7 +4,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 class FlutterToast {
   FToast fToast = FToast();
 
-  Future showToast({required dynamic msg}) async {
+  Future showToast({
+    required dynamic msg,
+    ToastGravity? gravity,
+  }) async {
     if (msg?.isEmpty ?? false) return;
     fToast.init(NavigationService.context);
     List<String> messageList = [];
@@ -52,7 +55,7 @@ class FlutterToast {
       ),
     );
     cancelToast();
-    fToast.showToast(child: toast, toastDuration: const Duration(seconds: 2), gravity: ToastGravity.BOTTOM);
+    fToast.showToast(child: toast, toastDuration: const Duration(seconds: 2), gravity: gravity ?? ToastGravity.BOTTOM);
   }
 
   cancelToast() {

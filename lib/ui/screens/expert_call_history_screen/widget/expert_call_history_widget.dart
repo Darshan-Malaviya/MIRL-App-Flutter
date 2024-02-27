@@ -8,8 +8,8 @@ class ExpertCallHistoryWidget extends StatelessWidget {
   final String? durationTime;
   final String number;
   final String? status;
-
   final Color? statusColor;
+  final Color? bgColor;
 
   const ExpertCallHistoryWidget(
       {super.key,
@@ -20,7 +20,8 @@ class ExpertCallHistoryWidget extends StatelessWidget {
       this.status,
       this.statusColor,
       required this.callTitle,
-      required this.number});
+      required this.number,
+      this.bgColor});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
         Container(
             width: double.infinity,
             decoration: ShapeDecoration(
-              color: ColorConstants.whiteColor,
+              color: bgColor ?? ColorConstants.whiteColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -90,18 +91,21 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                   //color: ColorConstants.greenColor,
                                   shadows: [
                                     BoxShadow(color: Colors.black, blurRadius: 1, spreadRadius: 0),
-                                    BoxShadow(color: Colors.white, blurRadius: 10, spreadRadius: 8,offset: Offset(1, 2),),
-                                  ],
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                        width: 1,
-                                        strokeAlign: BorderSide.strokeAlignCenter,
-                                        color: Color(0xFFCAC9C9),
-                                      ),
-                                    borderRadius: BorderRadius.circular(10),
-
-
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      blurRadius: 10,
+                                      spreadRadius: 8,
+                                      offset: Offset(1, 2),
                                     ),
+                                  ],
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      width: 1,
+                                      strokeAlign: BorderSide.strokeAlignCenter,
+                                      color: Color(0xFFCAC9C9),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
                                 // decoration: ShapeDecoration(
                                 //     shadows: [
@@ -123,7 +127,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                 //   ),
                                 // ),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(right: 30, left: 30,top: 5,bottom: 5),
+                                  padding: const EdgeInsets.only(right: 30, left: 30, top: 5, bottom: 5),
                                   child: Center(
                                     child: BodySmallText(
                                       title: callTitle,

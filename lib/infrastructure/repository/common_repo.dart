@@ -32,7 +32,7 @@ class CommonRepository extends ApiResponseHandler {
   }
 
   Future<ApiHttpResult> suggestedCategoryAPI({Map<String, dynamic>? requestModel}) async {
-    final uri = ApiConstants.endpointUri(path: ApiConstants.category);
+    final uri = ApiConstants.endpointUri(path: ApiConstants.suggestedCategory);
     APIResponse result = await _apiResponseProvider.requestAPI(uri,
         apiType: APIType.post, headers: ApiConstants.headerWithToken(), body: requestModel);
 
