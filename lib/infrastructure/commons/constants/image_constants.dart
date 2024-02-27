@@ -42,6 +42,12 @@ class ImageConstants {
   static const arrow = '${imagePath}arrow.png';
   static const mirlConnect = '${imagePath}mirl_connect.png';
   static const unlockSuggest = '${imagePath}unlock_suggest.png';
+  static const lame = '${imagePath}lame.png';
+  static const mah = '${imagePath}mah.png';
+  static const nice = '${imagePath}nice.png';
+  static const great = '${imagePath}great.png';
+  static const soSo = '${imagePath}so_so.png';
+  static const smiley = '${imagePath}smily.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';

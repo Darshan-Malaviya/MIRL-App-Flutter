@@ -10,6 +10,7 @@ import 'package:mirl/ui/screens/block_user/block_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/call_feedback_screen.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/feedback_submiting_screen.dart';
 import 'package:mirl/ui/screens/cms_screen/arguments/cms_arguments.dart';
 import 'package:mirl/ui/screens/cms_screen/cms_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
@@ -208,6 +209,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const ExpertCallHistoryScreen());
         case RoutesConstants.callFeedbackScreen:
         return MaterialPageRoute(builder: (_) => const CallFeedbackScreen());
+        case RoutesConstants.feedbackSubmittingScreen:
+        return MaterialPageRoute(builder: (_) => const FeedbackSubmittingScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

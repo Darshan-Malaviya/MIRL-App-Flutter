@@ -1,10 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/rate_and_review_response_model.dart';
 import 'package:mirl/infrastructure/repository/report_repo.dart';
 
 class ReportReviewProvider extends ChangeNotifier {
   final _reportRepository = ReportListRepository();
+
+  TextEditingController reviewController = TextEditingController();
 
   String sortByReview = 'HIGHEST REVIEW SCORE';
   String sortByReport = 'WEEKLY';
@@ -13,8 +17,20 @@ class ReportReviewProvider extends ChangeNotifier {
 
   List<String> sortByEarningItem = ['WEEKLY', 'MONTHLY', 'ALL TIME'];
 
+  List<CommonSelectionModel> get feedbackTypeList => _feedbackTypeList;
+  List<CommonSelectionModel> _feedbackTypeList = [
+    CommonSelectionModel(selectType: 1, title: LocaleKeys.lame.tr(), value: ImageConstants.lame,isSelected: false),
+    CommonSelectionModel(selectType: 2, title: LocaleKeys.mah.tr(), value: ImageConstants.mah),
+    CommonSelectionModel(selectType: 3, title: LocaleKeys.soSo.tr(), value: ImageConstants.soSo),
+    CommonSelectionModel(selectType: 4, title: LocaleKeys.nice.tr(), value: ImageConstants.nice),
+    CommonSelectionModel(selectType: 5, title: LocaleKeys.great.tr(), value: ImageConstants.great),
+  ];
+
   bool get isLoading => _isLoading;
   bool _isLoading = false;
+
+  bool get isListLoading => _isListLoading;
+  bool _isListLoading = false;
 
   ReviewAndRatingData? get reviewAndRatingData => _reviewAndRatingData;
   ReviewAndRatingData? _reviewAndRatingData;
@@ -25,8 +41,9 @@ class ReportReviewProvider extends ChangeNotifier {
   bool get reachedLastPage => _reachedLastPage;
   bool _reachedLastPage = false;
 
-  void setSortByReview(String? value) {
+  void setSortByReview(String? value, int id) {
     sortByReview = value!;
+    getRatingAndReviewApiCall(isLoading: false, id: id, isListLoading: true);
     notifyListeners();
   }
 
@@ -35,9 +52,16 @@ class ReportReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getRatingAndReviewApiCall({required bool isLoading, required int id}) async {
+  Future<void> getRatingAndReviewApiCall({required bool isLoading, required int id, required bool isListLoading}) async {
     if (isLoading) {
       _isLoading = true;
+      notifyListeners();
+    }
+
+    if (isListLoading) {
+      _pageNo = 1;
+      _reachedLastPage = false;
+      _isListLoading = true;
       notifyListeners();
     }
 
@@ -63,6 +87,12 @@ class ReportReviewProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+
+    if (isListLoading) {
+      _isListLoading = false;
+      notifyListeners();
+    }
+
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is RatingAndReviewResponseModel) {
