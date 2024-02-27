@@ -36,7 +36,7 @@ class BlockProvider extends ChangeNotifier {
   }
 
   Future<void> checkTimeOut({required BuildContext context, required bool isFromInstantCall}) async {
-    if (isFromInstantCall && (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout)) {
+    if (isFromInstantCall && (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout)) {
       context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
     } else {
       context.toPop();

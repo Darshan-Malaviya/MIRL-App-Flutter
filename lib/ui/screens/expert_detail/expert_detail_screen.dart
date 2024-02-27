@@ -210,14 +210,14 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               onTap: () {
                 if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
                     (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
-                  instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
+                  instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
 
                   /// THis is call sender (User) side
                   context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
                       args: InstanceCallDialogArguments(
                         name: expertDetailWatch.userData?.userName ?? "",
                         onFirstBtnTap: () {
-                          if (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout) {
+                          if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout) {
                             ref.read(socketProvider).manageTimeOutStatus(
                                 userData: expertDetailWatch.userData, expertId: widget.expertId, context: context);
                           } else {
@@ -232,7 +232,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                         onSecondBtnTap: () {
                           if (instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                             context.toPop();
-                          } else if (instanceCallEnumNotifier.value == CallTypeEnum.requestApproved) {
+                          } else if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestApproved) {
                             ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
 
                             ///context.toPop();

@@ -7,6 +7,7 @@ import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart'
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
@@ -25,7 +26,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
 
   Future<void> multiConnectRequestTimerFunction() async {
     await Future.delayed(const Duration(seconds: 1));
-    if (multiRequestTimerNotifier.value != 0 && multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestWaiting) {
+    if (multiRequestTimerNotifier.value != 0 && multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting) {
       multiRequestTimerNotifier.value =  multiRequestTimerNotifier.value - 1;
 
       if(widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId) {
@@ -35,7 +36,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
           expertIdList: data,
           callRoleEnum: CallRoleEnum.user,
           timer:multiRequestTimerNotifier.value,
-          timerType: CallTimerEnum.multiRequest, );
+          timerType: CallTimerEnum.multiRequest, requestType: 2, );
       }
       multiConnectRequestTimerFunction();
     } else {
@@ -48,24 +49,24 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-   /*   await Future.delayed(Duration(minutes: 1));
-      multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.timeout;
-      multiConnectCallEnumNotifier.value = CallTypeEnum.requestTimeout;
-          ref.read(socketProvider).multiConnectStatusEmit(callStatusEnum: CallRequestStatusEnum.timeout,
-          userId: widget.args.userDetail?.id.toString() ?? '',
-          expertId: widget.args.expertList?.first.id.toString() ?? '',
-          callRoleEnum: CallRoleEnum.user, callRequestId: SharedPrefHelper.getCallRequestId);*/
+    /*  await Future.delayed(Duration(seconds: 30));
+      if (multiRequestTimerNotifier.value == 0 && widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId) {
+        ref.read(socketProvider).multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.timeout,
+            userId: widget.args.userDetail?.id.toString() ?? '',
+            expertId: null,
+            callRoleEnum: CallRoleEnum.user, callRequestId: SharedPrefHelper.getCallRequestId);
+
+      }*/
 
       multiRequestTimerNotifier.addListener(() {
-        if (multiRequestTimerNotifier.value == 120) {
+        /// TODO change it with 120;
+        if (multiRequestTimerNotifier.value == 60) {
           multiConnectRequestTimerFunction();
         } else {
-          if((multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestWaiting && widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId)
+          if((multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting && widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId)
           // || (multiConnectCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)
           ) {
             if (multiRequestTimerNotifier.value == 0 && widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId) {
-              multiConnectCallEnumNotifier.value = CallTypeEnum.multiRequestTimeout;
-              multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.timeout;
               ref.read(socketProvider).multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.timeout,
                   userId: widget.args.userDetail?.id.toString() ?? '',
                   expertId: null,
@@ -89,8 +90,10 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
 
   @override
   Widget build(BuildContext context) {
+    final multiProviderWatch = ref.watch(multiConnectProvider);
+    final multiProviderRead = ref.read(multiConnectProvider);
     return PopScope(
-      canPop: true,
+      canPop: false,
       child: Scaffold(
         appBar: AppBarWidget(
           preferSize: 0,
@@ -98,16 +101,16 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
         backgroundColor: ColorConstants.whiteColor,
         body: ValueListenableBuilder(
             valueListenable: multiConnectCallEnumNotifier,
-            builder: (BuildContext context, CallTypeEnum value, Widget? child) {
+            builder: (BuildContext context, CallRequestTypeEnum value, Widget? child) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   40.0.spaceY,
-                  if ((multiConnectCallEnumNotifier.value == CallTypeEnum.multiCallRequest ||
-                      multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestWaiting ||
-                      multiConnectCallEnumNotifier.value == CallTypeEnum.multiReceiverRequested)) ...[
+                  if ((multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiCallRequest ||
+                      multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting ||
+                      multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)) ...[
                     TitleLargeText(
                       title: multiConnectCallEnumNotifier.value.titleName,
                       fontSize: 20,
@@ -164,7 +167,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                             maxLine: 10,
                           ),
 
-                          if (multiConnectCallEnumNotifier.value == CallTypeEnum.multiReceiverRequested) ...[
+                          if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested) ...[
                             ShadowContainer(
                               shadowColor: ColorConstants.blackColor.withOpacity(0.5),
                               border: 25,
@@ -199,12 +202,13 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                               ).addPaddingXY(paddingX: 16, paddingY: 16),
                             ),
                           ] else ...[
-                            if (widget.args.expertList?.isNotEmpty ?? false) ...[
+
+                            if (multiProviderWatch.selectedExpertDetails.isNotEmpty) ...[
                               10.0.spaceY,
                               SizedBox(
                                 height: 220,
                                 child: ListView.separated(
-                                  itemCount: widget.args.expertList?.length ?? 0,
+                                  itemCount: multiProviderWatch.selectedExpertDetails.length,
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -212,76 +216,95 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                     return ValueListenableBuilder(
                                       valueListenable: multiConnectRequestStatusNotifier,
                                         builder: (BuildContext context, CallRequestStatusEnum callRequestStatusEnum, Widget? callRequestStatusEnumChild) {
-                                          return ShadowContainer(
-                                            shadowColor: ColorConstants.blackColor.withOpacity(0.25),
-                                            border: 25,
-                                            width: 150,
-                                            height: 220,
-                                            offset: Offset(0, 4),
-                                            blurRadius: 4,
-                                            spreadRadius: 3,
-                                            backgroundColor: multiConnectRequestStatusNotifier.value.CallReqToCardColor,
-                                            padding: EdgeInsets.zero,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(boxShadow: [
-                                                    BoxShadow(
-                                                        offset: Offset(2, 5),
-                                                        color: ColorConstants.blackColor.withOpacity(0.3),
-                                                        spreadRadius: 2,
-                                                        blurRadius: 2),
-                                                  ], shape: BoxShape.circle),
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(50),
-                                                    child: NetworkImageWidget(
-                                                      imageURL: widget.args.expertList?[index].expertProfile ?? '',
-                                                      boxFit: BoxFit.cover,
-                                                      height: 90,
-                                                      width: 90,
+                                          return InkWell(
+                                            onTap: (){
+                                              /// is status is accept or not chosen then that expert can be able for connect call
+                                              if(multiProviderWatch.selectedExpertDetails[index].status.toString() == "2"
+                                              || multiProviderWatch.selectedExpertDetails[index].status.toString() == "7"){
+                                                multiProviderRead.setSelectedExpertForCall(multiProviderWatch.selectedExpertDetails[index]);
+                                                multiProviderRead.setSelectedExpertForCall(multiProviderWatch.selectedExpertDetails[index]);
+                                                // multiConnectCallEnumNotifier.value = CallTypeEnum.multiRequestApproved;
+                                                ref.read(socketProvider).multiConnectStatusEmit(callStatusEnum: CallRequestStatusEnum.choose,
+                                                    expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '',
+                                                    userId: SharedPrefHelper.getUserId,
+                                                    callRoleEnum: CallRoleEnum.user,
+                                                    callRequestId: SharedPrefHelper.getCallRequestId.toString());
+                                              }
+
+                                            },
+                                            child: ShadowContainer(
+                                              shadowColor: ColorConstants.blackColor.withOpacity(0.25),
+                                              border: 25,
+                                              width: 150,
+                                              height: 220,
+                                              offset: Offset(0, 4),
+                                              blurRadius: 4,
+                                              spreadRadius: 3,
+                                              backgroundColor:  multiProviderWatch.selectedExpertDetails[index].status.toString().numberToCallRequestStatusBGColor(),
+                                              padding: EdgeInsets.zero,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(boxShadow: [
+                                                      BoxShadow(
+                                                          offset: Offset(2, 5),
+                                                          color: ColorConstants.blackColor.withOpacity(0.3),
+                                                          spreadRadius: 2,
+                                                          blurRadius: 2),
+                                                    ], shape: BoxShape.circle),
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(50),
+                                                      child: NetworkImageWidget(
+                                                        imageURL: multiProviderWatch.selectedExpertDetails[index].expertProfile ?? '',
+                                                        boxFit: BoxFit.cover,
+                                                        height: 90,
+                                                        width: 90,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                12.0.spaceY,
-                                                SizedBox(
-                                                  width: 90,
-                                                  height: 40,
-                                                  child: BodyMediumText(
-                                                    title: widget.args.expertList?[index].expertName ?? '',
-                                                    fontFamily: FontWeightEnum.w600.toInter,
-                                                    titleColor: ColorConstants.textColor,
-                                                    titleTextAlign: TextAlign.center,
-                                                    maxLine: 2,
+                                                  12.0.spaceY,
+                                                  SizedBox(
+                                                    width: 90,
+                                                    height: 40,
+                                                    child: BodyMediumText(
+                                                      title: multiProviderWatch.selectedExpertDetails[index].expertName ?? '',
+                                                      fontFamily: FontWeightEnum.w600.toInter,
+                                                      titleColor: ColorConstants.textColor,
+                                                      titleTextAlign: TextAlign.center,
+                                                      maxLine: 2,
+                                                    ),
                                                   ),
-                                                ),
-                                                2.0.spaceY,
-                                                LabelSmallText(
-                                                  title:
-                                                  '${LocaleKeys.rating.tr()} ${widget.args.expertList?[index].overAllRating.toString() ?? "0"}',
-                                                  fontFamily: FontWeightEnum.w500.toInter,
-                                                  fontSize: 8,
-                                                  titleColor: ColorConstants.buttonTextColor,
-                                                ),
-                                                2.0.spaceY,
-                                                ( (widget.args.expertList?[index].fee.toString().isNotEmpty ?? false)
-                                                    && (widget.args.expertList?[index].fee.toString() != "null")) ?
-                                                LabelSmallText(
-                                                  title:
-                                                  '${LocaleKeys.feePerMinute.tr()} \$${((widget.args.expertList?[index].fee ?? 0) / 100) .toStringAsFixed(2)}',
-                                                  fontFamily: FontWeightEnum.w500.toInter,
-                                                  fontSize: 8,
-                                                  maxLine: 2,
-                                                  titleTextAlign: TextAlign.center,
-                                                  titleColor: ColorConstants.buttonTextColor,
-                                                ) : SizedBox.shrink(),
-                                                4.0.spaceY,
-                                                BodyMediumText(
-                                                  title: multiConnectRequestStatusNotifier.value.callRequestStatusToString,
-                                                  titleColor: multiConnectRequestStatusNotifier.value.CallReqToStatusColor,
-                                                )
-                                              ],
-                                            ).addPaddingY(4),
+                                                  2.0.spaceY,
+                                                  ( (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString().isNotEmpty)
+                                                      && (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString() != "null")) ?
+                                                  LabelSmallText(
+                                                    title:
+                                                    '${LocaleKeys.rating.tr()} ${multiProviderWatch.selectedExpertDetails[index].overAllRating.toString()}',
+                                                    fontFamily: FontWeightEnum.w500.toInter,
+                                                    fontSize: 8,
+                                                    titleColor: ColorConstants.buttonTextColor,
+                                                  ) : SizedBox.shrink(),
+                                                  2.0.spaceY,
+                                                  ( (multiProviderWatch.selectedExpertDetails[index].fee.toString().isNotEmpty)
+                                                      && (multiProviderWatch.selectedExpertDetails[index].fee.toString() != "null")) ?
+                                                  LabelSmallText(
+                                                    title:
+                                                    '${LocaleKeys.feePerMinute.tr()} \$${((multiProviderWatch.selectedExpertDetails[index].fee ?? 0) / 100) .toStringAsFixed(2)}',
+                                                    fontFamily: FontWeightEnum.w500.toInter,
+                                                    fontSize: 8,
+                                                    maxLine: 2,
+                                                    titleTextAlign: TextAlign.center,
+                                                    titleColor: ColorConstants.buttonTextColor,
+                                                  ) : SizedBox.shrink(),
+                                                  4.0.spaceY,
+                                                  BodyMediumText(
+                                                    title: multiProviderWatch.selectedExpertDetails[index].status.toString().callRequestStatusToString(),
+                                                    titleColor: multiProviderWatch.selectedExpertDetails[index].status.toString().numberToCallRequestStatusColor(),
+                                                  )
+                                                ],
+                                              ).addPaddingY(4),
+                                            ),
                                           );
                                       }
                                     );
@@ -303,8 +326,8 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                               valueListenable: allCallDurationNotifier,
                               builder: (BuildContext context, int value, Widget? child) {
                                 return Visibility(
-                                  visible: allCallDurationNotifier.value != 0 && (multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestWaiting
-                                      || multiConnectCallEnumNotifier.value == CallTypeEnum.multiReceiverRequested),
+                                  visible: allCallDurationNotifier.value != 0 && (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting
+                                      || multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested),
                                   replacement: SizedBox.shrink(),
                                   child: TitleSmallText(
                                     title: "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
@@ -316,19 +339,9 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                               }
                           ),
                           10.0.spaceY,
-                          (multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestWaiting ||
-                                  multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestApproved ||
-                                  multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestDeclined)
-                              ? Center(
-                                  child: PrimaryButton(
-                                    title: multiConnectCallEnumNotifier.value.secondButtonName,
-                                    width: 130,
-                                    onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                    buttonColor:  ColorConstants.primaryColor,
-                                    titleColor: ColorConstants.textColor,
-                                  ),
-                                )
-                              : Row(
+                          (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiCallRequest ||
+                                  multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)
+                              ? Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Flexible(
@@ -336,8 +349,10 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                         title: multiConnectCallEnumNotifier.value.secondButtonName,
                                         // width: 130,
                                         onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                        buttonColor: (multiConnectCallEnumNotifier.value == CallTypeEnum.multiReceiverRequested)
-                                            ? ColorConstants.yellowButtonColor : ColorConstants.primaryColor,
+                                        buttonColor:
+                                            (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)
+                                                ? ColorConstants.yellowButtonColor
+                                                : ColorConstants.primaryColor,
                                         titleColor: ColorConstants.textColor,
                                       ),
                                     ).addVisibility(multiConnectCallEnumNotifier.value.secondButtonName.isNotEmpty),
@@ -352,17 +367,25 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                       ),
                                     ).addVisibility(multiConnectCallEnumNotifier.value.firstButtonName.isNotEmpty)
                                   ],
-                                ).addPaddingX(40),
-
+                                ).addPaddingX(40)
+                              : Center(
+                                  child: PrimaryButton(
+                                    title: multiConnectCallEnumNotifier.value.secondButtonName,
+                                    width: 160,
+                                    onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
+                                    buttonColor: ColorConstants.primaryColor,
+                                    titleColor: ColorConstants.textColor,
+                                  ),
+                                ),
                         ],
                       ),
                     ],
                   ),
                   30.0.spaceY,
                   Visibility(
-                    visible: multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestDeclined ||
-                        multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestTimeout ||
-                        multiConnectCallEnumNotifier.value == CallTypeEnum.multiReceiverRequested,
+                    visible: multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestDeclined ||
+                        multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestTimeout ||
+                        multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested,
                     replacement: SizedBox.shrink(),
                     child: TitleSmallText(
                       title: LocaleKeys.viewOtherExpert.tr(),
@@ -373,7 +396,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                   ),
                   20.0.spaceY,
                   Visibility(
-                    visible: multiConnectCallEnumNotifier.value == CallTypeEnum.multiReceiverRequested,
+                    visible: multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested,
                     replacement: SizedBox.shrink(),
                     child: Align(
                       alignment: Alignment.bottomRight,

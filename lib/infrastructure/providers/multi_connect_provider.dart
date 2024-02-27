@@ -60,6 +60,9 @@ class MultiConnectProvider extends ChangeNotifier {
   List<ExpertDetails> get selectedExpertDetails => _selectedExpertDetails;
   List<ExpertDetails> _selectedExpertDetails = [];
 
+  ExpertDetails? selectedExpertForCall;
+
+
   void getLoggedUserData() {
     if (SharedPrefHelper.getUserData.isNotEmpty) {
       UserData loggedUserData = UserData.fromJson(jsonDecode(SharedPrefHelper.getUserData));
@@ -69,6 +72,11 @@ class MultiConnectProvider extends ChangeNotifier {
         userProfile: loggedUserData.userProfile,
       );
     }
+  }
+
+  void setSelectedExpertForCall(ExpertDetails expertDetails) {
+    selectedExpertForCall = expertDetails;
+    notifyListeners();
   }
 
   Future<void> categoryListApiCall({bool isLoaderVisible = false}) async {
@@ -192,6 +200,12 @@ class MultiConnectProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+
+  Future<void> changeExpertListAfterEmit({required List<ExpertDetails> expertsList}) async {
+    _selectedExpertDetails = expertsList;
+    notifyListeners();
+  }
+
 
   void clearExpertIds() {
     _selectedExperts.clear();

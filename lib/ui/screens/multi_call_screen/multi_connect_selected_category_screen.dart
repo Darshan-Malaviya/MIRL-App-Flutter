@@ -86,19 +86,17 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
 
                 await multiProviderRead.setExpertList();
                 FlutterToast().showToast(msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.');
-                multiConnectCallEnumNotifier.value = CallTypeEnum.multiCallRequest;
+                multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiCallRequest;
                 multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
                /// user side
                 NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
                     args: MultiConnectDialogArguments(
-                      expertList: multiProviderRead.selectedExpertDetails,
+                      //expertList: multiProviderRead.selectedExpertDetails,
                       userDetail:  multiProviderRead.loggedUserData,
                       onFirstBtnTap: () {
-                        if (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout) {
+                        if (instanceCallEnumNotifier.value == CallRequestTypeEnum.multiRequestTimeout) {
                           /// tru again
-                          ref.read(socketProvider).manageTimeOutStatusInMultiConnect(selectedExpertDetails: multiProviderWatch.selectedExpertDetails,
-                          context: context,
-                          loggedUserData: multiProviderWatch.loggedUserData);
+
 
 
                         } else {
@@ -111,8 +109,11 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                         /// cancel
                         if(multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                           context.toPop();
-                        } else if(multiConnectCallEnumNotifier.value == CallTypeEnum.multiRequestApproved){
-                        /// chosen
+                        } else if(multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved){
+                          if(multiProviderWatch.selectedExpertForCall != null){
+                            ref.read(socketProvider).connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
+                          }
+
                         }
                         else {
                           /// change expert id here
