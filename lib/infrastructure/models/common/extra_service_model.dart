@@ -14,6 +14,7 @@ class ExtraResponseModel {
   String? isVideo;
   String? instantCallSeconds;
   String? isJointRemote;
+  String? requestType;
   CallRoleEnum? callRoleEnum;
 
 
@@ -28,9 +29,10 @@ class ExtraResponseModel {
     this.agoraToken,
     this.callHistoryId,
     this.isVideo,
-    this.instantCallSeconds = "60",
+    this.instantCallSeconds = "120",
     this.key,
     this.callRoleEnum,
+    this.requestType,
     this.isJointRemote = "false",
   });
 
@@ -45,7 +47,9 @@ class ExtraResponseModel {
     agoraToken = json['agoraToken'];
     callHistoryId = json['callHistoryId'];
     isVideo = json['isVideo'];
-    instantCallSeconds = "60";
+    requestType = json['requestType'];
+    ///TODO change call duration from here
+    instantCallSeconds = "120";
    // instantCallSeconds = json['instantCallSeconds'];
     callRoleEnum = json['callRoleEnum'];
     key = json['key'];
@@ -62,6 +66,7 @@ class ExtraResponseModel {
     data['channelCode'] = channelCode;
     data['agoraToken'] = agoraToken;
     data['callHistoryId'] = callHistoryId;
+    data['requestType'] = requestType;
     data['isVideo'] = isVideo;
   //  data['instantCallSeconds'] = instantCallSeconds;
     data['key'] = key;

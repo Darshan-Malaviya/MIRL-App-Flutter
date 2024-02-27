@@ -7,7 +7,6 @@ import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
 import 'package:mirl/infrastructure/providers/call_provider.dart';
 import 'package:mirl/infrastructure/services/agora_service.dart';
@@ -38,7 +37,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
               expertIdList: [int.parse((model?.expertId.toString() ?? ''))],
               callRoleEnum: CallRoleEnum.user,
               timer: instanceCallDurationNotifier.value,
-              timerType: CallTimerEnum.call,
+              timerType: CallTimerEnum.call, requestType: widget.arguments.callType ?? 0,
             );
       }
       instanceCallTimerFunction();
@@ -82,7 +81,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       engine.leaveChannel();
       engine.release();
     }
-    instanceCallDurationNotifier.value = 60;
+    instanceCallDurationNotifier.value = 120;
     instanceCallDurationNotifier.removeListener(() { });
 
     //ref.read(callProvider).disposeCallDuration();
