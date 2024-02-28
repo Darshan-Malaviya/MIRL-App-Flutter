@@ -5,7 +5,6 @@ import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
@@ -77,8 +76,12 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
           Align(
             alignment: AlignmentDirectional.topEnd,
             child: InkWell(
-              onTap: () {
-                expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
+              onTap: () async {
+                await expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
+                ref.read(homeProvider).manageFavoriteUserList(
+                  expertId: expertDetailWatch.userData?.id ?? 0,
+                  expertName: expertDetailWatch.userData?.expertName  ?? '', expertProfile: expertDetailWatch.userData?.expertProfile ?? '',
+                  isFavorite: expertDetailWatch.userData?.isFavorite ?? false,);
               },
               child: Image.asset(
                 expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
@@ -215,18 +218,20 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   /// THis is call sender (User) side
                   context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
                       args: InstanceCallDialogArguments(
-                        name: expertDetailWatch.userData?.userName ?? "",
+                        name: expertDetailWatch.userData?.expertName ?? "",
                         onFirstBtnTap: () {
                           if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout) {
+                            instanceRequestTimerNotifier.dispose();
                             ref.read(socketProvider).manageTimeOutStatus(
                                 userData: expertDetailWatch.userData, expertId: widget.expertId, context: context);
                           } else {
-                            if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
+                            ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
+                           /* if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
                                 (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                               ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
                             } else {
                               FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
-                            }
+                            }*/
                           }
                         },
                         onSecondBtnTap: () {
@@ -237,15 +242,14 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
 
                             ///context.toPop();
                           } else {
-                            ref.read(socketProvider).updateRequestStatusEmit(
+                            ref.read(socketProvider).updateRequestStatusEmit(callStatusEnum: CallRequestStatusEnum.cancel,
                                 expertId: widget.expertId,
-                                callStatusEnum: CallRequestStatusEnum.cancel,
                                 callRoleEnum: CallRoleEnum.user,
                                 userId: SharedPrefHelper.getUserId.toString());
                             context.toPop();
                           }
                         },
-                        image: expertDetailWatch.userData?.userProfile ?? "",
+                        image: expertDetailWatch.userData?.expertProfile ?? "",
                         expertId: expertDetailWatch.userData?.id.toString() ?? '',
                         userID: SharedPrefHelper.getUserId.toString(),
                       ));

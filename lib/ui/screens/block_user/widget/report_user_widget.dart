@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -68,6 +66,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                   ? ListView.builder(
                       //controller: widget.args.controller,
                       shrinkWrap: true,
+                      padding: EdgeInsets.zero,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: (reportUserWatch.reportListDetails.length) + (reportUserWatch.reachedCategoryLastPage ? 0 : 1),
                       itemBuilder: (context, index) {
@@ -85,23 +84,24 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                             await reportUserRead.reportUser();
                           },
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Expanded(
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: BodySmallText(
-                                        title: reportUserWatch.reportListDetails[index].title ?? '',
-                                        titleColor: ColorConstants.blackColor,
-                                        titleTextAlign: TextAlign.start,
-                                        maxLine: 3,
-                                        fontSize: 13,
-                                      ),
+                                    BodySmallText(
+                                      title: reportUserWatch.reportListDetails[index].title ?? '',
+                                      titleColor: ColorConstants.blackColor,
+                                      titleTextAlign: TextAlign.start,
+                                      maxLine: 3,
+                                      fontSize: 13,
                                     ),
                                     20.0.spaceY,
                                     BodySmallText(
-                                      title: reportUserWatch.reportListDetails[index].description ?? '',
+                                      title: reportUserWatch.reportListDetails[index].description?.trim() ?? '',
                                       titleColor: ColorConstants.blackColor,
                                       titleTextAlign: TextAlign.start,
                                       fontFamily: FontWeightEnum.w400.toInter,
@@ -112,7 +112,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                                 ).addMarginTop(30),
                               ),
                               10.0.spaceX,
-                              Align(alignment: Alignment.centerRight, child: Image.asset(ImageConstants.arrow))
+                              Align(alignment: Alignment.topRight, child: Image.asset(ImageConstants.arrow).addPaddingTop(30))
                             ],
                           ),
                         );

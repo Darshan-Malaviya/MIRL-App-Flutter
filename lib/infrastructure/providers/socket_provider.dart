@@ -133,9 +133,6 @@ class SocketProvider extends ChangeNotifier {
   }
 
   void manageTimeOutStatus({required UserData? userData, required BuildContext context , required String expertId}) {
-
-    if ((userData?.instantCallAvailable ?? false) &&
-        (userData?.onlineStatus.toString() == '1')) {
       NavigationService.context.toPop();
       instanceRequestTimerNotifier.value = -1;
       instanceCallEnumNotifier.removeListener(() {});
@@ -146,15 +143,12 @@ class SocketProvider extends ChangeNotifier {
             name: userData?.userName ?? "",
             onFirstBtnTap: () {
               if(instanceCallEnumNotifier.value  == CallRequestTypeEnum.requestTimeout) {
-
+                instanceRequestTimerNotifier.dispose();
+                ref.read(socketProvider).manageTimeOutStatus(
+                    userData: userData, expertId: expertId, context: context);
               } else {
-                if((userData?.instantCallAvailable ?? false) && (userData?.onlineStatus.toString() == '1') ){
-                  instanceCallRequestEmit(expertId: expertId);
-                } else {
-                  FlutterToast().showToast(msg: "Expert not available.");
-                }
+                instanceCallRequestEmit(expertId: expertId);
               }
-
             },
             onSecondBtnTap: () {
               if(instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
@@ -166,6 +160,8 @@ class SocketProvider extends ChangeNotifier {
               else {
                 updateRequestStatusEmit(expertId: expertId, callStatusEnum: CallRequestStatusEnum.cancel,
                     callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
+                instanceRequestTimerNotifier.value = -1;
+                instanceCallEnumNotifier.removeListener(() {});
                 context.toPop();
               }
             },
@@ -173,11 +169,6 @@ class SocketProvider extends ChangeNotifier {
             expertId: userData?.id.toString() ??'',
             userID: SharedPrefHelper.getUserId.toString(),
           ));
-
-    } else {
-      FlutterToast().showToast(msg: "Expert not available.");
-    }
-
   }
 
   void updateSocketIdListener() {
@@ -214,7 +205,7 @@ class SocketProvider extends ChangeNotifier {
             SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
             allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
             instanceCallEnumNotifier.value = CallRequestTypeEnum.requestWaiting;
-            instanceRequestTimerNotifier.value = 120;
+            //instanceRequestTimerNotifier.value = 120;
           } else {
             InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
             FlutterToast().showToast(msg: model.message?.first.toString());
@@ -429,7 +420,6 @@ class SocketProvider extends ChangeNotifier {
 
           if (data['statusCode'].toString() == "200") {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
-
             if(model.data?.status.toString() == '2'){
               callConnectNotifier.value = CallConnectStatusEnum.accepted;
               /// accept
@@ -509,11 +499,10 @@ class SocketProvider extends ChangeNotifier {
               }
             } else if (model.data?.status.toString() == '4') {
               /// time out
-              if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
+              if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen || activeRoute.value == RoutesConstants.videoCallScreen) {
                 FlutterToast().showToast(msg: LocaleKeys.expertNotResponding.tr());
                 NavigationService.context.toPop();
               }
-
             }
             if (model.data?.status.toString() == '5') {
               /// cancelled
@@ -573,7 +562,7 @@ class SocketProvider extends ChangeNotifier {
   void timerResponse() {
     try {
       socket?.on(AppConstants.timeSend, (data) {
-       // Logger().d('timerResponse=====${data.toString()}');
+        Logger().d('timerResponse=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
 
@@ -588,7 +577,7 @@ class SocketProvider extends ChangeNotifier {
   void timerListener() {
     try {
       socket?.on(AppConstants.timeReceived, (data)  async {
-       // Logger().d('timerListener=====${data.toString()}');
+        Logger().d('timerListener=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);

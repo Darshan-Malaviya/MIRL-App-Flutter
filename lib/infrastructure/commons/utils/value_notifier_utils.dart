@@ -2,10 +2,10 @@ import 'package:mirl/infrastructure/commons/enums/call_connect_status_enum.dart'
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-
+import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 
 ValueNotifier<bool> socketListen = ValueNotifier(false);
-ValueNotifier<int> bgCallEndTrigger = ValueNotifier<int>(0);
+ValueNotifier<List<UserFavorites>> favoriteListNotifier = ValueNotifier<List<UserFavorites>>([]);
 ValueNotifier<int> instanceCallDurationNotifier = ValueNotifier<int>(-1);
 ValueNotifier<int> allCallDurationNotifier = ValueNotifier<int>(0);
 ValueNotifier<int> instanceRequestTimerNotifier = ValueNotifier<int>(-1);
