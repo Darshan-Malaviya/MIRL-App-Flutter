@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
-import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/all_category_list_bottom_view.dart';
 
 class SuggestNewExpertiseScreen extends ConsumerStatefulWidget {
@@ -22,6 +21,7 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
   Widget build(BuildContext context) {
     final suggestNewExpertiseWatch = ref.watch(suggestNewExpertiseProvider);
     final suggestNewExpertiseRead = ref.read(suggestNewExpertiseProvider);
+
     return Scaffold(
         backgroundColor: ColorConstants.scaffoldBg,
         appBar: AppBarWidget(
@@ -130,8 +130,8 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                     hintTextColor: ColorConstants.buttonTextColor,
                     maxLines: 10,
                     maxLength: 500,
-                    minLines: 8,
-                    controller: suggestNewExpertiseRead.newTopicController,
+                    minLines: 6,
+                    controller: suggestNewExpertiseWatch.newTopicController,
                     textInputType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
                     contentPadding: EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 30),

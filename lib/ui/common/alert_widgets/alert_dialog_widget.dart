@@ -10,6 +10,8 @@ class CommonAlertDialog {
     double? width,
     bool? barrierDismissible,
     double? borderRadius,
+    Color? bgColor,
+    EdgeInsets? insetPadding,
   }) {
     return showDialog(
         context: context,
@@ -24,10 +26,11 @@ class CommonAlertDialog {
             ),
             child: ZoomInAnimation(
               child: Dialog(
-                insetPadding: PaddingConstant.scaffoldPadding,
+                insetPadding: insetPadding ?? PaddingConstant.scaffoldPadding,
                 child: Container(
                     padding: PaddingConstant.alertDialogPadding,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.alertdialogRadius), color: ColorConstants.scaffoldColor),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.alertdialogRadius), color: bgColor ?? ColorConstants.scaffoldColor),
                     height: height,
                     width: width ?? maxWidth,
                     child: child),

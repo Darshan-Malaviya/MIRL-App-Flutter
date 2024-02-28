@@ -25,13 +25,13 @@ class _RatingAndReviewScreenState extends ConsumerState<RatingAndReviewScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(reportReviewProvider).getRatingAndReviewApiCall(isLoading: true, id: widget.id);
+      ref.read(reportReviewProvider).getRatingAndReviewApiCall(isLoading: true, id: widget.id, isListLoading: false);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(reportReviewProvider).reachedLastPage;
         if (!isLoading) {
-          ref.read(reportReviewProvider).getRatingAndReviewApiCall(isLoading: false, id: widget.id);
+          ref.read(reportReviewProvider).getRatingAndReviewApiCall(isLoading: false, id: widget.id, isListLoading: false);
         } else {
           log('reach last page on review list api');
         }
@@ -118,10 +118,19 @@ class _RatingAndReviewScreenState extends ConsumerState<RatingAndReviewScreen> {
                     ShortByReview(
                       value: reportReviewWatch.sortByReview,
                       itemList: reportReviewWatch.sortByReviewItem,
-                      onChanged: reportReviewWatch.setSortByReview,
+                      onChanged: (value) {
+                        reportReviewWatch.setSortByReview(value, widget.id);
+                      },
                     ).addPaddingX(30),
                     30.0.spaceY,
-                    ReviewListWidget()
+                    if (!reportReviewWatch.isListLoading) ...[
+                      ReviewListWidget()
+                    ] else ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Center(child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
+                      )
+                    ]
                   ] else ...[
                     Center(
                       child: BodyMediumText(
