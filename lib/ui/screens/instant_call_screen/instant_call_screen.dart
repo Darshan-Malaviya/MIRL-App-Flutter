@@ -24,61 +24,54 @@ class InstantCallRequestDialog extends ConsumerStatefulWidget {
 
 class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> {
 
-  Future<void> instanceRequestTimerFunction() async {
-    await Future.delayed(const Duration(seconds: 1));
-    if ((instanceRequestTimerNotifier.value != 0) && (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting)) {
-      instanceRequestTimerNotifier.value =  instanceRequestTimerNotifier.value - 1;
-      timerEmitOnReceiver();
-      instanceRequestTimerFunction();
-    } else {
-      instanceRequestTimerNotifier.value = -1;
-      instanceCallEnumNotifier.removeListener(() {});
-    }
-  }
+  Timer? _timer;
 
-  Future<void> timerEmitOnReceiver() async {
-    if(widget.args.userID == SharedPrefHelper.getUserId) {
-      if(instanceRequestTimerNotifier.value > 0){
-        await ref.read(socketProvider).timerEmit(userId: int.parse((widget.args.userID.toString())),expertIdList: [int.parse((widget.args.expertId.toString()))],
-          callRoleEnum: CallRoleEnum.user, timer:instanceRequestTimerNotifier.value, timerType: CallTimerEnum.request, requestType: 1, );
-      }
-    }
+  void startTimer() {
+    _timer?.cancel();
+    instanceRequestTimerNotifier = ValueNotifier<int>(120);
+    _timer = new Timer.periodic(
+      Duration(seconds: 1), (Timer timer)  {
+        if (instanceRequestTimerNotifier.value == 0) {
+          timer.cancel();
+          _timer?.cancel();
+          if (instanceRequestTimerNotifier.value == 0 && widget.args.userID == SharedPrefHelper.getUserId.toString()) {
+            instanceCallEnumNotifier.value = CallRequestTypeEnum.requestTimeout;
+            ref.read(socketProvider).updateRequestStatusEmit(
+                expertId: widget.args.expertId,
+                userId: widget.args.userID,
+                callStatusEnum: CallRequestStatusEnum.timeout,
+                callRoleEnum: CallRoleEnum.user);
+
+          }
+        } else {
+          instanceRequestTimerNotifier.value =  instanceRequestTimerNotifier.value - 1;
+          if(widget.args.userID == SharedPrefHelper.getUserId) {
+             ref.read(socketProvider).timerEmit(userId: int.parse((widget.args.userID.toString())),expertIdList: [int.parse((widget.args.expertId.toString()))],
+              callRoleEnum: CallRoleEnum.user, timer:instanceRequestTimerNotifier.value, timerType: CallTimerEnum.request, requestType: 1, );
+          }
+        }
+      },
+    );
   }
 
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-
-
-      instanceRequestTimerNotifier.addListener(() {
-        if (instanceRequestTimerNotifier.value == 120) {
-          instanceRequestTimerFunction();
-        } else {
-          if((instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting && widget.args.userID == SharedPrefHelper.getUserId)
-          // || (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested && widget.args.expertId == SharedPrefHelper.getUserId)
-          ) {
-            if (instanceRequestTimerNotifier.value == 0 && widget.args.userID == SharedPrefHelper.getUserId.toString()) {
-              instanceCallEnumNotifier.value = CallRequestTypeEnum.requestTimeout;
-              ref.read(socketProvider).updateRequestStatusEmit(
-                  expertId: widget.args.expertId,
-                  userId: widget.args.userID,
-                  callStatusEnum: CallRequestStatusEnum.timeout,
-                  callRoleEnum: CallRoleEnum.user);
-
-            }
-          }
-        }
-      });
-
+    instanceCallEnumNotifier.addListener(() {
+      if(instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting) {
+        startTimer();
+      }
     });
     super.initState();
   }
 
   @override
   void dispose() {
-    instanceRequestTimerNotifier.value = -1;
-    instanceCallEnumNotifier.removeListener(() {});
+    instanceCallEnumNotifier.dispose();
+    instanceRequestTimerNotifier.dispose();
+    instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+    instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
+    _timer?.cancel();
     super.dispose();
   }
 

@@ -56,7 +56,7 @@ class ExpertDetailProvider extends ChangeNotifier {
 
   Future<void> favoriteRequestCall(int expertId) async {
     FavoriteRequestModel favoriteRequestModel = FavoriteRequestModel(userFavoriteId: expertId);
-    favoriteApiCall(requestModel: favoriteRequestModel.prepareRequest());
+    await favoriteApiCall(requestModel: favoriteRequestModel.prepareRequest());
   }
 
   Future<void> favoriteApiCall({required Object requestModel}) async {

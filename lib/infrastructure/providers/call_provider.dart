@@ -184,6 +184,7 @@ class CallProvider extends ChangeNotifier {
           audioVideoCallFunction: () async {
             await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
             await engine.enableVideo();
+            await engine.enableAudio();
             await engine.startPreview();
           },
            onRemoteVideoStateChanged: (RtcConnection connection, int remoteUid, RemoteVideoState state, RemoteVideoStateReason reason, int elapsed) {
