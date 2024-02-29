@@ -32,7 +32,8 @@ class FilterBottomSheetWidget extends StatelessWidget {
                       )),
             ),
           ),
-        )
+        ),
+        20.0.spaceY,
       ],
     );
   }

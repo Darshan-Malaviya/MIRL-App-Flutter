@@ -61,7 +61,7 @@ class StringConstants {
   static const String theGenderDropDown = "SELECT YOUR GENDER FROM THE DROPDOWN ";
   static const String visibleOnYourProfile = "DO YOU WANT YOUR LOCATION \nTO BE VISIBLE ON YOUR PROFILE?";
   static const String certificationsAndExperience = "CERTIFICATIONS AND EXPERIENCE";
-  static const String nearestLandmark = "TYPE YOUR ADDRESS OR NEAREST LANDMARK HERE";
+  static const String nearestLandmark = "SELECT ";
   static const String instantCalls =
       "Instant calls are direct call requests by users only within the weekly availability schedule set by you.";
   static const String declineAnyCall =

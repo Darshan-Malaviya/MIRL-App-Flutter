@@ -526,7 +526,8 @@ class HeadlineSmallText extends StatelessWidget {
       this.fontSize,
       this.fontHeight,
       this.lineHeight,
-      this.isUnderline = false})
+      this.isUnderline = false,
+      this.shadow})
       : super(key: key);
 
   final String title;
@@ -541,6 +542,7 @@ class HeadlineSmallText extends StatelessWidget {
   final double? fontHeight;
   final bool? isUnderline;
   final double? lineHeight;
+  final List<Shadow>? shadow;
 
   @override
   Widget build(BuildContext context) {
@@ -553,6 +555,7 @@ class HeadlineSmallText extends StatelessWidget {
             decoration: isUnderline == true ? TextDecoration.underline : null,
             height: lineHeight,
             letterSpacing: -0.1,
+            shadows: shadow,
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,

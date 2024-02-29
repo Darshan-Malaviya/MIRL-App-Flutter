@@ -299,7 +299,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                       userId: SharedPrefHelper.getUserId));
             }
           } else {
-            FlutterToast().showToast(msg: "Please select any filter.");
+            FlutterToast().showToast(msg: LocaleKeys.pleasePickAnyFilter.tr());
           }
         },
       ).addPaddingXY(paddingX: 50, paddingY: 10),
