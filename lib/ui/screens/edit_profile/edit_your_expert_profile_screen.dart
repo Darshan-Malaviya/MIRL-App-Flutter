@@ -99,7 +99,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                             fontFamily: FontWeightEnum.w400.toInter,
                           ),
                         ],
-                      ),
+                      ).addMarginX(20),
               ),
             ),
             5.0.spaceY,

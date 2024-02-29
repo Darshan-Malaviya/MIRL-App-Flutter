@@ -23,144 +23,171 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   Widget build(BuildContext context) {
     final loginScreenProviderWatch = ref.watch(loginScreenProvider);
     final loginScreenProviderRead = ref.read(loginScreenProvider);
+
     return Scaffold(
-      body: Container(
-        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height, maxWidth: MediaQuery.of(context).size.width),
-        decoration: const BoxDecoration(color: ColorConstants.whiteColor),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Image.asset(
-                  ImageConstants.emailVerification,
-                  height: 180,
-                  width: 180,
-                ).addMarginTop(80),
-                BodyLargeText(
-                  title: StringConstants.checkYourEmail,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: FontWeightEnum.w600.toInter,
+      appBar: AppBarWidget(
+        preferSize: 40,
+        leading: InkWell(
+          child: Image.asset(ImageConstants.backIcon),
+          onTap: () {
+            loginScreenProviderWatch.timer?.cancel();
+            context.toPop();
+          },
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          margin: EdgeInsets.only(top: 80),
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: ColorConstants.borderColor,
+                blurRadius: 5,
+                offset: Offset(0, -3),
+              )
+            ],
+            color: ColorConstants.whiteColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+          ),
+          child: Column(
+            children: [
+              Image.asset(
+                ImageConstants.emailVerification,
+                height: 180,
+                width: 180,
+              ).addMarginTop(30),
+              BodyLargeText(
+                title: StringConstants.checkYourEmail,
+                fontWeight: FontWeight.bold,
+                fontFamily: FontWeightEnum.w600.toInter,
+              ),
+              BodyLargeText(
+                title: StringConstants.secretCode,
+                fontFamily: FontWeightEnum.w500.toInter,
+              ),
+              BodyLargeText(
+                title: StringConstants.enterHereLogin,
+                fontFamily: FontWeightEnum.w500.toInter,
+              ),
+              60.0.spaceY,
+              Pinput(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp(RegexConstants.emojiRegex)),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                controller: loginScreenProviderWatch.otpController,
+                keyboardType: TextInputType.number,
+                length: 6,
+                focusedPinTheme: PinTheme(
+                  height: 45,
+                  width: 46,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ColorConstants.blackColor),
+                    borderRadius: BorderRadius.circular(6.0),
+                    shape: BoxShape.rectangle,
+                    color: ColorConstants.whiteColor,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(0, 2),
+                        blurRadius: 7.0,
+                      ),
+                    ],
+                  ),
                 ),
-                BodyLargeText(
-                  title: StringConstants.secretCode,
-                  fontFamily: FontWeightEnum.w500.toInter,
+                followingPinTheme: PinTheme(
+                  height: 45,
+                  width: 46,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ColorConstants.blackColor),
+                    borderRadius: BorderRadius.circular(6.0),
+                    shape: BoxShape.rectangle,
+                    color: ColorConstants.whiteColor,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(0, 2),
+                        blurRadius: 7.0,
+                      ),
+                    ],
+                  ),
                 ),
-                BodyLargeText(
-                  title: StringConstants.enterHereLogin,
-                  fontFamily: FontWeightEnum.w500.toInter,
+                submittedPinTheme: PinTheme(
+                  height: 45,
+                  width: 46,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ColorConstants.blackColor),
+                    borderRadius: BorderRadius.circular(6.0),
+                    shape: BoxShape.rectangle,
+                    color: ColorConstants.whiteColor,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(0, 2),
+                        blurRadius: 7.0,
+                      ),
+                    ],
+                  ),
                 ),
-                60.0.spaceY,
-                Pinput(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(RegExp(RegexConstants.emojiRegex)),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  controller: loginScreenProviderWatch.otpController,
-                  keyboardType: TextInputType.number,
-                  length: 6,
-                  focusedPinTheme: PinTheme(
-                    height: 45,
-                    width: 46,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: ColorConstants.blackColor),
-                      borderRadius: BorderRadius.circular(6.0),
-                      shape: BoxShape.rectangle,
-                      color: ColorConstants.whiteColor,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(0, 2),
-                          blurRadius: 7.0,
-                        ),
-                      ],
+              ).addPaddingX(20),
+              60.0.spaceY,
+              PrimaryButton(
+                title: StringConstants.verifyOtp,
+                titleColor: ColorConstants.textColor,
+                onPressed: () {
+                  if (loginScreenProviderWatch.otpController.text.isNotEmpty) {
+                    loginScreenProviderRead.otpVerifyRequestCall();
+                  } else {
+                    FlutterToast().showToast(msg: LocaleKeys.pleaseEnterOtp.tr());
+                  }
+                },
+              ).addPaddingX(55),
+              20.0.spaceY,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: BodySmallText(
+                      title: loginScreenProviderRead.secondsRemaining == 0 ? LocaleKeys.dontReceiveCode.tr() : LocaleKeys.youCanSendAnotherCode.tr(),
+                      fontFamily: FontWeightEnum.w600.toInter,
                     ),
                   ),
-                  followingPinTheme: PinTheme(
-                    height: 45,
-                    width: 46,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: ColorConstants.blackColor),
-                      borderRadius: BorderRadius.circular(6.0),
-                      shape: BoxShape.rectangle,
-                      color: ColorConstants.whiteColor,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(0, 2),
-                          blurRadius: 7.0,
+                  if (loginScreenProviderRead.secondsRemaining == 0) ...{
+                    4.0.spaceX,
+                    Flexible(
+                      child: InkWell(
+                        onTap: () {
+                          context.unFocusKeyboard();
+                          loginScreenProviderWatch.otpController.clear();
+                          loginScreenProviderRead.loginRequestCall(
+                            context: context,
+                            loginType: 0,
+                            email: loginScreenProviderWatch.emailController.text.trim(),
+                            fromResend: true,
+                          );
+                        },
+                        child: BodySmallText(
+                          title: LocaleKeys.resend.tr(),
+                          titleColor: ColorConstants.primaryColor,
                         ),
-                      ],
-                    ),
-                  ),
-                  submittedPinTheme: PinTheme(
-                    height: 45,
-                    width: 46,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: ColorConstants.blackColor),
-                      borderRadius: BorderRadius.circular(6.0),
-                      shape: BoxShape.rectangle,
-                      color: ColorConstants.whiteColor,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(0, 2),
-                          blurRadius: 7.0,
-                        ),
-                      ],
-                    ),
-                  ),
-                ).addPaddingX(20),
-                60.0.spaceY,
-                PrimaryButton(
-                  title: StringConstants.verifyOtp,
-                  titleColor: ColorConstants.textColor,
-                  onPressed: () {
-                    if (loginScreenProviderWatch.otpController.text.isNotEmpty) {
-                      loginScreenProviderRead.otpVerifyRequestCall();
-                    } else {
-                      FlutterToast().showToast(msg: LocaleKeys.pleaseEnterOtp.tr());
-                    }
-                  },
-                ).addPaddingX(55),
-                20.0.spaceY,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                      ),
+                    )
+                  } else ...{
                     Flexible(
                       child: BodySmallText(
-                        title: loginScreenProviderRead.secondsRemaining == 0 ? LocaleKeys.dontReceiveCode.tr() : LocaleKeys.youCanSendAnotherCode.tr(),
-                        fontFamily: FontWeightEnum.w600.toInter,
+                        title: Duration(seconds: loginScreenProviderWatch.secondsRemaining).toTimeString(),
+                        fontSize: 10,
                       ),
                     ),
-                    if (loginScreenProviderRead.secondsRemaining == 0) ...{
-                      4.0.spaceX,
-                      Flexible(
-                        child: InkWell(
-                          onTap: () {
-                            loginScreenProviderRead.loginRequestCall(
-                              loginType: 0,
-                              email: loginScreenProviderWatch.emailController.text.trim(),
-                            );
-                          },
-                          child: BodySmallText(
-                            title: LocaleKeys.resend.tr(),
-                            titleColor: ColorConstants.primaryColor,
-                          ),
-                        ),
-                      )
-                    } else ...{
-                      Flexible(
-                        child: BodySmallText(
-                          title: Duration(seconds: loginScreenProviderWatch.secondsRemaining).toTimeString(),
-                          fontSize: 10,
-                        ),
-                      ),
-                    }
-                  ],
-                ),
-              ],
-            ),
+                  }
+                ],
+              ),
+            ],
           ),
         ),
       ),

@@ -40,7 +40,7 @@ extension DateTimeFormatter on String {
     return '';
   }
 
-  /// 10:10 AM
+  /// 10:10 AM from UTC
   String to12HourTimeFormat() {
     try {
       DateTime timeStamp = DateTime.parse(this).toLocal();
@@ -48,18 +48,6 @@ extension DateTimeFormatter on String {
       return output;
     } catch (e) {
       Logger().d("Exception occurred on to12HourTimeFormat : $e");
-    }
-    return '';
-  }
-
-  /// 5:20 from UTC
-  String toLocalTimeFromUtc() {
-    try {
-      DateTime localTime = DateTime.parse(this).toLocal();
-      var output = DateFormat('hh:mm a').format(localTime);
-      return output;
-    } catch (e) {
-      Logger().d("Exception occurred on toLocalTimeFromUtc : $e");
     }
     return '';
   }

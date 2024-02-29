@@ -21,6 +21,7 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(blockUserProvider).getAllBlockListApiCall(isFullScreenLoader: true);
     });
+
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(blockUserProvider).reachedCategoryLastPage;

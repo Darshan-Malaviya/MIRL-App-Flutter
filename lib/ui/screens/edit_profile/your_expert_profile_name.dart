@@ -20,7 +20,10 @@ class _YourExpertProfileNameScreenState extends ConsumerState<YourExpertProfileN
               onTap: () => context.toPop(),
             ),
             trailingIcon: InkWell(
-              onTap: () => expertRead.updateExpertNameApi(),
+              onTap: () {
+                context.unFocusKeyboard();
+                expertRead.updateExpertNameApi();
+              },
               child: TitleMediumText(
                 title: StringConstants.done,
               ).addPaddingRight(14),

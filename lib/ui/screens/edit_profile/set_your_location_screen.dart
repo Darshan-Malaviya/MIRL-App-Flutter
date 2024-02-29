@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/dropdown_widget/dropdown_widget.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
@@ -66,9 +68,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 DropdownMenuWidget(
                   hintText: StringConstants.theDropDown,
                   controller: expertWatch.locationController,
-                  dropdownList: expertWatch.locations
-                      .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
-                      .toList(),
+                  dropdownList: expertWatch.locations.map((String item) => dropdownMenuEntry(context: context, value: item, label: item)).toList(),
                   onSelect: (String value) {
                     expertWatch.locationSelect(value);
                   },
@@ -83,8 +83,10 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 40.0.spaceY,
                 TextFormFieldWidget(
                   isReadOnly: true,
-                  hintText: StringConstants.nearestLandmark,
+                  hintText: LocaleKeys.selectCountry.tr().toUpperCase(),
                   controller: expertWatch.countryNameController,
+                  contentPadding: EdgeInsets.symmetric(vertical: 16,horizontal: 16),
+                  enabledBorderColor: ColorConstants.dropDownBorderColor,
                   onTap: () {
                     CommonBottomSheet.bottomSheet(
                         context: context,
@@ -99,10 +101,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                         isDismissible: true);
                   },
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please select country";
-                    }
-                    return null;
+                    return value?.toEmptyStringValidation(msg: LocaleKeys.pleaseSelectCountry.tr());
                   },
                 ),
                 20.0.spaceY,
@@ -115,8 +114,10 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                 20.0.spaceY,
                 TextFormFieldWidget(
                   isReadOnly: true,
-                  hintText: StringConstants.nearestLandmark,
+                  hintText: LocaleKeys.selectCity.tr().toUpperCase(),
                   controller: expertWatch.cityNameController,
+                  contentPadding: EdgeInsets.symmetric(vertical: 16,horizontal: 16),
+                  enabledBorderColor: ColorConstants.dropDownBorderColor,
                   onTap: () {
                     CommonBottomSheet.bottomSheet(
                         context: context,
@@ -132,10 +133,7 @@ class _SetYourLocationScreenState extends ConsumerState<SetYourLocationScreen> {
                         ));
                   },
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please select city";
-                    }
-                    return null;
+                    return value?.toEmptyStringValidation(msg: LocaleKeys.pleaseSelectCity.tr());
                   },
                 ),
               ],
