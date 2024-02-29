@@ -451,7 +451,8 @@ class SocketProvider extends ChangeNotifier {
                if(activeRoute.value == RoutesConstants.videoCallScreen){
                  if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()) {
                    if(activeRoute.value == RoutesConstants.videoCallScreen){
-                     NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen);
+                     NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
+                         args: int.parse(extraResponseModel?.callHistoryId ?? ''));
                    }
                  } else {
                    await FlutterCallkitIncoming.endAllCalls();
@@ -522,7 +523,8 @@ class SocketProvider extends ChangeNotifier {
                   NavigationService.context.toPop();
                   await FlutterCallkitIncoming.endAllCalls();
                 } else {
-                  NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen);
+                  NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
+                      args: int.parse(extraResponseModel?.callHistoryId ?? ''));
                 }
               }
               instanceRequestTimerNotifier = ValueNotifier<int>(-1);
