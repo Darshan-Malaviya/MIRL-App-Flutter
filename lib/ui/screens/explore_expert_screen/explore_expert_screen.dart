@@ -78,6 +78,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                       suffixIcon: filterProviderWatch.exploreExpertController.text.isNotEmpty
                           ? InkWell(
                               onTap: () {
+                                context.unFocusKeyboard();
                                 filterProviderRead.clearExploreExpertSearchData();
                                 filterProviderRead.clearExploreController();
                                 filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
@@ -221,7 +222,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                                   expertData: filterProviderWatch.categoryList?.expertData?[i],
                                 );
                               },
-                              separatorBuilder: (context, index) => 20.0.spaceY,
+                              separatorBuilder: (context, index) => 30.0.spaceY,
                               itemCount: (filterProviderWatch.categoryList?.expertData?.length ?? 0) + (filterProviderWatch.reachedExploreExpertLastPage ? 0 : 1)),
                         ] else ...[
                           Column(

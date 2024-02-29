@@ -44,7 +44,7 @@ class FlutterToast {
                     Expanded(
                       child: BodySmallText(
                         titleColor: ColorConstants.whiteColor,
-                        titleTextAlign: TextAlign.left,
+                        titleTextAlign: TextAlign.center,
                         title: messageList[index],
                         maxLine: 10,
                       ),

@@ -132,13 +132,13 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             ),
             20.0.spaceY,
             LabelSmallText(
-              title: '${LocaleKeys.yourTimeZone.tr()}:${scheduleWatch.userLocalTimeZone}',
+              title: '${LocaleKeys.yourTimeZone.tr()}: ${scheduleWatch.userLocalTimeZone}',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
             ),
             10.0.spaceY,
             LabelSmallText(
-              title: '${LocaleKeys.expertTimeZone.tr()}:CENTRAL TIME (UTC -6:00)',
+              title: '${LocaleKeys.expertTimeZone.tr()}: CENTRAL TIME (UTC -6:00)',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
             ),

@@ -68,8 +68,8 @@ extension DateTimeFormatter on String {
   String toUTCDateTimeFormat() {
     try {
       int intValue = int.parse(this);
-      DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue, isUtc: true);
-      return dateTime.toIso8601String();
+      DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue);
+      return dateTime.toUtc().toIso8601String();
     } catch (e) {
       Logger().d("Exception occurred on toUTCDateTimeFormat : $e");
     }
@@ -112,7 +112,7 @@ extension DateTimeFormatter on String {
       DateTime startLocalTime = DateTime.parse(startTime).toLocal();
       String value1 = DateFormat('h:mm').format(endLocalTime);
       String value2 = DateFormat('h:mm').format(startLocalTime);
-      if (value1 == value2) {
+      if (value1 == '12:00' && value2 == '12:00') {
         DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute);
         return setTimeOfDay;
       } else {
@@ -179,7 +179,7 @@ extension DateTimeFormatter on String {
   String? toLocalEarningDate() {
     try {
       DateTime localTime = DateTime.parse(this).toLocal();
-      String formattedDate = DateFormat(' MMM dd yyyy').format(localTime);
+      String formattedDate = DateFormat('MMM dd yyyy').format(localTime);
       return formattedDate;
     } catch (e) {
       Logger().d("Exception on toLocalEarningDate : $e");

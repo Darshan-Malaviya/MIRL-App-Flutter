@@ -43,14 +43,14 @@ class BlockProvider extends ChangeNotifier {
     }
   }
 
-  void userBlockRequestCall({
+  Future<void> userBlockRequestCall({
     required int Status,
     required int UserBlockId,
     required BuildContext context,
     bool isFromInstatCall = false,
-  }) {
+  }) async {
     UserBlockRequestModel userBlockRequestModel = UserBlockRequestModel(status: Status, userBlockId: UserBlockId);
-    userBlockApiCall(requestModel: userBlockRequestModel.prepareRequest(), context: context, isFromInstatCall: isFromInstatCall);
+    await userBlockApiCall(requestModel: userBlockRequestModel.prepareRequest(), context: context, isFromInstatCall: isFromInstatCall);
   }
 
   Future<void> userBlockApiCall({

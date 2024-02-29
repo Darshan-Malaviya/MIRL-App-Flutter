@@ -80,6 +80,8 @@ class PushNotificationService {
              showCallkitIncoming(uuid: const Uuid().v4().toString(), extraResponseModel: extraResponseModel);
           } else if (message?.data['key'] == NotificationTypeEnum.autoLogout.name) {
             CommonMethods.autoLogout();
+          } else if (message?.data['key'] == NotificationTypeEnum.blocked.name) {
+            CommonMethods.blockByAnyOtherUser(blockedUserId: message?.data['blockedBy'].toString() ?? '');
           } else {
             if (notification != null && android != null) {
               flutterLocalNotificationsPlugin.show(

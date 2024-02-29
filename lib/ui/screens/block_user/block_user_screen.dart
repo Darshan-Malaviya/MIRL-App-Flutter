@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
-import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
@@ -132,10 +130,15 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                           ),
                           30.0.spaceY,
                           InkWell(
-                            onTap: () {
-                              blockUserRead.userBlockRequestCall(isFromInstatCall: widget.args.isFromInstantCall,
+                            onTap: () async {
+                              await context.toPop();
+                              await blockUserRead.userBlockRequestCall(isFromInstatCall: widget.args.isFromInstantCall,
                                   Status: 1, UserBlockId: widget.args.userId ?? 0, context: context);
-                              context.toPop();
+                              ref.read(homeProvider).manageFavoriteUserList(
+                                expertId: int.parse(widget.args.userId .toString()), expertName: widget.args.userName ?? '', expertProfile: widget.args.imageURL ?? '',
+                                isFavorite: false,);
+
+
                             },
                             child: Center(
                                 child: BodyLargeText(
@@ -163,9 +166,12 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
               60.0.spaceY,
               PrimaryButton(
                 title: LocaleKeys.permanentBlock.tr(),
-                onPressed: () {
+                onPressed: () async {
                   // context.toPushNamed(RoutesConstants.blockUserListScreen);
-                  blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.userId ?? 0, context: context,isFromInstatCall: widget.args.isFromInstantCall);
+                  await blockUserRead.userBlockRequestCall(Status: 2, UserBlockId: widget.args.userId ?? 0, context: context,isFromInstatCall: widget.args.isFromInstantCall);
+                  ref.read(homeProvider).manageFavoriteUserList(
+                    expertId: int.parse(widget.args.expertId .toString()), expertName: widget.args.userName ?? '', expertProfile: widget.args.imageURL ?? '',
+                    isFavorite: false,);
                 },
                 fontSize: 13,
               ),
@@ -181,7 +187,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
               InkWell(
                 onTap: () {
                   context.toPushNamed(RoutesConstants.reportUserScreen,
-                      args: BlockUserArgs(userRole: 2, reportName: 'REPORT THIS USER', expertId: SharedPrefHelper.getUserId));
+                      args: BlockUserArgs(userRole: 2, reportName: AppConstants.reportThisUSer, expertId: widget.args.userId.toString()));
                 },
                 child: BodySmallText(
                   title: LocaleKeys.reportUser.tr(),

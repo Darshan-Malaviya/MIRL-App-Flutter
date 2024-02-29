@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -31,6 +32,7 @@ class AuthProvider with ChangeNotifier {
 
   bool get enableResend => _enableResend;
   bool _enableResend = false;
+
   Timer? timer;
 
   String _socialId = '';
@@ -90,9 +92,8 @@ class AuthProvider with ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-          Logger().d("Successfully login");
           if (loginType == 0) {
-            FlutterToast().showToast(msg: loginResponseModel.message ?? '');
+             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
@@ -191,7 +192,6 @@ class AuthProvider with ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-          Logger().d("Successfully login");
           Logger().d("Login data======${loginResponseModel.toJson()}");
           timer?.cancel();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));

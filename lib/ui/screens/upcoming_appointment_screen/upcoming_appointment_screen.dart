@@ -54,7 +54,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
       ),
       body: upcomingWatch.isLoading ?? false
           ? Center(
-              child: CupertinoActivityIndicator(radius: 12, color: ColorConstants.primaryColor),
+              child: CupertinoActivityIndicator(radius: 16, color: ColorConstants.primaryColor),
             )
           : SingleChildScrollView(
               controller: scrollController,

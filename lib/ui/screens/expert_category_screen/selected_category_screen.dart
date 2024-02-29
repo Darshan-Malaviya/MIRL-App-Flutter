@@ -91,6 +91,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                 child: CupertinoActivityIndicator(
                   animating: true,
                   color: ColorConstants.primaryColor,
+                  radius: 16,
                 ),
               )
             : SingleChildScrollView(
@@ -287,7 +288,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                               expertData: filterProviderWatch.singleCategoryData?.expertData?[i],
                             );
                           },
-                          separatorBuilder: (context, index) => 20.0.spaceY,
+                          separatorBuilder: (context, index) => 30.0.spaceY,
                           itemCount: (filterProviderWatch.singleCategoryData?.expertData?.length ?? 0) + (filterProviderWatch.reachedOneCategoryScreenLastPage ? 0 : 1))
                     ] else ...[
                       Column(

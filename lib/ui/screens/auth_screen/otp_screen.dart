@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:pinput/pinput.dart';
@@ -114,12 +116,10 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   title: StringConstants.verifyOtp,
                   titleColor: ColorConstants.textColor,
                   onPressed: () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-
                     if (loginScreenProviderWatch.otpController.text.isNotEmpty) {
                       loginScreenProviderRead.otpVerifyRequestCall();
                     } else {
-                      FlutterToast().showToast(msg: "The OTP Field is required");
+                      FlutterToast().showToast(msg: LocaleKeys.pleaseEnterOtp.tr());
                     }
                   },
                 ).addPaddingX(55),
@@ -129,7 +129,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   children: [
                     Flexible(
                       child: BodySmallText(
-                        title: 'You can resend code in ',
+                        title: loginScreenProviderRead.secondsRemaining == 0 ? LocaleKeys.dontReceiveCode.tr() : LocaleKeys.youCanSendAnotherCode.tr(),
                         fontFamily: FontWeightEnum.w600.toInter,
                       ),
                     ),
@@ -138,17 +138,14 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       Flexible(
                         child: InkWell(
                           onTap: () {
-                            loginScreenProviderWatch.enableResend
-                                ? loginScreenProviderRead.loginRequestCall(
-                                    loginType: 0,
-                                    email: loginScreenProviderWatch.emailController.text.trim(),
-                                  )
-                                : null;
+                            loginScreenProviderRead.loginRequestCall(
+                              loginType: 0,
+                              email: loginScreenProviderWatch.emailController.text.trim(),
+                            );
                           },
                           child: BodySmallText(
-                            title: 'Resend',
-                            titleColor:
-                                loginScreenProviderWatch.enableResend ? ColorConstants.primaryColor : ColorConstants.whiteColor,
+                            title: LocaleKeys.resend.tr(),
+                            titleColor: ColorConstants.primaryColor,
                           ),
                         ),
                       )
