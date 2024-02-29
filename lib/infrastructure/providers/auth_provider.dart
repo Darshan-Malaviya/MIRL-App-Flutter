@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -93,15 +92,7 @@ class AuthProvider with ChangeNotifier {
           LoginResponseModel loginResponseModel = response.data;
           Logger().d("Successfully login");
           if (loginType == 0) {
-            // Fluttertoast.showToast(
-            //   msg: loginResponseModel.message ?? '',
-            //  // toastLength: Toast.LENGTH_SHORT,
-            //  // timeInSecForIosWeb: 1,
-            //   backgroundColor: ColorConstants.primaryColor,
-            //   textColor: ColorConstants.whiteColor,
-            //   fontSize: 12,
-            // );
-             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
+            FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));

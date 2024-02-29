@@ -63,9 +63,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         controller: loginScreenProviderWatch.emailController,
                         textInputAction: TextInputAction.done,
                         textInputType: TextInputType.emailAddress,
-                        onFieldSubmitted: (value) {
-                          context.unFocusKeyboard();
-                        },
+
                         validator: (value) {
                           return value?.toEmailValidation();
                         },
@@ -76,6 +74,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           titleColor: ColorConstants.textColor,
                           width: 235,
                           onPressed: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             if (_loginPassKey.currentState?.validate() ?? false) {
                               loginScreenProviderRead.loginRequestCall(
                                   loginType: LoginType.normal, email: loginScreenProviderWatch.emailController.text.trim());

@@ -293,6 +293,14 @@
   "noFeedback": "No feedback",
   "quickFeedback": "A quick feedback can help the Expert. Are you sure you want to skip it?",
   "thanksForFeedback": "Thank you for sharing your feedback!",
-  "backToProfile": "BACK TO EXPERT PROFILE"
-
+  "backToProfile": "BACK TO HOME",
+  "expertise": "EXPERTISE",
+  "communication": "COMMUNICATION",
+  "helpfulness": "HELPFULNESS",
+  "empathy": "EMPATHY",
+  "professionalism": "PROFESSIONALISM",
+  "blockAndReportUser": "Block / Report User",
+  "durationCallHistory": "DURATION:",
+  "totalPayment": "TOTAL PAYMENT:",
+  "expertHistory": "EXPERT:"
 }

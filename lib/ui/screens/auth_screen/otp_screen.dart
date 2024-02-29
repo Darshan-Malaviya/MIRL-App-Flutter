@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
@@ -115,6 +114,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   title: StringConstants.verifyOtp,
                   titleColor: ColorConstants.textColor,
                   onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+
                     if (loginScreenProviderWatch.otpController.text.isNotEmpty) {
                       loginScreenProviderRead.otpVerifyRequestCall();
                     } else {
@@ -146,7 +147,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                           },
                           child: BodySmallText(
                             title: 'Resend',
-                            titleColor: loginScreenProviderWatch.enableResend ? ColorConstants.primaryColor : ColorConstants.whiteColor,
+                            titleColor:
+                                loginScreenProviderWatch.enableResend ? ColorConstants.primaryColor : ColorConstants.whiteColor,
                           ),
                         ),
                       )
