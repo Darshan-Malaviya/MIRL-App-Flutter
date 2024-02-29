@@ -76,14 +76,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           items: List.generate(
             5,
             (index) => BottomNavigationBarItem(
-              icon: dashboardProviderWatch.selectedIndex == index
-                  ? Image.asset(
-                      color: ColorConstants.bottomTextColor,
-                      dashboardProviderRead.getImage(index),
-                    )
-                  : Image.asset(
-                      dashboardProviderRead.getImage(index),
-                    ),
+              icon: Image.asset(
+                color: dashboardProviderWatch.selectedIndex == index ? ColorConstants.bottomTextColor : null,
+                dashboardProviderRead.getImage(index),
+              ),
               label: dashboardProviderRead.getText(index),
             ),
           ),

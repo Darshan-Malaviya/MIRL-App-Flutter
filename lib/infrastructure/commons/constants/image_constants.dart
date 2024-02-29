@@ -11,7 +11,6 @@ class ImageConstants {
   static const apple = '${imagePath}apple.png';
   static const facebook = '${imagePath}facebook.png';
   static const line = '${imagePath}line.png';
-  static const emailVerification = '${imagePath}email_verification.png';
   static const home = '${imagePath}home.png';
   static const explore = '${imagePath}explore.png';
   static const notification = '${imagePath}notification.png';
@@ -55,6 +54,7 @@ class ImageConstants {
   /// icon
   static const recurringIcon = '${iconPath}recurring.png';
   static const nonRecurringIcon = '${iconPath}non_recurring.png';
+  static const emailVerification = '${iconPath}email_verification.png';
 
   /// json
  // static const splashScreen = '${rawPath}splash_screen.json';

@@ -32,6 +32,7 @@ class AuthProvider with ChangeNotifier {
 
   bool get enableResend => _enableResend;
   bool _enableResend = false;
+
   Timer? timer;
 
   String _socialId = '';
@@ -91,16 +92,7 @@ class AuthProvider with ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-          Logger().d("Successfully login");
           if (loginType == 0) {
-            // Fluttertoast.showToast(
-            //   msg: loginResponseModel.message ?? '',
-            //  // toastLength: Toast.LENGTH_SHORT,
-            //  // timeInSecForIosWeb: 1,
-            //   backgroundColor: ColorConstants.primaryColor,
-            //   textColor: ColorConstants.whiteColor,
-            //   fontSize: 12,
-            // );
              FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
           } else {
@@ -200,7 +192,6 @@ class AuthProvider with ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
-          Logger().d("Successfully login");
           Logger().d("Login data======${loginResponseModel.toJson()}");
           timer?.cancel();
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));

@@ -83,46 +83,41 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
             ),
             trailingIcon: InkWell(
               onTap: () async {
-
                 await multiProviderRead.setExpertList();
                 FlutterToast().showToast(msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.');
                 multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiCallRequest;
                 multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
-               /// user side
+
+                /// user side
                 NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
                     args: MultiConnectDialogArguments(
                       //expertList: multiProviderRead.selectedExpertDetails,
-                      userDetail:  multiProviderRead.loggedUserData,
+                      userDetail: multiProviderRead.loggedUserData,
                       onFirstBtnTap: () {
                         if (instanceCallEnumNotifier.value == CallRequestTypeEnum.multiRequestTimeout) {
                           /// tru again
-
-
-
                         } else {
                           List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
                           ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
                         }
-
                       },
-                      onSecondBtnTap: (){
+                      onSecondBtnTap: () {
                         /// cancel
-                        if(multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                        if (multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                           context.toPop();
-                        } else if(multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved){
-                          if(multiProviderWatch.selectedExpertForCall != null && multiProviderWatch.selectedExpertForCall?.status == '6'){
+                        } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
+                          if (multiProviderWatch.selectedExpertForCall != null && multiProviderWatch.selectedExpertForCall?.status == '6') {
                             ref.read(socketProvider).connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
                           } else {
                             /// Choose any expert for call
                             FlutterToast().showToast(msg: 'Please choose expert for call.');
 
                           }
-
-                        }
-                        else {
+                        } else {
                           /// change expert id here
 
-                          ref.read(socketProvider).multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.cancel,
+                          ref.read(socketProvider).multiConnectStatusEmit(
+                              callStatusEnum: CallRequestStatusEnum.cancel,
                               expertId: null,
                               userId: SharedPrefHelper.getUserId,
                               callRoleEnum: CallRoleEnum.user,
@@ -319,7 +314,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                       ListView.separated(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        separatorBuilder: (context, index) => 20.0.spaceY,
+                        separatorBuilder: (context, index) => 30.0.spaceY,
                         itemCount: (multiProviderWatch.expertData?.length ?? 0) + (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
                         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                         itemBuilder: (context, i) {
@@ -349,15 +344,22 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                         },
                       )
                     ] else ...[
-                      Container(
-                        height: 100,
-                        child: Center(
-                          child: BodyLargeText(
-                            title: LocaleKeys.thereWasNoExpertDataAvailable.tr(),
+                      Column(
+                        children: [
+                          100.0.spaceY,
+                          BodySmallText(
+                            title: LocaleKeys.noResultFound.tr(),
                             fontFamily: FontWeightEnum.w600.toInter,
                           ),
-                        ),
-                      ),
+                          20.0.spaceY,
+                          BodySmallText(
+                            title: LocaleKeys.tryWideningYourSearch.tr(),
+                            fontFamily: FontWeightEnum.w400.toInter,
+                            titleTextAlign: TextAlign.center,
+                            maxLine: 5,
+                          ),
+                        ],
+                      ).addMarginX(40),
                     ]
                   ],
                 ),

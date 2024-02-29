@@ -403,6 +403,11 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeFeesValue(String value) {
+    countController.text = value;
+    notifyListeners();
+  }
+
   void setValueOfCall(String value) {
     _isCallSelect = (value == 'Yes') ? true : false;
     notifyListeners();
