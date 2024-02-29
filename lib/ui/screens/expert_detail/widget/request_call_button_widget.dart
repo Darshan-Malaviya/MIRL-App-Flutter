@@ -7,6 +7,7 @@ import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
 class ExpertDetailsButtonWidget extends StatelessWidget {
   final String title;
+  final String suffixTitle;
   final Color? titleColor;
   final Color? buttonColor;
   final double? height;
@@ -21,6 +22,7 @@ class ExpertDetailsButtonWidget extends StatelessWidget {
     this.height,
     this.width,
     required this.onTap,
+    required this.suffixTitle,
   }) : super(key: key);
 
   @override
@@ -55,11 +57,11 @@ class ExpertDetailsButtonWidget extends StatelessWidget {
               alignment: AlignmentDirectional.centerEnd,
               child: LabelSmallText(
                 maxLine: 2,
-                title: LocaleKeys.expertOnline.tr(),
+                title: suffixTitle,
                 titleTextAlign: TextAlign.start,
                 titleColor: ColorConstants.buttonTextColor,
                 fontSize: 10,
-              ).addMarginX(6),
+              ),
             ).addMarginX(10),
           ],
         ),

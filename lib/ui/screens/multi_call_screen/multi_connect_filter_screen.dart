@@ -219,7 +219,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             } else {
               FlutterToast().showToast(msg: LocaleKeys.pleasePickAnyFilter.tr());
             }
-          }).addPaddingXY(paddingX: 50, paddingY: 10),
+          }).addPaddingXY(paddingX: 50, paddingY: 18),
     );
   }
 

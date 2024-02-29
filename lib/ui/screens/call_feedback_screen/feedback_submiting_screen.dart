@@ -21,7 +21,7 @@ class FeedbackSubmittingScreen extends StatelessWidget {
           Image.asset(ImageConstants.smiley),
           60.0.spaceY,
           PrimaryButton(
-            title: LocaleKeys.backToProfile.tr(),
+            title: LocaleKeys.backToHome.tr(),
             titleColor: ColorConstants.buttonTextColor,
             onPressed: () => context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0),
           ),

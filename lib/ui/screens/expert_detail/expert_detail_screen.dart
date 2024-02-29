@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -143,37 +144,36 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       titleTextAlign: TextAlign.center,
                     ),
                     10.0.spaceX,
-                    HeadlineSmallText(
-                      title: expertDetailWatch.userData?.overAllRating != 0 ? expertDetailWatch.userData?.overAllRating.toString() ?? '' : LocaleKeys.newText.tr(),
-                      titleColor: ColorConstants.overallRatingColor,
-                      shadow: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
-                    ),
+                    AutoSizeText(
+                      expertDetailWatch.userData?.overAllRating != 0 ? expertDetailWatch.userData?.overAllRating.toString() ?? '' : LocaleKeys.newText.tr(),
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: ColorConstants.overallRatingColor,
+                        shadows: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
+                      ),
+                    )
                   ],
                 ),
                 40.0.spaceX,
-                Flexible(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      BodySmallText(
-                        title: LocaleKeys.feesPerMinute.tr(),
-                        fontFamily: FontWeightEnum.w400.toInter,
-                        titleTextAlign: TextAlign.center,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    BodySmallText(
+                      title: LocaleKeys.feesPerMinute.tr(),
+                      fontFamily: FontWeightEnum.w400.toInter,
+                      titleTextAlign: TextAlign.center,
+                    ),
+                    10.0.spaceX,
+                    AutoSizeText(
+                      fee != null ? '\$${fee}' : '',
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: ColorConstants.overallRatingColor,
+                        shadows: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
                       ),
-                      10.0.spaceX,
-                      Flexible(
-                        child: HeadlineSmallText(
-                          maxLine: 4,
-                          title: fee != null ? '\$${fee}' : "",
-                          titleColor: ColorConstants.overallRatingColor,
-                          shadow: [
-                            Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ],
             ),
@@ -204,7 +204,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               titleColor: expertDetailWatch.userData?.onlineStatus == 1
                   ? ColorConstants.buttonTextColor
                   : ColorConstants.overAllRatingColor,
-              title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : "ZEN MODE : CALLS PAUSED",
+              title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : LocaleKeys.callPaused.tr(),
+              suffixTitle: expertDetailWatch.userData?.onlineStatus == 1 ? LocaleKeys.expertOnline.tr() : LocaleKeys.expertOffline.tr(),
               buttonColor: expertDetailWatch.userData?.onlineStatus == 1
                   ? ColorConstants.requestCallNowColor
                   : ColorConstants.redLightColor,
@@ -252,7 +253,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                         userID: SharedPrefHelper.getUserId.toString(),
                       ));
                 } else {
-                  FlutterToast().showToast(msg: "Expert not available.");
+                  FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
                 }
               },
             ),

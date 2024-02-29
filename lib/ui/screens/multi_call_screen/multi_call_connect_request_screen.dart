@@ -157,6 +157,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                             ]),
                       ),
                       Column(
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           12.0.spaceY,
                           BodySmallText(
@@ -202,7 +203,6 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                               ).addPaddingXY(paddingX: 16, paddingY: 16),
                             ),
                           ] else ...[
-
                             if (multiProviderWatch.selectedExpertDetails.isNotEmpty) ...[
                               10.0.spaceY,
                               SizedBox(

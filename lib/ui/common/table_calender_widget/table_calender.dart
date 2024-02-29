@@ -34,7 +34,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
   Widget build(BuildContext context) {
     return TableCalendar(
       firstDay: kFirstDay,
-      lastDay: kToday.add(Duration(days: 30)),
+      lastDay: kToday.add(Duration(days: 29)),
       focusedDay: _focusedDay,
       selectedDayPredicate: (day) {
         if (widget.fromUpcomingAppointment) {
