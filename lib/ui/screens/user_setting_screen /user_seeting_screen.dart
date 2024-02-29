@@ -243,8 +243,7 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                       titleColor: ColorConstants.buttonTextColor,
 
                       /// todo change the screen
-                      //onPressed: () => context.toPushNamed(RoutesConstants.notificationAndPreferencesScreen),
-                      onPressed: () => context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen, args: 1)),
+                      onPressed: () => context.toPushNamed(RoutesConstants.notificationAndPreferencesScreen)),
                   50.0.spaceY,
                   PrimaryButton(
                     buttonColor: ColorConstants.buttonColor,
