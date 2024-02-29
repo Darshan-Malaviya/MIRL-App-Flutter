@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
 import 'package:mirl/infrastructure/models/request/update_expert_Profile_request_model.dart';
@@ -517,8 +519,8 @@ class EditExpertProvider extends ChangeNotifier {
           LoginResponseModel loginResponseModel = response.data;
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
           SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false)? true : false);
-          Logger().d("Successfully updated");
           Logger().d("user data=====${loginResponseModel.toJson()}");
+          FlutterToast().showToast(msg:  LocaleKeys.profileUpdatedSuccessfully.tr());
           resetVariable();
           getUserData();
           if (!fromImageUpload) {

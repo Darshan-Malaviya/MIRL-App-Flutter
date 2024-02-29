@@ -21,6 +21,7 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(blockUserProvider).getAllBlockListApiCall(isFullScreenLoader: true);
     });
+
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(blockUserProvider).reachedCategoryLastPage;
@@ -46,12 +47,6 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
         ),
-        /*  trailingIcon: InkWell(
-            // onTap: () => expertRead.updateGenderApi(),
-            child: TitleMediumText(
-              title: StringConstants.done,
-            ).addPaddingRight(14),
-          )*/
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

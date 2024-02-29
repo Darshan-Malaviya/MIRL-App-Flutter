@@ -26,6 +26,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
             ),
             trailingIcon: InkWell(
               onTap: () {
+                context.unFocusKeyboard();
                 expertRead.updateAboutApi();
               },
               child: TitleMediumText(

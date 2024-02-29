@@ -7,65 +7,47 @@ class CategoryListShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        10.0.spaceY,
-        SizedBox(
-          height : 120,
-          child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 4,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  4.0.spaceY,
-                  ShadowContainer(
-                    shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child:  Shimmer.fromColors(
-                            baseColor: ColorConstants.whiteColor,
-                            highlightColor: ColorConstants.greyLightColor,
-                            child: const ShadowContainer(
-                              height: 60,
-                              width: 50,
-                              isShadow: false,
-                              border: 30,
-                              child:
-                              ImagePlaceholderContainer(height: 50, width: 50, borderRadius: 50, placeholderImageSize: 50),
-                            ),
-                          ),
+    return SizedBox(
+      height : 120,
+      child: GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: 3,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: 0.7),
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            children: [
+              4.0.spaceY,
+              ShadowContainer(
+                shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child:  Shimmer.fromColors(
+                        baseColor: ColorConstants.whiteColor,
+                        highlightColor: ColorConstants.greyLightColor,
+                        child: const ShadowContainer(
+                          height: 60,
+                          width: 50,
+                          isShadow: false,
+                          border: 30,
+                          child:
+                          ImagePlaceholderContainer(height: 50, width: 50, borderRadius: 50, placeholderImageSize: 50),
                         ),
-                        4.0.spaceY,
-                      ],
+                      ),
                     ),
-                    width: 90,
-                    isShadow: true,
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-        Center(
-          child: Shimmer.fromColors(
-            baseColor: ColorConstants.whiteColor,
-            highlightColor: ColorConstants.greyLightColor,
-            child: const ShadowContainer(
-              height: 16,
-              width: 240,
-              isShadow: false,
-              child: SizedBox.shrink(),
-            ),
-          ),
-        ),
-      ],
+                    4.0.spaceY,
+                  ],
+                ),
+                width: 90,
+                isShadow: true,
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

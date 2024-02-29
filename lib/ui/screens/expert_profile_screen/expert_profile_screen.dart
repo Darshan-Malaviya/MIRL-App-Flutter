@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -30,7 +31,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
         children: [
           NetworkImageWidget(
             imageURL: expertWatch.pickedImage,
-            isNetworkImage: true,
+            isNetworkImage: expertWatch.pickedImage.isNotEmpty,
             emptyImageWidget: Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
             boxFit: BoxFit.cover,
           ),
@@ -51,53 +52,54 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                     children: [
                       Center(
                         child: HeadlineMediumText(
-                          title: expertWatch.expertName,
+                          title: expertWatch.expertName.isNotEmpty ? expertWatch.expertName : LocaleKeys.yourExpertName.tr(),
                           fontSize: 30,
                           titleColor: ColorConstants.bottomTextColor,
+                          maxLine: 2,
+                          titleTextAlign: TextAlign.center,
                         ),
                       ),
                       28.0.spaceY,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Flexible(
-                            child: Row(
-                              children: [
-                                BodySmallText(
-                                  title: LocaleKeys.overAllRating.tr(),
-                                  fontFamily: FontWeightEnum.w400.toInter,
-                                  titleTextAlign: TextAlign.center,
-                                ),
-                                10.0.spaceX,
-                                HeadlineMediumText(
+                          Row(
+                            children: [
+                              BodySmallText(
+                                title: LocaleKeys.overAllRating.tr(),
+                                fontFamily: FontWeightEnum.w400.toInter,
+                                titleTextAlign: TextAlign.center,
+                              ),
+                              10.0.spaceX,
+                              AutoSizeText(
+                                expertWatch.overAllRating,
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                  color: ColorConstants.overallRatingColor,
                                   fontSize: 30,
-                                  title: expertWatch.overAllRating,
-                                  titleColor: ColorConstants.overallRatingColor,
-                                  shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                                  shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Flexible(
-                            child: Row(
-                              children: [
-                                BodySmallText(
-                                  title: LocaleKeys.feesPerMinute.tr(),
-                                  fontFamily: FontWeightEnum.w400.toInter,
-                                  titleTextAlign: TextAlign.center,
+                          Row(
+                            children: [
+                              BodySmallText(
+                                title: LocaleKeys.feesPerMinute.tr(),
+                                fontFamily: FontWeightEnum.w400.toInter,
+                                titleTextAlign: TextAlign.center,
+                              ),
+                              10.0.spaceX,
+                              AutoSizeText(
+                                '\$${expertWatch.countController.text}',
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                  color: ColorConstants.overallRatingColor,
+                                  fontSize: 30,
+                                  shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                                 ),
-                                10.0.spaceX,
-                                Flexible(
-                                  child: HeadlineMediumText(
-                                    fontSize: 30,
-                                    maxLine: 4,
-                                    title: '\$${expertWatch.countController.text}',
-                                    titleColor: ColorConstants.overallRatingColor,
-                                    shadow: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

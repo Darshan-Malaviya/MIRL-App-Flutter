@@ -38,7 +38,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                       final data = scheduleProviderWatch.weekAvailability[index];
                       return slotWidget(
                               dayText: data.dayOfWeek?.toUpperCase() ?? '',
-                              dayTimeText: '${data.startTime?.toLocalTimeFromUtc() ?? ''} - ${data.endTime?.toLocalTimeFromUtc() ?? ''}')
+                              dayTimeText: '${data.startTime?.to12HourTimeFormat() ?? ''} - ${data.endTime?.to12HourTimeFormat() ?? ''}')
                           .addPaddingY(12);
                     }),
                   ).addPaddingX(20),
