@@ -202,7 +202,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.blockedUsersList,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () {},
+                  onPressed: () => context.toPushNamed(RoutesConstants.blockUserListScreen),
                 ),
                 50.0.spaceY,
               ],

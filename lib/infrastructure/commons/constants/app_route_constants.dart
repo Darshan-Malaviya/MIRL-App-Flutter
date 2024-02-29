@@ -11,6 +11,8 @@ import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/call_feedback_screen.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/feedback_submiting_screen.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/report_problem_with_your_call_screen.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/repoted_submiting_screen.dart';
 import 'package:mirl/ui/screens/cms_screen/arguments/cms_arguments.dart';
 import 'package:mirl/ui/screens/cms_screen/cms_screen.dart';
 import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
@@ -163,7 +165,8 @@ class RouterConstant {
       case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(builder: (_) => VideoCallScreen(arguments: settings.arguments as VideoCallArguments));
       case RoutesConstants.instantCallRequestDialogScreen:
-        return MaterialPageRoute(builder: (_) => InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments));
+        return MaterialPageRoute(
+            builder: (_) => InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments));
       case RoutesConstants.multiConnectCallDialogScreen:
         return MaterialPageRoute(
             builder: (_) => MultiConnectCallDialogScreen(args: settings.arguments as MultiConnectDialogArguments));
@@ -187,30 +190,34 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => MirlConnectScreen());
       case RoutesConstants.helpAndTermsScreen:
         return MaterialPageRoute(builder: (_) => HelpAndTermsScreen());
-        case RoutesConstants.notificationAndPreferencesScreen:
+      case RoutesConstants.notificationAndPreferencesScreen:
         return MaterialPageRoute(builder: (_) => NotificationAndPreferencesScreen());
-        case RoutesConstants.reportAnIssueScreen:
+      case RoutesConstants.reportAnIssueScreen:
         return MaterialPageRoute(builder: (_) => ReportAnIssueScreen());
-        case RoutesConstants.paymentDetailsScreen:
+      case RoutesConstants.paymentDetailsScreen:
         return MaterialPageRoute(builder: (_) => PaymentDetailsScreen());
-        case RoutesConstants.seekerCallHistoryScreen:
+      case RoutesConstants.seekerCallHistoryScreen:
         return MaterialPageRoute(builder: (_) => SeekerCallHistoryScreen());
       case RoutesConstants.thanksGivingScreen:
         return MaterialPageRoute(builder: (_) => const ThanksGivingScreen());
       case RoutesConstants.suggestNewExpertiseScreen:
         return MaterialPageRoute(builder: (_) => const SuggestNewExpertiseScreen());
-        case RoutesConstants.editYourNameScreen:
+      case RoutesConstants.editYourNameScreen:
         return MaterialPageRoute(builder: (_) => const EditYourNameScreen());
-        case RoutesConstants.editYourEmailIdScreen:
+      case RoutesConstants.editYourEmailIdScreen:
         return MaterialPageRoute(builder: (_) => const EditYourEmailIdScreen());
-        case RoutesConstants.editYourPhoneNumberScreen:
+      case RoutesConstants.editYourPhoneNumberScreen:
         return MaterialPageRoute(builder: (_) => const EditYourPhoneNumberScreen());
-        case RoutesConstants.expertCallHistoryScreen:
+      case RoutesConstants.expertCallHistoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCallHistoryScreen());
-        case RoutesConstants.callFeedbackScreen:
-        return MaterialPageRoute(builder: (_) =>  CallFeedbackScreen(callHistoryId: settings.arguments as int));
-        case RoutesConstants.feedbackSubmittingScreen:
+      case RoutesConstants.callFeedbackScreen:
+        return MaterialPageRoute(builder: (_) => CallFeedbackScreen(callHistoryId: settings.arguments as int));
+      case RoutesConstants.feedbackSubmittingScreen:
         return MaterialPageRoute(builder: (_) => const FeedbackSubmittingScreen());
+      case RoutesConstants.reportProblemWithYourCallScreen:
+        return MaterialPageRoute(builder: (_) => const ReportProblemWithYourCallScreen());
+      case RoutesConstants.reportedSubmittingScreen:
+        return MaterialPageRoute(builder: (_) => const ReportedSubmittingScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

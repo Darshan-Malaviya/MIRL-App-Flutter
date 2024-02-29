@@ -47,6 +47,10 @@ class ImageConstants {
   static const great = '${imagePath}great.png';
   static const soSo = '${imagePath}so_so.png';
   static const smiley = '${imagePath}smily.png';
+  static const expertNotifications = '${imagePath}expert_notifications.png';
+  static const userNotifications = '${imagePath}user_notifications.png';
+  static const generalNotifications = '${imagePath}general_notifications.png';
+  static const reported = '${imagePath}reported.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';
@@ -57,7 +61,6 @@ class ImageConstants {
   static const emailVerification = '${iconPath}email_verification.png';
 
   /// json
- // static const splashScreen = '${rawPath}splash_screen.json';
+  // static const splashScreen = '${rawPath}splash_screen.json';
   static const mirlJson = '${rawPath}mirl_json.json';
-
 }

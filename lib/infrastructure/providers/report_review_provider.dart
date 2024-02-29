@@ -11,6 +11,7 @@ class ReportReviewProvider extends ChangeNotifier {
   final _reportRepository = ReportListRepository();
 
   TextEditingController reviewController = TextEditingController();
+  TextEditingController appropriateIssueController = TextEditingController();
 
   String sortByReview = 'HIGHEST REVIEW SCORE';
   String sortByReport = 'WEEKLY';
@@ -18,6 +19,10 @@ class ReportReviewProvider extends ChangeNotifier {
   List<String> sortByReviewItem = ['HIGHEST REVIEW SCORE', 'LOWEST REVIEW SCORE', 'NEWEST REVIEWS', 'OLDEST REVIEWS'];
 
   List<String> sortByEarningItem = ['WEEKLY', 'MONTHLY', 'ALL TIME'];
+
+  List<String> _callIssue = ["CALL DROPPED", "CALL DISCONNECTED"];
+
+  List<String> get callIssue => _callIssue;
 
   List<CommonSelectionModel> get feedbackTypeList => _feedbackTypeList;
   List<CommonSelectionModel> _feedbackTypeList = [

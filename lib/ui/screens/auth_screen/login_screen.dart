@@ -107,7 +107,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           },
                         ),
                       ),
-                   /*   PrimaryButton(
+                      PrimaryButton(
                         title: StringConstants.continueWithFacebook,
                         prefixIcon: ImageConstants.facebook,
                         titleColor: ColorConstants.textColor,
@@ -116,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: () {
                           loginScreenProviderRead.fbLogin();
                         },
-                      ),*/
+                      ),
                       30.0.spaceY,
                       RichText(
                         softWrap: true,

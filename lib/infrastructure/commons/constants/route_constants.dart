@@ -60,4 +60,6 @@ class RoutesConstants {
   static const String expertCallHistoryScreen = '/expertCallHistoryScreen';
   static const String callFeedbackScreen = '/callFeedbackScreen';
   static const String feedbackSubmittingScreen = '/feedbackSubmittingScreen';
+  static const String reportProblemWithYourCallScreen = '/reportProblemWithYourCallScreen';
+  static const String reportedSubmittingScreen = '/reportedSubmittingScreen';
 }

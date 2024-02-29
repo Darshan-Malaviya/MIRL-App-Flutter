@@ -308,6 +308,14 @@
   "pleaseEnterOtp": "Please enter the OTP sent to your emil id",
   "pleasePickAnyFilter": "Pick at least one filter to start the magic!",
   "dontReceiveCode": "Didn’t receive the code?",
-  "newText": "NEW"
-
+  "newText": "NEW",
+  "unBlockThisUser": "Are you sure you want to\nunblock this user?",
+  "unblock": "Unblock User?",
+  "callProblem": "REPORT A PROBLEM WITH YOUR CALL",
+  "elaborate": "Please select one of the options below, and elaborate on the issue you faced so we can look into it.",
+  "selectTheIssue": "SELECT THE ISSUE ",
+  "appropriateIssue": "SELECT THE APPROPRIATE ISSUE HERE",
+  "facedBelow": "Please share more details about the issue you faced below.",
+  "reported": "Reported!",
+  "letting": "Thank you for letting us know about the issue. We’ll get back to you as soon as possible via the email ID you’ve shared in your account settings."
 }

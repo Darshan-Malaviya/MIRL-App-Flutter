@@ -45,7 +45,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          30.0.spaceY,
+          10.0.spaceY,
           TitleLargeText(
             // title: LocaleKeys.reportThisUser.tr(),
             title: widget.args.reportName ?? '',
@@ -62,7 +62,7 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
           ),
           reportUserWatch.isLoading
               ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
                 )
               : reportUserWatch.reportListDetails.isNotEmpty
@@ -83,7 +83,6 @@ class _ReportUserWidgetState extends ConsumerState<ReportUserWidget> {
                             reportUserRead.userReportRequestCall(
                                 reportListId: reportUserWatch.reportListDetails[index].id ?? 0,
                                 reportToId: int.parse(widget.args.expertId ?? ''));
-                            await reportUserRead.reportUser();
                           },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,

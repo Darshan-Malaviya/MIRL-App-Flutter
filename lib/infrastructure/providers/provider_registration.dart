@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/providers/add_your_area_expertise_provider.dart';
 import 'package:mirl/infrastructure/providers/auth_provider.dart';
 import 'package:mirl/infrastructure/providers/block_provider.dart';
+import 'package:mirl/infrastructure/providers/call_history_provider.dart';
 import 'package:mirl/infrastructure/providers/call_provider.dart';
 import 'package:mirl/infrastructure/providers/cancel_appointment_provider.dart';
 import 'package:mirl/infrastructure/providers/common_app_provider.dart';
@@ -41,4 +42,5 @@ final reportReviewProvider = ChangeNotifierProvider.autoDispose((_) => ReportRev
 final notificationProvider = ChangeNotifierProvider.autoDispose((_) => NotificationProvider());
 final userSettingProvider = ChangeNotifierProvider.autoDispose((_) => UserSettingProvider());
 final suggestNewExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => SuggestNewExpertiseProvider());
+final callHistoryProvider = ChangeNotifierProvider.autoDispose((_) => CallHistoryProvider());
 
