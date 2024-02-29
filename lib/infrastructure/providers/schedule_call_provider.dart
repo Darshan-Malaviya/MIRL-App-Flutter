@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
@@ -83,8 +84,8 @@ class ScheduleCallProvider extends ChangeNotifier {
   void getSelectedDate(DateTime dateTime) {
     final now = DateTime.now().toLocal();
     selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second).toUtc();
-    selectedDateStartTime = DateTime(dateTime.year, dateTime.month, dateTime.day,00,00).toUtc();
-    selectedDateEndTime = DateTime(dateTime.year, dateTime.month, dateTime.day,23,59).toUtc();
+    selectedDateStartTime = DateTime(dateTime.year, dateTime.month, dateTime.day, 00, 00).toUtc();
+    selectedDateEndTime = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59).toUtc();
     _selectedUTCDate = selectedDate?.toIso8601String() ?? '';
     print(_selectedUTCDate);
     print(":selectedDateStartTime ${selectedDateStartTime.toIso8601String()}");

@@ -1,4 +1,3 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
@@ -47,10 +46,12 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FeesActionButtonWidget(
-                  icons: ImageConstants.plus,
-                  onTap: () {
-                    expertRead.increaseFees();
-                  }),
+                icons: ImageConstants.minus,
+                isDisable: expertWatch.countController.text.isNotEmpty ? double.parse(expertWatch.countController.text) <= 0.99 : false,
+                onTap: () {
+                  expertRead.decreaseFees();
+                },
+              ),
               TextFormFieldWidget(
                 controller: expertWatch.countController,
                 width: 150,
@@ -61,17 +62,18 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                 ],
+                onChanged: (value) {
+                  expertRead.changeFeesValue(value);
+                },
                 onFieldSubmitted: (value) {
                   context.unFocusKeyboard();
                 },
               ).addAllPadding(16),
               FeesActionButtonWidget(
-                icons: ImageConstants.minus,
-                isDisable: double.parse(expertWatch.countController.text) <= 0.99,
-                onTap: () {
-                  expertRead.decreaseFees();
-                },
-              ),
+                  icons: ImageConstants.plus,
+                  onTap: () {
+                    expertRead.increaseFees();
+                  }),
             ],
           ),
           TitleSmallText(
@@ -102,7 +104,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   titleColor: ColorConstants.buttonTextColor,
                 ),
                 BodyMediumText(
-                  title: '\$${double.parse(expertWatch.countController.text) + 20}',
+                  title: expertWatch.countController.text.isNotEmpty ? '\$${(double.parse(expertWatch.countController.text) * 0.20).toStringAsFixed(2)}' : '0.0',
                   titleColor: ColorConstants.buttonTextColor,
                 )
               ],

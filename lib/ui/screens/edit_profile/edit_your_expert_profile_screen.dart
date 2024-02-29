@@ -22,7 +22,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
           onTap: () => context.toPop(),
         ),
         trailingIcon: InkWell(
-          onTap: () => expertRead.updateProfileApi(),
+          onTap: () => expertWatch.pickedImage.isNotEmpty ? expertRead.updateProfileApi() : null,
           child: TitleMediumText(
             title: StringConstants.done,
           ).addPaddingRight(14),

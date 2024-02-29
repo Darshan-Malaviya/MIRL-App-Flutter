@@ -191,7 +191,7 @@
   "multiConnectFilter": "MULTIPLE CONNECT FILTER",
   "reviewAndRatingScreen": "YOUR REVIEWS AND RATINGS",
   "shortByReview": "SORT REVIEWS BY:",
-  "shortByExpert": "SORT EXPERTS BY:",
+  "shortByExpert": "SORT EXPERTS BY",
   "earningReport": "EARNING REPORT",
   "weekly": "WEEKLY",
   "weeklyEarning": "WEEKLY EARNINGS",
@@ -208,7 +208,7 @@
   "status" : "STATUS:",
   "unblockUser" : "UNBLOCK USER",
   "seeAll": "See all",
-  "expertNotAvailable": "Expert not available.",
+  "expertNotAvailable": "The expert is currently offline. Favorite them for later?",
   "anonymous": "Anonymous",
   "startCall": "START CALL",
   "expertNotResponding"  : "Expert not responding!",
@@ -291,6 +291,12 @@
   "noFeedback": "No feedback",
   "quickFeedback": "A quick feedback can help the Expert. Are you sure you want to skip it?",
   "thanksForFeedback": "Thank you for sharing your feedback!",
-  "backToProfile": "BACK TO EXPERT PROFILE"
+  "backToProfile": "BACK TO EXPERT PROFILE",
+  "youCanSendAnotherCode": "You can request another code in ",
+  "resend": "Resend",
+  "pleaseEnterOtp": "Please enter the OTP sent to your emil id",
+  "pleasePickAnyFilter": "Pick at least one filter to start the magic!",
+  "dontReceiveCode": "Didn’t receive the code?",
+  "newText": "NEW"
 
 }

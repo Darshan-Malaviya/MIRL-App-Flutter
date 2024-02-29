@@ -98,13 +98,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           prefixIcon: ImageConstants.apple,
                           titleColor: ColorConstants.textColor,
                           width: 280,
-                          margin: EdgeInsets.only(left: 50, right: 50, bottom: 30),
+                          margin: EdgeInsets.only(left: 50, right: 50),
                           onPressed: () {
                             loginScreenProviderRead.signInApple();
                           },
                         ),
                       ),
-                      PrimaryButton(
+                   /*   PrimaryButton(
                         title: StringConstants.continueWithFacebook,
                         prefixIcon: ImageConstants.facebook,
                         titleColor: ColorConstants.textColor,
@@ -113,7 +113,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: () {
                           loginScreenProviderRead.fbLogin();
                         },
-                      ),
+                      ),*/
                       30.0.spaceY,
                       RichText(
                         softWrap: true,

@@ -5,6 +5,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
+import 'package:mirl/ui/common/range_slider/range_slider_widget.dart';
 import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
@@ -110,7 +111,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             }, StringConstants.countryText),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.cityNameController, context, () {
-              if(filterWatch.countryNameController.text.isEmpty){
+              if (filterWatch.countryNameController.text.isEmpty) {
                 FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCountryFirst.tr());
                 return;
               }
@@ -134,17 +135,32 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
               title: StringConstants.feeRange,
               titleColor: ColorConstants.bottomTextColor,
             ),
+            10.0.spaceY,
             SliderTheme(
               data: SliderTheme.of(context).copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
-              child: RangeSlider(
+              child: RangeSliderWidget(
                 values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
                 activeColor: ColorConstants.yellowButtonColor,
                 inactiveColor: ColorConstants.lineColor,
-                divisions: 25,
+                divisions: 4,
                 onChanged: filterRead.setRange,
                 min: 0,
                 max: 100,
               ),
+            ),
+            10.0.spaceY,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                LabelSmallText(
+                  title: 'PRO\nBONO',
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ).addMarginLeft(10),
+                LabelSmallText(
+                  title: '\$100+',
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
+              ],
             ),
             if (filterWatch.start != null && filterWatch.end != null) ...[
               BodySmallText(
@@ -160,45 +176,49 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
           title: StringConstants.applyFilter,
           height: 55,
           onPressed: () async {
-            String? selectedTopicId;
-            if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
-              selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+            if (filterWatch.commonSelectionModel.isNotEmpty) {
+              String? selectedTopicId;
+              if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
+                selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+              }
+              double endFeeRange = filterWatch.end ?? 0;
+              double startFeeRange = filterWatch.start ?? 0;
+
+              filterRead.clearSingleCategoryData();
+
+              await multiProviderRead.getSingleCategoryApiCall(
+                  categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                  context: context,
+                  isFromFilter: true,
+                  requestModel: ExpertDataRequestModel(
+                    multiConnectRequest: 'true',
+                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
+                    topicIds: selectedTopicId,
+                    userId: SharedPrefHelper.getUserId,
+                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                    country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                    gender: filterWatch.genderController.text.isNotEmpty ? (filterWatch.selectGender ?? 0).toString() : null,
+                    maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
+                    minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
+                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                        ? null
+                        : filterWatch.sortBySelectedItem == 'PRICE'
+                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                ? 'ASC'
+                                : 'DESC'
+                            : null,
+                    overAllRating: filterWatch.selectedRating != null ? filterWatch.selectedRating.toString() : null,
+                    ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                        ? null
+                        : filterWatch.sortBySelectedItem == 'REVIEW SCORE'
+                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                ? 'DESC'
+                                : 'ASC'
+                            : null,
+                  ));
+            } else {
+              FlutterToast().showToast(msg: LocaleKeys.pleasePickAnyFilter.tr());
             }
-            double endFeeRange = filterWatch.end ?? 0;
-            double startFeeRange = filterWatch.start ?? 0;
-
-            filterRead.clearSingleCategoryData();
-
-            await multiProviderRead.getSingleCategoryApiCall(
-                categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
-                context: context,
-                isFromFilter: true,
-                requestModel: ExpertDataRequestModel(
-                  multiConnectRequest: 'true',
-                  categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
-                  topicIds: selectedTopicId,
-                  userId: SharedPrefHelper.getUserId,
-                  city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                  country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                  gender: filterWatch.genderController.text.isNotEmpty ? (filterWatch.selectGender ?? 0).toString() : null,
-                  maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
-                  minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
-                  feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                      ? null
-                      : filterWatch.sortBySelectedItem == 'PRICE'
-                          ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                              ? 'ASC'
-                              : 'DESC'
-                          : null,
-                  overAllRating: filterWatch.selectedRating != null? filterWatch.selectedRating.toString() : null,
-                  ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                      ? null
-                      : filterWatch.sortBySelectedItem == 'REVIEW SCORE'
-                          ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                              ? 'DESC'
-                              : 'ASC'
-                          : null,
-                ));
           }).addPaddingXY(paddingX: 50, paddingY: 10),
     );
   }
