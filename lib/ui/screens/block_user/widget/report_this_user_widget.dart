@@ -14,12 +14,6 @@ class ReportThisUserWidget extends ConsumerStatefulWidget {
 }
 
 class _ReportThisUserWidgetState extends ConsumerState<ReportThisUserWidget> {
-  // @override
-  // void initState() {
-  //   ref.read(reportUserProvider).changeReportAndThanksScreen(
-  //       roleId: widget.args.userRole ?? 0, reportName: widget.args.reportName ?? '', expertId: widget.args.expertId ?? '');
-  //   super.initState();
-  // }
 
   void initState() {
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {

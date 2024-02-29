@@ -59,9 +59,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       controller: loginScreenProviderWatch.emailController,
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.emailAddress,
-                      onFieldSubmitted: (value) {
-                        context.unFocusKeyboard();
-                      },
+
+
                       validator: (value) {
                         return value?.toEmailValidation();
                       },
@@ -73,7 +72,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         width: 235,
                         onPressed: () {
                           context.unFocusKeyboard();
-                          if (_loginPassKey.currentState?.validate() ?? false) {
+                          FocusManager.instance.primaryFocus?.unfocus();if (_loginPassKey.currentState?.validate() ?? false) {
                             loginScreenProviderRead.loginRequestCall(context: context, loginType: LoginType.normal, email: loginScreenProviderWatch.emailController.text.trim());
                           }
                         }),

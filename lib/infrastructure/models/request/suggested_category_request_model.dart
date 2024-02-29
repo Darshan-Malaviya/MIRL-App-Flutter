@@ -3,7 +3,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 class SuggestedCategoryRequestModel {
   String? userId;
   String? topicName;
-  String? categoryId;
+  int? categoryId;
   String? categoryName;
 
   SuggestedCategoryRequestModel({this.userId, this.topicName, this.categoryId, this.categoryName});

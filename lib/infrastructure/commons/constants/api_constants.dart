@@ -75,4 +75,5 @@ class ApiConstants {
   static const String reportList = '/reportList';
   static const String userReport = '/userReport';
   static const String rateExpert = '/rateExpert';
+  static const String suggestedCategory = '/SuggestedCategory';
 }

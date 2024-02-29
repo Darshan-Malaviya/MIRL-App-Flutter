@@ -82,8 +82,8 @@ class SocketProvider extends ChangeNotifier {
           // TODO: declined an incoming call
             log('ACTION_CALL_DECLINE');
             callConnectNotifier.value = CallConnectStatusEnum.declined;
-            instanceRequestTimerNotifier.value = - 1;
-            instanceRequestTimerNotifier.removeListener(() { });
+            instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+            instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             await updateCallStatusEmit(status: CallStatusEnum.declineCall, callRoleEnum: CallRoleEnum.expert,callHistoryId: extraResponseModel?.callHistoryId ?? '');
             break;
           case Event.actionCallEnded:
@@ -134,8 +134,8 @@ class SocketProvider extends ChangeNotifier {
 
   void manageTimeOutStatus({required UserData? userData, required BuildContext context , required String expertId}) {
       NavigationService.context.toPop();
-      instanceRequestTimerNotifier.value = -1;
-      instanceCallEnumNotifier.removeListener(() {});
+      instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+      instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
       instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
       /// THis is call sender (User) side
       context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
@@ -160,8 +160,8 @@ class SocketProvider extends ChangeNotifier {
               else {
                 updateRequestStatusEmit(expertId: expertId, callStatusEnum: CallRequestStatusEnum.cancel,
                     callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
-                instanceRequestTimerNotifier.value = -1;
-                instanceCallEnumNotifier.removeListener(() {});
+                instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+                instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
                 context.toPop();
               }
             },
@@ -205,7 +205,6 @@ class SocketProvider extends ChangeNotifier {
             SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
             allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
             instanceCallEnumNotifier.value = CallRequestTypeEnum.requestWaiting;
-            //instanceRequestTimerNotifier.value = 120;
           } else {
             InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
             FlutterToast().showToast(msg: model.message?.first.toString());
@@ -225,8 +224,6 @@ class SocketProvider extends ChangeNotifier {
           if (data['statusCode'].toString() == '200') {
             if(data['data'].toString().isNotEmpty){
               instanceCallEnumNotifier.value = CallRequestTypeEnum.receiverRequested;
-              //bgCallEndTrigger.value = 20;
-              //instanceRequestTimerNotifier.value = 120;
               InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
               SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
               allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
@@ -431,14 +428,17 @@ class SocketProvider extends ChangeNotifier {
             } else if (model.data?.status.toString() == '3'){
               /// decline
               callConnectNotifier.value = CallConnectStatusEnum.declined;
+              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
+
             }  else if (model.data?.status.toString() == '4'){
               /// time out
              /// When expert not accept ant nor decline phone that time from call kit time out emit called and get response on expert side here.
             }  if(model.data?.status.toString() == '5'){
               /// cancelled
               callConnectNotifier.value = CallConnectStatusEnum.cancelled;
-              instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
-              instanceCallDurationNotifier.removeListener(() { });
+              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
               if(model.data?.userId.toString().toString() == SharedPrefHelper.getUserId.toString()) {
                 if(activeRoute.value == RoutesConstants.videoCallScreen){
                   NavigationService.context.toPop();
@@ -451,15 +451,16 @@ class SocketProvider extends ChangeNotifier {
                if(activeRoute.value == RoutesConstants.videoCallScreen){
                  if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()) {
                    if(activeRoute.value == RoutesConstants.videoCallScreen){
-                     NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen);
+                     NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
+                         args: int.parse(extraResponseModel?.callHistoryId ?? ''));
                    }
                  } else {
                    await FlutterCallkitIncoming.endAllCalls();
                    NavigationService.context.toPop();
                  }
                }
-               instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
-               instanceCallDurationNotifier.removeListener(() { });
+               instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+               instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             }
 
           } else {
@@ -491,8 +492,8 @@ class SocketProvider extends ChangeNotifier {
               /// This decline listen in user side always
               callConnectNotifier.value = CallConnectStatusEnum.declined;
               FlutterToast().showToast(msg: "Call decline by expert");
-              instanceRequestTimerNotifier.value = -1;
-              instanceRequestTimerNotifier.removeListener(() {});
+              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
               if(activeRoute.value == RoutesConstants.videoCallScreen){
                 NavigationService.context.toPop();
                 NavigationService.context.toPop();
@@ -522,11 +523,12 @@ class SocketProvider extends ChangeNotifier {
                   NavigationService.context.toPop();
                   await FlutterCallkitIncoming.endAllCalls();
                 } else {
-                  NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen);
+                  NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
+                      args: int.parse(extraResponseModel?.callHistoryId ?? ''));
                 }
               }
-              instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
-              instanceCallDurationNotifier.removeListener(() {});
+              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             }
           } else {
             InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);

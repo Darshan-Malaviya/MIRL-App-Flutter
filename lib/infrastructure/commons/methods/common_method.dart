@@ -31,8 +31,7 @@ class CommonMethods {
     if(activeRoute.value == RoutesConstants.instantCallRequestDialogScreen){
       await FlutterToast().showToast(msg: "Sorry! You are blocked by this expert.");
       await Future.delayed(const Duration(seconds: 1));
-      instanceRequestTimerNotifier.dispose();
-      NavigationService.context.toPop();
+      NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
     }
   }
 }

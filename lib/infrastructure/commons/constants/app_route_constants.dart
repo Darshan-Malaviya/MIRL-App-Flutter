@@ -208,7 +208,7 @@ class RouterConstant {
         case RoutesConstants.expertCallHistoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCallHistoryScreen());
         case RoutesConstants.callFeedbackScreen:
-        return MaterialPageRoute(builder: (_) => const CallFeedbackScreen());
+        return MaterialPageRoute(builder: (_) =>  CallFeedbackScreen(callHistoryId: settings.arguments as int));
         case RoutesConstants.feedbackSubmittingScreen:
         return MaterialPageRoute(builder: (_) => const FeedbackSubmittingScreen());
       default:

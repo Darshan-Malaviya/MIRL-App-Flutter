@@ -11,7 +11,6 @@ import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
 import 'package:mirl/infrastructure/models/response/explore_expert_category_and_user_response.dart';
 import 'package:mirl/infrastructure/models/response/get_single_category_response_model.dart';
-import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 import 'package:mirl/infrastructure/repository/common_repo.dart';
 import 'package:mirl/infrastructure/repository/expert_category_repo.dart';
 
@@ -555,6 +554,11 @@ class FilterProvider extends ChangeNotifier {
     _topicPageNo = 1;
     _reachedTopicLastPage = false;
     _allTopic = [];
+    notifyListeners();
+  }
+
+  void clearCategoryController() {
+    categoryController.clear();
     notifyListeners();
   }
 

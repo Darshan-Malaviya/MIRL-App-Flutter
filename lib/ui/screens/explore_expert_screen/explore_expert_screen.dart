@@ -78,6 +78,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                       suffixIcon: filterProviderWatch.exploreExpertController.text.isNotEmpty
                           ? InkWell(
                               onTap: () {
+                                context.unFocusKeyboard();
                                 filterProviderRead.clearExploreExpertSearchData();
                                 filterProviderRead.clearExploreController();
                                 filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
