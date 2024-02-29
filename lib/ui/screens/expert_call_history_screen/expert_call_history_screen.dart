@@ -50,7 +50,6 @@ class _ExpertCallHistoryScreenState extends ConsumerState<ExpertCallHistoryScree
             Image.asset(ImageConstants.purpleLine),
             40.0.spaceY,
             ExpertCallHistoryWidget(
-              bgColor: ColorConstants.categoryList,
               userTitle: 'PREETI',
               callTitle: 'INSTANT CALL',
               number: '10',

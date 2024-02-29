@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/user_report_request_model.dart';
 import 'package:mirl/infrastructure/models/response/report_list_response_model.dart';
@@ -50,26 +52,20 @@ class ReportUserProvider extends ChangeNotifier {
   void changeReportAndThanksScreen({required int roleId, required String reportName, required String expertId}) {
     _pages = [
       ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName, expertId: expertId)),
-      ThanksWidget(reportName: 'BACK TO PROFILE'),
+      ThanksWidget(reportName: LocaleKeys.backToProfile.tr()),
     ];
   }
 
   Future<void> getAllReportListApiCall({required int role, bool isFullScreenLoader = false}) async {
     if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
       _isLoading = true;
       notifyListeners();
-    } else {
-      _isLoading = true;
     }
 
     ApiHttpResult response = await _reportRepository.reportListApi(limit: 10, page: _reportUserListPageNo, role: role);
     if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
       _isLoading = false;
       notifyListeners();
-    } else {
-      _isLoading = false;
     }
     switch (response.status) {
       case APIStatus.success:
@@ -107,6 +103,8 @@ class ReportUserProvider extends ChangeNotifier {
           UserReportResponseModel responseModel = response.data;
 
           Logger().d("Successfully user report API");
+          reportUser();
+
           // FlutterToast().showToast(msg: responseModel.message ?? '');
         }
         break;

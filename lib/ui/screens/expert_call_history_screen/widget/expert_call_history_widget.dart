@@ -11,19 +11,18 @@ class ExpertCallHistoryWidget extends StatelessWidget {
   final String number;
   final String? status;
   final Color? statusColor;
-  final Color? bgColor;
 
-  const ExpertCallHistoryWidget(
-      {super.key,
-      required this.userTitle,
-      this.minutes,
-      this.callTime,
-      this.durationTime,
-      this.status,
-      this.statusColor,
-      required this.callTitle,
-      required this.number,
-      this.bgColor});
+  const ExpertCallHistoryWidget({
+    super.key,
+    required this.userTitle,
+    this.minutes,
+    this.callTime,
+    this.durationTime,
+    this.status,
+    this.statusColor,
+    required this.callTitle,
+    required this.number,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
         Container(
             width: double.infinity,
             decoration: ShapeDecoration(
-              color: bgColor ?? ColorConstants.whiteColor,
+              color: ColorConstants.categoryList,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -130,7 +129,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                   //   ),
                                   // ),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(right: 30, left: 30, top: 5, bottom: 5),
+                                    padding: const EdgeInsets.only(right: 30, left: 30, top:  5, bottom: 5),
                                     child: Center(
                                       child: BodySmallText(
                                         title: callTitle,

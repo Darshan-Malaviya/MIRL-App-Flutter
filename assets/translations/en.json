@@ -317,6 +317,14 @@
   "pleaseSelectCountry": "Please select country",
   "pleaseSelectCity": "Please select city",
   "yourExpertName": "Your Expert Name",
-  "backToHome": "BACK TO HOME"
-
+  "backToHome": "BACK TO HOME",
+  "unBlockThisUser": "Are you sure you want to\nunblock this user?",
+  "unblock": "Unblock User?",
+  "callProblem": "REPORT A PROBLEM WITH YOUR CALL",
+  "elaborate": "Please select one of the options below, and elaborate on the issue you faced so we can look into it.",
+  "selectTheIssue": "SELECT THE ISSUE ",
+  "appropriateIssue": "SELECT THE APPROPRIATE ISSUE HERE",
+  "facedBelow": "Please share more details about the issue you faced below.",
+  "reported": "Reported!",
+  "letting": "Thank you for letting us know about the issue. We’ll get back to you as soon as possible via the email ID you’ve shared in your account settings."
 }
