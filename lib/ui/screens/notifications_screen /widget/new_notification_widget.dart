@@ -13,7 +13,7 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
   @override
   void initState() {
     super.initState();
-  //  ref.read(notificationProvider).startTimer();
+    //  ref.read(notificationProvider).startTimer();
   }
 
   @override
@@ -43,7 +43,8 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
           ).addMarginTop(10),
           20.0.spaceY,
           TitleMediumText(
-            title: 'Yay! A user has picked you among others for a Multiple Connect Call! Click here to be the chosen one or decline the request now.',
+            title:
+                'Yay! A user has picked you among others for a Multiple Connect Call! Click here to be the chosen one or decline the request now.',
             titleColor: ColorConstants.blackColor,
             maxLine: 10,
             titleTextAlign: TextAlign.start,
@@ -94,7 +95,6 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
                                 title: 'Learn more',
                                 fontFamily: FontWeightEnum.w500.toInter,
                                 titleColor: ColorConstants.bottomTextColor,
-                                fontSize: 17,
                                 titleTextAlign: TextAlign.center,
                               ),
                               InkWell(
@@ -103,7 +103,6 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
                                   title: 'Back',
                                   fontFamily: FontWeightEnum.w500.toInter,
                                   titleColor: ColorConstants.bottomTextColor,
-                                  fontSize: 17,
                                   titleTextAlign: TextAlign.center,
                                 ),
                               ),

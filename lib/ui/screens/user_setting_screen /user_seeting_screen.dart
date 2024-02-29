@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class UserSettingScreen extends ConsumerStatefulWidget {
@@ -239,11 +238,13 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                   ),
                   50.0.spaceY,
                   PrimaryButton(
-                    buttonColor: ColorConstants.buttonColor,
-                    title: LocaleKeys.notificationAndPreference.tr(),
-                    titleColor: ColorConstants.buttonTextColor,
-                    onPressed: () => context.toPushNamed(RoutesConstants.notificationAndPreferencesScreen),
-                  ),
+                      buttonColor: ColorConstants.buttonColor,
+                      title: LocaleKeys.notificationAndPreference.tr(),
+                      titleColor: ColorConstants.buttonTextColor,
+
+                      /// todo change the screen
+                      //onPressed: () => context.toPushNamed(RoutesConstants.notificationAndPreferencesScreen),
+                      onPressed: () => context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen, args: 1)),
                   50.0.spaceY,
                   PrimaryButton(
                     buttonColor: ColorConstants.buttonColor,

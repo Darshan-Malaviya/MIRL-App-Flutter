@@ -175,9 +175,59 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
                                       20.0.spaceY,
                                       InkWell(
                                         onTap: () {
-                                          blockUserRead.unBlockUserApiCall(
-                                              userBlockId: blockUserWatch.blockUserDetails[index].userDetail?.id ?? 0,
-                                              index: index);
+                                          CommonAlertDialog.dialog(
+                                              width: 290,
+                                              context: context,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  BodyLargeText(
+                                                    title: 'Unblock User?',
+                                                    fontFamily: FontWeightEnum.w600.toInter,
+                                                    titleColor: ColorConstants.bottomTextColor,
+                                                    fontSize: 17,
+                                                    titleTextAlign: TextAlign.center,
+                                                  ),
+                                                  30.0.spaceY,
+                                                  BodyLargeText(
+                                                    title: 'Are you sure you want to\nunblock this user?',
+                                                    maxLine: 4,
+                                                    fontFamily: FontWeightEnum.w400.toInter,
+                                                    titleColor: ColorConstants.blackColor,
+                                                    titleTextAlign: TextAlign.center,
+                                                  ),
+                                                  40.0.spaceY,
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {
+                                                          blockUserRead.unBlockUserApiCall(
+                                                              userBlockId:
+                                                                  blockUserWatch.blockUserDetails[index].userDetail?.id ?? 0,
+                                                              index: index);
+                                                          context.toPop();
+                                                        },
+                                                        child: BodyMediumText(
+                                                          title: 'YES',
+                                                          fontFamily: FontWeightEnum.w500.toInter,
+                                                          titleColor: ColorConstants.bottomTextColor,
+                                                          titleTextAlign: TextAlign.center,
+                                                        ),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () => context.toPop(),
+                                                        child: BodyMediumText(
+                                                          title: 'NO',
+                                                          fontFamily: FontWeightEnum.w500.toInter,
+                                                          titleColor: ColorConstants.bottomTextColor,
+                                                          titleTextAlign: TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ).addPaddingX(10)
+                                                ],
+                                              ));
                                         },
                                         child: BodySmallText(
                                           title: LocaleKeys.unblockUser.tr(),

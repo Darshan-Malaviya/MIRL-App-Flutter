@@ -7,7 +7,6 @@ import 'package:mirl/infrastructure/repository/common_repo.dart';
 class SuggestNewExpertiseProvider extends ChangeNotifier {
   TextEditingController expertCategoryController = TextEditingController();
   TextEditingController newTopicController = TextEditingController();
-  TextEditingController existingCategoryController = TextEditingController();
   final _commonRepository = CommonRepository();
 
   String _enteredText = '0';
@@ -19,11 +18,11 @@ class SuggestNewExpertiseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> suggestedCategoryApiCall() async {
+  Future<void> suggestedCategoryApiCall({int? categoryId}) async {
     SuggestedCategoryRequestModel model = SuggestedCategoryRequestModel(
-        categoryName: newTopicController.text,
+        categoryName: expertCategoryController.text.trim(),
         userId: SharedPrefHelper.getUserId,
-        categoryId: existingCategoryController.text.trim(),
+        categoryId: categoryId,
         topicName: newTopicController.text.trim());
 
     ApiHttpResult response = await _commonRepository.suggestedCategoryAPI(requestModel: model.toNullFreeJson());
@@ -33,6 +32,7 @@ class SuggestNewExpertiseProvider extends ChangeNotifier {
           UnBlockUserResponseModel categoryResponseModel = response.data;
           Logger().d("Successfully call suggested category api");
           FlutterToast().showToast(msg: categoryResponseModel.message ?? '');
+          NavigationService.context.toPushNamed(RoutesConstants.thanksGivingScreen);
         }
         break;
       case APIStatus.failure:

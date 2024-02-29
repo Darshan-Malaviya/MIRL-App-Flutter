@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/request/rate_expert_request_model.dart';
 import 'package:mirl/infrastructure/models/response/rate_and_review_response_model.dart';
+import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/repository/report_repo.dart';
 
 class ReportReviewProvider extends ChangeNotifier {
@@ -19,11 +21,20 @@ class ReportReviewProvider extends ChangeNotifier {
 
   List<CommonSelectionModel> get feedbackTypeList => _feedbackTypeList;
   List<CommonSelectionModel> _feedbackTypeList = [
-    CommonSelectionModel(selectType: 1, title: LocaleKeys.lame.tr(), value: ImageConstants.lame,isSelected: false),
-    CommonSelectionModel(selectType: 2, title: LocaleKeys.mah.tr(), value: ImageConstants.mah),
-    CommonSelectionModel(selectType: 3, title: LocaleKeys.soSo.tr(), value: ImageConstants.soSo),
-    CommonSelectionModel(selectType: 4, title: LocaleKeys.nice.tr(), value: ImageConstants.nice),
-    CommonSelectionModel(selectType: 5, title: LocaleKeys.great.tr(), value: ImageConstants.great),
+    CommonSelectionModel(selectType: 1, title: LocaleKeys.lame.tr(), value: ImageConstants.lame, isSelected: false),
+    CommonSelectionModel(selectType: 2, title: LocaleKeys.mah.tr(), value: ImageConstants.mah, isSelected: false),
+    CommonSelectionModel(selectType: 3, title: LocaleKeys.soSo.tr(), value: ImageConstants.soSo, isSelected: false),
+    CommonSelectionModel(selectType: 4, title: LocaleKeys.nice.tr(), value: ImageConstants.nice, isSelected: false),
+    CommonSelectionModel(selectType: 5, title: LocaleKeys.great.tr(), value: ImageConstants.great, isSelected: false),
+  ];
+
+  List<CommonSelectionModel> get criteriaList => _criteriaList;
+  List<CommonSelectionModel> _criteriaList = [
+    CommonSelectionModel(title: LocaleKeys.expertise.tr(), value: LocaleKeys.rateTheExpertKnowledge.tr(), ratingCategory: 1),
+    CommonSelectionModel(title: LocaleKeys.communication.tr(), value: LocaleKeys.wereTheyCourteous.tr(), ratingCategory: 2),
+    CommonSelectionModel(title: LocaleKeys.helpfulness.tr(), value: LocaleKeys.wereTheyAbleToHelp.tr(), ratingCategory: 3),
+    CommonSelectionModel(title: LocaleKeys.empathy.tr(), value: LocaleKeys.wereTheyComfortable.tr(), ratingCategory: 4),
+    CommonSelectionModel(title: LocaleKeys.professionalism.tr(), value: LocaleKeys.respectFullToThem.tr(), ratingCategory: 5),
   ];
 
   bool get isLoading => _isLoading;
@@ -41,6 +52,13 @@ class ReportReviewProvider extends ChangeNotifier {
   bool get reachedLastPage => _reachedLastPage;
   bool _reachedLastPage = false;
 
+  int? selectedIndex = 0;
+
+  void changeRatingColor({required int index, required int selectedValue}) {
+    _criteriaList[index].rating = selectedValue;
+    notifyListeners();
+  }
+
   void setSortByReview(String? value, int id) {
     sortByReview = value!;
     getRatingAndReviewApiCall(isLoading: false, id: id, isListLoading: true);
@@ -48,7 +66,16 @@ class ReportReviewProvider extends ChangeNotifier {
   }
 
   void setSortByReport(String? value) {
-    sortByReport = value!;
+    sortByReport = value ?? '';
+    notifyListeners();
+  }
+
+  void onSelectedCategory({required int index}) {
+    for (var element in _feedbackTypeList) {
+      element.isSelected = false;
+    }
+    _feedbackTypeList[index].isSelected = true;
+    selectedIndex = _feedbackTypeList[index].selectType;
     notifyListeners();
   }
 
@@ -117,5 +144,42 @@ class ReportReviewProvider extends ChangeNotifier {
         Logger().d("API fail get all review api call ${response.data}");
         break;
     }
+  }
+
+  void rateExpertRequestCall({required int callHistoryId}) {
+    List<RatingCriteria> ratingCriteria = [];
+
+    for (var element in _criteriaList) {
+      ratingCriteria.add(RatingCriteria(rating: element.rating ?? null, ratingCategory: element.ratingCategory));
+    }
+    RateExpertRequestModel rateExpertRequestModel = RateExpertRequestModel(
+      review: reviewController.text.trim(),
+      ratingCriteria: ratingCriteria,
+      rating: selectedIndex,
+      callHistoryId: callHistoryId,
+    );
+    rateExpertApiCall(requestModel: rateExpertRequestModel);
+  }
+
+  Future<void> rateExpertApiCall({required Object requestModel}) async {
+    CustomLoading.progressDialog(isLoading: true);
+    ApiHttpResult response = await _reportRepository.rateExpertApi(requestModel: requestModel);
+    CustomLoading.progressDialog(isLoading: false);
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is UnBlockUserResponseModel) {
+          UnBlockUserResponseModel responseModel = response.data;
+
+          Logger().d("Successfully user rate expert API");
+          // FlutterToast().showToast(msg: responseModel.message ?? '');
+          NavigationService.context.toPushNamed(RoutesConstants.feedbackSubmittingScreen);
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail rate expert api call ${response.data}");
+        break;
+    }
+    notifyListeners();
   }
 }

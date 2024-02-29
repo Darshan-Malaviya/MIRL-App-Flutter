@@ -15,13 +15,6 @@ class ReportExpertScreen extends ConsumerStatefulWidget {
 
 class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      ref.read(reportUserProvider).getAllReportListApiCall(role: widget.args.userRole ?? 0, isFullScreenLoader: true);
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

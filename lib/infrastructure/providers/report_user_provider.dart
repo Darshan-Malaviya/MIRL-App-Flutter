@@ -42,7 +42,6 @@ class ReportUserProvider extends ChangeNotifier {
 
   void thanks(BuildContext context) {
     _currentView = 0;
-    //  context.toPop(RoutesConstants.expertDetailScreen);
     context.toPop();
     context.toPop();
     notifyListeners();
@@ -50,15 +49,13 @@ class ReportUserProvider extends ChangeNotifier {
 
   void changeReportAndThanksScreen({required int roleId, required String reportName, required String expertId}) {
     _pages = [
-      ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName, expertId: expertId) ),
+      ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName, expertId: expertId)),
       ThanksWidget(reportName: 'BACK TO PROFILE'),
     ];
   }
 
   Future<void> getAllReportListApiCall({required int role, bool isFullScreenLoader = false}) async {
     if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
-    } else if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
       _isLoading = true;
       notifyListeners();
@@ -68,8 +65,6 @@ class ReportUserProvider extends ChangeNotifier {
 
     ApiHttpResult response = await _reportRepository.reportListApi(limit: 10, page: _reportUserListPageNo, role: role);
     if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
-    } else if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: false);
       _isLoading = false;
       notifyListeners();
@@ -112,7 +107,7 @@ class ReportUserProvider extends ChangeNotifier {
           UserReportResponseModel responseModel = response.data;
 
           Logger().d("Successfully user report API");
-          FlutterToast().showToast(msg: responseModel.message ?? '');
+          // FlutterToast().showToast(msg: responseModel.message ?? '');
         }
         break;
       case APIStatus.failure:

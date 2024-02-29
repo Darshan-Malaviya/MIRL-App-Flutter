@@ -2,9 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/review_rating_widget.dart';
 
 class CallFeedbackScreen extends ConsumerStatefulWidget {
-  const CallFeedbackScreen({super.key});
+  final int callHistoryId;
+
+  const CallFeedbackScreen({super.key, required this.callHistoryId});
 
   @override
   ConsumerState createState() => _CallFeedbackScreenState();
@@ -78,21 +81,42 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
               TitleLargeText(title: LocaleKeys.howWouldYouRate.tr(), fontSize: 18, titleColor: ColorConstants.buttonTextColor),
               10.0.spaceY,
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
-                  feedBackWatch.feedbackTypeList.length,
-                  (index) => Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Image.asset(feedBackWatch.feedbackTypeList[index].value ?? ''),
-                      10.0.spaceY,
-                      LabelSmallText(
-                        title: '${feedBackWatch.feedbackTypeList[index].title ?? ''}',
-                        fontSize: 10,
-                      ).addMarginBottom(3),
-                    ],
-                  ).addMarginLeft(10),
-                ),
+                    feedBackWatch.feedbackTypeList.length,
+                    (index) => InkWell(
+                          onTap: () {
+                            feedBackRead.onSelectedCategory(index: index);
+                          },
+                          child: Column(
+                            children: [
+                              Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  ShadowContainer(
+                                    shadowColor: feedBackWatch.feedbackTypeList[index].isSelected ?? false
+                                        ? ColorConstants.primaryColor
+                                        : ColorConstants.transparentColor,
+                                    offset: Offset(0, 0),
+                                    spreadRadius: 1,
+                                    blurRadius: 8,
+                                    child: SizedBox.shrink(),
+                                    height: 72,
+                                    width: 60,
+                                    isShadow: true,
+                                  ),
+                                  10.0.spaceY,
+                                  Image.asset(feedBackWatch.feedbackTypeList[index].value ?? ''),
+                                  10.0.spaceY,
+                                  LabelSmallText(
+                                    title: '${feedBackWatch.feedbackTypeList[index].title ?? ''}',
+                                    fontSize: 10,
+                                  ).addMarginBottom(3),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
               ),
               40.0.spaceY,
               Image.asset(ImageConstants.line, color: ColorConstants.primaryColor),
@@ -104,6 +128,39 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                 maxLine: 3,
               ),
               20.0.spaceY,
+              Column(
+                  children: List.generate(feedBackWatch.criteriaList.length, (index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BodyLargeText(
+                      title: feedBackWatch.criteriaList[index].title ?? '',
+                      titleColor: ColorConstants.buttonTextColor,
+                      titleTextAlign: TextAlign.start,
+                      maxLine: 3,
+                      fontSize: 15,
+                    ),
+                    BodyLargeText(
+                      title: feedBackWatch.criteriaList[index].value ?? '',
+                      titleColor: ColorConstants.buttonTextColor,
+                      titleTextAlign: TextAlign.start,
+                      maxLine: 3,
+                      fontSize: 15,
+                      fontFamily: FontWeightEnum.w400.toInter,
+                    ),
+                    4.0.spaceY,
+                    ReviewRatingWidget(
+                      onRatingChanged: (value) {
+                        feedBackRead.changeRatingColor(index: index, selectedValue: value);
+                        print("rating changed: rating = $value");
+                      },
+                      rating: feedBackWatch.criteriaList[index].rating ?? 0,
+                      ratingCount: 10,
+                    ),
+                  ],
+                ).addMarginY(10);
+              })),
+              40.0.spaceY,
               BodyMediumText(title: LocaleKeys.leaveAReview.tr(), titleColor: ColorConstants.buttonTextColor),
               10.0.spaceY,
               BodyMediumText(
@@ -129,6 +186,7 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                     borderWidth: 0,
                     enabledBorderColor: ColorConstants.transparentColor,
                     fillColor: ColorConstants.transparentColor,
+                    focusedBorderColor: ColorConstants.transparentColor,
                     enableShadow: true,
                   ),
                   Padding(
@@ -143,10 +201,12 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
               ),
               40.0.spaceY,
               PrimaryButton(
-                title: LocaleKeys.shareSuggestion.tr(),
-                titleColor: ColorConstants.buttonTextColor,
-                onPressed: () => context.toPushNamed(RoutesConstants.feedbackSubmittingScreen)
-              ),
+                  title: LocaleKeys.shareSuggestion.tr(),
+                  titleColor: ColorConstants.buttonTextColor,
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    feedBackRead.rateExpertRequestCall(callHistoryId: widget.callHistoryId);
+                  }),
             ],
           ).addAllMargin(20),
         ),
