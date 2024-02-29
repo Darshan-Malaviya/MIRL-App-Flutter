@@ -57,10 +57,12 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
 
   @override
   void initState() {
-    instanceCallEnumNotifier.addListener(() {
-      if(instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting) {
-        startTimer();
-      }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      instanceCallEnumNotifier.addListener(() {
+        if(instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting) {
+          startTimer();
+        }
+      });
     });
     super.initState();
   }

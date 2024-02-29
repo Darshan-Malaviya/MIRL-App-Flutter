@@ -187,7 +187,7 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
               InkWell(
                 onTap: () {
                   context.toPushNamed(RoutesConstants.reportUserScreen,
-                      args: BlockUserArgs(userRole: 2, reportName: 'REPORT THIS USER', expertId: SharedPrefHelper.getUserId));
+                      args: BlockUserArgs(userRole: 2, reportName: AppConstants.reportThisUSer, expertId: widget.args.userId.toString()));
                 },
                 child: BodySmallText(
                   title: LocaleKeys.reportUser.tr(),
