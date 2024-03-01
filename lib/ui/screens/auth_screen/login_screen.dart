@@ -11,6 +11,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _loginPassKey = GlobalKey<FormState>();
+  FocusNode loginFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +58,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       hintText: StringConstants.typeYourEmailAddress,
                       textAlign: TextAlign.start,
                       controller: loginScreenProviderWatch.emailController,
+                      focusNode: loginFocusNode,
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.emailAddress,
-
-
                       validator: (value) {
                         return value?.toEmailValidation();
+                      },
+                      onFieldSubmitted: (value){
+                        loginFocusNode.unfocus()  ;
                       },
                     ).addPaddingX(42),
                     14.0.spaceY,
@@ -71,8 +74,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         titleColor: ColorConstants.textColor,
                         width: 235,
                         onPressed: () {
-                          context.unFocusKeyboard();
-                          FocusManager.instance.primaryFocus?.unfocus();if (_loginPassKey.currentState?.validate() ?? false) {
+                          loginFocusNode.unfocus();
+                          if (_loginPassKey.currentState?.validate() ?? false) {
                             loginScreenProviderRead.loginRequestCall(context: context, loginType: LoginType.normal, email: loginScreenProviderWatch.emailController.text.trim());
                           }
                         }),
@@ -84,7 +87,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       titleColor: ColorConstants.textColor,
                       margin: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
                       onPressed: () {
-                        context.unFocusKeyboard();
+                        loginFocusNode.unfocus();
                         loginScreenProviderRead.signInGoogle();
                       },
                       prefixIcon: ImageConstants.google,
@@ -100,12 +103,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         width: 280,
                         margin: EdgeInsets.only(left: 50, right: 50),
                         onPressed: () {
-                          context.unFocusKeyboard();
+                          loginFocusNode.unfocus();
                           loginScreenProviderRead.signInApple();
                         },
                       ),
                     ),
-                       PrimaryButton(
+                    /*           PrimaryButton(
                       title: StringConstants.continueWithFacebook,
                       prefixIcon: ImageConstants.facebook,
                       titleColor: ColorConstants.textColor,
@@ -114,7 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       onPressed: () {
                         loginScreenProviderRead.fbLogin();
                       },
-                    ),
+                    ),*/
                     30.0.spaceY,
                     RichText(
                       softWrap: true,

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
@@ -26,10 +28,23 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
   List<String> get dateList => _dateList;
   List<String> _dateList = [];
 
+  bool get visibleCallNowBtn => _visibleCallNowBtn;
+  bool _visibleCallNowBtn = false;
+
   void getSelectedDate(DateTime dateTime, int role) {
     selectedDate = dateTime;
     upcomingAppointmentApiCall(showLoader: false, showListLoader: true, role: role);
     notifyListeners();
+  }
+
+  void callNowBtnVisibility(String startTime) {
+    DateTime startTimeValue = DateTime.parse(startTime);
+    DateTime now = DateTime.now();
+    if (startTimeValue.isAtSameMomentAs(now)) {
+      // TODO start the call
+    } else {
+      FlutterToast().showToast(msg: LocaleKeys.startCallToast.tr());
+    }
   }
 
   Future<void> upcomingAppointmentApiCall({required bool showLoader, required bool showListLoader, required int role}) async {

@@ -12,6 +12,7 @@ class YourMirlIdScreen extends ConsumerStatefulWidget {
 
 class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
   final _loginPassKey = GlobalKey<FormState>();
+  FocusNode mirlIdFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
             ),
             trailingIcon: InkWell(
               onTap: () {
-                context.unFocusKeyboard();
+                mirlIdFocusNode.unfocus();
                 if (_loginPassKey.currentState?.validate() ?? false) {
                   expertRead.updateMirlIdApi();
                 }
@@ -48,11 +49,12 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
                 TextFormFieldWidget(
                   hintText: StringConstants.charactersLong,
                   controller: expertWatch.mirlIdController,
+                  focusNode: mirlIdFocusNode,
                   validator: (value) {
-                    return value?.toMirlIdValidation(LocaleKeys.pleaseEnterMirlID.tr(),LocaleKeys.idContainsOnlyCharacter.tr());
+                    return value?.toMirlIdValidation(LocaleKeys.pleaseEnterMirlID.tr(), LocaleKeys.idContainsOnlyCharacter.tr());
                   },
                   onFieldSubmitted: (value) {
-                    context.unFocusKeyboard();
+                    mirlIdFocusNode.unfocus();
                   },
                   textInputAction: TextInputAction.done,
                 ),
