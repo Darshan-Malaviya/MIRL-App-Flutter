@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 import 'package:mirl/infrastructure/models/request/suggested_category_request_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/repository/common_repo.dart';
@@ -7,6 +8,8 @@ import 'package:mirl/infrastructure/repository/common_repo.dart';
 class SuggestNewExpertiseProvider extends ChangeNotifier {
   TextEditingController expertCategoryController = TextEditingController();
   TextEditingController newTopicController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+
   final _commonRepository = CommonRepository();
 
   String _enteredText = '0';
@@ -15,6 +18,13 @@ class SuggestNewExpertiseProvider extends ChangeNotifier {
 
   void newTopicCounterValue(String value) {
     _enteredText = value.length.toString();
+    notifyListeners();
+  }
+  CategoryIdNameCommonModel? selectedCategory;
+
+  void clearCategoryController() {
+    categoryController.clear();
+    selectedCategory?.id = null;
     notifyListeners();
   }
 
