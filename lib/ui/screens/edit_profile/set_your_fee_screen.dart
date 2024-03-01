@@ -10,6 +10,8 @@ class SetYourFreeScreen extends ConsumerStatefulWidget {
 }
 
 class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
+  FocusNode feesFocusNode = FocusNode();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -30,7 +32,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
         ),
         trailingIcon: InkWell(
           onTap: () {
-            context.unFocusKeyboard();
+            feesFocusNode.unfocus();
             expertRead.updateFeesApi();
           },
           child: TitleMediumText(
@@ -57,6 +59,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
               ),
               TextFormFieldWidget(
                 controller: expertWatch.countController,
+                focusNode: feesFocusNode,
                 width: 150,
                 textInputType: TextInputType.numberWithOptions(decimal: true),
                 textAlign: TextAlign.center,
@@ -69,7 +72,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   expertRead.changeFeesValue(value);
                 },
                 onFieldSubmitted: (value) {
-                  context.unFocusKeyboard();
+                  feesFocusNode.unfocus();
                 },
               ).addAllPadding(16),
               FeesActionButtonWidget(

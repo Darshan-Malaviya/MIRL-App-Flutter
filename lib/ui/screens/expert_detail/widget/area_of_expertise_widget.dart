@@ -51,7 +51,7 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
                     return Container(
                       margin: EdgeInsets.only(bottom: 14, right: 4),
                       padding: EdgeInsets.symmetric(horizontal: 11, vertical: 5),
-                      child: TitleMediumText(
+                      child: BodyMediumText(
                         maxLine: 3,
                         title: expertDetailWatch.userData?.areaOfExpertise?[index].topic?[i].name ?? '',
                         fontFamily: FontWeightEnum.w500.toInter,

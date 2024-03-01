@@ -114,15 +114,6 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                         spreadRadius: 0,
                       )
                     ]),
-                // width: double.infinity,
-                // shadowColor: ColorConstants.blackColor.withOpacity(0.10),
-                // backgroundColor: ColorConstants.yellowButtonColor,
-                // padding: EdgeInsets.zero,
-                // blurRadius: 2,
-                // offset: Offset(1, 1),
-                // spreadRadius: 0,
-                // border: 5,
-                // borderColor: ColorConstants.borderLightColor,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -140,9 +131,7 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                           title: LocaleKeys.paymentDetail.tr(),
                           titleColor: ColorConstants.textColor,
                           titleTextAlign: TextAlign.center,
-                          shadow: [
-                            Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
-                          ],
+                          shadow: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                         ).addAllPadding(20),
                       ),
                     ),
@@ -160,9 +149,7 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                           title: LocaleKeys.mirlConnect.tr(),
                           titleColor: ColorConstants.textColor,
                           titleTextAlign: TextAlign.center,
-                          shadow: [
-                            Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
-                          ],
+                          shadow: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                         ).addAllPadding(20),
                       ),
                     ),
@@ -180,9 +167,7 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                           title: LocaleKeys.helpTerm.tr(),
                           titleColor: ColorConstants.textColor,
                           titleTextAlign: TextAlign.center,
-                          shadow: [
-                            Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
-                          ],
+                          shadow: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                         ).addAllPadding(20),
                       ),
                     ),
@@ -239,12 +224,15 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                   50.0.spaceY,
                   PrimaryButton(
                       buttonColor: ColorConstants.buttonColor,
+                      title: LocaleKeys.upcomingAppointment.tr(),
+                      titleColor: ColorConstants.buttonTextColor,
+                      onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: 1)),
+                  50.0.spaceY,
+                  PrimaryButton(
+                      buttonColor: ColorConstants.buttonColor,
                       title: LocaleKeys.notificationAndPreference.tr(),
                       titleColor: ColorConstants.buttonTextColor,
-
-                      /// todo change the screen
-                       onPressed: () => context.toPushNamed(RoutesConstants.notificationAndPreferencesScreen)),
-                      //onPressed: () => context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen, args: 1)),
+                      onPressed: () => context.toPushNamed(RoutesConstants.notificationAndPreferencesScreen)),
                   50.0.spaceY,
                   PrimaryButton(
                     buttonColor: ColorConstants.buttonColor,
@@ -277,16 +265,6 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
             ],
           ).addAllPadding(20),
         )
-
-        // Center(
-        //   child: PrimaryButton(
-        //     title: StringConstants.logOut,
-        //     onPressed: () async {
-        //       SharedPrefHelper.clearPrefs();
-        //       context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-        //     },
-        //   ),
-        // ),
         );
   }
 }

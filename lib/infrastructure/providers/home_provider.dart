@@ -60,9 +60,12 @@ class HomeProvider extends ChangeNotifier {
   Future<void> homePageApi() async {
     _isHomeLoading = true;
     notifyListeners();
+
     ApiHttpResult response = await _homeRepo.homePageService();
+
     _isHomeLoading = false;
     notifyListeners();
+
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is HomeDataResponseModel) {

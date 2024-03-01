@@ -36,8 +36,8 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
             boxFit: BoxFit.cover,
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.60,
-            minChildSize: 0.60,
+            initialChildSize: 0.55,
+            minChildSize: 0.55,
             maxChildSize: 0.70,
             builder: (BuildContext context, myScrollController) {
               return Container(
@@ -112,6 +112,8 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               buttonTextFontFamily: FontWeightEnum.w400.toInter,
                               onPressed: () {
                                 context.toPushNamed(RoutesConstants.editYourExpertProfileScreen);
+                                // NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
+                                //     args: int.parse('0'));
                               },
                             ),
                           ),
@@ -131,10 +133,10 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                         titleColor: ColorConstants.blueColor,
                       ),
                       12.0.spaceY,
-                      if (expertWatch.aboutMeController.text.isNotEmpty) ...[
+                      if (expertWatch.about.isNotEmpty) ...[
                         ReadMoreText(
                           style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter),
-                          expertWatch.aboutMeController.text,
+                          expertWatch.about,
                           trimLines: 10,
                           trimMode: TrimMode.Line,
                           trimCollapsedText: LocaleKeys.readMore.tr(),

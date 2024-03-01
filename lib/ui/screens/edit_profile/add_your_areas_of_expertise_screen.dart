@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
+import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/child_category_bottom_view.dart';
 
 class AddYourAreasOfExpertiseScreen extends ConsumerStatefulWidget {
@@ -95,7 +96,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
 
                             return Stack(
                               children: [
-                                InkWell(
+                                CategoryCommonView(
                                   onTap: () {
                                     if (element?.topic?.isNotEmpty ?? false) {
                                       addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
@@ -110,40 +111,12 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                       FlutterToast().showToast(msg: LocaleKeys.thereAreNoAvailableTopics.tr());
                                     }
                                   },
-                                  child: ShadowContainer(
-                                    shadowColor: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false)
-                                        ? ColorConstants.categoryListBorder
-                                        : ColorConstants.blackColor.withOpacity(0.1),
-                                    offset: Offset(0, 2),
-                                    spreadRadius: 0,
-                                    blurRadius: 3,
-                                    child: Column(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                          child: NetworkImageWidget(
-                                            boxFit: BoxFit.cover,
-                                            imageURL: addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
-                                            isNetworkImage: true,
-                                            height: 50,
-                                            width: 50,
-                                          ),
-                                        ),
-                                        4.0.spaceY,
-                                        LabelSmallText(
-                                          fontSize: 9,
-                                          title: element?.name ?? '',
-                                          titleColor: ColorConstants.blackColor,
-                                          titleTextAlign: TextAlign.center,
-                                          maxLine: 2,
-                                        ),
-                                      ],
-                                    ),
-                                    height: 100,
-                                    width: 100,
-                                    isShadow: true,
-                                  ).addPaddingTop(5),
-                                ),
+                                  categoryName: element?.name ?? '',
+                                  imageUrl: element?.image ?? '',
+                                  isSelectedShadow: (element?.isVisible ?? false),
+                                  blurRadius: 8,
+                                  spreadRadius: 1,
+                                ).addPaddingTop(5),
                                 if (element?.badgeCount != 0) ...[
                                   Positioned(
                                       top: 0,
