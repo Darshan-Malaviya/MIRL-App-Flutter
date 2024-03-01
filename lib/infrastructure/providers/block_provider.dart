@@ -50,7 +50,8 @@ class BlockProvider extends ChangeNotifier {
     bool isFromInstatCall = false,
   }) async {
     UserBlockRequestModel userBlockRequestModel = UserBlockRequestModel(status: Status, userBlockId: UserBlockId);
-    await userBlockApiCall(requestModel: userBlockRequestModel.prepareRequest(), context: context, isFromInstatCall: isFromInstatCall);
+    await userBlockApiCall(
+        requestModel: userBlockRequestModel.prepareRequest(), context: context, isFromInstatCall: isFromInstatCall);
   }
 
   Future<void> userBlockApiCall({
@@ -108,23 +109,13 @@ class BlockProvider extends ChangeNotifier {
 
   Future<void> getAllBlockListApiCall({bool isFullScreenLoader = false}) async {
     if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
-    } else if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: true);
       _isLoading = true;
       notifyListeners();
-    } else {
-      _isLoading = true;
     }
     ApiHttpResult response = await _authRepository.getAllBlockListApi(limit: 10, page: _blockUserListPageNo);
     if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
-    } else if (isFullScreenLoader) {
-      CustomLoading.progressDialog(isLoading: false);
       _isLoading = false;
       notifyListeners();
-    } else {
-      _isLoading = false;
     }
     switch (response.status) {
       case APIStatus.success:
@@ -139,7 +130,6 @@ class BlockProvider extends ChangeNotifier {
           }
 
           Logger().d("Successfully get all block details");
-          FlutterToast().showToast(msg: userBlockResponseModel.message ?? '');
         }
         break;
       case APIStatus.failure:

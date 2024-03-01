@@ -144,6 +144,7 @@ class MultiConnectProvider extends ChangeNotifier {
           GetSingleCategoryResponseModel responseModel = response.data;
           if (_allExpertPageNo == 1) {
             _singleCategoryData = responseModel.data;
+            _expertData.clear();
             _expertData.addAll(responseModel.data?.expertData ?? []);
           } else {
             _expertData.addAll(responseModel.data?.expertData ?? []);

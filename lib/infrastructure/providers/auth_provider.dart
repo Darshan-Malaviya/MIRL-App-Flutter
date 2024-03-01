@@ -30,9 +30,6 @@ class AuthProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool _isLoading = false;
 
-  bool get enableResend => _enableResend;
-  bool _enableResend = false;
-
   Timer? timer;
 
   String _socialId = '';
@@ -60,14 +57,11 @@ class AuthProvider with ChangeNotifier {
       if (secondsRemaining != 0) {
         _secondsRemaining--;
         notifyListeners();
-      } else {
-        _enableResend = true;
-        notifyListeners();
       }
     });
   }
 
-  Future<void> loginRequestCall({required int loginType, required String email}) async {
+  Future<void> loginRequestCall({BuildContext? context, required int loginType, required String email, bool? fromResend = false}) async {
     debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
     debugPrint('getVoipToken=================${await AgoraService.singleton.getVoipToken()}');
     LoginRequestModel loginRequestModel = LoginRequestModel(
@@ -79,22 +73,28 @@ class AuthProvider with ChangeNotifier {
         loginType: loginType,
         voIpToken: await AgoraService.singleton.getVoipToken());
     loginApiCall(
-        requestModel:
-            email.isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
-        loginType: loginType);
+      context: context,
+      requestModel: email.isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
+      loginType: loginType,
+      fromResend: fromResend,
+    );
   }
 
-  Future<void> loginApiCall({required Object requestModel, required int loginType}) async {
+  Future<void> loginApiCall({BuildContext? context, required Object requestModel, required int loginType, bool? fromResend = false}) async {
+
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _authRepository.loginCallApi(requestModel: requestModel);
     CustomLoading.progressDialog(isLoading: false);
+
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           if (loginType == 0) {
-             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
-            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.otpScreen);
+            FlutterToast().showToast(msg: loginResponseModel.message ?? '');
+            if (fromResend == false) {
+              context?.toPushNamed(RoutesConstants.otpScreen);
+            }
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
             SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false) ? true : false);

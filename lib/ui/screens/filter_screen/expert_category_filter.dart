@@ -302,7 +302,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
             FlutterToast().showToast(msg: LocaleKeys.pleasePickAnyFilter.tr());
           }
         },
-      ).addPaddingXY(paddingX: 50, paddingY: 10),
+      ).addPaddingXY(paddingX: 50, paddingY: 18),
     );
   }
 

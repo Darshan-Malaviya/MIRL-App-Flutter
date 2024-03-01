@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/call_feedback_screen/review_rating_widget.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/widget/review_rating_widget.dart';
 
 class CallFeedbackScreen extends ConsumerStatefulWidget {
   final int callHistoryId;
@@ -70,10 +70,15 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                 textAlign: TextAlign.center,
               ),
               20.0.spaceY,
-              BodySmallText(
-                title: LocaleKeys.issueWithCall.tr(),
-                titleColor: ColorConstants.darkRedColor,
-                fontFamily: FontWeightEnum.w400.toInter,
+              InkWell(
+                onTap: (){
+                  context.toPushNamed(RoutesConstants.reportProblemWithYourCallScreen);
+                },
+                child: BodySmallText(
+                  title: LocaleKeys.issueWithCall.tr(),
+                  titleColor: ColorConstants.darkRedColor,
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
               ),
               40.0.spaceY,
               Image.asset(ImageConstants.line, color: ColorConstants.primaryColor),

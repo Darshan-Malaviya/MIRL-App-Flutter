@@ -29,7 +29,10 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
           onTap: () => context.toPop(),
         ),
         trailingIcon: InkWell(
-          onTap: () => expertRead.updateFeesApi(),
+          onTap: () {
+            context.unFocusKeyboard();
+            expertRead.updateFeesApi();
+          },
           child: TitleMediumText(
             title: StringConstants.done,
           ).addPaddingRight(14),

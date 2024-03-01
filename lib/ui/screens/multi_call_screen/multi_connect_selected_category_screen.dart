@@ -49,7 +49,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                 multiConnectRequest: 'true',
               ));
         } else {
-          log('reach last page on selected category export data list api');
+          log('reach last page on multi connect list api');
         }
       }
     });

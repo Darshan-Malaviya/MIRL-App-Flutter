@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -88,34 +89,30 @@ class ExpertDetailWidget extends StatelessWidget {
                           titleTextAlign: TextAlign.center,
                         ),
                         10.0.spaceX,
-                        TitleLargeText(
-                          title: expertData?.overAllRating != 0 ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
-                          titleColor: ColorConstants.bottomTextColor,
-                        ),
+                        AutoSizeText(
+                          expertData?.overAllRating != 0 ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                        )
                       ],
                     ),
                     20.0.spaceX,
-                    Flexible(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          BodySmallText(
-                            title: LocaleKeys.feesPerMinute.tr(),
-                            fontFamily: FontWeightEnum.w400.toInter,
-                            titleTextAlign: TextAlign.center,
-                          ),
-                          10.0.spaceX,
-                          Flexible(
-                            child: TitleLargeText(
-                              maxLine: 3,
-                              title: fee != null ? '\$${fee}' : "",
-                              titleColor: ColorConstants.bottomTextColor,
-                              titleTextAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BodySmallText(
+                          title: LocaleKeys.feesPerMinute.tr(),
+                          fontFamily: FontWeightEnum.w400.toInter,
+                          titleTextAlign: TextAlign.center,
+                        ),
+                        10.0.spaceX,
+                        AutoSizeText(
+                          fee != null ? '\$${fee}' : "",
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                        )
+                      ],
                     ),
                   ],
                 ),
