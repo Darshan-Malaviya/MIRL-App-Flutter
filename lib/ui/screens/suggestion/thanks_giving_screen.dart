@@ -46,7 +46,7 @@ class _ThanksGivingScreenState extends ConsumerState<ThanksGivingScreen> {
               titleColor: ColorConstants.buttonTextColor,
               onPressed: () {
                 ref.read(filterProvider).clearCategoryController();
-                ref.watch(filterProvider).selectedCategory?.id = null;
+             //    ref.watch(filterProvider).selectedCategory?.id = null;
 
                 context.toPop();
                 context.toPop();
