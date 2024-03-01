@@ -352,9 +352,8 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                               valueListenable: allCallDurationNotifier,
                               builder: (BuildContext context, int value, Widget? child) {
                                 return Visibility(
-                                  visible: true,
-                               /*   visible: allCallDurationNotifier.value != 0 && (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting
-                                      || multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested),*/
+                                  visible: allCallDurationNotifier.value != 0 /*&& (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting
+                                      || multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)*/,
                                   replacement: SizedBox.shrink(),
                                   child: TitleSmallText(
                                     title: "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
