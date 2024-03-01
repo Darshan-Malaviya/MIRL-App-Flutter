@@ -13,6 +13,8 @@ class OTPScreen extends ConsumerStatefulWidget {
 }
 
 class _OTPScreenState extends ConsumerState<OTPScreen> {
+  FocusNode otpFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -81,8 +83,12 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 controller: loginScreenProviderWatch.otpController,
+                focusNode: otpFocusNode,
                 keyboardType: TextInputType.number,
                 length: 6,
+                onSubmitted: (value) {
+                  otpFocusNode.unfocus();
+                },
                 focusedPinTheme: PinTheme(
                   height: 45,
                   width: 46,
@@ -140,6 +146,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 title: StringConstants.verifyOtp,
                 titleColor: ColorConstants.textColor,
                 onPressed: () {
+                  otpFocusNode.unfocus();
                   if (loginScreenProviderWatch.otpController.text.isNotEmpty) {
                     loginScreenProviderRead.otpVerifyRequestCall();
                   } else {
@@ -162,7 +169,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                     Flexible(
                       child: InkWell(
                         onTap: () {
-                          context.unFocusKeyboard();
+                          otpFocusNode.unfocus();
                           loginScreenProviderWatch.otpController.clear();
                           loginScreenProviderRead.loginRequestCall(
                             context: context,

@@ -64,6 +64,41 @@ class ReportReviewProvider extends ChangeNotifier {
 
   String get enteredText => _enteredText;
 
+  List formKeyList = List.generate(11, (index) => GlobalKey<FormState>());
+
+  List<Offset> currentPosition = [];
+  double localPosition = 0.0;
+  bool isLoaded = false;
+  int criteriaSelectedIndex = 0;
+
+  void changeCriteriaSelectedIndex(int index) {
+    RenderBox box = formKeyList[index].currentContext?.findRenderObject() as RenderBox;
+    Offset position = box.localToGlobal(Offset.zero);
+    localPosition = position.dx;
+    selectedIndex = index;
+    notifyListeners();
+  }
+
+  void onHorizontalDragUpdate(details) {
+    if (details.globalPosition.dx - 30 <= currentPosition.first.dx) {
+      return;
+    }
+    if (currentPosition.last.dx + 50 >= details.globalPosition.dx) {
+      localPosition = details.globalPosition.dx;
+      notifyListeners();
+    }
+  }
+
+  void afterLayout(_) {
+    for (var element in formKeyList) {
+      RenderBox box = element.currentContext?.findRenderObject() as RenderBox;
+      Offset position = box.localToGlobal(Offset.zero);
+      currentPosition.add(position);
+    }
+    isLoaded = true;
+    notifyListeners();
+  }
+
   void changeRatingColor({required int index, required int selectedValue}) {
     _criteriaList[index].rating = selectedValue;
     notifyListeners();

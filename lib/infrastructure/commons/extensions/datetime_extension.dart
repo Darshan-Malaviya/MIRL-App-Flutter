@@ -97,9 +97,10 @@ extension DateTimeFormatter on String {
       DateTime now = DateTime.now();
       DateTime endLocalTime = DateTime.parse(this).toLocal();
       DateTime startLocalTime = DateTime.parse(startTime).toLocal();
-      String value1 = DateFormat('h:mm').format(endLocalTime);
-      String value2 = DateFormat('h:mm').format(startLocalTime);
-      if (value1 == '12:00' && value2 == '12:00') {
+      String value1 = DateFormat('h:mm a').format(DateTime.parse(this));
+      String value2 = DateFormat('h:mm a').format(startLocalTime);
+      final lastTimeOfDay = DateFormat('h:mm a').format(DateTime(now.year, now.month, now.day, 0, 0).toUtc());
+      if (value2 == value1) {
         DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute);
         return setTimeOfDay;
       } else {

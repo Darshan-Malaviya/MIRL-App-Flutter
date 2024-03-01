@@ -206,11 +206,13 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                       child: PrimaryButton(
                                         title: LocaleKeys.startCall.tr(),
                                         width: 150,
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          upcomingRead.callNowBtnVisibility(upcomingWatch.upcomingAppointment[index].startTime ?? '');
+                                        },
                                         fontSize: 10,
                                         titleColor: ColorConstants.textColor,
                                         buttonColor: ColorConstants.yellowLightColor,
-                                      ).addMarginLeft(14),
+                                      ).addMarginRight(14),
                                     ),
                                     PrimaryButton(
                                       title: LocaleKeys.cancelAppointment.tr(),
