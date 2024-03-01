@@ -13,6 +13,8 @@ class MoreAboutMeScreen extends ConsumerStatefulWidget {
 }
 
 class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
+  FocusNode aboutFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     final expertWatch = ref.watch(editExpertProvider);
@@ -26,7 +28,7 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
             ),
             trailingIcon: InkWell(
               onTap: () {
-                context.unFocusKeyboard();
+                aboutFocusNode.unfocus();
                 expertRead.updateAboutApi();
               },
               child: TitleMediumText(
@@ -51,10 +53,14 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
                     maxLength: 1500,
                     minLines: 8,
                     controller: expertWatch.aboutMeController,
+                    focusNode: aboutFocusNode,
                     textInputType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
                     setFormatter: false,
                     contentPadding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 30),
+                    onFieldSubmitted: (value) {
+                      aboutFocusNode.unfocus();
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8, right: 12),
@@ -80,16 +86,15 @@ class _MoreAboutMeScreenState extends ConsumerState<MoreAboutMeScreen> {
 }
 
 class _Utf8LengthLimitingTextInputFormatter extends TextInputFormatter {
-  _Utf8LengthLimitingTextInputFormatter(this.maxLength)
-      : assert(maxLength == -1 || maxLength > 0);
+  _Utf8LengthLimitingTextInputFormatter(this.maxLength) : assert(maxLength == -1 || maxLength > 0);
 
   final int maxLength;
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     if (maxLength > 0 && bytesLength(newValue.text) > maxLength) {
       // If already at the maximum and tried to enter even more, keep the old value.
       if (bytesLength(oldValue.text) == maxLength) {

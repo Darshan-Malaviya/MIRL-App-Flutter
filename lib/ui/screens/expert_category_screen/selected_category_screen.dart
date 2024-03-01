@@ -121,7 +121,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       imageUrl: filterProviderWatch.singleCategoryData?.categoryData?.image ?? '',
                       isSelectedShadow: true,
                       blurRadius: 8,
-                      spreadRadius: 1,),
+                      spreadRadius: 1),
                     20.0.spaceY,
                     if (filterProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
                       Container(

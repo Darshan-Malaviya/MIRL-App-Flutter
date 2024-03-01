@@ -42,7 +42,7 @@ class ExpertDetailWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                180.0.spaceY,
+                200.0.spaceY,
                 Center(
                   child: ShadowContainer(
                     border: 20,
@@ -116,13 +116,13 @@ class ExpertDetailWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                10.0.spaceY,
+                16.0.spaceY,
                 Align(alignment: Alignment.centerLeft, child: BodySmallText(title: StringConstants.aboutMe)),
                 5.0.spaceY,
                 ReadMoreText(
                   style: TextStyle(fontSize: 12, fontFamily: FontWeightEnum.w400.toInter),
                   expertData?.about ?? '',
-                  trimLines: 4,
+                  trimLines: 5,
                   trimMode: TrimMode.Line,
                   textAlign: TextAlign.start,
                   trimCollapsedText: LocaleKeys.readMore.tr(),

@@ -139,7 +139,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           hintText: StringConstants.description,
                           textInputAction: TextInputAction.done,
                           onFieldSubmitted: (value) {
-                            context.unFocusKeyboard();
+                            expertWatch.certiAndExpModel[index].descriptionFocus.unfocus();
                           },
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(255),
