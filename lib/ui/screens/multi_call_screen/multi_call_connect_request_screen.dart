@@ -58,27 +58,6 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
     );
   }
 
-/*  Future<void> multiConnectRequestTimerFunction() async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (multiRequestTimerNotifier.value != 0 && multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting) {
-      multiRequestTimerNotifier.value =  multiRequestTimerNotifier.value - 1;
-
-      if(widget.args.userDetail?.id.toString() == SharedPrefHelper.getUserId) {
-        List<int> data = ref.watch(multiConnectProvider).selectedExpertDetails.map((e) => e.id ?? 0).toList();
-        ref.read(socketProvider).timerEmit(
-          userId: int.parse((widget.args.userDetail?.id.toString() ?? '')),
-          expertIdList: data,
-          callRoleEnum: CallRoleEnum.user,
-          timer:multiRequestTimerNotifier.value,
-          timerType: CallTimerEnum.multiRequest, requestType: 2, );
-      }
-      multiConnectRequestTimerFunction();
-    } else {
-      multiRequestTimerNotifier.value = -1;
-      multiRequestTimerNotifier.removeListener(() {});
-    }
-  }*/
-
 
   @override
   void initState() {
