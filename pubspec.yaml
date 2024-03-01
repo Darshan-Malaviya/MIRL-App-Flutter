@@ -71,6 +71,7 @@ dependencies:
   simple_ripple_animation: ^0.0.9
   tap_debouncer: ^2.2.0
   flutter_html: any
+  auto_size_text: ^3.0.0
 
   #permission
   permission_handler: ^11.2.0
