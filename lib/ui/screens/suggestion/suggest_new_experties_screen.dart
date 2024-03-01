@@ -13,11 +13,14 @@ class SuggestNewExpertiseScreen extends ConsumerStatefulWidget {
 }
 
 class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseScreen> {
+  FocusNode topic = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     final suggestNewExpertiseWatch = ref.watch(suggestNewExpertiseProvider);
     final suggestNewExpertiseRead = ref.read(suggestNewExpertiseProvider);
     final filterWatch = ref.watch(filterProvider);
+    final filterRead = ref.read(filterProvider);
     return Scaffold(
         backgroundColor: ColorConstants.scaffoldBg,
         appBar: AppBarWidget(
@@ -87,43 +90,116 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
             //   offset: Offset(0, 0),
             // ),
             20.0.spaceY,
-            TitleSmallText(
-              title: LocaleKeys.selectExpertCategory.tr(),
-              fontSize: 15,
-              titleTextAlign: TextAlign.center,
-              titleColor: ColorConstants.bottomTextColor,
+
+            Visibility(
+              visible: suggestNewExpertiseWatch.expertCategoryController.text.isEmpty,
+              child: Column(
+                children: [
+                  TitleSmallText(
+                    title: LocaleKeys.selectExpertCategory.tr(),
+                    fontSize: 15,
+                    titleTextAlign: TextAlign.center,
+                    titleColor: ColorConstants.bottomTextColor,
+                  ),
+                  20.0.spaceY,
+                  buildTextFormFieldWidget(filterWatch.categoryController, context, () {
+                    CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: AllCategoryListBottomView());
+                  }),
+                ],
+              ),
             ),
-            20.0.spaceY,
-            buildTextFormFieldWidget(filterWatch.categoryController, context, () {
-              CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: AllCategoryListBottomView());
-            }),
-            20.0.spaceY,
-            TitleSmallText(
-              title: LocaleKeys.or.tr(),
-              fontSize: 15,
-              fontFamily: FontWeightEnum.w400.toInter,
-              titleTextAlign: TextAlign.center,
-              titleColor: ColorConstants.buttonTextColor,
+
+            10.0.spaceY,
+            //   if (filterWatch.commonSelectionModel.isNotEmpty) ...[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(filterWatch.commonSelectionModel.length, (index) {
+                final data = filterWatch.commonSelectionModel[index];
+                return OnScaleTap(
+                    onPress: () {
+                      filterRead.clearCategoryController();
+                    },
+                    child: Visibility(
+                      visible: filterWatch.categoryController.text.isNotEmpty,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ShadowContainer(
+                            border: 20,
+                            height: 30,
+                            width: 30,
+                            shadowColor: ColorConstants.borderColor,
+                            backgroundColor: ColorConstants.yellowButtonColor,
+                            offset: Offset(0, 3),
+                            child: Center(child: Image.asset(ImageConstants.cancel)),
+                          ),
+                          20.0.spaceX,
+                          Flexible(
+                            child: ShadowContainer(
+                              border: 10,
+                              child: BodyMediumText(
+                                maxLine: 10,
+                                title: '${data.title}: ${data.value}',
+                                fontFamily: FontWeightEnum.w400.toInter,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ));
+              }),
             ),
-            20.0.spaceY,
-            TitleSmallText(
-              title: LocaleKeys.suggestNewExpertCategory.tr(),
-              fontSize: 15,
-              titleTextAlign: TextAlign.center,
-              titleColor: ColorConstants.bottomTextColor,
-            ),
-            15.0.spaceY,
-            TextFormFieldWidget(
-              hintText: LocaleKeys.newExpertisePlaceHolder.tr(),
-              controller: suggestNewExpertiseWatch.expertCategoryController,
-              enabledBorderColor: ColorConstants.dropDownBorderColor,
-              hintTextColor: ColorConstants.buttonTextColor,
-              onFieldSubmitted: (value) {
-                context.unFocusKeyboard();
-              },
-              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-              textInputAction: TextInputAction.done,
-            ),
+            //  ],
+            if (filterWatch.categoryController.text.isNotEmpty &&
+                suggestNewExpertiseWatch.expertCategoryController.text.isNotEmpty) ...[
+              20.0.spaceY,
+              TitleSmallText(
+                title: LocaleKeys.or.tr(),
+                fontSize: 15,
+                fontFamily: FontWeightEnum.w400.toInter,
+                titleTextAlign: TextAlign.center,
+                titleColor: ColorConstants.buttonTextColor,
+              ),
+            ],
+            if (filterWatch.categoryController.text.isEmpty) ...[
+              Column(
+                children: [
+                  20.0.spaceY,
+                  TitleSmallText(
+                    title: LocaleKeys.suggestNewExpertCategory.tr(),
+                    fontSize: 15,
+                    titleTextAlign: TextAlign.center,
+                    titleColor: ColorConstants.bottomTextColor,
+                  ),
+                  15.0.spaceY,
+                  TextFormFieldWidget(
+                    suffixIcon: suggestNewExpertiseWatch.expertCategoryController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear,color: ColorConstants.blackColor),
+                            onPressed: () {
+                              filterRead.clearCategoryController();
+                              topic.unfocus();
+                              suggestNewExpertiseWatch.expertCategoryController.clear();
+                            },
+                          )
+                        : SizedBox.shrink(),
+                    focusNode: topic,
+                    hintText: LocaleKeys.newExpertisePlaceHolder.tr(),
+                    controller: suggestNewExpertiseWatch.expertCategoryController,
+                    enabledBorderColor: ColorConstants.dropDownBorderColor,
+                    hintTextColor: ColorConstants.buttonTextColor,
+                    onFieldSubmitted: (value) {
+                      filterRead.clearCategoryController();
+                      topic.unfocus();
+                    },
+                    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    textInputAction: TextInputAction.done,
+                  ),
+                ],
+              ),
+            ],
             40.0.spaceY,
             TitleSmallText(
               title: LocaleKeys.suggestNewTopic.tr(),
