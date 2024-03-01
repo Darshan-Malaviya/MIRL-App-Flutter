@@ -16,60 +16,33 @@ class _ExpertCallHistoryScreenState extends ConsumerState<ExpertCallHistoryScree
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
+        centerTitle: true,
+        appTitle: TitleLargeText(
+          title: LocaleKeys.expertCallHistory.tr(),
+          titleColor: ColorConstants.bottomTextColor,
+          titleTextAlign: TextAlign.center,
+        ),
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
-        ),
-        trailingIcon: OnScaleTap(
-          onPress: () {
-            // if (_loginPassKey.currentState?.validate() ?? false) {
-            // }
-          },
-          child: TitleMediumText(
-            title: StringConstants.done,
-            fontFamily: FontWeightEnum.w700.toInter,
-          ).addPaddingRight(14),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TitleLargeText(
-              title: LocaleKeys.expertCallHistory.tr(),
-              titleColor: ColorConstants.bottomTextColor,
-              titleTextAlign: TextAlign.center,
-            ),
-            20.0.spaceY,
             TitleSmallText(
               title: "NOVEMBER 2023",
+              //toDisplayMonthWithYear()
               titleColor: ColorConstants.buttonTextColor,
               titleTextAlign: TextAlign.center,
             ),
             20.0.spaceY,
             Image.asset(ImageConstants.purpleLine),
             40.0.spaceY,
-            ExpertCallHistoryWidget(
-              userTitle: 'PREETI',
-              callTitle: 'INSTANT CALL',
-              number: '10',
-              minutes: '03:30PM',
-              callTime: 'PAYMENT COMPLETE',
-              status: 'INCOMPLETE',
-              statusColor: ColorConstants.disableColor,
-              durationTime: '20',
-            ),
+            ExpertCallHistoryWidget(),
             20.0.spaceY,
-            ExpertCallHistoryWidget(
-              userTitle: 'PREETI',
-              callTitle: 'INSTANT CALL',
-              number: '10',
-              minutes: '03:30PM',
-              callTime: 'PAYMENT COMPLETE',
-              status: 'COMPLETE',
-              durationTime: '20',
-
-            )
+            ExpertCallHistoryWidget()
           ],
         ).addAllPadding(20),
       ),

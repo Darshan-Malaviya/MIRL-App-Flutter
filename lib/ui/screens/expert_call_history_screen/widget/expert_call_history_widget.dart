@@ -1,29 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/enums/call_history_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class ExpertCallHistoryWidget extends StatelessWidget {
-  final String userTitle;
-  final String? minutes;
-  final String? callTime;
-  final String callTitle;
-  final String? durationTime;
-  final String number;
-  final String? status;
-  final Color? statusColor;
-
+class ExpertCallHistoryWidget extends ConsumerStatefulWidget {
   const ExpertCallHistoryWidget({
     super.key,
-    required this.userTitle,
-    this.minutes,
-    this.callTime,
-    this.durationTime,
-    this.status,
-    this.statusColor,
-    required this.callTitle,
-    required this.number,
   });
 
+  @override
+  ConsumerState<ExpertCallHistoryWidget> createState() => _ExpertCallHistoryWidgetState();
+}
+
+class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,7 +61,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: BodySmallText(
-                                    title: number,
+                                    title: '0',
                                     titleColor: ColorConstants.buttonTextColor,
                                     titleTextAlign: TextAlign.center,
                                     fontFamily: FontWeightEnum.w400.toInter,
@@ -80,17 +70,9 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                               ),
                               14.0.spaceX,
                               Container(
-                                  // shadowColor: ColorConstants.dropDownBorderColor,
-                                  // backgroundColor: ColorConstants.greenColor,
-                                  // offset: Offset(1,2),
-                                  // blurRadius: 5,
-                                  // spreadRadius: 0,
-                                  // height: 25,
-                                  // padding: EdgeInsets.zero,
-                                  // border: 10,
                                   alignment: Alignment.center,
                                   decoration: ShapeDecoration(
-                                    //color: ColorConstants.greenColor,
+                                    color: callHistoryEnumNotifier.value.callHistoryTypeNameColor,
                                     shadows: [
                                       BoxShadow(color: Colors.black, blurRadius: 1, spreadRadius: 0),
                                       BoxShadow(
@@ -109,30 +91,11 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  // decoration: ShapeDecoration(
-                                  //     shadows: [
-                                  //       BoxShadow(
-                                  //         color: ColorConstants.dropDownBorderColor,
-                                  //         blurRadius: 5,
-                                  //         offset: Offset(-1, -2),
-                                  //         spreadRadius: 0,
-                                  //       )
-                                  //     ],
-                                  //   color: Color(0xFFABDF75),
-                                  //   shape: RoundedRectangleBorder(
-                                  //     side: BorderSide(
-                                  //       width: 1,
-                                  //       strokeAlign: BorderSide.strokeAlignCenter,
-                                  //       color: Color(0xFFCAC9C9),
-                                  //     ),
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //   ),
-                                  // ),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(right: 30, left: 30, top:  5, bottom: 5),
+                                    padding: const EdgeInsets.only(right: 30, left: 30, top: 5, bottom: 5),
                                     child: Center(
                                       child: BodySmallText(
-                                        title: callTitle,
+                                        title: callHistoryEnumNotifier.value.callHistoryTypeName,
                                         titleColor: ColorConstants.buttonTextColor,
                                         titleTextAlign: TextAlign.center,
                                         fontFamily: FontWeightEnum.w600.toInter,
@@ -151,7 +114,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                               children: [
                                 WidgetSpan(child: 2.0.spaceX),
                                 TextSpan(
-                                    text: userTitle,
+                                    text: 'vaidehi',
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: ColorConstants.buttonTextColor,
                                         fontFamily: FontWeightEnum.w700.toInter,
@@ -187,7 +150,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                               children: [
                                 WidgetSpan(child: 2.0.spaceX),
                                 TextSpan(
-                                    text: durationTime,
+                                    text: '20 mins',
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: ColorConstants.buttonTextColor,
                                         fontFamily: FontWeightEnum.w700.toInter,
@@ -221,7 +184,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                 children: [
                                   RichText(
                                     text: TextSpan(
-                                      text: minutes,
+                                      text: '04:05PM',
                                       style: TextStyle(
                                           fontFamily: FontWeightEnum.w400.toInter,
                                           color: ColorConstants.buttonTextColor,
@@ -232,7 +195,7 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                           width: 14,
                                         )),
                                         TextSpan(
-                                          text: callTime,
+                                          text: "callTime",
                                           style: TextStyle(
                                               fontFamily: FontWeightEnum.w400.toInter,
                                               color: ColorConstants.buttonTextColor,
@@ -258,9 +221,9 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                                   children: [
                                     WidgetSpan(child: 6.0.spaceX),
                                     TextSpan(
-                                        text: status,
+                                        text: "call completed".toUpperCase(),
                                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                            color: statusColor ?? ColorConstants.textGreenColor,
+                                            color: ColorConstants.textGreenColor,
                                             fontFamily: FontWeightEnum.w700.toInter,
                                             fontSize: 12))
                                   ],
@@ -291,7 +254,6 @@ class ExpertCallHistoryWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    //Image.asset(ImageConstants.expert,height: 70,width: 70,)
                   ],
                 ),
                 18.0.spaceY,

@@ -12,6 +12,7 @@ class ReportReviewProvider extends ChangeNotifier {
 
   TextEditingController reviewController = TextEditingController();
   TextEditingController appropriateIssueController = TextEditingController();
+  TextEditingController callIssueController = TextEditingController();
 
   String sortByReview = 'HIGHEST REVIEW SCORE';
   String sortByReport = 'WEEKLY';
@@ -59,8 +60,17 @@ class ReportReviewProvider extends ChangeNotifier {
 
   int? selectedIndex = 0;
 
+  String _enteredText = '0';
+
+  String get enteredText => _enteredText;
+
   void changeRatingColor({required int index, required int selectedValue}) {
     _criteriaList[index].rating = selectedValue;
+    notifyListeners();
+  }
+
+  void newTopicCounterValue(String value) {
+    _enteredText = value.length.toString();
     notifyListeners();
   }
 

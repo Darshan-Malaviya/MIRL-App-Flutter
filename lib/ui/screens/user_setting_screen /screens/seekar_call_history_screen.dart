@@ -16,17 +16,11 @@ class _SeekerCallHistoryScreenState extends ConsumerState<SeekerCallHistoryScree
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-          leading: InkWell(
-            child: Image.asset(ImageConstants.backIcon),
-            onTap: () => context.toPop(),
-          ),
-          trailingIcon: InkWell(
-            onTap: () {},
-            child: TitleMediumText(
-              title: StringConstants.done,
-              fontFamily: FontWeightEnum.w700.toInter,
-            ).addPaddingRight(14),
-          )),
+        leading: InkWell(
+          child: Image.asset(ImageConstants.backIcon),
+          onTap: () => context.toPop(),
+        ),
+      ),
       body: Column(
         children: [
           TitleLargeText(
@@ -43,15 +37,7 @@ class _SeekerCallHistoryScreenState extends ConsumerState<SeekerCallHistoryScree
           10.0.spaceY,
           Image.asset(ImageConstants.purpleLine),
           40.0.spaceY,
-          ExpertCallHistoryWidget(
-            number: '1',
-            callTitle: 'INSTANT CALL',
-            userTitle: 'PREETI TEWARI SERAI',
-            status: 'CALL COMPLETED',
-            minutes: '03:30PM',
-            callTime: 'PAYMENT COMPLETE',
-            durationTime: '20 min',
-          )
+          ExpertCallHistoryWidget()
         ],
       ).addAllPadding(20),
     );

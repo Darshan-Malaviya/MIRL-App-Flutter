@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 /// convert date and time form timestamp
@@ -141,7 +140,8 @@ extension DateTimeFormatter on String {
     try {
       DateTime localTime = DateTime.parse(this).toLocal();
       String formattedDate = DateFormat('d MMMM yyyy').format(localTime);
-      formattedDate = formattedDate.replaceFirstMapped(RegExp(r'\b(\d{1,2})\b'), (match) => '${match.group(1)}${getDaySuffix(int.parse(match.group(1)!))}');
+      formattedDate = formattedDate.replaceFirstMapped(
+          RegExp(r'\b(\d{1,2})\b'), (match) => '${match.group(1)}${getDaySuffix(int.parse(match.group(1)!))}');
 
       String finalDate = '$formattedDate';
       return finalDate.toUpperCase();
@@ -171,6 +171,18 @@ extension DateTimeFormatter on String {
       return formattedDate;
     } catch (e) {
       Logger().d("Exception on toLocalEarningDate : $e");
+    }
+    return null;
+  }
+
+  /// NOVEMBER 2023
+  String? toDisplayMonthWithYear() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat('MMMM yyyy').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");
     }
     return null;
   }
