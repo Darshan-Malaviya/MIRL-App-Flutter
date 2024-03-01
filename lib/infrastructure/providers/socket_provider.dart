@@ -352,7 +352,9 @@ class SocketProvider extends ChangeNotifier {
     }
   }
 
-  void connectCallEmit({required String expertId}) {
+
+  /// For schedule call pass call-history id from upcoming appointment list
+  void connectCallEmit({required String expertId, String? callRequestId}) {
     try {
       Logger().d('connectCallEmit ==== Success');
       String userId = SharedPrefHelper.getUserId.toString();
@@ -361,7 +363,7 @@ class SocketProvider extends ChangeNotifier {
         AppConstants.userId: userId,
         AppConstants.uuid : const Uuid().v4().toString(),
         AppConstants.isVideo: "true",
-        AppConstants.callRequestId: SharedPrefHelper.getCallRequestId.toString(),
+        AppConstants.callRequestId: callRequestId ?? SharedPrefHelper.getCallRequestId.toString(),
 
       });
     } catch (e) {
@@ -564,7 +566,7 @@ class SocketProvider extends ChangeNotifier {
   void timerResponse() {
     try {
       socket?.on(AppConstants.timeSend, (data) {
-        Logger().d('timerResponse=====${data.toString()}');
+       // Logger().d('timerResponse=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
 
@@ -579,7 +581,7 @@ class SocketProvider extends ChangeNotifier {
   void timerListener() {
     try {
       socket?.on(AppConstants.timeReceived, (data)  async {
-        Logger().d('timerListener=====${data.toString()}');
+       // Logger().d('timerListener=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
@@ -629,6 +631,7 @@ class SocketProvider extends ChangeNotifier {
             SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
             allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
             multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestWaiting;
+            ref.read(multiConnectProvider).setAllExpertStatusAsWaitingOnRequestCall();
             /// TODO change it will 120;
             multiRequestTimerNotifier.value = 60;
           } else {
@@ -711,12 +714,12 @@ class SocketProvider extends ChangeNotifier {
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
-            /// change the expert list after time out
+
             if(model.data?.expertList?.isNotEmpty ?? false) {
               ref.read(multiConnectProvider).changeExpertListAfterEmit(expertsList: model.data?.expertList ?? []);
-              bool isAnyApprove =  model.data?.expertList?.every((element) => element.status.toString() == '2')  ?? false;
-              bool isAnyChoose=  model.data?.expertList?.any((element) => element.status.toString() == '6')  ?? false;
-              if(isAnyApprove || isAnyChoose){
+              bool isAnyApproveOrChoose =  model.data?.expertList?.any((element) => (element.status.toString() == '2') || (element.status.toString() == '6'))  ?? false;
+             // bool isAnyChoose=  model.data?.expertList?.any((element) => element.status.toString() == '6')  ?? false;
+              if(isAnyApproveOrChoose){
                 multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestApproved;
               } else {
                 multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestTimeout;
@@ -742,6 +745,11 @@ class SocketProvider extends ChangeNotifier {
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
+            if(model.data?.status.toString() == '5'){
+              if(activeRoute.value == RoutesConstants.multiConnectCallDialogScreen){
+                NavigationService.context.toPop();
+              }
+            }
 
           } else {
             InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);

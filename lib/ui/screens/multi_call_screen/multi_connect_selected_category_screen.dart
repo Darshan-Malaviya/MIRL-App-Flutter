@@ -106,7 +106,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                         if (multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                           context.toPop();
                         } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
-                          if (multiProviderWatch.selectedExpertForCall != null && multiProviderWatch.selectedExpertForCall?.status == '6') {
+                          if (multiProviderWatch.selectedExpertForCall != null && multiConnectCallEnumNotifier.value  == CallRequestTypeEnum.multiRequestApproved) {
                             ref.read(socketProvider).connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
                           } else {
                             /// Choose any expert for call
