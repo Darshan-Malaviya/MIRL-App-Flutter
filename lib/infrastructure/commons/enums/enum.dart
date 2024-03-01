@@ -24,8 +24,6 @@ abstract class OverAllRatingType {
   static const PROFESSIONALISM = 5;
 }
 
-enum CallHistoryEnum { InstantCall, MultipleConnect, Appointment }
-
 enum RatingEnum { EXPERTISE, COMMUNICATION, HELPFULNESS, EMPATHY, PROFESSIONALISM }
 
 enum NotificationTypeEnum {
