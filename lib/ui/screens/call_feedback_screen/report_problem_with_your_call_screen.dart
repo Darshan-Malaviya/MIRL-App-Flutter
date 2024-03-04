@@ -41,14 +41,14 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
               titleColor: ColorConstants.buttonTextColor,
               maxLine: 5,
             ),
-            10.0.spaceY,
+            20.0.spaceY,
             TitleSmallText(
               title: LocaleKeys.selectTheIssue.tr(),
               titleTextAlign: TextAlign.center,
               titleColor: ColorConstants.bottomTextColor,
               maxLine: 4,
             ),
-            10.0.spaceY,
+            20.0.spaceY,
             DropdownMenuWidget(
               hintText: LocaleKeys.appropriateIssue.tr(),
               controller: feedBackWatch.appropriateIssueController,
@@ -65,16 +65,16 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
               titleColor: ColorConstants.buttonTextColor,
               maxLine: 2,
             ),
-            20.0.spaceY,
+            10.0.spaceY,
             Stack(
               alignment: Alignment.bottomRight,
               children: [
                 TextFormFieldWidget(
-                  // onChanged: suggestNewExpertiseRead.newTopicCounterValue,
+                  onChanged: feedBackRead.newTopicCounterValue,
                   maxLines: 10,
                   maxLength: 500,
                   minLines: 8,
-                  // controller: suggestNewExpertiseRead.newTopicController,
+                  controller: feedBackWatch.callIssueController,
                   textInputType: TextInputType.multiline,
                   textInputAction: TextInputAction.newline,
                   contentPadding: EdgeInsets.only(left: 16, right: 16, top: 14, bottom: 30),
@@ -88,11 +88,39 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                     context.unFocusKeyboard();
                   },
                 ),
+                Align(
+                  alignment: AlignmentDirectional.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BodySmallText(
+                        title: 'CALL DROPPED',
+                        titleColor: ColorConstants.buttonTextColor,
+                      ),
+                      BodySmallText(
+                        title: 'An unexpected end of the call due to technical issues like network problems or app errors.',
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        titleColor: ColorConstants.buttonTextColor,
+                        maxLine: 4,
+                      ),
+                      20.0.spaceY,
+                      BodySmallText(
+                        title: 'CALL DISCONNECTED ',
+                        titleColor: ColorConstants.buttonTextColor,
+                      ),
+                      BodySmallText(
+                        title: 'The call was ended intentionally or due to issues like battery drainage or time limits.',
+                        fontFamily: FontWeightEnum.w400.toInter,
+                        titleColor: ColorConstants.buttonTextColor,
+                        maxLine: 4,
+                      ),
+                    ],
+                  ),
+                ).addMarginXY(marginX: 20, marginY: 50),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8, right: 12),
                   child: BodySmallText(
-                    title: '',
-                    // title: '${suggestNewExpertiseRead.enteredText}/500 ${LocaleKeys.characters.tr()}',
+                    title: '${feedBackWatch.enteredText}/500 ${LocaleKeys.characters.tr()}',
                     fontFamily: FontWeightEnum.w400.toInter,
                     titleColor: ColorConstants.buttonTextColor,
                   ),
