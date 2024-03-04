@@ -20,27 +20,15 @@ class _SeekerCallHistoryScreenState extends ConsumerState<SeekerCallHistoryScree
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
         ),
+        centerTitle: true,
+        appTitle: TitleLargeText(
+          title: LocaleKeys.seekerCallHistory.tr(),
+          titleColor: ColorConstants.bottomTextColor,
+          titleTextAlign: TextAlign.center,
+        ),
       ),
-      body: Column(
-        children: [
-          TitleLargeText(
-            title: LocaleKeys.seekerCallHistory.tr(),
-            titleColor: ColorConstants.bottomTextColor,
-            titleTextAlign: TextAlign.center,
-          ),
-          20.0.spaceY,
-          TitleSmallText(
-            title: "NOVEMBER 2023",
-            titleColor: ColorConstants.buttonTextColor,
-            titleTextAlign: TextAlign.center,
-          ),
-          10.0.spaceY,
-          Image.asset(ImageConstants.purpleLine),
-          40.0.spaceY,
-          ExpertCallHistoryWidget(
-            role: 2,
-          )
-        ],
+      body: SingleChildScrollView(
+        child: ExpertCallHistoryWidget(role: 1),
       ).addAllPadding(20),
     );
   }

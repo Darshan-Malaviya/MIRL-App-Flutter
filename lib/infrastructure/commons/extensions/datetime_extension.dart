@@ -187,6 +187,29 @@ extension DateTimeFormatter on String {
     }
     return null;
   }
+  ///14:00AM/PM
+  String to24HourAmTimeFormat() {
+    try {
+      DateTime timeStamp = DateTime.parse(this);
+      var output = DateFormat('HH:mma').format(timeStamp);
+      return output;
+    } catch (e) {
+      Logger().d("Exception occurred on to24HourTimeFormat : $e");
+    }
+    return '';
+  }
+  /// only day
+  String? toDisplayDay() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat('d').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");
+    }
+    return null;
+  }
+
 
 /* String timeAgo({bool numericDates = true}) {
     final date2 = DateTime.now();

@@ -28,22 +28,8 @@ class _ExpertCallHistoryScreenState extends ConsumerState<ExpertCallHistoryScree
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TitleSmallText(
-              title: "NOVEMBER 2023",
-              //toDisplayMonthWithYear()
-              titleColor: ColorConstants.buttonTextColor,
-              titleTextAlign: TextAlign.center,
-            ),
-            20.0.spaceY,
-            Image.asset(ImageConstants.purpleLine),
-            40.0.spaceY,
-            ExpertCallHistoryWidget(role: 1),
-          ],
-        ).addAllPadding(20),
-      ),
+        child: ExpertCallHistoryWidget(role: 2),
+      ).addAllPadding(20),
     );
   }
 }

@@ -15,16 +15,32 @@ class CallHistoryProvider extends ChangeNotifier {
   List<CallHistoryData> get callHistoryData => _callHistoryData;
   List<CallHistoryData> _callHistoryData = [];
 
-  Future<void> callHistoryApiCall({required int role}) async {
+  List<CallStatusHistory> get callStatusHistory => _callStatusHistory;
+  List<CallStatusHistory> _callStatusHistory = [];
+
+  bool? get isLoading => _isLoading;
+  bool? _isLoading = false;
+
+  Future<void> callHistoryApiCall({required int role, required bool showLoader}) async {
+    if (showLoader) {
+      _isLoading = true;
+      notifyListeners();
+    }
+
     ApiHttpResult response = await _scheduleCallRepository.callHistory(role: role, page: _pageNo, limit: 10);
+    if (showLoader) {
+      _isLoading = false;
+      notifyListeners();
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is CallHistoryResponseModel) {
           CallHistoryResponseModel responseModel = response.data;
 
           _callHistoryData.addAll(responseModel.data ?? []);
+        //  _callStatusHistory.addAll(responseModel.data?.callStatusHistory ?? []);
 
-          if (_pageNo == responseModel.pagination?.itemCount) {
+          if (_pageNo == responseModel.pagination?.pageCount) {
             _reachedLastPage = true;
           } else {
             _pageNo = _pageNo + 1;
