@@ -1,86 +1,28 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/componnet/call_feedback_model.dart';
 
 class ReviewRatingWidget extends ConsumerStatefulWidget {
-  const ReviewRatingWidget({super.key});
+  const ReviewRatingWidget({super.key, this.index});
+
+  final index;
 
   @override
   ConsumerState<ReviewRatingWidget> createState() => _ReviewRatingWidgetState();
 }
 
 class _ReviewRatingWidgetState extends ConsumerState<ReviewRatingWidget> {
+  ValueNotifier<int> selectedIndex = ValueNotifier(0);
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(ref.read(reportReviewProvider).afterLayout);
-  }
-
-/*  Widget buildStar(BuildContext context, int index) {
-    Row icon;
-    if (index >= widget.rating) {
-      icon = Row(
-        children: [
-          Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-              color: ColorConstants.yellowButtonColor,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstants.dropDownBorderColor,
-                  blurRadius: 3,
-                  offset: Offset(0, 1),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: Center(
-              child: BodySmallText(
-                title: '${index + 1}',
-                titleColor: ColorConstants.buttonTextColor,
-                titleTextAlign: TextAlign.center,
-                fontFamily: FontWeightEnum.w400.toInter,
-              ),
-            ),
-          ).addMarginX(4),
-        ],
-      );
-    } else {
-      icon = Row(
-        children: [
-          Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-              color: ColorConstants.primaryColor,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstants.dropDownBorderColor,
-                  blurRadius: 3,
-                  offset: Offset(0, 1),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: Center(
-              child: BodySmallText(
-                title: '${index + 1}',
-                titleColor: ColorConstants.buttonTextColor,
-                titleTextAlign: TextAlign.center,
-                fontFamily: FontWeightEnum.w400.toInter,
-              ),
-            ),
-          ).addMarginX(4),
-        ],
-      );
-    }
-    return InkResponse(
-      onTap: () => widget.onRatingChanged(index + 1),
-      child: icon,
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        ref.read(reportReviewProvider).afterLayout(widget.index);
+      },
     );
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,28 +38,38 @@ class _ReviewRatingWidgetState extends ConsumerState<ReviewRatingWidget> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: List.generate(
-                feedBackWatch.formKeyList.length,
-                (index) {
+                feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList.length,
+                (position) {
+                  CallFeedbackData element =
+                      feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList[position];
                   if (feedBackWatch.isLoaded) {
-                    if (feedBackWatch.currentPosition[index].dx <= feedBackWatch.localPosition) {
-                      feedBackWatch.criteriaSelectedIndex = index;
+                    if (feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList[position].currentDxPosition <=
+                        feedBackWatch.callFeedbackList[widget.index].localPosition) {
+                      element.criteriaSelectedIndex = position;
+                      print(element.criteriaSelectedIndex);
+                      selectedIndex.value = position;
                     }
                   }
-                  if (index == 0) {
-                    return SizedBox(key: feedBackWatch.formKeyList[index], height: 50, width: 24);
+                  if (position == 0) {
+                    return SizedBox(
+                        key: feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList[position].formKey,
+                        height: 50,
+                        width: 24);
                   }
                   return Flexible(
                     child: GestureDetector(
                       onTap: () {
-                        feedBackRead.changeCriteriaSelectedIndex(index);
+                        feedBackRead.changeCriteriaSelectedIndex(index: widget.index, position: position);
                       },
                       child: Container(
-                        key: feedBackWatch.formKeyList[index],
+                        key: feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList[position].formKey,
                         margin: EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: feedBackWatch.isLoaded
-                                ? feedBackWatch.currentPosition[index].dx <= feedBackWatch.localPosition
+                                ? feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList[position]
+                                            .currentDxPosition <=
+                                        feedBackWatch.callFeedbackList[widget.index].localPosition
                                     ? ColorConstants.primaryColor
                                     : ColorConstants.yellowButtonColor
                                 : ColorConstants.yellowButtonColor),
@@ -125,7 +77,7 @@ class _ReviewRatingWidgetState extends ConsumerState<ReviewRatingWidget> {
                         width: 30,
                         child: Center(
                           child: BodySmallText(
-                            title: index.toString(),
+                            title: position.toString(),
                             titleColor: ColorConstants.buttonTextColor,
                             fontFamily: FontWeightEnum.w400.toInter,
                           ),
@@ -137,17 +89,26 @@ class _ReviewRatingWidgetState extends ConsumerState<ReviewRatingWidget> {
               ),
             ),
           ),
-          Positioned(
-            left: feedBackWatch.localPosition,
-            child: GestureDetector(
-              onHorizontalDragStart: feedBackRead.onHorizontalDragUpdate,
-              onHorizontalDragUpdate: feedBackRead.onHorizontalDragUpdate,
-              child: const Image(image: AssetImage(ImageConstants.rating)),
-            ),
-          )
+          ValueListenableBuilder(
+            valueListenable: selectedIndex,
+            builder: (context, value, child) {
+              if (!feedBackWatch.isLoaded) SizedBox.shrink();
+              return Positioned(
+                left: feedBackWatch.callFeedbackList[widget.index].localPosition,
+                child: GestureDetector(
+                  onHorizontalDragStart: (detail) {
+                    feedBackRead.onHorizontalDragUpdate(detail, index: widget.index);
+                  },
+                  onHorizontalDragUpdate: (detail) {
+                    feedBackRead.onHorizontalDragUpdate(detail, index: widget.index);
+                  },
+                  child: const Image(image: AssetImage(ImageConstants.rating)),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
-    // return Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(widget.ratingCount, (index) => InkResponse(child: buildStar(context, index))));
   }
 }

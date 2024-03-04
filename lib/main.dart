@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/mirl_app.dart';
 
+import 'ui/screens/call_feedback_screen/call_feedback_screen.dart';
+
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);
@@ -44,10 +46,10 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            initialRoute: '/',
-            onGenerateRoute: RouterConstant.generateRoute,
+            // initialRoute: '/',
+            // onGenerateRoute: RouterConstant.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
-            // home: ReviewSlider(onChange: (int index) {  },),
+            home: CallFeedbackScreen(callHistoryId: 5, ),
           );
         },
       ),
