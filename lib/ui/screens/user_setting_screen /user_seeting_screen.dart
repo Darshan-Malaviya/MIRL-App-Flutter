@@ -13,12 +13,27 @@ class UserSettingScreen extends ConsumerStatefulWidget {
 
 class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(userSettingProvider).getUserSettingData();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final userSettingWatch = ref.watch(userSettingProvider);
     final userSettingRead = ref.read(userSettingProvider);
 
     return Scaffold(
-        appBar: AppBarWidget(),
+        appBar: AppBarWidget(
+          trailingIcon: InkWell(
+            onTap: () => userSettingWatch.pickedImage.isNotEmpty ? userSettingRead.updateProfileApi() : null,
+            child: TitleMediumText(
+              title: StringConstants.done,
+            ).addPaddingRight(14),
+          ),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -131,7 +146,9 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                           title: LocaleKeys.paymentDetail.tr(),
                           titleColor: ColorConstants.textColor,
                           titleTextAlign: TextAlign.center,
-                          shadow: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                          shadow: [
+                            Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                          ],
                         ).addAllPadding(20),
                       ),
                     ),
@@ -149,7 +166,9 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                           title: LocaleKeys.mirlConnect.tr(),
                           titleColor: ColorConstants.textColor,
                           titleTextAlign: TextAlign.center,
-                          shadow: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                          shadow: [
+                            Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                          ],
                         ).addAllPadding(20),
                       ),
                     ),
@@ -167,7 +186,9 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                           title: LocaleKeys.helpTerm.tr(),
                           titleColor: ColorConstants.textColor,
                           titleTextAlign: TextAlign.center,
-                          shadow: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                          shadow: [
+                            Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                          ],
                         ).addAllPadding(20),
                       ),
                     ),
@@ -188,12 +209,15 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                     enabledBorderColor: ColorConstants.borderLightColor,
                     isReadOnly: true,
                     onTap: () {
+                      userSettingRead.getUserSettingData();
                       context.toPushNamed(RoutesConstants.editYourNameScreen);
                     },
                     height: 30,
                     labelText: LocaleKeys.yourName.tr(),
                     alignment: Alignment.centerLeft,
                     labelTextSpace: 0.0,
+                    controller: userSettingWatch.userNameController,
+                    //  controller: TextEditingController(text: userSettingWatch.userName),
                   ),
                   20.0.spaceY,
                   TextFormFieldWidget(
@@ -201,12 +225,14 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                     labelTextSpace: 0.0,
                     enabledBorderColor: ColorConstants.borderLightColor,
                     isReadOnly: true,
-                    onTap: () {
-                      context.toPushNamed(RoutesConstants.editYourEmailIdScreen);
-                    },
+                    // onTap: () {
+                    //   context.toPushNamed(RoutesConstants.editYourEmailIdScreen);
+                    // },
                     height: 30,
                     labelText: LocaleKeys.emailId.tr(),
                     alignment: Alignment.centerLeft,
+                    controller: userSettingWatch.emailIdController,
+                    //controller: TextEditingController(text: userSettingWatch.emailId),
                   ),
                   20.0.spaceY,
                   TextFormFieldWidget(
@@ -215,11 +241,15 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                     enabledBorderColor: ColorConstants.borderLightColor,
                     isReadOnly: true,
                     onTap: () {
+                      userSettingRead.getUserSettingData();
                       context.toPushNamed(RoutesConstants.editYourPhoneNumberScreen);
                     },
                     height: 30,
                     labelText: LocaleKeys.phoneNumber.tr(),
                     alignment: Alignment.centerLeft,
+                    controller: userSettingWatch.phoneNumberController,
+
+                    //controller: TextEditingController(text: userSettingWatch.phoneNumber),
                   ),
                   50.0.spaceY,
                   PrimaryButton(
@@ -264,7 +294,6 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
               ).addMarginX(20),
             ],
           ).addAllPadding(20),
-        )
-        );
+        ));
   }
 }

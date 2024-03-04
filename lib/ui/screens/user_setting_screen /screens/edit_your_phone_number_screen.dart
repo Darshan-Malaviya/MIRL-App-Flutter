@@ -13,6 +13,8 @@ class EditYourPhoneNumberScreen extends ConsumerStatefulWidget {
 class _EditYourPhoneNumberScreenState extends ConsumerState<EditYourPhoneNumberScreen> {
   @override
   Widget build(BuildContext context) {
+    final userSettingWatch = ref.watch(userSettingProvider);
+    final userSettingRead = ref.read(userSettingProvider);
     return Scaffold(
         appBar: AppBarWidget(
             leading: InkWell(
@@ -20,7 +22,10 @@ class _EditYourPhoneNumberScreenState extends ConsumerState<EditYourPhoneNumberS
               onTap: () => context.toPop(),
             ),
             trailingIcon: InkWell(
-              // onTap: () => expertRead.updateExpertNameApi(),
+              onTap: () {
+                context.unFocusKeyboard();
+                userSettingRead.updatePhoneNumberApi();
+              },
               child: TitleMediumText(
                 title: StringConstants.done,
               ).addPaddingRight(14),
@@ -36,7 +41,7 @@ class _EditYourPhoneNumberScreenState extends ConsumerState<EditYourPhoneNumberS
               TextFormFieldWidget(
                 height: 36,
                 //  hintText: StringConstants.officialNameHere,
-                // controller: expertWatch.expertNameController,
+                controller: userSettingWatch.phoneNumberController,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(50),
                 ],
