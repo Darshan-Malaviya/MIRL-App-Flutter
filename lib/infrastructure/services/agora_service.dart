@@ -3,7 +3,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:mirl/infrastructure/commons/constants/agora_constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 
- late RtcEngine engine;
+late RtcEngine engine;
 
 class AgoraService {
   // A static private instance to access _socketApi from inside class only

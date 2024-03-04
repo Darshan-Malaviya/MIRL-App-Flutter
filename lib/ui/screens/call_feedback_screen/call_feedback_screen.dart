@@ -154,7 +154,7 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                       fontFamily: FontWeightEnum.w400.toInter,
                     ),
                     4.0.spaceY,
-                    ReviewRatingWidget(selectedIndex: index),
+                    ReviewRatingWidget(index: index),
                   ],
                 ).addMarginY(10);
               })),
