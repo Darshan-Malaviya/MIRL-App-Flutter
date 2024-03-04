@@ -79,18 +79,7 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
               width: 95,
               isShadow: true,
             ),
-            // 20.0.spaceY,
-            // CategoryCommonView(
-            //   onTap: () {},
-            //   categoryName: 'UNLOCK!',
-            //   imageUrl: ImageConstants.suggestNewExpertise,
-            //   isSelectedShadow: true,
-            //   blurRadius: 8,
-            //   spreadRadius: 1,
-            //   offset: Offset(0, 0),
-            // ),
             20.0.spaceY,
-
             Visibility(
               visible: suggestNewExpertiseWatch.expertCategoryController.text.isEmpty,
               child: Column(
@@ -108,9 +97,7 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                 ],
               ),
             ),
-
             10.0.spaceY,
-            //   if (filterWatch.commonSelectionModel.isNotEmpty) ...[
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -151,9 +138,8 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                     ));
               }),
             ),
-            //  ],
-            if (filterWatch.categoryController.text.isNotEmpty &&
-                suggestNewExpertiseWatch.expertCategoryController.text.isNotEmpty) ...[
+            if (filterWatch.categoryController.text.isEmpty &&
+                suggestNewExpertiseWatch.expertCategoryController.text.isEmpty) ...[
               20.0.spaceY,
               TitleSmallText(
                 title: LocaleKeys.or.tr(),
@@ -177,7 +163,7 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                   TextFormFieldWidget(
                     suffixIcon: suggestNewExpertiseWatch.expertCategoryController.text.isNotEmpty
                         ? IconButton(
-                            icon: const Icon(Icons.clear,color: ColorConstants.blackColor),
+                            icon: const Icon(Icons.clear, color: ColorConstants.blackColor),
                             onPressed: () {
                               filterRead.clearCategoryController();
                               topic.unfocus();

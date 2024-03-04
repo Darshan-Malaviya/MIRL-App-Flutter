@@ -12,6 +12,7 @@ class ReportReviewProvider extends ChangeNotifier {
 
   TextEditingController reviewController = TextEditingController();
   TextEditingController appropriateIssueController = TextEditingController();
+  TextEditingController callIssueController = TextEditingController();
 
   String sortByReview = 'HIGHEST REVIEW SCORE';
   String sortByReport = 'WEEKLY';
@@ -59,6 +60,10 @@ class ReportReviewProvider extends ChangeNotifier {
 
   int? selectedIndex = 0;
 
+  String _enteredText = '0';
+
+  String get enteredText => _enteredText;
+
   List formKeyList = List.generate(11, (index) => GlobalKey<FormState>());
 
   List<Offset> currentPosition = [];
@@ -75,10 +80,10 @@ class ReportReviewProvider extends ChangeNotifier {
   }
 
   void onHorizontalDragUpdate(details) {
-    if (details.globalPosition.dx - 30 <= currentPosition.first.dx) {
+    if (details.globalPosition.dx <= currentPosition.first.dx) {
       return;
     }
-    if (currentPosition.last.dx + 50 >= details.globalPosition.dx) {
+    if (currentPosition.last.dx >= details.globalPosition.dx) {
       localPosition = details.globalPosition.dx;
       notifyListeners();
     }
@@ -96,6 +101,11 @@ class ReportReviewProvider extends ChangeNotifier {
 
   void changeRatingColor({required int index, required int selectedValue}) {
     _criteriaList[index].rating = selectedValue;
+    notifyListeners();
+  }
+
+  void newTopicCounterValue(String value) {
+    _enteredText = value.length.toString();
     notifyListeners();
   }
 
