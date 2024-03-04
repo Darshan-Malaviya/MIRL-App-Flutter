@@ -37,7 +37,9 @@ class _SeekerCallHistoryScreenState extends ConsumerState<SeekerCallHistoryScree
           10.0.spaceY,
           Image.asset(ImageConstants.purpleLine),
           40.0.spaceY,
-          ExpertCallHistoryWidget()
+          ExpertCallHistoryWidget(
+            role: 2,
+          )
         ],
       ).addAllPadding(20),
     );

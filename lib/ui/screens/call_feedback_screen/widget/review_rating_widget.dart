@@ -2,7 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class ReviewRatingWidget extends ConsumerStatefulWidget {
-  const ReviewRatingWidget({super.key});
+  const ReviewRatingWidget({super.key, required this.selectedIndex});
+
+  final int selectedIndex;
 
   @override
   ConsumerState<ReviewRatingWidget> createState() => _ReviewRatingWidgetState();
@@ -14,73 +16,6 @@ class _ReviewRatingWidgetState extends ConsumerState<ReviewRatingWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(ref.read(reportReviewProvider).afterLayout);
   }
-
-/*  Widget buildStar(BuildContext context, int index) {
-    Row icon;
-    if (index >= widget.rating) {
-      icon = Row(
-        children: [
-          Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-              color: ColorConstants.yellowButtonColor,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstants.dropDownBorderColor,
-                  blurRadius: 3,
-                  offset: Offset(0, 1),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: Center(
-              child: BodySmallText(
-                title: '${index + 1}',
-                titleColor: ColorConstants.buttonTextColor,
-                titleTextAlign: TextAlign.center,
-                fontFamily: FontWeightEnum.w400.toInter,
-              ),
-            ),
-          ).addMarginX(4),
-        ],
-      );
-    } else {
-      icon = Row(
-        children: [
-          Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-              color: ColorConstants.primaryColor,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: ColorConstants.dropDownBorderColor,
-                  blurRadius: 3,
-                  offset: Offset(0, 1),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: Center(
-              child: BodySmallText(
-                title: '${index + 1}',
-                titleColor: ColorConstants.buttonTextColor,
-                titleTextAlign: TextAlign.center,
-                fontFamily: FontWeightEnum.w400.toInter,
-              ),
-            ),
-          ).addMarginX(4),
-        ],
-      );
-    }
-    return InkResponse(
-      onTap: () => widget.onRatingChanged(index + 1),
-      child: icon,
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {

@@ -40,9 +40,7 @@ class _ExpertCallHistoryScreenState extends ConsumerState<ExpertCallHistoryScree
             20.0.spaceY,
             Image.asset(ImageConstants.purpleLine),
             40.0.spaceY,
-            ExpertCallHistoryWidget(),
-            20.0.spaceY,
-            ExpertCallHistoryWidget()
+            ExpertCallHistoryWidget(role: 1),
           ],
         ).addAllPadding(20),
       ),
