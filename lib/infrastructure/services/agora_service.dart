@@ -3,7 +3,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:mirl/infrastructure/commons/constants/agora_constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 
- late RtcEngine engine;
+late RtcEngine engine;
 
 class AgoraService {
   // A static private instance to access _socketApi from inside class only
@@ -27,11 +27,11 @@ class AgoraService {
     required Function(RtcConnection connection, int rUid, UserOfflineReasonType reason) onUserOffline,
     required Function(ErrorCodeType err, String msg)? onError,
     required Function() audioVideoCallFunction,
-    Function(RtcConnection connection, LocalAudioStreamState state, ())? onLocalAudioStateChanged,
+    Function(RtcConnection connection, LocalAudioStreamState state, LocalAudioStreamError error)? onLocalAudioStateChanged,
     Function(RtcConnection connection, int remoteUid, RemoteVideoState state, RemoteVideoStateReason reason, int elapsed)? onRemoteVideoStateChanged,
     Function(RtcConnection connection, String token)? onTokenPrivilegeWillExpire,
     Function(RtcConnection, int, RemoteAudioState, RemoteAudioStateReason, int)? onRemoteAudioStateChanged,
-    Function(VideoSourceType, LocalVideoStreamState, ())? onLocalVideoStateChanged
+    Function(VideoSourceType, LocalVideoStreamState, LocalVideoStreamError)? onLocalVideoStateChanged
   }) async {
     if (isFromAudio) {
       await [Permission.microphone].request();
@@ -52,10 +52,10 @@ class AgoraService {
         onUserJoined: onUserJoined,
         onUserOffline: onUserOffline,
         onTokenPrivilegeWillExpire: onTokenPrivilegeWillExpire,
-        onLocalAudioStateChanged: null,
+        onLocalAudioStateChanged: onLocalAudioStateChanged,
         onRemoteVideoStateChanged:onRemoteVideoStateChanged,
         onRemoteAudioStateChanged:onRemoteAudioStateChanged ,
-        onLocalVideoStateChanged: null
+        onLocalVideoStateChanged: onLocalVideoStateChanged
 
     ));
 
