@@ -13,6 +13,7 @@ class ReportReviewProvider extends ChangeNotifier {
 
   TextEditingController reviewController = TextEditingController();
   TextEditingController appropriateIssueController = TextEditingController();
+  TextEditingController callIssueController = TextEditingController();
 
   String sortByReview = 'HIGHEST REVIEW SCORE';
   String sortByReport = 'WEEKLY';
@@ -63,6 +64,15 @@ class ReportReviewProvider extends ChangeNotifier {
   bool _reachedLastPage = false;
 
   int? selectedIndex = 0;
+
+  String _enteredText = '0';
+
+  String get enteredText => _enteredText;
+
+  List formKeyList = List.generate(11, (index) => GlobalKey<FormState>());
+
+  List<Offset> currentPosition = [];
+  double localPosition = 0.0;
   bool isLoaded = false;
 
   List<CallFeedBackModel> callFeedbackList = [
@@ -109,6 +119,11 @@ class ReportReviewProvider extends ChangeNotifier {
 
   void changeRatingColor({required int index, required int selectedValue}) {
     _criteriaList[index].rating = selectedValue;
+    notifyListeners();
+  }
+
+  void newTopicCounterValue(String value) {
+    _enteredText = value.length.toString();
     notifyListeners();
   }
 
