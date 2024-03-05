@@ -110,7 +110,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                           context.toPop();
                         } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
                           if (multiProviderWatch.selectedExpertForCall != null &&
-                              multiProviderWatch.selectedExpertForCall?.status == '6') {
+                              multiConnectCallEnumNotifier.value  == CallRequestTypeEnum.multiRequestApproved) {
                             ref
                                 .read(socketProvider)
                                 .connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');

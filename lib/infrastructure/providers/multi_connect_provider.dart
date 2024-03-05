@@ -186,6 +186,13 @@ class MultiConnectProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setAllExpertStatusAsWaitingOnRequestCall(){
+    _selectedExpertDetails.forEach((element) {
+      element.status = 1;
+    });
+    notifyListeners();
+  }
+
   Future<void> setExpertList() async {
     _selectedExpertDetails.clear();
     _selectedExperts.forEach((element) {

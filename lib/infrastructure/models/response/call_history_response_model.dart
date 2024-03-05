@@ -52,7 +52,7 @@ class CallHistoryData {
   int? duration;
   int? totalPayment;
   List<CallStatusHistory>? callStatusHistory;
-  String? status;
+  int? status;
 
   CallHistoryData(
       {this.id,

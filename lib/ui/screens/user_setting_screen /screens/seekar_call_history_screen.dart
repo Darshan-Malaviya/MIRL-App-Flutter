@@ -27,9 +27,7 @@ class _SeekerCallHistoryScreenState extends ConsumerState<SeekerCallHistoryScree
           titleTextAlign: TextAlign.center,
         ),
       ),
-      body: SingleChildScrollView(
-        child: ExpertCallHistoryWidget(role: 1),
-      ).addAllPadding(20),
+      body: ExpertCallHistoryWidget(role: 1),
     );
   }
 }

@@ -24,14 +24,17 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(callHistoryProvider).clearPaginationData();
       ref.read(callHistoryProvider).callHistoryApiCall(role: widget.role, showLoader: true);
     });
 
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        bool isLoading = ref.watch(upcomingAppointmentProvider).reachedLastPage;
+        bool isLoading = ref.watch(callHistoryProvider).reachedLastPage;
         if (!isLoading) {
-          ref.read(callHistoryProvider).callHistoryApiCall(role: widget.role, showLoader: false);
+          ref
+              .read(callHistoryProvider)
+              .callHistoryApiCall(role: widget.role, showLoader: false, isFromPagination: true);
         } else {
           log('reach last page on get appointment list api');
         }
@@ -43,229 +46,254 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
   Widget build(BuildContext context) {
     final callHistoryWatch = ref.watch(callHistoryProvider);
     final callHistoryRead = ref.read(callHistoryProvider);
-    print(callHistoryWatch.callHistoryData.length);
 
     return callHistoryWatch.isLoading ?? false
         ? Center(
             child: CupertinoActivityIndicator(radius: 16, color: ColorConstants.primaryColor),
           )
         : callHistoryWatch.callHistoryData.isNotEmpty
-            ? GroupedListView<CallHistoryData, dynamic>(
-                //semanticChildCount: callHistoryWatch.callHistoryData.length + (callHistoryWatch.reachedLastPage ? 0 : 1),
-                controller: scrollController,
-                padding: const EdgeInsets.all(10),
-                reverse: true,
-                elements: callHistoryWatch.callHistoryData,
-                groupBy: (element) {
-                  return DateTime(DateTime.parse(element.date ?? '').year, DateTime.parse(element.date ?? '').month,
-                          DateTime.parse(element.date ?? '').day)
-                      .toString()
-                      .toDisplayMonthWithYear();
-                },
-                groupComparator: (value1, value2) => value2.compareTo(value1),
-                shrinkWrap: true,
-                sort: false,
-                groupSeparatorBuilder: (value) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TitleSmallText(
-                        title: value,
-                        titleColor: ColorConstants.buttonTextColor,
-                        titleTextAlign: TextAlign.center,
-                      ),
-                      10.0.spaceY,
-                      Image.asset(ImageConstants.purpleLine),
-                    ],
-                  ).addMarginX(20);
-                },
-                itemBuilder: (context, element) {
-                  if (element == callHistoryWatch.callHistoryData.length && callHistoryWatch.callHistoryData.isNotEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Center(child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
-                    );
-                  }
-                  return ValueListenableBuilder(
-                      valueListenable: callHistoryEnumNotifier,
-                      builder: (BuildContext context, CallHistoryEnum value, Widget? child) {
-                        return Container(
-                                width: double.infinity,
-                                decoration: ShapeDecoration(
-                                  color: ColorConstants.categoryList,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  shadows: [
-                                    BoxShadow(
-                                      color: Color(0xffDDDDDD),
-                                      blurRadius: 6.0,
-                                      spreadRadius: 2.0,
-                                      offset: Offset(0.0, 0.0),
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
+            ? Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 40),
+                    child: GroupedListView<CallHistoryData, dynamic>(
+                      padding: const EdgeInsets.all(10),
+                      reverse: false,
+                      controller: scrollController,
+                      elements: callHistoryWatch.callHistoryData,
+                      groupBy: (element) {
+                        return DateTime(DateTime.parse(element.date ?? '').year,
+                                DateTime.parse(element.date ?? '').month, DateTime.parse(element.date ?? '').day)
+                            .toString()
+                            .toDisplayMonthWithYear();
+                      },
+                      groupComparator: (value1, value2) => value2.compareTo(value1),
+                      shrinkWrap: true,
+                      sort: true,
+                      groupSeparatorBuilder: (value) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            TitleSmallText(
+                              title: value.toString().toUpperCase(),
+                              titleColor: ColorConstants.buttonTextColor,
+                              titleTextAlign: TextAlign.center,
+                            ),
+                            10.0.spaceY,
+                            Image.asset(ImageConstants.purpleLine),
+                          ],
+                        ).addMarginX(20);
+                      },
+                      itemBuilder: (context, element) {
+                        double durationInMinute = 0;
+                        if(element.duration != null){
+                           durationInMinute = (element.duration ?? 0) / 60;
+                        }
+
+                       return Container(
+                            width: double.infinity,
+                            decoration: ShapeDecoration(
+                              color: widget.role == 1
+                                  ? element.status?.toString().callHistoryStatusUserFromString ==
+                                  CallHistoryUserStatusEnum.incomplete
+                                  ? ColorConstants.certificatedBgColor
+                                  : ColorConstants.whiteColor
+                                  : element.status?.toString().callHistoryStatusExpertFromString ==
+                                  CallHistoryStatusExpertEnum.incomplete
+                                  ? ColorConstants.certificatedBgColor
+                                  : ColorConstants.whiteColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              shadows: [
+                                BoxShadow(
+                                  color: Color(0xffDDDDDD),
+                                  blurRadius: 6.0,
+                                  spreadRadius: 2.0,
+                                  offset: Offset(0.0, 0.0),
+                                )
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
                                             children: [
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    height: 25,
-                                                    width: 25,
-                                                    decoration: BoxDecoration(
-                                                      color: ColorConstants.yellowButtonColor,
-                                                      shape: BoxShape.circle,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: ColorConstants.dropDownBorderColor,
-                                                          blurRadius: 2,
-                                                          offset: Offset(0, 2),
-                                                          spreadRadius: 0,
-                                                        )
-                                                      ],
-                                                    ),
-                                                    child: Center(
-                                                      child: BodySmallText(
-                                                        title: element.date?.toDisplayDay() ?? '',
-                                                        titleColor: ColorConstants.buttonTextColor,
-                                                        titleTextAlign: TextAlign.center,
-                                                        fontFamily: FontWeightEnum.w400.toInter,
-                                                      ),
-                                                    ),
+                                              Container(
+                                                height: 25,
+                                                width: 25,
+                                                decoration: BoxDecoration(
+                                                  color: ColorConstants.yellowButtonColor,
+                                                  shape: BoxShape.circle,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: ColorConstants.dropDownBorderColor,
+                                                      blurRadius: 2,
+                                                      offset: Offset(0, 2),
+                                                      spreadRadius: 0,
+                                                    )
+                                                  ],
+                                                ),
+                                                child: Center(
+                                                  child: BodySmallText(
+                                                    title: element.date?.toDisplayDay() ?? '',
+                                                    titleColor: ColorConstants.buttonTextColor,
+                                                    titleTextAlign: TextAlign.center,
+                                                    fontFamily: FontWeightEnum.w400.toInter,
                                                   ),
-                                                  14.0.spaceX,
-                                                  Container(
-                                                      alignment: Alignment.center,
-                                                      decoration: ShapeDecoration(
-                                                        color: callHistoryEnumNotifier.value.callHistoryTypeNameColor,
-                                                        shadows: [
-                                                          BoxShadow(color: Colors.black, blurRadius: 1, spreadRadius: 0),
-                                                          BoxShadow(
-                                                            color: Colors.white,
-                                                            blurRadius: 10,
-                                                            spreadRadius: 8,
-                                                            offset: Offset(1, 2),
-                                                          ),
-                                                        ],
-                                                        shape: RoundedRectangleBorder(
-                                                          side: BorderSide(
-                                                            width: 1,
-                                                            strokeAlign: BorderSide.strokeAlignCenter,
-                                                            color: Color(0xFFCAC9C9),
-                                                          ),
-                                                          borderRadius: BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              14.0.spaceX,
+                                              Flexible(
+                                                child: Container(
+                                                    alignment: Alignment.center,
+                                                    decoration: ShapeDecoration(
+                                                      color: element.requestType
+                                                          .toString()
+                                                          .getCallHistoryColorFromString,
+                                                      shadows: [
+                                                        BoxShadow(
+                                                            color: Colors.black,
+                                                            blurRadius: 1,
+                                                            spreadRadius: 0),
+                                                        BoxShadow(
+                                                          color: Colors.white,
+                                                          blurRadius: 10,
+                                                          spreadRadius: 8,
+                                                          offset: Offset(1, 2),
+                                                        ),
+                                                      ],
+                                                      shape: RoundedRectangleBorder(
+                                                        side: BorderSide(
+                                                          width: 1,
+                                                          strokeAlign: BorderSide.strokeAlignCenter,
+                                                          color: Color(0xFFCAC9C9),
+                                                        ),
+                                                        borderRadius: BorderRadius.circular(10),
+                                                      ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.symmetric(
+                                                        vertical: 5,
+                                                      ),
+                                                      child: Center(
+                                                        child: BodySmallText(
+                                                          title: element.requestType
+                                                              .toString()
+                                                              .getCallHistoryFromString,
+                                                          titleColor: ColorConstants.buttonTextColor,
+                                                          titleTextAlign: TextAlign.center,
+                                                          fontFamily: FontWeightEnum.w600.toInter,
                                                         ),
                                                       ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(right: 30, left: 30, top: 5, bottom: 5),
-                                                        child: Center(
-                                                          child: BodySmallText(
-                                                            title: element.requestType ?? '',
-                                                            titleColor: ColorConstants.buttonTextColor,
-                                                            titleTextAlign: TextAlign.center,
-                                                            fontFamily: FontWeightEnum.w600.toInter,
-                                                          ),
-                                                        ),
-                                                      ))
+                                                    )),
+                                              )
+                                            ],
+                                          ),
+                                          20.0.spaceY,
+                                          RichText(
+                                            softWrap: true,
+                                            text: TextSpan(
+                                              text: widget.role == 1
+                                                  ? LocaleKeys.userWith.tr()
+                                                  : LocaleKeys.expertWith.tr(),
+                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                  color: ColorConstants.buttonTextColor,
+                                                  fontFamily: FontWeightEnum.w400.toInter,
+                                                  fontSize: 12),
+                                              children: [
+                                                WidgetSpan(child: 2.0.spaceX),
+                                                TextSpan(
+                                                    text: (element.userDetails?.name?.isNotEmpty ?? false)
+                                                        ? element.userDetails?.name?.toUpperCase()
+                                                        : LocaleKeys.anonymous.tr().toUpperCase(),
+                                                    // text: callHistoryWatch.callHistoryData[index].userDetails?.name?.toUpperCase() ?? '',
+                                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                        color: ColorConstants.buttonTextColor,
+                                                        fontFamily: FontWeightEnum.w700.toInter,
+                                                        fontSize: 12))
+                                              ],
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          10.0.spaceY,
+                                          if (widget.role == 1) ...[
+                                            RichText(
+                                              text: TextSpan(
+                                                text: LocaleKeys.feePerMinute.tr(),
+                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                    color: ColorConstants.buttonTextColor,
+                                                    fontFamily: FontWeightEnum.w400.toInter,
+                                                    fontSize: 12),
+                                                children: [
+                                                  WidgetSpan(child: 2.0.spaceX),
+                                                  TextSpan(
+                                                      text: 'INR ${element.userDetails?.fee ?? ''}',
+                                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                          color: ColorConstants.buttonTextColor,
+                                                          fontFamily: FontWeightEnum.w700.toInter,
+                                                          fontSize: 12))
                                                 ],
                                               ),
-                                              20.0.spaceY,
-                                              RichText(
-                                                softWrap: true,
-                                                text: TextSpan(
-                                                  text: 'User: ',
-                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                      color: ColorConstants.buttonTextColor,
-                                                      fontFamily: FontWeightEnum.w400.toInter,
-                                                      fontSize: 12),
-                                                  children: [
-                                                    WidgetSpan(child: 2.0.spaceX),
-                                                    TextSpan(
-                                                        text: element.userDetails?.name?.toUpperCase() ?? '',
-                                                        // text: callHistoryWatch.callHistoryData[index].userDetails?.name?.toUpperCase() ?? '',
-                                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                            color: ColorConstants.buttonTextColor,
-                                                            fontFamily: FontWeightEnum.w700.toInter,
-                                                            fontSize: 12))
-                                                  ],
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              10.0.spaceY,
-                                              RichText(
-                                                text: TextSpan(
-                                                  text: LocaleKeys.feePerMinute.tr(),
-                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                      color: ColorConstants.buttonTextColor,
-                                                      fontFamily: FontWeightEnum.w400.toInter,
-                                                      fontSize: 12),
-                                                  children: [
-                                                    WidgetSpan(child: 2.0.spaceX),
-                                                    TextSpan(
-                                                        text: 'INR ${element.userDetails?.fee ?? ''}',
-                                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                            color: ColorConstants.buttonTextColor,
-                                                            fontFamily: FontWeightEnum.w700.toInter,
-                                                            fontSize: 12))
-                                                  ],
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              10.0.spaceY,
-                                              RichText(
-                                                text: TextSpan(
-                                                  text: LocaleKeys.durationCallHistory.tr(),
-                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                      color: ColorConstants.buttonTextColor,
-                                                      fontFamily: FontWeightEnum.w400.toInter,
-                                                      fontSize: 12),
-                                                  children: [
-                                                    WidgetSpan(child: 2.0.spaceX),
-                                                    TextSpan(
-                                                        text: '${element.duration ?? ''} mins',
-                                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                            color: ColorConstants.buttonTextColor,
-                                                            fontFamily: FontWeightEnum.w700.toInter,
-                                                            fontSize: 12))
-                                                  ],
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              10.0.spaceY,
-                                              RichText(
-                                                text: TextSpan(
-                                                  text: LocaleKeys.totalPayment.tr(),
-                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                      color: ColorConstants.buttonTextColor,
-                                                      fontFamily: FontWeightEnum.w400.toInter,
-                                                      fontSize: 12),
-                                                  children: [
-                                                    WidgetSpan(child: 2.0.spaceX),
-                                                    TextSpan(
-                                                        text: 'INR ${element.totalPayment ?? ''}',
-                                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                            color: ColorConstants.buttonTextColor,
-                                                            fontFamily: FontWeightEnum.w700.toInter,
-                                                            fontSize: 12))
-                                                  ],
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              10.0.spaceY,
-                                              Column(
-                                                children: List.generate(element.callStatusHistory?.length ?? 0, (index) {
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            10.0.spaceY,
+                                          ],
+                                          RichText(
+                                            text: TextSpan(
+                                              text: LocaleKeys.durationCallHistory.tr(),
+                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                  color: ColorConstants.buttonTextColor,
+                                                  fontFamily: FontWeightEnum.w400.toInter,
+                                                  fontSize: 12),
+                                              children: [
+                                                WidgetSpan(child: 2.0.spaceX),
+                                                TextSpan(
+                                                    text: durationInMinute > 1 ? '${durationInMinute.toInt()} mins' : '${durationInMinute.toInt()} min',
+                                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                        color: ColorConstants.buttonTextColor,
+                                                        fontFamily: FontWeightEnum.w700.toInter,
+                                                        fontSize: 12))
+                                              ],
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          10.0.spaceY,
+                                          RichText(
+                                            text: TextSpan(
+                                              text: LocaleKeys.totalPayment.tr(),
+                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                  color: ColorConstants.buttonTextColor,
+                                                  fontFamily: FontWeightEnum.w400.toInter,
+                                                  fontSize: 12),
+                                              children: [
+                                                WidgetSpan(child: 2.0.spaceX),
+                                                TextSpan(
+                                                    text: 'INR ${element.totalPayment ?? ''}',
+                                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                        color: ColorConstants.buttonTextColor,
+                                                        fontFamily: FontWeightEnum.w700.toInter,
+                                                        fontSize: 12))
+                                              ],
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          10.0.spaceY,
+                                          Column(
+                                            children: List.generate(element.callStatusHistory?.length ?? 0,
+                                                    (index) {
                                                   return RichText(
                                                     text: TextSpan(
                                                       text: element.callStatusHistory?[index].firstCreated
-                                                              ?.to24HourAmTimeFormat()
-                                                              .toUpperCase() ??
+                                                          ?.to24HourAmTimeFormat()
+                                                          .toUpperCase() ??
                                                           '',
                                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                                           color: ColorConstants.buttonTextColor,
@@ -275,7 +303,10 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                                         WidgetSpan(child: 14.0.spaceX),
                                                         TextSpan(
                                                             text: element.callStatusHistory?[index].status ?? '',
-                                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                            style: Theme.of(context)
+                                                                .textTheme
+                                                                .bodySmall
+                                                                ?.copyWith(
                                                                 color: ColorConstants.buttonTextColor,
                                                                 fontFamily: FontWeightEnum.w400.toInter,
                                                                 fontSize: 12))
@@ -309,80 +340,111 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                                   //   ],
                                                   // ).addMarginY(6);
                                                 }),
-                                              ),
-                                              10.0.spaceY,
-                                              Row(
-                                                children: [
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: LocaleKeys.status.tr(),
-                                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                          color: ColorConstants.buttonTextColor,
-                                                          fontFamily: FontWeightEnum.w400.toInter,
-                                                          fontSize: 12),
-                                                      children: [
-                                                        WidgetSpan(child: 6.0.spaceX),
-                                                        TextSpan(
-                                                            text: element.status?.toUpperCase(),
-                                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                                color: ColorConstants.textGreenColor,
-                                                                fontFamily: FontWeightEnum.w700.toInter,
-                                                                fontSize: 12))
-                                                      ],
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
+                                          ),
+                                          10.0.spaceY,
+                                          Row(
+                                            children: [
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: LocaleKeys.status.tr(),
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                      color: ColorConstants.buttonTextColor,
+                                                      fontFamily: FontWeightEnum.w400.toInter,
+                                                      fontSize: 12),
+                                                  children: [
+                                                    WidgetSpan(child: 6.0.spaceX),
+                                                    TextSpan(
+                                                        text: widget.role == 1
+                                                            ? element.status
+                                                            ?.toString()
+                                                            .callHistoryStatusUserFromString
+                                                            .callHistoryUserStatusText ??
+                                                            ''
+                                                            : element.status
+                                                            ?.toString()
+                                                            .callHistoryStatusExpertFromString
+                                                            .callHistoryExpertStatusText ??
+                                                            '',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodySmall
+                                                            ?.copyWith(
+                                                            color: widget.role == 1
+                                                                ? element.status
+                                                                ?.toString()
+                                                                .callHistoryStatusUserFromString
+                                                                .callHistoryUserStatusColor
+                                                                : element.status
+                                                                ?.toString()
+                                                                .callHistoryStatusExpertFromString
+                                                                .callHistoryExpertStatusColor,
+                                                            fontFamily: FontWeightEnum.w700.toInter,
+                                                            fontSize: 12))
+                                                  ],
+                                                ),
+                                                textAlign: TextAlign.center,
                                               ),
                                             ],
                                           ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(boxShadow: [
-                                            BoxShadow(
-                                                offset: Offset(2, 4),
-                                                color: ColorConstants.blackColor.withOpacity(0.3),
-                                                spreadRadius: 0,
-                                                blurRadius: 2),
-                                          ], shape: BoxShape.circle),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(50),
-                                            child: NetworkImageWidget(
-                                              imageURL: element.userDetails?.profile ?? '',
-                                              boxFit: BoxFit.cover,
-                                              height: 75,
-                                              width: 75,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    4.0.spaceY,
-                                    Align(
-                                      alignment: AlignmentDirectional.bottomEnd,
-                                      child: BodySmallText(
-                                        title: LocaleKeys.blockAndReportUser.tr(),
-                                        fontFamily: FontWeightEnum.w400.toInter,
-                                        titleTextAlign: TextAlign.end,
-                                        titleColor: ColorConstants.darkRedColor,
+                                    Container(
+                                      decoration: BoxDecoration(boxShadow: [
+                                        BoxShadow(
+                                            offset: Offset(2, 4),
+                                            color: ColorConstants.blackColor.withOpacity(0.3),
+                                            spreadRadius: 0,
+                                            blurRadius: 2),
+                                      ], shape: BoxShape.circle),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: NetworkImageWidget(
+                                          imageURL: element.userDetails?.profile ?? '',
+                                          boxFit: BoxFit.cover,
+                                          height: 75,
+                                          width: 75,
+                                        ),
                                       ),
                                     ),
                                   ],
-                                ).addMarginXY(marginX: 20, marginY: 20))
-                            .addMarginY(20);
-                      });
+                                ),
+                                if (widget.role == 2) ...[
+                                  4.0.spaceY,
+                                  Align(
+                                    alignment: AlignmentDirectional.bottomEnd,
+                                    child: BodySmallText(
+                                      title: LocaleKeys.blockAndReportUser.tr(),
+                                      fontFamily: FontWeightEnum.w400.toInter,
+                                      titleTextAlign: TextAlign.end,
+                                      titleColor: ColorConstants.darkRedColor,
+                                    ),
+                                  ),
+                                ]
+                              ],
+                            ).addMarginXY(marginX: 20, marginY: 20)).addMarginY(20);
 
-                  //return buildUi(element, context, callHistoryWatch);
-                },
+                        //return buildUi(element, context, callHistoryWatch);
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Visibility(
+                      //visible: true,
+                      visible: callHistoryWatch.isPaginationLoading ?? false,
+                      child: Center(child: CircularProgressIndicator(color: ColorConstants.primaryColor)),
+                    ).addPaddingXY(paddingX: 20, paddingY: 20),
+                  )
+                ],
               )
             : Center(
                 child: BodyLargeText(
                   title: StringConstants.noDataFound,
                   fontFamily: FontWeightEnum.w600.toInter,
                 ),
-                // child: EmptyListWidget(
-                //   title: LocaleKeys.noChatHistory.tr(),
-                // )
               );
   }
 }
