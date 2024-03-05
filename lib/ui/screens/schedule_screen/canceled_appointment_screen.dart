@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
 class CanceledAppointmentScreen extends ConsumerWidget {
   final CancelArgs args;
@@ -32,7 +33,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
               32.0.spaceY,
               Center(
                 child: BodyMediumText(
-                  title: LocaleKeys.expertNotify.tr(),
+                  title: args.role == 1 ? LocaleKeys.expertNotify.tr() : LocaleKeys.userNotify.tr(),
                   titleColor: ColorConstants.buttonTextColor,
                 ),
               ),
@@ -149,7 +150,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                   onPressed: () {
                     context.toPop();
                     context.toPop();
-                    context.toPushReplacementNamed(RoutesConstants.viewCalendarAppointment, args: 2);
+                    context.toPushReplacementNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: args.role ?? 1));
                   },
                   fontSize: 15,
                   titleColor: ColorConstants.textColor,
@@ -157,7 +158,14 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                 30.0.spaceY,
                 Center(
                   child: InkWell(
-                    onTap: () => context.toPushNamed(RoutesConstants.blockUserScreen),
+                    onTap: () => context.toPushNamed(RoutesConstants.blockUserScreen,
+                        args: BlockUserArgs(
+                          userName: args.cancelData?.name ?? 'Anonymous',
+                          imageURL: args.cancelData?.profileImage ?? '',
+                          userId: args.cancelData?.id,
+                          userRole: 2,
+                          reportName: '',
+                        )),
                     child: BodySmallText(
                       title: LocaleKeys.blockedUser.tr(),
                       fontFamily: FontWeightEnum.w400.toInter,

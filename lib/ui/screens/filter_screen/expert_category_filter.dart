@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
+import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
+import 'package:mirl/ui/common/range_slider/range_slider_widget.dart';
 import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
@@ -84,18 +86,18 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                     isDismissible: false,
                     child: TopicListByCategoryBottomView(
                       isFromExploreExpert: widget.args.fromExploreExpert ?? false,
-                      categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                      category: filterWatch.selectedCategory ?? CategoryIdNameCommonModel(),
                     ));
               } else {
                 FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCategoryFirst.tr());
               }
-            }, StringConstants.pickTopicFromTheAbove),
+            }, StringConstants.pickTopicFromTheAbove, hintText: LocaleKeys.pickCategoryTopic.tr()),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.instantCallAvailabilityController, context, () {
               CommonBottomSheet.bottomSheet(
                   context: context,
                   child: FilterBottomSheetWidget(
-                      itemList: filterWatch.yesNoSelectionList.map((e) => e).toList(),
+                      itemList: filterWatch.callSelectionList.map((e) => e).toList(),
                       title: LocaleKeys.selectCallAvailability.tr().toUpperCase(),
                       onTapItem: (item) {
                         filterRead.setValueOfCall(item);
@@ -108,7 +110,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               CommonBottomSheet.bottomSheet(
                   context: context,
                   child: FilterBottomSheetWidget(
-                      itemList: filterWatch.ratingList.map((e) => e).toList(),
+                      itemList: filterWatch.ratingList.map((e) => e.title).toList(),
                       title: LocaleKeys.pickRating.tr().toUpperCase(),
                       onTapItem: (item) {
                         filterRead.setRating(item);
@@ -146,6 +148,10 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
             }, StringConstants.countryText),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.cityNameController, context, () {
+              if (filterWatch.countryNameController.text.isEmpty) {
+                FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCountryFirst.tr());
+                return;
+              }
               CommonBottomSheet.bottomSheet(
                   context: context,
                   isDismissible: true,
@@ -166,22 +172,41 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               title: StringConstants.feeRange,
               titleColor: ColorConstants.bottomTextColor,
             ),
+            10.0.spaceY,
             SliderTheme(
-              data: SliderTheme.of(context)
-                  .copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
-              child: RangeSlider(
+              data: SliderTheme.of(context).copyWith(
+                rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor),
+                showValueIndicator: ShowValueIndicator.onlyForContinuous,
+              ),
+              child: RangeSliderWidget(
                 values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
                 activeColor: ColorConstants.yellowButtonColor,
                 inactiveColor: ColorConstants.lineColor,
-                divisions: 25,
+                divisions: 4,
                 onChanged: filterRead.setRange,
                 min: 0,
                 max: 100,
               ),
             ),
+            10.0.spaceY,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                LabelSmallText(
+                  title: 'PRO\nBONO',
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ).addMarginLeft(10),
+                LabelSmallText(
+                  title: '\$100+',
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
+              ],
+            ),
             if (filterWatch.start != null && filterWatch.end != null) ...[
               BodySmallText(
-                title: '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}',
+                title: filterWatch.end == 100
+                    ? '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}+'
+                    : '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}',
                 titleColor: ColorConstants.bottomTextColor,
               ),
               50.0.spaceY,
@@ -193,89 +218,104 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
         title: StringConstants.applyFilter,
         height: 55,
         onPressed: () async {
-          if (filterWatch.commonSelectionModel.isNotEmpty) {String? selectedTopicId;
-          if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
-            selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
-          }
-          double endFeeRange = filterWatch.end ?? 0;
-          double startFeeRange = filterWatch.start ?? 0;
-          if (widget.args.fromExploreExpert ?? false) {
-            filterRead.clearExploreExpertSearchData();
-            filterRead.clearExploreController();
-            await filterRead.exploreExpertUserAndCategoryApiCall(
-                context: context,
-                isFromFilter: true,
-                requestModel: ExpertDataRequestModel(
-                    userId: SharedPrefHelper.getUserId,
-                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
-                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                    country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
-                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
-                        ? filterWatch.isCallSelect == 1
-                            ? "true"
-                            : "false"
-                        : null,
-                    /*  experienceOder: "ASC",
+          if (filterWatch.commonSelectionModel.isNotEmpty) {
+            String? selectedTopicId;
+            if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
+              selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+            }
+            double endFeeRange = filterWatch.end ?? 0;
+            double startFeeRange = filterWatch.start ?? 0;
+            if (widget.args.fromExploreExpert ?? false) {
+              filterRead.clearExploreExpertSearchData();
+              filterRead.clearExploreController();
+              await filterRead.exploreExpertUserAndCategoryApiCall(
+                  context: context,
+                  isFromFilter: true,
+                  requestModel: ExpertDataRequestModel(
+                      userId: SharedPrefHelper.getUserId,
+                      categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false)
+                          ? filterWatch.selectedCategory?.id.toString()
+                          : null,
+                      city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                      country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                      gender: filterWatch.genderController.text.isNotEmpty ? (filterWatch.selectGender ?? 0).toString() : null,
+                      instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                          ? filterWatch.isCallSelect == 1
+                              ? "true"
+                              : "false"
+                          : null,
+                      /*  experienceOder: "ASC",
                   reviewOrder: "ASC",*/
                       maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
-                    minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
-                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                        ? null
-                        : filterWatch.sortBySelectedItem == 'PRICE'
-                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                ? 'ASC'
-                                : 'DESC'
-                            : null,
-                    topicIds: selectedTopicId));
-          } else {
-            filterRead.clearSingleCategoryData();
-            await filterRead.getSingleCategoryApiCall(
-                categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
-                context: context,
-                isFromFilter: true,
-                requestModel: ExpertDataRequestModel(
-                    city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
-                    country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                    /*  experienceOder: "ASC",
+                      minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
+                      feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                          ? null
+                          : filterWatch.sortBySelectedItem == 'PRICE'
+                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                  ? 'ASC'
+                                  : 'DESC'
+                              : null,
+                      overAllRating: filterWatch.selectedRating != null ? filterWatch.selectedRating.toString() : null,
+                      ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                          ? null
+                          : filterWatch.sortBySelectedItem == 'REVIEW SCORE'
+                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                  ? 'DESC'
+                                  : 'ASC'
+                              : null,
+                      topicIds: selectedTopicId));
+            } else {
+              filterRead.clearSingleCategoryData();
+              await filterRead.getSingleCategoryApiCall(
+                  categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                  context: context,
+                  isFromFilter: true,
+                  requestModel: ExpertDataRequestModel(
+                      city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
+                      country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
+                      /*  experienceOder: "ASC",
                     feeOrder: "ASC",
                     reviewOrder: "ASC",*/
-                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
-                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
-                        ? filterWatch.isCallSelect == 1
-                            ? "true"
-                            : "false"
-                        : null,
-                    maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
-                    minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
-                    feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
-                        ? null
-                        : filterWatch.sortBySelectedItem == 'PRICE'
-                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                ? 'ASC'
-                                : 'DESC'
-                            : null,
-                    topicIds: selectedTopicId,
-                    userId: SharedPrefHelper.getUserId));
+                      gender: filterWatch.genderController.text.isNotEmpty ? (filterWatch.selectGender ?? 0).toString() : null,
+                      instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
+                          ? filterWatch.isCallSelect == 1
+                              ? "true"
+                              : "false"
+                          : null,
+                      maxFee: filterWatch.end != null ? (endFeeRange * 100.0).toString() : null,
+                      minFee: filterWatch.start != null ? (startFeeRange * 100.0).toString() : null,
+                      feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                          ? null
+                          : filterWatch.sortBySelectedItem == 'PRICE'
+                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                  ? 'ASC'
+                                  : 'DESC'
+                              : null,
+                      overAllRating: filterWatch.selectedRating != null ? filterWatch.selectedRating.toString() : null,
+                      ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                          ? null
+                          : filterWatch.sortBySelectedItem == 'REVIEW SCORE'
+                              ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                  ? 'DESC'
+                                  : 'ASC'
+                              : null,
+                      topicIds: selectedTopicId,
+                      userId: SharedPrefHelper.getUserId));
             }
-          }
-          else {
-            FlutterToast().showToast(msg: "Please select any filter.");
+          } else {
+            FlutterToast().showToast(msg: LocaleKeys.pleasePickAnyFilter.tr());
           }
         },
-      ).addPaddingXY(paddingX: 50, paddingY: 10),
+      ).addPaddingXY(paddingX: 50, paddingY: 18),
     );
   }
 
   TextFormFieldWidget buildTextFormFieldWidget(
-    TextEditingController controller,
-    BuildContext context,
-    VoidCallback OnTap,
-    String labelText,
-  ) {
+      TextEditingController controller, BuildContext context, VoidCallback OnTap, String labelText,
+      {String? hintText}) {
     return TextFormFieldWidget(
       isReadOnly: true,
-      hintText: StringConstants.selectOnrOrLeave,
+      hintText: hintText ?? StringConstants.selectOnrOrLeave,
       controller: controller,
       labelText: labelText,
       labelColor: ColorConstants.bottomTextColor,

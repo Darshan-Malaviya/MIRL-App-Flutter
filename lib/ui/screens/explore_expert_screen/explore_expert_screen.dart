@@ -12,6 +12,7 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   final bool isFromHomePage;
+
   const ExploreExpertScreen({super.key, required this.isFromHomePage});
 
   @override
@@ -26,7 +27,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(filterProvider).clearExploreExpertSearchData();
       ref.read(filterProvider).clearExploreController();
-      ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context);
+      ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
     });
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
@@ -62,7 +63,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
             children: [
               Row(
                 children: [
-                  if(!widget.isFromHomePage)...[
+                  if (!widget.isFromHomePage) ...[
                     InkWell(
                         child: Image.asset(ImageConstants.backIcon),
                         onTap: () {
@@ -77,6 +78,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                       suffixIcon: filterProviderWatch.exploreExpertController.text.isNotEmpty
                           ? InkWell(
                               onTap: () {
+                                context.unFocusKeyboard();
                                 filterProviderRead.clearExploreExpertSearchData();
                                 filterProviderRead.clearExploreController();
                                 filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
@@ -84,8 +86,10 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                               child: Icon(Icons.close),
                             )
                           : SizedBox.shrink(),
-                      hintText: LocaleKeys.searchCategory.tr(),
-                      fontFamily: FontWeightEnum.w400.toInter,
+                      hintText: LocaleKeys.typeAnyCategoryHint.tr(),
+                      hintTextColor: ColorConstants.blackColor,
+                      enabledBorderColor: ColorConstants.dropDownBorderColor,
+                      focusedBorderColor: ColorConstants.dropDownBorderColor,
                       controller: filterProviderWatch.exploreExpertController,
                       onChanged: (value) {
                         if (filterProviderWatch.exploreExpertController.text.isNotEmpty) {
@@ -128,6 +132,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                             context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
                           },
                           prefixIcon: ImageConstants.filter,
+                          titleColor: ColorConstants.blackColor,
                           buttonTextFontFamily: FontWeightEnum.w400.toInter,
                           prefixIconPadding: 10,
                           padding: EdgeInsets.symmetric(horizontal: 100),
@@ -217,16 +222,24 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                                   expertData: filterProviderWatch.categoryList?.expertData?[i],
                                 );
                               },
-                              separatorBuilder: (context, index) => 20.0.spaceY,
+                              separatorBuilder: (context, index) => 30.0.spaceY,
                               itemCount: (filterProviderWatch.categoryList?.expertData?.length ?? 0) + (filterProviderWatch.reachedExploreExpertLastPage ? 0 : 1)),
                         ] else ...[
-                          Center(
-                            child: BodyLargeText(
-                              title: LocaleKeys.thereWasNoExpertDataAvailable.tr(),
-                              fontFamily: FontWeightEnum.w600.toInter,
-                              maxLine: 2,
-                            ),
-                          ),
+                          Column(
+                            children: [
+                              BodySmallText(
+                                title: LocaleKeys.noResultFound.tr(),
+                                fontFamily: FontWeightEnum.w600.toInter,
+                              ),
+                              20.0.spaceY,
+                              BodySmallText(
+                                title: LocaleKeys.tryWideningYourSearch.tr(),
+                                fontFamily: FontWeightEnum.w400.toInter,
+                                titleTextAlign: TextAlign.center,
+                                maxLine: 5,
+                              ),
+                            ],
+                          ).addMarginX(40),
                         ]
                       ],
                     ),

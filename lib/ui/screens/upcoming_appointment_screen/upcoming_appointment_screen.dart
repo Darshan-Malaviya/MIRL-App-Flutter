@@ -5,14 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
+import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/table_calender_widget/table_calender.dart';
 
 class UpcomingAppointmentScreen extends ConsumerStatefulWidget {
-  final int role;
+  final AppointmentArgs args;
 
-  const UpcomingAppointmentScreen({super.key, required this.role});
+  const UpcomingAppointmentScreen({super.key, required this.args});
 
   @override
   ConsumerState createState() => _UpcomingAppointmentScreenState();
@@ -25,14 +25,16 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(upcomingAppointmentProvider).upcomingAppointmentApiCall(showLoader: true, showListLoader: false, role: widget.role);
+      ref.read(upcomingAppointmentProvider).upcomingAppointmentApiCall(
+          showLoader: true, showListLoader: false, role: widget.args.role, fromNotification: widget.args.fromNotification, date: widget.args.selectedDate ?? '');
     });
 
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(upcomingAppointmentProvider).reachedLastPage;
         if (!isLoading) {
-          ref.read(upcomingAppointmentProvider).upcomingAppointmentApiCall(showLoader: false, showListLoader: false, role: widget.role);
+          ref.read(upcomingAppointmentProvider).upcomingAppointmentApiCall(
+              showLoader: false, showListLoader: false, role: widget.args.role, fromNotification: widget.args.fromNotification, date: widget.args.selectedDate ?? '');
         } else {
           log('reach last page on get appointment list api');
         }
@@ -54,7 +56,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
       ),
       body: upcomingWatch.isLoading ?? false
           ? Center(
-              child: CupertinoActivityIndicator(radius: 12, color: ColorConstants.primaryColor),
+              child: CupertinoActivityIndicator(radius: 16, color: ColorConstants.primaryColor),
             )
           : SingleChildScrollView(
               controller: scrollController,
@@ -78,7 +80,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                   TableCalenderRangeWidget(
                     onDateSelected: (selectedDay, focusedDay) {
                       if (upcomingWatch.dateList.contains(selectedDay.toString().toLocalDate())) {
-                        upcomingRead.getSelectedDate(selectedDay, widget.role);
+                        upcomingRead.getSelectedDate(selectedDay, widget.args.role);
                       }
                       print(selectedDay);
                     },
@@ -107,7 +109,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                   ).addPaddingX(20),
                   if (upcomingWatch.upcomingAppointment.isNotEmpty) ...[
                     if (upcomingWatch.isListLoading ?? false) ...[
-                      Center(child: CupertinoActivityIndicator(radius: 12, color: ColorConstants.primaryColor)),
+                      Center(child: CupertinoActivityIndicator(radius: 12, color: ColorConstants.primaryColor)).addMarginTop(50),
                     ] else ...[
                       ListView.separated(
                         shrinkWrap: true,
@@ -197,20 +199,22 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                     ),
                                   ],
                                 ),
-                                12.0.spaceY,
+                                widget.args == 1 ? 12.0.spaceY : 0.0.spaceY,
                                 Row(
                                   children: [
                                     Visibility(
-                                      visible: widget.role == 1,
+                                      visible: widget.args == 1,
                                       replacement: SizedBox.shrink(),
                                       child: PrimaryButton(
                                         title: LocaleKeys.startCall.tr(),
                                         width: 150,
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          upcomingRead.callNowBtnVisibility(upcomingWatch.upcomingAppointment[index].startTime ?? '');
+                                        },
                                         fontSize: 10,
                                         titleColor: ColorConstants.textColor,
                                         buttonColor: ColorConstants.yellowLightColor,
-                                      ).addMarginLeft(14),
+                                      ).addMarginRight(14),
                                     ),
                                     PrimaryButton(
                                       title: LocaleKeys.cancelAppointment.tr(),
@@ -218,9 +222,16 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                       onPressed: () => context.toPushNamed(
                                         RoutesConstants.canceledAppointmentOptionScreen,
                                         args: CancelArgs(
-                                            appointmentData: AppointmentData(
-                                                id: upcomingWatch.upcomingAppointment[index].id, expertDetail: ExpertDetail(id: upcomingWatch.upcomingAppointment[index].expertId)),
-                                            role: widget.role,
+                                            appointmentData: GetUpcomingAppointment(
+                                              id: upcomingWatch.upcomingAppointment[index].id,
+                                              userId: upcomingWatch.upcomingAppointment[index].userId,
+                                              expertId: upcomingWatch.upcomingAppointment[index].expertId,
+                                              startTime: upcomingWatch.upcomingAppointment[index].startTime,
+                                              endTime: upcomingWatch.upcomingAppointment[index].endTime,
+                                              duration: upcomingWatch.upcomingAppointment[index].duration.toString(),
+                                              date: upcomingWatch.upcomingAppointment[index].date,
+                                            ),
+                                            role: widget.args.role,
                                             fromScheduled: false),
                                       ),
                                       fontSize: 10,

@@ -4,7 +4,6 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/table_calender_widget/table_calender.dart';
 import 'package:mirl/ui/screens/earning_report_screen/widget/short_report_widget.dart';
-import 'package:mirl/ui/screens/rating_and_review_screen/widget/short_by_widget.dart';
 
 class EarningReportScreen extends ConsumerStatefulWidget {
   const EarningReportScreen({super.key});
@@ -72,7 +71,8 @@ class _EarningReportScreenState extends ConsumerState<EarningReportScreen> {
             ),
             20.0.spaceY,
             BodyMediumText(
-              title: '${LocaleKeys.weeklyEarning.tr()} [${'2024-02-14T05:33:05Z'.toLocalEarningDate() ?? ''}-${'2024-02-21T05:33:05Z'.toLocalEarningDate() ?? ''}]',
+              title:
+                  '${LocaleKeys.weeklyEarning.tr()} [${'2024-02-14T05:33:05Z'.toLocalEarningDate() ?? ''}-${'2024-02-21T05:33:05Z'.toLocalEarningDate() ?? ''}]',
               titleColor: ColorConstants.buttonTextColor,
             ),
             20.0.spaceY,
@@ -112,9 +112,15 @@ class _EarningReportScreenState extends ConsumerState<EarningReportScreen> {
                             textAlign: TextAlign.center,
                             text: TextSpan(
                               text: '${LocaleKeys.user.tr().toUpperCase()}: ',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                               children: [
-                                TextSpan(text: 'PREETI', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                                TextSpan(
+                                    text: 'PREETI',
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                               ],
                             ),
                           ),
@@ -124,9 +130,15 @@ class _EarningReportScreenState extends ConsumerState<EarningReportScreen> {
                             textAlign: TextAlign.center,
                             text: TextSpan(
                               text: '${LocaleKeys.time.tr()}: ',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                               children: [
-                                TextSpan(text: '10:00 AM - 11:00 AM', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                                TextSpan(
+                                    text: '10:00 AM - 11:00 AM',
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                               ],
                             ),
                           ),
@@ -136,9 +148,15 @@ class _EarningReportScreenState extends ConsumerState<EarningReportScreen> {
                             textAlign: TextAlign.center,
                             text: TextSpan(
                               text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                               children: [
-                                TextSpan(text: '60 minutes', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                                TextSpan(
+                                    text: '60 minutes',
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                               ],
                             ),
                           ),
@@ -148,9 +166,15 @@ class _EarningReportScreenState extends ConsumerState<EarningReportScreen> {
                             textAlign: TextAlign.center,
                             text: TextSpan(
                               text: '${LocaleKeys.earning.tr()}: ',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                               children: [
-                                TextSpan(text: 'USD \$30', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                                TextSpan(
+                                    text: 'USD \$30',
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                               ],
                             ),
                           ),
@@ -159,7 +183,11 @@ class _EarningReportScreenState extends ConsumerState<EarningReportScreen> {
                     ),
                     Container(
                       decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(offset: Offset(2, 5), color: ColorConstants.blackColor.withOpacity(0.3), spreadRadius: 2, blurRadius: 2),
+                        BoxShadow(
+                            offset: Offset(2, 5),
+                            color: ColorConstants.blackColor.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 2),
                       ], shape: BoxShape.circle),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),

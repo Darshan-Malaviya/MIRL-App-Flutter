@@ -2,6 +2,7 @@ import 'package:mirl/infrastructure/models/response/appointment_response_model.d
 import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/expert_category_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
+import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 
 class FilterArgs {
   final bool? fromExploreExpert;
@@ -19,7 +20,7 @@ class CallArgs {
 }
 
 class CancelArgs {
-  final AppointmentData? appointmentData;
+  final GetUpcomingAppointment? appointmentData;
   final int? role;
   final CancelAppointmentData? cancelData;
   final bool? fromScheduled;
@@ -27,3 +28,10 @@ class CancelArgs {
   CancelArgs({this.appointmentData, this.role, this.cancelData, this.fromScheduled = false});
 }
 
+class AppointmentArgs {
+  final int role;
+  final bool? fromNotification;
+  final String? selectedDate;
+
+  AppointmentArgs({required this.role, this.fromNotification = false, this.selectedDate});
+}

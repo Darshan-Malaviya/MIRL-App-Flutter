@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
@@ -22,7 +23,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
           onTap: () => context.toPop(),
         ),
         trailingIcon: InkWell(
-          onTap: () => expertRead.updateProfileApi(),
+          onTap: () => expertWatch.pickedImage.isNotEmpty ? expertRead.updateProfileApi() : null,
           child: TitleMediumText(
             title: StringConstants.done,
           ).addPaddingRight(14),
@@ -99,7 +100,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                             fontFamily: FontWeightEnum.w400.toInter,
                           ),
                         ],
-                      ),
+                      ).addMarginX(20),
               ),
             ),
             5.0.spaceY,
@@ -173,7 +174,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: 2),
+                  onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: 2)),
                 ),
                 50.0.spaceY,
                 PrimaryButton(
@@ -194,14 +195,14 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.callHistory,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () {},
+                  onPressed: () => context.toPushNamed(RoutesConstants.expertCallHistoryScreen),
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.blockedUsersList,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () {},
+                  onPressed: () => context.toPushNamed(RoutesConstants.blockUserListScreen),
                 ),
                 50.0.spaceY,
               ],

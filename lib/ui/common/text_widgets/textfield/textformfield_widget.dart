@@ -336,28 +336,28 @@ class TextFormFieldWidget extends StatelessWidget {
                     ///text field with shadow
                     enabledBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
-                        borderSide: BorderSide(color: enabledBorderColor ?? ColorConstants.borderColor, width: 0),
+                        borderSide: BorderSide(color: enabledBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
                         borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),
                     ),
                     focusedBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
-                        borderSide: BorderSide(color: focusedBorderColor ?? ColorConstants.borderColor, width: 0),
+                        borderSide: BorderSide(color: focusedBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
                         borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),
                     ),
                     errorBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
-                        borderSide: BorderSide(color: errorBorderColor ?? ColorConstants.borderColor),
+                        borderSide: BorderSide(color: errorBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
                         borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),
                     ),
                     focusedErrorBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
-                        borderSide: BorderSide(color: focusedErrorBorderColor ?? ColorConstants.borderColor),
+                        borderSide: BorderSide(color: focusedErrorBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
                         borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),

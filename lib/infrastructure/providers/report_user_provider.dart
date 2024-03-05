@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/user_report_request_model.dart';
 import 'package:mirl/infrastructure/models/response/report_list_response_model.dart';
@@ -23,6 +25,14 @@ class ReportUserProvider extends ChangeNotifier {
   int get reportUserListPageNo => _reportUserListPageNo;
   int _reportUserListPageNo = 1;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
+  // void changeLoading(bool value) {
+  //   _isLoading = value;
+  //   notifyListeners();
+  // }
+
   List<ReportList> _reportListDetails = [];
 
   List<ReportList> get reportListDetails => _reportListDetails;
@@ -34,7 +44,6 @@ class ReportUserProvider extends ChangeNotifier {
 
   void thanks(BuildContext context) {
     _currentView = 0;
-    //  context.toPop(RoutesConstants.expertDetailScreen);
     context.toPop();
     context.toPop();
     notifyListeners();
@@ -43,20 +52,27 @@ class ReportUserProvider extends ChangeNotifier {
   void changeReportAndThanksScreen({required int roleId, required String reportName, required String expertId}) {
     _pages = [
       ReportUserWidget(args: BlockUserArgs(userRole: roleId, reportName: reportName, expertId: expertId)),
-      ThanksWidget(reportName: 'BACK TO PROFILE'),
+      ThanksWidget(reportName: LocaleKeys.backToProfile.tr()),
     ];
   }
 
-  Future<void> getAllReportListApiCall({required int role}) async {
-    CustomLoading.progressDialog(isLoading: true);
+  Future<void> getAllReportListApiCall({required int role, bool isFullScreenLoader = false}) async {
+    if (isFullScreenLoader) {
+      _isLoading = true;
+      notifyListeners();
+    }
+
     ApiHttpResult response = await _reportRepository.reportListApi(limit: 10, page: _reportUserListPageNo, role: role);
-    CustomLoading.progressDialog(isLoading: false);
+    if (isFullScreenLoader) {
+      _isLoading = false;
+      notifyListeners();
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is ReportListResponseModel) {
           ReportListResponseModel responseModel = response.data;
           _reportListDetails.addAll(responseModel.data ?? []);
-          if (_reportUserListPageNo == responseModel.pagination?.itemCount) {
+          if (_reportUserListPageNo == responseModel.pagination?.pageCount) {
             _reachedCategoryLastPage = true;
           } else {
             _reportUserListPageNo = _reportUserListPageNo + 1;
@@ -87,7 +103,9 @@ class ReportUserProvider extends ChangeNotifier {
           UserReportResponseModel responseModel = response.data;
 
           Logger().d("Successfully user report API");
-          FlutterToast().showToast(msg: responseModel.message ?? '');
+          reportUser();
+
+          // FlutterToast().showToast(msg: responseModel.message ?? '');
         }
         break;
       case APIStatus.failure:

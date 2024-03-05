@@ -184,6 +184,7 @@ class CallProvider extends ChangeNotifier {
           audioVideoCallFunction: () async {
             await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
             await engine.enableVideo();
+            await engine.enableAudio();
             await engine.startPreview();
           },
            onRemoteVideoStateChanged: (RtcConnection connection, int remoteUid, RemoteVideoState state, RemoteVideoStateReason reason, int elapsed) {
@@ -196,6 +197,7 @@ class CallProvider extends ChangeNotifier {
                _isRemoteVideoOn = false;
              }
              changeVideoCallView.value = !changeVideoCallView.value;
+             notifyListeners();
           },
         onRemoteAudioStateChanged: (RtcConnection connection, int remoteUid, RemoteAudioState state, RemoteAudioStateReason reason, int elapsed) {
           log("onRemoteAudioStateChanged");
@@ -207,17 +209,18 @@ class CallProvider extends ChangeNotifier {
             _isRemoteMicOn = true;
           }
           changeVideoCallView.value = !changeVideoCallView.value;
+          notifyListeners();
           log(_isRemoteMicOn.toString());
           },
-        onLocalVideoStateChanged: (VideoSourceType source, LocalVideoStreamState state, LocalVideoStreamError error) async {
+        onLocalVideoStateChanged: (VideoSourceType source, LocalVideoStreamState state, error) async {
           log("onLocalVideoStateChanged");
           log(state.name);
           log(state.index.toString());
           notifyListeners();
          // changeVideoCallView.value = !changeVideoCallView.value;
           },
-          onLocalAudioStateChanged: (RtcConnection connection, LocalAudioStreamState state, LocalAudioStreamError error) async {
-            log("onLocalAudioStateChanged");
+        onLocalAudioStateChanged: (RtcConnection connection, LocalAudioStreamState state, error) async {
+          log("onLocalAudioStateChanged");
             log(state.name);
             log(state.index.toString());
             notifyListeners();

@@ -17,6 +17,9 @@ class ColorConstants {
   static const categoryList = Color(0xFFF0F0F0);
   static const scaffoldBg = Color(0xFFF4F3F3);
   static const emptyTextColor = Color(0xFF7E7E7E);
+  static const lightPrimaryColor = Color(0xFFF0CBF9);
+  static const lightYellowColor = Color(0xFFFFECBD);
+  static const emojiBg = Color(0xFFD6D1CA);
 
   static Color primaryColor = const Color(0xffD97CF0);
   static Color secondaryColor = const Color(0xffED1C22);
@@ -26,8 +29,11 @@ class ColorConstants {
   static Color sheetTitleColor = const Color(0xFF64569E);
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
+  static Color yellowMediumColor = const Color(0xFFffcc5c);
   static Color greenColor = const Color(0xFFABDF75);
+  static Color greenDarkColor = const Color(0xFF5DB500);
   static Color redColor = const Color(0xFFFE654F);
+  static Color redMediumColor = const Color(0xFFDA8380);
   static Color sliderColor = const Color(0xFF85C7F2);
   static Color overallRatingColor = const Color(0xFFFF6666);
   static Color blueColor = const Color(0xFF01295F);
@@ -44,7 +50,6 @@ class ColorConstants {
   static Color textGreenColor = const Color(0xFF65C106);
 
   static Color overAllRatingColor = const Color(0xFF393737);
-  static Color topicColor = const Color(0x66D97CF0);
   static Color yellowLightColor = const Color(0xffF3D58C);
   static Color topicShoeColorColor = const Color(0x33000000);
   static Color certificatedBoxShadowColor = const Color(0x19000000);
@@ -52,10 +57,13 @@ class ColorConstants {
   static Color certificatedBorderColor = const Color(0xFFD8D5D5);
   static Color certificatedBgColor = const Color(0xFFF0F0F0);
   static Color purpleDarkColor = const Color(0xFF773a79);
+  static Color mirlConnectColor = const Color(0xFFDB70FE);
 
   static Color successColor = const Color(0xff12805C);
   static Color warningColor = const Color(0xffCB6F10);
   static Color errorColor = const Color(0xffB33F40);
   static Color lineColor = const Color(0xffFF950A);
   static Color callRequestColor = const Color(0xffFFAD05);
+  static Color demo = const Color(0xff21842);
+  static Color mirlConnectShadowColor = const Color(0xffFD02E0);
 }

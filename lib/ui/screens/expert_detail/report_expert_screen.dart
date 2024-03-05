@@ -1,3 +1,4 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
@@ -14,6 +15,7 @@ class ReportExpertScreen extends ConsumerStatefulWidget {
 
 class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
@@ -28,14 +30,13 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
         children: [
           NetworkImageWidget(
             imageURL: widget.args.imageURL ?? '',
-            // 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             isNetworkImage: true,
             boxFit: BoxFit.cover,
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.45,
-            minChildSize: 0.45,
-            maxChildSize: 0.86,
+            initialChildSize: 0.65,
+            minChildSize: 0.55,
+            maxChildSize: 0.90,
             builder: (BuildContext context, myScrollController) {
               return bottomSheetView(controller: myScrollController);
             },
@@ -56,7 +57,11 @@ class _ReportExpertScreenState extends ConsumerState<ReportExpertScreen> {
         controller: controller,
         child: ReportThisUserWidget(
             args: BlockUserArgs(
-                userRole: widget.args.userRole, reportName: widget.args.reportName, expertId: widget.args.expertId)),
+          userRole: widget.args.userRole,
+          reportName: widget.args.reportName,
+          expertId: widget.args.expertId,
+          controller: controller,
+        )),
       ),
     );
   }

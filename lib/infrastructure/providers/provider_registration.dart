@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/providers/add_your_area_expertise_provider.dart';
 import 'package:mirl/infrastructure/providers/auth_provider.dart';
 import 'package:mirl/infrastructure/providers/block_provider.dart';
+import 'package:mirl/infrastructure/providers/call_history_provider.dart';
 import 'package:mirl/infrastructure/providers/call_provider.dart';
 import 'package:mirl/infrastructure/providers/cancel_appointment_provider.dart';
 import 'package:mirl/infrastructure/providers/common_app_provider.dart';
@@ -18,6 +19,7 @@ import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/infrastructure/providers/suggest_new_experties_provider.dart';
 import 'package:mirl/infrastructure/providers/socket_provider.dart';
 import 'package:mirl/infrastructure/providers/upcoming_appointment_provider.dart';
+import 'package:mirl/infrastructure/providers/user_setting_provider.dart';
 
 // final authProvider = ChangeNotifierProvider.autoDispose((ref) => AuthProvider());
 final loginScreenProvider = ChangeNotifierProvider.autoDispose((_) => AuthProvider());
@@ -38,5 +40,7 @@ final upcomingAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => Up
 final cancelAppointmentProvider = ChangeNotifierProvider.autoDispose((_) => CancelAppointmentProvider());
 final reportReviewProvider = ChangeNotifierProvider.autoDispose((_) => ReportReviewProvider());
 final notificationProvider = ChangeNotifierProvider.autoDispose((_) => NotificationProvider());
+final userSettingProvider = ChangeNotifierProvider.autoDispose((_) => UserSettingProvider());
 final suggestNewExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => SuggestNewExpertiseProvider());
+final callHistoryProvider = ChangeNotifierProvider.autoDispose((_) => CallHistoryProvider());
 

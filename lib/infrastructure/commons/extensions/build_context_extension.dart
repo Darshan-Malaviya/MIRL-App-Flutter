@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 extension BuildContextExtension on BuildContext {
 
-  void unFocusKeyboard() => FocusScope.of(this).unfocus();
+  void unFocusKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
 
   dynamic get getArguments => ModalRoute.of(this)?.settings.arguments;
 

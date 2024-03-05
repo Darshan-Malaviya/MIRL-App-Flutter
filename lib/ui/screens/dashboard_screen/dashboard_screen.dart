@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
+import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/providers/provider_registration.dart';
 import 'package:mirl/infrastructure/services/socket_service.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
@@ -27,6 +29,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     super.initState();
     pageController = PageController(initialPage: widget.index);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+      instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
       ref.read(dashboardProvider).pageChanged(widget.index);
       ref.read(socketProvider).listenerEvent();
       SocketApi.singleTone.init(onListenMethod: (value) {
@@ -72,14 +76,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           items: List.generate(
             5,
             (index) => BottomNavigationBarItem(
-              icon: dashboardProviderWatch.selectedIndex == index
-                  ? Image.asset(
-                      color: ColorConstants.bottomTextColor,
-                      dashboardProviderRead.getImage(index),
-                    )
-                  : Image.asset(
-                      dashboardProviderRead.getImage(index),
-                    ),
+              icon: Image.asset(
+                color: dashboardProviderWatch.selectedIndex == index ? ColorConstants.bottomTextColor : null,
+                dashboardProviderRead.getImage(index),
+              ),
               label: dashboardProviderRead.getText(index),
             ),
           ),

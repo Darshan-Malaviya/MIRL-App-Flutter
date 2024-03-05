@@ -56,7 +56,7 @@ class ExpertDetailProvider extends ChangeNotifier {
 
   Future<void> favoriteRequestCall(int expertId) async {
     FavoriteRequestModel favoriteRequestModel = FavoriteRequestModel(userFavoriteId: expertId);
-    favoriteApiCall(requestModel: favoriteRequestModel.prepareRequest());
+    await favoriteApiCall(requestModel: favoriteRequestModel.prepareRequest());
   }
 
   Future<void> favoriteApiCall({required Object requestModel}) async {
@@ -73,7 +73,6 @@ class ExpertDetailProvider extends ChangeNotifier {
           _userData?.isFavorite = !(_userData?.isFavorite ?? false);
           notifyListeners();
           FlutterToast().showToast(msg: favoriteResponseModel.message ?? '');
-          Logger().d("User favorite successfully");
         }
         break;
       case APIStatus.failure:

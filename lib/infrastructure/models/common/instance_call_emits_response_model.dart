@@ -35,6 +35,7 @@ class InstanceCallEmitsData {
   int? callHistoryId;
   int? requestType;
   int? instantCallSeconds;
+  List<ExpertDetails>? expertList;
 
   InstanceCallEmitsData(
       {this.userDetails,
@@ -48,7 +49,7 @@ class InstanceCallEmitsData {
       this.timerType,
       this.callHistoryId,
       this.requestType,
-        this.instantCallSeconds});
+        this.instantCallSeconds,this.expertList});
 
   InstanceCallEmitsData.fromJson(Map<String, dynamic> json) {
     userDetails = json['userDetails'] != null ? UserDetails.fromJson(json['userDetails']) : null;
@@ -124,6 +125,12 @@ class InstanceCallEmitsData {
           instantCallSeconds = json['instantCallSeconds'];
         }
       }
+      if(json['experts'] != null){
+        expertList = <ExpertDetails>[];
+        json['experts'].forEach((v) {
+          expertList!.add(ExpertDetails.fromJson(v));
+        });
+      }
 
   }
 
@@ -165,6 +172,9 @@ class InstanceCallEmitsData {
     if(data['instantCallSeconds'] != null){
       data['instantCallSeconds'] = this.instantCallSeconds;
     }
+    if(this.expertList != null){
+      data['experts'] = this.expertList!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -197,9 +207,10 @@ class ExpertDetails {
   String? expertName;
   int? fee;
   int? overAllRating;
+  int? status;
 
 
-  ExpertDetails({this.id, this.expertProfile, this.expertName,this.fee,this.overAllRating});
+  ExpertDetails({this.id, this.expertProfile, this.expertName,this.fee,this.overAllRating,this.status});
 
   ExpertDetails.fromJson(Map<String, dynamic> json) {
     if (json['id'] != null) {
@@ -232,6 +243,13 @@ class ExpertDetails {
         fee = json['fee'];
       }
     }
+   if(json['status'] != null){
+     if (json['status'] is String) {
+       status = int.parse(json['status']);
+     } else {
+       status = json['status'];
+     }
+   }
 
   }
 
@@ -251,6 +269,9 @@ class ExpertDetails {
     }
     if(this.overAllRating != null){
       data['overAllRating'] = this.overAllRating;
+    }
+    if(this.status != null){
+      data['status'] = this.status;
     }
     return data;
   }

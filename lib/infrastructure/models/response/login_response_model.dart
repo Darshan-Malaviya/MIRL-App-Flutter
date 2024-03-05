@@ -212,10 +212,8 @@ class WeeklyAvailableData {
   String? endTime;
   bool? isAvailable;
   int? scheduleType;
-  String? firstCreated;
-  String? lastModified;
 
-  WeeklyAvailableData({this.id, this.userId, this.dayOfWeek, this.startTime, this.endTime, this.isAvailable, this.scheduleType, this.firstCreated, this.lastModified});
+  WeeklyAvailableData({this.id, this.userId, this.dayOfWeek, this.startTime, this.endTime, this.isAvailable, this.scheduleType});
 
   WeeklyAvailableData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -225,8 +223,6 @@ class WeeklyAvailableData {
     endTime = json['endTime'];
     isAvailable = json['isAvailable'];
     scheduleType = json['scheduleType'];
-    firstCreated = json['firstCreated'];
-    lastModified = json['lastModified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -238,8 +234,6 @@ class WeeklyAvailableData {
     data['endTime'] = this.endTime;
     data['isAvailable'] = this.isAvailable;
     data['scheduleType'] = this.scheduleType;
-    data['firstCreated'] = this.firstCreated;
-    data['lastModified'] = this.lastModified;
     return data;
   }
 }

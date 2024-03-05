@@ -3,6 +3,7 @@ import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/request/user_block_request_model.dart';
+import 'package:mirl/infrastructure/models/response/block_details_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/models/response/user_block_response_model.dart';
 import 'package:mirl/infrastructure/repository/auth_repo.dart';
@@ -22,6 +23,9 @@ class BlockProvider extends ChangeNotifier {
 
   DateTime? selectedDate;
 
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
   String? userStatus(int index) {
     if (_blockUserDetails[index].status == 1) {
       return 'PERMANENT';
@@ -32,21 +36,22 @@ class BlockProvider extends ChangeNotifier {
   }
 
   Future<void> checkTimeOut({required BuildContext context, required bool isFromInstantCall}) async {
-    if (isFromInstantCall && (instanceCallEnumNotifier.value == CallTypeEnum.requestTimeout)) {
-      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
+    if (isFromInstantCall && (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout)) {
+      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
     } else {
       context.toPop();
     }
   }
 
-  void userBlockRequestCall({
+  Future<void> userBlockRequestCall({
     required int Status,
     required int UserBlockId,
     required BuildContext context,
     bool isFromInstatCall = false,
-  }) {
+  }) async {
     UserBlockRequestModel userBlockRequestModel = UserBlockRequestModel(status: Status, userBlockId: UserBlockId);
-    userBlockApiCall(requestModel: userBlockRequestModel.prepareRequest(), context: context, isFromInstatCall: isFromInstatCall);
+    await userBlockApiCall(
+        requestModel: userBlockRequestModel.prepareRequest(), context: context, isFromInstatCall: isFromInstatCall);
   }
 
   Future<void> userBlockApiCall({
@@ -56,18 +61,21 @@ class BlockProvider extends ChangeNotifier {
   }) async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _authRepository.userBlockApi(requestModel: requestModel);
+    // context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
     CustomLoading.progressDialog(isLoading: false);
     switch (response.status) {
       case APIStatus.success:
-        if (response.data != null && response.data is UserBlockResponseModel) {
-          UserBlockResponseModel userBlockResponseModel = response.data;
+        if (response.data != null && response.data is BlockDetailsResponseModel) {
+          BlockDetailsResponseModel userBlockResponseModel = response.data;
           Logger().d("Successfully user block");
+          FlutterToast().showToast(msg: userBlockResponseModel.message ?? '');
+
           if (isFromInstatCall) {
-            context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 0);
+            context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
           } else {
             context.toPop();
           }
-          FlutterToast().showToast(msg: userBlockResponseModel.message ?? '');
+          //  context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen, args: 0);
         }
         break;
       case APIStatus.failure:
@@ -99,16 +107,22 @@ class BlockProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getAllBlockListApiCall() async {
-    CustomLoading.progressDialog(isLoading: true);
+  Future<void> getAllBlockListApiCall({bool isFullScreenLoader = false}) async {
+    if (isFullScreenLoader) {
+      _isLoading = true;
+      notifyListeners();
+    }
     ApiHttpResult response = await _authRepository.getAllBlockListApi(limit: 10, page: _blockUserListPageNo);
-    CustomLoading.progressDialog(isLoading: false);
+    if (isFullScreenLoader) {
+      _isLoading = false;
+      notifyListeners();
+    }
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is UserBlockResponseModel) {
           UserBlockResponseModel userBlockResponseModel = response.data;
           _blockUserDetails.addAll(userBlockResponseModel.data ?? []);
-          if (_blockUserListPageNo == userBlockResponseModel.pagination?.itemCount) {
+          if (_blockUserListPageNo == userBlockResponseModel.pagination?.pageCount) {
             _reachedCategoryLastPage = true;
           } else {
             _blockUserListPageNo = _blockUserListPageNo + 1;
@@ -116,7 +130,6 @@ class BlockProvider extends ChangeNotifier {
           }
 
           Logger().d("Successfully get all block details");
-          FlutterToast().showToast(msg: userBlockResponseModel.message ?? '');
         }
         break;
       case APIStatus.failure:

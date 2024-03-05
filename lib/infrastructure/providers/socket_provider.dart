@@ -13,11 +13,11 @@ import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart'
 import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
 import 'package:mirl/infrastructure/models/common/instance_call_emits_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
+import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:uuid/uuid.dart';
 
@@ -45,6 +45,8 @@ class SocketProvider extends ChangeNotifier {
     timerListener();
     multiConnectRequestResponse();
     multiConnectRequestListener();
+    multiConnectStatusListener();
+    multiConnectStatusResponse();
     socketListen.value = true;
   }
 
@@ -80,8 +82,8 @@ class SocketProvider extends ChangeNotifier {
           // TODO: declined an incoming call
             log('ACTION_CALL_DECLINE');
             callConnectNotifier.value = CallConnectStatusEnum.declined;
-            instanceRequestTimerNotifier.value = - 1;
-            instanceRequestTimerNotifier.removeListener(() { });
+            instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+            instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             await updateCallStatusEmit(status: CallStatusEnum.declineCall, callRoleEnum: CallRoleEnum.expert,callHistoryId: extraResponseModel?.callHistoryId ?? '');
             break;
           case Event.actionCallEnded:
@@ -131,39 +133,35 @@ class SocketProvider extends ChangeNotifier {
   }
 
   void manageTimeOutStatus({required UserData? userData, required BuildContext context , required String expertId}) {
-
-    if ((userData?.instantCallAvailable ?? false) &&
-        (userData?.onlineStatus.toString() == '1')) {
       NavigationService.context.toPop();
-      instanceRequestTimerNotifier.value = -1;
-      instanceCallEnumNotifier.removeListener(() {});
-      instanceCallEnumNotifier.value = CallTypeEnum.callRequest;
+      instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+      instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
+      instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
       /// THis is call sender (User) side
       context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
           args: InstanceCallDialogArguments(
             name: userData?.userName ?? "",
             onFirstBtnTap: () {
-              if(instanceCallEnumNotifier.value  == CallTypeEnum.requestTimeout) {
-
+              if(instanceCallEnumNotifier.value  == CallRequestTypeEnum.requestTimeout) {
+                instanceRequestTimerNotifier.dispose();
+                ref.read(socketProvider).manageTimeOutStatus(
+                    userData: userData, expertId: expertId, context: context);
               } else {
-                if((userData?.instantCallAvailable ?? false) && (userData?.onlineStatus.toString() == '1') ){
-                  instanceCallRequestEmit(expertId: expertId);
-                } else {
-                  FlutterToast().showToast(msg: "Expert not available.");
-                }
+                instanceCallRequestEmit(expertId: expertId);
               }
-
             },
             onSecondBtnTap: () {
               if(instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                 context.toPop();
-              } else if(instanceCallEnumNotifier.value == CallTypeEnum.requestApproved){
+              } else if(instanceCallEnumNotifier.value == CallRequestTypeEnum.requestApproved){
                connectCallEmit(expertId: expertId);
                 ///context.toPop();
               }
               else {
                 updateRequestStatusEmit(expertId: expertId, callStatusEnum: CallRequestStatusEnum.cancel,
                     callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
+                instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+                instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
                 context.toPop();
               }
             },
@@ -171,11 +169,6 @@ class SocketProvider extends ChangeNotifier {
             expertId: userData?.id.toString() ??'',
             userID: SharedPrefHelper.getUserId.toString(),
           ));
-
-    } else {
-      FlutterToast().showToast(msg: "Expert not available.");
-    }
-
   }
 
   void updateSocketIdListener() {
@@ -211,8 +204,7 @@ class SocketProvider extends ChangeNotifier {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
             SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
             allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
-            instanceCallEnumNotifier.value = CallTypeEnum.requestWaiting;
-            instanceRequestTimerNotifier.value = 120;
+            instanceCallEnumNotifier.value = CallRequestTypeEnum.requestWaiting;
           } else {
             InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
             FlutterToast().showToast(msg: model.message?.first.toString());
@@ -231,9 +223,7 @@ class SocketProvider extends ChangeNotifier {
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             if(data['data'].toString().isNotEmpty){
-              instanceCallEnumNotifier.value = CallTypeEnum.receiverRequested;
-              //bgCallEndTrigger.value = 20;
-              //instanceRequestTimerNotifier.value = 120;
+              instanceCallEnumNotifier.value = CallRequestTypeEnum.receiverRequested;
               InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
               SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
               allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
@@ -242,7 +232,6 @@ class SocketProvider extends ChangeNotifier {
               NavigationService.context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
                   args: InstanceCallDialogArguments(
                     name: model.data?.userDetails?.userName.toString(),
-                   secondBtnColor: ColorConstants.yellowButtonColor,
                     onFirstBtnTap: () {
                       updateRequestStatusEmit(userId: model.data?.userDetails?.id.toString() ?? '', callStatusEnum: CallRequestStatusEnum.accept,
                           callRoleEnum: CallRoleEnum.expert, expertId: model.data?.expertId.toString() ?? '');
@@ -325,24 +314,27 @@ class SocketProvider extends ChangeNotifier {
             if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()){
               /// user side
               if(model.data?.status.toString() == '2'){
-                instanceCallEnumNotifier.value = CallTypeEnum.requestApproved;
+                instanceCallEnumNotifier.value = CallRequestTypeEnum.requestApproved;
               } else if (model.data?.status.toString() == '3'){
-                instanceCallEnumNotifier.value = CallTypeEnum.requestDeclined;
+                instanceCallEnumNotifier.value = CallRequestTypeEnum.requestDeclined;
               }
             } else {
               ///  on expert side
               if(model.data?.expertId.toString() == SharedPrefHelper.getUserId.toString()){
 
                 if((model.data?.status.toString() == '4'
-                 && (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested))) {
-                  instanceCallEnumNotifier.value = CallTypeEnum.requestTimeout;
+                 && (instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested))) {
+                  instanceCallEnumNotifier.value = CallRequestTypeEnum.requestTimeout;
                   if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
                     NavigationService.context.toPop();
                   }
 
                 } else if(( (model.data?.status.toString() == '5')
-                    && (instanceCallEnumNotifier.value == CallTypeEnum.receiverRequested))) {
-                  NavigationService.context.toPop();
+                    && (instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested))) {
+                  if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
+                    NavigationService.context.toPop();
+                  }
+
                 }
 
               }
@@ -360,7 +352,9 @@ class SocketProvider extends ChangeNotifier {
     }
   }
 
-  void connectCallEmit({required String expertId}) {
+
+  /// For schedule call pass call-history id from upcoming appointment list
+  void connectCallEmit({required String expertId, String? callRequestId}) {
     try {
       Logger().d('connectCallEmit ==== Success');
       String userId = SharedPrefHelper.getUserId.toString();
@@ -369,7 +363,7 @@ class SocketProvider extends ChangeNotifier {
         AppConstants.userId: userId,
         AppConstants.uuid : const Uuid().v4().toString(),
         AppConstants.isVideo: "true",
-        AppConstants.callRequestId: SharedPrefHelper.getCallRequestId.toString(),
+        AppConstants.callRequestId: callRequestId ?? SharedPrefHelper.getCallRequestId.toString(),
 
       });
     } catch (e) {
@@ -389,7 +383,7 @@ class SocketProvider extends ChangeNotifier {
              extraResponseModel?.callRoleEnum = CallRoleEnum.user;
               NavigationService.context.toPushNamed(RoutesConstants.videoCallScreen,
                   args: VideoCallArguments(agoraChannelId: extraResponseModel?.channelCode.toString() ?? '',
-                      agoraToken: extraResponseModel?.agoraToken.toString() ?? ''));
+                      agoraToken: extraResponseModel?.agoraToken.toString() ?? '', callType: int.parse(extraResponseModel?.requestType ?? "0")));
 
             }
 
@@ -425,26 +419,28 @@ class SocketProvider extends ChangeNotifier {
 
           if (data['statusCode'].toString() == "200") {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
-
             if(model.data?.status.toString() == '2'){
               callConnectNotifier.value = CallConnectStatusEnum.accepted;
               /// accept
               if(isSocketConnected){
                 NavigationService.context.toPushNamed(RoutesConstants.videoCallScreen,
                     args: VideoCallArguments(agoraChannelId: extraResponseModel?.channelCode.toString() ?? '',
-                        agoraToken: extraResponseModel?.agoraToken.toString() ?? ''));
+                        agoraToken: extraResponseModel?.agoraToken.toString() ?? '', callType: model.data?.requestType ?? 0));
               }
             } else if (model.data?.status.toString() == '3'){
               /// decline
               callConnectNotifier.value = CallConnectStatusEnum.declined;
+              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
+
             }  else if (model.data?.status.toString() == '4'){
               /// time out
              /// When expert not accept ant nor decline phone that time from call kit time out emit called and get response on expert side here.
             }  if(model.data?.status.toString() == '5'){
               /// cancelled
               callConnectNotifier.value = CallConnectStatusEnum.cancelled;
-              instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
-              instanceCallDurationNotifier.removeListener(() { });
+              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
               if(model.data?.userId.toString().toString() == SharedPrefHelper.getUserId.toString()) {
                 if(activeRoute.value == RoutesConstants.videoCallScreen){
                   NavigationService.context.toPop();
@@ -454,19 +450,19 @@ class SocketProvider extends ChangeNotifier {
             } if(model.data?.status.toString() == '6') {
               /// completed
                callConnectNotifier.value = CallConnectStatusEnum.completed;
-
-              if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()) {
-                if(activeRoute.value == RoutesConstants.videoCallScreen){
-                  NavigationService.context.toPop();
-                  NavigationService.context.toPop();
-                }
-              } else {
-                await FlutterCallkitIncoming.endAllCalls();
-                NavigationService.context.toPop();
-              }
-
-               instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
-               instanceCallDurationNotifier.removeListener(() { });
+               if(activeRoute.value == RoutesConstants.videoCallScreen){
+                 if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()) {
+                   if(activeRoute.value == RoutesConstants.videoCallScreen){
+                     NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
+                         args: int.parse(extraResponseModel?.callHistoryId ?? ''));
+                   }
+                 } else {
+                   await FlutterCallkitIncoming.endAllCalls();
+                   NavigationService.context.toPop();
+                 }
+               }
+               instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+               instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             }
 
           } else {
@@ -498,40 +494,43 @@ class SocketProvider extends ChangeNotifier {
               /// This decline listen in user side always
               callConnectNotifier.value = CallConnectStatusEnum.declined;
               FlutterToast().showToast(msg: "Call decline by expert");
-              instanceRequestTimerNotifier.value = -1;
-              instanceRequestTimerNotifier.removeListener(() {});
+              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
               if(activeRoute.value == RoutesConstants.videoCallScreen){
                 NavigationService.context.toPop();
                 NavigationService.context.toPop();
               }
             } else if (model.data?.status.toString() == '4') {
               /// time out
-              FlutterToast().showToast(msg: LocaleKeys.expertNotResponding.tr());
-              NavigationService.context.toPop();
+              if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen || activeRoute.value == RoutesConstants.videoCallScreen) {
+                FlutterToast().showToast(msg: LocaleKeys.expertNotResponding.tr());
+                NavigationService.context.toPop();
+              }
             }
             if (model.data?.status.toString() == '5') {
               /// cancelled
-              callConnectNotifier.value = CallConnectStatusEnum.cancelled;
+              if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
+                callConnectNotifier.value = CallConnectStatusEnum.cancelled;
 
-              /// Expert not receive call from call kit and user cut call .
-              await FlutterCallkitIncoming.endAllCalls();
+                /// Expert not receive call from call kit and user cut call .
+                await FlutterCallkitIncoming.endAllCalls();
+              }
             }
             if (model.data?.status.toString() == '6') {
               /// completed
               callConnectNotifier.value = CallConnectStatusEnum.completed;
-
-              if (model.data?.expertId.toString() == SharedPrefHelper.getUserId.toString()) {
-                /// Call cut by user and listen in expert side so pop the screen and cut call kit call also
-                NavigationService.context.toPop();
-                await FlutterCallkitIncoming.endAllCalls();
-              } else {
-                if(activeRoute.value == RoutesConstants.videoCallScreen){
+              if(activeRoute.value == RoutesConstants.videoCallScreen){
+                if (model.data?.expertId.toString() == SharedPrefHelper.getUserId.toString()) {
+                  /// Call cut by user and listen in expert side so pop the screen and cut call kit call also
                   NavigationService.context.toPop();
-                  NavigationService.context.toPop();
+                  await FlutterCallkitIncoming.endAllCalls();
+                } else {
+                  NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
+                      args: int.parse(extraResponseModel?.callHistoryId ?? ''));
                 }
               }
-              instanceCallDurationNotifier.value = int.parse(extraResponseModel?.instantCallSeconds ?? "0") + 1;
-              instanceCallDurationNotifier.removeListener(() {});
+              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             }
           } else {
             InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
@@ -544,15 +543,20 @@ class SocketProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> timerEmit({required int userId, required int expertId, required CallRoleEnum callRoleEnum, required int timer, required CallTimerEnum timerType}) async {
+  Future<void> timerEmit({required int userId,
+      required List<int> expertIdList,
+      required CallRoleEnum callRoleEnum,
+      required int timer,
+      required CallTimerEnum timerType,
+      required int requestType}) async {
     try {
       socket?.emit(AppConstants.getTime, {
         AppConstants.userId: userId,
-        AppConstants.expertId: expertId,
+        AppConstants.expertIds: expertIdList,
         AppConstants.role: callRoleEnum.roleToNumber,
         AppConstants.time: timer,
-        AppConstants.requestType: 1,
-        AppConstants.timerType : timerType.callTimerToString
+        AppConstants.requestType: requestType,
+        AppConstants.timerType: timerType.callTimerToString
       });
     } catch (e) {
       Logger().d('timerEmit====$e');
@@ -562,7 +566,7 @@ class SocketProvider extends ChangeNotifier {
   void timerResponse() {
     try {
       socket?.on(AppConstants.timeSend, (data) {
-        Logger().d('timerResponse=====${data.toString()}');
+       // Logger().d('timerResponse=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
 
@@ -577,7 +581,7 @@ class SocketProvider extends ChangeNotifier {
   void timerListener() {
     try {
       socket?.on(AppConstants.timeReceived, (data)  async {
-        Logger().d('timerListener=====${data.toString()}');
+       // Logger().d('timerListener=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
@@ -585,10 +589,13 @@ class SocketProvider extends ChangeNotifier {
             if(model.data?.timerType.toString() == CallTimerEnum.call.name) {
               if(model.data?.time.toString() !=  extraResponseModel?.instantCallSeconds.toString()){
                 instanceCallDurationNotifier.value = int.parse(model.data?.time.toString() ?? '');
-              } else {
               }
-            } else {
+            } else if(model.data?.timerType.toString() == CallTimerEnum.request.name){
               instanceRequestTimerNotifier.value = int.parse(model.data?.time.toString() ?? '');
+            }  else if(model.data?.timerType.toString() == CallTimerEnum.multiRequest.name){
+              multiRequestTimerNotifier.value = int.parse(model.data?.time.toString() ?? '');
+            } else {
+              multiRequestTimerNotifier.value = int.parse(model.data?.time.toString() ?? '');
             }
           }
         }
@@ -597,8 +604,6 @@ class SocketProvider extends ChangeNotifier {
       Logger().d('timerListener====$e');
     }
   }
-
-
 
 
   void multiConnectRequestEmit({required List<int> expertIdsList}) {
@@ -623,8 +628,15 @@ class SocketProvider extends ChangeNotifier {
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
-
-
+            SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
+            allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
+            multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestWaiting;
+            ref.read(multiConnectProvider).setAllExpertStatusAsWaitingOnRequestCall();
+            /// TODO change it will 120;
+            multiRequestTimerNotifier.value = 60;
+          } else {
+            InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
+            FlutterToast().showToast(msg: model.message?.first.toString());
           }
         }
       });
@@ -639,12 +651,114 @@ class SocketProvider extends ChangeNotifier {
         Logger().d('multiConnectRequestReceived=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
+            multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiReceiverRequested;
+            InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
+            SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
+            allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
+            multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
+            /// This is multi connect call receiver (Expert) side.
+            NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
+                args: MultiConnectDialogArguments(
+                  //expertList: model.data?.expertList,
+                  userDetail: model.data?.userDetails,
+                  onFirstBtnTap: () {
+                    multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.accept,
+                        expertId: SharedPrefHelper.getUserId,
+                        userId: model.data?.userDetails?.id.toString() ?? '',
+                        callRoleEnum: CallRoleEnum.expert,
+                        callRequestId: model.data?.callRequestId.toString() ?? '');
+                    /// expert accept
+                    NavigationService.context.toPop();
+                  },
+                  onSecondBtnTap: (){
+                    /// expert decline
+                    multiConnectStatusEmit( callStatusEnum: CallRequestStatusEnum.decline,
+                        expertId: SharedPrefHelper.getUserId,
+                        userId: model.data?.userDetails?.id.toString() ?? '',
+                        callRoleEnum: CallRoleEnum.expert,
+                        callRequestId: model.data?.callRequestId.toString() ?? '');
+                    NavigationService.context.toPop();
+                  },
+                ));
 
           }
         }
       });
     } catch (e) {
       Logger().d('multiConnectRequestReceived====$e');
+    }
+  }
+
+  void multiConnectStatusEmit({required String? expertId,required String userId,
+    required CallRequestStatusEnum callStatusEnum, required CallRoleEnum callRoleEnum, required String callRequestId}) {
+    try {
+      Logger().d('multiConnectStatusEmit ==== Success');
+      socket?.emit(AppConstants.multiConnectUpdateStatus, {
+        AppConstants.expertId: expertId,
+        AppConstants.userId: userId,
+        AppConstants.role: callRoleEnum.roleToNumber,
+        AppConstants.callStatus: callStatusEnum.callRequestStatusToNumber,
+        AppConstants.callRequestId: callRequestId,
+        AppConstants.time: DateTime.now().toUtc().toString()
+      });
+    } catch (e) {
+      Logger().d('multiConnectStatusEmit====$e');
+    }
+  }
+
+
+  void multiConnectStatusResponse() {
+    try {
+      socket?.on(AppConstants.multiConnectStatusSend, (data) {
+        Logger().d('multiConnectStatusSend=====${data.toString()}');
+        if (data.toString().isNotEmpty) {
+          if (data['statusCode'].toString() == '200') {
+            InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
+
+            if(model.data?.expertList?.isNotEmpty ?? false) {
+              ref.read(multiConnectProvider).changeExpertListAfterEmit(expertsList: model.data?.expertList ?? []);
+              bool isAnyApproveOrChoose =  model.data?.expertList?.any((element) => (element.status.toString() == '2') || (element.status.toString() == '6'))  ?? false;
+             // bool isAnyChoose=  model.data?.expertList?.any((element) => element.status.toString() == '6')  ?? false;
+              if(isAnyApproveOrChoose){
+                multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestApproved;
+              } else {
+                multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestTimeout;
+                multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.timeout;
+              }
+            }
+          } else {
+            InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
+            FlutterToast().showToast(msg: model.message?.first.toString());
+          }
+        }
+      });
+    } catch (e) {
+      Logger().d('multiConnectStatusSend====$e');
+    }
+  }
+
+
+  void multiConnectStatusListener() {
+    try {
+      socket?.on(AppConstants.multiConnectStatusReceived, (data) {
+        Logger().d('multiConnectStatusReceived=====${data.toString()}');
+        if (data.toString().isNotEmpty) {
+          if (data['statusCode'].toString() == '200') {
+            InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
+            if(model.data?.status.toString() == '5' || model.data?.status.toString() == '4'){
+              if(activeRoute.value == RoutesConstants.multiConnectCallDialogScreen){
+                NavigationService.context.toPop();
+              }
+            }
+
+          } else {
+            InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
+            FlutterToast().showToast(msg: model.message?.first.toString());
+          }
+        }
+      });
+    } catch (e) {
+      Logger().d('multiConnectStatusReceived====$e');
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
@@ -14,6 +15,14 @@ class BookingConfirmScreen extends ConsumerStatefulWidget {
 }
 
 class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(scheduleCallProvider).getTimeZone();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheduleWatch = ref.watch(scheduleCallProvider);
@@ -30,8 +39,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
       body: Stack(
         children: [
           NetworkImageWidget(
-            imageURL:
-                scheduleWatch.appointmentData?.expertDetail?.expertProfile ?? '',
+            imageURL: scheduleWatch.appointmentData?.expertDetail?.expertProfile ?? '',
             isNetworkImage: true,
             boxFit: BoxFit.cover,
           ),
@@ -125,20 +133,20 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             ),
             20.0.spaceY,
             LabelSmallText(
-              title: '${LocaleKeys.yourTimeZone.tr()}:INDIAN STANDARD TIME (UTC +5:30)',
+              title: '${LocaleKeys.yourTimeZone.tr()}: ${scheduleWatch.userLocalTimeZone}',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
             ),
             10.0.spaceY,
             LabelSmallText(
-              title: '${LocaleKeys.expertTimeZone.tr()}:CENTRAL TIME (UTC -6:00)',
+              title: '${LocaleKeys.expertTimeZone.tr()}: CENTRAL TIME (UTC -6:00)',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
             ),
             30.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.checkNotification.tr(),
-              onPressed: ()=>context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen,args: 2),
+              onPressed: () => context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 2),
               buttonColor: ColorConstants.yellowButtonColor,
               fontSize: 15,
             ),
@@ -148,7 +156,18 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
               onPressed: () {
                 context.toPushNamed(
                   RoutesConstants.canceledAppointmentOptionScreen,
-                  args: CancelArgs(appointmentData: scheduleWatch.appointmentData, role: 1, fromScheduled: true),
+                  args: CancelArgs(
+                      appointmentData: GetUpcomingAppointment(
+                        id: scheduleWatch.appointmentData?.id,
+                        expertId: scheduleWatch.appointmentData?.expertDetail?.id,
+                        userId: int.parse(SharedPrefHelper.getUserId),
+                        startTime: scheduleWatch.appointmentData?.startTime,
+                        endTime: scheduleWatch.appointmentData?.endTime,
+                        duration: scheduleWatch.appointmentData?.duration.toString(),
+                        date: scheduleWatch.appointmentData?.date,
+                      ),
+                      role: 1,
+                      fromScheduled: true),
                 );
               },
               buttonColor: ColorConstants.yellowButtonColor,

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class YourMirlIdScreen extends ConsumerStatefulWidget {
@@ -10,6 +12,7 @@ class YourMirlIdScreen extends ConsumerStatefulWidget {
 
 class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
   final _loginPassKey = GlobalKey<FormState>();
+  FocusNode mirlIdFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
             ),
             trailingIcon: InkWell(
               onTap: () {
+                mirlIdFocusNode.unfocus();
                 if (_loginPassKey.currentState?.validate() ?? false) {
                   expertRead.updateMirlIdApi();
                 }
@@ -45,11 +49,12 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
                 TextFormFieldWidget(
                   hintText: StringConstants.charactersLong,
                   controller: expertWatch.mirlIdController,
+                  focusNode: mirlIdFocusNode,
                   validator: (value) {
-                    return value?.toMirlIdValidation('Please enter MIRL ID', 'MIRL ID contains only character');
+                    return value?.toMirlIdValidation(LocaleKeys.pleaseEnterMirlID.tr(), LocaleKeys.idContainsOnlyCharacter.tr());
                   },
-                  onFieldSubmitted: (value){
-                    context.unFocusKeyboard();
+                  onFieldSubmitted: (value) {
+                    mirlIdFocusNode.unfocus();
                   },
                   textInputAction: TextInputAction.done,
                 ),

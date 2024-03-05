@@ -40,27 +40,26 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CategoryCommonView(
-                  onTap: (){},
+                  onTap: () {},
                   categoryName: expertDetailWatch.userData?.areaOfExpertise?[index].name ?? '',
-                  imageUrl:  expertDetailWatch.userData?.areaOfExpertise?[index].image ?? '',).addPaddingLeft(4),
+                  imageUrl: expertDetailWatch.userData?.areaOfExpertise?[index].image ?? '',
+                ).addPaddingLeft(4),
                 15.0.spaceX,
                 Expanded(
                   child: Wrap(
                       children: List.generate(expertDetailWatch.userData?.areaOfExpertise?[index].topic?.length ?? 0, (i) {
                     return Container(
-                      margin: EdgeInsets.only(bottom: 14,right: 4),
-                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 3),
-                      child: TitleMediumText(
+                      margin: EdgeInsets.only(bottom: 14, right: 4),
+                      padding: EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                      child: BodyMediumText(
                         maxLine: 3,
                         title: expertDetailWatch.userData?.areaOfExpertise?[index].topic?[i].name ?? '',
                         fontFamily: FontWeightEnum.w500.toInter,
                         titleTextAlign: TextAlign.start,
                       ),
                       decoration: ShapeDecoration(
-                        color: index % 2 == 0 ? ColorConstants.primaryColor.withOpacity(0.40) : ColorConstants.yellowButtonColor.withOpacity(0.4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                        color: index % 2 == 0 ? ColorConstants.lightPrimaryColor : ColorConstants.lightYellowColor,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         shadows: [
                           BoxShadow(
                             color: ColorConstants.blackColor.withOpacity(0.20),

@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             onGenerateRoute: RouterConstant.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
-            // home: EarningReportScreen(),
+           // home: CallFeedbackScreen(callHistoryId: 45),
           );
         },
       ),

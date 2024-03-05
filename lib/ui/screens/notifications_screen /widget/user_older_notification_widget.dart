@@ -20,9 +20,9 @@ class _UserOlderNotificationWidgetState extends State<UserOlderNotificationWidge
               offset: Offset(0, 2), color: ColorConstants.blackColor.withOpacity(0.25), spreadRadius: 0, blurRadius: 2),
         ],
         borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
+          bottomRight: Radius.circular(15),
+          bottomLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
         ),
       ),
       child: Stack(

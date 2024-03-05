@@ -95,13 +95,15 @@ class UserFavorites {
   int? id;
   String? expertName;
   String? expertProfile;
+  bool? isFavorite;
 
-  UserFavorites({this.id, this.expertName, this.expertProfile});
+  UserFavorites({this.id, this.expertName, this.expertProfile,this.isFavorite});
 
   UserFavorites.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     expertName = json['expertName'];
     expertProfile = json['expertProfile'];
+    isFavorite = json['isFavorite'];
   }
 
   Map<String, dynamic> toJson() {

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
@@ -24,7 +25,13 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   DateTime? selectedDate;
 
+  late DateTime selectedDateStartTime;
+
+  late DateTime selectedDateEndTime;
+
   String _selectedUTCDate = '';
+
+  String userLocalTimeZone = '';
 
   List<SlotsData> get slotList => _slotList;
   List<SlotsData> _slotList = [];
@@ -76,10 +83,22 @@ class ScheduleCallProvider extends ChangeNotifier {
 
   void getSelectedDate(DateTime dateTime) {
     final now = DateTime.now().toLocal();
-    selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second);
+    selectedDate = DateTime(dateTime.year, dateTime.month, dateTime.day, now.hour, now.minute, now.second).toUtc();
+    selectedDateStartTime = DateTime(dateTime.year, dateTime.month, dateTime.day, 00, 00).toUtc();
+    selectedDateEndTime = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59).toUtc();
     _selectedUTCDate = selectedDate?.toIso8601String() ?? '';
     print(_selectedUTCDate);
+    print(":selectedDateStartTime ${selectedDateStartTime.toIso8601String()}");
+    print(":selectedDateEndTime ${selectedDateEndTime.toIso8601String()}");
+    print(_selectedUTCDate);
     getSlotsApi();
+    notifyListeners();
+  }
+
+  void getTimeZone() async {
+    final Duration timeDuration = DateTime.now().timeZoneOffset;
+    final String timeZone = DateTime.now().timeZoneName;
+    userLocalTimeZone = '$timeZone (UTC ${timeDuration.inHours}:${timeDuration.inMinutes})';
     notifyListeners();
   }
 
@@ -130,7 +149,13 @@ class ScheduleCallProvider extends ChangeNotifier {
     notifyListeners();
 
     ApiHttpResult response = await _scheduleCallRepository.getTimeSlotsApi(
-      request: SlotsRequestModel(expertId: expertData?.id, date: _selectedUTCDate, duration: _callDuration).prepareRequest(),
+      request: SlotsRequestModel(
+              expertId: expertData?.id,
+              date: _selectedUTCDate,
+              duration: _callDuration,
+              endDate: selectedDateEndTime.toIso8601String(),
+              startDate: selectedDateStartTime.toIso8601String())
+          .prepareRequest(),
     );
 
     _isLoadingSlot = false;

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
 import 'package:mirl/ui/screens/home_screen/widget/category_and_topic_list_view.dart';
@@ -15,11 +16,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(homeProvider).homePageApi();
+      instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+      instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
     });
     super.initState();
   }
@@ -30,6 +32,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
+        appBarColor: ColorConstants.greyLightColor,
         preferSize: 0,
       ),
       body: SingleChildScrollView(
@@ -37,18 +40,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InkWell(
-              onTap: () {
-                context.toPushNamed(RoutesConstants.searchScreen);
-              },
+              onTap: () => context.toPushNamed(RoutesConstants.searchScreen),
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.0), border: Border.all(color: ColorConstants.dropDownBorderColor)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: ColorConstants.dropDownBorderColor),
+                  color: ColorConstants.whiteColor,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: BodySmallText(
                   maxLine: 1,
                   fontFamily: FontWeightEnum.w400.toInter,
                   title: LocaleKeys.searchTypeAnyKeyword.tr(),
                   titleColor: ColorConstants.blackColor,
-                ).addAllMargin(12),
+                ),
               ),
             ),
             30.0.spaceY,
@@ -58,18 +64,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Flexible(
                   child: GestureDetector(
                     onTap: () {
-                      context.toPushNamed(RoutesConstants.exploreExpertScreen,args: false);
+                      context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
                     },
                     child: Container(
                         height: 178,
-                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
-                          BoxShadow(
-                            color: Color(0x33000000),
-                            blurRadius: 2,
-                            offset: Offset(0, 2),
-                            spreadRadius: 0,
-                          )
-                        ]),
+                        decoration: BoxDecoration(
+                            color: ColorConstants.whiteColor,
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x33000000),
+                                blurRadius: 2,
+                                offset: Offset(0, 2),
+                                spreadRadius: 0,
+                              )
+                            ]),
                         child: Column(
                           children: [
                             BodySmallText(
@@ -98,15 +107,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: GestureDetector(
                     onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                     child: Container(
-                      height: 178,
-                        decoration: BoxDecoration(color: ColorConstants.whiteColor, borderRadius: BorderRadius.circular(10.0), boxShadow: [
-                          BoxShadow(
-                            color: Color(0x33000000),
-                            blurRadius: 2,
-                            offset: Offset(0, 2),
-                            spreadRadius: 0,
-                          )
-                        ]),
+                        height: 178,
+                        decoration: BoxDecoration(
+                            color: ColorConstants.whiteColor,
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x33000000),
+                                blurRadius: 2,
+                                offset: Offset(0, 2),
+                                spreadRadius: 0,
+                              )
+                            ]),
                         child: Column(
                           children: [
                             BodySmallText(

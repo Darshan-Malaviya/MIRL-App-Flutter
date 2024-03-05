@@ -37,6 +37,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
           ),
           trailingIcon: OnScaleTap(
             onPress: () {
+              context.unFocusKeyboard();
               if (_loginPassKey.currentState?.validate() ?? false) {
                 expertRead.expertCertificateApi(context);
               }
@@ -138,7 +139,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           hintText: StringConstants.description,
                           textInputAction: TextInputAction.done,
                           onFieldSubmitted: (value) {
-                            context.unFocusKeyboard();
+                            expertWatch.certiAndExpModel[index].descriptionFocus.unfocus();
                           },
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(255),

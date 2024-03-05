@@ -55,4 +55,9 @@ class AppConstants {
 
   static const termsAndConditions = 'Terms and Conditions';
   static const privacyPolicy = 'Privacy Policy';
+
+
+  static const reportThisUSer = 'REPORT THIS USER';
+
+
 }

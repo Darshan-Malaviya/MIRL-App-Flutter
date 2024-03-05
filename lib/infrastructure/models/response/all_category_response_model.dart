@@ -17,7 +17,7 @@ class AllCategoryListResponseModel {
     if (json['data'] != null) {
       data = <CategoryIdNameCommonModel>[];
       json['data'].forEach((v) {
-        data!.add(CategoryIdNameCommonModel.fromJson(v));
+        data?.add(CategoryIdNameCommonModel.fromJson(v));
       });
     }
   }

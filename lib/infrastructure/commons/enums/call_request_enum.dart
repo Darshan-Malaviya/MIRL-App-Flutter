@@ -3,24 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
 
-enum CallTypeEnum { callRequest, requestWaiting, requestApproved, requestDeclined, requestTimeout, receiverRequested, multiConnectReceiverRequested }
+enum CallRequestTypeEnum { callRequest, requestWaiting, requestApproved, requestDeclined, requestTimeout, receiverRequested,
+  multiCallRequest, multiRequestWaiting, multiRequestApproved, multiRequestDeclined, multiRequestTimeout, multiReceiverRequested,
+}
 
-extension CallTypeEnumExtension on CallTypeEnum {
+extension CallRequestTypeEnumExtension on CallRequestTypeEnum {
   Color get typeName {
     switch (this) {
-      case CallTypeEnum.callRequest:
+      case CallRequestTypeEnum.callRequest:
         return ColorConstants.callRequestColor;
-        case CallTypeEnum.requestWaiting:
+        case CallRequestTypeEnum.requestWaiting:
         return ColorConstants.yellowButtonColor;
-      case CallTypeEnum.requestApproved:
+      case CallRequestTypeEnum.requestApproved:
         return ColorConstants.greenColor;
-      case CallTypeEnum.requestDeclined:
+      case CallRequestTypeEnum.requestDeclined:
         return ColorConstants.redColor;
-      case CallTypeEnum.requestTimeout:
+      case CallRequestTypeEnum.requestTimeout:
         return ColorConstants.sliderColor;
-      case CallTypeEnum.receiverRequested:
+      case CallRequestTypeEnum.receiverRequested:
         return ColorConstants.greenColor;
-      case CallTypeEnum.multiConnectReceiverRequested:
+
+      case CallRequestTypeEnum.multiCallRequest:
+        return ColorConstants.callRequestColor;
+      case CallRequestTypeEnum.multiRequestWaiting:
+        return ColorConstants.yellowButtonColor;
+      case CallRequestTypeEnum.multiRequestApproved:
+        return ColorConstants.greenColor;
+      case CallRequestTypeEnum.multiRequestDeclined:
+        return ColorConstants.redColor;
+      case CallRequestTypeEnum.multiRequestTimeout:
+        return ColorConstants.sliderColor;
+      case CallRequestTypeEnum.multiReceiverRequested:
         return ColorConstants.callRequestColor;
       default:
         return ColorConstants.callRequestColor;
@@ -29,19 +42,30 @@ extension CallTypeEnumExtension on CallTypeEnum {
 
   String get descriptionName {
     switch (this) {
-      case CallTypeEnum.callRequest:
+      case CallRequestTypeEnum.callRequest:
         return LocaleKeys.requestCallDesc.tr();
-      case CallTypeEnum.requestWaiting:
+      case CallRequestTypeEnum.requestWaiting:
         return LocaleKeys.requestWaitingDesc.tr();
-      case CallTypeEnum.requestApproved:
+      case CallRequestTypeEnum.requestApproved:
         return LocaleKeys.requestApprovedDesc.tr();
-      case CallTypeEnum.requestDeclined:
+      case CallRequestTypeEnum.requestDeclined:
         return LocaleKeys.requestDeclineDesc.tr();
-      case CallTypeEnum.requestTimeout:
+      case CallRequestTypeEnum.requestTimeout:
         return LocaleKeys.requestTimeoutDesc.tr();
-      case CallTypeEnum.receiverRequested:
+      case CallRequestTypeEnum.receiverRequested:
         return LocaleKeys.ringingDesc.tr();
-      case CallTypeEnum.multiConnectReceiverRequested:
+
+      case CallRequestTypeEnum.multiCallRequest:
+        return LocaleKeys.confirmMultiCall.tr();
+      case CallRequestTypeEnum.multiRequestWaiting:
+        return LocaleKeys.multiCallWaiting.tr();
+      case CallRequestTypeEnum.multiRequestApproved:
+        return LocaleKeys.multiCallApprove.tr();
+      case CallRequestTypeEnum.multiRequestDeclined:
+        return LocaleKeys.multiCallDecline.tr();
+      case CallRequestTypeEnum.multiRequestTimeout:
+        return LocaleKeys.multiCallTimeOut.tr();
+      case CallRequestTypeEnum.multiReceiverRequested:
         return LocaleKeys.multiConnectRequestDesc.tr();
       default:
         return LocaleKeys.requestCallDesc.tr();
@@ -51,19 +75,30 @@ extension CallTypeEnumExtension on CallTypeEnum {
 
   String get secondButtonName {
     switch (this) {
-      case CallTypeEnum.callRequest:
+      case CallRequestTypeEnum.callRequest:
         return LocaleKeys.goBack.tr().toUpperCase();
-      case CallTypeEnum.requestWaiting:
+      case CallRequestTypeEnum.requestWaiting:
         return LocaleKeys.cancel.tr().toUpperCase();
-      case CallTypeEnum.requestApproved:
+      case CallRequestTypeEnum.requestApproved:
         return LocaleKeys.continueText.tr().toUpperCase();
-      case CallTypeEnum.requestDeclined:
+      case CallRequestTypeEnum.requestDeclined:
         return LocaleKeys.goBack.tr().toUpperCase();
-      case CallTypeEnum.requestTimeout:
+      case CallRequestTypeEnum.requestTimeout:
         return LocaleKeys.goBack.tr().toUpperCase();
-      case CallTypeEnum.receiverRequested:
+      case CallRequestTypeEnum.receiverRequested:
         return LocaleKeys.sorryBusy.tr().toUpperCase();
-      case CallTypeEnum.multiConnectReceiverRequested:
+
+      case CallRequestTypeEnum.multiCallRequest:
+        return LocaleKeys.goBack.tr().toUpperCase();
+      case CallRequestTypeEnum.multiRequestWaiting:
+        return LocaleKeys.cancel.tr().toUpperCase();
+      case CallRequestTypeEnum.multiRequestApproved:
+        return LocaleKeys.confirmExpert.tr().toUpperCase();
+      case CallRequestTypeEnum.multiRequestDeclined:
+        return LocaleKeys.goBack.tr().toUpperCase();
+      case CallRequestTypeEnum.multiRequestTimeout:
+        return LocaleKeys.goBack.tr().toUpperCase();
+      case CallRequestTypeEnum.multiReceiverRequested:
         return LocaleKeys.sorryBusy.tr().toUpperCase();
       default:
         return LocaleKeys.goBack.tr().toUpperCase();
@@ -73,19 +108,30 @@ extension CallTypeEnumExtension on CallTypeEnum {
 
   String get firstButtonName {
     switch (this) {
-      case CallTypeEnum.callRequest:
+      case CallRequestTypeEnum.callRequest:
         return LocaleKeys.requestCall.tr().toUpperCase();
-      case CallTypeEnum.requestWaiting:
+      case CallRequestTypeEnum.requestWaiting:
         return '';
-      case CallTypeEnum.requestApproved:
+      case CallRequestTypeEnum.requestApproved:
         return '';
-      case CallTypeEnum.requestDeclined:
+      case CallRequestTypeEnum.requestDeclined:
         return '';
-      case CallTypeEnum.requestTimeout:
+      case CallRequestTypeEnum.requestTimeout:
         return LocaleKeys.tryAgain.tr().toUpperCase();
-      case CallTypeEnum.receiverRequested:
+      case CallRequestTypeEnum.receiverRequested:
         return LocaleKeys.yesCallMe.tr().toUpperCase();
-      case CallTypeEnum.multiConnectReceiverRequested:
+
+      case CallRequestTypeEnum.multiCallRequest:
+        return LocaleKeys.confirm.tr().toUpperCase();
+      case CallRequestTypeEnum.multiRequestWaiting:
+        return '';
+      case CallRequestTypeEnum.multiRequestApproved:
+        return '';
+      case CallRequestTypeEnum.multiRequestDeclined:
+        return '';
+      case CallRequestTypeEnum.multiRequestTimeout:
+        return '';
+      case CallRequestTypeEnum.multiReceiverRequested:
         return LocaleKeys.yesCallMe.tr().toUpperCase();
       default:
         return '';
@@ -94,20 +140,32 @@ extension CallTypeEnumExtension on CallTypeEnum {
 
   String get titleName {
     switch (this) {
-      case CallTypeEnum.callRequest:
+      case CallRequestTypeEnum.callRequest:
         return LocaleKeys.instantCallRequest.tr().toUpperCase();
-      case CallTypeEnum.requestWaiting:
+      case CallRequestTypeEnum.requestWaiting:
         return LocaleKeys.instantCallRequest.tr().toUpperCase();
-      case CallTypeEnum.requestApproved:
+      case CallRequestTypeEnum.requestApproved:
         return LocaleKeys.requestApproved.tr().toUpperCase();
-      case CallTypeEnum.requestDeclined:
+      case CallRequestTypeEnum.requestDeclined:
         return LocaleKeys.requestDeclined.tr().toUpperCase();
-      case CallTypeEnum.requestTimeout:
+      case CallRequestTypeEnum.requestTimeout:
         return LocaleKeys.requestTimeOut.tr().toUpperCase();
-      case CallTypeEnum.receiverRequested:
+      case CallRequestTypeEnum.receiverRequested:
         return LocaleKeys.instantCallRequest.tr().toUpperCase();
-      case CallTypeEnum.multiConnectReceiverRequested:
-        return LocaleKeys.instantCallRequest.tr().toUpperCase();
+
+      case CallRequestTypeEnum.multiCallRequest:
+        return LocaleKeys.areYouReady.tr().toUpperCase();
+        case CallRequestTypeEnum.multiRequestWaiting:
+        return LocaleKeys.multiConnectRequest.tr().toUpperCase();
+      case CallRequestTypeEnum.multiRequestApproved:
+        return LocaleKeys.multiConnectRequest.tr().toUpperCase();
+      case CallRequestTypeEnum.multiRequestDeclined:
+        return LocaleKeys.multiConnectRequest.tr().toUpperCase();
+      case CallRequestTypeEnum.multiRequestTimeout:
+        return LocaleKeys.multiConnectRequest.tr().toUpperCase();
+      case CallRequestTypeEnum.multiReceiverRequested:
+        return LocaleKeys.multiConnectRequest.tr().toUpperCase();
+
       default:
         return LocaleKeys.instantCallRequest.tr().toUpperCase();
     }

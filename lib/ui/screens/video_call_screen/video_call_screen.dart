@@ -7,7 +7,6 @@ import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
 import 'package:mirl/infrastructure/providers/call_provider.dart';
 import 'package:mirl/infrastructure/services/agora_service.dart';
@@ -35,10 +34,10 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       if (model?.callRoleEnum == CallRoleEnum.user) {
         ref.read(socketProvider).timerEmit(
               userId: int.parse((model?.userId.toString() ?? '')),
-              expertId: int.parse((model?.expertId.toString() ?? '')),
+              expertIdList: [int.parse((model?.expertId.toString() ?? ''))],
               callRoleEnum: CallRoleEnum.user,
               timer: instanceCallDurationNotifier.value,
-              timerType: CallTimerEnum.call,
+              timerType: CallTimerEnum.call, requestType: widget.arguments.callType ?? 0,
             );
       }
       instanceCallTimerFunction();
@@ -82,8 +81,9 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       engine.leaveChannel();
       engine.release();
     }
-    instanceCallDurationNotifier.value = 60;
+    instanceCallDurationNotifier.value = 120;
     instanceCallDurationNotifier.removeListener(() { });
+    instanceRequestTimerNotifier.dispose();
 
     //ref.read(callProvider).disposeCallDuration();
     super.dispose();
@@ -94,81 +94,84 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
     final callWatch = ref.watch(callProvider);
 
 
-    return Scaffold(
-      body: ValueListenableBuilder(
-        valueListenable: changeVideoCallView,
-        builder: (BuildContext context, bool uiUpdate, Widget? mainChild) {
-          return ValueListenableBuilder(
-            valueListenable: callConnectNotifier,
-            builder: (BuildContext context, CallConnectStatusEnum value, Widget? child) {
-              return Stack(
-                children: [
-                  /*AgoraVideoView(
-                    controller: VideoViewController(
-                      rtcEngine: engine,
-                      canvas: const VideoCanvas(uid: 0, mirrorMode: VideoMirrorModeType.videoMirrorModeAuto),
-                    ),
-                  ),*/
-                      if (value == CallConnectStatusEnum.ringing) ...[
-                        Center(
-                            child: _waitingView(
-                                title: 'Ringing..',
-                                color: ColorConstants.yellowButtonColor.withOpacity(0.2),
-                                textColor: ColorConstants.yellowButtonColor))
-                      ] else ...[
-                        if (callWatch.isSwipeUser) ...[
-                          _remoteUserAgoraView(remotId: callWatch.remoteUid ?? -1, callProvider: callWatch)
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: ValueListenableBuilder(
+          valueListenable: changeVideoCallView,
+          builder: (BuildContext context, bool uiUpdate, Widget? mainChild) {
+            return ValueListenableBuilder(
+              valueListenable: callConnectNotifier,
+              builder: (BuildContext context, CallConnectStatusEnum value, Widget? child) {
+                return Stack(
+                  children: [
+                    /*AgoraVideoView(
+                      controller: VideoViewController(
+                        rtcEngine: engine,
+                        canvas: const VideoCanvas(uid: 0, mirrorMode: VideoMirrorModeType.videoMirrorModeAuto),
+                      ),
+                    ),*/
+                        if (value == CallConnectStatusEnum.ringing) ...[
+                          Center(
+                              child: _waitingView(
+                                  title: 'Ringing..',
+                                  color: ColorConstants.yellowButtonColor.withOpacity(0.2),
+                                  textColor: ColorConstants.yellowButtonColor))
                         ] else ...[
-                          _localUserAgoraView(callProvider: callWatch)
+                          if (callWatch.isSwipeUser) ...[
+                            _remoteUserAgoraView(remotId: callWatch.remoteUid ?? -1, callProvider: callWatch)
+                          ] else ...[
+                            _localUserAgoraView(callProvider: callWatch)
+                          ],
                         ],
-                      ],
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Visibility(
-                      visible: callWatch.visible,
-                      child: AnimatedContainer(
-                        duration: Duration(seconds: 2),
-                        child: VideoCallWidget(),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Visibility(
+                        visible: callWatch.visible,
+                        child: AnimatedContainer(
+                          duration: Duration(seconds: 2),
+                          child: VideoCallWidget(),
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: callWatch.visible ? 200 : 10,
-                    right: 2,
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 150,
-                          width: 120,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            color: ColorConstants.primaryColor.withOpacity(0.3),
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                                child: callWatch.isSwipeUser
-                                    ? _localUserAgoraView(callProvider: callWatch)
-                                    : _remoteUserAgoraView(remotId: callWatch.remoteUid ?? -1, callProvider: callWatch)),
-                        if(!callWatch.isRemoteMicOn)...[
+                    Positioned(
+                      bottom: callWatch.visible ? 200 : 10,
+                      right: 2,
+                      child: Stack(
+                        children: [
                           Container(
+                            height: 150,
+                            width: 120,
+                            clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(offset: Offset(0, 0), color: ColorConstants.whiteColor.withOpacity(0.2), spreadRadius: 1, blurRadius: 5),
-                              ],
+                              color: ColorConstants.primaryColor.withOpacity(0.3),
+                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
                             ),
-                            child: Image.asset(ImageConstants.voiceOff).addAllPadding(8),
-                          )
-                        ]
+                                  child: callWatch.isSwipeUser
+                                      ? _localUserAgoraView(callProvider: callWatch)
+                                      : _remoteUserAgoraView(remotId: callWatch.remoteUid ?? -1, callProvider: callWatch)),
+                          if(!callWatch.isRemoteMicOn)...[
+                            Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(offset: Offset(0, 0), color: ColorConstants.whiteColor.withOpacity(0.2), spreadRadius: 1, blurRadius: 5),
+                                ],
+                              ),
+                              child: Image.asset(ImageConstants.voiceOff).addAllPadding(8),
+                            )
+                          ]
 
-                      ],
-                    ).addAllPadding(20),
-                  )
-                ],
-              );
-            }
-          );
-        }
+                        ],
+                      ).addAllPadding(20),
+                    )
+                  ],
+                );
+              }
+            );
+          }
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -41,7 +42,7 @@ class ExpertDetailWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                180.0.spaceY,
+                200.0.spaceY,
                 Center(
                   child: ShadowContainer(
                     border: 20,
@@ -50,7 +51,7 @@ class ExpertDetailWidget extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        BodyMediumText(title: expertData?.expertName ?? ''),
+                        BodyLargeText(title: expertData?.expertName?.toUpperCase() ?? ''),
                         8.0.spaceY,
                         if (expertData?.expertCategory?.isNotEmpty ?? false) ...[
                           Wrap(
@@ -64,9 +65,9 @@ class ExpertDetailWidget extends StatelessWidget {
                                 color: Color(colorConcat),
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                                child: BodyMediumText(
+                                child: BodySmallText(
                                   title: expertData?.expertCategory?[i].name ?? '',
-                                  fontFamily: FontWeightEnum.w400.toInter,
+                                  fontFamily: FontWeightEnum.w500.toInter,
                                 ),
                               );
                             }),
@@ -88,52 +89,46 @@ class ExpertDetailWidget extends StatelessWidget {
                           titleTextAlign: TextAlign.center,
                         ),
                         10.0.spaceX,
-                        HeadlineMediumText(
-                          fontSize: 30,
-                          title: '-',
-                          titleColor: ColorConstants.bottomTextColor,
-                        ),
+                        AutoSizeText(
+                          expertData?.overAllRating != 0 ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                        )
                       ],
                     ),
                     20.0.spaceX,
-                    Flexible(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          BodySmallText(
-                            title: LocaleKeys.feesPerMinute.tr(),
-                            fontFamily: FontWeightEnum.w400.toInter,
-                            titleTextAlign: TextAlign.center,
-                          ),
-                          10.0.spaceX,
-                          Flexible(
-                            child: HeadlineMediumText(
-                              fontSize: 30,
-                              maxLine: 3,
-                              title: fee != null ? '\$${fee}' : "",
-                              titleColor: ColorConstants.bottomTextColor,
-                              titleTextAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BodySmallText(
+                          title: LocaleKeys.feesPerMinute.tr(),
+                          fontFamily: FontWeightEnum.w400.toInter,
+                          titleTextAlign: TextAlign.center,
+                        ),
+                        10.0.spaceX,
+                        AutoSizeText(
+                          fee != null ? '\$${fee}' : "",
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                        )
+                      ],
                     ),
                   ],
                 ),
-                10.0.spaceY,
+                16.0.spaceY,
                 Align(alignment: Alignment.centerLeft, child: BodySmallText(title: StringConstants.aboutMe)),
                 5.0.spaceY,
                 ReadMoreText(
-                  style: TextStyle(fontSize: 14, fontFamily: FontWeightEnum.w400.toInter),
+                  style: TextStyle(fontSize: 12, fontFamily: FontWeightEnum.w400.toInter),
                   expertData?.about ?? '',
-                  trimLines: 2,
+                  trimLines: 5,
                   trimMode: TrimMode.Line,
                   textAlign: TextAlign.start,
                   trimCollapsedText: LocaleKeys.readMore.tr(),
-                  trimExpandedText: LocaleKeys.readLess.tr(),
-                  moreStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor),
-                  lessStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor),
+                  trimExpandedText: ' ${LocaleKeys.readLess.tr()}',
+                  moreStyle: TextStyle(fontSize: 12, color: ColorConstants.bottomTextColor.withOpacity(0.7)),
+                  lessStyle: TextStyle(fontSize: 12, color: ColorConstants.bottomTextColor.withOpacity(0.7)),
                 ),
                 fromMultiConnect ? 20.0.spaceY : 0.0.spaceY,
               ],

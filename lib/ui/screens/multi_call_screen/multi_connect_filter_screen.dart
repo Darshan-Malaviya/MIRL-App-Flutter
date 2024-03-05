@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/dropdown_widget/sort_experts_droup_down_widget.dart';
+import 'package:mirl/ui/common/range_slider/range_slider_widget.dart';
 import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
@@ -21,8 +23,7 @@ class MultiConnectFilterScreen extends ConsumerStatefulWidget {
 class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
     super.initState();
   }
 
@@ -61,31 +62,18 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                     isDismissible: false,
                     child: TopicListByCategoryBottomView(
                       isFromExploreExpert: true,
-                      categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
+                      category: filterWatch.selectedCategory ?? CategoryIdNameCommonModel(),
                     ));
               } else {
                 FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCategoryFirst.tr());
               }
-            }, StringConstants.pickTopicFromTheAbove),
-            30.0.spaceY,
-            buildTextFormFieldWidget(filterWatch.instantCallAvailabilityController, context, () {
-              CommonBottomSheet.bottomSheet(
-                  context: context,
-                  child: FilterBottomSheetWidget(
-                      itemList: filterWatch.yesNoSelectionList.map((e) => e).toList(),
-                      title: LocaleKeys.selectCallAvailability.tr().toUpperCase(),
-                      onTapItem: (item) {
-                        filterRead.setValueOfCall(item);
-                        context.toPop();
-                      }),
-                  isDismissible: true);
-            }, StringConstants.instantCallsAvailability),
+            }, StringConstants.pickTopicFromTheAbove,hintText: LocaleKeys.pickCategoryTopic.tr()),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.ratingController, context, () {
               CommonBottomSheet.bottomSheet(
                   context: context,
                   child: FilterBottomSheetWidget(
-                      itemList: filterWatch.ratingList.map((e) => e).toList(),
+                      itemList: filterWatch.ratingList.map((e) => e.title).toList(),
                       title: LocaleKeys.pickRating.tr().toUpperCase(),
                       onTapItem: (item) {
                         filterRead.setRating(item);
@@ -123,6 +111,10 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             }, StringConstants.countryText),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.cityNameController, context, () {
+              if (filterWatch.countryNameController.text.isEmpty) {
+                FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCountryFirst.tr());
+                return;
+              }
               CommonBottomSheet.bottomSheet(
                   context: context,
                   isDismissible: true,
@@ -143,21 +135,39 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
               title: StringConstants.feeRange,
               titleColor: ColorConstants.bottomTextColor,
             ),
+            10.0.spaceY,
             SliderTheme(
-              data: SliderTheme.of(context).copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
-              child: RangeSlider(
+              data: SliderTheme.of(context)
+                  .copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
+              child: RangeSliderWidget(
                 values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
                 activeColor: ColorConstants.yellowButtonColor,
                 inactiveColor: ColorConstants.lineColor,
-                divisions: 25,
+                divisions: 4,
                 onChanged: filterRead.setRange,
                 min: 0,
                 max: 100,
               ),
             ),
+            10.0.spaceY,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                LabelSmallText(
+                  title: 'PRO\nBONO',
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ).addMarginLeft(10),
+                LabelSmallText(
+                  title: '\$100+',
+                  fontFamily: FontWeightEnum.w400.toInter,
+                ),
+              ],
+            ),
             if (filterWatch.start != null && filterWatch.end != null) ...[
               BodySmallText(
-                title: '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}',
+                title: filterWatch.end == 100
+                    ? '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}+'
+                    : '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}',
                 titleColor: ColorConstants.bottomTextColor,
               ),
               50.0.spaceY,
@@ -169,12 +179,13 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
           title: StringConstants.applyFilter,
           height: 55,
           onPressed: () async {
-            String? selectedTopicId;
-            if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
-              selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
-            }
-            double endFeeRange = filterWatch.end ?? 0;
-            double startFeeRange = filterWatch.start ?? 0;
+            if (filterWatch.commonSelectionModel.isNotEmpty) {
+              String? selectedTopicId;
+              if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
+                selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+              }
+              double endFeeRange = filterWatch.end ?? 0;
+              double startFeeRange = filterWatch.start ?? 0;
 
               filterRead.clearSingleCategoryData();
 
@@ -184,17 +195,14 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                   isFromFilter: true,
                   requestModel: ExpertDataRequestModel(
                     multiConnectRequest: 'true',
-                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
+                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false)
+                        ? filterWatch.selectedCategory?.id.toString()
+                        : null,
                     topicIds: selectedTopicId,
                     userId: SharedPrefHelper.getUserId,
                     city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
                     country: filterWatch.countryNameController.text.isNotEmpty ? filterWatch.countryNameController.text : null,
-                    gender: filterWatch.genderController.text.isNotEmpty ? ((filterWatch.selectGender ?? 0) - 1).toString() : null,
-                    instantCallAvailable: filterWatch.instantCallAvailabilityController.text.isNotEmpty
-                        ? filterWatch.isCallSelect == 1
-                            ? "true"
-                            : "false"
-                        : null,
+                    gender: filterWatch.genderController.text.isNotEmpty ? (filterWatch.selectGender ?? 0).toString() : null,
                     maxFee: filterWatch.end != null ? (endFeeRange * 100).toInt().toString() : null,
                     minFee: filterWatch.start != null ? (startFeeRange * 100).toInt().toString() : null,
                     feeOrder: filterWatch.sortBySelectedItem == 'SORT BY'
@@ -204,9 +212,19 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                                 ? 'ASC'
                                 : 'DESC'
                             : null,
+                    overAllRating: filterWatch.selectedRating != null ? filterWatch.selectedRating.toString() : null,
+                    ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
+                        ? null
+                        : filterWatch.sortBySelectedItem == 'REVIEW SCORE'
+                            ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
+                                ? 'DESC'
+                                : 'ASC'
+                            : null,
                   ));
-
-          }).addPaddingXY(paddingX: 50, paddingY: 10),
+            } else {
+              FlutterToast().showToast(msg: LocaleKeys.pleasePickAnyFilter.tr());
+            }
+          }).addPaddingXY(paddingX: 50, paddingY: 18),
     );
   }
 
@@ -215,22 +233,27 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
     BuildContext context,
     VoidCallback OnTap,
     String labelText,
+      {String? hintText}
   ) {
     return TextFormFieldWidget(
       isReadOnly: true,
-      hintText: StringConstants.selectOnrOrLeave,
+      hintText: hintText ??StringConstants.selectOnrOrLeave,
       controller: controller,
       labelText: labelText,
       labelColor: ColorConstants.bottomTextColor,
       enabledBorderColor: ColorConstants.dropDownBorderColor,
       labelTextFontFamily: FontWeightEnum.w700.toInter,
-      textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      textStyle: Theme.of(context)
+          .textTheme
+          .bodyMedium
+          ?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       suffixIcon: Icon(
         size: 18,
         Icons.keyboard_arrow_down_rounded,
         color: ColorConstants.dropDownBorderColor,
       ),
-      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       onTap: OnTap,
     );
   }

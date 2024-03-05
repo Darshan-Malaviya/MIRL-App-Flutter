@@ -1,4 +1,4 @@
-enum CallTimerEnum { call, request }
+enum CallTimerEnum { call, request ,multiCall, multiRequest}
 
 extension CallTimerEnumExtension on CallTimerEnum {
   String get callTimerToString {
@@ -7,6 +7,10 @@ extension CallTimerEnumExtension on CallTimerEnum {
         return 'call';
       case CallTimerEnum.request:
         return 'request';
+      case CallTimerEnum.multiCall:
+        return 'multiCall';
+        case CallTimerEnum.multiRequest:
+        return 'multiRequest';
       default:
         return '';
     }

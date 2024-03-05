@@ -27,12 +27,45 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setFavoriteList(){
+    favoriteListNotifier.value.clear();
+    favoriteListNotifier.value = _homeData?.userFavorites ?? [];
+    notifyListeners();
+  }
+
+  void manageFavoriteUserList(
+      {required int expertId, required String expertName, required String expertProfile, required bool isFavorite}) {
+    if (isFavorite == false) {
+      int index = favoriteListNotifier.value.indexWhere((element) => element.id.toString() == expertId.toString());
+      if (index != -1) {
+        favoriteListNotifier.value.removeAt(index);
+        notifyListeners();
+      }
+    } else {
+      if (favoriteListNotifier.value.isEmpty) {
+        favoriteListNotifier.value
+            .add(UserFavorites(id: expertId, expertName: expertName, expertProfile: expertProfile));
+        notifyListeners();
+      } else {
+        int index = favoriteListNotifier.value.indexWhere((element) => element.id.toString() != expertId.toString());
+        if (index != -1) {
+          favoriteListNotifier.value
+              .add(UserFavorites(id: expertId, expertName: expertName, expertProfile: expertProfile));
+          notifyListeners();
+        }
+      }
+    }
+  }
+
   Future<void> homePageApi() async {
     _isHomeLoading = true;
     notifyListeners();
+
     ApiHttpResult response = await _homeRepo.homePageService();
+
     _isHomeLoading = false;
     notifyListeners();
+
     switch (response.status) {
       case APIStatus.success:
         if (response.data != null && response.data is HomeDataResponseModel) {
@@ -40,6 +73,12 @@ class HomeProvider extends ChangeNotifier {
           Logger().d("home page API call successfully${response.data}");
           if (response.data != null && response.data is HomeDataResponseModel) {
             _homeData = responseModel.data;
+            if(_homeData?.userFavorites?.isNotEmpty ?? false ){
+              _homeData?.userFavorites?.forEach((element) {
+                element.isFavorite = true;
+              });
+            }
+            setFavoriteList();
           }
         }
         break;

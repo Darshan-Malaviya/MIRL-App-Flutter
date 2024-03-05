@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 /// convert date and time form timestamp
@@ -40,7 +39,7 @@ extension DateTimeFormatter on String {
     return '';
   }
 
-  /// 10:10 AM
+  /// 10:10 AM from UTC
   String to12HourTimeFormat() {
     try {
       DateTime timeStamp = DateTime.parse(this).toLocal();
@@ -52,24 +51,12 @@ extension DateTimeFormatter on String {
     return '';
   }
 
-  /// 5:20 from UTC
-  String toLocalTimeFromUtc() {
-    try {
-      DateTime localTime = DateTime.parse(this).toLocal();
-      var output = DateFormat('hh:mm a').format(localTime);
-      return output;
-    } catch (e) {
-      Logger().d("Exception occurred on toLocalTimeFromUtc : $e");
-    }
-    return '';
-  }
-
   /// UTC time format
   String toUTCDateTimeFormat() {
     try {
       int intValue = int.parse(this);
-      DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue, isUtc: true);
-      return dateTime.toIso8601String();
+      DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(intValue);
+      return dateTime.toUtc().toIso8601String();
     } catch (e) {
       Logger().d("Exception occurred on toUTCDateTimeFormat : $e");
     }
@@ -96,11 +83,7 @@ extension DateTimeFormatter on String {
     try {
       DateTime now = DateTime.now();
       DateTime localTime = DateTime.parse(this).toLocal();
-      // debugPrint('localTime=====================${localTime}');
-      // debugPrint('this=====================$this');
       DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, localTime.hour, localTime.minute);
-      // debugPrint('setTimeOfDay=====================$setTimeOfDay');
-
       return setTimeOfDay;
     } catch (e) {
       Logger().d("Exception on toLocaleFromUtcStart : $e");
@@ -114,9 +97,10 @@ extension DateTimeFormatter on String {
       DateTime now = DateTime.now();
       DateTime endLocalTime = DateTime.parse(this).toLocal();
       DateTime startLocalTime = DateTime.parse(startTime).toLocal();
-      String value1 = DateFormat('HH:mm:ss').format(endLocalTime);
-      String value2 = DateFormat('HH:mm:ss').format(startLocalTime);
-      if (value1 == value2) {
+      String value1 = DateFormat('h:mm a').format(DateTime.parse(this));
+      String value2 = DateFormat('h:mm a').format(startLocalTime);
+      final lastTimeOfDay = DateFormat('h:mm a').format(DateTime(now.year, now.month, now.day, 0, 0).toUtc());
+      if (value2 == value1) {
         DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute);
         return setTimeOfDay;
       } else {
@@ -132,8 +116,8 @@ extension DateTimeFormatter on String {
   ///December 21, 2023
   String? toDisplayDateWithMonth() {
     try {
-      DateTime localTime = DateFormat('yyyy-mm-dd').parse(this, true).toLocal();
-      String date = DateFormat.yMMMMd().format(localTime);
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String date = DateFormat('MMMM d, yyyy').format(localTime);
       return date;
     } catch (e) {
       Logger().d("Exception on toLocaleFromStringUtc : $e");
@@ -157,7 +141,8 @@ extension DateTimeFormatter on String {
     try {
       DateTime localTime = DateTime.parse(this).toLocal();
       String formattedDate = DateFormat('d MMMM yyyy').format(localTime);
-      formattedDate = formattedDate.replaceFirstMapped(RegExp(r'\b(\d{1,2})\b'), (match) => '${match.group(1)}${getDaySuffix(int.parse(match.group(1)!))}');
+      formattedDate = formattedDate.replaceFirstMapped(
+          RegExp(r'\b(\d{1,2})\b'), (match) => '${match.group(1)}${getDaySuffix(int.parse(match.group(1)!))}');
 
       String finalDate = '$formattedDate';
       return finalDate.toUpperCase();
@@ -183,7 +168,7 @@ extension DateTimeFormatter on String {
   String? toLocalEarningDate() {
     try {
       DateTime localTime = DateTime.parse(this).toLocal();
-      String formattedDate = DateFormat(' MMM dd yyyy').format(localTime);
+      String formattedDate = DateFormat('MMM dd yyyy').format(localTime);
       return formattedDate;
     } catch (e) {
       Logger().d("Exception on toLocalEarningDate : $e");
@@ -191,8 +176,64 @@ extension DateTimeFormatter on String {
     return null;
   }
 
+  /// NOVEMBER 2023
+  String? toDisplayMonthWithYear() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat('MMMM yyyy').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");
+    }
+    return null;
+  }
+  ///14:00AM/PM
+  String to24HourAmTimeFormat() {
+    try {
+      DateTime timeStamp = DateTime.parse(this);
+      var output = DateFormat('HH:mma').format(timeStamp);
+      return output;
+    } catch (e) {
+      Logger().d("Exception occurred on to24HourTimeFormat : $e");
+    }
+    return '';
+  }
+  /// only day
+  String? toDisplayDay() {
+    try {
+      DateTime localTime = DateTime.parse(this).toLocal();
+      String formattedDate = DateFormat('d').format(localTime);
+      return formattedDate;
+    } catch (e) {
+      Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");
+    }
+    return null;
+  }
+
+  String getChatHeaderDate() {
+    String finalDate = '';
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = DateTime(now.year, now.month, now.day - 1);
+    final DateTime givenDate = DateTime.tryParse(this)?.toLocal() ?? DateTime.now();
+    final convertedDate = DateTime(givenDate.year, givenDate.month, givenDate.day);
+
+    if (this.isNotEmpty) {
+      if (convertedDate == today) {
+        finalDate = 'New Notification';
+      } else if (convertedDate == yesterday) {
+        finalDate = 'Old Notification';
+      } else {
+        finalDate = 'Old Notification';
+      }
+    }
+    return finalDate;
+  }
+
+
 /* String timeAgo({bool numericDates = true}) {
     final date2 = DateTime.now();
+
     final difference = date2.difference(this);
     final years = difference.inDays ~/ 365;
     print((difference.inDays - (years * 365)) ~/ 30);
@@ -226,6 +267,7 @@ extension DateTimeFormatter on String {
     }
   }*/
 }
+//DateTime.now().subtract(Duration(days:1)),
 
 String getDaySuffix(int day) {
   if (day >= 11 && day <= 13) {

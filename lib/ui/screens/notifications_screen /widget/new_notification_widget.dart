@@ -1,26 +1,18 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 
-class NewNotificationWidget extends ConsumerStatefulWidget {
-  const NewNotificationWidget({super.key});
+class NewNotificationWidget extends StatelessWidget {
+  final int remainingSecond;
+  final String title, message, time;
 
-  @override
-  ConsumerState<NewNotificationWidget> createState() => _NewNotificationWidgetState();
-}
-
-class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
-  @override
-  void initState() {
-    super.initState();
-    ref.read(notificationProvider).startTimer();
-  }
+  const NewNotificationWidget({super.key, required this.remainingSecond, required this.title, required this.message, required this.time});
 
   @override
   Widget build(BuildContext context) {
-    final notificationProviderWatch = ref.watch(notificationProvider);
     return Container(
       width: double.infinity,
+      padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
       decoration: BoxDecoration(
         color: Colors.amber,
         border: Border.all(color: ColorConstants.dropDownBorderColor),
@@ -36,18 +28,24 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          10.0.spaceY,
           BodySmallText(
-            title: 'NEW NOTIFICATIONS',
+            title: title,
             titleColor: ColorConstants.blackColor,
             titleTextAlign: TextAlign.center,
-          ).addMarginTop(10),
-          20.0.spaceY,
-          TitleMediumText(
-            title: 'Yay! A user has picked you among others for a Multiple Connect Call! Click here to be the chosen one or decline the request now.',
-            titleColor: ColorConstants.blackColor,
-            maxLine: 10,
-            titleTextAlign: TextAlign.start,
-            fontFamily: FontWeightEnum.w400.toInter,
+          ),
+          Html(
+            data: message,
+            shrinkWrap: true,
+            style: {
+              'html': Style(
+                  textAlign: TextAlign.start,
+                  maxLines: 30,
+                  fontFamily: FontWeightEnum.w400.toInter,
+                  color: ColorConstants.blackColor,
+                  fontSize: FontSize.medium,
+                  alignment: Alignment.centerLeft,lineHeight: LineHeight.normal,padding: HtmlPaddings.zero,margin: Margins.zero,)
+            },
           ),
           20.0.spaceY,
           Row(
@@ -59,7 +57,7 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
                   Image.asset(ImageConstants.timer),
                   6.0.spaceX,
                   BodyMediumText(
-                    title: Duration(seconds: notificationProviderWatch.secondsRemaining).toTimeString(),
+                    title: Duration(seconds: remainingSecond).toTimeString(),
                     titleColor: ColorConstants.notificationTimerColor,
                   ),
                 ],
@@ -94,7 +92,6 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
                                 title: 'Learn more',
                                 fontFamily: FontWeightEnum.w500.toInter,
                                 titleColor: ColorConstants.bottomTextColor,
-                                fontSize: 17,
                                 titleTextAlign: TextAlign.center,
                               ),
                               InkWell(
@@ -103,7 +100,6 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
                                   title: 'Back',
                                   fontFamily: FontWeightEnum.w500.toInter,
                                   titleColor: ColorConstants.bottomTextColor,
-                                  fontSize: 17,
                                   titleTextAlign: TextAlign.center,
                                 ),
                               ),
@@ -113,7 +109,7 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
                       ));
                 },
                 child: BodySmallText(
-                  title: '2023-04-27 04:31:00.000Z'.to12HourTimeFormat().toUpperCase(),
+                  title: time.to12HourTimeFormat().toUpperCase(),
                   titleColor: ColorConstants.notificationTimeColor,
                   titleTextAlign: TextAlign.center,
                   fontFamily: FontWeightEnum.w400.toInter,
@@ -122,7 +118,7 @@ class _NewNotificationWidgetState extends ConsumerState<NewNotificationWidget> {
             ],
           )
         ],
-      ).addMarginXY(marginX: 20, marginY: 10),
+      ),
     );
   }
 }

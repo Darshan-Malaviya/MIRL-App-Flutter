@@ -1,3 +1,4 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
@@ -16,6 +17,7 @@ class ReportUserScreen extends ConsumerStatefulWidget {
 }
 
 class _ReportUserScreenState extends ConsumerState<ReportUserScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +28,12 @@ class _ReportUserScreenState extends ConsumerState<ReportUserScreen> {
           onTap: () => context.toPop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: ReportThisUserWidget(
-            args: BlockUserArgs(
-                userRole: widget.args.userRole, reportName: widget.args.reportName, expertId: widget.args.expertId)),
-      ),
+      body: ReportThisUserWidget(
+          args: BlockUserArgs(
+              userRole: widget.args.userRole,
+              reportName: widget.args.reportName,
+              expertId: widget.args.expertId,
+              )),
     );
   }
 }

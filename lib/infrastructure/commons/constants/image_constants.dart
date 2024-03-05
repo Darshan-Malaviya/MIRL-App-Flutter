@@ -11,7 +11,6 @@ class ImageConstants {
   static const apple = '${imagePath}apple.png';
   static const facebook = '${imagePath}facebook.png';
   static const line = '${imagePath}line.png';
-  static const emailVerification = '${imagePath}email_verification.png';
   static const home = '${imagePath}home.png';
   static const explore = '${imagePath}explore.png';
   static const notification = '${imagePath}notification.png';
@@ -40,6 +39,18 @@ class ImageConstants {
   static const suggestNewExpertise = '${imagePath}suggest_new_experties.png';
   static const timer = '${imagePath}timer.png';
   static const arrow = '${imagePath}arrow.png';
+  static const mirlConnect = '${imagePath}mirl_connect.png';
+  static const unlockSuggest = '${imagePath}unlock_suggest.png';
+  static const lame = '${imagePath}lame.png';
+  static const mah = '${imagePath}mah.png';
+  static const nice = '${imagePath}nice.png';
+  static const great = '${imagePath}great.png';
+  static const soSo = '${imagePath}so_so.png';
+  static const smiley = '${imagePath}smily.png';
+  static const expertNotifications = '${imagePath}expert_notifications.png';
+  static const userNotifications = '${imagePath}user_notifications.png';
+  static const generalNotifications = '${imagePath}general_notifications.png';
+  static const reported = '${imagePath}reported.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';
@@ -47,8 +58,9 @@ class ImageConstants {
   /// icon
   static const recurringIcon = '${iconPath}recurring.png';
   static const nonRecurringIcon = '${iconPath}non_recurring.png';
+  static const emailVerification = '${iconPath}email_verification.png';
 
   /// json
-  static const splashScreen = '${rawPath}splash_screen.json';
-
+  // static const splashScreen = '${rawPath}splash_screen.json';
+  static const mirlJson = '${rawPath}mirl_json.json';
 }

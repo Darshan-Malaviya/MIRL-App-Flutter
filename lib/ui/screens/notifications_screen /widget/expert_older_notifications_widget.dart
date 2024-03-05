@@ -18,9 +18,9 @@ class _ExpertOlderNotificationWidgetState extends State<ExpertOlderNotificationW
           BoxShadow(offset: Offset(0, 0), color: ColorConstants.whiteColor.withOpacity(0.25), spreadRadius: 1, blurRadius: 1),
         ],
         borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
+          bottomRight: Radius.circular(15),
+          bottomLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
         ),
       ),
       child: Column(
@@ -40,7 +40,7 @@ class _ExpertOlderNotificationWidgetState extends State<ExpertOlderNotificationW
             titleTextAlign: TextAlign.start,
             fontFamily: FontWeightEnum.w400.toInter,
           ),
-          20.0.spaceY,
+          5.0.spaceY,
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

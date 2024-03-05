@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class CategoryCommonView extends StatefulWidget {
@@ -7,7 +8,10 @@ class CategoryCommonView extends StatefulWidget {
   final double? blurRadius;
   final double? spreadRadius;
   final bool isSelectedShadow;
-  const CategoryCommonView({super.key,this.onTap,required this.imageUrl,required this.categoryName,this.blurRadius,this.isSelectedShadow = false,this.spreadRadius});
+  final Offset? offset;
+
+  const CategoryCommonView(
+      {super.key, this.onTap, required this.imageUrl, required this.categoryName, this.blurRadius, this.isSelectedShadow = false, this.spreadRadius, this.offset});
 
   @override
   State<CategoryCommonView> createState() => _CategoryCommonViewState();
@@ -21,9 +25,9 @@ class _CategoryCommonViewState extends State<CategoryCommonView> {
       child: ShadowContainer(
         shadowColor: widget.isSelectedShadow ? ColorConstants.categoryListBorder : ColorConstants.blackColor.withOpacity(0.1),
         height: 90,
-        padding: EdgeInsets.only(top: 8,bottom: 4,left: 6,right: 6),
+        padding: EdgeInsets.only(top: 8, bottom: 4, left: 6, right: 6),
         width: 90,
-        offset: Offset(0,2),
+        offset: widget.offset ?? Offset(0, 2),
         spreadRadius: widget.spreadRadius ?? 0,
         blurRadius: widget.blurRadius ?? 3,
         isShadow: true,
@@ -45,14 +49,12 @@ class _CategoryCommonViewState extends State<CategoryCommonView> {
             4.0.spaceY,
             LabelSmallText(
               fontSize: 9,
-             // title: "ARTS & HOBBIES",
               title: widget.categoryName.toUpperCase(),
               maxLine: 1,
               titleTextAlign: TextAlign.center,
             ),
           ],
         ),
-
       ),
     );
   }
