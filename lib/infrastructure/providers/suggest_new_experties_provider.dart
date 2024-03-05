@@ -41,7 +41,7 @@ class SuggestNewExpertiseProvider extends ChangeNotifier {
         if (response.data != null && response.data is UnBlockUserResponseModel) {
           UnBlockUserResponseModel categoryResponseModel = response.data;
           Logger().d("Successfully call suggested category api");
-          FlutterToast().showToast(msg: categoryResponseModel.message ?? '');
+        //  FlutterToast().showToast(msg: categoryResponseModel.message ?? '');
           NavigationService.context.toPushNamed(RoutesConstants.thanksGivingScreen);
         }
         break;

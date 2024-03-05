@@ -32,7 +32,9 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(multiConnectProvider).getLoggedUserData();
       await ref.read(multiConnectProvider).getSingleCategoryApiCall(
-          categoryId: widget.args.categoryId ?? '', context: context, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+          categoryId: widget.args.categoryId ?? '',
+          context: context,
+          requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
       ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
     });
 
@@ -84,7 +86,8 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
             trailingIcon: InkWell(
               onTap: () async {
                 await multiProviderRead.setExpertList();
-                FlutterToast().showToast(msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.');
+                FlutterToast()
+                    .showToast(msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.');
                 multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiCallRequest;
                 multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
 
@@ -106,12 +109,14 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                         if (multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                           context.toPop();
                         } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
-                          if (multiProviderWatch.selectedExpertForCall != null && multiProviderWatch.selectedExpertForCall?.status == '6') {
-                            ref.read(socketProvider).connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
+                          if (multiProviderWatch.selectedExpertForCall != null &&
+                              multiProviderWatch.selectedExpertForCall?.status == '6') {
+                            ref
+                                .read(socketProvider)
+                                .connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
                           } else {
                             /// Choose any expert for call
                             FlutterToast().showToast(msg: 'Please choose expert for call.');
-
                           }
                         } else {
                           /// change expert id here
@@ -197,7 +202,8 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                           ],
                         ),
                         child: Wrap(
-                          children: List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                          children:
+                              List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                             final data = multiProviderWatch.singleCategoryData?.categoryData?.topic?[index];
                             int topicIndex = filterWatch.allTopic.indexWhere((element) => element.id == data?.id);
                             return OnScaleTap(
@@ -247,22 +253,44 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                               BodySmallText(
                                 title: LocaleKeys.appliedFilters.tr(),
                               ),
-                              InkWell(
-                                  onTap: () async {
-                                    multiProviderRead.clearExpertIds();
-                                    filterRead.clearAllFilter(selectedCategoryClearAll: true);
-                                    await multiProviderRead.getSingleCategoryApiCall(
-                                      context: context,
-                                      categoryId: widget.args.categoryId ?? '',
-                                      requestModel: ExpertDataRequestModel(
-                                        userId: SharedPrefHelper.getUserId,
-                                        multiConnectRequest: 'true',
-                                      ),
-                                    );
-                                  },
-                                  child: BodySmallText(
-                                    title: LocaleKeys.clearAll.tr(),
-                                  )),
+                              if (widget.args.fromExploreExpert == true) ...[
+                                InkWell(
+                                    onTap: () async {
+                                      multiProviderRead.clearExpertIds();
+                                      filterRead.clearAllFilter(selectedCategoryClearAll: true);
+                                      await multiProviderRead.getSingleCategoryApiCall(
+                                        context: context,
+                                        categoryId: widget.args.categoryId ?? '',
+                                        requestModel: ExpertDataRequestModel(
+                                          userId: SharedPrefHelper.getUserId,
+                                          multiConnectRequest: 'true',
+                                        ),
+                                      );
+                                    },
+                                    child: BodySmallText(
+                                      title: LocaleKeys.clearAll.tr(),
+                                    )),
+                              ] else ...[
+                                if (filterRead.commonSelectionModel.first.title == FilterType.Category.name &&
+                                    filterRead.commonSelectionModel.length > 1) ...[
+                                  InkWell(
+                                      onTap: () async {
+                                        multiProviderRead.clearExpertIds();
+                                        filterRead.clearAllFilter(selectedCategoryClearAll: true);
+                                        await multiProviderRead.getSingleCategoryApiCall(
+                                          context: context,
+                                          categoryId: widget.args.categoryId ?? '',
+                                          requestModel: ExpertDataRequestModel(
+                                            userId: SharedPrefHelper.getUserId,
+                                            multiConnectRequest: 'true',
+                                          ),
+                                        );
+                                      },
+                                      child: BodySmallText(
+                                        title: LocaleKeys.clearAll.tr(),
+                                      )),
+                                ]
+                              ],
                             ],
                           ),
                           10.0.spaceY,
@@ -279,7 +307,11 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                     OnScaleTap(
                                       onPress: () {
                                         filterRead.removeFilter(
-                                            index: index, context: context, isFromMultiConnect: true, singleCategoryId: widget.args.categoryId, multiConnectRequest: 'true');
+                                            index: index,
+                                            context: context,
+                                            isFromMultiConnect: true,
+                                            singleCategoryId: widget.args.categoryId,
+                                            multiConnectRequest: 'true');
                                       },
                                       child: ShadowContainer(
                                         border: 20,
@@ -315,10 +347,12 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         separatorBuilder: (context, index) => 30.0.spaceY,
-                        itemCount: (multiProviderWatch.expertData?.length ?? 0) + (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
+                        itemCount:
+                            (multiProviderWatch.expertData?.length ?? 0) + (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
                         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                         itemBuilder: (context, i) {
-                          if (i == (multiProviderWatch.expertData?.length ?? 0) && (multiProviderWatch.expertData?.isNotEmpty ?? false)) {
+                          if (i == (multiProviderWatch.expertData?.length ?? 0) &&
+                              (multiProviderWatch.expertData?.isNotEmpty ?? false)) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
@@ -332,8 +366,12 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                 fromMultiConnect: true,
                               ).addMarginBottom(22),
                               PrimaryButton(
-                                title: multiProviderWatch.expertData?[i].selectedForMultiConnect ?? false ? LocaleKeys.selected.tr() : LocaleKeys.clickToSelect.tr(),
-                                buttonColor: multiProviderWatch.expertData?[i].selectedForMultiConnect ?? false ? ColorConstants.primaryColor : ColorConstants.buttonColor,
+                                title: multiProviderWatch.expertData?[i].selectedForMultiConnect ?? false
+                                    ? LocaleKeys.selected.tr()
+                                    : LocaleKeys.clickToSelect.tr(),
+                                buttonColor: multiProviderWatch.expertData?[i].selectedForMultiConnect ?? false
+                                    ? ColorConstants.primaryColor
+                                    : ColorConstants.buttonColor,
                                 width: 140,
                                 onPressed: () {
                                   multiProviderRead.setSelectedExpert(i);

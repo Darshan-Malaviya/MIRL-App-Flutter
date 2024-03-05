@@ -149,6 +149,7 @@ class ReportReviewProvider extends ChangeNotifier {
   void clearController() {
     callIssueController.clear();
     selectedReportCall = null;
+    _reportCallTitleList = [];
     notifyListeners();
   }
 
@@ -266,7 +267,10 @@ class ReportReviewProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is ReportCallTitleResponseModel) {
           ReportCallTitleResponseModel responseModel = response.data;
-          _reportCallTitleList == responseModel.data ?? [];
+
+          _reportCallTitleList = responseModel.data ?? [];
+
+          //_reportCallTitleList.addAll(responseModel.data ?? []);
         }
         break;
       case APIStatus.failure:
@@ -284,9 +288,10 @@ class ReportReviewProvider extends ChangeNotifier {
 
     switch (response.status) {
       case APIStatus.success:
-        if (response.data != null && response.data is ReportCallTitleResponseModel) {
-          ReportCallTitleResponseModel responseModel = response.data;
+        if (response.data != null && response.data is UnBlockUserResponseModel) {
+          UnBlockUserResponseModel responseModel = response.data;
           Logger().d("Successfully report call API");
+          //FlutterToast().showToast(msg: responseModel.message ?? '');
           NavigationService.context.toPushNamed(RoutesConstants.reportedSubmittingScreen);
         }
         break;
@@ -295,6 +300,6 @@ class ReportReviewProvider extends ChangeNotifier {
         Logger().d("API fail report call api call ${response.data}");
         break;
     }
-    notifyListeners();
+    // notifyListeners();
   }
 }

@@ -67,7 +67,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
               } else {
                 FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCategoryFirst.tr());
               }
-            }, StringConstants.pickTopicFromTheAbove),
+            }, StringConstants.pickTopicFromTheAbove,hintText: LocaleKeys.pickCategoryTopic.tr()),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.ratingController, context, () {
               CommonBottomSheet.bottomSheet(
@@ -137,7 +137,8 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             ),
             10.0.spaceY,
             SliderTheme(
-              data: SliderTheme.of(context).copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
+              data: SliderTheme.of(context)
+                  .copyWith(rangeThumbShape: RoundRangeSliderThumbShapeWidget(thumbColor: ColorConstants.bottomTextColor)),
               child: RangeSliderWidget(
                 values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
                 activeColor: ColorConstants.yellowButtonColor,
@@ -164,7 +165,9 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             ),
             if (filterWatch.start != null && filterWatch.end != null) ...[
               BodySmallText(
-                title: '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}',
+                title: filterWatch.end == 100
+                    ? '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}+'
+                    : '\$${filterWatch.start?.toStringAsFixed(2)} - \$${filterWatch.end?.toStringAsFixed(2)}',
                 titleColor: ColorConstants.bottomTextColor,
               ),
               50.0.spaceY,
@@ -192,7 +195,9 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                   isFromFilter: true,
                   requestModel: ExpertDataRequestModel(
                     multiConnectRequest: 'true',
-                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false) ? filterWatch.selectedCategory?.id.toString() : null,
+                    categoryId: (filterWatch.selectedCategory?.id.toString().isNotEmpty ?? false)
+                        ? filterWatch.selectedCategory?.id.toString()
+                        : null,
                     topicIds: selectedTopicId,
                     userId: SharedPrefHelper.getUserId,
                     city: filterWatch.cityNameController.text.isNotEmpty ? filterWatch.cityNameController.text : null,
@@ -228,22 +233,27 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
     BuildContext context,
     VoidCallback OnTap,
     String labelText,
+      {String? hintText}
   ) {
     return TextFormFieldWidget(
       isReadOnly: true,
-      hintText: StringConstants.selectOnrOrLeave,
+      hintText: hintText ??StringConstants.selectOnrOrLeave,
       controller: controller,
       labelText: labelText,
       labelColor: ColorConstants.bottomTextColor,
       enabledBorderColor: ColorConstants.dropDownBorderColor,
       labelTextFontFamily: FontWeightEnum.w700.toInter,
-      textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      textStyle: Theme.of(context)
+          .textTheme
+          .bodyMedium
+          ?.copyWith(fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       suffixIcon: Icon(
         size: 18,
         Icons.keyboard_arrow_down_rounded,
         color: ColorConstants.dropDownBorderColor,
       ),
-      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
+      hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, overflow: TextOverflow.ellipsis),
       onTap: OnTap,
     );
   }

@@ -27,9 +27,10 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(filterProvider).clearSingleCategoryData();
-      await ref
-          .read(filterProvider)
-          .getSingleCategoryApiCall(categoryId: widget.args.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId), context: context);
+      await ref.read(filterProvider).getSingleCategoryApiCall(
+          categoryId: widget.args.categoryId,
+          requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId),
+          context: context);
       ref.read(filterProvider).getSelectedCategory();
       if (ref.watch(filterProvider).allTopic.isEmpty) {
         ref.read(filterProvider).clearSearchTopicController();
@@ -46,7 +47,10 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
         bool isLoading = ref.watch(filterProvider).reachedOneCategoryScreenLastPage;
         if (!isLoading) {
           await ref.read(filterProvider).getSingleCategoryApiCall(
-              isPaginating: true, categoryId: widget.args.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId), context: context);
+              isPaginating: true,
+              categoryId: widget.args.categoryId,
+              requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId),
+              context: context);
         } else {
           log('reach last page on selected category export data list api');
         }
@@ -67,7 +71,9 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
         if (widget.args.isFromExploreExpert) {
           ref.read(filterProvider).clearExploreExpertSearchData();
           ref.read(filterProvider).clearExploreController();
-          ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isFromFilter: false, isPaginating: false);
+          ref
+              .read(filterProvider)
+              .exploreExpertUserAndCategoryApiCall(context: context, isFromFilter: false, isPaginating: false);
         }
       },
       child: Scaffold(
@@ -81,7 +87,9 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                 if (widget.args.isFromExploreExpert) {
                   ref.read(filterProvider).clearExploreExpertSearchData();
                   ref.read(filterProvider).clearExploreController();
-                  ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isFromFilter: false, isPaginating: false);
+                  ref
+                      .read(filterProvider)
+                      .exploreExpertUserAndCategoryApiCall(context: context, isFromFilter: false, isPaginating: false);
                 }
                 context.toPop();
               }),
@@ -116,12 +124,12 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                     ).addPaddingX(20),
                     20.0.spaceY,
                     CategoryCommonView(
-                      onTap: () {},
-                      categoryName: filterProviderWatch.singleCategoryData?.categoryData?.name ?? '',
-                      imageUrl: filterProviderWatch.singleCategoryData?.categoryData?.image ?? '',
-                      isSelectedShadow: true,
-                      blurRadius: 8,
-                      spreadRadius: 1),
+                        onTap: () {},
+                        categoryName: filterProviderWatch.singleCategoryData?.categoryData?.name ?? '',
+                        imageUrl: filterProviderWatch.singleCategoryData?.categoryData?.image ?? '',
+                        isSelectedShadow: true,
+                        blurRadius: 8,
+                        spreadRadius: 1),
                     20.0.spaceY,
                     if (filterProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
                       Container(
@@ -139,15 +147,17 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                           ],
                         ),
                         child: Wrap(
-                          children: List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                          children:
+                              List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                             final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
                             int topicIndex = filterProviderWatch.allTopic.indexWhere((element) => element.id == data?.id);
                             return OnScaleTap(
                               onPress: () {},
                               child: ShadowContainer(
-                                shadowColor: (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
-                                    ? ColorConstants.primaryColor
-                                    : ColorConstants.blackColor.withOpacity(0.1),
+                                shadowColor:
+                                    (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
+                                        ? ColorConstants.primaryColor
+                                        : ColorConstants.blackColor.withOpacity(0.1),
                                 backgroundColor: ColorConstants.whiteColor,
                                 isShadow: true,
                                 spreadRadius: 1,
@@ -195,7 +205,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       titleColor: ColorConstants.blackColor,
                       margin: EdgeInsets.symmetric(horizontal: 20),
                       onPressed: () {
-                        context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: false));
+                        context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
+                            args: FilterArgs(fromExploreExpert: false));
                       },
                       prefixIcon: ImageConstants.filter,
                       prefixIconPadding: 10,
@@ -214,16 +225,34 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                               BodySmallText(
                                 title: LocaleKeys.appliedFilters.tr(),
                               ),
-                              InkWell(
-                                  onTap: () {
-                                    filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
-                                    filterProviderRead.getSingleCategoryApiCall(
-                                        context: context, categoryId: widget.args.categoryId, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId));
-                                    // filterProviderRead.getSelectedCategory();
-                                  },
-                                  child: BodySmallText(
-                                    title: LocaleKeys.clearAll.tr(),
-                                  )),
+                              if (widget.args.isFromExploreExpert == true) ...[
+                                InkWell(
+                                    onTap: () {
+                                      filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
+                                      filterProviderRead.getSingleCategoryApiCall(
+                                          context: context,
+                                          categoryId: widget.args.categoryId,
+                                          requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId));
+                                    },
+                                    child: BodySmallText(
+                                      title: LocaleKeys.clearAll.tr(),
+                                    )),
+                              ] else ...[
+                                if (filterProviderWatch.commonSelectionModel.first.title == FilterType.Category.name &&
+                                    filterProviderWatch.commonSelectionModel.length > 1) ...[
+                                  InkWell(
+                                      onTap: () {
+                                        filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
+                                        filterProviderRead.getSingleCategoryApiCall(
+                                            context: context,
+                                            categoryId: widget.args.categoryId,
+                                            requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId));
+                                      },
+                                      child: BodySmallText(
+                                        title: LocaleKeys.clearAll.tr(),
+                                      )),
+                                ]
+                              ],
                             ],
                           ),
                           10.0.spaceY,
@@ -239,7 +268,11 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                   if (data.title != FilterType.Category.name) ...[
                                     OnScaleTap(
                                       onPress: () {
-                                        filterProviderRead.removeFilter(index: index, context: context, isFromExploreExpert: false, singleCategoryId: widget.args.categoryId);
+                                        filterProviderRead.removeFilter(
+                                            index: index,
+                                            context: context,
+                                            isFromExploreExpert: false,
+                                            singleCategoryId: widget.args.categoryId);
                                       },
                                       child: ShadowContainer(
                                         border: 20,
@@ -289,7 +322,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                             );
                           },
                           separatorBuilder: (context, index) => 30.0.spaceY,
-                          itemCount: (filterProviderWatch.singleCategoryData?.expertData?.length ?? 0) + (filterProviderWatch.reachedOneCategoryScreenLastPage ? 0 : 1))
+                          itemCount: (filterProviderWatch.singleCategoryData?.expertData?.length ?? 0) +
+                              (filterProviderWatch.reachedOneCategoryScreenLastPage ? 0 : 1))
                     ] else ...[
                       Column(
                         children: [
