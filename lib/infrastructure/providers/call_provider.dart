@@ -212,15 +212,15 @@ class CallProvider extends ChangeNotifier {
           notifyListeners();
           log(_isRemoteMicOn.toString());
           },
-        onLocalVideoStateChanged: (VideoSourceType source, LocalVideoStreamState state, LocalVideoStreamError error) async {
+        onLocalVideoStateChanged: (VideoSourceType source, LocalVideoStreamState state, error) async {
           log("onLocalVideoStateChanged");
           log(state.name);
           log(state.index.toString());
           notifyListeners();
          // changeVideoCallView.value = !changeVideoCallView.value;
           },
-          onLocalAudioStateChanged: (RtcConnection connection, LocalAudioStreamState state, LocalAudioStreamError error) async {
-            log("onLocalAudioStateChanged");
+        onLocalAudioStateChanged: (RtcConnection connection, LocalAudioStreamState state, error) async {
+          log("onLocalAudioStateChanged");
             log(state.name);
             log(state.index.toString());
             notifyListeners();

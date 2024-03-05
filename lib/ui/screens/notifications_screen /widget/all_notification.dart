@@ -3,11 +3,11 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class AllNotificationTypeNameWidget extends ConsumerStatefulWidget {
   final String notificationName;
-
-  // final int index;
   final bool isSelectedShadow;
+  final String imageURL;
 
-  const AllNotificationTypeNameWidget({super.key, required this.notificationName, required this.isSelectedShadow});
+  const AllNotificationTypeNameWidget(
+      {super.key, required this.notificationName, required this.isSelectedShadow, required this.imageURL});
 
   @override
   ConsumerState<AllNotificationTypeNameWidget> createState() => _AllNotificationTypeNameWidgetState();
@@ -31,16 +31,7 @@ class _AllNotificationTypeNameWidgetState extends ConsumerState<AllNotificationT
             borderColor: ColorConstants.greyLightColor,
             child: Column(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: NetworkImageWidget(
-                    boxFit: BoxFit.cover,
-                    imageURL: ImageConstants.iconPath,
-                    isNetworkImage: true,
-                    height: 50,
-                    width: 50,
-                  ),
-                ),
+                Image.asset(widget.imageURL),
                 4.0.spaceY,
                 LabelSmallText(
                   fontSize: 9,
@@ -51,10 +42,10 @@ class _AllNotificationTypeNameWidgetState extends ConsumerState<AllNotificationT
                 ),
               ],
             ),
-            height: 100,
-            width: 100,
+            height: 96,
+            width: 96,
             isShadow: true,
-          ).addPaddingTop(5),
+          ),
         ),
         Align(
           alignment: AlignmentDirectional.topEnd,

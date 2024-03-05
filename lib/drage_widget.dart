@@ -114,10 +114,10 @@ class _ReviewSliderState extends State<ReviewSlider> with SingleTickerProviderSt
   }
 
   void onHorizontalDragUpdate(details) {
-    if (details.globalPosition.dx - 30 <= currentPosition.first.dx) {
+    if (details.globalPosition.dx <= currentPosition.first.dx) {
       return;
     }
-    if (currentPosition.last.dx + 50 >= details.globalPosition.dx) {
+    if (currentPosition.last.dx >= details.globalPosition.dx) {
       localPosition = details.globalPosition.dx;
       setState(() {});
     }

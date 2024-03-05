@@ -4,6 +4,8 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 enum CallHistoryEnum { instantCall, multipleConnect, appointment }
 
+enum CallHistoryStatusEnum { complete, incomplete }
+
 extension CallHistoryTypeEnumExtension on CallHistoryEnum {
   Color get callHistoryTypeNameColor {
     switch (this) {
@@ -24,6 +26,17 @@ extension CallHistoryTypeEnumExtension on CallHistoryEnum {
         return LocaleKeys.multipleConnect.tr();
       case CallHistoryEnum.appointment:
         return LocaleKeys.appointment.tr();
+    }
+  }
+}
+
+extension CallHistoryStatusEnumExtension on CallHistoryStatusEnum {
+  Color get callHistoryStatusColor {
+    switch (this) {
+      case CallHistoryStatusEnum.complete:
+        return ColorConstants.greenColor;
+      case CallHistoryStatusEnum.incomplete:
+        return ColorConstants.disableColor;
     }
   }
 }

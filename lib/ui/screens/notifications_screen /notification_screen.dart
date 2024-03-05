@@ -24,8 +24,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
   }
 
   void _handleTabSelection() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -56,9 +55,18 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
             //indicatorSize: TabBarIndicatorSize.label,
             //unselectedLabelColor: Colors.black,
             tabs: [
-              AllNotificationTypeNameWidget(notificationName: "EXPERT", isSelectedShadow: tabController?.index == 0 ? true : false),
-              AllNotificationTypeNameWidget(notificationName: "USER", isSelectedShadow: tabController?.index == 1 ? true : false),
-              AllNotificationTypeNameWidget(notificationName: "GENERAL", isSelectedShadow: tabController?.index == 2 ? true : false),
+              AllNotificationTypeNameWidget(
+                  notificationName: "EXPERT",
+                  isSelectedShadow: tabController?.index == 0 ? true : false,
+                  imageURL: ImageConstants.expertNotifications),
+              AllNotificationTypeNameWidget(
+                  notificationName: "USER",
+                  isSelectedShadow: tabController?.index == 1 ? true : false,
+                  imageURL: ImageConstants.userNotifications),
+              AllNotificationTypeNameWidget(
+                  notificationName: "GENERAL",
+                  isSelectedShadow: tabController?.index == 2 ? true : false,
+                  imageURL: ImageConstants.generalNotifications),
             ],
             controller: tabController,
           ),

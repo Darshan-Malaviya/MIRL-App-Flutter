@@ -6,12 +6,14 @@ import 'package:mirl/infrastructure/models/request/rate_expert_request_model.dar
 import 'package:mirl/infrastructure/models/response/rate_and_review_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/repository/report_repo.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/componnet/call_feedback_model.dart';
 
 class ReportReviewProvider extends ChangeNotifier {
   final _reportRepository = ReportListRepository();
 
   TextEditingController reviewController = TextEditingController();
   TextEditingController appropriateIssueController = TextEditingController();
+  TextEditingController callIssueController = TextEditingController();
 
   String sortByReview = 'HIGHEST REVIEW SCORE';
   String sortByReport = 'WEEKLY';
@@ -35,11 +37,15 @@ class ReportReviewProvider extends ChangeNotifier {
 
   List<CommonSelectionModel> get criteriaList => _criteriaList;
   List<CommonSelectionModel> _criteriaList = [
-    CommonSelectionModel(title: LocaleKeys.expertise.tr(), value: LocaleKeys.rateTheExpertKnowledge.tr(), ratingCategory: 1),
-    CommonSelectionModel(title: LocaleKeys.communication.tr(), value: LocaleKeys.wereTheyCourteous.tr(), ratingCategory: 2),
-    CommonSelectionModel(title: LocaleKeys.helpfulness.tr(), value: LocaleKeys.wereTheyAbleToHelp.tr(), ratingCategory: 3),
+    CommonSelectionModel(
+        title: LocaleKeys.expertise.tr(), value: LocaleKeys.rateTheExpertKnowledge.tr(), ratingCategory: 1),
+    CommonSelectionModel(
+        title: LocaleKeys.communication.tr(), value: LocaleKeys.wereTheyCourteous.tr(), ratingCategory: 2),
+    CommonSelectionModel(
+        title: LocaleKeys.helpfulness.tr(), value: LocaleKeys.wereTheyAbleToHelp.tr(), ratingCategory: 3),
     CommonSelectionModel(title: LocaleKeys.empathy.tr(), value: LocaleKeys.wereTheyComfortable.tr(), ratingCategory: 4),
-    CommonSelectionModel(title: LocaleKeys.professionalism.tr(), value: LocaleKeys.respectFullToThem.tr(), ratingCategory: 5),
+    CommonSelectionModel(
+        title: LocaleKeys.professionalism.tr(), value: LocaleKeys.respectFullToThem.tr(), ratingCategory: 5),
   ];
 
   bool get isLoading => _isLoading;
@@ -59,36 +65,53 @@ class ReportReviewProvider extends ChangeNotifier {
 
   int? selectedIndex = 0;
 
+  String _enteredText = '0';
+
+  String get enteredText => _enteredText;
+
   List formKeyList = List.generate(11, (index) => GlobalKey<FormState>());
 
   List<Offset> currentPosition = [];
   double localPosition = 0.0;
   bool isLoaded = false;
-  int criteriaSelectedIndex = 0;
 
-  void changeCriteriaSelectedIndex(int index) {
-    RenderBox box = formKeyList[index].currentContext?.findRenderObject() as RenderBox;
-    Offset position = box.localToGlobal(Offset.zero);
-    localPosition = position.dx;
-    selectedIndex = index;
+  List<CallFeedBackModel> callFeedbackList = [
+    CallFeedBackModel(
+        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(
+        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(
+        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(
+        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(
+        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+  ];
+
+  void changeCriteriaSelectedIndex({required int index, required int position}) {
+    RenderBox box =
+        callFeedbackList[index].callFeedbackDataList[position].formKey.currentContext?.findRenderObject() as RenderBox;
+    Offset positionOffset = box.localToGlobal(Offset.zero);
+    callFeedbackList[index].localPosition = positionOffset.dx;
+    selectedIndex = position;
     notifyListeners();
   }
 
-  void onHorizontalDragUpdate(details) {
-    if (details.globalPosition.dx - 30 <= currentPosition.first.dx) {
+  void onHorizontalDragUpdate(details, {required int index}) {
+    if (details.globalPosition.dx <= callFeedbackList[index].callFeedbackDataList.first.currentDxPosition) {
       return;
     }
-    if (currentPosition.last.dx + 50 >= details.globalPosition.dx) {
-      localPosition = details.globalPosition.dx;
+    if (callFeedbackList[index].callFeedbackDataList.last.currentDxPosition + 20 >= details.globalPosition.dx) {
+      callFeedbackList[index].localPosition = details.globalPosition.dx;
       notifyListeners();
     }
   }
 
-  void afterLayout(_) {
-    for (var element in formKeyList) {
-      RenderBox box = element.currentContext?.findRenderObject() as RenderBox;
+  void afterLayout(index) {
+    for (var element in callFeedbackList[index].callFeedbackDataList) {
+      RenderBox box = element.formKey.currentContext?.findRenderObject() as RenderBox;
       Offset position = box.localToGlobal(Offset.zero);
-      currentPosition.add(position);
+      element.currentDxPosition = position.dx - 30;
     }
     isLoaded = true;
     notifyListeners();
@@ -96,6 +119,11 @@ class ReportReviewProvider extends ChangeNotifier {
 
   void changeRatingColor({required int index, required int selectedValue}) {
     _criteriaList[index].rating = selectedValue;
+    notifyListeners();
+  }
+
+  void newTopicCounterValue(String value) {
+    _enteredText = value.length.toString();
     notifyListeners();
   }
 
@@ -119,7 +147,8 @@ class ReportReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getRatingAndReviewApiCall({required bool isLoading, required int id, required bool isListLoading}) async {
+  Future<void> getRatingAndReviewApiCall(
+      {required bool isLoading, required int id, required bool isListLoading}) async {
     if (isLoading) {
       _isLoading = true;
       notifyListeners();

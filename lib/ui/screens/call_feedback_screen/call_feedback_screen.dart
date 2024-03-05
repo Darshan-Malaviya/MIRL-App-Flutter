@@ -99,7 +99,9 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                                 alignment: Alignment.bottomCenter,
                                 children: [
                                   ShadowContainer(
-                                    shadowColor: feedBackWatch.feedbackTypeList[index].isSelected ?? false ? ColorConstants.primaryColor : ColorConstants.transparentColor,
+                                    shadowColor: feedBackWatch.feedbackTypeList[index].isSelected ?? false
+                                        ? ColorConstants.primaryColor
+                                        : ColorConstants.transparentColor,
                                     offset: Offset(0, 0),
                                     spreadRadius: 1,
                                     blurRadius: 8,
@@ -152,7 +154,7 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                       fontFamily: FontWeightEnum.w400.toInter,
                     ),
                     4.0.spaceY,
-                    ReviewRatingWidget(),
+                    ReviewRatingWidget(index: index),
                   ],
                 ).addMarginY(10);
               })),
