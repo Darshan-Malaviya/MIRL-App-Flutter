@@ -336,7 +336,7 @@
   "refund": "REFUND",
   "completeUser": "CALL COMPLETED",
   "incompleteUser": "CALL INCOMPLETE",
-  "due" : "DUE"
+  "due" : "DUE",
   "appointment": "APPOINTMENT",
   "filedRequired": "This field required",
   "selectThisIssue": "Please enter select this issue.",
