@@ -1,51 +1,40 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-class AllNotificationTypeNameWidget extends ConsumerStatefulWidget {
+class AllNotificationTypeNameWidget extends StatelessWidget {
   final String notificationName;
   final bool isSelectedShadow;
   final String imageURL;
 
-  const AllNotificationTypeNameWidget(
-      {super.key, required this.notificationName, required this.isSelectedShadow, required this.imageURL});
+  const AllNotificationTypeNameWidget({super.key, required this.notificationName, required this.isSelectedShadow, required this.imageURL});
 
-  @override
-  ConsumerState<AllNotificationTypeNameWidget> createState() => _AllNotificationTypeNameWidgetState();
-}
-
-class _AllNotificationTypeNameWidgetState extends ConsumerState<AllNotificationTypeNameWidget> {
   @override
   Widget build(BuildContext context) {
-    final notificationProviderWatch = ref.watch(notificationProvider);
-    final notificationProviderRead = ref.read(notificationProvider);
-
     return Stack(
       children: [
-        InkWell(
-          child: ShadowContainer(
-            shadowColor: widget.isSelectedShadow ? ColorConstants.primaryColor : ColorConstants.blackColor.withOpacity(0.25),
-            offset: widget.isSelectedShadow ? Offset(0, 1) : Offset(0, 0),
-            spreadRadius: widget.isSelectedShadow ? 1 : 0,
-            blurRadius: widget.isSelectedShadow ? 8 : 2,
-            borderWidth: 1,
-            borderColor: ColorConstants.greyLightColor,
-            child: Column(
-              children: [
-                Image.asset(widget.imageURL),
-                4.0.spaceY,
-                LabelSmallText(
-                  fontSize: 9,
-                  title: widget.notificationName,
-                  titleColor: ColorConstants.blackColor,
-                  titleTextAlign: TextAlign.center,
-                  maxLine: 2,
-                ),
-              ],
-            ),
-            height: 96,
-            width: 96,
-            isShadow: true,
+        ShadowContainer(
+          shadowColor: isSelectedShadow ? ColorConstants.primaryColor : ColorConstants.disableColor,
+          offset: isSelectedShadow ? Offset(0, 1) : Offset(0, 2),
+          spreadRadius: isSelectedShadow ? 1 : 0,
+          blurRadius: isSelectedShadow ? 8 : 2,
+          borderWidth: 1,
+          borderColor: ColorConstants.greyLightColor,
+          child: Column(
+            children: [
+              Image.asset(imageURL),
+              4.0.spaceY,
+              LabelSmallText(
+                fontSize: 9,
+                title: notificationName,
+                titleColor: ColorConstants.blackColor,
+                titleTextAlign: TextAlign.center,
+                maxLine: 2,
+              ),
+            ],
           ),
+          height: 95,
+          width: 95,
+          isShadow: true,
         ),
         Align(
           alignment: AlignmentDirectional.topEnd,

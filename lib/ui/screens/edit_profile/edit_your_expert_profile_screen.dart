@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class EditYourExpertProfileScreen extends ConsumerStatefulWidget {
@@ -173,15 +174,14 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: 2),
+                  onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: 2)),
                 ),
                 50.0.spaceY,
                 PrimaryButton(
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.reviewsAndRatings,
                   titleColor: ColorConstants.buttonTextColor,
-                  onPressed: () =>
-                      context.toPushNamed(RoutesConstants.ratingAndReviewScreen, args: int.parse(SharedPrefHelper.getUserId)),
+                  onPressed: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen, args: int.parse(SharedPrefHelper.getUserId)),
                 ),
                 50.0.spaceY,
                 PrimaryButton(

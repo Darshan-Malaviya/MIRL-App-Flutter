@@ -179,7 +179,7 @@ class RouterConstant {
       case RoutesConstants.multiConnectSelectedCategoryScreen:
         return MaterialPageRoute(builder: (_) => MultiConnectSelectedCategoryScreen(args: settings.arguments as FilterArgs));
       case RoutesConstants.viewCalendarAppointment:
-        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen(role: settings.arguments as int));
+        return MaterialPageRoute(builder: (_) => UpcomingAppointmentScreen(args: settings.arguments as AppointmentArgs));
       case RoutesConstants.ratingAndReviewScreen:
         return MaterialPageRoute(builder: (_) => RatingAndReviewScreen(id: settings.arguments as int));
       case RoutesConstants.earningReportScreen:
@@ -215,7 +215,10 @@ class RouterConstant {
       case RoutesConstants.feedbackSubmittingScreen:
         return MaterialPageRoute(builder: (_) => const FeedbackSubmittingScreen());
       case RoutesConstants.reportProblemWithYourCallScreen:
-        return MaterialPageRoute(builder: (_) => const ReportProblemWithYourCallScreen());
+        return MaterialPageRoute(
+            builder: (_) => ReportProblemWithYourCallScreen(
+                  callHistoryId: settings.arguments as int
+                ));
       case RoutesConstants.reportedSubmittingScreen:
         return MaterialPageRoute(builder: (_) => const ReportedSubmittingScreen());
       default:

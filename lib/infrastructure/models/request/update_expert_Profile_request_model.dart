@@ -129,4 +129,29 @@ class UpdateExpertProfileRequestModel {
     });
     return formData;
   }
+
+  Future<FormData> toJsonUserProfile() async {
+    Map<String, dynamic> request = {};
+    request['userProfile'] = await MultipartFile.fromFile(
+      userProfile ?? '',
+      filename: DateTime.now().toIso8601String(),
+      contentType: MediaType('image', userProfile?.split('.').last ?? 'jpg'),
+    );
+    FormData formData = FormData.fromMap(request);
+    return formData;
+  }
+
+  FormData toJsonUserName() {
+    FormData formData = FormData.fromMap({
+      'userName': userName,
+    });
+    return formData;
+  }
+
+  FormData toJsonPhoneNumber() {
+    FormData formData = FormData.fromMap({
+      'phone': phone,
+    });
+    return formData;
+  }
 }

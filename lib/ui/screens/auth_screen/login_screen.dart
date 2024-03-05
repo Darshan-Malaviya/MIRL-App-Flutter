@@ -19,25 +19,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final loginScreenProviderRead = ref.read(loginScreenProvider);
 
     return Scaffold(
-      body: Form(
-        key: _loginPassKey,
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _loginPassKey,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(
                 ImageConstants.backgroundLogo,
               ).addPaddingTop(100),
               50.0.spaceY,
               Container(
-                height: MediaQuery.of(context).size.height,
-                decoration: const BoxDecoration(boxShadow: [
-                  BoxShadow(
-                    color: ColorConstants.borderColor,
-                    //spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, -3),
-                  )
-                ], color: ColorConstants.whiteColor, borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+                decoration: const BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: ColorConstants.borderColor,
+                        //spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, -3),
+                      )
+                    ],
+                    color: ColorConstants.whiteColor,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
                 child: Column(
                   children: [
                     25.0.spaceY,
@@ -54,29 +57,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     40.0.spaceY,
                     TextFormFieldWidget(
+                      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 4),
                       fontFamily: FontWeightEnum.w400.toInter,
                       hintText: StringConstants.typeYourEmailAddress,
                       textAlign: TextAlign.start,
                       controller: loginScreenProviderWatch.emailController,
                       focusNode: loginFocusNode,
+                      canRequestFocus: !loginScreenProviderWatch.isLoading,
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.emailAddress,
                       validator: (value) {
                         return value?.toEmailValidation();
                       },
-                      onFieldSubmitted: (value){
-                        loginFocusNode.unfocus()  ;
+                      onFieldSubmitted: (value) {
+                        loginFocusNode.unfocus();
                       },
                     ).addPaddingX(42),
                     14.0.spaceY,
                     PrimaryButton(
                         title: StringConstants.selectLoginCode,
                         titleColor: ColorConstants.textColor,
+                        isLoading: loginScreenProviderWatch.isLoading,
                         width: 235,
                         onPressed: () {
                           loginFocusNode.unfocus();
                           if (_loginPassKey.currentState?.validate() ?? false) {
-                            loginScreenProviderRead.loginRequestCall(context: context, loginType: LoginType.normal, email: loginScreenProviderWatch.emailController.text.trim());
+                            loginScreenProviderRead.loginRequestCall(
+                                context: context,
+                                loginType: LoginType.normal,
+                                email: loginScreenProviderWatch.emailController.text.trim());
                           }
                         }),
                     40.0.spaceY,
@@ -147,7 +156,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               context.unFocusKeyboard();
-                              context.toPushNamed(RoutesConstants.cmsScreen, args: CmsArgs(title: AppConstants.privacyPolicy, name: "privacyPolicy"));
+                              context.toPushNamed(RoutesConstants.cmsScreen,
+                                  args: CmsArgs(title: AppConstants.privacyPolicy, name: "privacyPolicy"));
                             },
                         ),
                       ]),

@@ -20,6 +20,10 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
     tabController = TabController(length: 3, vsync: this);
     tabController?.addListener(_handleTabSelection);
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(notificationProvider).getNotificationListApiCall(isFullScreenLoader: true, type: 1,pageLoading: false);
+    });
+
     super.initState();
   }
 
@@ -31,6 +35,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
   Widget build(BuildContext context) {
     final notificationProviderWatch = ref.watch(notificationProvider);
     final notificationProviderRead = ref.read(notificationProvider);
+
     return Scaffold(
       appBar: AppBarWidget(
         preferSize: 0,
@@ -38,34 +43,22 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          50.0.spaceY,
+          40.0.spaceY,
           TitleLargeText(
             title: 'ALL NOTIFICATIONS',
             fontSize: 20,
             titleColor: ColorConstants.notificationTextColor,
             titleTextAlign: TextAlign.center,
           ),
-          20.0.spaceY,
+          30.0.spaceY,
           TabBar(
             overlayColor: MaterialStatePropertyAll(Colors.transparent),
-            //labelColor: ColorConstants.transparentColor,
             indicatorColor: ColorConstants.transparentColor,
             dividerColor: ColorConstants.transparentColor,
-            //indicatorSize: TabBarIndicatorSize.label,
-            //unselectedLabelColor: Colors.black,
             tabs: [
-              AllNotificationTypeNameWidget(
-                  notificationName: "EXPERT",
-                  isSelectedShadow: tabController?.index == 0 ? true : false,
-                  imageURL: ImageConstants.expertNotifications),
-              AllNotificationTypeNameWidget(
-                  notificationName: "USER",
-                  isSelectedShadow: tabController?.index == 1 ? true : false,
-                  imageURL: ImageConstants.userNotifications),
-              AllNotificationTypeNameWidget(
-                  notificationName: "GENERAL",
-                  isSelectedShadow: tabController?.index == 2 ? true : false,
-                  imageURL: ImageConstants.generalNotifications),
+              AllNotificationTypeNameWidget(notificationName: "EXPERT", isSelectedShadow: tabController?.index == 0 ? true : false, imageURL: ImageConstants.expertNotifications),
+              AllNotificationTypeNameWidget(notificationName: "USER", isSelectedShadow: tabController?.index == 1 ? true : false, imageURL: ImageConstants.userNotifications),
+              AllNotificationTypeNameWidget(notificationName: "GENERAL", isSelectedShadow: tabController?.index == 2 ? true : false, imageURL: ImageConstants.generalNotifications),
             ],
             controller: tabController,
           ),
@@ -80,62 +73,5 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
         ],
       ),
     );
-    // return Scaffold(
-    //   appBar: AppBarWidget(
-    //     preferSize: 0,
-    //   ),
-    //   body: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.center,
-    //     children: [
-    //       50.0.spaceY,
-    //       TitleLargeText(
-    //         title: 'ALL NOTIFICATIONS',
-    //         fontSize: 20,
-    //         titleColor: ColorConstants.notificationTextColor,
-    //         titleTextAlign: TextAlign.center,
-    //       ),
-    //       20.0.spaceY,
-    //       TabBar(controller: tabController, unselectedLabelColor: Colors.black, labelColor: Colors.red, tabs: [
-    //         AllNotificationTypeNameWidget(),
-    //         AllNotificationTypeNameWidget(),
-    //         AllNotificationTypeNameWidget(),
-    //       ]),
-    //       Expanded(
-    //         child: TabBarView(
-    //           controller: tabController,
-    //           children: const [
-    //             Center(
-    //               child: Text(
-    //                 'Screen 1',
-    //               ),
-    //             ),
-    //             Center(
-    //               child: Text(
-    //                 'Screen 2',
-    //               ),
-    //             ),
-    //             Center(
-    //               child: Text(
-    //                 'Screen 3',
-    //               ),
-    //             ),
-    //             Center(
-    //               child: Text(
-    //                 'Screen 4',
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //       AllNotificationTypeNameWidget(),
-    //       // 10.0.spaceY,
-    //       // ExpertNotificationWidget(),
-    //       // 20.0.spaceY,
-    //       // UserNotificationWidget(),
-    //       // 40.0.spaceY,
-    //       // GeneralNotificationWidget()
-    //     ],
-    //   ).addAllPadding(20),
-    // );
   }
 }

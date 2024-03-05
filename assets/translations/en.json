@@ -70,6 +70,7 @@
   "duration": "Duration",
   "appointmentCanceled": "Appointment\ncanceled!",
   "expertNotify": "THE EXPERT HAS BEEN NOTIFIED",
+  "userNotify": "THE USER HAS BEEN NOTIFIED",
   "expert": "EXPERT",
   "time": "TIME",
   "reasonForCanceledAppointment": "REASON FOR CANCELLATION",
@@ -329,7 +330,6 @@
   "reported": "Reported!",
   "letting": "Thank you for letting us know about the issue. We’ll get back to you as soon as possible via the email ID you’ve shared in your account settings.",
   "startCallToast": "You can only start the call at the scheduled time",
-  "appointment": "APPOINTMENT",
   "complete": "COMPLETE",
   "incomplete": "INCOMPLETE",
   "supportTicket": "SUPPORT TICKET",
@@ -337,4 +337,8 @@
   "completeUser": "CALL COMPLETED",
   "incompleteUser": "CALL INCOMPLETE",
   "due" : "DUE"
+  "appointment": "APPOINTMENT",
+  "filedRequired": "This field required",
+  "selectThisIssue": "Please enter select this issue.",
+  "pickCategoryTopic": "PICK A CATEGORY TOPIC OR LEAVE AS IS"
 }

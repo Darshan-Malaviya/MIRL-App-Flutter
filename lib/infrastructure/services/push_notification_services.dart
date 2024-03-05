@@ -4,8 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
+import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
 import 'package:mirl/infrastructure/services/call_kit_service.dart';
 import 'package:mirl/mirl_app.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:uuid/uuid.dart';
 
 class PushNotificationService {
@@ -77,7 +79,7 @@ class PushNotificationService {
 
           if (message?.data['key'] == NotificationTypeEnum.connectAndroidCall.name) {
             ExtraResponseModel extraResponseModel = ExtraResponseModel.fromJson(message?.data ?? {});
-             showCallkitIncoming(uuid: const Uuid().v4().toString(), extraResponseModel: extraResponseModel);
+            showCallkitIncoming(uuid: const Uuid().v4().toString(), extraResponseModel: extraResponseModel);
           } else if (message?.data['key'] == NotificationTypeEnum.autoLogout.name) {
             CommonMethods.autoLogout();
           } else if (message?.data['key'] == NotificationTypeEnum.blocked.name) {
@@ -88,9 +90,15 @@ class PushNotificationService {
                   notification.hashCode,
                   notification.title,
                   notification.body,
-                  const NotificationDetails(
-                      android: AndroidNotificationDetails("high_importance_channel", "High Importance Notifications",
-                          channelDescription: "This channel is used for important notifications.", importance: Importance.max, icon: "@drawable/notification_logo"),
+                  NotificationDetails(
+                      android: AndroidNotificationDetails(
+                        "high_importance_channel",
+                        "High Importance Notifications",
+                        channelDescription: "This channel is used for important notifications.",
+                        importance: Importance.max,
+                        icon: "@drawable/notification_logo",
+                        styleInformation: BigTextStyleInformation(''),
+                      ),
                       iOS: DarwinNotificationDetails(presentSound: true)),
                   payload: jsonEncode(message?.data));
             }
@@ -111,7 +119,13 @@ class PushNotificationService {
   }
 
   void onMessageOpened(RemoteMessage? message) {
-    if (message?.data != null) {}
+    if (message?.data != null) {
+      NotificationData notificationData = NotificationData.fromJson(message?.data ?? {});
+      if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
+        NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment,
+            args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
+      }
+    }
   }
 
   Future getFirebaseToken() async {
