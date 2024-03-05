@@ -206,6 +206,7 @@
   "ok": "OK",
   "soFarYouHaveNotBlockedAnyUsers": "So far, you haven't blocked any users.",
   "userWith": "USER:",
+  "expertWith": "EXPERT:",
   "blockedOn": "BLOCKED ON:",
   "status": "STATUS:",
   "unblockUser": "UNBLOCK USER",
@@ -328,5 +329,12 @@
   "reported": "Reported!",
   "letting": "Thank you for letting us know about the issue. We’ll get back to you as soon as possible via the email ID you’ve shared in your account settings.",
   "startCallToast": "You can only start the call at the scheduled time",
-  "appointment": "APPOINTMENT"
+  "appointment": "APPOINTMENT",
+  "complete": "COMPLETE",
+  "incomplete": "INCOMPLETE",
+  "supportTicket": "SUPPORT TICKET",
+  "refund": "REFUND",
+  "completeUser": "CALL COMPLETED",
+  "incompleteUser": "CALL INCOMPLETE",
+  "due" : "DUE"
 }

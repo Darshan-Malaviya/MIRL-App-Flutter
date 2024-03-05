@@ -745,7 +745,7 @@ class SocketProvider extends ChangeNotifier {
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
-            if(model.data?.status.toString() == '5'){
+            if(model.data?.status.toString() == '5' || model.data?.status.toString() == '4'){
               if(activeRoute.value == RoutesConstants.multiConnectCallDialogScreen){
                 NavigationService.context.toPop();
               }
