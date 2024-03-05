@@ -40,6 +40,7 @@ class _ExpertOlderNotificationWidgetState extends State<ExpertOlderNotificationW
             titleTextAlign: TextAlign.start,
             fontFamily: FontWeightEnum.w400.toInter,
           ),
+          5.0.spaceY,
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

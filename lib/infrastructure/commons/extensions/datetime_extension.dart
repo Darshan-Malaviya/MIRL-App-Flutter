@@ -210,9 +210,30 @@ extension DateTimeFormatter on String {
     return null;
   }
 
+  String getChatHeaderDate() {
+    String finalDate = '';
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = DateTime(now.year, now.month, now.day - 1);
+    final DateTime givenDate = DateTime.tryParse(this)?.toLocal() ?? DateTime.now();
+    final convertedDate = DateTime(givenDate.year, givenDate.month, givenDate.day);
+
+    if (this.isNotEmpty) {
+      if (convertedDate == today) {
+        finalDate = 'New Notification';
+      } else if (convertedDate == yesterday) {
+        finalDate = 'Old Notification';
+      } else {
+        finalDate = 'Old Notification';
+      }
+    }
+    return finalDate;
+  }
+
 
 /* String timeAgo({bool numericDates = true}) {
     final date2 = DateTime.now();
+
     final difference = date2.difference(this);
     final years = difference.inDays ~/ 365;
     print((difference.inDays - (years * 365)) ~/ 30);

@@ -51,13 +51,13 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
                             title: homeProviderWatch.homeSearchData?.users?[index].expertName ?? '',
                           ),
                           2.0.spaceY,
-                          if (homeProviderWatch.homeSearchData?.users?[index].categoris?.isNotEmpty ?? false) ...[
+                          if (homeProviderWatch.homeSearchData?.users?[index].categories?.isNotEmpty ?? false) ...[
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 120,
                               child: Wrap(
                                 alignment: WrapAlignment.start,
-                                children: List.generate(homeProviderWatch.homeSearchData?.users?[index].categoris?.length ?? 0, (i) {
-                                  String color = homeProviderWatch.homeSearchData?.users?[index].categoris?[i].colorCode?.substring(1) ?? "D97CF0";
+                                children: List.generate(homeProviderWatch.homeSearchData?.users?[index].categories?.length ?? 0, (i) {
+                                  String color = homeProviderWatch.homeSearchData?.users?[index].categories?[i].colorCode?.substring(1) ?? "D97CF0";
                                   int colorConcat = int.parse('0xff$color');
 
                                   return Container(
@@ -66,7 +66,7 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
                                     padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                                     child: BodyMediumText(
                                       maxLine: 3,
-                                      title: (homeProviderWatch.homeSearchData?.users?[index].categoris?[i].name?.toLowerCase().toCapitalizeAllWord() ?? ''),
+                                      title: (homeProviderWatch.homeSearchData?.users?[index].categories?[i].name?.toLowerCase().toCapitalizeAllWord() ?? ''),
                                       fontFamily: FontWeightEnum.w400.toInter,
                                     ),
                                   );

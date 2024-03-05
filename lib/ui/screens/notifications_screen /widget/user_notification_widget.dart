@@ -13,6 +13,9 @@ class UserNotificationWidget extends ConsumerStatefulWidget {
 class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget> {
   @override
   Widget build(BuildContext context) {
+    final notificationProviderWatch = ref.watch(notificationProvider);
+    final notificationProviderRead = ref.read(notificationProvider);
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -31,7 +34,7 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
             titleTextAlign: TextAlign.center,
           ),
           30.0.spaceY,
-          NewNotificationWidget(),
+          NewNotificationWidget(remainingSecond: notificationProviderWatch.secondsRemaining,message: '',time: '',title: '', ),
           20.0.spaceY,
           Image.asset(ImageConstants.purpleLine),
           20.0.spaceY,

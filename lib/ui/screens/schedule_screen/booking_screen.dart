@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
@@ -155,7 +156,18 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
               onPressed: () {
                 context.toPushNamed(
                   RoutesConstants.canceledAppointmentOptionScreen,
-                  args: CancelArgs(appointmentData: scheduleWatch.appointmentData, role: 1, fromScheduled: true),
+                  args: CancelArgs(
+                      appointmentData: GetUpcomingAppointment(
+                        id: scheduleWatch.appointmentData?.id,
+                        expertId: scheduleWatch.appointmentData?.expertDetail?.id,
+                        userId: int.parse(SharedPrefHelper.getUserId),
+                        startTime: scheduleWatch.appointmentData?.startTime,
+                        endTime: scheduleWatch.appointmentData?.endTime,
+                        duration: scheduleWatch.appointmentData?.duration.toString(),
+                        date: scheduleWatch.appointmentData?.date,
+                      ),
+                      role: 1,
+                      fromScheduled: true),
                 );
               },
               buttonColor: ColorConstants.yellowButtonColor,

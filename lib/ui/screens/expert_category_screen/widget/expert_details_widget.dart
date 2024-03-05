@@ -92,7 +92,7 @@ class ExpertDetailWidget extends StatelessWidget {
                         AutoSizeText(
                           expertData?.overAllRating != 0 ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorConstants.bottomTextColor),
                         )
                       ],
                     ),
@@ -110,7 +110,7 @@ class ExpertDetailWidget extends StatelessWidget {
                         AutoSizeText(
                           fee != null ? '\$${fee}' : "",
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorConstants.bottomTextColor),
                         )
                       ],
                     ),
