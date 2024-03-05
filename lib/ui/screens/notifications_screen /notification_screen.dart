@@ -32,6 +32,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
   Widget build(BuildContext context) {
     final notificationProviderWatch = ref.watch(notificationProvider);
     final notificationProviderRead = ref.read(notificationProvider);
+
     return Scaffold(
       appBar: AppBarWidget(
         preferSize: 0,

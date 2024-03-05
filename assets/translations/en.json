@@ -70,6 +70,7 @@
   "duration": "Duration",
   "appointmentCanceled": "Appointment\ncanceled!",
   "expertNotify": "THE EXPERT HAS BEEN NOTIFIED",
+  "userNotify": "THE USER HAS BEEN NOTIFIED",
   "expert": "EXPERT",
   "time": "TIME",
   "reasonForCanceledAppointment": "REASON FOR CANCELLATION",

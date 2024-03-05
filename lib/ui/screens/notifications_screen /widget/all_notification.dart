@@ -23,8 +23,8 @@ class _AllNotificationTypeNameWidgetState extends ConsumerState<AllNotificationT
       children: [
         InkWell(
           child: ShadowContainer(
-            shadowColor: widget.isSelectedShadow ? ColorConstants.primaryColor : ColorConstants.blackColor.withOpacity(0.25),
-            offset: widget.isSelectedShadow ? Offset(0, 1) : Offset(0, 0),
+            shadowColor: widget.isSelectedShadow ? ColorConstants.primaryColor : ColorConstants.disableColor,
+            offset: widget.isSelectedShadow ? Offset(0, 1) : Offset(0, 2),
             spreadRadius: widget.isSelectedShadow ? 1 : 0,
             blurRadius: widget.isSelectedShadow ? 8 : 2,
             borderWidth: 1,

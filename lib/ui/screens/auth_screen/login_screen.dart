@@ -19,17 +19,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final loginScreenProviderRead = ref.read(loginScreenProvider);
 
     return Scaffold(
-      body: Form(
-        key: _loginPassKey,
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _loginPassKey,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(
                 ImageConstants.backgroundLogo,
               ).addPaddingTop(100),
               50.0.spaceY,
               Container(
-                height: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(boxShadow: [
                   BoxShadow(
                     color: ColorConstants.borderColor,
@@ -54,24 +54,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     40.0.spaceY,
                     TextFormFieldWidget(
-                      fontFamily: FontWeightEnum.w400.toInter,
                       hintText: StringConstants.typeYourEmailAddress,
                       textAlign: TextAlign.start,
                       controller: loginScreenProviderWatch.emailController,
                       focusNode: loginFocusNode,
+                      canRequestFocus: !loginScreenProviderWatch.isLoading,
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.emailAddress,
                       validator: (value) {
                         return value?.toEmailValidation();
                       },
                       onFieldSubmitted: (value){
-                        loginFocusNode.unfocus()  ;
+                        loginFocusNode.unfocus();
                       },
                     ).addPaddingX(42),
                     14.0.spaceY,
                     PrimaryButton(
                         title: StringConstants.selectLoginCode,
                         titleColor: ColorConstants.textColor,
+                        isLoading: loginScreenProviderWatch.isLoading,
                         width: 235,
                         onPressed: () {
                           loginFocusNode.unfocus();

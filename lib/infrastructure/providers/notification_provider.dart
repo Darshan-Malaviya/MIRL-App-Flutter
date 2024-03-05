@@ -1,10 +1,16 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/repository/notification_repo.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/widget/expert_notification_widget.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/widget/general_notification_widget.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/widget/user_notification_widget.dart';
 
 class NotificationProvider extends ChangeNotifier {
+
+  final _notificationRepository = NotificationRepository();
+
   int get currentView => _currentView;
   int _currentView = 0;
 
@@ -18,6 +24,15 @@ class NotificationProvider extends ChangeNotifier {
   int _secondsRemaining = 120;
 
   Timer? timer;
+
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
+  bool get reachedLastPage => _reachedLastPage;
+  bool _reachedLastPage = false;
+
+  int get pageNo => _pageNo;
+  int _pageNo = 1;
 
   void expertNotification() {
     _currentView = 0;
@@ -40,6 +55,39 @@ class NotificationProvider extends ChangeNotifier {
       UserNotificationWidget(),
       GeneralNotificationWidget(),
     ];
+  }
+
+  Future<void> getNotificationListApiCall({required int type, bool isFullScreenLoader = false}) async {
+    if (isFullScreenLoader) {
+      _isLoading = true;
+      notifyListeners();
+    }
+
+    ApiHttpResult response = await _notificationRepository.notificationListApi(limit: 30, page: _pageNo, type: type);
+
+    if (isFullScreenLoader) {
+      _isLoading = false;
+      notifyListeners();
+    }
+
+    switch (response.status) {
+      case APIStatus.success:
+ /*       if (response.data != null && response.data is ReportListResponseModel) {
+          ReportListResponseModel responseModel = response.data;
+          _reportListDetails.addAll(responseModel.data ?? []);
+          if (_reportUserListPageNo == responseModel.pagination?.pageCount) {
+            _reachedCategoryLastPage = true;
+          } else {
+            _reportUserListPageNo = _reportUserListPageNo + 1;
+            _reachedCategoryLastPage = false;
+          }
+        }*/
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail get all notification api call ${response.data}");
+        break;
+    }
   }
 
   startTimer() {

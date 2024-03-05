@@ -26,6 +26,7 @@ class FlutterToast {
         ),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: List.generate(
             messageList.length,
             (index) => Row(

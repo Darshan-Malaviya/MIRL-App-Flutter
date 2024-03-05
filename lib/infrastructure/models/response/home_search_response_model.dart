@@ -82,18 +82,18 @@ class Users {
   int? id;
   String? expertName;
   String? expertProfile;
-  List<Categories>? categoris;
+  List<Categories>? categories;
 
-  Users({this.id, this.expertName, this.expertProfile, this.categoris});
+  Users({this.id, this.expertName, this.expertProfile, this.categories});
 
   Users.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     expertName = json['expertName'];
     expertProfile = json['expertProfile'];
-    if (json['categoris'] != null) {
-      categoris = <Categories>[];
-      json['categoris'].forEach((v) {
-        categoris?.add(Categories.fromJson(v));
+    if (json['categories'] != null) {
+      categories = <Categories>[];
+      json['categories'].forEach((v) {
+        categories?.add(Categories.fromJson(v));
       });
     }
   }
@@ -103,8 +103,8 @@ class Users {
     data['id'] = this.id;
     data['expertName'] = this.expertName;
     data['expertProfile'] = this.expertProfile;
-    if (this.categoris != null) {
-      data['categoris'] = this.categoris?.map((v) => v.toJson()).toList();
+    if (this.categories != null) {
+      data['categories'] = this.categories?.map((v) => v.toJson()).toList();
     }
     return data;
   }
