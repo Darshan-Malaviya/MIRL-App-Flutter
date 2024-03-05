@@ -1,7 +1,7 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
-import 'package:mirl/infrastructure/models/response/report_list_response_model.dart';
+import 'package:mirl/infrastructure/models/response/notification_list_response_model.dart';
 
 class NotificationRepository extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
@@ -13,6 +13,6 @@ class NotificationRepository extends ApiResponseHandler {
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), apiType: APIType.get);
 
-    return responseHandler(result: result, json: ReportListResponseModel.parseInfo);
+    return responseHandler(result: result, json: NotificationListResponseModel.parseInfo);
   }
 }

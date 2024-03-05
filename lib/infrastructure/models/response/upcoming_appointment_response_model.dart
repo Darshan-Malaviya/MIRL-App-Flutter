@@ -7,15 +7,12 @@ class UpcomingAppointmentResponseModel {
   Pagination? pagination;
   upcomingAppointmentData? data;
 
-  UpcomingAppointmentResponseModel(
-      {this.status, this.message, this.pagination, this.data});
+  UpcomingAppointmentResponseModel({this.status, this.message, this.pagination, this.data});
 
   UpcomingAppointmentResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
-        : null;
+    pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
     data = json['data'] != null ? new upcomingAppointmentData.fromJson(json['data']) : null;
   }
 
@@ -66,11 +63,10 @@ class upcomingAppointmentData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.dateLists != null) {
-      data['dateLists'] = this.dateLists!.map((v) => v.toJson()).toList();
+      data['dateLists'] = this.dateLists?.map((v) => v.toJson()).toList();
     }
     if (this.getUpcomingAppointment != null) {
-      data['getUpcomingAppointment'] =
-          this.getUpcomingAppointment!.map((v) => v.toJson()).toList();
+      data['getUpcomingAppointment'] = this.getUpcomingAppointment!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -100,17 +96,20 @@ class GetUpcomingAppointment {
   String? startTime;
   String? endTime;
   String? date;
+  int? callRequestId;
   DetailData? detail;
 
-  GetUpcomingAppointment(
-      {this.id,
-        this.userId,
-        this.expertId,
-        this.duration,
-        this.startTime,
-        this.endTime,
-        this.date,
-        this.detail});
+  GetUpcomingAppointment({
+    this.id,
+    this.userId,
+    this.expertId,
+    this.duration,
+    this.startTime,
+    this.endTime,
+    this.date,
+    this.detail,
+    this.callRequestId,
+  });
 
   GetUpcomingAppointment.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -120,8 +119,8 @@ class GetUpcomingAppointment {
     startTime = json['startTime'];
     endTime = json['endTime'];
     date = json['date'];
-    detail =
-    json['detail'] != null ? new DetailData.fromJson(json['detail']) : null;
+    callRequestId = json['callRequestId'];
+    detail = json['detail'] != null ? new DetailData.fromJson(json['detail']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -133,8 +132,9 @@ class GetUpcomingAppointment {
     data['startTime'] = this.startTime;
     data['endTime'] = this.endTime;
     data['date'] = this.date;
+    data['callRequestId'] = this.callRequestId;
     if (this.detail != null) {
-      data['detail'] = this.detail!.toJson();
+      data['detail'] = this.detail?.toJson();
     }
     return data;
   }
