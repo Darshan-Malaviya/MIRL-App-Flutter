@@ -246,45 +246,43 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
             title: LocaleKeys.upcomingAppointment.tr(),
             titleColor: ColorConstants.buttonTextColor,
             onPressed: () => context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: 1))),
-            50.0.spaceY,
-            PrimaryButton(
-                buttonColor: ColorConstants.buttonColor,
-                title: LocaleKeys.notificationAndPreference.tr(),
-                titleColor: ColorConstants.buttonTextColor,
-                onPressed: () => context.toPushNamed(RoutesConstants.notificationAndPreferencesScreen)),
-            50.0.spaceY,
-            PrimaryButton(
-              buttonColor: ColorConstants.buttonColor,
-              title: LocaleKeys.reportAndIssue.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              onPressed: () => context.toPushNamed(RoutesConstants.reportAnIssueScreen),
-            ),
-            50.0.spaceY,
-            PrimaryButton(
-              buttonColor: ColorConstants.buttonColor,
-              title: LocaleKeys.callHistoryAndBilling.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              onPressed: () => context.toPushNamed(RoutesConstants.seekerCallHistoryScreen),//onPressed: () => context.toPushNamed(RoutesConstants.callFeedbackScreen,args: 53),
-            ),
-            50.0.spaceY,
-            PrimaryButton(
-              buttonColor: ColorConstants.buttonColor,
-              title: LocaleKeys.signOut.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              onPressed: () {
-                // NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
-                //     args: BlockUserArgs(reportName: 'vaidehi', userRole: 2, expertId: SharedPrefHelper.getUserId));
-                SharedPrefHelper.clearPrefs();
-                context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-              },
-            ),
-            50.0.spaceY,
+                  50.0.spaceY,
+                  PrimaryButton(
+                      buttonColor: ColorConstants.buttonColor,
+                      title: LocaleKeys.notificationAndPreference.tr(),
+                      titleColor: ColorConstants.buttonTextColor,
+                      onPressed: () => context.toPushNamed(RoutesConstants.notificationAndPreferencesScreen)),
+                  50.0.spaceY,
+                  PrimaryButton(
+                    buttonColor: ColorConstants.buttonColor,
+                    title: LocaleKeys.reportAndIssue.tr(),
+                    titleColor: ColorConstants.buttonTextColor,
+                    onPressed: () => context.toPushNamed(RoutesConstants.reportAnIssueScreen),
+                  ),
+                  50.0.spaceY,
+                  PrimaryButton(
+                    buttonColor: ColorConstants.buttonColor,
+                    title: LocaleKeys.callHistoryAndBilling.tr(),
+                    titleColor: ColorConstants.buttonTextColor,
+                    onPressed: () => context.toPushNamed(RoutesConstants.seekerCallHistoryScreen),
+                  ),
+                  50.0.spaceY,
+                  PrimaryButton(
+                    buttonColor: ColorConstants.buttonColor,
+                    title: LocaleKeys.signOut.tr(),
+                    titleColor: ColorConstants.buttonTextColor,
+                    onPressed: () {
+                      // NavigationService.context.toPushNamed(RoutesConstants.blockUserScreen,
+                      //     args: BlockUserArgs(reportName: 'vaidehi', userRole: 2, expertId: SharedPrefHelper.getUserId));
+                      SharedPrefHelper.clearPrefs();
+                      context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+                    },
+                  ),
+                  50.0.spaceY,
+                ],
+              ).addMarginX(20),
             ],
-          ).addMarginX(20),
-        ],
-      ).addAllPadding
-        (
-          20
+          ).addAllPadding(20
       )
       ,
     ));

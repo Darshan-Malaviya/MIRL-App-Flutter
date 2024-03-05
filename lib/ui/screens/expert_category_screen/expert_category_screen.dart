@@ -117,7 +117,7 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                   fontFamily: FontWeightEnum.w700.toInter,
                   maxLine: 2,
                 ),
-              ),
+              ).addPaddingBottom(20),
               20.0.spaceY
             ],
           ).addPaddingX(20),
