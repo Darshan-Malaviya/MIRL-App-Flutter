@@ -215,7 +215,10 @@ class RouterConstant {
       case RoutesConstants.feedbackSubmittingScreen:
         return MaterialPageRoute(builder: (_) => const FeedbackSubmittingScreen());
       case RoutesConstants.reportProblemWithYourCallScreen:
-        return MaterialPageRoute(builder: (_) => const ReportProblemWithYourCallScreen());
+        return MaterialPageRoute(
+            builder: (_) => ReportProblemWithYourCallScreen(
+                  callHistoryId: settings.arguments as int
+                ));
       case RoutesConstants.reportedSubmittingScreen:
         return MaterialPageRoute(builder: (_) => const ReportedSubmittingScreen());
       default:

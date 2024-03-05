@@ -13,6 +13,8 @@ class EditYourEmailIdScreen extends ConsumerStatefulWidget {
 class _EditYourEmailIdScreenState extends ConsumerState<EditYourEmailIdScreen> {
   @override
   Widget build(BuildContext context) {
+    final userSettingWatch = ref.watch(userSettingProvider);
+    final userSettingRead = ref.read(userSettingProvider);
     return Scaffold(
         appBar: AppBarWidget(
             leading: InkWell(
@@ -36,7 +38,7 @@ class _EditYourEmailIdScreenState extends ConsumerState<EditYourEmailIdScreen> {
               TextFormFieldWidget(
                 height: 36,
                // hintText: StringConstants.officialNameHere,
-                // controller: expertWatch.expertNameController,
+                controller: userSettingWatch.emailIdController,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(50),
                 ],
