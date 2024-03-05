@@ -329,5 +329,6 @@
   "reported": "Reported!",
   "letting": "Thank you for letting us know about the issue. We’ll get back to you as soon as possible via the email ID you’ve shared in your account settings.",
   "startCallToast": "You can only start the call at the scheduled time",
-  "appointment": "APPOINTMENT"
+  "appointment": "APPOINTMENT",
+  "filedRequired": "This field required"
 }

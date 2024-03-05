@@ -13,6 +13,8 @@ class EditYourNameScreen extends ConsumerStatefulWidget {
 class _EditYourNameScreenState extends ConsumerState<EditYourNameScreen> {
   @override
   Widget build(BuildContext context) {
+    final userSettingWatch = ref.watch(userSettingProvider);
+    final userSettingRead = ref.read(userSettingProvider);
     return Scaffold(
         appBar: AppBarWidget(
             leading: InkWell(
@@ -20,7 +22,10 @@ class _EditYourNameScreenState extends ConsumerState<EditYourNameScreen> {
               onTap: () => context.toPop(),
             ),
             trailingIcon: InkWell(
-             // onTap: () => expertRead.updateExpertNameApi(),
+              onTap: () {
+                context.unFocusKeyboard();
+                userSettingRead.updateUserNameApi();
+              },
               child: TitleMediumText(
                 title: StringConstants.done,
               ).addPaddingRight(14),
@@ -36,11 +41,11 @@ class _EditYourNameScreenState extends ConsumerState<EditYourNameScreen> {
               TextFormFieldWidget(
                 height: 36,
                 //hintText: StringConstants.officialNameHere,
-               // controller: expertWatch.expertNameController,
+                controller: userSettingWatch.userNameController,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(50),
                 ],
-                onFieldSubmitted: (value){
+                onFieldSubmitted: (value) {
                   context.unFocusKeyboard();
                 },
                 textInputAction: TextInputAction.done,

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/call_feedback_screen/componnet/call_feedback_model.dart';
 
 class ReviewRatingWidget extends ConsumerStatefulWidget {
   const ReviewRatingWidget({super.key, this.index});
@@ -40,13 +39,10 @@ class _ReviewRatingWidgetState extends ConsumerState<ReviewRatingWidget> {
               children: List.generate(
                 feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList.length,
                 (position) {
-                  CallFeedbackData element =
-                      feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList[position];
                   if (feedBackWatch.isLoaded) {
                     if (feedBackWatch.callFeedbackList[widget.index].callFeedbackDataList[position].currentDxPosition <=
                         feedBackWatch.callFeedbackList[widget.index].localPosition) {
-                      element.criteriaSelectedIndex = position;
-                      print(element.criteriaSelectedIndex);
+                      feedBackWatch.callFeedbackList[widget.index].criteriaSelectedIndex = position;
                       selectedIndex.value = position;
                     }
                   }

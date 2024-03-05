@@ -78,4 +78,6 @@ class ApiConstants {
   static const String suggestedCategory = '/SuggestedCategory';
   static const String notificationMessage = '/notificationMessage';
   static const String callHistory = '/history';
+  static const String reportCallTitles = '/reportCallTitles';
+  static const String reportCall = '/reportCall';
 }

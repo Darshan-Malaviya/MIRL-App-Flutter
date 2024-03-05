@@ -14,13 +14,27 @@ class UserSettingScreen extends ConsumerStatefulWidget {
 
 class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(userSettingProvider).getUserSettingData();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final userSettingWatch = ref.watch(userSettingProvider);
     final userSettingRead = ref.read(userSettingProvider);
 
     return Scaffold(
-      appBar: AppBarWidget(),
-      body: SingleChildScrollView(
+      appBar: AppBarWidget(
+      trailingIcon: InkWell(
+            onTap: () => userSettingWatch.pickedImage.isNotEmpty ? userSettingRead.updateProfileApi() : null,
+            child: TitleMediumText(
+              title: StringConstants.done,
+            ).addPaddingRight(14),
+          ),
+        ),body: SingleChildScrollView(
         child: Column(
             children: [
         TitleLargeText(
@@ -132,8 +146,8 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                   title: LocaleKeys.paymentDetail.tr(),
                   titleColor: ColorConstants.textColor,
                   titleTextAlign: TextAlign.center,
-                  shadow: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
-                ).addAllPadding(20),
+                  shadow: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                ],).addAllPadding(20),
               ),
             ),
             InkWell(
@@ -188,13 +202,14 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
             borderWidth: 1,
             enabledBorderColor: ColorConstants.borderLightColor,
             isReadOnly: true,
-            onTap: () {
+            onTap: () {userSettingRead.getUserSettingData();
               context.toPushNamed(RoutesConstants.editYourNameScreen);
             },
             height: 30,
             labelText: LocaleKeys.yourName.tr(),
             alignment: Alignment.centerLeft,
-            labelTextSpace: 0.0,
+            labelTextSpace: 0.0,controller: userSettingWatch.userNameController,
+                    //  controller: TextEditingController(text: userSettingWatch.userName),
           ),
           20.0.spaceY,
           TextFormFieldWidget(
@@ -202,12 +217,13 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
             labelTextSpace: 0.0,
             enabledBorderColor: ColorConstants.borderLightColor,
             isReadOnly: true,
-            onTap: () {
-              context.toPushNamed(RoutesConstants.editYourEmailIdScreen);
-            },
+            //onTap: () {
+              //context.toPushNamed(RoutesConstants.editYourEmailIdScreen);
+            //},
             height: 30,
             labelText: LocaleKeys.emailId.tr(),
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.centerLeft,controller: userSettingWatch.emailIdController,
+                    //controller: TextEditingController(text: userSettingWatch.emailId),
           ),
           20.0.spaceY,
           TextFormFieldWidget(
@@ -215,12 +231,14 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
             labelTextSpace: 0.0,
             enabledBorderColor: ColorConstants.borderLightColor,
             isReadOnly: true,
-            onTap: () {
+            onTap: () {userSettingRead.getUserSettingData();
               context.toPushNamed(RoutesConstants.editYourPhoneNumberScreen);
             },
             height: 30,
             labelText: LocaleKeys.phoneNumber.tr(),
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.centerLeft,controller: userSettingWatch.phoneNumberController,
+
+                    //controller: TextEditingController(text: userSettingWatch.phoneNumber),
           ),
           50.0.spaceY,
           PrimaryButton(
@@ -246,7 +264,7 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
               buttonColor: ColorConstants.buttonColor,
               title: LocaleKeys.callHistoryAndBilling.tr(),
               titleColor: ColorConstants.buttonTextColor,
-              onPressed: () => context.toPushNamed(RoutesConstants.seekerCallHistoryScreen),
+              onPressed: () => context.toPushNamed(RoutesConstants.seekerCallHistoryScreen),//onPressed: () => context.toPushNamed(RoutesConstants.callFeedbackScreen,args: 53),
             ),
             50.0.spaceY,
             PrimaryButton(

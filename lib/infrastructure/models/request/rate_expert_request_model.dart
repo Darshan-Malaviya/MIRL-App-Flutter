@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 class RateExpertRequestModel {
   int? callHistoryId;
   int? rating;
@@ -28,6 +30,10 @@ class RateExpertRequestModel {
       data['ratingCriteria'] = this.ratingCriteria!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  String prepareRequest() {
+    return jsonEncode(toJson());
   }
 }
 
