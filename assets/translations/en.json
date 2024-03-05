@@ -249,7 +249,7 @@
   "reportIssue": "REPORT THE ISSUE",
   "seekerCallHistory": "SEEKER CALL HISTORY",
   "inviteYourFriend": "Invite your friends and share this code!",
-  "back": "BACK",
+  "back": "back",
   "suggestNewExpertise": "SUGGEST A NEW EXPERTISE",
   "suggestNewExpertiseNote": "Would you like to suggest a new Expert Category or Topic(s) that we don’t have yet on MIRL?",
   "suggestNewExpertiseSubNote": "Please enter your suggestions below, and we’d be thrilled to add your suggested Expert Categories and Topics if there’s a user demand for it.",
@@ -332,5 +332,10 @@
   "appointment": "APPOINTMENT",
   "filedRequired": "This field required",
   "selectThisIssue": "Please enter select this issue.",
-  "pickCategoryTopic": "PICK A CATEGORY TOPIC OR LEAVE AS IS"
+  "pickCategoryTopic": "PICK A CATEGORY TOPIC OR LEAVE AS IS",
+  "general": "GENERAL",
+  "allNotification": "ALL NOTIFICATIONS",
+  "notificationTimeout": "Notification Timed Out!",
+  "spookyTimeFlies": "Boo!\nThis notification is now a ghost.\nSpooky how time flies!",
+  "learnMore": "Learn more"
 }
