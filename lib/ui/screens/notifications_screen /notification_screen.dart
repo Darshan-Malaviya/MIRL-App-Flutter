@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/widget/expert_notification_widget.dart';
 import 'package:mirl/ui/screens/notifications_screen%20/widget/general_notification_widget.dart';
@@ -21,7 +23,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
     tabController?.addListener(_handleTabSelection);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(notificationProvider).getNotificationListApiCall(isFullScreenLoader: true, type: 1,pageLoading: false);
+      ref.read(notificationProvider).getNotificationListApiCall(isFullScreenLoader: true, type: 1, pageLoading: false);
     });
 
     super.initState();
@@ -45,7 +47,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
         children: [
           40.0.spaceY,
           TitleLargeText(
-            title: 'ALL NOTIFICATIONS',
+            title: LocaleKeys.allNotification.tr(),
             fontSize: 20,
             titleColor: ColorConstants.notificationTextColor,
             titleTextAlign: TextAlign.center,
@@ -56,9 +58,18 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
             indicatorColor: ColorConstants.transparentColor,
             dividerColor: ColorConstants.transparentColor,
             tabs: [
-              AllNotificationTypeNameWidget(notificationName: "EXPERT", isSelectedShadow: tabController?.index == 0 ? true : false, imageURL: ImageConstants.expertNotifications),
-              AllNotificationTypeNameWidget(notificationName: "USER", isSelectedShadow: tabController?.index == 1 ? true : false, imageURL: ImageConstants.userNotifications),
-              AllNotificationTypeNameWidget(notificationName: "GENERAL", isSelectedShadow: tabController?.index == 2 ? true : false, imageURL: ImageConstants.generalNotifications),
+              AllNotificationTypeNameWidget(
+                  notificationName: LocaleKeys.expert.tr(),
+                  isSelectedShadow: tabController?.index == 0 ? true : false,
+                  imageURL: ImageConstants.expertNotifications),
+              AllNotificationTypeNameWidget(
+                  notificationName: LocaleKeys.user.tr().toUpperCase(),
+                  isSelectedShadow: tabController?.index == 1 ? true : false,
+                  imageURL: ImageConstants.userNotifications),
+              AllNotificationTypeNameWidget(
+                  notificationName: LocaleKeys.general.tr(),
+                  isSelectedShadow: tabController?.index == 2 ? true : false,
+                  imageURL: ImageConstants.generalNotifications),
             ],
             controller: tabController,
           ),

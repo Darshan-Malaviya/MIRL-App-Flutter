@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 
@@ -6,7 +8,8 @@ class NewNotificationWidget extends StatelessWidget {
   final int remainingSecond;
   final String title, message, time;
 
-  const NewNotificationWidget({super.key, required this.remainingSecond, required this.title, required this.message, required this.time});
+  const NewNotificationWidget(
+      {super.key, required this.remainingSecond, required this.title, required this.message, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +42,16 @@ class NewNotificationWidget extends StatelessWidget {
             shrinkWrap: true,
             style: {
               'html': Style(
-                  textAlign: TextAlign.start,
-                  maxLines: 30,
-                  fontFamily: FontWeightEnum.w400.toInter,
-                  color: ColorConstants.blackColor,
-                  fontSize: FontSize.medium,
-                  alignment: Alignment.centerLeft,lineHeight: LineHeight.normal,padding: HtmlPaddings.zero,margin: Margins.zero,)
+                textAlign: TextAlign.start,
+                maxLines: 30,
+                fontFamily: FontWeightEnum.w400.toInter,
+                color: ColorConstants.blackColor,
+                fontSize: FontSize.medium,
+                alignment: Alignment.centerLeft,
+                lineHeight: LineHeight.normal,
+                padding: HtmlPaddings.zero,
+                margin: Margins.zero,
+              )
             },
           ),
           20.0.spaceY,
@@ -70,7 +77,7 @@ class NewNotificationWidget extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           BodyLargeText(
-                            title: 'Notification Timed Out!',
+                            title: LocaleKeys.notificationTimeout.tr(),
                             fontFamily: FontWeightEnum.w600.toInter,
                             titleColor: ColorConstants.bottomTextColor,
                             fontSize: 17,
@@ -78,7 +85,7 @@ class NewNotificationWidget extends StatelessWidget {
                           ),
                           20.0.spaceY,
                           BodyLargeText(
-                            title: 'Boo!\nThis notification is now a ghost.\nSpooky how time flies!',
+                            title: LocaleKeys.spookyTimeFlies.tr(),
                             maxLine: 4,
                             fontFamily: FontWeightEnum.w400.toInter,
                             titleColor: ColorConstants.blackColor,
@@ -89,7 +96,7 @@ class NewNotificationWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               BodyMediumText(
-                                title: 'Learn more',
+                                title: LocaleKeys.learnMore.tr(),
                                 fontFamily: FontWeightEnum.w500.toInter,
                                 titleColor: ColorConstants.bottomTextColor,
                                 titleTextAlign: TextAlign.center,
@@ -97,7 +104,7 @@ class NewNotificationWidget extends StatelessWidget {
                               InkWell(
                                 onTap: () => context.toPop(),
                                 child: BodyMediumText(
-                                  title: 'Back',
+                                  title: LocaleKeys.back.tr(),
                                   fontFamily: FontWeightEnum.w500.toInter,
                                   titleColor: ColorConstants.bottomTextColor,
                                   titleTextAlign: TextAlign.center,

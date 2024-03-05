@@ -57,6 +57,7 @@ class UserSettingProvider extends ChangeNotifier {
       emailIdController.text = _userData?.email ?? '';
       phoneNumberController.text = _userData?.phone ?? '';
       _pickedImage = _userData?.userProfile ?? '';
+      notifyListeners();
     }
   }
 
@@ -78,7 +79,7 @@ class UserSettingProvider extends ChangeNotifier {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
       userProfile: _pickedImage,
     );
-    UpdateUserSettingApiCall(requestModel: await updateExpertProfileRequestModel.toJsonUserName(), fromImageUpload: true);
+    UpdateUserSettingApiCall(requestModel: await updateExpertProfileRequestModel.toJsonUserProfile(), fromImageUpload: true);
   }
 
   Future<void> UpdateUserSettingApiCall({required FormData requestModel, bool fromImageUpload = false}) async {
