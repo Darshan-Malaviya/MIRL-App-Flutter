@@ -3,7 +3,9 @@ import 'package:logger/logger.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/rate_expert_request_model.dart';
+import 'package:mirl/infrastructure/models/request/report_call_request_model.dart';
 import 'package:mirl/infrastructure/models/response/rate_and_review_response_model.dart';
+import 'package:mirl/infrastructure/models/response/report_call_title_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/repository/report_repo.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/componnet/call_feedback_model.dart';
@@ -21,10 +23,11 @@ class ReportReviewProvider extends ChangeNotifier {
   List<String> sortByReviewItem = ['HIGHEST REVIEW SCORE', 'LOWEST REVIEW SCORE', 'NEWEST REVIEWS', 'OLDEST REVIEWS'];
 
   List<String> sortByEarningItem = ['WEEKLY', 'MONTHLY', 'ALL TIME'];
+  int? selectedId = 0;
+  ReportCallTitleList? selectedReportCall;
 
-  List<String> _callIssue = ["CALL DROPPED", "CALL DISCONNECTED"];
-
-  List<String> get callIssue => _callIssue;
+  List<ReportCallTitleList> get reportCallTitleList => _reportCallTitleList;
+  List<ReportCallTitleList> _reportCallTitleList = [];
 
   List<CommonSelectionModel> get feedbackTypeList => _feedbackTypeList;
   List<CommonSelectionModel> _feedbackTypeList = [
@@ -37,15 +40,11 @@ class ReportReviewProvider extends ChangeNotifier {
 
   List<CommonSelectionModel> get criteriaList => _criteriaList;
   List<CommonSelectionModel> _criteriaList = [
-    CommonSelectionModel(
-        title: LocaleKeys.expertise.tr(), value: LocaleKeys.rateTheExpertKnowledge.tr(), ratingCategory: 1),
-    CommonSelectionModel(
-        title: LocaleKeys.communication.tr(), value: LocaleKeys.wereTheyCourteous.tr(), ratingCategory: 2),
-    CommonSelectionModel(
-        title: LocaleKeys.helpfulness.tr(), value: LocaleKeys.wereTheyAbleToHelp.tr(), ratingCategory: 3),
+    CommonSelectionModel(title: LocaleKeys.expertise.tr(), value: LocaleKeys.rateTheExpertKnowledge.tr(), ratingCategory: 1),
+    CommonSelectionModel(title: LocaleKeys.communication.tr(), value: LocaleKeys.wereTheyCourteous.tr(), ratingCategory: 2),
+    CommonSelectionModel(title: LocaleKeys.helpfulness.tr(), value: LocaleKeys.wereTheyAbleToHelp.tr(), ratingCategory: 3),
     CommonSelectionModel(title: LocaleKeys.empathy.tr(), value: LocaleKeys.wereTheyComfortable.tr(), ratingCategory: 4),
-    CommonSelectionModel(
-        title: LocaleKeys.professionalism.tr(), value: LocaleKeys.respectFullToThem.tr(), ratingCategory: 5),
+    CommonSelectionModel(title: LocaleKeys.professionalism.tr(), value: LocaleKeys.respectFullToThem.tr(), ratingCategory: 5),
   ];
 
   bool get isLoading => _isLoading;
@@ -76,23 +75,18 @@ class ReportReviewProvider extends ChangeNotifier {
   bool isLoaded = false;
 
   List<CallFeedBackModel> callFeedbackList = [
-    CallFeedBackModel(
-        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
-    CallFeedBackModel(
-        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
-    CallFeedBackModel(
-        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
-    CallFeedBackModel(
-        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
-    CallFeedBackModel(
-        callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
+    CallFeedBackModel(callFeedbackDataList: List.generate(11, (index) => CallFeedbackData(formKey: GlobalKey<FormState>()))),
   ];
 
   void changeCriteriaSelectedIndex({required int index, required int position}) {
     RenderBox box =
         callFeedbackList[index].callFeedbackDataList[position].formKey.currentContext?.findRenderObject() as RenderBox;
     Offset positionOffset = box.localToGlobal(Offset.zero);
-    callFeedbackList[index].localPosition = positionOffset.dx;
+    callFeedbackList[index].localPosition = positionOffset.dx - 20;
     selectedIndex = position;
     notifyListeners();
   }
@@ -101,7 +95,7 @@ class ReportReviewProvider extends ChangeNotifier {
     if (details.globalPosition.dx <= callFeedbackList[index].callFeedbackDataList.first.currentDxPosition) {
       return;
     }
-    if (callFeedbackList[index].callFeedbackDataList.last.currentDxPosition + 20 >= details.globalPosition.dx) {
+    if (callFeedbackList[index].callFeedbackDataList.last.currentDxPosition + 16 >= details.globalPosition.dx) {
       callFeedbackList[index].localPosition = details.globalPosition.dx;
       notifyListeners();
     }
@@ -147,8 +141,18 @@ class ReportReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getRatingAndReviewApiCall(
-      {required bool isLoading, required int id, required bool isListLoading}) async {
+  void setReportCallTitle(ReportCallTitleList? value) {
+    selectedReportCall = value;
+    notifyListeners();
+  }
+
+  void clearController() {
+    callIssueController.clear();
+    selectedReportCall = null;
+    notifyListeners();
+  }
+
+  Future<void> getRatingAndReviewApiCall({required bool isLoading, required int id, required bool isListLoading}) async {
     if (isLoading) {
       _isLoading = true;
       notifyListeners();
@@ -218,8 +222,11 @@ class ReportReviewProvider extends ChangeNotifier {
   void rateExpertRequestCall({required int callHistoryId}) {
     List<RatingCriteria> ratingCriteria = [];
 
+    int index = 0;
     for (var element in _criteriaList) {
-      ratingCriteria.add(RatingCriteria(rating: element.rating ?? null, ratingCategory: element.ratingCategory));
+      ratingCriteria
+          .add(RatingCriteria(rating: callFeedbackList[index].criteriaSelectedIndex, ratingCategory: element.ratingCategory));
+      index++;
     }
     RateExpertRequestModel rateExpertRequestModel = RateExpertRequestModel(
       review: reviewController.text.trim(),
@@ -227,7 +234,7 @@ class ReportReviewProvider extends ChangeNotifier {
       rating: selectedIndex,
       callHistoryId: callHistoryId,
     );
-    rateExpertApiCall(requestModel: rateExpertRequestModel);
+    rateExpertApiCall(requestModel: rateExpertRequestModel.prepareRequest());
   }
 
   Future<void> rateExpertApiCall({required Object requestModel}) async {
@@ -247,6 +254,45 @@ class ReportReviewProvider extends ChangeNotifier {
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
         Logger().d("API fail rate expert api call ${response.data}");
+        break;
+    }
+    notifyListeners();
+  }
+
+  Future<void> getReportCallTitleApiCall() async {
+    ApiHttpResult response = await _reportRepository.reportCallTitleApi();
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is ReportCallTitleResponseModel) {
+          ReportCallTitleResponseModel responseModel = response.data;
+          _reportCallTitleList == responseModel.data ?? [];
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail get all report call title api call ${response.data}");
+        break;
+    }
+    notifyListeners();
+  }
+
+  Future<void> reportCallApiCall({required int callHistoryId}) async {
+    ReportCallRequestModel reportCallRequestModel = ReportCallRequestModel(
+        callHistoryId: callHistoryId, message: callIssueController.text.trim(), reportCallTitleId: selectedReportCall?.id);
+    ApiHttpResult response = await _reportRepository.reportCallApi(requestModel: reportCallRequestModel.prepareRequest());
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is ReportCallTitleResponseModel) {
+          ReportCallTitleResponseModel responseModel = response.data;
+          Logger().d("Successfully report call API");
+          NavigationService.context.toPushNamed(RoutesConstants.reportedSubmittingScreen);
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail report call api call ${response.data}");
         break;
     }
     notifyListeners();

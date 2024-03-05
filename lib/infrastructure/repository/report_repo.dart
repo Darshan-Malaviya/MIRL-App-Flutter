@@ -2,6 +2,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/data_access_layer/api/api_response_provider.dart';
 import 'package:mirl/infrastructure/handler/api_response_handler/api_response_handler.dart';
 import 'package:mirl/infrastructure/models/response/rate_and_review_response_model.dart';
+import 'package:mirl/infrastructure/models/response/report_call_title_response_model.dart';
 import 'package:mirl/infrastructure/models/response/report_list_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/models/response/user_report_response_model.dart';
@@ -43,6 +44,25 @@ class ReportListRepository extends ApiResponseHandler {
 
     APIResponse result = await _apiResponseProvider.requestAPI(uri,
         headers: ApiConstants.headerWithToken(), apiType: APIType.post, body: requestModel);
+
+    return responseHandler(result: result, json: UnBlockUserResponseModel.parseInfo);
+  }
+
+  Future<ApiHttpResult> reportCallTitleApi() async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.reportCallTitles);
+
+    APIResponse result = await _apiResponseProvider.requestAPI(uri,
+        headers: ApiConstants.headerWithToken(), apiType: APIType.get,);
+
+    return responseHandler(result: result, json: ReportCallTitleResponseModel.parseInfo);
+  }
+
+
+  Future<ApiHttpResult> reportCallApi({required Object requestModel}) async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.reportCall);
+
+    APIResponse result = await _apiResponseProvider.requestAPI(uri,
+        headers: ApiConstants.headerWithToken(), apiType: APIType.post,body: requestModel);
 
     return responseHandler(result: result, json: UnBlockUserResponseModel.parseInfo);
   }

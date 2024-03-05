@@ -72,7 +72,7 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
               20.0.spaceY,
               InkWell(
                 onTap: () {
-                  context.toPushNamed(RoutesConstants.reportProblemWithYourCallScreen);
+                  context.toPushNamed(RoutesConstants.reportProblemWithYourCallScreen,args: widget.callHistoryId);
                 },
                 child: BodySmallText(
                   title: LocaleKeys.issueWithCall.tr(),

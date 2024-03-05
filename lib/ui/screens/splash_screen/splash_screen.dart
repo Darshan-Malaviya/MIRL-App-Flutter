@@ -1,5 +1,4 @@
 import 'package:lottie/lottie.dart';
-import 'package:mirl/drage_widget.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,14 +25,14 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     //   }
     // });
 
-    // Future.delayed(const Duration(milliseconds: 5000)).then((value) {
-    //   var isLoginIn = SharedPrefHelper.getUserData;
-    //   if (isLoginIn.isNotEmpty) {
-    //     context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
-    //   } else {
-    //     context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-    //   }
-    // });
+    Future.delayed(const Duration(milliseconds: 5000)).then((value) {
+      var isLoginIn = SharedPrefHelper.getUserData;
+      if (isLoginIn.isNotEmpty) {
+        context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
+      } else {
+        context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+      }
+    });
     super.initState();
 
     //_composition = AssetLottie(ImageConstants.mirlJson).load();
@@ -42,11 +41,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     // return CustomTooltip(text: '10',position: Offset(200,200));
-    return Scaffold(
-      body: ReviewSlider(
-        onChange: (int index) {},
-      ),
-    );
+    // return Scaffold(
+    //   body: ReviewSlider(
+    //     onChange: (int index) {},
+    //   ),
+    // );
     return Scaffold(
       backgroundColor: ColorConstants.whiteColor,
       body: Container(
