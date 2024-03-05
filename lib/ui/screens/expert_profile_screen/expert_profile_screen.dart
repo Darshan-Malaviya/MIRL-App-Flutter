@@ -74,9 +74,8 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               AutoSizeText(
                                 expertWatch.overAllRating,
                                 maxLines: 1,
-                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,
-                                  fontSize: 30,
                                   shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                                 ),
                               ),
@@ -93,9 +92,8 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               AutoSizeText(
                                 '\$${expertWatch.countController.text}',
                                 maxLines: 1,
-                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,
-                                  fontSize: 30,
                                   shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                                 ),
                               ),
@@ -110,11 +108,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                             child: PrimaryButton(
                               title: StringConstants.editProfile,
                               buttonTextFontFamily: FontWeightEnum.w400.toInter,
-                              onPressed: () {
-                                context.toPushNamed(RoutesConstants.editYourExpertProfileScreen);
-                                // NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
-                                //     args: int.parse('0'));
-                              },
+                              onPressed: () => context.toPushNamed(RoutesConstants.editYourExpertProfileScreen),
                             ),
                           ),
                           44.0.spaceX,

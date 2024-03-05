@@ -3,6 +3,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
+import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
@@ -21,13 +22,13 @@ class CancelAppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> cancelAppointmentApiCall({required BuildContext context, required AppointmentData? appointmentData, required int role, required bool fromScheduled}) async {
+  Future<void> cancelAppointmentApiCall({required BuildContext context, required GetUpcomingAppointment? appointmentData, required int role, required bool fromScheduled}) async {
     _isLoadingReason = true;
     notifyListeners();
 
     CancelAppointmentRequestModel requestModel = CancelAppointmentRequestModel(
-      userId: int.parse(SharedPrefHelper.getUserId),
-      expertId: appointmentData?.expertDetail?.id,
+      userId: appointmentData?.userId,
+      expertId: appointmentData?.expertId,
       role: role,
       reason: reasonController.text.trim(),
     );
@@ -41,7 +42,7 @@ class CancelAppointmentProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is CancelAppointmentResponseModel) {
           CancelAppointmentResponseModel responseModel = response.data;
-          context.toPushNamed(RoutesConstants.canceledAppointmentScreen, args: CancelArgs(cancelData: responseModel.data, fromScheduled: fromScheduled));
+          context.toPushNamed(RoutesConstants.canceledAppointmentScreen, args: CancelArgs(cancelData: responseModel.data, fromScheduled: fromScheduled, role: role));
         }
         break;
       case APIStatus.failure:

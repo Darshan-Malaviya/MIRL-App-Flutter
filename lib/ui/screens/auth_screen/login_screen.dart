@@ -19,17 +19,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final loginScreenProviderRead = ref.read(loginScreenProvider);
 
     return Scaffold(
-      body: Form(
-        key: _loginPassKey,
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _loginPassKey,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(
                 ImageConstants.backgroundLogo,
               ).addPaddingTop(100),
               50.0.spaceY,
               Container(
-                height: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -63,6 +63,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       textAlign: TextAlign.start,
                       controller: loginScreenProviderWatch.emailController,
                       focusNode: loginFocusNode,
+                      canRequestFocus: !loginScreenProviderWatch.isLoading,
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.emailAddress,
                       validator: (value) {
@@ -76,6 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     PrimaryButton(
                         title: StringConstants.selectLoginCode,
                         titleColor: ColorConstants.textColor,
+                        isLoading: loginScreenProviderWatch.isLoading,
                         width: 235,
                         onPressed: () {
                           loginFocusNode.unfocus();

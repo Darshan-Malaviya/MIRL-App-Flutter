@@ -29,5 +29,7 @@ enum RatingEnum { EXPERTISE, COMMUNICATION, HELPFULNESS, EMPATHY, PROFESSIONALIS
 enum NotificationTypeEnum {
   connectAndroidCall,
   autoLogout,
-  blocked
+  blocked,
+  appointmentConfirmed,
+  appointmentCancelled
 }
