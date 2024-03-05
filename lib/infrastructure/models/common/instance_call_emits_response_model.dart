@@ -210,7 +210,7 @@ class ExpertDetails {
   int? status;
 
 
-  ExpertDetails({this.id, this.expertProfile, this.expertName,this.fee,this.overAllRating});
+  ExpertDetails({this.id, this.expertProfile, this.expertName,this.fee,this.overAllRating,this.status});
 
   ExpertDetails.fromJson(Map<String, dynamic> json) {
     if (json['id'] != null) {
