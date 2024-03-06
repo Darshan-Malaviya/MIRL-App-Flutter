@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
 import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
+import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/services/call_kit_service.dart';
 import 'package:mirl/mirl_app.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
@@ -124,6 +126,19 @@ class PushNotificationService {
       if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
         NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment,
             args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
+      } else if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
+        NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
+            args: CancelArgs(
+              role: int.parse(notificationData.role.toString()),
+              cancelDate: notificationData.date,
+              cancelData: CancelAppointmentData(
+                startTime: notificationData.startTime,
+                endTime: notificationData.endTime,
+                duration: int.parse(notificationData.duration ?? '0'),
+                name: notificationData.name,
+                profileImage: notificationData.profile,
+              ),
+            ));
       }
     }
   }

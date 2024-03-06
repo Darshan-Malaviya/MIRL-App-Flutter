@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 
 /// convert date and time form timestamp
 extension DateTimeFormatter on String {
@@ -141,8 +142,7 @@ extension DateTimeFormatter on String {
     try {
       DateTime localTime = DateTime.parse(this).toLocal();
       String formattedDate = DateFormat('d MMMM yyyy').format(localTime);
-      formattedDate = formattedDate.replaceFirstMapped(
-          RegExp(r'\b(\d{1,2})\b'), (match) => '${match.group(1)}${getDaySuffix(int.parse(match.group(1)!))}');
+      formattedDate = formattedDate.replaceFirstMapped(RegExp(r'\b(\d{1,2})\b'), (match) => '${match.group(1)}${getDaySuffix(int.parse(match.group(1)!))}');
 
       String finalDate = '$formattedDate';
       return finalDate.toUpperCase();
@@ -187,6 +187,7 @@ extension DateTimeFormatter on String {
     }
     return null;
   }
+
   ///14:00AM/PM
   String to24HourAmTimeFormat() {
     try {
@@ -198,6 +199,7 @@ extension DateTimeFormatter on String {
     }
     return '';
   }
+
   /// only day
   String? toDisplayDay() {
     try {
@@ -210,7 +212,7 @@ extension DateTimeFormatter on String {
     return null;
   }
 
-  String getChatHeaderDate() {
+  String getHeaderTitle() {
     String finalDate = '';
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -220,21 +222,23 @@ extension DateTimeFormatter on String {
 
     if (this.isNotEmpty) {
       if (convertedDate == today) {
-        finalDate = 'New Notification';
+        finalDate = LocaleKeys.newNotifications.tr();
       } else if (convertedDate == yesterday) {
-        finalDate = 'Old Notification';
+        finalDate = LocaleKeys.oldNotifications.tr();
       } else {
-        finalDate = 'Old Notification';
+        finalDate = LocaleKeys.oldNotifications.tr();
       }
     }
     return finalDate;
   }
 
-
-/* String timeAgo({bool numericDates = true}) {
+  String timeAgo({bool numericDates = true}) {
     final date2 = DateTime.now();
+    DateTime date1 = DateTime.parse(this).toLocal();
+    final difference = date2.difference(date1);
 
-    final difference = date2.difference(this);
+    var output = DateFormat('hh:mm a').format(date1);
+
     final years = difference.inDays ~/ 365;
     print((difference.inDays - (years * 365)) ~/ 30);
 
@@ -252,20 +256,10 @@ extension DateTimeFormatter on String {
       return '${difference.inDays} days ago';
     } else if (difference.inDays >= 1) {
       return 'Yesterday';
-    } else if (difference.inHours >= 2) {
-      return '${difference.inHours} hr ago';
-    } else if (difference.inHours >= 1) {
-      return (numericDates) ? '1 hr ago' : 'An hr ago';
-    } else if (difference.inMinutes >= 2) {
-      return '${difference.inMinutes} mins ago';
-    } else if (difference.inMinutes >= 1) {
-      return (numericDates) ? '1 mins ago' : 'A mins ago';
-    } else if (difference.inSeconds >= 3) {
-      return '${difference.inSeconds} sec ago';
     } else {
-      return 'Just now';
+      return output.toUpperCase();
     }
-  }*/
+  }
 }
 //DateTime.now().subtract(Duration(days:1)),
 

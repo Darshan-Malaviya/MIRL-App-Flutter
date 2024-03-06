@@ -81,7 +81,6 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> loginApiCall({BuildContext? context, required Object requestModel, required int loginType, bool? fromResend = false}) async {
-
     changeIsLoading(true);
 
     ApiHttpResult response = await _authRepository.loginCallApi(requestModel: requestModel);
@@ -96,6 +95,8 @@ class AuthProvider with ChangeNotifier {
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             if (fromResend == false) {
               context?.toPushNamed(RoutesConstants.otpScreen);
+            } else {
+              startTimer();
             }
           } else {
             SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));

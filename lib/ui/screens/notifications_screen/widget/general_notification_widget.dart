@@ -1,26 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/ui/screens/notifications_screen%20/widget/new_notification_widget.dart';
-import 'package:mirl/ui/screens/notifications_screen%20/widget/user_older_notification_widget.dart';
+import 'package:mirl/ui/screens/notifications_screen/widget/general_new_notification_widget.dart';
 
-class UserNotificationWidget extends ConsumerStatefulWidget {
-  const UserNotificationWidget({super.key});
+class GeneralNotificationWidget extends ConsumerStatefulWidget {
+  const GeneralNotificationWidget({super.key});
 
   @override
-  ConsumerState<UserNotificationWidget> createState() => _UserNotificationWidgetState();
+  ConsumerState<GeneralNotificationWidget> createState() => _GeneralNotificationWidgetState();
 }
 
-class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget> {
+class _GeneralNotificationWidgetState extends ConsumerState<GeneralNotificationWidget> {
   @override
   Widget build(BuildContext context) {
-    final notificationProviderWatch = ref.watch(notificationProvider);
-    final notificationProviderRead = ref.read(notificationProvider);
-
     return SingleChildScrollView(
       child: Column(
         children: [
           TitleMediumText(
-            title: 'USER NOTIFICATIONS',
+            title: 'GENERAL NOTIFICATIONS',
             fontSize: 18,
             titleColor: ColorConstants.notificationTextColor,
             titleTextAlign: TextAlign.center,
@@ -34,7 +30,7 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
             titleTextAlign: TextAlign.center,
           ),
           30.0.spaceY,
-          NewNotificationWidget(remainingSecond: notificationProviderWatch.secondsRemaining,message: '',time: '',title: '', ),
+          GeneralNewNotificationWidget(),
           20.0.spaceY,
           Image.asset(ImageConstants.purpleLine),
           20.0.spaceY,
@@ -44,7 +40,7 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
             titleTextAlign: TextAlign.center,
           ),
           20.0.spaceY,
-          UserOlderNotificationWidget(),
+          GeneralNewNotificationWidget(bgColor: Colors.white, titleColor: ColorConstants.primaryColor),
         ],
       ).addAllPadding(20),
     );
