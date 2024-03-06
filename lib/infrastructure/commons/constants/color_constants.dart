@@ -30,6 +30,7 @@ class ColorConstants {
   static Color buttonColor = const Color(0xFFEFD8F5);
   static Color yellowButtonColor = const Color(0xFFFFCF5A);
   static Color yellowMediumColor = const Color(0xFFffcc5c);
+  static Color lemonYellowColor = const Color(0xFFFFCC64);
   static Color greenColor = const Color(0xFFABDF75);
   static Color greenDarkColor = const Color(0xFF5DB500);
   static Color redColor = const Color(0xFFFE654F);

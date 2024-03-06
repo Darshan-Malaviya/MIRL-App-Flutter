@@ -330,5 +330,16 @@
   "letting": "Thank you for letting us know about the issue. We’ll get back to you as soon as possible via the email ID you’ve shared in your account settings.",
   "startCallToast": "You can only start the call at the scheduled time",
   "appointment": "APPOINTMENT",
-  "filedRequired": "This field required"
+  "filedRequired": "This field required",
+  "oldNotifications": "OLD NOTIFICATIONS",
+  "newNotifications": "NEW NOTIFICATIONS",
+  "emptyNotification": "No notifications available",
+  "allNotifications": "ALL NOTIFICATIONS",
+  "general": "GENERAL",
+  "userNotification": "USER NOTIFICATIONS",
+  "generalNotification": "GENERAL NOTIFICATIONS",
+  "userHasCanceled": "THE USER HAS CANCELED THE APPOINTMENT",
+  "expertHasCanceled": "THE EXPERT HAS CANCELED THE APPOINTMENT",
+"date": "Date"
+
 }

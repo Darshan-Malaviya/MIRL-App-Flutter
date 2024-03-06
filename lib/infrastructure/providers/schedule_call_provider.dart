@@ -152,7 +152,7 @@ class ScheduleCallProvider extends ChangeNotifier {
       request: SlotsRequestModel(
               expertId: expertData?.id,
               date: _selectedUTCDate,
-              duration: _callDuration,
+              duration: _callDuration * 60,
               endDate: selectedDateEndTime.toIso8601String(),
               startDate: selectedDateStartTime.toIso8601String())
           .prepareRequest(),
@@ -187,7 +187,7 @@ class ScheduleCallProvider extends ChangeNotifier {
     CustomLoading.progressDialog(isLoading: true);
 
     ScheduleAppointmentRequestModel requestModel = ScheduleAppointmentRequestModel(
-      duration: _callDuration,
+      duration: _callDuration * 60,
       expertId: expertData?.id,
       endTime: selectedSlotData?.endTimeUTC ?? '',
       startTime: selectedSlotData?.startTimeUTC ?? '',

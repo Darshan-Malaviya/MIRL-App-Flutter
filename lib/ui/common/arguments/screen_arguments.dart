@@ -23,9 +23,10 @@ class CancelArgs {
   final GetUpcomingAppointment? appointmentData;
   final int? role;
   final CancelAppointmentData? cancelData;
+  final String? cancelDate;
   final bool? fromScheduled;
 
-  CancelArgs({this.appointmentData, this.role, this.cancelData, this.fromScheduled = false});
+  CancelArgs({this.appointmentData, this.role, this.cancelData, this.fromScheduled = false,this.cancelDate});
 }
 
 class AppointmentArgs {

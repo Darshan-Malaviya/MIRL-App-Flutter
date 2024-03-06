@@ -48,11 +48,12 @@ import 'package:mirl/ui/screens/multi_call_screen/multi_call_connect_request_scr
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_filter_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_screen.dart';
-import 'package:mirl/ui/screens/notifications_screen%20/notification_screen.dart';
+import 'package:mirl/ui/screens/notifications_screen/notification_screen.dart';
 import 'package:mirl/ui/screens/rating_and_review_screen/rating_and_review_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/booking_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_option_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/canceled_appointment_screen.dart';
+import 'package:mirl/ui/screens/schedule_screen/canceled_notification_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/schedule_appointment_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
@@ -165,11 +166,9 @@ class RouterConstant {
       case RoutesConstants.videoCallScreen:
         return MaterialPageRoute(builder: (_) => VideoCallScreen(arguments: settings.arguments as VideoCallArguments));
       case RoutesConstants.instantCallRequestDialogScreen:
-        return MaterialPageRoute(
-            builder: (_) => InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments));
+        return MaterialPageRoute(builder: (_) => InstantCallRequestDialog(args: settings.arguments as InstanceCallDialogArguments));
       case RoutesConstants.multiConnectCallDialogScreen:
-        return MaterialPageRoute(
-            builder: (_) => MultiConnectCallDialogScreen(args: settings.arguments as MultiConnectDialogArguments));
+        return MaterialPageRoute(builder: (_) => MultiConnectCallDialogScreen(args: settings.arguments as MultiConnectDialogArguments));
       case RoutesConstants.blockUserScreen:
         return MaterialPageRoute(builder: (_) => BlockUserScreen(args: settings.arguments as BlockUserArgs));
       case RoutesConstants.multiConnectScreen:
@@ -215,12 +214,11 @@ class RouterConstant {
       case RoutesConstants.feedbackSubmittingScreen:
         return MaterialPageRoute(builder: (_) => const FeedbackSubmittingScreen());
       case RoutesConstants.reportProblemWithYourCallScreen:
-        return MaterialPageRoute(
-            builder: (_) => ReportProblemWithYourCallScreen(
-                  callHistoryId: settings.arguments as int
-                ));
+        return MaterialPageRoute(builder: (_) => ReportProblemWithYourCallScreen(callHistoryId: settings.arguments as int));
       case RoutesConstants.reportedSubmittingScreen:
         return MaterialPageRoute(builder: (_) => const ReportedSubmittingScreen());
+      case RoutesConstants.canceledNotificationScreen:
+        return MaterialPageRoute(builder: (_) => CanceledNotificationScreen(args: settings.arguments as CancelArgs));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
