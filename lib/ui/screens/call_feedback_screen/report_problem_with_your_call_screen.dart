@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/report_call_title_response_model.dart';
@@ -19,7 +18,7 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(reportReviewProvider).clearController();
-      ref.read(reportReviewProvider).getReportCallTitleApiCall();
+      await ref.read(reportReviewProvider).getReportCallTitleApiCall();
     });
 
     super.initState();
@@ -66,10 +65,18 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                 maxLine: 4,
               ),
               20.0.spaceY,
+              //if(feedBackWatch.reportCallTitleList.)
               DropdownButtonFormField<ReportCallTitleList>(
                 isDense: false,
                 borderRadius: BorderRadius.all(Radius.circular(5)),
                 //    underline: SizedBox.shrink(),
+                decoration: InputDecoration(
+                    // focusColor: ColorConstants.dropDownBorderColor,
+                    // border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: const BorderSide(color: ColorConstants.dropDownBorderColor, width: 1),
+                )),
                 hint: BodySmallText(
                   title: LocaleKeys.appropriateIssue.tr(),
                   titleColor: ColorConstants.buttonTextColor,
@@ -104,7 +111,7 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                   feedBackRead.setReportCallTitle(newValue ?? null);
                 },
                 validator: (value) => value == null ? LocaleKeys.filedRequired.tr() : null,
-              ),
+              ).addMarginX(10),
               // ),
               // DropdownMenuWidget(
               //   hintText: LocaleKeys.appropriateIssue.tr(),
@@ -162,11 +169,13 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
               PrimaryButton(
                 title: LocaleKeys.reportIssue.tr(),
                 onPressed: () {
+                  // ref.read(reportReviewProvider).clearController();
+                  // await ref.read(reportReviewProvider).getReportCallTitleApiCall();
                   FocusManager.instance.primaryFocus?.unfocus();
                   if (_formKey.currentState!.validate() && feedBackWatch.callIssueController.text.isNotEmpty) {
                     feedBackRead.reportCallApiCall(callHistoryId: widget.callHistoryId);
                   } else {
-                    FlutterToast().showToast(msg: LocaleKeys.enterTopic.tr(), gravity: ToastGravity.TOP);
+                    FlutterToast().showToast(msg: LocaleKeys.selectThisIssue.tr());
                   }
                 },
               )

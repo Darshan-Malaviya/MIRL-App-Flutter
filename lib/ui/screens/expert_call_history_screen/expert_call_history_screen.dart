@@ -27,9 +27,7 @@ class _ExpertCallHistoryScreenState extends ConsumerState<ExpertCallHistoryScree
           onTap: () => context.toPop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: ExpertCallHistoryWidget(role: 2),
-      ).addAllPadding(20),
+      body: ExpertCallHistoryWidget(role: 2),
     );
   }
 }
