@@ -32,6 +32,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
           onTap: () {
+            loginScreenProviderWatch.otpController.clear();
             loginScreenProviderWatch.timer?.cancel();
             context.toPop();
           },
@@ -162,6 +163,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                     child: BodySmallText(
                       title: loginScreenProviderRead.secondsRemaining == 0 ? LocaleKeys.dontReceiveCode.tr() : LocaleKeys.youCanSendAnotherCode.tr(),
                       fontFamily: FontWeightEnum.w600.toInter,
+                      maxLine: 2,
                     ),
                   ),
                   if (loginScreenProviderRead.secondsRemaining == 0) ...{

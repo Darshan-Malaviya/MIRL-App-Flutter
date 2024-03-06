@@ -1,12 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 
 class AllNotificationTypeNameWidget extends StatelessWidget {
   final String notificationName;
   final bool isSelectedShadow;
   final String imageURL;
+  final String count;
 
-  const AllNotificationTypeNameWidget({super.key, required this.notificationName, required this.isSelectedShadow, required this.imageURL});
+  const AllNotificationTypeNameWidget({super.key, required this.notificationName, required this.isSelectedShadow, required this.imageURL, required this.count});
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +42,14 @@ class AllNotificationTypeNameWidget extends StatelessWidget {
           alignment: AlignmentDirectional.topEnd,
           child: CircleAvatar(
             child: TitleMediumText(
-              title: '0',
+              title: count,
               fontFamily: FontWeightEnum.w600.toInter,
               titleColor: ColorConstants.blackColor,
             ),
             radius: 14,
             backgroundColor: ColorConstants.primaryColor,
           ),
-        )
-        // ]
+        ).addVisibility(count != '0')
       ],
     );
   }

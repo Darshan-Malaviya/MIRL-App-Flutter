@@ -43,7 +43,7 @@ class _ThanksWidgetState extends ConsumerState<ThanksWidget> {
         ),
         100.0.spaceY,
         PrimaryButton(
-          title: LocaleKeys.back.tr(),
+          title: LocaleKeys.back.tr().toUpperCase(),
           titleColor: ColorConstants.buttonTextColor,
           onPressed: () {
           //  context.toPushNamedAndRemoveUntil(RoutesConstants.expertDetailScreen);

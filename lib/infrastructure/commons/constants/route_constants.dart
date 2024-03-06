@@ -62,4 +62,5 @@ class RoutesConstants {
   static const String feedbackSubmittingScreen = '/feedbackSubmittingScreen';
   static const String reportProblemWithYourCallScreen = '/reportProblemWithYourCallScreen';
   static const String reportedSubmittingScreen = '/reportedSubmittingScreen';
+  static const String canceledNotificationScreen = '/canceledNotificationScreen';
 }
