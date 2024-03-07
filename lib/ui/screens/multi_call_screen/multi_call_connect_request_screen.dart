@@ -75,7 +75,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
   void dispose() {
     multiConnectCallEnumNotifier.dispose();
     multiRequestTimerNotifier.dispose();
-    multiRequestTimerNotifier = ValueNotifier<int>(-1);
+    multiRequestTimerNotifier = ValueNotifier<int>(60);
     multiConnectCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.multiCallRequest);
     _timer?.cancel();
     super.dispose();
@@ -114,13 +114,10 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                     ValueListenableBuilder(
                         valueListenable: multiRequestTimerNotifier,
                         builder: (BuildContext context, int value, Widget? child) {
-                          if (multiRequestTimerNotifier.value >= 1) {
-                            return DisplayLargeText(
-                                title: Duration(seconds: multiRequestTimerNotifier.value).toTimeString(),
-                                fontSize: 65,
-                                titleColor: ColorConstants.primaryColor);
-                          }
-                          return SizedBox.shrink();
+                          return DisplayLargeText(
+                              title: Duration(seconds: multiRequestTimerNotifier.value).toTimeString(),
+                              fontSize: 65,
+                              titleColor: ColorConstants.primaryColor);
                         }),
                   ] else ...[
                     TitleLargeText(
@@ -414,7 +411,9 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                         multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested,
                     replacement: SizedBox.shrink(),
                     child: TitleSmallText(
-                      title: LocaleKeys.viewOtherExpert.tr(),
+                      title: multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested
+                          ? LocaleKeys.multiConnectReceiver.tr()
+                          : LocaleKeys.viewOtherExpert.tr(),
                       fontFamily: FontWeightEnum.w400.toInter,
                       titleTextAlign: TextAlign.center,
                       titleColor: ColorConstants.textColor,
