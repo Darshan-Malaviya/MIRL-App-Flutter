@@ -57,7 +57,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     40.0.spaceY,
                     TextFormFieldWidget(
-                      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 4),
                       fontFamily: FontWeightEnum.w400.toInter,
                       hintText: StringConstants.typeYourEmailAddress,
                       textAlign: TextAlign.start,

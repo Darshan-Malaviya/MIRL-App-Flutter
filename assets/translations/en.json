@@ -345,5 +345,7 @@
   "allNotification": "ALL NOTIFICATIONS",
   "notificationTimeout": "Notification Timed Out!",
   "spookyTimeFlies": "Boo!\nThis notification is now a ghost.\nSpooky how time flies!",
-  "learnMore": "Learn more"
+  "learnMore": "Learn more",
+  "copyLink": "COPY\nLINK",
+  "shareProfile": "SHARE\nPROFILE"
 }
