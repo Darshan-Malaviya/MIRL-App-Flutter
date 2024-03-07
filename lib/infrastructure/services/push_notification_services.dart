@@ -127,6 +127,7 @@ class PushNotificationService {
         NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment,
             args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
       } else if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
+        NotificationData notificationData = NotificationData.fromJsonCanceled(message?.data ?? {});
         NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
             args: CancelArgs(
               role: int.parse(notificationData.role.toString()),

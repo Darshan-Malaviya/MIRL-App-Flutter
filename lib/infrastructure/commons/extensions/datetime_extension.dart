@@ -28,11 +28,11 @@ extension DateTimeFormatter on String {
     return '';
   }
 
-  ///14:00
-  String to24HourTimeFormat() {
+  ///11:00 am
+  String to24HourTimeFormatLocal() {
     try {
-      DateTime timeStamp = DateTime.parse(this);
-      var output = DateFormat('HH:mm').format(timeStamp);
+      DateTime timeStamp = DateFormat('hh:mm:ss').parse(this).toLocal();
+      var output = DateFormat('hh:mma').format(timeStamp);
       return output;
     } catch (e) {
       Logger().d("Exception occurred on to24HourTimeFormat : $e");
@@ -44,7 +44,7 @@ extension DateTimeFormatter on String {
   String to12HourTimeFormat() {
     try {
       DateTime timeStamp = DateTime.parse(this).toLocal();
-      var output = DateFormat('hh:mm a').format(timeStamp);
+      var output = DateFormat('hh:mma').format(timeStamp);
       return output;
     } catch (e) {
       Logger().d("Exception occurred on to12HourTimeFormat : $e");

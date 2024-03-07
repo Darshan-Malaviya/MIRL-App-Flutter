@@ -43,6 +43,7 @@ class NotificationData {
   NotificationData.fromJsonCanceled(Map<String, dynamic> json) {
     key = json['key'];
     date = json['date'];
+    role = json['role'];
     id = json['id'];
     profile = json['profile'];
     name = json['name'];

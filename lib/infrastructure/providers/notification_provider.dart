@@ -122,6 +122,10 @@ class NotificationProvider extends ChangeNotifier {
     });
   }
 
+  void notifyState() {
+    notifyListeners();
+  }
+
 // @override
 // void dispose() {
 //   super.dispose();

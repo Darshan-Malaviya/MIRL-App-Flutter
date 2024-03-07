@@ -193,7 +193,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 LabelSmallText(
-                  title: 'PRO\nBONO',
+                  title: LocaleKeys.proBono.tr(),
                   fontFamily: FontWeightEnum.w400.toInter,
                 ).addMarginLeft(10),
                 LabelSmallText(

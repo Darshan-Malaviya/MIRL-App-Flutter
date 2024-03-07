@@ -94,7 +94,7 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
                         ),
                       ),
               ),
-              20.0.spaceY,
+              notificationProviderWatch.isPageLoading?  20.0.spaceY : 0.0.spaceY,
               Visibility(visible: notificationProviderWatch.isPageLoading, child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
             ],
           ).addMarginX(20);
@@ -118,11 +118,11 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
 
   void onTapNotification(String data, BuildContext context) {
     NotificationData notificationData = NotificationData.fromJson(jsonDecode(data));
-    print(notificationData.toJson());
     if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
       context.toPushNamed(RoutesConstants.viewCalendarAppointment,
           args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
     } else if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
+      NotificationData notificationData = NotificationData.fromJsonCanceled(jsonDecode(data));
       NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
           args: CancelArgs(
             role: int.parse(notificationData.role.toString()),

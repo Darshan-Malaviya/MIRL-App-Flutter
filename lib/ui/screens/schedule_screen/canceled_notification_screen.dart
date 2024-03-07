@@ -12,7 +12,10 @@ class CanceledNotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget(
-          preferSize: 40,
+          leading: InkWell(
+            child: Image.asset(ImageConstants.backIcon),
+            onTap: () => context.toPop(),
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -67,7 +70,7 @@ class CanceledNotificationScreen extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                             children: [
                               TextSpan(
-                                  text: '${args.cancelData?.startTime?.to12HourTimeFormat() ?? ''} - ${args.cancelData?.endTime?.to12HourTimeFormat() ?? ''}',
+                                  text: '${args.cancelData?.startTime?.to24HourTimeFormatLocal() ?? ''} - ${args.cancelData?.endTime?.to24HourTimeFormatLocal() ?? ''}',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                             ],
                           ),
@@ -95,7 +98,7 @@ class CanceledNotificationScreen extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                             children: [
                               TextSpan(
-                                  text: '${args.cancelData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
+                                  text: '${(args.cancelData?.duration ?? 0) ~/ 60} ${LocaleKeys.minutes.tr()}',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                             ],
                           ),
