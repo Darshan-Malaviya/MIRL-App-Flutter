@@ -71,7 +71,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
   void dispose() {
     instanceCallEnumNotifier.dispose();
     instanceRequestTimerNotifier.dispose();
-    instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+    instanceRequestTimerNotifier = ValueNotifier<int>(120);
     instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
     _timer?.cancel();
     super.dispose();
@@ -109,13 +109,10 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                       ValueListenableBuilder(
                           valueListenable: instanceRequestTimerNotifier,
                           builder: (BuildContext context, int value, Widget? child) {
-                            if(instanceRequestTimerNotifier.value >= 1) {
-                              return DisplayLargeText(
-                                  title: Duration(seconds: instanceRequestTimerNotifier.value).toTimeString(),
-                                  fontSize: 65,
-                                  titleColor: ColorConstants.primaryColor);
-                            }
-                           return SizedBox.shrink();
+                            return DisplayLargeText(
+                                title: Duration(seconds: instanceRequestTimerNotifier.value).toTimeString(),
+                                fontSize: 65,
+                                titleColor: ColorConstants.primaryColor);
                           }),
                   ] else ... [
                     TitleLargeText(
@@ -248,7 +245,9 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                         instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested,
                     replacement: SizedBox.shrink(),
                     child: TitleSmallText(
-                      title: LocaleKeys.viewOtherExpert.tr(),
+                      title: instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested
+                          ? LocaleKeys.instantCallReceiver.tr()
+                          : LocaleKeys.viewOtherExpert.tr(),
                       fontFamily: FontWeightEnum.w400.toInter,
                       titleTextAlign: TextAlign.center,
                       titleColor: ColorConstants.textColor,
