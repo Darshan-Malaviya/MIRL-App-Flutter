@@ -85,7 +85,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                             children: [
                               TextSpan(
-                                  text: '${args.cancelData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
+                                  text: '${(args.cancelData?.duration ?? 0) ~/ 60} ${LocaleKeys.minutes.tr()}',
                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                             ],
                           ),
@@ -144,6 +144,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                   maxLine: 3,
                   titleTextAlign: TextAlign.center,
                 ).addMarginX(20),
+                20.0.spaceY,
               ] else ...[
                 PrimaryButton(
                   title: LocaleKeys.backCalenderAppointment.tr(),

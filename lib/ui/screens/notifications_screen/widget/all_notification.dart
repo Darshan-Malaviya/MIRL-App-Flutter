@@ -41,12 +41,12 @@ class AllNotificationTypeNameWidget extends StatelessWidget {
         Align(
           alignment: AlignmentDirectional.topEnd,
           child: CircleAvatar(
-            child: TitleMediumText(
+            child: TitleSmallText(
               title: count,
               fontFamily: FontWeightEnum.w600.toInter,
               titleColor: ColorConstants.blackColor,
             ),
-            radius: 14,
+            radius: 12,
             backgroundColor: ColorConstants.primaryColor,
           ),
         ).addVisibility(count != '0')

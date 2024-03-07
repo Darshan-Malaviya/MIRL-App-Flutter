@@ -7,12 +7,13 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
+import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/notification_list_response_model.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/grouped_list_widget/grouped_list.dart';
 import 'package:mirl/ui/screens/notifications_screen/widget/notification_widget.dart';
 import 'package:mirl/ui/screens/notifications_screen/widget/user_older_notification_widget.dart';
 import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
-
 
 class UserNotificationWidget extends ConsumerStatefulWidget {
   const UserNotificationWidget({super.key});
@@ -109,7 +110,7 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
                         ),
                       ),
               ),
-              20.0.spaceY,
+              notificationProviderWatch.isPageLoading?  20.0.spaceY : 0.0.spaceY,
               Visibility(visible: notificationProviderWatch.isPageLoading, child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
             ],
           ).addMarginX(20);
@@ -135,6 +136,23 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
 
   void onTapNotification(String data, BuildContext context) {
     NotificationData notificationData = NotificationData.fromJson(jsonDecode(data));
-    print(notificationData.toJson());
+    if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
+      context.toPushNamed(RoutesConstants.viewCalendarAppointment,
+          args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
+    } else if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
+      NotificationData notificationData = NotificationData.fromJsonCanceled(jsonDecode(data));
+      NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
+          args: CancelArgs(
+            role: int.parse(notificationData.role.toString()),
+            cancelDate: notificationData.date,
+            cancelData: CancelAppointmentData(
+              startTime: notificationData.startTime,
+              endTime: notificationData.endTime,
+              duration: int.parse(notificationData.duration ?? '0'),
+              name: notificationData.name,
+              profileImage: notificationData.profile,
+            ),
+          ));
+    }
   }
 }

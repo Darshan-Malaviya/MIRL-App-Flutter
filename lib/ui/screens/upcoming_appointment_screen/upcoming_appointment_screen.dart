@@ -175,7 +175,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                             style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
                                             children: [
                                               TextSpan(
-                                                  text: '${upcomingWatch.upcomingAppointment[index].duration.toString()} ${LocaleKeys.minutes.tr()}',
+                                                  text: '${int.parse(upcomingWatch.upcomingAppointment[index].duration.toString()) ~/ 60} ${LocaleKeys.minutes.tr()}',
                                                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
                                             ],
                                           ),
@@ -199,11 +199,11 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                     ),
                                   ],
                                 ),
-                                widget.args == 1 ? 12.0.spaceY : 0.0.spaceY,
+                                widget.args.role == 1 ? 12.0.spaceY : 0.0.spaceY,
                                 Row(
                                   children: [
                                     Visibility(
-                                      visible: widget.args == 1,
+                                      visible: widget.args.role == 1,
                                       replacement: SizedBox.shrink(),
                                       child: PrimaryButton(
                                         title: LocaleKeys.startCall.tr(),

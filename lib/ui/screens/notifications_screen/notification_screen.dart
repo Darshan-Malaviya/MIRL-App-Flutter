@@ -20,13 +20,17 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this);
-    // tabController?.addListener(_handleTabSelection);
+    tabController?.addListener(_handleTabSelection);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(notificationProvider).getNotificationListApiCall(isFullScreenLoader: true, type: NotificationType.expert, pageLoading: false);
     });
 
     super.initState();
+  }
+
+  void _handleTabSelection() {
+    ref.read(notificationProvider).notifyState();
   }
 
   @override

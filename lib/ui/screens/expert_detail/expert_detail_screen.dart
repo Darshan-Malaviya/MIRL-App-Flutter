@@ -166,7 +166,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     ),
                     10.0.spaceX,
                     AutoSizeText(
-                      fee != null ? '\$${fee}' : '',
+                      fee != null ? '\$${fee}' : LocaleKeys.proBono.tr(),
                       maxLines: 2,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,

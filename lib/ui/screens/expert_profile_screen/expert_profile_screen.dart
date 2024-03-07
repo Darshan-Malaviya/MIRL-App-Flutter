@@ -90,7 +90,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               ),
                               10.0.spaceX,
                               AutoSizeText(
-                                '\$${expertWatch.countController.text}',
+                                '\$${double.parse(expertWatch.countController.text).toStringAsFixed(2)}',
                                 maxLines: 1,
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,
