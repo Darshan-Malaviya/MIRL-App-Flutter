@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/notification_list_response_model.dart';
 import 'package:mirl/infrastructure/repository/notification_repo.dart';
-import 'package:mirl/ui/screens/notifications_screen%20/widget/expert_notification_widget.dart';
-import 'package:mirl/ui/screens/notifications_screen%20/widget/general_notification_widget.dart';
-import 'package:mirl/ui/screens/notifications_screen%20/widget/user_notification_widget.dart';
 
 class NotificationProvider extends ChangeNotifier {
   final _notificationRepository = NotificationRepository();
@@ -37,6 +33,10 @@ class NotificationProvider extends ChangeNotifier {
   int get pageNo => _pageNo;
   int _pageNo = 1;
 
+  int? userCount = 0;
+  int? expertCount = 0;
+  int? generalCount = 0;
+
   List<NotificationDetails> get notificationList => _notificationList;
   List<NotificationDetails> _notificationList = [];
 
@@ -53,14 +53,6 @@ class NotificationProvider extends ChangeNotifier {
   void generalNotification() {
     _currentView = 2;
     notifyListeners();
-  }
-
-  void changeReportAndThanksScreen() {
-    _pages = [
-      ExpertNotificationWidget(),
-      UserNotificationWidget(),
-      GeneralNotificationWidget(),
-    ];
   }
 
   Future<void> getNotificationListApiCall({required int type, bool isFullScreenLoader = false, bool pageLoading = false}) async {
@@ -93,7 +85,11 @@ class NotificationProvider extends ChangeNotifier {
         if (response.data != null && response.data is NotificationListResponseModel) {
           NotificationListResponseModel responseModel = response.data;
 
-          if(pageLoading) {
+          userCount = responseModel.data?.userCount;
+          expertCount = responseModel.data?.expertCount;
+          generalCount = responseModel.data?.generalCount;
+
+          if (_pageNo == 1) {
             _notificationList.clear();
           }
 
@@ -124,6 +120,10 @@ class NotificationProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  void notifyState() {
+    notifyListeners();
   }
 
 // @override

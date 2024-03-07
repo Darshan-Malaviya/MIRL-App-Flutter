@@ -358,7 +358,7 @@ class TextFormFieldWidget extends StatelessWidget {
                     focusedErrorBorder: DecoratedInputBorder(
                       child: OutlineInputBorder(
                         borderSide: BorderSide(color: focusedErrorBorderColor ?? ColorConstants.borderColor, width: borderWidth ?? 1),
-                        borderRadius: BorderRadius.circular(RadiusConstant.commonRadius),
+                        borderRadius: BorderRadius.circular(borderRadius ?? RadiusConstant.commonRadius),
                       ),
                       shadow: buildBoxShadow(),
                     ),

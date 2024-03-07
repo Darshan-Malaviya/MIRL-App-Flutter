@@ -4,7 +4,7 @@ import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 class NotificationListResponseModel {
   int? status;
   String? message;
-  NotificationListData? data;
+  NotificationListDetails? data;
   Pagination? pagination;
 
   NotificationListResponseModel({this.status, this.message, this.data, this.pagination});
@@ -12,7 +12,7 @@ class NotificationListResponseModel {
   NotificationListResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new NotificationListData.fromJson(json['data']) : null;
+    data = json['data'] != null ? new NotificationListDetails.fromJson(json['data']) : null;
     pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
   }
 
@@ -39,14 +39,18 @@ class NotificationListResponseModel {
   }
 }
 
-class NotificationListData {
-  int? count;
+class NotificationListDetails {
+  int? userCount;
+  int? expertCount;
+  int? generalCount;
   List<NotificationDetails>? notification;
 
-  NotificationListData({this.count, this.notification});
+  NotificationListDetails({this.userCount, this.expertCount, this.generalCount, this.notification});
 
-  NotificationListData.fromJson(Map<String, dynamic> json) {
-    count = json['count'];
+  NotificationListDetails.fromJson(Map<String, dynamic> json) {
+    userCount = json['userCount'];
+    expertCount = json['expertCount'];
+    generalCount = json['generalCount'];
     if (json['notification'] != null) {
       notification = <NotificationDetails>[];
       json['notification'].forEach((v) {
@@ -57,7 +61,9 @@ class NotificationListData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['count'] = this.count;
+    data['userCount'] = this.userCount;
+    data['expertCount'] = this.expertCount;
+    data['generalCount'] = this.generalCount;
     if (this.notification != null) {
       data['notification'] = this.notification?.map((v) => v.toJson()).toList();
     }
@@ -68,14 +74,14 @@ class NotificationListData {
 class NotificationDetails {
   int? id;
   String? isRead;
-  NotificationData? notification;
+  NotificationListData? notification;
 
   NotificationDetails({this.id, this.isRead, this.notification});
 
   NotificationDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     isRead = json['isRead'];
-    notification = json['notification'] != null ? new NotificationData.fromJson(json['notification']) : null;
+    notification = json['notification'] != null ? new NotificationListData.fromJson(json['notification']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -89,7 +95,7 @@ class NotificationDetails {
   }
 }
 
-class NotificationData {
+class NotificationListData {
   int? id;
   String? key;
   String? title;
@@ -97,9 +103,9 @@ class NotificationData {
   String? data;
   String? firstCreated;
 
-  NotificationData({this.id, this.key, this.title, this.message, this.data, this.firstCreated});
+  NotificationListData({this.id, this.key, this.title, this.message, this.data, this.firstCreated});
 
-  NotificationData.fromJson(Map<String, dynamic> json) {
+  NotificationListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     key = json['key'];
     title = json['title'];

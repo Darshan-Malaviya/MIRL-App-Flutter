@@ -7,7 +7,7 @@ class NotificationData {
   String? appointmentId;
   String? userId;
   String? id;
-  String? profileImage;
+  String? profile;
   String? name;
   String? duration;
   String? startTime;
@@ -23,7 +23,7 @@ class NotificationData {
       this.userId,
       this.key,
       this.id,
-      this.profileImage,
+      this.profile,
       this.name,
       this.duration,
       this.startTime,
@@ -43,8 +43,9 @@ class NotificationData {
   NotificationData.fromJsonCanceled(Map<String, dynamic> json) {
     key = json['key'];
     date = json['date'];
+    role = json['role'];
     id = json['id'];
-    profileImage = json['profileImage'];
+    profile = json['profile'];
     name = json['name'];
     duration = json['duration'];
     startTime = json['startTime'];

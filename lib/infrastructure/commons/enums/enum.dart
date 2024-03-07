@@ -15,6 +15,13 @@ abstract class LoginType {
   static const facebook = 3;
 }
 
+///define notification type
+abstract class NotificationType {
+  static const expert = 1;
+  static const user = 2;
+  static const general = 3;
+}
+
 ///over all rating type  code
 abstract class OverAllRatingType {
   static const EXPERTISE = 1;
@@ -25,11 +32,3 @@ abstract class OverAllRatingType {
 }
 
 enum RatingEnum { EXPERTISE, COMMUNICATION, HELPFULNESS, EMPATHY, PROFESSIONALISM }
-
-enum NotificationTypeEnum {
-  connectAndroidCall,
-  autoLogout,
-  blocked,
-  appointmentConfirmed,
-  appointmentCancelled
-}

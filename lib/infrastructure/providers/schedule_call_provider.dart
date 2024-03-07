@@ -1,11 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/schedule_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/slots_request_model.dart';
 import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
-import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
@@ -152,7 +149,7 @@ class ScheduleCallProvider extends ChangeNotifier {
       request: SlotsRequestModel(
               expertId: expertData?.id,
               date: _selectedUTCDate,
-              duration: _callDuration,
+              duration: _callDuration * 60,
               endDate: selectedDateEndTime.toIso8601String(),
               startDate: selectedDateStartTime.toIso8601String())
           .prepareRequest(),
@@ -187,11 +184,11 @@ class ScheduleCallProvider extends ChangeNotifier {
     CustomLoading.progressDialog(isLoading: true);
 
     ScheduleAppointmentRequestModel requestModel = ScheduleAppointmentRequestModel(
-      duration: _callDuration,
+      duration: _callDuration * 60,
       expertId: expertData?.id,
       endTime: selectedSlotData?.endTimeUTC ?? '',
       startTime: selectedSlotData?.startTimeUTC ?? '',
-      status: '0',
+      status: '3',
       amount: ((totalPayAmount ?? 0) * 100).toInt(),
     );
 
