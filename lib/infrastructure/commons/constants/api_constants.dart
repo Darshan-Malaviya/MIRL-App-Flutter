@@ -49,6 +49,7 @@ class ApiConstants {
   }
 
   static const String login = '/user/login';
+  static const String logout = '/user/logout';
   static const String otpVerify = '/user/verify-otp';
   static String updateUser = '/user/${SharedPrefHelper.getUserId}';
   static String getUserDetail = '/user/';
