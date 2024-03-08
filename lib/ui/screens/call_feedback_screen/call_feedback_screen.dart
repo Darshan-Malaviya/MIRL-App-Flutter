@@ -199,7 +199,7 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
               ),
               40.0.spaceY,
               PrimaryButton(
-                  title: LocaleKeys.shareSuggestion.tr(),
+                  title: LocaleKeys.shareFeedBack.tr(),
                   titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {
                     FocusManager.instance.primaryFocus?.unfocus();

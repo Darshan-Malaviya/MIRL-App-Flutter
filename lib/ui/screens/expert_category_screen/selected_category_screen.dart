@@ -229,7 +229,6 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                   filterProviderWatch.commonSelectionModel.first.value == widget.args.categoryId) ...[
                                 InkWell(
                                     onTap: () {
-                                      print('${filterProviderWatch.commonSelectionModel.first.value}');
                                       filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
                                       filterProviderRead.getSingleCategoryApiCall(
                                           context: context,
@@ -244,6 +243,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                     filterProviderWatch.commonSelectionModel.length > 1) ...[
                                   InkWell(
                                       onTap: () {
+                                        print('value=======${filterProviderWatch.commonSelectionModel.first.value}');
+
                                         filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
                                         filterProviderRead.getSingleCategoryApiCall(
                                             context: context,

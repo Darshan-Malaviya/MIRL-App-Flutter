@@ -87,7 +87,7 @@ class ReportReviewProvider extends ChangeNotifier {
         callFeedbackList[index].callFeedbackDataList[position].formKey.currentContext?.findRenderObject() as RenderBox;
     Offset positionOffset = box.localToGlobal(Offset.zero);
     callFeedbackList[index].localPosition = positionOffset.dx - 20;
-    selectedIndex = position;
+   // selectedIndex = position;
     notifyListeners();
   }
 
@@ -105,7 +105,7 @@ class ReportReviewProvider extends ChangeNotifier {
     for (var element in callFeedbackList[index].callFeedbackDataList) {
       RenderBox box = element.formKey.currentContext?.findRenderObject() as RenderBox;
       Offset position = box.localToGlobal(Offset.zero);
-      element.currentDxPosition = position.dx - 30;
+      element.currentDxPosition = position.dx - 40;
     }
     isLoaded = true;
     notifyListeners();
@@ -226,7 +226,7 @@ class ReportReviewProvider extends ChangeNotifier {
     int index = 0;
     for (var element in _criteriaList) {
       ratingCriteria
-          .add(RatingCriteria(rating: callFeedbackList[index].criteriaSelectedIndex, ratingCategory: element.ratingCategory));
+          .add(RatingCriteria(rating: callFeedbackList[index].criteriaSelectedIndex ?? null, ratingCategory: element.ratingCategory));
       index++;
     }
     RateExpertRequestModel rateExpertRequestModel = RateExpertRequestModel(

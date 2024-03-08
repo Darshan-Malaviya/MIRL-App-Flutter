@@ -68,7 +68,7 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
   Future<void> childUpdateApiCall({required BuildContext context}) async {
     CustomLoading.progressDialog(isLoading: true);
     ChildUpdateRequestModel requestModel = ChildUpdateRequestModel(categoryIds: _childCategoryIds);
-    ApiHttpResult response = await _addYourAreaExpertiseRepository.expertiseChildUpdateApiCall(request: requestModel);
+    ApiHttpResult response = await _addYourAreaExpertiseRepository.expertiseChildUpdateApiCall(request: requestModel.prepareRequest());
     CustomLoading.progressDialog(isLoading: false);
 
     switch (response.status) {
