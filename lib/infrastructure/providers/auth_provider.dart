@@ -81,11 +81,20 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> loginApiCall({BuildContext? context, required Object requestModel, required int loginType, bool? fromResend = false}) async {
-    changeIsLoading(true);
+
+    if (loginType == 0) {
+      changeIsLoading(true);
+    } else {
+      CustomLoading.progressDialog(isLoading: true);
+    }
 
     ApiHttpResult response = await _authRepository.loginCallApi(requestModel: requestModel);
 
-    changeIsLoading(false);
+    if (loginType == 0) {
+      changeIsLoading(false);
+    } else {
+      CustomLoading.progressDialog(isLoading: false);
+    }
 
     switch (response.status) {
       case APIStatus.success:
