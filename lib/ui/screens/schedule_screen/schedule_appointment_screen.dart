@@ -95,7 +95,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                   ),
                   10.0.spaceX,
                   AutoSizeText(
-                    '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toString()}',
+                    '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}',
                     maxLines: 1,
                     softWrap: true,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(

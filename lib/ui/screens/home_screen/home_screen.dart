@@ -20,7 +20,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(homeProvider).homePageApi();
-      instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+      instanceRequestTimerNotifier = ValueNotifier<int>(120);
       instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
     });
     super.initState();

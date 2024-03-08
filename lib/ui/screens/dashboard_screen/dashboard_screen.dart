@@ -29,7 +29,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     super.initState();
     pageController = PageController(initialPage: widget.index);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+      instanceRequestTimerNotifier = ValueNotifier<int>(120);
       instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
       ref.read(dashboardProvider).pageChanged(widget.index);
       ref.read(socketProvider).listenerEvent();

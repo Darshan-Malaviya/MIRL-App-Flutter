@@ -111,6 +111,27 @@ class UserSettingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> UserLogoutApiCall({required BuildContext context}) async {
+    CustomLoading.progressDialog(isLoading: true);
+
+    ApiHttpResult response = await _updateUserDetailsRepository.userLogout();
+
+    CustomLoading.progressDialog(isLoading: false);
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is LoginResponseModel) {
+          await SharedPrefHelper.clearPrefs();
+          context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on user log out call Api ${response.data}");
+        break;
+    }
+  }
+
   void resetVariable() {
     emailIdController.clear();
     userNameController.clear();
