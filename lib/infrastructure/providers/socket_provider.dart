@@ -82,7 +82,7 @@ class SocketProvider extends ChangeNotifier {
           // TODO: declined an incoming call
             log('ACTION_CALL_DECLINE');
             callConnectNotifier.value = CallConnectStatusEnum.declined;
-            instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+            instanceRequestTimerNotifier = ValueNotifier<int>(120);
             instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             await updateCallStatusEmit(status: CallStatusEnum.declineCall, callRoleEnum: CallRoleEnum.expert,callHistoryId: extraResponseModel?.callHistoryId ?? '');
             break;
@@ -134,7 +134,7 @@ class SocketProvider extends ChangeNotifier {
 
   void manageTimeOutStatus({required UserData? userData, required BuildContext context , required String expertId}) {
       NavigationService.context.toPop();
-      instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+      instanceRequestTimerNotifier = ValueNotifier<int>(120);
       instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
       instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
       /// THis is call sender (User) side
@@ -160,7 +160,7 @@ class SocketProvider extends ChangeNotifier {
               else {
                 updateRequestStatusEmit(expertId: expertId, callStatusEnum: CallRequestStatusEnum.cancel,
                     callRoleEnum: CallRoleEnum.user, userId: SharedPrefHelper.getUserId.toString());
-                instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+                instanceRequestTimerNotifier = ValueNotifier<int>(120);
                 instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
                 context.toPop();
               }
@@ -430,7 +430,7 @@ class SocketProvider extends ChangeNotifier {
             } else if (model.data?.status.toString() == '3'){
               /// decline
               callConnectNotifier.value = CallConnectStatusEnum.declined;
-              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceRequestTimerNotifier = ValueNotifier<int>(120);
               instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
 
             }  else if (model.data?.status.toString() == '4'){
@@ -439,7 +439,7 @@ class SocketProvider extends ChangeNotifier {
             }  if(model.data?.status.toString() == '5'){
               /// cancelled
               callConnectNotifier.value = CallConnectStatusEnum.cancelled;
-              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceRequestTimerNotifier = ValueNotifier<int>(120);
               instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
               if(model.data?.userId.toString().toString() == SharedPrefHelper.getUserId.toString()) {
                 if(activeRoute.value == RoutesConstants.videoCallScreen){
@@ -461,7 +461,7 @@ class SocketProvider extends ChangeNotifier {
                    NavigationService.context.toPop();
                  }
                }
-               instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+               instanceRequestTimerNotifier = ValueNotifier<int>(120);
                instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             }
 
@@ -494,7 +494,7 @@ class SocketProvider extends ChangeNotifier {
               /// This decline listen in user side always
               callConnectNotifier.value = CallConnectStatusEnum.declined;
               FlutterToast().showToast(msg: "Call decline by expert");
-              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceRequestTimerNotifier = ValueNotifier<int>(120);
               instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
               if(activeRoute.value == RoutesConstants.videoCallScreen){
                 NavigationService.context.toPop();
@@ -529,7 +529,7 @@ class SocketProvider extends ChangeNotifier {
                       args: int.parse(extraResponseModel?.callHistoryId ?? ''));
                 }
               }
-              instanceRequestTimerNotifier = ValueNotifier<int>(-1);
+              instanceRequestTimerNotifier = ValueNotifier<int>(120);
               instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
             }
           } else {

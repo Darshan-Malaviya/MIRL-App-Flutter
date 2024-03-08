@@ -9,8 +9,8 @@ ValueNotifier<bool> socketListen = ValueNotifier(false);
 ValueNotifier<List<UserFavorites>> favoriteListNotifier = ValueNotifier<List<UserFavorites>>([]);
 ValueNotifier<int> instanceCallDurationNotifier = ValueNotifier<int>(-1);
 ValueNotifier<int> allCallDurationNotifier = ValueNotifier<int>(0);
-ValueNotifier<int> instanceRequestTimerNotifier = ValueNotifier<int>(-1);
-ValueNotifier<int> multiRequestTimerNotifier = ValueNotifier<int>(-1);
+ValueNotifier<int> instanceRequestTimerNotifier = ValueNotifier<int>(120);
+ValueNotifier<int> multiRequestTimerNotifier = ValueNotifier<int>(60);
 ValueNotifier<CallRequestTypeEnum> instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
 ValueNotifier<CallRequestTypeEnum> multiConnectCallEnumNotifier =
     ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
