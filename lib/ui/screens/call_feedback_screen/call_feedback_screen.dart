@@ -72,7 +72,7 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
               20.0.spaceY,
               InkWell(
                 onTap: () {
-                  context.toPushNamed(RoutesConstants.reportProblemWithYourCallScreen,args: widget.callHistoryId);
+                  context.toPushNamed(RoutesConstants.reportProblemWithYourCallScreen, args: widget.callHistoryId);
                 },
                 child: BodySmallText(
                   title: LocaleKeys.issueWithCall.tr(),
@@ -199,11 +199,16 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
               ),
               40.0.spaceY,
               PrimaryButton(
-                  title: LocaleKeys.shareSuggestion.tr(),
+                  title: LocaleKeys.shareFeedBack.tr(),
                   titleColor: ColorConstants.buttonTextColor,
                   onPressed: () {
                     FocusManager.instance.primaryFocus?.unfocus();
                     feedBackRead.rateExpertRequestCall(callHistoryId: widget.callHistoryId);
+                    // if (feedBackWatch.feedbackTypeList.isNotEmpty) {
+                    //   feedBackRead.rateExpertRequestCall(callHistoryId: widget.callHistoryId);
+                    // } else {
+                    //   FlutterToast().showToast(msg: 'please select rate the expert', gravity: ToastGravity.TOP);
+                    // }
                   }),
             ],
           ).addAllMargin(20),

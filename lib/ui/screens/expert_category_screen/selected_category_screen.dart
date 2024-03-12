@@ -225,7 +225,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                               BodySmallText(
                                 title: LocaleKeys.appliedFilters.tr(),
                               ),
-                              if (widget.args.isFromExploreExpert == true) ...[
+                              if (widget.args.isFromExploreExpert == true &&
+                                  filterProviderWatch.commonSelectionModel.first.value == widget.args.categoryId) ...[
                                 InkWell(
                                     onTap: () {
                                       filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
@@ -242,6 +243,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                     filterProviderWatch.commonSelectionModel.length > 1) ...[
                                   InkWell(
                                       onTap: () {
+                                        print('value=======${filterProviderWatch.commonSelectionModel.first.value}');
+
                                         filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
                                         filterProviderRead.getSingleCategoryApiCall(
                                             context: context,

@@ -43,7 +43,6 @@ class PushNotificationService {
       sound: true,
     );
 
-    await getFirebaseToken();
   }
 
   Future initialise() async {
@@ -144,8 +143,5 @@ class PushNotificationService {
     }
   }
 
-  Future getFirebaseToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    SharedPrefHelper.saveFirebaseToken(token);
-  }
+
 }

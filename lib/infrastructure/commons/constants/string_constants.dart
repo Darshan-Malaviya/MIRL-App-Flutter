@@ -83,7 +83,7 @@ class StringConstants {
   static const String mediaAccount =
       " This could include links to your professional website or accounts, your social media accounts, any certifications, etc.";
   static const String writeYourTitle = "WRITE YOUR TITLE HERE (role, designation, etc.)";
-  static const String sourceUrl = "PASTE A SOURCE URL/LINK (optional, but preferable!)";
+  static const String sourceUrl = "SOURCE URL/LINK (optional, but preferable)";
   static const String description = "DESCRIPTION (optional)";
   static const String addMoreCredentials = "ADD MORE CREDENTIALS ";
   static const String shareBankAccountDetails =

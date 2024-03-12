@@ -81,20 +81,22 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                         ? GridView.builder(
                             padding: EdgeInsets.only(top: 10),
                             controller: scrollController,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 25),
-                            itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0 + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 25),
+                            itemCount: addYourAreaExpertiseProviderWatch.categoryList?.length ??
+                                0 + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1),
                             itemBuilder: (context, index) {
                               CategoryListData? element = addYourAreaExpertiseProviderWatch.categoryList?[index];
 
                               return CategoryCommonView(
-                                onTap: (){
+                                onTap: () {
                                   addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
                                   context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
                                       args: SelectedCategoryArgument(
                                           categoryId: element?.id.toString() ?? '', isFromExploreExpert: true));
                                 },
                                 categoryName: addYourAreaExpertiseProviderWatch.categoryList?[index].name ?? '',
-                                imageUrl:  addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
+                                imageUrl: addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',
                                 isSelectedShadow: (addYourAreaExpertiseProviderWatch.categoryList?[index].isVisible ?? false),
                                 blurRadius: 8,
                                 spreadRadius: 1,
@@ -108,7 +110,7 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                           ),
               ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   context.toPushNamed(RoutesConstants.suggestNewExpertiseScreen);
                 },
                 child: LabelSmallText(

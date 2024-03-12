@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/cms_screen/arguments/cms_arguments.dart';
@@ -12,6 +13,19 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _loginPassKey = GlobalKey<FormState>();
   FocusNode loginFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await getFirebaseToken();
+    });
+    super.initState();
+  }
+
+  Future getFirebaseToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    SharedPrefHelper.saveFirebaseToken(token);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,5 @@
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+
 class ChildUpdateRequestModel {
   List<CategoryIds>? categoryIds;
 
@@ -19,6 +21,9 @@ class ChildUpdateRequestModel {
     }
     return data;
   }
+  String prepareRequest() {
+    return jsonEncode(toJson());
+  }
 }
 
 class CategoryIds {
@@ -35,7 +40,7 @@ class CategoryIds {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['parentId'] = this.parentId;
-    data['childIds'] = this.childIds;
+    data['childIds'] = this.childIds?.toSet().toList();
     return data;
   }
 }

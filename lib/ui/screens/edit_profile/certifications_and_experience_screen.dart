@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 
@@ -131,18 +133,29 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           },
                         ),
                         20.0.spaceY,
-                        TextFormFieldWidget(
-                          controller: expertWatch.certiAndExpModel[index].descriptionController,
-                          focusNode: expertWatch.certiAndExpModel[index].descriptionFocus,
-                          maxLines: 5,
-                          minLines: 5,
-                          hintText: StringConstants.description,
-                          textInputAction: TextInputAction.done,
-                          onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].descriptionFocus.unfocus();
-                          },
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(255),
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            TextFormFieldWidget(
+                              onChanged: expertRead.changeAboutCounterValue,
+                              controller: expertWatch.certiAndExpModel[index].descriptionController,
+                              focusNode: expertWatch.certiAndExpModel[index].descriptionFocus,
+                              maxLines: 5,
+                              minLines: 5,
+                              hintText: StringConstants.description,
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (value) {
+                                expertWatch.certiAndExpModel[index].descriptionFocus.unfocus();
+                              },
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8, right: 12),
+                              child: BodySmallText(
+                                title: '${expertWatch.enteredText}/200 ${LocaleKeys.characters.tr()}',
+                                fontFamily: FontWeightEnum.w400.toInter,
+                                titleColor: ColorConstants.buttonTextColor,
+                              ),
+                            ),
                           ],
                         ),
                       ],
