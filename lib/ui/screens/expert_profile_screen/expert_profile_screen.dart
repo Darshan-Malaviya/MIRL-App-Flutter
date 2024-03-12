@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
-import 'package:mirl/ui/screens/share_expert_profile_screen/share_expert_profile_screen.dart';
 
 class ExpertProfileScreen extends ConsumerStatefulWidget {
   const ExpertProfileScreen({super.key});
@@ -122,13 +121,15 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               title: StringConstants.shareProfile,
                               buttonTextFontFamily: FontWeightEnum.w400.toInter,
                               onPressed: () {
-                                CommonBottomSheet.bottomSheet(
-                                    backgroundColor:
-                                        //Color(0xCC7E3490)
-                                        ColorConstants.shareProfileBgColor.withOpacity(0.80),
-                                    context: context,
-                                    isDismissible: true,
-                                    child: shareExpertProfileScreen());
+                                // CommonBottomSheet.bottomSheet(
+                                //     context: context, backgroundColor: ColorConstants.whiteColor, child: DemoScreenScreen());
+                                // CommonBottomSheet.bottomSheet(
+                                //     backgroundColor:
+                                //         //Color(0xCC7E3490)
+                                //         ColorConstants.shareProfileBgColor.withOpacity(0.80),
+                                //     context: context,
+                                //     isDismissible: true,
+                                //     child: shareExpertProfileScreen());
                               },
                             ),
                           ),

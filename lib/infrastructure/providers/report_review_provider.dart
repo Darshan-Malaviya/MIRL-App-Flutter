@@ -225,8 +225,9 @@ class ReportReviewProvider extends ChangeNotifier {
 
     int index = 0;
     for (var element in _criteriaList) {
-      ratingCriteria
-          .add(RatingCriteria(rating: callFeedbackList[index].criteriaSelectedIndex ?? null, ratingCategory: element.ratingCategory));
+      ratingCriteria.add(RatingCriteria(
+          rating: callFeedbackList[index].criteriaSelectedIndex == 0 ? null : callFeedbackList[index].criteriaSelectedIndex,
+          ratingCategory: element.ratingCategory));
       index++;
     }
     RateExpertRequestModel rateExpertRequestModel = RateExpertRequestModel(

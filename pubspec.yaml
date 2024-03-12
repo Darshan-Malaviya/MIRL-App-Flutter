@@ -54,6 +54,7 @@ dependencies:
   easy_localization: ^3.0.3
 
   agora_rtc_engine: ^6.2.6
+#  agora_rtc_engine: ^6.1.0
 
   #ui
   logger: ^2.0.2+1

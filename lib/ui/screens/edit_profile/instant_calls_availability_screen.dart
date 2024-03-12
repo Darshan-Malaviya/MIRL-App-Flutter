@@ -80,7 +80,8 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             20.0.spaceY,
             TitleSmallText(
               fontFamily: FontWeightEnum.w400.toInter,
-              title: StringConstants.highlyRecommend,
+              title: StringConstants.highlyRecommend.toUpperCase(),
+              maxLine: 4,
             )
           ],
         ).addAllPadding(20),

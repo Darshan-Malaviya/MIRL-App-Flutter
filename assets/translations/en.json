@@ -313,11 +313,11 @@
   "pleasePickAnyFilter": "Pick at least one filter to start the magic!",
   "dontReceiveCode": "Didn’t receive the code?",
   "newText": "NEW",
-  "pleaseEnterMirlID": "Please enter MIRL ID",
+  "pleaseEnterMirlID": "Please type your preferred MIRL ID",
   "idContainsOnlyCharacter": "MIRL ID contains only characters",
   "profileUpdatedSuccessfully": "Profile updated successfully",
-  "pleaseSelectCountry": "Please select country",
-  "pleaseSelectCity": "Please select city",
+  "pleaseSelectCountry": "Please select your country",
+  "pleaseSelectCity": "Please select your city",
   "yourExpertName": "Your Expert Name",
   "backToHome": "BACK TO HOME",
   "unBlockThisUser": "Are you sure you want to\nunblock this user?",
@@ -359,5 +359,6 @@
   "learnMore": "Learn more",
   "pay": "PAY",
   "proBono": "PRO\nBONO",
-  "shareFeedBack": "SHARE FEEDBACK"
+  "shareFeedBack": "SHARE FEEDBACK",
+  "charactersLong": "Your MIRL ID should be at least 5 characters long"
 }

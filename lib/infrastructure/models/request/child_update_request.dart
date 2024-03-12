@@ -40,7 +40,7 @@ class CategoryIds {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['parentId'] = this.parentId;
-    data['childIds'] = this.childIds;
+    data['childIds'] = this.childIds?.toSet().toList();
     return data;
   }
 }
