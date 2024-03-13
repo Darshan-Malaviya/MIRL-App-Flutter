@@ -12,7 +12,7 @@ Future<void> showCallkitIncoming({required String uuid, required ExtraResponseMo
     avatar: extraResponseModel.userProfile,
     handle: 'Incoming call',
     type: 0,
-    duration: 3000,
+    duration: 6000,
     textAccept: 'Accept',
     textDecline: 'Decline',
     extra: extraResponseModel.toJson(),
