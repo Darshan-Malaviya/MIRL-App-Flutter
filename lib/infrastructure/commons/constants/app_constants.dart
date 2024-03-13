@@ -10,6 +10,7 @@ class AppConstants {
   static const expertIds = 'expertIds';
   static const requestType = 'requestType';
   static const time = 'time';
+  static const requestedDuration = 'requestedDuration';
   static const callRequestId = 'callRequestId';
   static const callStatus = 'status';
   static const role = 'role';

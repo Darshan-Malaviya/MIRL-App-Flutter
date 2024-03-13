@@ -6,7 +6,10 @@ import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/response/login_response_model.dart';
+import 'package:mirl/infrastructure/providers/expert_detail_provider.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
+import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
@@ -29,6 +32,8 @@ class ExpertDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
+  int duration = 0;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -206,47 +211,57 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               suffixTitle: expertDetailWatch.userData?.onlineStatus == 1 ? LocaleKeys.expertOnline.tr() : LocaleKeys.expertOffline.tr(),
               buttonColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.requestCallNowColor : ColorConstants.redLightColor,
               onTap: () {
-                if ((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
-                  instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
-
-                  /// THis is call sender (User) side
-                  context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
-                      args: InstanceCallDialogArguments(
-                        name: expertDetailWatch.userData?.expertName ?? "",
-                        onFirstBtnTap: () {
-                          if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout) {
-                            instanceRequestTimerNotifier.dispose();
-                            ref.read(socketProvider).manageTimeOutStatus(userData: expertDetailWatch.userData, expertId: widget.expertId, context: context);
-                          } else {
-                            ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
-                            /* if ((expertDetailWatch.userData?.instantCallAvailable ?? false) &&
-                                (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
-                              ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId);
-                            } else {
-                              FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
-                            }*/
-                          }
-                        },
-                        onSecondBtnTap: () {
-                          if (instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
-                            context.toPop();
-                          } else if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestApproved) {
-                            ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
-
-                            ///context.toPop();
-                          } else {
-                            ref.read(socketProvider).updateRequestStatusEmit(
-                                callStatusEnum: CallRequestStatusEnum.cancel,
-                                expertId: widget.expertId,
-                                callRoleEnum: CallRoleEnum.user,
-                                userId: SharedPrefHelper.getUserId.toString());
-                            context.toPop();
-                          }
-                        },
-                        image: expertDetailWatch.userData?.expertProfile ?? "",
-                        expertId: expertDetailWatch.userData?.id.toString() ?? '',
-                        userID: SharedPrefHelper.getUserId.toString(),
-                      ));
+                if(expertDetailWatch.userData?.onlineStatus == 1) {
+                  CommonBottomSheet.bottomSheet(
+                      context: context,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      child: CallDurationBottomSheetView(expertName: expertDetailWatch.userData?.expertName ?? '', onPressed: () {
+                        context.toPop();
+                        allCallDurationNotifier.value = expertDetailWatch.callDuration;
+                        if ((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+                          instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
+                          /// THis is call sender (User) side
+                          context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
+                              args: InstanceCallDialogArguments(
+                                name: expertDetailWatch.userData?.expertName ?? "",
+                                onFirstBtnTap: () {
+                                  if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout) {
+                                    instanceRequestTimerNotifier.dispose();
+                                   manageTimeOutStatus(userData: expertDetailWatch.userData, expertId: widget.expertId, context: context, expertDetailWatch : expertDetailWatch);
+                                  } else {
+                                    ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId, requestedDuration: (expertDetailWatch.callDuration * 60));
+                                  }
+                                },
+                                onSecondBtnTap: () {
+                                  if (instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                                    context.toPop();
+                                  } else if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestApproved) {
+                                    CommonBottomSheet.bottomSheet(
+                                        context: context,
+                                        child: CallPaymentBottomSheetView(onPressed: () {
+                                          context.toPop();
+                                          ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
+                                        }),
+                                        isDismissible: true);
+                                    ///context.toPop();
+                                  } else {
+                                    ref.read(socketProvider).updateRequestStatusEmit(
+                                        callStatusEnum: CallRequestStatusEnum.cancel,
+                                        expertId: widget.expertId,
+                                        callRoleEnum: CallRoleEnum.user,
+                                        userId: SharedPrefHelper.getUserId.toString());
+                                    context.toPop();
+                                  }
+                                },
+                                image: expertDetailWatch.userData?.expertProfile ?? "",
+                                expertId: expertDetailWatch.userData?.id.toString() ?? '',
+                                userID: SharedPrefHelper.getUserId.toString(),
+                              ));
+                        } else {
+                          FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
+                        }
+                      }),
+                      isDismissible: true);
                 } else {
                   FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
                 }
@@ -389,4 +404,304 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
       ).addAllPadding(28),
     );
   }
+
+/*  Widget bottomSheetViewForCallDuration({required String expertName,required void Function() onPressed , required ExpertDetailProvider expertDetailProvider, }) {
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        HeadlineMediumText(
+          title: expertName,
+          fontSize: 30,
+          titleColor: ColorConstants.bottomTextColor,
+        ),
+        22.0.spaceY,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FeesActionButtonWidget(
+              onTap: () => expertDetailProvider.decrementCallDuration(),
+              icons: ImageConstants.minus,
+              isDisable: expertDetailProvider.callDuration == 10,
+            ),
+            20.0.spaceX,
+            PrimaryButton(
+              height: 45,
+              width: 148,
+              title: '${expertDetailProvider.callDuration} ${LocaleKeys.minutes.tr()}',
+              onPressed: () {},
+              buttonColor: ColorConstants.buttonColor,
+            ),
+            20.0.spaceX,
+            FeesActionButtonWidget(
+              onTap: () => expertDetailProvider.incrementCallDuration(),
+              icons: ImageConstants.plus,
+              isDisable: expertDetailProvider.callDuration == 30,
+            ),
+          ],
+        ),
+        20.0.spaceY,
+        BodyMediumText(
+          title: LocaleKeys.scheduleAppointment.tr(),
+          fontSize: 15,
+          titleColor: ColorConstants.blueColor,
+        ),
+        20.0.spaceY,
+        PrimaryButton(
+          height: 45,
+          width: 148,
+          title: '${allCallDurationNotifier.value.toString()} ${LocaleKeys.minutes.tr()}',
+          onPressed: () {},
+          buttonColor: ColorConstants.buttonColor,
+        ),
+        20.0.spaceY,
+        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
+        20.0.spaceY,
+        PrimaryButton(
+          height: 55,
+          title: 'Done',
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          fontSize: 18,
+          onPressed: (){
+            allCallDurationNotifier.value = duration;
+            onPressed();
+          },
+        ),
+      ],
+    ).addAllPadding(28);
+  }*/
+
+  void manageTimeOutStatus({required UserData? userData, required BuildContext context , required String expertId, required ExpertDetailProvider expertDetailWatch}) {
+    context.toPop();
+    instanceRequestTimerNotifier = ValueNotifier<int>(120);
+    instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
+    instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
+    /// THis is call sender (User) side
+    CommonBottomSheet.bottomSheet(
+        context: context,
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: CallDurationBottomSheetView(expertName: expertDetailWatch.userData?.expertName ?? '', onPressed: () {
+          context.toPop();
+          allCallDurationNotifier.value = expertDetailWatch.callDuration;
+          if ((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+            instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
+            /// THis is call sender (User) side
+            context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
+                args: InstanceCallDialogArguments(
+                  name: expertDetailWatch.userData?.expertName ?? "",
+                  onFirstBtnTap: () {
+                    if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout) {
+                      instanceRequestTimerNotifier.dispose();
+                      manageTimeOutStatus(userData: expertDetailWatch.userData, expertId: widget.expertId, context: context, expertDetailWatch: expertDetailWatch);
+                    } else {
+                      ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId, requestedDuration: (expertDetailWatch.callDuration * 60) );
+                    }
+                  },
+                  onSecondBtnTap: () {
+                    if (instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                      context.toPop();
+                    } else if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestApproved) {
+                      CommonBottomSheet.bottomSheet(
+                          context: context,
+                          child: CallPaymentBottomSheetView(onPressed: () {
+                            context.toPop();
+                            ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
+                          }),
+                          isDismissible: true);
+                      ///context.toPop();
+                    } else {
+                      ref.read(socketProvider).updateRequestStatusEmit(
+                          callStatusEnum: CallRequestStatusEnum.cancel,
+                          expertId: widget.expertId,
+                          callRoleEnum: CallRoleEnum.user,
+                          userId: SharedPrefHelper.getUserId.toString());
+                      context.toPop();
+                    }
+                  },
+                  image: expertDetailWatch.userData?.expertProfile ?? "",
+                  expertId: expertDetailWatch.userData?.id.toString() ?? '',
+                  userID: SharedPrefHelper.getUserId.toString(),
+                ));
+          } else {
+            FlutterToast().showToast(msg: LocaleKeys.expertNotAvailable.tr());
+          }
+        }),
+        isDismissible: true);
+  }
+
 }
+
+class CallDurationBottomSheetView extends ConsumerStatefulWidget {
+  final  String expertName;
+  final void Function() onPressed;
+  const CallDurationBottomSheetView({required this.expertName, required this.onPressed, super.key});
+
+  @override
+  ConsumerState createState() => _CallDurationBottomSheetViewState();
+}
+
+class _CallDurationBottomSheetViewState extends ConsumerState<CallDurationBottomSheetView> {
+
+  @override
+  Widget build(BuildContext context) {
+    final expertDetailProviderWatch = ref.watch(expertDetailProvider);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        HeadlineMediumText(
+          title: widget.expertName,
+          fontSize: 30,
+          titleColor: ColorConstants.bottomTextColor,
+        ),
+        20.0.spaceY,
+        BodyMediumText(
+          title: "Please select call duration",
+          fontSize: 15,
+          titleColor: ColorConstants.blueColor,
+        ),
+        22.0.spaceY,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FeesActionButtonWidget(
+              onTap: () => expertDetailProviderWatch.decrementCallDuration(),
+              icons: ImageConstants.minus,
+              isDisable: expertDetailProviderWatch.callDuration == 10,
+            ),
+            20.0.spaceX,
+            PrimaryButton(
+              height: 45,
+              width: 148,
+              title: '${expertDetailProviderWatch.callDuration} ${LocaleKeys.minutes.tr()}',
+              onPressed: () {},
+              buttonColor: ColorConstants.buttonColor,
+            ),
+            20.0.spaceX,
+            FeesActionButtonWidget(
+              onTap: () => expertDetailProviderWatch.incrementCallDuration(),
+              icons: ImageConstants.plus,
+              isDisable: expertDetailProviderWatch.callDuration == 30,
+            ),
+          ],
+        ),
+        20.0.spaceY,
+        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
+        20.0.spaceY,
+        PrimaryButton(
+          height: 55,
+          title: 'Done',
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          fontSize: 18,
+          onPressed: widget.onPressed,
+        ),
+      ],
+    ).addAllPadding(28);
+  }
+}
+
+
+class CallPaymentBottomSheetView extends ConsumerStatefulWidget {
+  final void Function() onPressed;
+  const CallPaymentBottomSheetView({required this.onPressed, super.key});
+
+  @override
+  ConsumerState createState() => _CallPaymentBottomSheetViewState();
+}
+
+class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSheetView> {
+
+  @override
+  Widget build(BuildContext context) {
+    final expertDetailProviderWatch = ref.watch(expertDetailProvider);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        HeadlineMediumText(
+          title: expertDetailProviderWatch.userData?.expertName ?? '',
+          fontSize: 30,
+          titleColor: ColorConstants.bottomTextColor,
+        ),
+        22.0.spaceY,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                BodySmallText(
+                  title: LocaleKeys.overAllRating.tr(),
+                  fontFamily: FontWeightEnum.w400.toInter,
+                  titleTextAlign: TextAlign.center,
+                ),
+                10.0.spaceX,
+                AutoSizeText(
+                  expertDetailProviderWatch.userData?.overAllRating != 0 ? expertDetailProviderWatch.userData?.overAllRating.toString() ?? '0' : LocaleKeys.newText.tr(),
+                  maxLines: 1,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: ColorConstants.overallRatingColor,
+                    shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                BodySmallText(
+                  title: LocaleKeys.feesPerMinute.tr(),
+                  fontFamily: FontWeightEnum.w400.toInter,
+                  titleTextAlign: TextAlign.center,
+                ),
+                10.0.spaceX,
+                AutoSizeText(
+                  '\$${((expertDetailProviderWatch.userData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}',
+                  maxLines: 1,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: ColorConstants.overallRatingColor,
+                    shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+        20.0.spaceY,
+        BodyMediumText(
+          title: " Selected Call Duration",
+          fontSize: 15,
+          titleColor: ColorConstants.blueColor,
+        ),
+        20.0.spaceY,
+        PrimaryButton(
+          height: 45,
+          width: 148,
+          title: '${expertDetailProviderWatch.callDuration} ${LocaleKeys.minutes.tr()}',
+          onPressed: () {},
+          buttonColor: ColorConstants.buttonColor,
+        ),
+        20.0.spaceY,
+        PrimaryButton(
+          height: 55,
+         // title: '${LocaleKeys.pay.tr()} \$${scheduleWatch.totalPayAmount?.toStringAsFixed(2)}',
+          title: '${LocaleKeys.pay.tr()} \$20',
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          fontSize: 18,
+          onPressed: widget.onPressed,
+        ),
+        22.0.spaceY,
+        BodyMediumText(
+          title: '${LocaleKeys.scheduleDescription.tr()} ${expertDetailProviderWatch.userData?.expertName ?? 'Anonymous'}',
+          fontFamily: FontWeightEnum.w500.toInter,
+          titleColor: ColorConstants.buttonTextColor,
+          titleTextAlign: TextAlign.center,
+        )
+      ],
+    ).addAllPadding(28);
+  }
+}
+
+

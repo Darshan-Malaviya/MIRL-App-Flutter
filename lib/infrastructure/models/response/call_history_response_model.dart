@@ -101,14 +101,16 @@ class CallHistoryData {
 class UserDetails {
   String? name;
   String? profile;
+  int? id;
   int? fee;
 
-  UserDetails({this.name, this.profile, this.fee});
+  UserDetails({this.name, this.profile, this.fee,this.id});
 
   UserDetails.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     profile = json['profile'];
     fee = json['fee'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -116,6 +118,7 @@ class UserDetails {
     data['name'] = this.name;
     data['profile'] = this.profile;
     data['fee'] = this.fee;
+    data['id'] = this.id;
     return data;
   }
 }
