@@ -24,6 +24,7 @@ extension CallHistoryStatusExpertExtension on CallHistoryStatusExpertEnum {
         return LocaleKeys.complete.tr();
       case CallHistoryStatusExpertEnum.incomplete:
         return LocaleKeys.incomplete.tr();
+      default :  return LocaleKeys.incomplete.tr();
     }
   }
 }
@@ -52,6 +53,8 @@ extension CallHistoryStatusUserExtension on CallHistoryUserStatusEnum {
          return LocaleKeys.refund.tr();
        case CallHistoryUserStatusEnum.supportTicket:
          return LocaleKeys.supportTicket.tr();
+       default :
+         return LocaleKeys.incompleteUser.tr();
      }
    }
 }
@@ -105,6 +108,8 @@ extension CallHistoryStatusEnumFromString on String {
         return CallHistoryStatusExpertEnum.incomplete;
       case '6':
         return CallHistoryStatusExpertEnum.complete;
+      case '':
+        return CallHistoryStatusExpertEnum.incomplete;
       default:
         return CallHistoryStatusExpertEnum.incomplete;
     }
@@ -127,6 +132,8 @@ extension CallHistoryStatusUserEnumFromString on String {
         return CallHistoryUserStatusEnum.incomplete;
       case '6':
         return CallHistoryUserStatusEnum.complete;
+      case '':
+        return CallHistoryUserStatusEnum.incomplete;
       default:
         return CallHistoryUserStatusEnum.incomplete;
     }
