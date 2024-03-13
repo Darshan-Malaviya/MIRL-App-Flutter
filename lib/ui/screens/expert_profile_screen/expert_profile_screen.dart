@@ -76,7 +76,9 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                                 maxLines: 1,
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,
-                                  shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                                  shadows: [
+                                    Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                                  ],
                                 ),
                               ),
                             ],
@@ -94,7 +96,9 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                                 maxLines: 1,
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,
-                                  shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                                  shadows: [
+                                    Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                                  ],
                                 ),
                               ),
                             ],
@@ -116,7 +120,17 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                             child: PrimaryButton(
                               title: StringConstants.shareProfile,
                               buttonTextFontFamily: FontWeightEnum.w400.toInter,
-                              onPressed: () {},
+                              onPressed: () {
+                                // CommonBottomSheet.bottomSheet(
+                                //     context: context, backgroundColor: ColorConstants.whiteColor, child: DemoScreenScreen());
+                                // CommonBottomSheet.bottomSheet(
+                                //     backgroundColor:
+                                //         //Color(0xCC7E3490)
+                                //         ColorConstants.shareProfileBgColor.withOpacity(0.80),
+                                //     context: context,
+                                //     isDismissible: true,
+                                //     child: shareExpertProfileScreen());
+                              },
                             ),
                           ),
                         ],

@@ -54,6 +54,7 @@ dependencies:
   easy_localization: ^3.0.3
 
   agora_rtc_engine: ^6.2.6
+#  agora_rtc_engine: ^6.1.0
 
   #ui
   logger: ^2.0.2+1
@@ -72,6 +73,7 @@ dependencies:
   tap_debouncer: ^2.2.0
   flutter_html: any
   auto_size_text: ^3.0.0
+  qr_flutter: ^4.1.0
 
   #permission
   permission_handler: ^11.2.0

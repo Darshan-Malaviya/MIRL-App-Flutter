@@ -1,4 +1,5 @@
 class AppConstants {
+  static const localFlavorName = 'Mirl Local';
   static const devFlavorName = 'Mirl Dev';
   static const prodFlavorName = 'Mirl Prod';
   static const fontFamily = 'Inter';

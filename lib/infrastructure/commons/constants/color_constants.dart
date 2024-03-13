@@ -67,4 +67,5 @@ class ColorConstants {
   static Color callRequestColor = const Color(0xffFFAD05);
   static Color demo = const Color(0xff21842);
   static Color mirlConnectShadowColor = const Color(0xffFD02E0);
+  static Color shareProfileBgColor = const Color(0xff7E3490);
 }

@@ -51,6 +51,9 @@ class ImageConstants {
   static const userNotifications = '${imagePath}user_notifications.png';
   static const generalNotifications = '${imagePath}general_notifications.png';
   static const reported = '${imagePath}reported.png';
+  static const mirlIcon = '${imagePath}mirl_icon.png';
+  static const shareProfile = '${imagePath}share_profile.png';
+  static const copyLink = '${imagePath}copy_link.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';

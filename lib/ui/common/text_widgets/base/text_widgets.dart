@@ -418,7 +418,8 @@ class TitleMediumText extends StatelessWidget {
       this.fontHeight,
       this.lineHeight,
       this.fontFamily,
-      this.isUnderline = false})
+      this.isUnderline = false,
+      this.shadows})
       : super(key: key);
 
   final String title;
@@ -434,6 +435,7 @@ class TitleMediumText extends StatelessWidget {
   final bool? isUnderline;
   final double? lineHeight;
   final String? fontFamily;
+  final List<Shadow>? shadows;
 
   @override
   Widget build(BuildContext context) {
@@ -441,13 +443,15 @@ class TitleMediumText extends StatelessWidget {
       title,
       textScaler: TextScaler.linear(1),
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          color: titleColor ?? Theme.of(context).textTheme.titleMedium?.color,
-          fontWeight: fontWeight,
-          decoration: isUnderline == true ? TextDecoration.underline : null,
-          height: lineHeight,
-          fontFamily: fontFamily,
-          letterSpacing: -0.1,
-          fontSize: fontSize),
+            color: titleColor ?? Theme.of(context).textTheme.titleMedium?.color,
+            fontWeight: fontWeight,
+            decoration: isUnderline == true ? TextDecoration.underline : null,
+            height: lineHeight,
+            fontFamily: fontFamily,
+            letterSpacing: -0.1,
+            fontSize: fontSize,
+            shadows: shadows,
+          ),
       textAlign: titleTextAlign,
       maxLines: maxLine,
       overflow: TextOverflow.ellipsis,

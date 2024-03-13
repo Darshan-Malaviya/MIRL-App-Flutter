@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 extension ValidationExtension on String {
@@ -21,7 +23,7 @@ extension ValidationExtension on String {
     if (trim().isEmpty) {
       return msg;
     } else if (this.length < 5) {
-      return 'It should be at least 5 character long';
+      return LocaleKeys.charactersLong.tr();
     } /*else if (!RegExp(RegexConstants.onlyCharacter).hasMatch(this)) {
       return validatedMsg;
     }*/
