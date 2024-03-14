@@ -89,9 +89,10 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
         if (response.data != null && response.data is UpcomingAppointmentResponseModel) {
           UpcomingAppointmentResponseModel responseModel = response.data;
           if (_pageNo == 1) {
-            _upcomingAppointment.clear();
+            _upcomingAppointment = responseModel.data?.getUpcomingAppointment ?? [];
+          } else {
+            _upcomingAppointment.addAll(responseModel.data?.getUpcomingAppointment ?? []);
           }
-          _upcomingAppointment.addAll(responseModel.data?.getUpcomingAppointment ?? []);
           if (responseModel.data?.dateLists?.isNotEmpty ?? false) {
             _dateList.clear();
             responseModel.data?.dateLists?.forEach((element) {

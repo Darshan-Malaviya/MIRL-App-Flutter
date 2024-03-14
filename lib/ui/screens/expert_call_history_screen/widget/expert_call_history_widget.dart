@@ -410,8 +410,10 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                     onTap: () {
                                        context.toPushNamed(RoutesConstants.blockUserScreen,
                                            args: BlockUserArgs(
-                                               userName: element.userDetails?.name ?? '',
-                                               imageURL: element.userDetails?.profile ?? '',
+                                                  userName: (element.userDetails?.name?.isNotEmpty ?? false)
+                                                      ? element.userDetails?.name
+                                                      : LocaleKeys.anonymous.tr(),
+                                                  imageURL: element.userDetails?.profile ?? '',
                                                userId: int.parse(element.userDetails?.id.toString() ?? ''),
                                                userRole: 2,
                                                reportName: '',

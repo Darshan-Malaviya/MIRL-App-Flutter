@@ -62,6 +62,20 @@ class MultiConnectProvider extends ChangeNotifier {
 
   ExpertDetails? selectedExpertForCall;
 
+  int _multiCallDuration = 10;
+  int get multiCallDuration => _multiCallDuration;
+
+
+  void incrementMultiCallDuration() {
+    _multiCallDuration += 10;
+    notifyListeners();
+  }
+
+  void decrementMultiCallDuration() {
+    _multiCallDuration -= 10;
+    notifyListeners();
+  }
+
 
   void getLoggedUserData() {
     if (SharedPrefHelper.getUserData.isNotEmpty) {

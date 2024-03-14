@@ -13,7 +13,7 @@ class ApiResponseProvider {
 
     _dio = Dio(BaseOptions(
         baseUrl: flavorConfig?.appTitle == AppConstants.localFlavorName
-            ? 'http://192.168.1.137:3000'
+            ? 'http://192.168.1.107:3000'
             : '${ApiConstants.scheme}://${ApiConstants.host}',
         headers: header ?? authHeader));
 

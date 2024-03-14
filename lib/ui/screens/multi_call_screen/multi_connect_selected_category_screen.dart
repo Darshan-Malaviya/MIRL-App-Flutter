@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
+import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
 import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 
@@ -91,46 +93,61 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                 multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiCallRequest;
                 multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
 
-                /// user side
-                NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
-                    args: MultiConnectDialogArguments(
-                      //expertList: multiProviderRead.selectedExpertDetails,
-                      userDetail: multiProviderRead.loggedUserData,
-                      onFirstBtnTap: () {
-                        if (instanceCallEnumNotifier.value == CallRequestTypeEnum.multiRequestTimeout) {
-                          /// tru again
-                        } else {
-                          List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
-                          ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
-                        }
-                      },
-                      onSecondBtnTap: () {
-                        /// cancel
-                        if (multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
-                          context.toPop();
-                        } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
-                          if (multiProviderWatch.selectedExpertForCall != null &&
-                              multiConnectCallEnumNotifier.value  == CallRequestTypeEnum.multiRequestApproved) {
-                            ref
-                                .read(socketProvider)
-                                .connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
-                          } else {
-                            /// Choose any expert for call
-                            FlutterToast().showToast(msg: 'Please choose expert for call.');
-                          }
-                        } else {
-                          /// change expert id here
+                CommonBottomSheet.bottomSheet(
+                    context: context,
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: MultiCallDurationBottomSheetView( onPressed: () {
+                      context.toPop();
+                      allCallDurationNotifier.value = multiProviderWatch.multiCallDuration;
+                      /// user side
+                      NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
+                          args: MultiConnectDialogArguments(
+                            //expertList: multiProviderRead.selectedExpertDetails,
+                            userDetail: multiProviderRead.loggedUserData,
+                            onFirstBtnTap: () {
+                              if (instanceCallEnumNotifier.value == CallRequestTypeEnum.multiRequestTimeout) {
+                                /// tru again
+                              } else {
+                                List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
+                                ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
+                              }
+                            },
+                            onSecondBtnTap: () {
+                              /// cancel
+                              if (multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
+                                context.toPop();
+                              } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
+                                if (multiProviderWatch.selectedExpertForCall != null &&
+                                    multiConnectCallEnumNotifier.value  == CallRequestTypeEnum.multiRequestApproved) {
+                                  CommonBottomSheet.bottomSheet(
+                                      context: context,
+                                      child: MultiCallPaymentBottomSheetView(onPressed: () {
+                                        context.toPop();
+                                        ref
+                                            .read(socketProvider)
+                                            .connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
+                                      }),
+                                      isDismissible: true);
+                                } else {
+                                  /// Choose any expert for call
+                                  FlutterToast().showToast(msg: 'Please choose expert for call.');
+                                }
+                              } else {
+                                /// change expert id here
+                                ref.read(socketProvider).multiConnectStatusEmit(
+                                    callStatusEnum: CallRequestStatusEnum.cancel,
+                                    expertId: null,
+                                    userId: SharedPrefHelper.getUserId,
+                                    callRoleEnum: CallRoleEnum.user,
+                                    callRequestId: SharedPrefHelper.getCallRequestId.toString());
+                                context.toPop();
+                              }
+                            },
+                          ));
+                    }),
+                    isDismissible: true);
 
-                          ref.read(socketProvider).multiConnectStatusEmit(
-                              callStatusEnum: CallRequestStatusEnum.cancel,
-                              expertId: null,
-                              userId: SharedPrefHelper.getUserId,
-                              callRoleEnum: CallRoleEnum.user,
-                              callRequestId: SharedPrefHelper.getCallRequestId.toString());
-                          context.toPop();
-                        }
-                      },
-                    ));
+
               },
               child: TitleMediumText(
                 title: StringConstants.done,
@@ -404,5 +421,170 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
               ),
       ),
     );
+  }
+}
+
+class MultiCallDurationBottomSheetView extends ConsumerStatefulWidget {
+  final void Function() onPressed;
+  const MultiCallDurationBottomSheetView({required this.onPressed, super.key});
+
+  @override
+  ConsumerState createState() => _MultiCallDurationBottomSheetViewState();
+}
+
+class _MultiCallDurationBottomSheetViewState extends ConsumerState<MultiCallDurationBottomSheetView> {
+
+  @override
+  Widget build(BuildContext context) {
+    final multiConnectProviderWatch = ref.watch(multiConnectProvider);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        BodyMediumText(
+          title: "Please select call duration",
+          fontSize: 15,
+          titleColor: ColorConstants.blueColor,
+        ),
+        22.0.spaceY,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FeesActionButtonWidget(
+              onTap: () => multiConnectProviderWatch.decrementMultiCallDuration(),
+              icons: ImageConstants.minus,
+              isDisable: multiConnectProviderWatch.multiCallDuration == 10,
+            ),
+            20.0.spaceX,
+            PrimaryButton(
+              height: 45,
+              width: 148,
+              title: '${multiConnectProviderWatch.multiCallDuration} ${LocaleKeys.minutes.tr()}',
+              onPressed: () {},
+              buttonColor: ColorConstants.buttonColor,
+            ),
+            20.0.spaceX,
+            FeesActionButtonWidget(
+              onTap: () => multiConnectProviderWatch.incrementMultiCallDuration(),
+              icons: ImageConstants.plus,
+              isDisable: multiConnectProviderWatch.multiCallDuration == 30,
+            ),
+          ],
+        ),
+        20.0.spaceY,
+        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
+        20.0.spaceY,
+        PrimaryButton(
+          height: 55,
+          title: 'Done',
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          fontSize: 18,
+          onPressed: widget.onPressed,
+        ),
+      ],
+    ).addAllPadding(28);
+  }
+}
+
+
+class MultiCallPaymentBottomSheetView extends ConsumerStatefulWidget {
+  final void Function() onPressed;
+  const MultiCallPaymentBottomSheetView({required this.onPressed, super.key});
+
+  @override
+  ConsumerState createState() => _MultiCallPaymentBottomSheetViewState();
+}
+
+class _MultiCallPaymentBottomSheetViewState extends ConsumerState<MultiCallPaymentBottomSheetView> {
+
+  @override
+  Widget build(BuildContext context) {
+    final multiConnectProviderWatch = ref.watch(multiConnectProvider);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        HeadlineMediumText(
+          title: multiConnectProviderWatch.selectedExpertForCall?.expertName ?? LocaleKeys.anonymous.tr(),
+          fontSize: 30,
+          titleColor: ColorConstants.bottomTextColor,
+        ),
+        22.0.spaceY,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                BodySmallText(
+                  title: LocaleKeys.overAllRating.tr(),
+                  fontFamily: FontWeightEnum.w400.toInter,
+                  titleTextAlign: TextAlign.center,
+                ),
+                10.0.spaceX,
+                AutoSizeText(
+                  multiConnectProviderWatch.selectedExpertForCall?.overAllRating != 0 ? multiConnectProviderWatch.selectedExpertForCall?.overAllRating.toString() ?? '0' : LocaleKeys.newText.tr(),
+                  maxLines: 1,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: ColorConstants.overallRatingColor,
+                    shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                BodySmallText(
+                  title: LocaleKeys.feesPerMinute.tr(),
+                  fontFamily: FontWeightEnum.w400.toInter,
+                  titleTextAlign: TextAlign.center,
+                ),
+                10.0.spaceX,
+                AutoSizeText(
+                  '\$${((multiConnectProviderWatch.selectedExpertForCall?.fee ?? 0) / 100).toStringAsFixed(2).toString()}',
+                  maxLines: 1,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: ColorConstants.overallRatingColor,
+                    shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+        20.0.spaceY,
+        BodyMediumText(
+          title: " Selected Call Duration",
+          fontSize: 15,
+          titleColor: ColorConstants.blueColor,
+        ),
+        20.0.spaceY,
+        PrimaryButton(
+          height: 45,
+          width: 148,
+          title: '${multiConnectProviderWatch.multiCallDuration} ${LocaleKeys.minutes.tr()}',
+          onPressed: () {},
+          buttonColor: ColorConstants.buttonColor,
+        ),
+        20.0.spaceY,
+        PrimaryButton(
+          height: 55,
+          // title: '${LocaleKeys.pay.tr()} \$${scheduleWatch.totalPayAmount?.toStringAsFixed(2)}',
+          title: '${LocaleKeys.pay.tr()} \$20',
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          fontSize: 18,
+          onPressed: widget.onPressed,
+        ),
+        22.0.spaceY,
+        BodyMediumText(
+          title: '${LocaleKeys.scheduleDescription.tr()} ${multiConnectProviderWatch.selectedExpertForCall?.expertName ?? LocaleKeys.anonymous.tr()}',
+          fontFamily: FontWeightEnum.w500.toInter,
+          titleColor: ColorConstants.buttonTextColor,
+          titleTextAlign: TextAlign.center,
+        )
+      ],
+    ).addAllPadding(28);
   }
 }

@@ -550,7 +550,7 @@ class SocketProvider extends ChangeNotifier {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
 
             if(model.data?.timerType.toString() == CallTimerEnum.call.name) {
-              if(model.data?.time.toString() !=  extraResponseModel?.instantCallSeconds.toString()){
+              if(model.data?.time.toString() !=  extraResponseModel?.requestedDuration.toString()){
                 instanceCallDurationNotifier.value = int.parse(model.data?.time.toString() ?? '');
               }
             } else if(model.data?.timerType.toString() == CallTimerEnum.request.name){
