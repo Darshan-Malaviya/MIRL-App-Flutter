@@ -38,16 +38,6 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void callNowBtnVisibility(String startTime) {
-    DateTime startTimeValue = DateTime.parse(startTime);
-    DateTime now = DateTime.now();
-    if (startTimeValue.isAtSameMomentAs(now)) {
-      // TODO start the call
-    } else {
-      FlutterToast().showToast(msg: LocaleKeys.startCallToast.tr());
-    }
-  }
-
   Future<void> upcomingAppointmentApiCall({required bool showLoader, required bool showListLoader, required int role, bool? fromNotification = false, String date = ''}) async {
 
     if (showLoader) {

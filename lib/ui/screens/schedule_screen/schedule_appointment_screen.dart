@@ -59,7 +59,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           HeadlineMediumText(
-            title: scheduleWatch.expertData?.expertName ?? '',
+            title: scheduleWatch.expertData?.expertName?.toUpperCase() ?? '',
             fontSize: 30,
             titleColor: ColorConstants.bottomTextColor,
           ),
@@ -124,7 +124,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
           20.0.spaceY,
           PrimaryButton(
             height: 45,
-            title: '${scheduleWatch.selectedSlotData?.startTimeUTC?.to12HourTimeFormat() ?? ''}, ${scheduleWatch.selectedSlotData?.startTimeUTC?.toDisplayDateWithMonth()}',
+            title: '${scheduleWatch.selectedSlotData?.startTimeUTC?.to12HourTimeFormat().toLowerCase() ?? ''}, ${scheduleWatch.selectedSlotData?.startTimeUTC?.toDisplayDateWithMonth()}',
             margin: EdgeInsets.symmetric(horizontal: 40),
             onPressed: () {},
             buttonColor: ColorConstants.buttonColor,
@@ -141,7 +141,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
           ),
           10.0.spaceY,
           BodyMediumText(
-            title: '${LocaleKeys.scheduleDescription.tr()} ${scheduleWatch.expertData?.userName ?? 'Anonymous'}',
+            title: '${LocaleKeys.scheduleDescription.tr()} ${scheduleWatch.expertData?.expertName ?? ''}',
             fontFamily: FontWeightEnum.w500.toInter,
             titleColor: ColorConstants.buttonTextColor,
             titleTextAlign: TextAlign.center,
