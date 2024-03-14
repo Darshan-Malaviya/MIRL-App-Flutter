@@ -97,7 +97,7 @@ class CallProvider extends ChangeNotifier {
 
   void getCallDuration() {
     /// Change when duration of instance call is changed , right now it's 10 min = 600 sec.
-    _callDuration = int.parse(ref.watch(socketProvider).extraResponseModel?.instantCallSeconds ?? '600');
+    _callDuration = int.parse(ref.watch(socketProvider).extraResponseModel?.requestedDuration ?? '600');
     notifyListeners();
   }
 

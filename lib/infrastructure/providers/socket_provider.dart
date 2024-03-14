@@ -166,7 +166,7 @@ class SocketProvider extends ChangeNotifier {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
             SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
-            //allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
+            allCallDurationNotifier.value = model.data?.requestedDuration ?? 0;
             instanceCallEnumNotifier.value = CallRequestTypeEnum.requestWaiting;
           } else {
             InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
@@ -189,7 +189,7 @@ class SocketProvider extends ChangeNotifier {
               instanceCallEnumNotifier.value = CallRequestTypeEnum.receiverRequested;
               InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
               SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
-              //allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
+              allCallDurationNotifier.value = model.data?.requestedDuration ?? 0;
 
               /// This is call receiver (Expert) side.
               NavigationService.context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
@@ -550,7 +550,7 @@ class SocketProvider extends ChangeNotifier {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
 
             if(model.data?.timerType.toString() == CallTimerEnum.call.name) {
-              if(model.data?.time.toString() !=  extraResponseModel?.instantCallSeconds.toString()){
+              if(model.data?.time.toString() !=  extraResponseModel?.requestedDuration.toString()){
                 instanceCallDurationNotifier.value = int.parse(model.data?.time.toString() ?? '');
               }
             } else if(model.data?.timerType.toString() == CallTimerEnum.request.name){
@@ -569,14 +569,15 @@ class SocketProvider extends ChangeNotifier {
   }
 
 
-  void multiConnectRequestEmit({required List<int> expertIdsList}) {
+  void multiConnectRequestEmit({required List<int> expertIdsList,required int requestedDuration}) {
     try {
       Logger().d('multiConnectRequestEmit ==== Success');
       String userId = SharedPrefHelper.getUserId.toString();
       socket?.emit(AppConstants.multiConnectRequest, {
         AppConstants.expertIds: expertIdsList,
         AppConstants.userId: userId,
-        AppConstants.time: DateTime.now().toUtc().toString()
+        AppConstants.time: DateTime.now().toUtc().toString(),
+        AppConstants.requestedDuration: requestedDuration
       });
     } catch (e) {
       Logger().d('multiConnectRequestEmit====$e');
@@ -587,12 +588,13 @@ class SocketProvider extends ChangeNotifier {
   void multiConnectRequestResponse() {
     try {
       socket?.on(AppConstants.multiConnectRequestSent, (data) {
+        CustomLoading.progressDialog(isLoading: false);
         Logger().d('multiConnectRequestResponse=====${data.toString()}');
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
             SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
-            //allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
+            allCallDurationNotifier.value = model.data?.requestedDuration ?? 0;
             multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestWaiting;
             ref.read(multiConnectProvider).setAllExpertStatusAsWaitingOnRequestCall();
             /// TODO change it will 120;
@@ -617,7 +619,7 @@ class SocketProvider extends ChangeNotifier {
             multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiReceiverRequested;
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
             SharedPrefHelper.saveCallRequestId(model.data?.callRequestId.toString());
-            //allCallDurationNotifier.value = model.data?.instantCallSeconds ?? 0;
+            allCallDurationNotifier.value = model.data?.requestedDuration ?? 0;
             multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
             /// This is multi connect call receiver (Expert) side.
             NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
@@ -674,15 +676,16 @@ class SocketProvider extends ChangeNotifier {
     try {
       socket?.on(AppConstants.multiConnectStatusSend, (data) {
         Logger().d('multiConnectStatusSend=====${data.toString()}');
+        chooseMultiConnectExpert.value = false;
         if (data.toString().isNotEmpty) {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
-
             if(model.data?.expertList?.isNotEmpty ?? false) {
               ref.read(multiConnectProvider).changeExpertListAfterEmit(expertsList: model.data?.expertList ?? []);
               bool isAnyApproveOrChoose =  model.data?.expertList?.any((element) => (element.status.toString() == '2') || (element.status.toString() == '6'))  ?? false;
              // bool isAnyChoose=  model.data?.expertList?.any((element) => element.status.toString() == '6')  ?? false;
               if(isAnyApproveOrChoose){
+                //CustomLoading.progressDialog(isLoading: false);
                 multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestApproved;
               } else {
                 multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiRequestTimeout;
