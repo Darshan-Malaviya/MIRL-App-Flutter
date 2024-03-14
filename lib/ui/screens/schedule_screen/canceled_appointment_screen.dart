@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
+import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
 class CanceledAppointmentScreen extends ConsumerWidget {
@@ -48,49 +49,56 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${args.fromScheduled ?? false ? LocaleKeys.expert.tr() : LocaleKeys.user.tr().toUpperCase()}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextSpan(text: args.cancelData?.name ?? 'Anonymous', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                              BodySmallText(
+                                  title: '${args.fromScheduled ?? false ? LocaleKeys.expert.tr() : LocaleKeys.user.tr().toUpperCase()}: ',
+                                  titleColor: ColorConstants.buttonTextColor,
+                                  fontFamily: FontWeightEnum.w400.toInter),
+                              Expanded(
+                                child: BodySmallText(
+                                  title: args.cancelData?.name ?? 'Mystery MIRL',
+                                  titleColor: ColorConstants.buttonTextColor,
+                                  maxLine: 3,
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                        5.0.spaceY,
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${LocaleKeys.time.tr()}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
-                            children: [
-                              TextSpan(
-                                  text: '${args.cancelData?.startTime?.to12HourTimeFormat() ?? ''} - ${args.cancelData?.endTime?.to12HourTimeFormat() ?? ''}',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
-                            ],
+                          5.0.spaceY,
+                          RichText(
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: '${LocaleKeys.time.tr()}: ',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              children: [
+                                TextSpan(
+                                    text: '${args.cancelData?.startTime?.to12HourTimeFormat().toLowerCase() ?? ''} - ${args.cancelData?.endTime?.to12HourTimeFormat().toLowerCase() ?? ''}',
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                              ],
+                            ),
                           ),
-                        ),
-                        5.0.spaceY,
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
-                            children: [
-                              TextSpan(
-                                  text: '${(args.cancelData?.duration ?? 0) ~/ 60} ${LocaleKeys.minutes.tr()}',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
-                            ],
+                          5.0.spaceY,
+                          RichText(
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              children: [
+                                TextSpan(
+                                    text: '${(args.cancelData?.duration ?? 0) ~/ 60} ${LocaleKeys.minutes.tr()}',
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Container(
                       decoration: BoxDecoration(boxShadow: [
@@ -115,13 +123,23 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                 titleColor: ColorConstants.buttonTextColor,
               ),
               10.0.spaceY,
-              BodyMediumText(
+              ReadMoreText(
+                args.cancelData?.reason ?? '',
+                style: TextStyle(fontSize: 14, fontFamily: FontWeightEnum.w400.toInter),
+                trimLines: 50,
+                trimMode: TrimMode.Line,
+                trimCollapsedText: LocaleKeys.readMore.tr(),
+                trimExpandedText: ' ${LocaleKeys.readLess.tr()}',
+                moreStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor.withOpacity(0.7)),
+                lessStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor.withOpacity(0.7)),
+              ),
+             /* BodyMediumText(
                 title: args.cancelData?.reason ?? '',
                 fontFamily: FontWeightEnum.w400.toInter,
                 fontStyle: FontStyle.italic,
                 maxLine: 10,
                 titleColor: ColorConstants.buttonTextColor,
-              ),
+              ),*/
               20.0.spaceY,
               if (args.fromScheduled ?? false) ...[
                 PrimaryButton(
@@ -161,7 +179,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                   child: InkWell(
                     onTap: () => context.toPushNamed(RoutesConstants.blockUserScreen,
                         args: BlockUserArgs(
-                          userName: args.cancelData?.name ?? 'Anonymous',
+                          userName: args.cancelData?.name ?? 'Mystery MIRL',
                           imageURL: args.cancelData?.profileImage ?? '',
                           userId: args.cancelData?.id,
                           userRole: 2,

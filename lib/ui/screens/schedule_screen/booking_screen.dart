@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
@@ -76,7 +75,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             ),
             22.0.spaceY,
             BodyLargeText(
-              title: '${LocaleKeys.bookingDescription.tr()} ${scheduleWatch.appointmentData?.expertDetail?.expertName ?? ''}.',
+              title: '${LocaleKeys.bookingDescription.tr()} ${scheduleWatch.appointmentData?.expertDetail?.expertName ?? ''}!.',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
               maxLine: 5,
@@ -118,13 +117,14 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BodySmallText(
-                    title: '${scheduleWatch.appointmentData?.startTime?.to12HourTimeFormat() ?? ''} - ${scheduleWatch.appointmentData?.endTime?.to12HourTimeFormat() ?? ''}',
+                    title:
+                        '${scheduleWatch.appointmentData?.startTime?.to12HourTimeFormat().toLowerCase() ?? ''} - ${scheduleWatch.appointmentData?.endTime?.to12HourTimeFormat().toLowerCase() ?? ''}',
                     fontSize: 13,
                     titleColor: ColorConstants.buttonTextColor,
                   ),
                   8.0.spaceY,
                   BodySmallText(
-                    title: '${LocaleKeys.duration.tr()}: ${scheduleWatch.appointmentData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
+                    title: '${LocaleKeys.duration.tr()}: ${(scheduleWatch.appointmentData?.duration ?? 0) ~/ 60 } ${LocaleKeys.minutes.tr()}',
                     fontSize: 13,
                     titleColor: ColorConstants.buttonTextColor,
                   ),

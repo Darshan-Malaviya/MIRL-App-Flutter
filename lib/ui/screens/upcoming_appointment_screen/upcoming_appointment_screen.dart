@@ -135,53 +135,60 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        RichText(
-                                          softWrap: true,
-                                          textAlign: TextAlign.center,
-                                          text: TextSpan(
-                                            text: '${LocaleKeys.user.tr().toUpperCase()}: ',
-                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              TextSpan(
-                                                  text: upcomingWatch.upcomingAppointment[index].detail?.name ?? LocaleKeys.anonymous.tr(),
-                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                                              BodySmallText(
+                                                  title: '${widget.args.role == 1 ? LocaleKeys.expert.tr().toUpperCase() : LocaleKeys.user.tr().toUpperCase()}: ',
+                                                  titleColor: ColorConstants.buttonTextColor,
+                                                  fontFamily: FontWeightEnum.w400.toInter),
+                                              Expanded(
+                                                child: BodySmallText(
+                                                  title: upcomingWatch.upcomingAppointment[index].detail?.name ?? LocaleKeys.anonymous.tr(),
+                                                  titleColor: ColorConstants.buttonTextColor,
+                                                  maxLine: 3,
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                        ),
-                                        5.0.spaceY,
-                                        RichText(
-                                          softWrap: true,
-                                          textAlign: TextAlign.center,
-                                          text: TextSpan(
-                                            text: '${LocaleKeys.time.tr()}: ',
-                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
-                                            children: [
-                                              TextSpan(
-                                                  text:
-                                                      '${upcomingWatch.upcomingAppointment[index].startTime?.to12HourTimeFormat().toUpperCase() ?? ''} - ${upcomingWatch.upcomingAppointment[index].endTime?.to12HourTimeFormat().toUpperCase() ?? ''}',
-                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
-                                            ],
+                                          5.0.spaceY,
+                                          RichText(
+                                            softWrap: true,
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
+                                              text: '${LocaleKeys.time.tr()}: ',
+                                              style:
+                                                  Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                                              children: [
+                                                TextSpan(
+                                                    text:
+                                                        '${upcomingWatch.upcomingAppointment[index].startTime?.to12HourTimeFormat().toLowerCase() ?? ''} - ${upcomingWatch.upcomingAppointment[index].endTime?.to12HourTimeFormat().toLowerCase() ?? ''}',
+                                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        5.0.spaceY,
-                                        RichText(
-                                          softWrap: true,
-                                          textAlign: TextAlign.center,
-                                          text: TextSpan(
-                                            text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
-                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
-                                            children: [
-                                              TextSpan(
-                                                  text: '${int.parse(upcomingWatch.upcomingAppointment[index].duration.toString()) ~/ 60} ${LocaleKeys.minutes.tr()}',
-                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
-                                            ],
+                                          5.0.spaceY,
+                                          RichText(
+                                            softWrap: true,
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
+                                              text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
+                                              style:
+                                                  Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                                              children: [
+                                                TextSpan(
+                                                    text: '${int.parse(upcomingWatch.upcomingAppointment[index].duration.toString()) ~/ 60} ${LocaleKeys.minutes.tr()}',
+                                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        10.0.spaceY,
-                                      ],
+                                          10.0.spaceY,
+                                        ],
+                                      ),
                                     ),
                                     Container(
                                       decoration: BoxDecoration(boxShadow: [
@@ -209,7 +216,17 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                         title: LocaleKeys.startCall.tr(),
                                         width: 150,
                                         onPressed: () {
-                                          upcomingRead.callNowBtnVisibility(upcomingWatch.upcomingAppointment[index].startTime ?? '');
+                                          DateTime startTimeValue = DateTime.parse(upcomingWatch.upcomingAppointment[index].startTime ?? '').toLocal();
+                                          DateTime endTimeValue = DateTime.parse(upcomingWatch.upcomingAppointment[index].endTime ?? '').toLocal();
+                                          DateTime now = DateTime.now();
+                                          if (startTimeValue.isBefore(now) && endTimeValue.isAfter(now)) {
+                                            ref.read(socketProvider).connectCallEmit(
+                                                expertId: upcomingWatch.upcomingAppointment[index].expertId.toString(),
+                                                callRequestId:
+                                                upcomingWatch.upcomingAppointment[index].callRequestId.toString());
+                                          } else {
+                                            FlutterToast().showToast(msg: LocaleKeys.startCallToast.tr());
+                                          }
                                         },
                                         fontSize: 10,
                                         titleColor: ColorConstants.textColor,

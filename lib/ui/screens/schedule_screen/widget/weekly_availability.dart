@@ -36,9 +36,9 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                   Column(
                     children: List.generate(scheduleProviderWatch.weekAvailability.length, (index) {
                       final data = scheduleProviderWatch.weekAvailability[index];
-                      return slotWidget(
+                      return weekAvailabilityWidget(
                               dayText: data.dayOfWeek?.toUpperCase() ?? '',
-                              dayTimeText: '${data.startTime?.to12HourTimeFormat() ?? ''} - ${data.endTime?.to12HourTimeFormat() ?? ''}')
+                              dayTimeText: '${data.startTime?.to12HourTimeFormat().toLowerCase() ?? ''} - ${data.endTime?.to12HourTimeFormat().toLowerCase() ?? ''}')
                           .addPaddingY(12);
                     }),
                   ).addPaddingX(20),
@@ -94,7 +94,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
             : NoWeeklyAvailability();
   }
 
-  Widget slotWidget({required String dayText, required String dayTimeText}) {
+  Widget weekAvailabilityWidget({required String dayText, required String dayTimeText}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

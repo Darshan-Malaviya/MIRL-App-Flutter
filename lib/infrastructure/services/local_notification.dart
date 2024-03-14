@@ -38,7 +38,9 @@ class LocalNotification {
   onSelectNotification(NotificationResponse response) {
     /// TODO Push screen code or open dialog when tap on foreground and background notification
     if (response.payload != null) {
-      Map<String, dynamic> payloadData = jsonDecode(response.payload ?? '');
+      CommonMethods.onTapNotification(response.payload ?? '', NavigationService.context);
+
+/*      Map<String, dynamic> payloadData = jsonDecode(response.payload ?? '');
 
       NotificationData notificationData = NotificationData.fromJson(payloadData);
       if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
@@ -56,9 +58,11 @@ class LocalNotification {
                 duration: int.parse(notificationData.duration ?? '0'),
                 name: notificationData.name,
                 profileImage: notificationData.profile,
+                reason: notificationData.reason,
               ),
             ));
       }
+    }*/
     }
   }
 }
