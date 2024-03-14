@@ -241,8 +241,8 @@ class ReadMoreTextState extends State<ReadMoreText> {
                 data: _readMore ? widget.data.substring(0, endIndex) + (linkLongerThanLine ? _kLineSeparator : '') : widget.data,
                 textStyle: effectiveTextStyle,
                 linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
+                  // decoration: TextDecoration.underline,
+                  color: Colors.black,
                 ),
                 onPressed: widget.onLinkPressed,
                 children: [_delimiter, link],
@@ -252,8 +252,8 @@ class ReadMoreTextState extends State<ReadMoreText> {
                 data: widget.data,
                 textStyle: effectiveTextStyle,
                 linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
+                  // decoration: TextDecoration.underline,
+                  color: Colors.black,
                 ),
                 onPressed: widget.onLinkPressed,
                 children: [],

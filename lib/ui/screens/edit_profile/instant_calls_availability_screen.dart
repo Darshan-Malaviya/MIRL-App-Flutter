@@ -58,7 +58,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             DropdownMenuWidget(
               hintText: StringConstants.theDropDown,
               controller: expertWatch.instantCallAvailabilityController,
-              dropdownList: expertWatch.locations
+              dropdownList: expertWatch.instantCall
                   .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                   .toList(),
               onSelect: (value) {

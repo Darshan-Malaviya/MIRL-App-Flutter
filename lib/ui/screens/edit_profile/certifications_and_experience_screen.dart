@@ -106,10 +106,12 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           ],
                         ),
                         20.0.spaceY,
-                        TextFormFieldWidget(
+                        TextFormFieldWidget(textStyle: TextStyle(fontFamily: FontWeightEnum.w700.toInter),
                           controller: expertWatch.certiAndExpModel[index].titleController,
                           focusNode: expertWatch.certiAndExpModel[index].titleFocus,
                           hintText: StringConstants.writeYourTitle,
+                          fontFamily: FontWeightEnum.w700.toInter,
+                          maxLines: 2,
                           textInputType: TextInputType.text,
                           onFieldSubmitted: (value) {
                             expertWatch.certiAndExpModel[index].titleFocus.toChangeFocus(

@@ -12,7 +12,7 @@ class ImagePickerBottomSheet extends StatelessWidget {
       children: [
         20.0.spaceY,
         TitleMediumText(
-          title: 'Image Picker',
+          title: 'Please Select One',
           fontFamily: FontWeightEnum.w500.toInter,
         ),
         20.0.spaceY,
@@ -27,14 +27,14 @@ class ImagePickerBottomSheet extends StatelessWidget {
                     borderRadius: const BorderRadius.all(
                       Radius.circular(20),
                     ),
-                    border: Border.all(color: ColorConstants.borderColor, width: 2)),
+                    border: Border.all(color: ColorConstants.borderColor, width: 1)),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.image,
                       size: 36,
-                      color: ColorConstants.primaryColor,
+                      color: ColorConstants.bottomTextColor,
                     ),
                     12.0.spaceX,
                     BodyMediumText(
@@ -53,14 +53,14 @@ class ImagePickerBottomSheet extends StatelessWidget {
                     borderRadius: const BorderRadius.all(
                       Radius.circular(20),
                     ),
-                    border: Border.all(color: ColorConstants.borderColor, width: 2)),
+                    border: Border.all(color: ColorConstants.borderColor, width: 1)),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.camera,
                       size: 36,
-                      color: ColorConstants.primaryColor,
+                      color: ColorConstants.bottomTextColor,
                     ),
                     12.0.spaceX,
                     BodyMediumText(
@@ -73,7 +73,7 @@ class ImagePickerBottomSheet extends StatelessWidget {
             ),
           ],
         ),
-        20.0.spaceY,
+        40.0.spaceY,
       ],
     ).addPaddingX(40);
   }

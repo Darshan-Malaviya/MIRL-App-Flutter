@@ -74,6 +74,7 @@ dependencies:
   flutter_html: any
   auto_size_text: ^3.0.0
   qr_flutter: ^4.1.0
+  linkwell: ^2.0.6
 
   #permission
   permission_handler: ^11.2.0

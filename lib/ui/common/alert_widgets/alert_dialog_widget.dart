@@ -110,12 +110,18 @@ class CommonAlertDialog {
                             child: PrimaryButton(
                               title: discardButtonTitle,
                               onPressed: onDiscardTap ?? () => Navigator.pop(context),
-                              buttonColor: ColorConstants.scaffoldColor,
-                              titleColor: ColorConstants.primaryColor,
+                              buttonColor: ColorConstants.primaryColor,
+                              titleColor: ColorConstants.buttonTextColor,
                             ),
                           ),
                           16.0.spaceX,
-                          Expanded(child: PrimaryButton(title: acceptButtonTitle, onPressed: onAcceptTap)),
+                          Expanded(
+                              child: PrimaryButton(
+                            title: acceptButtonTitle,
+                            onPressed: onAcceptTap,
+                            buttonColor: ColorConstants.whiteColor,
+                            titleColor: ColorConstants.primaryColor,
+                          )),
                         ],
                       ),
                     ],

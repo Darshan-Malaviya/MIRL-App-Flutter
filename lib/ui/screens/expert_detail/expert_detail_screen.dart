@@ -154,7 +154,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       softWrap: true,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,
-                        shadows: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
+                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.2))],
                       ),
                     )
                   ],
@@ -175,7 +175,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       maxLines: 2,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,
-                        shadows: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
+                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.2))],
                       ),
                     )
                   ],
@@ -192,6 +192,18 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 ),
               ),
               8.0.spaceY,
+              // LinkWell(expertDetailWatch.userData?.about ?? '',
+              //     maxLines: 100,
+              //     style: TextStyle(
+              //       color: ColorConstants.blackColor,
+              //       fontFamily: FontWeightEnum.w400.toInter,
+              //       fontSize: 16,
+              //     ),
+              //     linkStyle: TextStyle(
+              //       color: ColorConstants.bottomTextColor,
+              //       fontFamily: FontWeightEnum.w400.toInter,
+              //       fontSize: 16,
+              //     )),
               ReadMoreText(
                 style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter),
                 expertDetailWatch.userData?.about ?? '',
@@ -278,7 +290,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             40.0.spaceY,
             CertificationAndExperienceWidget(),
-            if (expertDetailWatch.userData?.loginType != null) ...[
+            if (expertDetailWatch.userData?.isLocationVisible == true) ...[
               40.0.spaceY,
               RichText(
                 text: TextSpan(
@@ -293,6 +305,31 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     ),
                     TextSpan(
                       text: '${expertDetailWatch.userData?.city ?? ''}, ${expertDetailWatch.userData?.country ?? ''}',
+                      style: TextStyle(
+                        color: ColorConstants.blueColor,
+                        fontSize: 16,
+                        fontFamily: FontWeightEnum.w400.toInter,
+                      ),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.start,
+              ),
+            ]else...[
+              40.0.spaceY,
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: LocaleKeys.location.tr(),
+                      style: TextStyle(
+                        color: ColorConstants.blueColor,
+                        fontFamily: FontWeightEnum.w700.toInter,
+                        fontSize: 16,
+                      ),
+                    ),
+                    TextSpan(
+                      text: LocaleKeys.earthBased.tr(),
                       style: TextStyle(
                         color: ColorConstants.blueColor,
                         fontSize: 16,

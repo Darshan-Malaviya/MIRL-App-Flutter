@@ -77,7 +77,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,
                                   shadows: [
-                                    Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                                    Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.3))
                                   ],
                                 ),
                               ),
@@ -97,7 +97,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,
                                   shadows: [
-                                    Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))
+                                    Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
                                   ],
                                 ),
                               ),

@@ -39,6 +39,22 @@ class SocketApi {
     );
 
     socket?.connect();
+    socket?.on('connect', (data) => log("SOCKET:- connect----$data"));
+    socket?.on('connect_error', (data) => log("SOCKET:- connect_error----$data"));
+    socket?.on('connect_timeout', (data) => log("SOCKET:- connect_timeout----$data"));
+    socket?.on('connecting', (data) => log("SOCKET:- connecting----$data"));
+    socket?.on('disconnect', (data) {
+       log("SOCKET:- disconnect----$data");
+    });
+    socket?.on('error', (data) => log("SOCKET:- error----$data"));
+    socket?.on('reconnect', (data) => log("SOCKET:- reconnect----$data"));
+    socket?.on('reconnect_attempt', (data) => log("SOCKET:- reconnect_attempt----$data"));
+    socket?.on('reconnect_failed', (data) => log("SOCKET:- reconnect_failed----$data"));
+    socket?.on('reconnect_error', (data) => log("SOCKET:- reconnect_error----$data"));
+    socket?.on('reconnect_failed', (data) => log("SOCKET:- reconnect_failed----$data"));
+    socket?.on('reconnecting', (data) => log("SOCKET:- reconnecting----$data"));
+    socket?.on('ping', (data) => log("SOCKET:- ping----$data"));
+    socket?.on('pong', (data) => log("SOCKET:- pong----$data"));
     socket?.onConnect((_) {
       log('Connection established');
       isSocketConnected = true;

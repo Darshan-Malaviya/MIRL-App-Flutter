@@ -20,6 +20,7 @@ class WeekAvailabilityDialog extends StatelessWidget {
         BodyMediumText(
           title: description,
           maxLine: 5,
+          //fontFamily: FontWeightEnum.w400.toInter,
           titleTextAlign: TextAlign.center,
         ),
         10.0.spaceY,
