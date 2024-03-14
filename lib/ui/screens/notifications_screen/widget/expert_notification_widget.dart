@@ -80,7 +80,7 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
                             title: element.notification?.title ?? '',
                             time: element.notification?.firstCreated ?? '',
                             onTap: () {
-                              onTapNotification(element.notification?.data ?? '', context);
+                              CommonMethods.onTapNotification(element.notification?.data ?? '', context);
                             },
                           );
                         },
@@ -114,27 +114,5 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
         ).addMarginY(20),
       ],
     );
-  }
-
-  void onTapNotification(String data, BuildContext context) {
-    NotificationData notificationData = NotificationData.fromJson(jsonDecode(data));
-    if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
-      context.toPushNamed(RoutesConstants.viewCalendarAppointment,
-          args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
-    } else if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
-      NotificationData notificationData = NotificationData.fromJsonCanceled(jsonDecode(data));
-      NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
-          args: CancelArgs(
-            role: int.parse(notificationData.role.toString()),
-            cancelDate: notificationData.date,
-            cancelData: CancelAppointmentData(
-              startTime: notificationData.startTime,
-              endTime: notificationData.endTime,
-              duration: int.parse(notificationData.duration ?? '0'),
-              name: notificationData.name,
-              profileImage: notificationData.profile,
-            ),
-          ));
-    }
   }
 }

@@ -39,7 +39,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
     final notificationProviderRead = ref.read(notificationProvider);
 
     return Scaffold(
+      backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
+        appBarColor: ColorConstants.greyLightColor,
         preferSize: 0,
       ),
       body: Column(

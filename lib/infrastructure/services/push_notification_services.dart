@@ -42,7 +42,6 @@ class PushNotificationService {
       badge: true,
       sound: true,
     );
-
   }
 
   Future initialise() async {
@@ -121,7 +120,9 @@ class PushNotificationService {
 
   void onMessageOpened(RemoteMessage? message) {
     if (message?.data != null) {
-      NotificationData notificationData = NotificationData.fromJson(message?.data ?? {});
+      CommonMethods.onTapNotification(jsonEncode(message?.data), NavigationService.context);
+
+/*      NotificationData notificationData = NotificationData.fromJson(message?.data ?? {});
       if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
         NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment,
             args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
@@ -137,11 +138,11 @@ class PushNotificationService {
                 duration: int.parse(notificationData.duration ?? '0'),
                 name: notificationData.name,
                 profileImage: notificationData.profile,
+                reason: notificationData.reason,
               ),
             ));
       }
+    }*/
     }
   }
-
-
 }
