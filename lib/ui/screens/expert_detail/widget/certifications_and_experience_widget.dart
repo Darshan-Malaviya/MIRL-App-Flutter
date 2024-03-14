@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linkwell/linkwell.dart';
 import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
 import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
@@ -64,12 +65,24 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
                         titleColor: ColorConstants.blackColor,
                       ),
                       8.0.spaceY,
-                      TitleSmallText(
-                        title: expertDetailWatch.userData?.certification?[index].url ?? '',
-                        fontFamily: FontWeightEnum.w400.toInter,
-                        titleTextAlign: TextAlign.start,
-                        titleColor: ColorConstants.bottomTextColor,
-                      ),
+                      LinkWell(expertDetailWatch.userData?.certification?[index].url ?? '',
+                          maxLines: 100,
+                          style: TextStyle(
+                            color: ColorConstants.blackColor,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                            fontSize: 14,
+                          ),
+                          linkStyle: TextStyle(
+                            color: ColorConstants.bottomTextColor,
+                            fontFamily: FontWeightEnum.w400.toInter,
+                            fontSize: 14,
+                          )),
+                      // TitleSmallText(
+                      //   title: expertDetailWatch.userData?.certification?[index].url ?? '',
+                      //   fontFamily: FontWeightEnum.w400.toInter,
+                      //   titleTextAlign: TextAlign.start,
+                      //   titleColor: ColorConstants.bottomTextColor,
+                      // ),
                       8.0.spaceY,
                       TitleSmallText(
                         maxLine: 10,

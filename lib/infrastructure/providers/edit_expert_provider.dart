@@ -52,7 +52,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   int? isSelectGender = 1;
 
-  List<String> _locations = [LocaleKeys.yes.tr(), LocaleKeys.earthBased.tr()];
+  List<String> _locations = [LocaleKeys.yes.tr(), LocaleKeys.no.tr()];
 
   List<String> get locations => _locations;
 
@@ -272,7 +272,7 @@ class EditExpertProvider extends ChangeNotifier {
         _editButtonList[3].isSelected = false;
       }
       if (_userData?.isLocationVisible != null) {
-        locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? LocaleKeys.yes.tr(): LocaleKeys.earthBased.tr()));
+        locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? LocaleKeys.yes.tr(): LocaleKeys.no.tr()));
         _editButtonList[4].isSelected = true;
       } else {
         _editButtonList[4].isSelected = false;

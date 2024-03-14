@@ -192,6 +192,18 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 ),
               ),
               8.0.spaceY,
+              // LinkWell(expertDetailWatch.userData?.about ?? '',
+              //     maxLines: 100,
+              //     style: TextStyle(
+              //       color: ColorConstants.blackColor,
+              //       fontFamily: FontWeightEnum.w400.toInter,
+              //       fontSize: 16,
+              //     ),
+              //     linkStyle: TextStyle(
+              //       color: ColorConstants.bottomTextColor,
+              //       fontFamily: FontWeightEnum.w400.toInter,
+              //       fontSize: 16,
+              //     )),
               ReadMoreText(
                 style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter),
                 expertDetailWatch.userData?.about ?? '',
@@ -278,7 +290,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ),
             40.0.spaceY,
             CertificationAndExperienceWidget(),
-            if (expertDetailWatch.userData?.loginType != null) ...[
+            if (expertDetailWatch.userData?.isLocationVisible == true) ...[
               40.0.spaceY,
               RichText(
                 text: TextSpan(
@@ -293,6 +305,31 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     ),
                     TextSpan(
                       text: '${expertDetailWatch.userData?.city ?? ''}, ${expertDetailWatch.userData?.country ?? ''}',
+                      style: TextStyle(
+                        color: ColorConstants.blueColor,
+                        fontSize: 16,
+                        fontFamily: FontWeightEnum.w400.toInter,
+                      ),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.start,
+              ),
+            ]else...[
+              40.0.spaceY,
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: LocaleKeys.location.tr(),
+                      style: TextStyle(
+                        color: ColorConstants.blueColor,
+                        fontFamily: FontWeightEnum.w700.toInter,
+                        fontSize: 16,
+                      ),
+                    ),
+                    TextSpan(
+                      text: LocaleKeys.earthBased.tr(),
                       style: TextStyle(
                         color: ColorConstants.blueColor,
                         fontSize: 16,

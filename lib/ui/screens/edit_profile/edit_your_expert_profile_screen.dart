@@ -171,6 +171,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   }),
                 ),
                 PrimaryButton(
+                  fontSize: 12,
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.calendar,
                   titleColor: ColorConstants.buttonTextColor,
@@ -178,6 +179,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 ),
                 50.0.spaceY,
                 PrimaryButton(
+                  fontSize: 12,
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.reviewsAndRatings,
                   titleColor: ColorConstants.buttonTextColor,
@@ -185,6 +187,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 ),
                 50.0.spaceY,
                 PrimaryButton(
+                  fontSize: 12,
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.earningReports,
                   titleColor: ColorConstants.buttonTextColor,
@@ -192,6 +195,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 ),
                 50.0.spaceY,
                 PrimaryButton(
+                  fontSize: 12,
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.callHistory,
                   titleColor: ColorConstants.buttonTextColor,
@@ -199,6 +203,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                 ),
                 50.0.spaceY,
                 PrimaryButton(
+                  fontSize: 12,
                   buttonColor: ColorConstants.yellowButtonColor,
                   title: StringConstants.blockedUsersList,
                   titleColor: ColorConstants.buttonTextColor,

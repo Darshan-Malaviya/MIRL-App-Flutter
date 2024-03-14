@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
@@ -28,9 +30,9 @@ class BlockProvider extends ChangeNotifier {
 
   String? userStatus(int index) {
     if (_blockUserDetails[index].status == 1) {
-      return 'PERMANENT';
+      return LocaleKeys.temporary.tr();
     } else if (_blockUserDetails[index].status == 2) {
-      return 'TEMPORARY';
+      return LocaleKeys.permanent.tr();
     }
     return null;
   }

@@ -47,7 +47,7 @@ class _EditYourPhoneNumberScreenState extends ConsumerState<EditYourPhoneNumberS
                 ],
                 onFieldSubmitted: (value) {
                   context.unFocusKeyboard();
-                },
+                },textInputType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
               20.0.spaceY,

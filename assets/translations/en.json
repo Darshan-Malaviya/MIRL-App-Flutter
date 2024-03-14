@@ -205,7 +205,7 @@
   "userTemporarilyBlocked": "User Temporarily Blocked!",
   "theUserHasBeenSuccessfullyBlockedFromContacting": "The user has been successfully blocked from contacting you, as per your request.",
   "ok": "OK",
-  "soFarYouHaveNotBlockedAnyUsers": "So far, you haven't blocked any users.",
+  "soFarYouHaveNotBlockedAnyUsers": "You haven't blocked any users so far.",
   "userWith": "USER:",
   "expertWith": "EXPERT:",
   "blockedOn": "BLOCKED ON:",
@@ -362,7 +362,9 @@
   "shareFeedBack": "SHARE FEEDBACK",
   "instantCallActive": "Yes, Keep Instant Calls Active",
   "InstantCallOff": "No, Display Me as Offline for Instant Calls",
-  "earthBased": "Earth-Based"
+  "earthBased": "Earth-Based",
   "charactersLong": "Your MIRL ID should be at least 5 characters long",
-  "backToNotification": "BACK TO NOTIFICATIONS"
+  "backToNotification": "BACK TO NOTIFICATIONS",
+  "permanent": "PERMANENT",
+  "temporary": "TEMPORARY"
 }
