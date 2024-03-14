@@ -9,9 +9,9 @@ import 'package:mirl/mirl_app.dart';
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);
-  // if (flavorConfig.appTitle == AppConstants.localFlavorName) {
-  //   _checkProxySettings();
-  // }
+/*  if (flavorConfig.appTitle == AppConstants.localFlavorName) {
+    _checkProxySettings();
+  }*/
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((value) => runApp(

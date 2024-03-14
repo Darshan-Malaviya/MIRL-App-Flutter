@@ -181,7 +181,7 @@
   "selectCity": "Select City",
   "selectCountry": "Select Country",
   "noSlotAvailable": "No slot available",
-  "pleaseSelectSlot": "You have select slot for scheduling appointment",
+  "pleaseSelectSlot": "Pick a slot to schedule the appointment",
   "backCalenderAppointment": "BACK TO CALENDAR AND APPOINTMENTS",
   "user": "User",
   "filterFromTopicAndCategories": "FILTER CATEGORIES AND TOPICS",
@@ -213,7 +213,7 @@
   "unblockUser": "UNBLOCK USER",
   "seeAll": "See all",
   "expertNotAvailable": "The expert is currently offline. Favorite them for later?",
-  "anonymous": "Anonymous",
+  "anonymous": "Mystery MIRL",
   "startCall": "START CALL",
   "expertNotResponding": "Expert not responding!",
   "noReviewFound": "No review found",
@@ -262,7 +262,7 @@
   "whyNotThinkOfThat": "Ah, why didn’t we think of that?!",
   "thanksNote": "Thanks a ton for your suggestions, we really appreciate your help in making MIRL more inclusive and helpful to everyone in the world.",
   "backToExpertCategories": "BACK TO EXPERT CATEGORIES",
-  "reasonRequired": "Reason is required",
+  "reasonRequired": "Please share your reason!",
   "suggestNewExpertCategoryNote": "Please type your suggested topic name, and describe it for us to understand your idea better.",
   "pleaseSelectCountryFirst": "Select a country to filter by city",
   "noResultFound": "WHOOPS! SORRY, NO RESULTS FOUND!",
@@ -360,8 +360,9 @@
   "pay": "PAY",
   "proBono": "PRO\nBONO",
   "shareFeedBack": "SHARE FEEDBACK",
-  "charactersLong": "Your MIRL ID should be at least 5 characters long",
   "instantCallActive": "Yes, Keep Instant Calls Active",
   "InstantCallOff": "No, Display Me as Offline for Instant Calls",
   "earthBased": "Earth-Based"
+  "charactersLong": "Your MIRL ID should be at least 5 characters long",
+  "backToNotification": "BACK TO NOTIFICATIONS"
 }

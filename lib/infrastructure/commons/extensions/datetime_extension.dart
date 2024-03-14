@@ -156,7 +156,7 @@ extension DateTimeFormatter on String {
   String? toLocalFullDateWithoutSuffix() {
     try {
       DateTime localTime = DateTime.parse(this).toLocal();
-      String formattedDate = DateFormat('dd MMMM yyyy').format(localTime);
+      String formattedDate = DateFormat('dd MMMM, yyyy').format(localTime);
       return formattedDate;
     } catch (e) {
       Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");

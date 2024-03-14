@@ -7,6 +7,7 @@ import 'package:mirl/infrastructure/commons/enums/call_history_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/call_history_response_model.dart';
 import 'package:mirl/ui/common/grouped_list_widget/grouped_list.dart';
+import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 
 class ExpertCallHistoryWidget extends ConsumerStatefulWidget {
   final int role;
@@ -45,7 +46,7 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
   @override
   Widget build(BuildContext context) {
     final callHistoryWatch = ref.watch(callHistoryProvider);
-    final callHistoryRead = ref.read(callHistoryProvider);
+
 
     return callHistoryWatch.isLoading ?? false
         ? Center(
@@ -94,11 +95,11 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                             width: double.infinity,
                             decoration: ShapeDecoration(
                               color: widget.role == 1
-                                  ? element.status?.toString().callHistoryStatusUserFromString ==
+                                  ? (element.status?.toString() ?? '').callHistoryStatusUserFromString ==
                                   CallHistoryUserStatusEnum.incomplete
                                   ? ColorConstants.certificatedBgColor
                                   : ColorConstants.whiteColor
-                                  : element.status?.toString().callHistoryStatusExpertFromString ==
+                                  : (element.status?.toString() ?? '').callHistoryStatusExpertFromString ==
                                   CallHistoryStatusExpertEnum.incomplete
                                   ? ColorConstants.certificatedBgColor
                                   : ColorConstants.whiteColor,
@@ -355,27 +356,21 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                                     WidgetSpan(child: 6.0.spaceX),
                                                     TextSpan(
                                                         text: widget.role == 1
-                                                            ? element.status
-                                                            ?.toString()
+                                                            ? (element.status?.toString() ?? '')
                                                             .callHistoryStatusUserFromString
-                                                            .callHistoryUserStatusText ??
-                                                            ''
-                                                            : element.status
-                                                            ?.toString()
+                                                            .callHistoryUserStatusText
+                                                            : (element.status?.toString() ?? '')
                                                             .callHistoryStatusExpertFromString
-                                                            .callHistoryExpertStatusText ??
-                                                            '',
+                                                            .callHistoryExpertStatusText,
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .bodySmall
                                                             ?.copyWith(
                                                             color: widget.role == 1
-                                                                ? element.status
-                                                                ?.toString()
+                                                                ? (element.status?.toString() ?? '')
                                                                 .callHistoryStatusUserFromString
                                                                 .callHistoryUserStatusColor
-                                                                : element.status
-                                                                ?.toString()
+                                                                : (element.status?.toString() ?? '')
                                                                 .callHistoryStatusExpertFromString
                                                                 .callHistoryExpertStatusColor,
                                                             fontFamily: FontWeightEnum.w700.toInter,
@@ -411,13 +406,25 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                 ),
                                 if (widget.role == 2) ...[
                                   4.0.spaceY,
-                                  Align(
-                                    alignment: AlignmentDirectional.bottomEnd,
-                                    child: BodySmallText(
-                                      title: LocaleKeys.blockAndReportUser.tr(),
-                                      fontFamily: FontWeightEnum.w400.toInter,
-                                      titleTextAlign: TextAlign.end,
-                                      titleColor: ColorConstants.darkRedColor,
+                                  InkWell(
+                                    onTap: () {
+                                       context.toPushNamed(RoutesConstants.blockUserScreen,
+                                           args: BlockUserArgs(
+                                               userName: element.userDetails?.name ?? '',
+                                               imageURL: element.userDetails?.profile ?? '',
+                                               userId: int.parse(element.userDetails?.id.toString() ?? ''),
+                                               userRole: 2,
+                                               reportName: '',
+                                               isFromInstantCall: false));
+                                    },
+                                    child: Align(
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      child: BodySmallText(
+                                        title: LocaleKeys.blockAndReportUser.tr(),
+                                        fontFamily: FontWeightEnum.w400.toInter,
+                                        titleTextAlign: TextAlign.end,
+                                        titleColor: ColorConstants.darkRedColor,
+                                      ),
                                     ),
                                   ),
                                 ]
