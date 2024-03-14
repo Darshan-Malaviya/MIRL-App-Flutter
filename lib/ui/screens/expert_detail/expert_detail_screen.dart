@@ -149,7 +149,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       softWrap: true,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,
-                        shadows: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
+                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.2))],
                       ),
                     )
                   ],
@@ -170,7 +170,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       maxLines: 2,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,
-                        shadows: [Shadow(offset: Offset(0, 3), blurRadius: 8, color: ColorConstants.blackColor.withOpacity(0.2))],
+                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.2))],
                       ),
                     )
                   ],

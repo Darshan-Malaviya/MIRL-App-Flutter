@@ -83,10 +83,13 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                 : addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false
                     ? GridView.builder(
                         controller: scrollController,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
-                        itemCount: ((addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0) + (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1)),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                        itemCount: ((addYourAreaExpertiseProviderWatch.categoryList?.length ?? 0) +
+                            (addYourAreaExpertiseProviderWatch.reachedCategoryLastPage ? 0 : 1)),
                         itemBuilder: (context, index) {
-                          if (index == addYourAreaExpertiseProviderWatch.categoryList?.length && (addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false)) {
+                          if (index == addYourAreaExpertiseProviderWatch.categoryList?.length &&
+                              (addYourAreaExpertiseProviderWatch.categoryList?.isNotEmpty ?? false)) {
                             /*  return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
@@ -116,7 +119,7 @@ class _AddYourAreasOfExpertiseScreenState extends ConsumerState<AddYourAreasOfEx
                                   isSelectedShadow: (element?.isVisible ?? false),
                                   blurRadius: 8,
                                   spreadRadius: 1,
-                                ).addPaddingTop(5),
+                                ).addPaddingXY(paddingX: 10, paddingY: 5),
                                 if (element?.badgeCount != 0) ...[
                                   Positioned(
                                       top: 0,

@@ -22,12 +22,12 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
           child: Image.asset(ImageConstants.backIcon),
           onTap: () => context.toPop(),
         ),
-        trailingIcon: InkWell(
-          onTap: () => expertWatch.pickedImage.isNotEmpty ? expertRead.updateProfileApi() : null,
-          child: TitleMediumText(
-            title: StringConstants.done,
-          ).addPaddingRight(14),
-        ),
+        // trailingIcon: InkWell(
+        //   onTap: () => expertWatch.pickedImage.isNotEmpty ? expertRead.updateProfileApi() : null,
+        //   child: TitleMediumText(
+        //     title: StringConstants.done,
+        //   ).addPaddingRight(14),
+        // ),
       ),
       body: SingleChildScrollView(
         child: Column(

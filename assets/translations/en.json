@@ -126,7 +126,7 @@
   "rating": "RATING:",
   "feePerMinute": "FEE PER 10 MINUTES:",
   "sameScheduleRepeat": "The Same schedule automatic repeated every week.",
-  "setManually": "You have to set your schedule time every week manually",
+  "setManually": "You have to set your availability manually each week! Are you sure about this?",
   "durationOfBooking": "DURATION OF BOOKING",
   "startVideoCall": "START THE VIDEO CALL",
   "paymentCompleted": "PAYMENT COMPLETE.\nTHANK YOU!",
@@ -360,5 +360,8 @@
   "pay": "PAY",
   "proBono": "PRO\nBONO",
   "shareFeedBack": "SHARE FEEDBACK",
-  "charactersLong": "Your MIRL ID should be at least 5 characters long"
+  "charactersLong": "Your MIRL ID should be at least 5 characters long",
+  "instantCallActive": "Yes, Keep Instant Calls Active",
+  "InstantCallOff": "No, Display Me as Offline for Instant Calls",
+  "earthBased": "Earth-Based"
 }

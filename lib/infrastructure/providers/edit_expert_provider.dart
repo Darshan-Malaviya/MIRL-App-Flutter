@@ -52,9 +52,13 @@ class EditExpertProvider extends ChangeNotifier {
 
   int? isSelectGender = 1;
 
-  List<String> _locations = ["Yes", "No"];
+  List<String> _locations = [LocaleKeys.yes.tr(), LocaleKeys.earthBased.tr()];
 
   List<String> get locations => _locations;
+
+  List<String> _instantCall = [LocaleKeys.instantCallActive.tr(), LocaleKeys.InstantCallOff.tr()];
+
+  List<String> get instantCall => _instantCall;
 
   String _pickedImage = '';
 
@@ -65,8 +69,8 @@ class EditExpertProvider extends ChangeNotifier {
   String get setInstantCall => _setInstantCall;
 
   List<CommonSelectionModel> _genderList = [
-    CommonSelectionModel(title: "Male", isSelected: false, selectType: 1),
     CommonSelectionModel(title: "Female", isSelected: false, selectType: 2),
+    CommonSelectionModel(title: "Male", isSelected: false, selectType: 1),
     CommonSelectionModel(title: "Non-Binary", isSelected: false, selectType: 3)
   ];
 
@@ -262,13 +266,13 @@ class EditExpertProvider extends ChangeNotifier {
         _editButtonList[0].isSelected = false;
       }
       if (_userData?.instantCallAvailable != null) {
-        instantCallAvailabilityController.text = _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
+        instantCallAvailabilityController.text = _instantCall.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? LocaleKeys.instantCallActive.tr() : LocaleKeys.InstantCallOff.tr()));
         _editButtonList[3].isSelected = true;
       } else {
         _editButtonList[3].isSelected = false;
       }
       if (_userData?.isLocationVisible != null) {
-        locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
+        locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? LocaleKeys.yes.tr(): LocaleKeys.earthBased.tr()));
         _editButtonList[4].isSelected = true;
       } else {
         _editButtonList[4].isSelected = false;
@@ -411,12 +415,12 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void setValueOfCall(String value) {
-    _isCallSelect = (value == 'Yes') ? true : false;
+    _isCallSelect = (value == LocaleKeys.instantCallActive.tr()) ? true : false;
     notifyListeners();
   }
 
   void locationSelect(String value) {
-    _isLocationSelect = (value == 'Yes') ? true : false;
+    _isLocationSelect = (value == LocaleKeys.yes.tr()) ? true : false;
     notifyListeners();
   }
 
@@ -432,6 +436,7 @@ class EditExpertProvider extends ChangeNotifier {
     if (image != null && image.isNotEmpty) {
       _pickedImage = image;
       notifyListeners();
+      updateProfileApi();
     }
   }
 
@@ -441,6 +446,7 @@ class EditExpertProvider extends ChangeNotifier {
     if (image != null && image.isNotEmpty) {
       _pickedImage = image;
       notifyListeners();
+      updateProfileApi();
     }
   }
 
@@ -520,7 +526,8 @@ class EditExpertProvider extends ChangeNotifier {
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
           SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false)? true : false);
           Logger().d("user data=====${loginResponseModel.toJson()}");
-          FlutterToast().showToast(msg:  LocaleKeys.profileUpdatedSuccessfully.tr());
+         // FlutterToast().showToast(msg:  LocaleKeys.profileUpdatedSuccessfully.tr());
+          FlutterToast().showToast(msg: loginResponseModel.message);
           resetVariable();
           getUserData();
           if (!fromImageUpload) {
