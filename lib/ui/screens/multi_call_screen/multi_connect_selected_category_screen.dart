@@ -98,7 +98,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                     height: MediaQuery.of(context).size.height * 0.5,
                     child: MultiCallDurationBottomSheetView( onPressed: () {
                       context.toPop();
-                      allCallDurationNotifier.value = multiProviderWatch.multiCallDuration;
+                      allCallDurationNotifier.value = multiProviderWatch.multiCallDuration * 60;
                       /// user side
                       NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
                           args: MultiConnectDialogArguments(
@@ -109,7 +109,8 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                 /// tru again
                               } else {
                                 List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
-                                ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data);
+                                CustomLoading.progressDialog(isLoading: true);
+                                ref.read(socketProvider).multiConnectRequestEmit(expertIdsList: data, requestedDuration: multiProviderWatch.multiCallDuration * 60);
                               }
                             },
                             onSecondBtnTap: () {

@@ -12,6 +12,7 @@ import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MultiConnectCallDialogScreen extends ConsumerStatefulWidget {
   final MultiConnectDialogArguments args;
@@ -192,24 +193,6 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                               ).addPaddingXY(paddingX: 16, paddingY: 16),
                             ),
                           ] else ...[
-                            /*Container(
-                                width: 146,
-                                height: 204,
-                                decoration: BoxDecoration(
-                                  borderRadius : BorderRadius.only(
-                                    topLeft: Radius.circular(25),
-                                    topRight: Radius.circular(25),
-                                    bottomLeft: Radius.circular(25),
-                                    bottomRight: Radius.circular(25),
-                                  ),
-                                  boxShadow : [BoxShadow(
-                                      color: Color.fromRGBO(68, 134, 0, 1),
-                                      offset: Offset(0,1),
-                                      blurRadius: 8
-                                  )],
-                                  color : Color.fromRGBO(255, 207, 90, 1),
-                                )
-                            ),*/
 
                             if (multiProviderWatch.selectedExpertDetails.isNotEmpty) ...[
                               10.0.spaceY,
@@ -224,6 +207,42 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                     return ValueListenableBuilder(
                                       valueListenable: multiConnectRequestStatusNotifier,
                                         builder: (BuildContext context, CallRequestStatusEnum callRequestStatusEnum, Widget? callRequestStatusEnumChild) {
+                                        if(chooseMultiConnectExpert.value){
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius : BorderRadius.only(
+                                                topLeft: Radius.circular(25),
+                                                topRight: Radius.circular(25),
+                                                bottomLeft: Radius.circular(25),
+                                                bottomRight: Radius.circular(25),
+                                              ),
+                                              boxShadow : [BoxShadow(
+                                                  color: ColorConstants.blackColor.withOpacity(0.25),
+                                                  offset: Offset(0,1),
+                                                  blurRadius: 8,
+                                                  spreadRadius: 1
+                                              )],
+                                              color : ColorConstants.borderLightColor,
+                                            ),
+                                            width: 150,
+                                            height: 220,
+                                            padding: EdgeInsets.zero,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              child: Shimmer.fromColors(
+                                                baseColor: ColorConstants.borderLightColor,
+                                                highlightColor: ColorConstants.greyLightColor,
+                                                child: ShadowContainer(
+                                                  width: 150,
+                                                  height: 200,
+                                                  isShadow: false,
+                                                  border: 25,
+                                                  child: Container(),
+                                                ),
+                                              ),
+                                            ).addPaddingY(4),
+                                          );
+                                        }
                                           return InkWell(
                                             onTap: (){
                                               /// is status is accept or not chosen then that expert can be able for connect call
@@ -232,6 +251,8 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                 multiProviderRead.setSelectedExpertForCall(multiProviderWatch.selectedExpertDetails[index]);
                                                 multiProviderRead.setSelectedExpertForCall(multiProviderWatch.selectedExpertDetails[index]);
                                                 // multiConnectCallEnumNotifier.value = CallTypeEnum.multiRequestApproved;
+                                               // CustomLoading.progressDialog(isLoading: true);
+                                                chooseMultiConnectExpert.value = true;
                                                 ref.read(socketProvider).multiConnectStatusEmit(callStatusEnum: CallRequestStatusEnum.choose,
                                                     expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '',
                                                     userId: SharedPrefHelper.getUserId,
@@ -338,7 +359,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                             ] else ... [
                               Center(
                                 child: BodyLargeText(
-                                  title: "Not expert available!",
+                                  title: "No expert available!",
                                   fontFamily: FontWeightEnum.w600.toInter,
                                 ),
                               ),

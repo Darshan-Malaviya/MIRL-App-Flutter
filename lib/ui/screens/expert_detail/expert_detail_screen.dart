@@ -217,7 +217,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       height: MediaQuery.of(context).size.height * 0.5,
                       child: CallDurationBottomSheetView(expertName: expertDetailWatch.userData?.expertName ?? '', onPressed: () {
                         context.toPop();
-                        allCallDurationNotifier.value = expertDetailWatch.callDuration;
+                        allCallDurationNotifier.value = expertDetailWatch.callDuration * 60;
                         if ((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
                           instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
                           /// THis is call sender (User) side
