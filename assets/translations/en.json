@@ -125,7 +125,7 @@
   "anyExpertAccept": "WE’VE NOTIFIED THE EXPERTS.\nPLEASE WAIT FOR THEIR RESPONSE.",
   "rating": "RATING:",
   "feePerMinute": "FEE PER 10 MINUTES:",
-  "sameScheduleRepeat": "The Same schedule automatic repeated every week.",
+  "sameScheduleRepeat": "Good call! Would you like to go ahead and set a recurring weekly schedule?",
   "setManually": "You have to set your availability manually each week! Are you sure about this?",
   "durationOfBooking": "DURATION OF BOOKING",
   "startVideoCall": "START THE VIDEO CALL",
