@@ -31,14 +31,16 @@ class ImagePickerHandler extends PermissionHandler {
     //pick image from library
     if (storagePermissionStatus == PermissionStatus.granted || storagePermissionStatus == PermissionStatus.limited) {
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      final croppedImage = await ImageCropper().cropImage(
-        sourcePath: pickedFile?.path ?? '',
-        maxWidth: 1080,
-        maxHeight: 1080,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 60,
-      );
-      return croppedImage?.path;
+      if (pickedFile?.path.isNotEmpty ?? false) {
+        final croppedImage = await ImageCropper().cropImage(
+          sourcePath: pickedFile?.path ?? '',
+          maxWidth: 1080,
+          maxHeight: 1080,
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 60,
+        );
+        return croppedImage?.path;
+      }
     }
     return null;
   }
@@ -83,14 +85,17 @@ class ImagePickerHandler extends PermissionHandler {
     //get permission status
     await permissionRequest(context: context, permission: Permission.camera, alertMessage: "Open Setting and\nallow Mirl app to access camera to take a picture. .");
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
-    final croppedImage = await ImageCropper().cropImage(
-      sourcePath: pickedFile?.path ?? '',
-      maxWidth: 1080,
-      maxHeight: 1080,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-      compressQuality: 60,
-    );
-    return croppedImage?.path ?? '';
+    if(pickedFile?.path.isNotEmpty ?? false) {
+      final croppedImage = await ImageCropper().cropImage(
+        sourcePath: pickedFile?.path ?? '',
+        maxWidth: 1080,
+        maxHeight: 1080,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 60,
+      );
+      return croppedImage?.path ?? '';
+    }
+    return null;
   }
 
   ///get storage permission based on android OS version

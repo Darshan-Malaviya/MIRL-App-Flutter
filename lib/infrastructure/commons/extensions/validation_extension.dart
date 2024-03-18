@@ -24,7 +24,10 @@ extension ValidationExtension on String {
       return msg;
     } else if (this.length < 5) {
       return LocaleKeys.charactersLong.tr();
-    } /*else if (!RegExp(RegexConstants.onlyCharacter).hasMatch(this)) {
+    } else if(this.length > 15) {
+      return 'Username overload! Trim to 15, pretty please?';
+    }
+    /*else if (!RegExp(RegexConstants.onlyCharacter).hasMatch(this)) {
       return validatedMsg;
     }*/
     return null;

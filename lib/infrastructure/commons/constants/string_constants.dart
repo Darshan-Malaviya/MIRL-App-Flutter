@@ -58,7 +58,7 @@ class StringConstants {
   static const String instantCallsAvailability = "INSTANT CALLS AVAILABILITY";
   static const String availabilitySchedule = "ALLOW USERS TO REQUEST CALLS WITHIN YOUR WEEKLY AVAILABILITY SCHEDULE?";
   static const String theDropDown = "SELECT YES OR NO FROM THE DROPDOWN";
-  static const String theGenderDropDown = "SELECT YOUR GENDER FROM THE DROPDOWN ";
+  static const String theGenderDropDown = "SELECT YOUR GENDER";
   static const String visibleOnYourProfile = "DO YOU WANT YOUR LOCATION \nTO BE VISIBLE ON YOUR PROFILE?";
   static const String certificationsAndExperience = "CERTIFICATIONS AND EXPERIENCE";
   static const String nearestLandmark = "SELECT ";
@@ -66,7 +66,7 @@ class StringConstants {
       "Instant calls are direct call requests by users only within the weekly availability schedule set by you.";
   static const String declineAnyCall =
       "If this is turned on, users can reach out to you, and you still have a choice to accept or decline any call.";
-  static const String highlyRecommend = "(we highly recommend keeping this active)";
+  static const String highlyRecommend = "we highly recommend keeping this active";
   static const String filterExperts =
       "Your exact location will NEVER be displayed to anyone. It will only be used internally by our algorithms to filter experts.";
   static const String specificCityOrCountry =

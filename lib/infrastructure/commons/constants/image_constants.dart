@@ -59,9 +59,11 @@ class ImageConstants {
   static const splashImages = '${gifPath}splash_image.gif';
 
   /// icon
-  static const recurringIcon = '${iconPath}recurring.png';
-  static const nonRecurringIcon = '${iconPath}non_recurring.png';
+  // static const recurringIcon = '${iconPath}recurring.png';
+  // static const nonRecurringIcon = '${iconPath}non_recurring.png';
   static const emailVerification = '${iconPath}email_verification.png';
+  static const recurring = '${iconPath}recurring_to_non-recurring.png';
+  static const nonRecurring = '${iconPath}non-recurring_to_recurring.png';
 
   /// json
   // static const splashScreen = '${rawPath}splash_screen.json';

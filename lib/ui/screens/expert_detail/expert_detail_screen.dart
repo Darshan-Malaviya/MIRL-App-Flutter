@@ -10,7 +10,6 @@ import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/providers/expert_detail_provider.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
-import 'package:mirl/ui/common/read_more/readmore.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/rating_widget.dart';
@@ -19,6 +18,7 @@ import 'package:mirl/ui/screens/expert_detail/widget/certifications_and_experien
 import 'package:mirl/ui/screens/expert_detail/widget/overall_rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/overall_widget.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
+import 'package:parsed_readmore/parsed_readmore.dart';
 
 ValueNotifier<bool> isFavorite = ValueNotifier(false);
 
@@ -204,11 +204,11 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               //       fontFamily: FontWeightEnum.w400.toInter,
               //       fontSize: 16,
               //     )),
-              ReadMoreText(
-                style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter),
+              ParsedReadMore(
+                style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter,color: ColorConstants.bottomTextColor),
                 expertDetailWatch.userData?.about ?? '',
                 trimLines: 15,
-                trimMode: TrimMode.Line,
+                //trimMode: TrimMode.Line,
                 trimCollapsedText: LocaleKeys.readMore.tr(),
                 trimExpandedText: ' ${LocaleKeys.readLess.tr()}',
                 moreStyle: TextStyle(fontSize: 16, color: ColorConstants.bottomTextColor.withOpacity(0.7)),

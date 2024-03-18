@@ -62,7 +62,7 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
                         title: expertDetailWatch.userData?.certification?[index].title ?? '',
                         fontFamily: FontWeightEnum.w600.toInter,
                         titleTextAlign: TextAlign.start,
-                        titleColor: ColorConstants.blackColor,
+                        titleColor: ColorConstants.blackColor,maxLine: 3,
                       ),
                       8.0.spaceY,
                       LinkWell(expertDetailWatch.userData?.certification?[index].url ?? '',
