@@ -388,7 +388,7 @@ class FilterProvider extends ChangeNotifier {
   void setCategoryWhenFromMultiConnect(CategoryData? categoryData) {
     selectedCategory = CategoryIdNameCommonModel(
         name: categoryData?.name ?? '', isCategorySelected: true, id: categoryData?.id, image: categoryData?.image);
-    commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: categoryData?.name ?? ''));
+    // commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: categoryData?.name ?? ''));
     categoryController.text = selectedCategory?.name ?? '';
     notifyListeners();
   }

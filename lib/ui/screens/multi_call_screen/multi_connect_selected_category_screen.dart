@@ -13,6 +13,7 @@ import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
+import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
 import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 
@@ -174,34 +175,41 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                     ),
                     20.0.spaceY,
                     if (multiProviderWatch.singleCategoryData?.categoryData != null) ...[
-                      ShadowContainer(
-                        shadowColor: ColorConstants.categoryListBorder,
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: NetworkImageWidget(
-                                boxFit: BoxFit.cover,
-                                imageURL: multiProviderWatch.singleCategoryData?.categoryData?.image ?? '',
-                                isNetworkImage: true,
-                                height: 50,
-                                width: 50,
-                              ),
-                            ),
-                            4.0.spaceY,
-                            LabelSmallText(
-                              fontSize: 9,
-                              title: multiProviderWatch.singleCategoryData?.categoryData?.name ?? '',
-                              titleColor: ColorConstants.blackColor,
-                              fontFamily: FontWeightEnum.w700.toInter,
-                              titleTextAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                        height: 90,
-                        width: 90,
-                        isShadow: true,
+                      CategoryCommonView(
+                        categoryName: multiProviderWatch.singleCategoryData?.categoryData?.name ?? '',
+                        imageUrl: multiProviderWatch.singleCategoryData?.categoryData?.image ?? '',
+                        spreadRadius: 1,
+                        blurRadius: 8,offset: Offset(0,0),
+                        isSelectedShadow: true,
                       )
+                      // ShadowContainer(offset: Offset(0, 0),blurRadius: 8,spreadRadius: 1,
+                      //   shadowColor: ColorConstants.primaryColor,
+                      //   child: Column(
+                      //     children: [
+                      //       ClipRRect(
+                      //         borderRadius: BorderRadius.circular(20.0),
+                      //         child: NetworkImageWidget(
+                      //           boxFit: BoxFit.cover,
+                      //           imageURL: multiProviderWatch.singleCategoryData?.categoryData?.image ?? '',
+                      //           isNetworkImage: true,
+                      //           height: 50,
+                      //           width: 50,
+                      //         ),
+                      //       ),
+                      //       4.0.spaceY,
+                      //       LabelSmallText(
+                      //         fontSize: 9,
+                      //         title: multiProviderWatch.singleCategoryData?.categoryData?.name ?? '',
+                      //         titleColor: ColorConstants.blackColor,
+                      //         fontFamily: FontWeightEnum.w700.toInter,
+                      //         titleTextAlign: TextAlign.center,
+                      //       ),
+                      //     ],
+                      //   ),
+                      //   height: 90,
+                      //   width: 90,
+                      //   isShadow: true,
+                      // )
                     ],
                     20.0.spaceY,
                     if (multiProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
@@ -271,7 +279,6 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                               BodySmallText(
                                 title: LocaleKeys.appliedFilters.tr(),
                               ),
-                              if (widget.args.fromExploreExpert == true) ...[
                                 InkWell(
                                     onTap: () async {
                                       multiProviderRead.clearExpertIds();
@@ -288,27 +295,6 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                     child: BodySmallText(
                                       title: LocaleKeys.clearAll.tr(),
                                     )),
-                              ] else ...[
-                                if (filterRead.commonSelectionModel.first.title == FilterType.Category.name &&
-                                    filterRead.commonSelectionModel.length > 1) ...[
-                                  InkWell(
-                                      onTap: () async {
-                                        multiProviderRead.clearExpertIds();
-                                        filterRead.clearAllFilter(selectedCategoryClearAll: true);
-                                        await multiProviderRead.getSingleCategoryApiCall(
-                                          context: context,
-                                          categoryId: widget.args.categoryId ?? '',
-                                          requestModel: ExpertDataRequestModel(
-                                            userId: SharedPrefHelper.getUserId,
-                                            multiConnectRequest: 'true',
-                                          ),
-                                        );
-                                      },
-                                      child: BodySmallText(
-                                        title: LocaleKeys.clearAll.tr(),
-                                      )),
-                                ]
-                              ],
                             ],
                           ),
                           10.0.spaceY,
@@ -321,7 +307,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  if (data.title != FilterType.Category.name) ...[
+                                //  if (data.title != null) ...[
                                     OnScaleTap(
                                       onPress: () {
                                         filterRead.removeFilter(
@@ -342,10 +328,30 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                       ),
                                     ),
                                     20.0.spaceX,
-                                  ],
+                                //  ],
                                   Flexible(
                                     child: ShadowContainer(
                                       border: 10,
+                                      // child :RichText(
+                                      //   softWrap: true,
+                                      //   text: TextSpan(
+                                      //     text:'${data.title} : ',
+                                      //     style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      //         color: ColorConstants.buttonTextColor,
+                                      //         fontFamily: FontWeightEnum.w400.toInter,
+                                      //         fontSize: 12),
+                                      //     children: [
+                                      //       WidgetSpan(child: 2.0.spaceX),
+                                      //       TextSpan(
+                                      //           text: '${data.value }',
+                                      //           style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      //               color: ColorConstants.buttonTextColor,
+                                      //               fontFamily: FontWeightEnum.w700.toInter,
+                                      //               fontSize: 12))
+                                      //     ],
+                                      //   ),
+                                      //   textAlign: TextAlign.center,
+                                      // ),
                                       child: BodyMediumText(
                                         maxLine: 10,
                                         title: '${data.title}: ${data.value}',
@@ -414,6 +420,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                             titleTextAlign: TextAlign.center,
                             maxLine: 5,
                           ),
+                          30.0.spaceY,
                         ],
                       ).addMarginX(40),
                     ]

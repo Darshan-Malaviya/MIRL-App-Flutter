@@ -18,13 +18,14 @@ class WeekAvailabilityDialog extends StatelessWidget {
         ),
         20.0.spaceY,
         BodyMediumText(
+          fontFamily: FontWeightEnum.w400.toInter,
           title: description,
           maxLine: 5,
           //fontFamily: FontWeightEnum.w400.toInter,
           titleTextAlign: TextAlign.center,
         ),
         10.0.spaceY,
-        BodyMediumText(title: 'Would you like to change?')
+      //  BodyMediumText(title: 'Would you like to change?')
       ],
     );
   }
