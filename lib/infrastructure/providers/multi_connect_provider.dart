@@ -158,6 +158,10 @@ class MultiConnectProvider extends ChangeNotifier {
           GetSingleCategoryResponseModel responseModel = response.data;
           if (_allExpertPageNo == 1) {
             _singleCategoryData = responseModel.data;
+            if(_singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false ){
+              _singleCategoryData?.categoryData?.topic?.insert(0, Topic(id: 0, name: '${_singleCategoryData?.categoryData?.name ?? ''} - All',
+                  categoryId: _singleCategoryData?.categoryData?.id, isSelected: false));
+            }
             _expertData.clear();
             _expertData.addAll(responseModel.data?.expertData ?? []);
           } else {

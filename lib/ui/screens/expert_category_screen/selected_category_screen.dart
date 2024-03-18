@@ -37,7 +37,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
         ref.read(filterProvider).clearTopicPaginationData();
         ref.read(filterProvider).topicListByCategory(
               isFullScreenLoader: false,
-              categoryId: widget.args.categoryId,
+              categoryId: widget.args.categoryId, categoryName: widget.args.categoryName,
             );
       }
     });

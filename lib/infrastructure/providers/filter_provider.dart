@@ -611,7 +611,7 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> topicListByCategory({bool isFullScreenLoader = false, String? searchName, required String categoryId}) async {
+  Future<void> topicListByCategory({bool isFullScreenLoader = false, String? searchName, required String categoryId, required String categoryName}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
     } else {
@@ -637,6 +637,9 @@ class FilterProvider extends ChangeNotifier {
             _allTopic.clear();
           }
           _allTopic.addAll(categoryResponseModel.data ?? []);
+          if(_allTopic.isNotEmpty){
+            _allTopic.insert(0, CategoryIdNameCommonModel(name: '${categoryName} - All', id: 0, isCategorySelected: true, image: ''));
+          }
           if (_topicPageNo == categoryResponseModel.pagination?.pageCount) {
             _reachedTopicLastPage = true;
           } else {

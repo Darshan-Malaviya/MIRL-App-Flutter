@@ -26,7 +26,7 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
         ref.read(filterProvider).clearTopicPaginationData();
         ref.read(filterProvider).topicListByCategory(
               isFullScreenLoader: true,
-              categoryId: widget.category.id.toString(),
+              categoryId: widget.category.id.toString(), categoryName: widget.category.name.toString(),
             );
         // }
     //  }
@@ -37,6 +37,7 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
         if (!isLoading) {
           ref.read(filterProvider).topicListByCategory(
                 categoryId: widget.category.id.toString(),
+              categoryName: widget.category.name.toString()
               );
         } else {
           log('reach last page on all category list api');
@@ -91,6 +92,7 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
                         filterProviderRead.clearSearchTopicController();
                         filterProviderRead.topicListByCategory(
                           categoryId: widget.category.id.toString(),
+                            categoryName: widget.category.name.toString()
                         );
                       },
                       child: Icon(Icons.close))
@@ -101,6 +103,7 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
                 filterProviderRead.topicListByCategory(
                   searchName: value,
                   categoryId: widget.category.id.toString(),
+                    categoryName: widget.category.name.toString()
                 );
               },
               height: 40,
