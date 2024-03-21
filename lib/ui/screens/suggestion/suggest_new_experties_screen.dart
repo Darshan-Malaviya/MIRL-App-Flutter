@@ -238,8 +238,7 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                       onPressed: () {
                         //context.unFocusKeyboard();
                         FocusManager.instance.primaryFocus?.unfocus();
-
-                        if (suggestNewExpertiseRead.newTopicController.text.isNotEmpty) {
+                        if (suggestNewExpertiseWatch.newTopicController.text.isNotEmpty) {
                           suggestNewExpertiseRead.suggestedCategoryApiCall(categoryId: filterWatch.selectedCategory?.id ?? null);
                         } else {
                           FlutterToast().showToast(msg: LocaleKeys.enterTopic.tr(), gravity: ToastGravity.TOP);

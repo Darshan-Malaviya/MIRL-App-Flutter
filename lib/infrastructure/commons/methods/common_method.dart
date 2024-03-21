@@ -22,6 +22,9 @@ class CommonMethods {
     if (data?.loginType == 1) {
       googleSignIn?.signOut();
     }
+    // else {
+    //   await UpdateUserDetailsRepository().userLogout();
+    // }
     SharedPrefHelper.clearPrefs();
     NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
   }

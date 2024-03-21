@@ -4,6 +4,7 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/rate_expert_request_model.dart';
 import 'package:mirl/infrastructure/models/request/report_call_request_model.dart';
+import 'package:mirl/infrastructure/models/request/sort_by_reviews_request_model.dart';
 import 'package:mirl/infrastructure/models/response/rate_and_review_response_model.dart';
 import 'package:mirl/infrastructure/models/response/report_call_title_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
@@ -166,21 +167,17 @@ class ReportReviewProvider extends ChangeNotifier {
       notifyListeners();
     }
 
+    SortByReviewRequestModel sortByReviewRequestModel = SortByReviewRequestModel(firstCreatedOrder:  sortByReview == sortByReviewItem[2]
+        ? 'DESC'
+        : sortByReview == sortByReviewItem[3]
+        ? 'ASC'
+        : null,ratingOrder:sortByReview == sortByReviewItem[0]
+        ? 'DESC'
+        : sortByReview == sortByReviewItem[1]
+        ? 'ASC'
+        : null,page: _pageNo.toString(),limit: "10" );
     ApiHttpResult response = await _reportRepository.reviewAndRateListApi(
-      paras: {
-        "firstCreatedOrder": sortByReview == sortByReviewItem[2]
-            ? 'DESC'
-            : sortByReview == sortByReviewItem[3]
-                ? 'ASC'
-                : 'DESC',
-        "ratingOrder": sortByReview == sortByReviewItem[0]
-            ? 'DESC'
-            : sortByReview == sortByReviewItem[1]
-                ? 'ASC'
-                : 'DESC',
-        'page': _pageNo.toString(),
-        "limit": '10'
-      },
+      paras: sortByReviewRequestModel.toNullFreeJson(),
       id: id,
     );
 

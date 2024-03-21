@@ -14,13 +14,13 @@ class CallFeedbackScreen extends ConsumerStatefulWidget {
 }
 
 class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      OpenDialog(context);
-    });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     OpenDialog(context);
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +31,26 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
       canPop: false,
       child: Scaffold(
         appBar: AppBarWidget(
-          preferSize: 0,
+          appTitle: TitleLargeText(
+            title: LocaleKeys.yourCallCompleted.tr(),
+            titleColor: ColorConstants.bottomTextColor,
+          ),
+          // preferSize: 0,
+          leading: InkWell(
+            child: Image.asset(ImageConstants.backIcon),
+            onTap: () => OpenDialog(context),
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              20.0.spaceY,
-              TitleLargeText(
-                title: LocaleKeys.yourCallCompleted.tr(),
-                titleColor: ColorConstants.bottomTextColor,
-              ),
-              20.0.spaceY,
+              // TitleLargeText(
+              //   title: LocaleKeys.yourCallCompleted.tr(),
+              //   titleColor: ColorConstants.bottomTextColor,
+              // ),
+              // 20.0.spaceY,
               RichText(
                 text: TextSpan(
                   style: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 16, height: 1.5),
@@ -211,7 +218,7 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                     // }
                   }),
             ],
-          ).addAllMargin(20),
+          ).addMarginX(20),
         ),
       ),
     );

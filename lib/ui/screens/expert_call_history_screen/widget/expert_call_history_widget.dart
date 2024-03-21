@@ -325,7 +325,7 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             BodySmallText(title: element.callStatusHistory?[index].firstCreated
-                                                ?.to24HourAmTimeFormat()
+                                                ?.to12HourTimeFormat()
                                                 .toUpperCase() ??
                                                 '',
                                               fontFamily: FontWeightEnum.w400.toInter,

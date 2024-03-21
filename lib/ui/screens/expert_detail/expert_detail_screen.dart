@@ -46,64 +46,69 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   Widget build(BuildContext context) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
     final expertDetailRead = ref.read(expertDetailProvider);
-
-    return Scaffold(
-      appBar: AppBarWidget(
-        preferSize: 40,
-        leading: InkWell(
-          child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
+    return RefreshIndicator(
+      color: ColorConstants.primaryColor,
+      onRefresh: () async {
+        ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
+      },
+      child: Scaffold(
+        appBar: AppBarWidget(
+          preferSize: 40,
+          leading: InkWell(
+            child: Image.asset(ImageConstants.backIcon),
+            onTap: () => context.toPop(),
+          ),
+          trailingIcon: InkWell(
+                  onTap: () {
+                    //ReportThisUserWidget();
+                    // context.toPushNamed(RoutesConstants.demoReportUserScreen,
+                    //     args: BlockUserArgs(
+                    //         userRole: 1,
+                    //         reportName: 'REPORT THIS EXPERT',
+                    //         expertId: widget.expertId,
+                    //         imageURL: expertDetailWatch.userData?.expertProfile ?? ''));
+                    context.toPushNamed(RoutesConstants.reportExpertScreen,
+                        args: BlockUserArgs(reportName: 'REPORT THIS EXPERT', userRole: 1, expertId: widget.expertId, imageURL: expertDetailWatch.userData?.expertProfile ?? ''));
+                  },
+                  child: Icon(Icons.more_horiz))
+              .addPaddingRight(14),
         ),
-        trailingIcon: InkWell(
-                onTap: () {
-                  //ReportThisUserWidget();
-                  // context.toPushNamed(RoutesConstants.demoReportUserScreen,
-                  //     args: BlockUserArgs(
-                  //         userRole: 1,
-                  //         reportName: 'REPORT THIS EXPERT',
-                  //         expertId: widget.expertId,
-                  //         imageURL: expertDetailWatch.userData?.expertProfile ?? ''));
-                  context.toPushNamed(RoutesConstants.reportExpertScreen,
-                      args: BlockUserArgs(reportName: 'REPORT THIS EXPERT', userRole: 1, expertId: widget.expertId, imageURL: expertDetailWatch.userData?.expertProfile ?? ''));
-                },
-                child: Icon(Icons.more_horiz))
-            .addPaddingRight(14),
-      ),
-      body: Stack(
-        children: [
-          NetworkImageWidget(
-            imageURL: expertDetailWatch.userData?.expertProfile ?? '',
-            isNetworkImage: true,
-            boxFit: BoxFit.cover,
-          ),
-          Align(
-            alignment: AlignmentDirectional.topEnd,
-            child: InkWell(
-              onTap: () async {
-                await expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
-                ref.read(homeProvider).manageFavoriteUserList(
-                      expertId: expertDetailWatch.userData?.id ?? 0,
-                      expertName: expertDetailWatch.userData?.expertName ?? '',
-                      expertProfile: expertDetailWatch.userData?.expertProfile ?? '',
-                      isFavorite: expertDetailWatch.userData?.isFavorite ?? false,
-                    );
-              },
-              child: Image.asset(
-                expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
-                height: 40,
-                width: 40,
-              ),
+        body: Stack(
+          children: [
+            NetworkImageWidget(
+              imageURL: expertDetailWatch.userData?.expertProfile ?? '',
+              isNetworkImage: true,
+              boxFit: BoxFit.cover,
             ),
-          ).addAllPadding(15),
-          DraggableScrollableSheet(
-            initialChildSize: 0.55,
-            minChildSize: 0.55,
-            maxChildSize: 0.90,
-            builder: (BuildContext context, myScrollController) {
-              return bottomSheetView(controller: myScrollController);
-            },
-          ),
-        ],
+            Align(
+              alignment: AlignmentDirectional.topEnd,
+              child: InkWell(
+                onTap: () async {
+                  await expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
+                  ref.read(homeProvider).manageFavoriteUserList(
+                        expertId: expertDetailWatch.userData?.id ?? 0,
+                        expertName: expertDetailWatch.userData?.expertName ?? '',
+                        expertProfile: expertDetailWatch.userData?.expertProfile ?? '',
+                        isFavorite: expertDetailWatch.userData?.isFavorite ?? false,
+                      );
+                },
+                child: Image.asset(
+                  expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+            ).addAllPadding(15),
+            DraggableScrollableSheet(
+              initialChildSize: 0.55,
+              minChildSize: 0.55,
+              maxChildSize: 0.90,
+              builder: (BuildContext context, myScrollController) {
+                return bottomSheetView(controller: myScrollController);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

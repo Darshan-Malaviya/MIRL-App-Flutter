@@ -58,6 +58,6 @@ class MyApp extends StatelessWidget {
 }
 
 _checkProxySettings() {
-  final proxy = CustomProxy(ipAddress: '192.168.1.137', port: 3000, allowBadCertificates: true);
+  final proxy = CustomProxy(ipAddress: '192.168.1.107', port: 3000, allowBadCertificates: true);
   proxy.enable();
 }

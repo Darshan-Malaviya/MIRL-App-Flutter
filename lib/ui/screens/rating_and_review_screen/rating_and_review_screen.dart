@@ -124,7 +124,8 @@ class _RatingAndReviewScreenState extends ConsumerState<RatingAndReviewScreen> {
                     ).addPaddingX(30),
                     30.0.spaceY,
                     if (!reportReviewWatch.isListLoading) ...[
-                      ReviewListWidget()
+                      ReviewListWidget(),
+                      30.0.spaceY,
                     ] else ...[
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),

@@ -78,7 +78,7 @@ class NoWeeklyAvailability extends StatelessWidget {
         124.0.spaceY,
         PrimaryButton(
           title: LocaleKeys.visitMultipleConnect.tr(),
-          onPressed: () {},
+          onPressed: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
           fontSize: 15,
         ).addPaddingXY(paddingX: 30, paddingY: 12),
       ],

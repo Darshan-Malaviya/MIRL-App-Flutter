@@ -64,6 +64,7 @@ class ImageConstants {
   static const emailVerification = '${iconPath}email_verification.png';
   static const recurring = '${iconPath}recurring_to_non-recurring.png';
   static const nonRecurring = '${iconPath}non-recurring_to_recurring.png';
+  static const MySteryMirlProfile = '${iconPath}my_stery_mirl_profile.png';
 
   /// json
   // static const splashScreen = '${rawPath}splash_screen.json';
