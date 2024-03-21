@@ -45,6 +45,7 @@ import flutter_callkit_incoming
         let isVideo = payload.dictionaryPayload["isVideo"] as? Bool ?? false
 
         let data = flutter_callkit_incoming.Data(id: id, nameCaller: nameCaller, handle: handle, type: isVideo ? 1 : 0)
+        data.duration = 60000
         //set more data
         data.extra = payload.dictionaryPayload["extra"] as? NSDictionary ?? NSDictionary()
         SwiftFlutterCallkitIncomingPlugin.sharedInstance?.showCallkitIncoming(data, fromPushKit: true)
