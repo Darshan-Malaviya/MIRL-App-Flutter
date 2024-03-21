@@ -137,12 +137,15 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
             ),
-            10.0.spaceY,
-            LabelSmallText(
-              title: '${LocaleKeys.expertTimeZone.tr()}: CENTRAL TIME (UTC -6:00)',
-              titleColor: ColorConstants.blueColor,
-              fontFamily: FontWeightEnum.w400.toInter,
-            ),
+            if (scheduleWatch.appointmentData?.expertTimezone?.isNotEmpty ?? false) ...[
+              10.0.spaceY,
+              LabelSmallText(
+                //title: '${LocaleKeys.expertTimeZone.tr()}: CENTRAL TIME (UTC -6:00)',
+                title: '${LocaleKeys.expertTimeZone.tr()}: ${scheduleWatch.appointmentData?.expertTimezone ?? ''}',
+                titleColor: ColorConstants.blueColor,
+                fontFamily: FontWeightEnum.w400.toInter,
+              ),
+            ],
             30.0.spaceY,
             PrimaryButton(
               title: LocaleKeys.checkNotification.tr(),

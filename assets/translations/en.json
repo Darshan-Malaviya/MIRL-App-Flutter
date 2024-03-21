@@ -376,5 +376,6 @@
   "pleaseSelectCallDuration": "Please select call duration",
   "selectedCallDuration": "Selected Call Duration",
   "pleasePickOneExpertStartYourCall": "Please pick one expert to start your call.",
-  "theExpertHasDeclinedYourCall": "The expert has declined your call. Maybe they're busy?"
+  "theExpertHasDeclinedYourCall": "The expert has declined your call. Maybe they're busy?",
+  "startingYourCall": "Starting Your MIRL!"
 }

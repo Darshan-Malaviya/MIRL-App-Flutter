@@ -202,6 +202,7 @@ class ScheduleCallProvider extends ChangeNotifier {
         if (response.data != null && response.data is AppointmentResponseModel) {
           AppointmentResponseModel responseModel = response.data;
           _appointmentData = responseModel.data;
+          print("expert Time Zone===========${_appointmentData?.expertTimezone}");
           context.toPushNamed(RoutesConstants.bookingConfirmScreen);
           notifyListeners();
         }

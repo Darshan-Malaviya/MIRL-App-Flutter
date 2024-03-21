@@ -155,7 +155,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     ),
                     10.0.spaceX,
                     AutoSizeText(
-                      expertDetailWatch.userData?.overAllRating != 0 ? expertDetailWatch.userData?.overAllRating.toString() ?? '' : LocaleKeys.newText.tr(),
+                      expertDetailWatch.userData?.overAllRating != 0 && expertDetailWatch.userData?.overAllRating != null
+                          ? expertDetailWatch.userData?.overAllRating.toString() ?? ''
+                          : LocaleKeys.newText.tr(),
                       maxLines: 1,
                       softWrap: true,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -703,8 +705,10 @@ class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSh
                 ),
                 10.0.spaceX,
                 AutoSizeText(
-                  '\$${((expertDetailProviderWatch.userData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}',
-                  maxLines: 1,
+                  expertDetailProviderWatch.userData?.fee != null
+                      ? '\$${((expertDetailProviderWatch.userData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}'
+                      : LocaleKeys.proBono.tr(),
+                  maxLines: 2,
                   softWrap: true,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstants.overallRatingColor,
@@ -743,6 +747,7 @@ class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSh
           fontFamily: FontWeightEnum.w500.toInter,
           titleColor: ColorConstants.buttonTextColor,
           titleTextAlign: TextAlign.center,
+          maxLine: 4,
         )
       ],
     ).addAllPadding(28);
