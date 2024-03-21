@@ -80,7 +80,7 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
                           return messageSeparator(value);
                         },
                         itemBuilder: (_, element) {
-                          return data == LocaleKeys.newNotifications.tr()
+                          return DateTime.parse(element.notification?.firstCreated ?? '').day == DateTime.now().day
                               ? NotificationWidget(
                                   remainingSecond: notificationProviderWatch.secondsRemaining,
                                   message: element.notification?.message ?? '',

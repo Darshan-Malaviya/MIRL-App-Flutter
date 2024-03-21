@@ -76,6 +76,7 @@ dependencies:
   qr_flutter: ^4.1.0
   linkwell: ^2.0.6
   parsed_readmore: ^0.0.9
+  url_launcher: ^6.2.5
 
   #permission
   permission_handler: ^11.2.0

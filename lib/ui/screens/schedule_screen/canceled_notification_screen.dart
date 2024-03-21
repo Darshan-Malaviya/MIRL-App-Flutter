@@ -153,7 +153,8 @@ class CanceledNotificationScreen extends StatelessWidget {
                 onPressed: () => context.toPop(),
                 //onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
                 fontSize: 15,
-              )
+              ),
+              30.0.spaceY,
             ],
           ).addPaddingX(20),
         ));
