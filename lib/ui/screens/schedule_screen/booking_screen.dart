@@ -75,7 +75,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
             ),
             22.0.spaceY,
             BodyLargeText(
-              title: '${LocaleKeys.bookingDescription.tr()} ${scheduleWatch.appointmentData?.expertDetail?.expertName ?? ''}!.',
+              title: '${LocaleKeys.bookingDescription.tr()} ${scheduleWatch.appointmentData?.expertDetail?.expertName?.toUpperCase() ?? ''}.',
               titleColor: ColorConstants.blueColor,
               fontFamily: FontWeightEnum.w400.toInter,
               maxLine: 5,

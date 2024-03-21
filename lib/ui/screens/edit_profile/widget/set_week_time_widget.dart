@@ -34,9 +34,10 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
               children: [
                 LabelSmallText(
                     title: (weekData.isAvailable)
-                        ? "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.startTime.toInt()))} - "
-                            "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.endTime.toInt()))}"
+                        ? "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.startTime.toInt())).toLowerCase()} - "
+                            "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.endTime.toInt())).toLowerCase()}"
                         : StringConstants.noTimeSchedule),
+                5.0.spaceY,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -84,7 +85,7 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
                                 fontFamily: FontWeightEnum.w400.toInter,
                               ),
                               LabelSmallText(
-                                title: '12:00am',
+                                title: '11:59pm',
                                 fontFamily: FontWeightEnum.w400.toInter,
                               ),
                             ],
