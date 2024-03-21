@@ -38,7 +38,8 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
                 return  CategoryCommonView(
                     onTap: () {
                       context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                          args: SelectedCategoryArgument(categoryId: homeProviderWatch.homeSearchData?.categories?[index].id.toString() ?? '', isFromExploreExpert: false));
+                          args: SelectedCategoryArgument(categoryId: homeProviderWatch.homeSearchData?.categories?[index].id.toString() ?? '', isFromExploreExpert: false,
+                              categoryName:  homeProviderWatch.homeSearchData?.categories?[index].name.toString() ?? ''));
                     },
                     categoryName: homeProviderWatch.homeSearchData?.categories?[index].name ?? '',
                     imageUrl: homeProviderWatch.homeSearchData?.categories?[index].image ?? '');

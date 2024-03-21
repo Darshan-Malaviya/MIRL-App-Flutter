@@ -193,7 +193,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                                           border: 10,
                                           child: BodyMediumText(
                                             maxLine: 10,
-                                            title: '${data.title}: ${data.value}',
+                                            title: '${data.displayText}: ${data.value}',
                                             fontFamily: FontWeightEnum.w400.toInter,
                                           ),
                                         ),

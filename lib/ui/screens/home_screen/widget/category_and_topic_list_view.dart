@@ -33,7 +33,8 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
               return CategoryCommonView(
                 onTap: () {
                   context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                      args: SelectedCategoryArgument(categoryId: homeProviderWatch.homeData?.categories?[index].id.toString() ?? '', isFromExploreExpert: false));
+                      args: SelectedCategoryArgument(categoryId: homeProviderWatch.homeData?.categories?[index].id.toString() ?? '', isFromExploreExpert: false,
+                          categoryName: homeProviderWatch.homeData?.categories?[index].name.toString() ?? ''));
                 },
                 categoryName: homeProviderWatch.homeData?.categories?[index].name?.toUpperCase() ?? '',
                 imageUrl: homeProviderWatch.homeData?.categories?[index].image ?? '',

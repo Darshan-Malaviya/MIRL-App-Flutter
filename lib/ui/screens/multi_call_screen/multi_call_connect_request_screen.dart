@@ -128,6 +128,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                       titleTextAlign: TextAlign.center,
                       titleColor: ColorConstants.primaryColor,
                     ),
+                    32.0.spaceY,
                   ],
                   16.0.spaceY,
                   Stack(
@@ -151,7 +152,11 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                         children: [
                           12.0.spaceY,
                           BodySmallText(
-                            title: multiConnectCallEnumNotifier.value.descriptionName,
+                            title: CallRequestTypeEnum.multiRequestApproved == multiConnectCallEnumNotifier.value
+                                ? multiProviderWatch.selectedExpertDetails.length > 1
+                                ? "YAY! YOU HAVE ${(CommonMethods.numberToWord(multiProviderWatch.selectedExpertDetails.length)).toString().toUpperCase()} EXPERTS\nWAITING TO TALK TO YOU RIGHT NOW!"
+                                : "YAY! YOU HAVE ${(CommonMethods.numberToWord(multiProviderWatch.selectedExpertDetails.length)).toString().toUpperCase()} EXPERT\nWAITING TO TALK TO YOU RIGHT NOW!"
+                                : multiConnectCallEnumNotifier.value.descriptionName,
                             titleColor: ColorConstants.textColor,
                             titleTextAlign: TextAlign.center,
                             fontFamily: FontWeightEnum.w600.toInter,
@@ -197,7 +202,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                             if (multiProviderWatch.selectedExpertDetails.isNotEmpty) ...[
                               10.0.spaceY,
                               SizedBox(
-                                height: 230,
+                                height: 240,
                                 child: ListView.separated(
                                   itemCount: multiProviderWatch.selectedExpertDetails.length,
                                   shrinkWrap: true,
@@ -225,7 +230,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                               color : ColorConstants.borderLightColor,
                                             ),
                                             width: 150,
-                                            height: 220,
+                                            height: 238,
                                             padding: EdgeInsets.zero,
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.circular(20.0),
@@ -278,16 +283,17 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                     color :multiProviderWatch.selectedExpertDetails[index].status.toString().numberToCallRequestStatusBGColor(),
                                                 ),
                                               width: 150,
-                                              height: 220,
+                                              height: 238,
                                               padding: EdgeInsets.zero,
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
+                                                  6.0.spaceY,
                                                   Container(
                                                     decoration: BoxDecoration(boxShadow: [
                                                       BoxShadow(
-                                                          offset: Offset(2, 5),
-                                                          color: ColorConstants.blackColor.withOpacity(0.3),
+                                                          offset: Offset(2, 3),
+                                                          color: ColorConstants.blackColor.withOpacity(0.2),
                                                           spreadRadius: 2,
                                                           blurRadius: 2),
                                                     ], shape: BoxShape.circle),
@@ -320,13 +326,13 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                     title:
                                                     '${LocaleKeys.rating.tr()} ${multiProviderWatch.selectedExpertDetails[index].overAllRating.toString()}',
                                                     fontFamily: FontWeightEnum.w500.toInter,
-                                                    fontSize: 8,
+                                                    fontSize: 10,
                                                     titleColor: ColorConstants.buttonTextColor,
                                                   ) : LabelSmallText(
                                                     title:
-                                                    '${LocaleKeys.rating.tr()} 0',
+                                                    '${LocaleKeys.rating.tr()} ${LocaleKeys.newText.tr()}',
                                                     fontFamily: FontWeightEnum.w500.toInter,
-                                                    fontSize: 8,
+                                                    fontSize: 10,
                                                     titleColor: ColorConstants.buttonTextColor,
                                                   ),
                                                   2.0.spaceY,
@@ -336,7 +342,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                     title:
                                                     '${LocaleKeys.feePerMinute.tr()} \$${((multiProviderWatch.selectedExpertDetails[index].fee ?? 0) / 100) .toStringAsFixed(2)}',
                                                     fontFamily: FontWeightEnum.w500.toInter,
-                                                    fontSize: 8,
+                                                    fontSize: 10,
                                                     maxLine: 2,
                                                     titleTextAlign: TextAlign.center,
                                                     titleColor: ColorConstants.buttonTextColor,
@@ -374,7 +380,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                       || multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)*/,
                                   replacement: SizedBox.shrink(),
                                   child: TitleSmallText(
-                                    title: "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
+                                    title: "${LocaleKeys.duration.tr()}: ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
                                     fontFamily: FontWeightEnum.w400.toInter,
                                     titleTextAlign: TextAlign.center,
                                     titleColor: ColorConstants.textColor,
