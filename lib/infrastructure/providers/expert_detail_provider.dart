@@ -24,6 +24,13 @@ class ExpertDetailProvider extends ChangeNotifier {
   int get callDuration => _callDuration;
 
 
+  double? totalPayAmountInstanceCall;
+
+  void getPayValue({required int fee}) {
+    totalPayAmountInstanceCall = (fee / 100 * (_callDuration == 20 ? 2 : _callDuration == 30 ? 3 : 1));
+    notifyListeners();
+  }
+
   void incrementCallDuration() {
     _callDuration += 10;
     notifyListeners();

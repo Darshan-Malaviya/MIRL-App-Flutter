@@ -54,6 +54,7 @@ class _CategoryNameAndImageListViewState extends ConsumerState<CategoryNameAndIm
                       context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
                           args: SelectedCategoryArgument(
                               categoryId: filterProviderWatch.categoryList?.category?[index].id.toString() ?? '',
+                              categoryName: filterProviderWatch.categoryList?.category?[index].name.toString() ?? '',
                               isFromExploreExpert: true));
                     },
                     categoryName: filterProviderWatch.categoryList?.category?[index].name ?? '',

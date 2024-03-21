@@ -93,7 +93,7 @@ class _ExpertCategoryScreenState extends ConsumerState<ExpertCategoryScreen> {
                                   addYourAreaExpertiseProviderWatch.onSelectedCategory(index);
                                   context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
                                       args: SelectedCategoryArgument(
-                                          categoryId: element?.id.toString() ?? '', isFromExploreExpert: true));
+                                          categoryId: element?.id.toString() ?? '', isFromExploreExpert: true, categoryName: element?.name.toString() ?? ''));
                                 },
                                 categoryName: addYourAreaExpertiseProviderWatch.categoryList?[index].name ?? '',
                                 imageUrl: addYourAreaExpertiseProviderWatch.categoryList?[index].image ?? '',

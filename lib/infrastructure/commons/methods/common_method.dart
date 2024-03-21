@@ -13,18 +13,70 @@ class CommonMethods {
     return await FlutterTimezone.getLocalTimezone();
   }
 
+ static String numberToWord(int number) {
+    if (number < 0 || number > 99) {
+      return "Number out of range";
+    }
+
+    final List<String> units = [
+      '',
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine'
+    ];
+
+    final List<String> teens = [
+      'ten',
+      'eleven',
+      'twelve',
+      'thirteen',
+      'fourteen',
+      'fifteen',
+      'sixteen',
+      'seventeen',
+      'eighteen',
+      'nineteen'
+    ];
+
+    final List<String> tens = [
+      '',
+      'ten',
+      'twenty',
+      'thirty',
+      'forty',
+      'fifty',
+      'sixty',
+      'seventy',
+      'eighty',
+      'ninety'
+    ];
+
+    if (number < 10) {
+      return units[number];
+    } else if (number < 20) {
+      return teens[number - 10];
+    } else {
+      return '${tens[number ~/ 10]}-${units[number % 10]}';
+    }
+  }
+
   /// autoLogout
-  static void autoLogout() {
+  static Future<void> autoLogout() async {
     UserData? data;
     if (SharedPrefHelper.getUserData.isNotEmpty) {
       data = UserData.fromJson(jsonDecode(SharedPrefHelper.getUserData));
     }
     if (data?.loginType == 1) {
       googleSignIn?.signOut();
-    }
-    // else {
-    //   await UpdateUserDetailsRepository().userLogout();
-    // }
+    } /*else {
+      await UpdateUserDetailsRepository().userLogout();
+    }*/
     SharedPrefHelper.clearPrefs();
     NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
   }

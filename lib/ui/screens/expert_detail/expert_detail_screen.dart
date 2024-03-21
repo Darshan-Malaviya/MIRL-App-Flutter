@@ -115,6 +115,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
 
   Widget bottomSheetView({required ScrollController controller}) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
+    final expertDetailRead= ref.read(expertDetailProvider);
 
     String? fee;
     if (expertDetailWatch.userData?.fee != null) {
@@ -157,7 +158,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       expertDetailWatch.userData?.overAllRating != 0 ? expertDetailWatch.userData?.overAllRating.toString() ?? '' : LocaleKeys.newText.tr(),
                       maxLines: 1,
                       softWrap: true,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,
                         shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.2))],
                       ),
@@ -178,7 +179,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     AutoSizeText(
                       fee != null ? '\$${fee}' : LocaleKeys.proBono.tr(),
                       maxLines: 2,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,
                         shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.2))],
                       ),
@@ -253,6 +254,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                                   if (instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                                     context.toPop();
                                   } else if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestApproved) {
+                                    expertDetailRead.getPayValue(fee: expertDetailWatch.userData?.fee ?? 0);
                                     CommonBottomSheet.bottomSheet(
                                         context: context,
                                         child: CallPaymentBottomSheetView(onPressed: () {
@@ -544,6 +546,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     if (instanceCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                       context.toPop();
                     } else if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestApproved) {
+                      ref.read(expertDetailProvider).getPayValue(fee: expertDetailWatch.userData?.fee ?? 0);
                       CommonBottomSheet.bottomSheet(
                           context: context,
                           child: CallPaymentBottomSheetView(onPressed: () {
@@ -599,7 +602,7 @@ class _CallDurationBottomSheetViewState extends ConsumerState<CallDurationBottom
         ),
         20.0.spaceY,
         BodyMediumText(
-          title: "Please select call duration",
+          title: LocaleKeys.pleaseSelectCallDuration.tr(),
           fontSize: 15,
           titleColor: ColorConstants.blueColor,
         ),
@@ -633,7 +636,7 @@ class _CallDurationBottomSheetViewState extends ConsumerState<CallDurationBottom
         20.0.spaceY,
         PrimaryButton(
           height: 55,
-          title: 'Done',
+          title:LocaleKeys.checkAvailability.tr(),
           margin: EdgeInsets.symmetric(horizontal: 10),
           fontSize: 18,
           onPressed: widget.onPressed,
@@ -680,10 +683,11 @@ class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSh
                 ),
                 10.0.spaceX,
                 AutoSizeText(
-                  expertDetailProviderWatch.userData?.overAllRating != 0 ? expertDetailProviderWatch.userData?.overAllRating.toString() ?? '0' : LocaleKeys.newText.tr(),
+                  expertDetailProviderWatch.userData?.overAllRating != 0 && expertDetailProviderWatch.userData?.overAllRating != null
+                      ? expertDetailProviderWatch.userData?.overAllRating.toString() ?? '0' : LocaleKeys.newText.tr(),
                   maxLines: 1,
                   softWrap: true,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstants.overallRatingColor,
                     shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                   ),
@@ -702,7 +706,7 @@ class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSh
                   '\$${((expertDetailProviderWatch.userData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}',
                   maxLines: 1,
                   softWrap: true,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstants.overallRatingColor,
                     shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
                   ),
@@ -713,7 +717,7 @@ class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSh
         ),
         20.0.spaceY,
         BodyMediumText(
-          title: " Selected Call Duration",
+          title: LocaleKeys.selectedCallDuration.tr(),
           fontSize: 15,
           titleColor: ColorConstants.blueColor,
         ),
@@ -728,15 +732,14 @@ class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSh
         20.0.spaceY,
         PrimaryButton(
           height: 55,
-         // title: '${LocaleKeys.pay.tr()} \$${scheduleWatch.totalPayAmount?.toStringAsFixed(2)}',
-          title: '${LocaleKeys.pay.tr()} \$20',
+          title: '${LocaleKeys.pay.tr()} \$${expertDetailProviderWatch.totalPayAmountInstanceCall?.toStringAsFixed(2)}',
           margin: EdgeInsets.symmetric(horizontal: 10),
           fontSize: 18,
           onPressed: widget.onPressed,
         ),
         22.0.spaceY,
         BodyMediumText(
-          title: '${LocaleKeys.scheduleDescription.tr()} ${expertDetailProviderWatch.userData?.expertName ?? 'Anonymous'}',
+          title: '${LocaleKeys.scheduleDescription.tr()} ${expertDetailProviderWatch.userData?.expertName?.toUpperCase() ?? LocaleKeys.anonymous.tr().toUpperCase()}',
           fontFamily: FontWeightEnum.w500.toInter,
           titleColor: ColorConstants.buttonTextColor,
           titleTextAlign: TextAlign.center,

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/infrastructure/models/common/expert_data_model.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
 
@@ -65,8 +66,8 @@ class ExpertDetailWidget extends StatelessWidget {
                                 color: Color(colorConcat),
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                                child: BodySmallText(
-                                  title: expertData?.expertCategory?[i].name ?? '',
+                                child: BodyMediumText(
+                                  title: expertData?.expertCategory?[i].name.toString().toLowerCase().toCapitalizeAllWord() ?? '',
                                   fontFamily: FontWeightEnum.w500.toInter,
                                 ),
                               );
@@ -90,9 +91,10 @@ class ExpertDetailWidget extends StatelessWidget {
                         ),
                         10.0.spaceX,
                         AutoSizeText(
-                          expertData?.overAllRating != 0 ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
+                          expertData?.overAllRating != 0 && expertData?.overAllRating != null
+                              ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorConstants.bottomTextColor),
                         )
                       ],
                     ),
@@ -108,9 +110,9 @@ class ExpertDetailWidget extends StatelessWidget {
                         ),
                         10.0.spaceX,
                         AutoSizeText(
-                          fee != null ? '\$${fee}' : "",
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                          fee != null ? '\$${fee}' : LocaleKeys.proBono.tr(),
+                          maxLines: 2,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorConstants.bottomTextColor),
                         )
                       ],
                     ),
@@ -120,7 +122,7 @@ class ExpertDetailWidget extends StatelessWidget {
                 Align(alignment: Alignment.centerLeft, child: BodySmallText(title: StringConstants.aboutMe)),
                 5.0.spaceY,
                 ReadMoreText(
-                  style: TextStyle(fontSize: 12, fontFamily: FontWeightEnum.w400.toInter),
+                  style: TextStyle(fontSize: 14, fontFamily: FontWeightEnum.w400.toInter),
                   expertData?.about ?? '',
                   trimLines: 5,
                   trimMode: TrimMode.Line,

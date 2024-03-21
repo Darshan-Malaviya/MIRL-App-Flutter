@@ -37,7 +37,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
         ref.read(filterProvider).clearTopicPaginationData();
         ref.read(filterProvider).topicListByCategory(
               isFullScreenLoader: false,
-              categoryId: widget.args.categoryId,
+              categoryId: widget.args.categoryId, categoryName: widget.args.categoryName,
             );
       }
     });
@@ -154,7 +154,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                             return OnScaleTap(
                               onPress: () {},
                               child: ShadowContainer(
-                                shadowColor:
+                                shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0)
+                                    ? ColorConstants.primaryColor :
                                     (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
                                         ? ColorConstants.primaryColor
                                         : ColorConstants.blackColor.withOpacity(0.1),
@@ -225,7 +226,18 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                               BodySmallText(
                                 title: LocaleKeys.appliedFilters.tr(),
                               ),
-                              if (widget.args.isFromExploreExpert == true &&
+                              InkWell(
+                                  onTap: () {
+                                    filterProviderRead.clearAllFilter(selectedCategoryClearAll: true);
+                                    filterProviderRead.getSingleCategoryApiCall(
+                                        context: context,
+                                        categoryId: widget.args.categoryId,
+                                        requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId));
+                                  },
+                                  child: BodySmallText(
+                                    title: LocaleKeys.clearAll.tr(),
+                                  )),
+                           /*   if (widget.args.isFromExploreExpert == true &&
                                   filterProviderWatch.commonSelectionModel.first.value == widget.args.categoryId) ...[
                                 InkWell(
                                     onTap: () {
@@ -255,7 +267,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                         title: LocaleKeys.clearAll.tr(),
                                       )),
                                 ]
-                              ],
+                              ],*/
                             ],
                           ),
                           10.0.spaceY,
@@ -294,7 +306,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                       border: 10,
                                       child: BodyMediumText(
                                         maxLine: 10,
-                                        title: '${data.title}: ${data.value}',
+                                        title: '${data.displayText}: ${data.value}',
                                         fontFamily: FontWeightEnum.w400.toInter,
                                       ),
                                     ),
