@@ -193,6 +193,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+                30.0.spaceY,
               ]
             ],
           ).addPaddingX(20),

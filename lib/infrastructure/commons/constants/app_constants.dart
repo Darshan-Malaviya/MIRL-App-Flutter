@@ -4,6 +4,9 @@ class AppConstants {
   static const prodFlavorName = 'Mirl Prod';
   static const fontFamily = 'Inter';
 
+  /// url
+  static const feesUrl = 'https://mirl.com/mirl-app-fees';
+
   /// socket request variables
   static const userId = 'userId';
   static const expertId = 'expertId';

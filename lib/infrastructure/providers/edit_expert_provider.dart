@@ -116,6 +116,8 @@ class EditExpertProvider extends ChangeNotifier {
   String mirlId = '';
   String about = '';
   String overAllRating = '';
+  String userFees = '';
+  String calculateFees = '';
 
   void generateExperienceList({required bool fromInit}) {
     if (fromInit && (_userData?.certification?.isNotEmpty ?? false)) {
@@ -149,7 +151,7 @@ class EditExpertProvider extends ChangeNotifier {
     _weekScheduleModel.clear();
     var _time = DateTime.now();
     hourOnly = DateTime(_time.year, _time.month, _time.day, 0, 0, 0);
-    plusDay = hourOnly.add(Duration(days: 1));
+    plusDay = hourOnly.add(Duration(days: 1, hours: 0, minutes: -1));
     DateTime lowerValue = hourOnly.add(Duration(hours: 10));
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
@@ -258,21 +260,24 @@ class EditExpertProvider extends ChangeNotifier {
       _enteredText = _userData?.about?.length.toString() ?? '0';
       countryNameController.text = _userData?.country ?? '';
       cityNameController.text = _userData?.city ?? '';
-      overAllRating = _userData?.overAllRating != null ? _userData?.overAllRating.toString() ?? '' : '0';
+      overAllRating = _userData?.overAllRating != null ? _userData?.overAllRating.toString() ?? '' : LocaleKeys.newText.tr();
       if (_userData?.fee != null) {
-        countController.text = ((_userData?.fee ?? 0) / 100).toString();
+        displayActualTest(_userData?.fee ?? 0);
+        /*      countController.text = ((_userData?.fee ?? 0) / 100).toString();
+        userFees = ((_userData?.fee ?? 0) / 100).toString();*/
         _editButtonList[0].isSelected = true;
       } else {
         _editButtonList[0].isSelected = false;
       }
       if (_userData?.instantCallAvailable != null) {
-        instantCallAvailabilityController.text = _instantCall.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? LocaleKeys.instantCallActive.tr() : LocaleKeys.InstantCallOff.tr()));
+        instantCallAvailabilityController.text =
+            _instantCall.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? LocaleKeys.instantCallActive.tr() : LocaleKeys.InstantCallOff.tr()));
         _editButtonList[3].isSelected = true;
       } else {
         _editButtonList[3].isSelected = false;
       }
       if (_userData?.isLocationVisible != null) {
-        locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? LocaleKeys.yes.tr(): LocaleKeys.no.tr()));
+        locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? LocaleKeys.yes.tr() : LocaleKeys.no.tr()));
         _editButtonList[4].isSelected = true;
       } else {
         _editButtonList[4].isSelected = false;
@@ -400,17 +405,38 @@ class EditExpertProvider extends ChangeNotifier {
   void increaseFees() {
     double plusValue = double.parse(countController.text.trim());
     countController.text = (plusValue + 1).toStringAsFixed(2);
+    changeFeesValue(countController.text);
     notifyListeners();
   }
 
   void decreaseFees() {
     double minusValue = double.parse(countController.text.trim());
     countController.text = (minusValue - 1).toStringAsFixed(2);
+    changeFeesValue(countController.text);
     notifyListeners();
   }
 
   void changeFeesValue(String value) {
-    countController.text = value;
+    if (value.isNotEmpty) {
+      countController.text = value;
+      // Calculate the percentage amount
+      double percentageAmount = (double.parse(countController.text) * 20) / 100;
+
+      // Add the percentage amount to the original amount
+      double totalAmount = double.parse(countController.text) + percentageAmount;
+      calculateFees = totalAmount.toStringAsFixed(2);
+    } else {
+      calculateFees = '';
+    }
+    notifyListeners();
+  }
+
+  void displayActualTest(int value) {
+    double convertFees = (value / 100).toDouble();
+    calculateFees = convertFees.toStringAsFixed(2);
+    userFees = convertFees.toStringAsFixed(2);
+    double originalValue = convertFees / (1 + (20 / 100));
+    countController.text = originalValue.toStringAsFixed(2);
     notifyListeners();
   }
 
@@ -456,17 +482,13 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateFeesApi() {
-    int feesValue = (double.parse(countController.text) * 100).toInt();
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      fee: feesValue.toString(),
-    );
+    int feesValue = (double.parse(calculateFees) * 100).toInt();
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(fee: feesValue.toString());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonFees());
   }
 
   void updateAboutApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      about: aboutMeController.text.trim(),
-    );
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(about: aboutMeController.text.trim());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonAbout());
   }
 
@@ -480,16 +502,12 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateMirlIdApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      mirlId: mirlIdController.text.trim(),
-    );
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(mirlId: mirlIdController.text.trim());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonMirlId());
   }
 
   void updateExpertNameApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      expertName: expertNameController.text.trim(),
-    );
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertName: expertNameController.text.trim());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonName());
   }
 
@@ -524,9 +542,9 @@ class EditExpertProvider extends ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
-          SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false)? true : false);
+          SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false) ? true : false);
           Logger().d("user data=====${loginResponseModel.toJson()}");
-         // FlutterToast().showToast(msg:  LocaleKeys.profileUpdatedSuccessfully.tr());
+          // FlutterToast().showToast(msg:  LocaleKeys.profileUpdatedSuccessfully.tr());
           FlutterToast().showToast(msg: loginResponseModel.message);
           resetVariable();
           getUserData();
@@ -559,6 +577,9 @@ class EditExpertProvider extends ChangeNotifier {
     expertName = '';
     mirlId = '';
     about = '';
+    calculateFees = '';
+    overAllRating = '';
+    userFees = '';
     expertNameController.clear();
     mirlIdController.clear();
     aboutMeController.clear();
