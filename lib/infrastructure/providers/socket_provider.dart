@@ -456,7 +456,7 @@ class SocketProvider extends ChangeNotifier {
               /// decline
               /// This decline listen in user side always
               callConnectNotifier.value = CallConnectStatusEnum.declined;
-              FlutterToast().showToast(msg: "Call decline by expert");
+              FlutterToast().showToast(msg: LocaleKeys.theExpertHasDeclinedYourCall.tr());
               instanceRequestTimerNotifier = ValueNotifier<int>(120);
               instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
               if(activeRoute.value == RoutesConstants.videoCallScreen){

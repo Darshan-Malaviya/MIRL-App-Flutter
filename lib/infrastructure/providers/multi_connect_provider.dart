@@ -65,6 +65,12 @@ class MultiConnectProvider extends ChangeNotifier {
   int _multiCallDuration = 10;
   int get multiCallDuration => _multiCallDuration;
 
+  double? totalPayAmountMultiConnect;
+
+  void getPayValue({required int fee}) {
+    totalPayAmountMultiConnect = (fee / 100 * (_multiCallDuration == 20 ? 2 : _multiCallDuration == 30 ? 3 : 1));
+    notifyListeners();
+  }
 
   void incrementMultiCallDuration() {
     _multiCallDuration += 10;

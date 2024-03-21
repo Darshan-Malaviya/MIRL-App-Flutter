@@ -181,7 +181,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             if (filterWatch.commonSelectionModel.isNotEmpty) {
               String? selectedTopicId;
               if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
-                if (filterWatch.selectedTopicList?.first.isCategorySelected ?? false) {
+                if (filterWatch.selectedTopicList?.any((element) => (element.id == 0)) ?? false) {
                   selectedTopicId = null;
                 } else {
                   selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");

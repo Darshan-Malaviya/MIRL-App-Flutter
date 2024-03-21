@@ -122,6 +122,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                       titleTextAlign: TextAlign.center,
                       titleColor: ColorConstants.primaryColor,
                     ),
+                    32.0.spaceY,
                   ],
                   16.0.spaceY,
                   Container(
@@ -188,7 +189,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                                   || instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested),
                               replacement: SizedBox.shrink(),
                               child: TitleSmallText(
-                                title: "${LocaleKeys.duration.tr()} : ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
+                                title: "${LocaleKeys.duration.tr()}: ${(allCallDurationNotifier.value / 60).toStringAsFixed(0)} minutes",
                                 fontFamily: FontWeightEnum.w400.toInter,
                                 titleTextAlign: TextAlign.center,
                                 titleColor: ColorConstants.textColor,

@@ -19,12 +19,12 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
      // if (widget.isFromExploreExpert) {
         // if(ref.watch(filterProvider).allTopic.isEmpty){
         ref.read(filterProvider).clearSearchTopicController();
         ref.read(filterProvider).clearTopicPaginationData();
-        ref.read(filterProvider).topicListByCategory(
+       await ref.read(filterProvider).topicListByCategory(
               isFullScreenLoader: true,
               categoryId: widget.category.id.toString(), categoryName: widget.category.name.toString(),
             );
@@ -132,6 +132,7 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
                             return InkWell(
                               onTap: () {
                                 filterProviderRead.setTopicList(topic: filterProviderWatch.allTopic[index]);
+                                filterProviderRead.checkAllTopicSelect(topic: filterProviderWatch.allTopic[index]);
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
