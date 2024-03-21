@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/enums/call_connect_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
@@ -114,7 +116,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
                         if (value == CallConnectStatusEnum.ringing) ...[
                           Center(
                               child: _waitingView(
-                                  title: 'Ringing..',
+                                  title: LocaleKeys.startingYourCall.tr(),
                                   color: ColorConstants.yellowButtonColor.withOpacity(0.2),
                                   textColor: ColorConstants.yellowButtonColor))
                         ] else ...[

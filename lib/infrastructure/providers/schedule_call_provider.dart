@@ -95,7 +95,8 @@ class ScheduleCallProvider extends ChangeNotifier {
   void getTimeZone() async {
     final Duration timeDuration = DateTime.now().timeZoneOffset;
     final String timeZone = DateTime.now().timeZoneName;
-    userLocalTimeZone = '$timeZone (UTC ${timeDuration.inHours}:${timeDuration.inMinutes})';
+    userLocalTimeZone = '$timeZone (UTC ${timeDuration.inHours}:${timeDuration.inMinutes.remainder(60)})';
+   // userLocalTimeZone = '$timeZone (UTC $timeDuration)';
     notifyListeners();
   }
 
@@ -201,6 +202,7 @@ class ScheduleCallProvider extends ChangeNotifier {
         if (response.data != null && response.data is AppointmentResponseModel) {
           AppointmentResponseModel responseModel = response.data;
           _appointmentData = responseModel.data;
+          print("expert Time Zone===========${_appointmentData?.expertTimezone}");
           context.toPushNamed(RoutesConstants.bookingConfirmScreen);
           notifyListeners();
         }

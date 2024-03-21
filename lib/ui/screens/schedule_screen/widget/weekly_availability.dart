@@ -7,7 +7,6 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 import 'package:mirl/ui/screens/schedule_screen/widget/no_weekly_availability.dart';
-import 'package:pinput/pinput.dart';
 
 import '../../../common/shimmer_widgets/slots_shimmer_widget.dart';
 
@@ -89,6 +88,7 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                     fontSize: 15,
                     titleColor: ColorConstants.blueColor,
                   ).addPaddingXY(paddingX: 29, paddingY: 12),
+                  20.0.spaceY,
                 ],
               )
             : NoWeeklyAvailability();

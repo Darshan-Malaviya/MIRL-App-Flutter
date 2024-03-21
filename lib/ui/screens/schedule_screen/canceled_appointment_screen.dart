@@ -107,6 +107,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: NetworkImageWidget(
+                          //emptyImageWidget: Image.asset(ImageConstants.MySteryMirlProfile),
                           imageURL: args.cancelData?.profileImage ?? '',
                           boxFit: BoxFit.cover,
                           height: 100,
@@ -162,7 +163,7 @@ class CanceledAppointmentScreen extends ConsumerWidget {
                   maxLine: 3,
                   titleTextAlign: TextAlign.center,
                 ).addMarginX(20),
-                20.0.spaceY,
+                30.0.spaceY,
               ] else ...[
                 PrimaryButton(
                   title: LocaleKeys.backCalenderAppointment.tr(),

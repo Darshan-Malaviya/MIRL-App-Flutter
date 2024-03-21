@@ -111,6 +111,9 @@ class EditExpertProvider extends ChangeNotifier {
   String _enteredText = '0';
 
   String get enteredText => _enteredText;
+  String _enteredCertificateText = '0';
+
+  String get enteredCertificateText => _enteredCertificateText;
 
   String expertName = '';
   String mirlId = '';
@@ -244,6 +247,10 @@ class EditExpertProvider extends ChangeNotifier {
     _enteredText = value.length.toString();
     notifyListeners();
   }
+  void changeCertificationsValue(String value) {
+    _enteredCertificateText = value.length.toString();
+    notifyListeners();
+  }
 
   void getUserData() {
     String value = SharedPrefHelper.getUserData;
@@ -258,6 +265,7 @@ class EditExpertProvider extends ChangeNotifier {
       aboutMeController.text = _userData?.about ?? '';
       about = _userData?.about ?? '';
       _enteredText = _userData?.about?.length.toString() ?? '0';
+     // _enteredCertificateText = _userData?.certification?[0].description?.length.toString() ?? '0';
       countryNameController.text = _userData?.country ?? '';
       cityNameController.text = _userData?.city ?? '';
       overAllRating = _userData?.overAllRating != null ? _userData?.overAllRating.toString() ?? '' : LocaleKeys.newText.tr();
@@ -295,6 +303,8 @@ class EditExpertProvider extends ChangeNotifier {
         _editButtonList[1].isSelected = false;
       }
       if (_userData?.certification?.isNotEmpty ?? false) {
+        // _userData?.certification?.forEach((element) {
+        // });
         _editButtonList[6].isSelected = true;
       } else {
         _editButtonList[6].isSelected = false;
@@ -574,6 +584,7 @@ class EditExpertProvider extends ChangeNotifier {
   void resetVariable() {
     countController.text = '0';
     _enteredText = '0';
+    _enteredCertificateText = '0';
     expertName = '';
     mirlId = '';
     about = '';

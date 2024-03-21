@@ -78,8 +78,9 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter, fontSize: 13),
                               children: [
+                                WidgetSpan(child: 2.0.spaceX),
                                 TextSpan(
-                                    text: widget.args.userName,
+                                    text: widget.args.userName?.toUpperCase(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall

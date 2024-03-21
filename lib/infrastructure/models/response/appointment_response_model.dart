@@ -40,9 +40,11 @@ class AppointmentData {
   String? startTime;
   String? endTime;
   String? status;
+  String? expertTimezone;
+  String? userTimezone;
   ExpertDetail? expertDetail;
 
-  AppointmentData({this.id,this.date, this.duration, this.startTime, this.endTime, this.status, this.expertDetail});
+  AppointmentData({this.id,this.date, this.duration, this.startTime, this.endTime, this.status, this.expertDetail,this.expertTimezone,this.userTimezone});
 
   AppointmentData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -51,6 +53,8 @@ class AppointmentData {
     startTime = json['startTime'];
     endTime = json['endTime'];
     status = json['status'];
+    expertTimezone = json['expertTimezone'];
+    userTimezone = json['userTimezone'];
     expertDetail = json['expertDetail'] != null ? new ExpertDetail.fromJson(json['expertDetail']) : null;
   }
 
@@ -62,6 +66,8 @@ class AppointmentData {
     data['startTime'] = this.startTime;
     data['endTime'] = this.endTime;
     data['status'] = this.status;
+    data['expertTimezone'] = this.expertTimezone;
+    data['userTimezone'] = this.userTimezone;
     if (this.expertDetail != null) {
       data['expertDetail'] = this.expertDetail?.toJson();
     }

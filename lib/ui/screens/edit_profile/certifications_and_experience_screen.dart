@@ -139,7 +139,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           alignment: Alignment.bottomRight,
                           children: [
                             TextFormFieldWidget(
-                              onChanged: expertRead.changeAboutCounterValue,
+                              onChanged: expertRead.changeCertificationsValue,
                               controller: expertWatch.certiAndExpModel[index].descriptionController,
                               focusNode: expertWatch.certiAndExpModel[index].descriptionFocus,
                               maxLines: 5,
@@ -153,7 +153,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                             Padding(
                               padding: const EdgeInsets.only(bottom: 8, right: 12),
                               child: BodySmallText(
-                                title: '${expertWatch.enteredText}/200 ${LocaleKeys.characters.tr()}',
+                                title: '${expertWatch.enteredCertificateText}/200 ${LocaleKeys.characters.tr()}',
                                 fontFamily: FontWeightEnum.w400.toInter,
                                 titleColor: ColorConstants.buttonTextColor,
                               ),

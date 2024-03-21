@@ -145,6 +145,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
             fontFamily: FontWeightEnum.w500.toInter,
             titleColor: ColorConstants.buttonTextColor,
             titleTextAlign: TextAlign.center,
+            maxLine: 4,
           )
         ],
       ).addAllPadding(28),
