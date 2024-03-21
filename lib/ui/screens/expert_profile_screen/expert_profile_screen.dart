@@ -72,7 +72,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               ),
                               10.0.spaceX,
                               AutoSizeText(
-                                expertWatch.overAllRating,
+                                expertWatch.overAllRating != '0' ? expertWatch.overAllRating ?? '' : LocaleKeys.newText.tr(),
                                 maxLines: 1,
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,
@@ -92,7 +92,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               ),
                               10.0.spaceX,
                               AutoSizeText(
-                                '\$${double.parse(expertWatch.countController.text).toStringAsFixed(2)}',
+                                '\$${expertWatch.userFees}',
                                 maxLines: 1,
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   color: ColorConstants.overallRatingColor,

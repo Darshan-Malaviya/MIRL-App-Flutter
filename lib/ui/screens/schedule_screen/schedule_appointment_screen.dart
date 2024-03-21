@@ -141,7 +141,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
           ),
           10.0.spaceY,
           BodyMediumText(
-            title: '${LocaleKeys.scheduleDescription.tr()} ${scheduleWatch.expertData?.expertName ?? ''}',
+            title: '${LocaleKeys.scheduleDescription.tr()} ${scheduleWatch.expertData?.expertName?.toUpperCase() ?? ''}',
             fontFamily: FontWeightEnum.w500.toInter,
             titleColor: ColorConstants.buttonTextColor,
             titleTextAlign: TextAlign.center,

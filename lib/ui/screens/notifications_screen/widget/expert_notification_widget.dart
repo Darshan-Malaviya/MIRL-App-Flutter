@@ -94,7 +94,7 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
                         ),
                       ),
               ),
-              notificationProviderWatch.isPageLoading?  20.0.spaceY : 0.0.spaceY,
+              notificationProviderWatch.isPageLoading ? 20.0.spaceY : 0.0.spaceY,
               Visibility(visible: notificationProviderWatch.isPageLoading, child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
             ],
           ).addMarginX(20);

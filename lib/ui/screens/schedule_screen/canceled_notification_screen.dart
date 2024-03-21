@@ -152,7 +152,8 @@ class CanceledNotificationScreen extends StatelessWidget {
                 title: LocaleKeys.backToNotification.tr(),
                 onPressed: () => context.toPop(),
                 fontSize: 15,
-              )
+              ),
+              30.0.spaceY,
             ],
           ).addPaddingX(20),
         ));
