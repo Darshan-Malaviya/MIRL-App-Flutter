@@ -61,6 +61,14 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                           color: ColorConstants.blackColor,
                         )),
                     TextSpan(
+                    //  recognizer: TapGestureRecognizer()..onTap = () => context.toPushNamedAndRemoveUntil(RoutesConstants.expertDetailScreen,args:  widget.args.expertId),
+                    //   recognizer: TapGestureRecognizer()..onTap = () {
+                    //     // if(activeRoute.value == RoutesConstants.videoCallScreen){
+                    //     //
+                    //     // }
+                    //       context.toPop();
+                    //       context.toPop();
+                    //     },
                       text: LocaleKeys.instantCall.tr(),
                       style: TextStyle(
                         color: ColorConstants.bottomTextColor,
@@ -188,11 +196,11 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                     textInputAction: TextInputAction.newline,
                     contentPadding: EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 30),
                     borderRadius: 25,
-                    borderWidth: 0,
-                    enabledBorderColor: ColorConstants.transparentColor,
-                    fillColor: ColorConstants.transparentColor,
-                    focusedBorderColor: ColorConstants.transparentColor,
-                    enableShadow: true,
+                   // borderWidth: 0,
+                   // enabledBorderColor: ColorConstants.transparentColor,
+                   // fillColor: ColorConstants.transparentColor,
+                   // focusedBorderColor: ColorConstants.transparentColor,
+                  //  enableShadow: true,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8, right: 12),
@@ -211,12 +219,14 @@ class _CallFeedbackScreenState extends ConsumerState<CallFeedbackScreen> {
                   onPressed: () {
                     FocusManager.instance.primaryFocus?.unfocus();
                     feedBackRead.rateExpertRequestCall(callHistoryId: widget.callHistoryId);
-                    // if (feedBackWatch.feedbackTypeList.isNotEmpty) {
+                    // if(feedBackWatch.selectedIndex){
                     //   feedBackRead.rateExpertRequestCall(callHistoryId: widget.callHistoryId);
-                    // } else {
-                    //   FlutterToast().showToast(msg: 'please select rate the expert', gravity: ToastGravity.TOP);
+                    // }
+                    // else {
+                    //   FlutterToast().showToast(msg: 'Please pick one emoji to rate the Expert!', gravity: ToastGravity.TOP);
                     // }
                   }),
+              20.0.spaceY
             ],
           ).addMarginX(20),
         ),

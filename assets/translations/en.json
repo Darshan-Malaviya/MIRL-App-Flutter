@@ -286,7 +286,7 @@
   "soSo": "SO-SO!",
   "nice": "NICE!",
   "great": "GREAT!",
-  "howWouldYouRateExpert": "How would you rate the Expert on these criteria on a scale of 1 to 10?",
+  "howWouldYouRateExpert": "How would you rate the Expert on these criteria on a scale of 1 to 10? (optional)",
   "rateTheExpertKnowledge": "Rate the Expert’s knowledge on the topic.",
   "wereTheyCourteous": "Were they courteous and pleasant?",
   "wereTheyAbleToHelp": "Were they able to help you?",
