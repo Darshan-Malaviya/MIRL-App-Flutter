@@ -90,11 +90,11 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                   title: LocaleKeys.appropriateIssue.tr(),
                   titleColor: ColorConstants.buttonTextColor,
                   fontFamily: FontWeightEnum.w400.toInter,
-                ).addMarginX(10),
-                itemHeight: 66,
+                ),
+                itemHeight: 70,
                 value: feedBackWatch.selectedReportCall,
                 isExpanded: true,
-                padding: EdgeInsets.only(right: 6, left: 6, top: 10),
+//                padding: EdgeInsets.only(right: 6, left: 6, top: 10),
                 items: feedBackWatch.reportCallTitleList.map((value) {
                   return DropdownMenuItem(
                     value: value,
@@ -113,14 +113,14 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                           maxLine: 4,
                         ),
                       ],
-                    ),
+                    ).addMarginY(8),
                   );
                 }).toList(),
                 onChanged: (newValue) {
                   feedBackRead.setReportCallTitle(newValue ?? null);
                 },
                 validator: (value) => value == null ? LocaleKeys.filedRequired.tr() : null,
-              ).addMarginX(10),
+              ),
               // ),
               // DropdownMenuWidget(
               //   hintText: LocaleKeys.appropriateIssue.tr(),
@@ -155,11 +155,11 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                     textInputAction: TextInputAction.newline,
                     contentPadding: EdgeInsets.only(left: 16, right: 16, top: 14, bottom: 30),
                     borderRadius: 25,
-                    borderWidth: 0,
-                    enabledBorderColor: ColorConstants.transparentColor,
-                    fillColor: ColorConstants.transparentColor,
-                    enableShadow: true,
-                    focusedBorderColor: ColorConstants.transparentColor,
+                    // borderWidth: 0,
+                    // enabledBorderColor: ColorConstants.transparentColor,
+                    // fillColor: ColorConstants.transparentColor,
+                    //enableShadow: true,
+                    // focusedBorderColor: ColorConstants.transparentColor,
                     onFieldSubmitted: (value) {
                       context.unFocusKeyboard();
                     },
