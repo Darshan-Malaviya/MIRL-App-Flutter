@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
-import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
@@ -96,13 +95,19 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
             _pageNo = _pageNo + 1;
             _reachedLastPage = false;
           }
-          notifyListeners();
+        //  notifyListeners();
         }
         break;
       case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        //FlutterToast().showToast(msg: response.failure?.message ?? '');
+        _reachedLastPage = false;
+        if(_pageNo == 1){
+          _upcomingAppointment = [];
+          _dateList = [];
+        }
         Logger().d("API fail on upcomingAppointmentApiCall Api ${response.data}");
         break;
     }
+    notifyListeners();
   }
 }

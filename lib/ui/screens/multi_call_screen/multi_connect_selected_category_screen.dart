@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -73,144 +72,161 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
         multiProviderRead.clearExpertIds();
         filterRead.clearAllFilter();
       },
-      child: Scaffold(
-        backgroundColor: ColorConstants.greyLightColor,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: ColorConstants.primaryColor,
-          onPressed: () async {
-            await multiProviderRead.setExpertList();
-            FlutterToast().showToast(
-              msg: multiProviderWatch.selectedExperts.length > 1
-                ? 'Nice, you have chosen ${multiProviderWatch.selectedExperts.length} expert for a Multiple Connect Request!'
-                : 'Nice, you have chosen ${multiProviderWatch.selectedExperts.length} experts for a Multiple Connect Request!'
-               // msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.'
-            );
-            multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiCallRequest;
-            multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
+      child: RefreshIndicator(
+        color: ColorConstants.primaryColor,
+        onRefresh: () async {
+          ref.read(multiConnectProvider).getLoggedUserData();
+          await ref.read(multiConnectProvider).getSingleCategoryApiCall(
+              categoryId: widget.args.categoryId ?? '',
+              context: context,
+              requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+          ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);        },
+        child: Scaffold(
+          backgroundColor: ColorConstants.greyLightColor,
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: ColorConstants.primaryColor,
+            onPressed: () async {
+              await multiProviderRead.setExpertList();
+              FlutterToast().showToast(
+                msg:'Nice, you have chosen ${multiProviderWatch.selectedExperts.length} expert(s) for a Multiple Connect Request!'
+                 // msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.'
+              );
+              multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiCallRequest;
+              multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
 
-            CommonBottomSheet.bottomSheet(
-                context: context,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: MultiCallDurationBottomSheetView(onPressed: () {
-                  context.toPop();
-                  allCallDurationNotifier.value = multiProviderWatch.multiCallDuration * 60;
+              CommonBottomSheet.bottomSheet(
+                  context: context,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: MultiCallDurationBottomSheetView(onPressed: () {
+                    context.toPop();
+                    allCallDurationNotifier.value = multiProviderWatch.multiCallDuration * 60;
 
-                  /// user side
-                  NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
-                      args: MultiConnectDialogArguments(
-                        //expertList: multiProviderRead.selectedExpertDetails,
-                        userDetail: multiProviderRead.loggedUserData,
-                        onFirstBtnTap: () {
-                          if (instanceCallEnumNotifier.value == CallRequestTypeEnum.multiRequestTimeout) {
-                            /// tru again
-                          } else {
-                            List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
-                            CustomLoading.progressDialog(isLoading: true);
-                            ref.read(socketProvider).multiConnectRequestEmit(
-                                expertIdsList: data, requestedDuration: multiProviderWatch.multiCallDuration * 60);
-                          }
-                        },
-                        onSecondBtnTap: () {
-                          /// cancel
-                          if (multiConnectCallEnumNotifier.value.secondButtonName ==
-                              LocaleKeys.goBack.tr().toUpperCase()) {
-                            context.toPop();
-                          } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
-                            if (multiProviderWatch.selectedExpertForCall != null &&
-                                multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
-                              multiProviderRead.getPayValue(fee: multiProviderWatch.selectedExpertForCall?.fee ?? 0);
-                              CommonBottomSheet.bottomSheet(
-                                  context: context,
-                                  child: MultiCallPaymentBottomSheetView(onPressed: () {
-                                    context.toPop();
-                                    ref.read(socketProvider).connectCallEmit(
-                                        expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
-                                  }),
-                                  isDismissible: true);
+                    /// user side
+                    NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
+                        args: MultiConnectDialogArguments(
+                          //expertList: multiProviderRead.selectedExpertDetails,
+                          userDetail: multiProviderRead.loggedUserData,
+                          onFirstBtnTap: () {
+                            if (instanceCallEnumNotifier.value == CallRequestTypeEnum.multiRequestTimeout) {
+                              /// tru again
                             } else {
-                              /// Choose any expert for call
-                              FlutterToast().showToast(msg: LocaleKeys.pleasePickOneExpertStartYourCall.tr());
+                              List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
+                              CustomLoading.progressDialog(isLoading: true);
+                              ref.read(socketProvider).multiConnectRequestEmit(
+                                  expertIdsList: data, requestedDuration: multiProviderWatch.multiCallDuration * 60);
                             }
-                          } else {
-                            /// change expert id here
-                            ref.read(socketProvider).multiConnectStatusEmit(
-                                callStatusEnum: CallRequestStatusEnum.cancel,
-                                expertId: null,
-                                userId: SharedPrefHelper.getUserId,
-                                callRoleEnum: CallRoleEnum.user,
-                                callRequestId: SharedPrefHelper.getCallRequestId.toString());
-                            context.toPop();
-                          }
-                        },
-                      ));
-                }),
-                isDismissible: true);
-          },
-          child: Icon(Icons.add,size: 30,color: ColorConstants.buttonTextColor,),
-        ).addVisibility(multiProviderWatch.selectedExperts.isNotEmpty),
-        appBar: AppBarWidget(
-            appBarColor: ColorConstants.greyLightColor,
-            preferSize: 40,
-            leading: InkWell(
-              child: Image.asset(ImageConstants.backIcon),
-              onTap: () {
-                multiProviderRead.clearExpertIds();
-                filterRead.clearAllFilter();
-                context.toPop();
-              },
-            ),),
-        body: multiProviderWatch.isLoading
-            ? Center(
-                child: CupertinoActivityIndicator(
-                  animating: true,
-                  color: ColorConstants.primaryColor,
-                  radius: 16,
-                ),
-              )
-            : SingleChildScrollView(
-                controller: scrollController,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TitleLargeText(
-                      title: LocaleKeys.multipleConnect.tr(),
-                      maxLine: 2,
-                      titleTextAlign: TextAlign.center,
-                    ),
-                    20.0.spaceY,
-                    if (multiProviderWatch.singleCategoryData?.categoryData != null) ...[
-                      CategoryCommonView(
-                        categoryName: multiProviderWatch.singleCategoryData?.categoryData?.name ?? '',
-                        imageUrl: multiProviderWatch.singleCategoryData?.categoryData?.image ?? '',
-                        spreadRadius: 1,
-                        blurRadius: 8,offset: Offset(0,0),
-                        isSelectedShadow: true,
-                      )
-                    ],
-                    20.0.spaceY,
-                    if (multiProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: ColorConstants.scaffoldBg,
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0, 0),
-                              color: ColorConstants.blackColor.withOpacity(0.1),
-                              spreadRadius: 2.0,
-                              blurRadius: 2.0,
-                            ),
-                          ],
-                        ),
-                        child: Wrap(
-                          children:
-                              List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
-                            final data = multiProviderWatch.singleCategoryData?.categoryData?.topic?[index];
-                            int topicIndex = filterWatch.allTopic.indexWhere((element) => element.id == data?.id);
-                            return OnScaleTap(
-                              onPress: () {},
-                              child: ShadowContainer(
+                          },
+                          onSecondBtnTap: () async {
+                            /// cancel
+                            if (multiConnectCallEnumNotifier.value.secondButtonName ==
+                                LocaleKeys.goBack.tr().toUpperCase()) {
+                              context.toPop();
+                              ref.read(multiConnectProvider).getLoggedUserData();
+                              await ref.read(multiConnectProvider).getSingleCategoryApiCall(
+                                  categoryId: widget.args.categoryId ?? '',
+                                  context: context,
+                                  requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+                              ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+                            } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
+                              if (multiProviderWatch.selectedExpertForCall != null &&
+                                  multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
+                                multiProviderRead.getPayValue(fee: multiProviderWatch.selectedExpertForCall?.fee ?? 0);
+                                CommonBottomSheet.bottomSheet(
+                                    context: context,
+                                    child: MultiCallPaymentBottomSheetView(onPressed: () {
+                                      context.toPop();
+                                      ref.read(socketProvider).connectCallEmit(
+                                          expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
+                                    }),
+                                    isDismissible: true);
+                              } else {
+                                /// Choose any expert for call
+                                FlutterToast().showToast(msg: LocaleKeys.pleasePickOneExpertStartYourCall.tr());
+                              }
+                            } else {
+                              /// change expert id here
+                              ref.read(socketProvider).multiConnectStatusEmit(
+                                  callStatusEnum: CallRequestStatusEnum.cancel,
+                                  expertId: null,
+                                  userId: SharedPrefHelper.getUserId,
+                                  callRoleEnum: CallRoleEnum.user,
+                                  callRequestId: SharedPrefHelper.getCallRequestId.toString());
+                              context.toPop();
+                              ref.read(multiConnectProvider).getLoggedUserData();
+                              await ref.read(multiConnectProvider).getSingleCategoryApiCall(
+                                  categoryId: widget.args.categoryId ?? '',
+                                  context: context,
+                                  requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+                              ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+                            }
+                          },
+                        ));
+                  }),
+                  isDismissible: true);
+            },
+            child: Icon(Icons.check,size: 30,color: ColorConstants.buttonTextColor,),
+          ).addVisibility(multiProviderWatch.selectedExperts.isNotEmpty),
+          appBar: AppBarWidget(
+              appBarColor: ColorConstants.greyLightColor,
+              preferSize: 40,
+              leading: InkWell(
+                child: Image.asset(ImageConstants.backIcon),
+                onTap: () {
+                  multiProviderRead.clearExpertIds();
+                  filterRead.clearAllFilter();
+                  context.toPop();
+                },
+              ),),
+          body: multiProviderWatch.isLoading
+              ? Center(
+                  child: CupertinoActivityIndicator(
+                    animating: true,
+                    color: ColorConstants.primaryColor,
+                    radius: 16,
+                  ),
+                )
+              : SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TitleLargeText(
+                        title: LocaleKeys.multipleConnect.tr(),
+                        maxLine: 2,
+                        titleTextAlign: TextAlign.center,
+                      ),
+                      20.0.spaceY,
+                      if (multiProviderWatch.singleCategoryData?.categoryData != null) ...[
+                        CategoryCommonView(
+                          categoryName: multiProviderWatch.singleCategoryData?.categoryData?.name ?? '',
+                          imageUrl: multiProviderWatch.singleCategoryData?.categoryData?.image ?? '',
+                          spreadRadius: 1,
+                          blurRadius: 8,offset: Offset(0,0),
+                          isSelectedShadow: true,
+                        )
+                      ],
+                      20.0.spaceY,
+                      if (multiProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: ColorConstants.scaffoldBg,
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(0, 0),
+                                color: ColorConstants.blackColor.withOpacity(0.1),
+                                spreadRadius: 2.0,
+                                blurRadius: 2.0,
+                              ),
+                            ],
+                          ),
+                          child: Wrap(
+                            children:
+                                List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                              final data = multiProviderWatch.singleCategoryData?.categoryData?.topic?[index];
+                              int topicIndex = filterWatch.allTopic.indexWhere((element) => element.id == data?.id);
+                              return ShadowContainer(
                                 shadowColor: ((filterWatch.allTopic.isEmpty) && index == 0)
                                     ? ColorConstants.primaryColor :
                                      (topicIndex != -1 && (filterWatch.allTopic[topicIndex].isCategorySelected ?? false))
@@ -227,184 +243,184 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                   fontFamily: FontWeightEnum.w500.toInter,
                                   maxLine: 5,
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ],
-                    30.0.spaceY,
-                    PrimaryButton(
-                      title: LocaleKeys.filterFromTopicAndCategories.tr(),
-                      titleColor: ColorConstants.blackColor,
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      onPressed: () => context.toPushNamed(RoutesConstants.multiConnectFilterScreen),
-                      prefixIcon: ImageConstants.filter,
-                      buttonTextFontFamily: FontWeightEnum.w400.toInter,
-                      prefixIconPadding: 10,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                    ),
-                    20.0.spaceY,
-                    if (filterWatch.commonSelectionModel.isNotEmpty) ...[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          20.0.spaceY,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              BodySmallText(
-                                title: LocaleKeys.appliedFilters.tr(),
-                              ),
-                                InkWell(
-                                    onTap: () async {
-                                      multiProviderRead.clearExpertIds();
-                                      filterRead.clearAllFilter(selectedCategoryClearAll: true);
-                                      await multiProviderRead.getSingleCategoryApiCall(
-                                        context: context,
-                                        categoryId: widget.args.categoryId ?? '',
-                                        requestModel: ExpertDataRequestModel(
-                                          userId: SharedPrefHelper.getUserId,
-                                          multiConnectRequest: 'true',
-                                        ),
-                                      );
-                                    },
-                                    child: BodySmallText(
-                                      title: LocaleKeys.clearAll.tr(),
-                                    )),
-                            ],
-                          ),
-                          10.0.spaceY,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(filterWatch.commonSelectionModel.length, (index) {
-                              final data = filterWatch.commonSelectionModel[index];
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                //  if (data.title != null) ...[
-                                    OnScaleTap(
-                                      onPress: () {
-                                        filterRead.removeFilter(
-                                            index: index,
-                                            context: context,
-                                            isFromMultiConnect: true,
-                                            singleCategoryId: widget.args.categoryId,
-                                            multiConnectRequest: 'true');
-                                      },
-                                      child: ShadowContainer(
-                                        border: 20,
-                                        height: 30,
-                                        width: 30,
-                                        shadowColor: ColorConstants.borderColor,
-                                        backgroundColor: ColorConstants.yellowButtonColor,
-                                        offset: Offset(0, 3),
-                                        child: Center(child: Image.asset(ImageConstants.cancel)),
-                                      ),
-                                    ),
-                                    20.0.spaceX,
-                                //  ],
-                                  Flexible(
-                                    child: ShadowContainer(
-                                      border: 10,
-                                      // child :RichText(
-                                      //   softWrap: true,
-                                      //   text: TextSpan(
-                                      //     text:'${data.title} : ',
-                                      //     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      //         color: ColorConstants.buttonTextColor,
-                                      //         fontFamily: FontWeightEnum.w400.toInter,
-                                      //         fontSize: 12),
-                                      //     children: [
-                                      //       WidgetSpan(child: 2.0.spaceX),
-                                      //       TextSpan(
-                                      //           text: '${data.value }',
-                                      //           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      //               color: ColorConstants.buttonTextColor,
-                                      //               fontFamily: FontWeightEnum.w700.toInter,
-                                      //               fontSize: 12))
-                                      //     ],
-                                      //   ),
-                                      //   textAlign: TextAlign.center,
-                                      // ),
-                                      child: BodyMediumText(
-                                        maxLine: 10,
-                                        title: '${data.displayText}: ${data.value}',
-                                        fontFamily: FontWeightEnum.w400.toInter,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ).addPaddingY(10);
+                              );
                             }),
                           ),
-                        ],
-                      ).addPaddingXY(paddingX: 20, paddingY: 10)
-                    ],
-                    if (multiProviderWatch.expertData?.isNotEmpty ?? false) ...[
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        separatorBuilder: (context, index) => 30.0.spaceY,
-                        itemCount:
-                            (multiProviderWatch.expertData?.length ?? 0) + (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                        itemBuilder: (context, i) {
-                          if (i == (multiProviderWatch.expertData?.length ?? 0) &&
-                              (multiProviderWatch.expertData?.isNotEmpty ?? false)) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                        ),
+                      ],
+                      30.0.spaceY,
+                      PrimaryButton(
+                        title: LocaleKeys.filterFromTopicAndCategories.tr(),
+                        titleColor: ColorConstants.blackColor,
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        onPressed: () => context.toPushNamed(RoutesConstants.multiConnectFilterScreen),
+                        prefixIcon: ImageConstants.filter,
+                        buttonTextFontFamily: FontWeightEnum.w400.toInter,
+                        prefixIconPadding: 10,
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                      ),
+                      20.0.spaceY,
+                      if (filterWatch.commonSelectionModel.isNotEmpty) ...[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            20.0.spaceY,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                BodySmallText(
+                                  title: LocaleKeys.appliedFilters.tr(),
+                                ),
+                                  InkWell(
+                                      onTap: () async {
+                                        multiProviderRead.clearExpertIds();
+                                        filterRead.clearAllFilter(selectedCategoryClearAll: true);
+                                        await multiProviderRead.getSingleCategoryApiCall(
+                                          context: context,
+                                          categoryId: widget.args.categoryId ?? '',
+                                          requestModel: ExpertDataRequestModel(
+                                            userId: SharedPrefHelper.getUserId,
+                                            multiConnectRequest: 'true',
+                                          ),
+                                        );
+                                      },
+                                      child: BodySmallText(
+                                        title: LocaleKeys.clearAll.tr(),
+                                      )),
+                              ],
+                            ),
+                            10.0.spaceY,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(filterWatch.commonSelectionModel.length, (index) {
+                                final data = filterWatch.commonSelectionModel[index];
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                  //  if (data.title != null) ...[
+                                      OnScaleTap(
+                                        onPress: () {
+                                          filterRead.removeFilter(
+                                              index: index,
+                                              context: context,
+                                              isFromMultiConnect: true,
+                                              singleCategoryId: widget.args.categoryId,
+                                              multiConnectRequest: 'true');
+                                        },
+                                        child: ShadowContainer(
+                                          border: 20,
+                                          height: 30,
+                                          width: 30,
+                                          shadowColor: ColorConstants.borderColor,
+                                          backgroundColor: ColorConstants.yellowButtonColor,
+                                          offset: Offset(0, 3),
+                                          child: Center(child: Image.asset(ImageConstants.cancel)),
+                                        ),
+                                      ),
+                                      20.0.spaceX,
+                                  //  ],
+                                    Flexible(
+                                      child: ShadowContainer(
+                                        border: 10,
+                                        // child :RichText(
+                                        //   softWrap: true,
+                                        //   text: TextSpan(
+                                        //     text:'${data.title} : ',
+                                        //     style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        //         color: ColorConstants.buttonTextColor,
+                                        //         fontFamily: FontWeightEnum.w400.toInter,
+                                        //         fontSize: 12),
+                                        //     children: [
+                                        //       WidgetSpan(child: 2.0.spaceX),
+                                        //       TextSpan(
+                                        //           text: '${data.value }',
+                                        //           style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        //               color: ColorConstants.buttonTextColor,
+                                        //               fontFamily: FontWeightEnum.w700.toInter,
+                                        //               fontSize: 12))
+                                        //     ],
+                                        //   ),
+                                        //   textAlign: TextAlign.center,
+                                        // ),
+                                        child: BodyMediumText(
+                                          maxLine: 10,
+                                          title: '${data.displayText}: ${data.value}',
+                                          fontFamily: FontWeightEnum.w400.toInter,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ).addPaddingY(10);
+                              }),
+                            ),
+                          ],
+                        ).addPaddingXY(paddingX: 20, paddingY: 10)
+                      ],
+                      if (multiProviderWatch.expertData?.isNotEmpty ?? false) ...[
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          separatorBuilder: (context, index) => 30.0.spaceY,
+                          itemCount:
+                              (multiProviderWatch.expertData?.length ?? 0) + (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                          itemBuilder: (context, i) {
+                            if (i == (multiProviderWatch.expertData?.length ?? 0) &&
+                                (multiProviderWatch.expertData?.isNotEmpty ?? false)) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                              );
+                            }
+                            return Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                ExpertDetailWidget(
+                                  expertData: multiProviderWatch.expertData?[i],
+                                  fromMultiConnect: true,
+                                ).addMarginBottom(22),
+                                PrimaryButton(
+                                  title: multiProviderWatch.expertData?[i].selectedForMultiConnect ?? false
+                                      ? LocaleKeys.selected.tr()
+                                      : LocaleKeys.clickToSelect.tr(),
+                                  buttonColor: multiProviderWatch.expertData?[i].selectedForMultiConnect ?? false
+                                      ? ColorConstants.primaryColor
+                                      : ColorConstants.buttonColor,
+                                  width: 140,
+                                  onPressed: () {
+                                    multiProviderRead.setSelectedExpert(i);
+                                  },
+                                )
+                              ],
                             );
-                          }
-                          return Stack(
-                            alignment: Alignment.bottomCenter,
-                            children: [
-                              ExpertDetailWidget(
-                                expertData: multiProviderWatch.expertData?[i],
-                                fromMultiConnect: true,
-                              ).addMarginBottom(22),
-                              PrimaryButton(
-                                title: multiProviderWatch.expertData?[i].selectedForMultiConnect ?? false
-                                    ? LocaleKeys.selected.tr()
-                                    : LocaleKeys.clickToSelect.tr(),
-                                buttonColor: multiProviderWatch.expertData?[i].selectedForMultiConnect ?? false
-                                    ? ColorConstants.primaryColor
-                                    : ColorConstants.buttonColor,
-                                width: 140,
-                                onPressed: () {
-                                  multiProviderRead.setSelectedExpert(i);
-                                },
-                              )
-                            ],
-                          );
-                        },
-                      )
-                    ] else ...[
-                      Column(
-                        children: [
-                          100.0.spaceY,
-                          BodySmallText(
-                            title: LocaleKeys.noResultFound.tr(),
-                            fontFamily: FontWeightEnum.w600.toInter,
-                          ),
-                          20.0.spaceY,
-                          BodySmallText(
-                            title: LocaleKeys.tryWideningYourSearch.tr(),
-                            fontFamily: FontWeightEnum.w400.toInter,
-                            titleTextAlign: TextAlign.center,
-                            maxLine: 5,
-                          ),
-                          30.0.spaceY,
-                        ],
-                      ).addMarginX(40),
-                    ]
-                  ],
+                          },
+                        )
+                      ] else ...[
+                        Column(
+                          children: [
+                            100.0.spaceY,
+                            BodySmallText(
+                              title: LocaleKeys.noResultFound.tr(),
+                              fontFamily: FontWeightEnum.w600.toInter,
+                            ),
+                            20.0.spaceY,
+                            BodySmallText(
+                              title: LocaleKeys.tryWideningYourSearch.tr(),
+                              fontFamily: FontWeightEnum.w400.toInter,
+                              titleTextAlign: TextAlign.center,
+                              maxLine: 5,
+                            ),
+                            30.0.spaceY,
+                          ],
+                        ).addMarginX(40),
+                      ]
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -517,8 +533,9 @@ class _MultiCallPaymentBottomSheetViewState extends ConsumerState<MultiCallPayme
                   softWrap: true,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstants.overallRatingColor,
-                    shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
-                  ),
+                    shadows: [
+                      Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                    ],                  ),
                 )
               ],
             ),
@@ -537,7 +554,13 @@ class _MultiCallPaymentBottomSheetViewState extends ConsumerState<MultiCallPayme
                   maxLines: 2,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstants.overallRatingColor,
-                    shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
+                    shadows: [
+                      Shadow(
+                        offset: Offset(0, 1),
+                        blurRadius: 3,
+                        color: ColorConstants.blackColor.withOpacity(0.25),
+                      )
+                    ],
                   ),
                 )
               ],

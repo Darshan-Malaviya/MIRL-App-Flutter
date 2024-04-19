@@ -26,10 +26,10 @@ class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirl
         20.0.spaceY,
         TextFormFieldWidget(
           labelTextSpace: 0.0,
-          borderWidth:1,
+          borderWidth: 1,
           onTap: () {},
           textInputAction: TextInputAction.done,
-          onFieldSubmitted: (value){
+          onFieldSubmitted: (value) {
             context.unFocusKeyboard();
           },
           height: 45,
@@ -52,12 +52,33 @@ class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirl
           fontSize: 10,
         ),
         60.0.spaceY,
-        TitleSmallText(
-          fontFamily: FontWeightEnum.w500.toInter,
-          title: LocaleKeys.referralCode.tr(),
-          titleColor: ColorConstants.blackColor,
-          titleTextAlign: TextAlign.center,
-          maxLine: 10,
+        // TitleSmallText(
+        //   fontFamily: FontWeightEnum.w500.toInter,
+        //   title: LocaleKeys.referralCode.tr(),
+        //   titleColor: ColorConstants.blackColor,
+        //   titleTextAlign: TextAlign.center,
+        //   maxLine: 10,
+        // ),
+        RichText(
+          softWrap: true,
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: LocaleKeys.referralCode.tr(),
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(color: ColorConstants.blackColor, fontFamily: FontWeightEnum.w500.toInter),
+            children: [
+              WidgetSpan(child: 2.0.spaceX),
+              TextSpan(
+                text: LocaleKeys.referral.tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: ColorConstants.bottomTextColor, fontFamily: FontWeightEnum.w500.toInter),
+              ),
+            ],
+          ),
         ),
       ],
     );

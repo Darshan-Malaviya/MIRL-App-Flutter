@@ -63,6 +63,10 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                       controller: scrollController,
                       elements: callHistoryWatch.callHistoryData,
                       groupBy: (element) {
+                        print("check==========================${DateTime(DateTime.parse(element.date ?? '').year,
+                            DateTime.parse(element.date ?? '').month, DateTime.parse(element.date ?? '').day)
+                            .toString()
+                            .toDisplayMonthWithYear()}");
                         return DateTime(DateTime.parse(element.date ?? '').year,
                                 DateTime.parse(element.date ?? '').month, DateTime.parse(element.date ?? '').day)
                             .toString()
@@ -70,7 +74,7 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                       },
                       groupComparator: (value1, value2) => value2.compareTo(value1),
                       shrinkWrap: true,
-                      sort: true,
+                      sort: false,
                       groupSeparatorBuilder: (value) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -210,7 +214,7 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                            RichText(
                                              softWrap: true,
                                              text: TextSpan(
-                                               text: widget.role == 1
+                                               text: widget.role == 2
                                                    ? LocaleKeys.userWith.tr()
                                                    : LocaleKeys.expertWith.tr(),
                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -329,15 +333,40 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                                 .toUpperCase() ??
                                                 '',
                                               fontFamily: FontWeightEnum.w400.toInter,
-                                              titleColor: ColorConstants.buttonTextColor,),
+                                              titleColor: ColorConstants.buttonTextColor),
                                             10.0.spaceX,
                                             Flexible(
-                                              child: BodySmallText(title: element.callStatusHistory?[index].status ?? '',
-                                              fontFamily: FontWeightEnum.w400.toInter,
-                                              maxLine: 6,
-                                              titleColor: ColorConstants.buttonTextColor,),
-                                            )
-                                          ],
+                                                  child: element.requestType == '3'
+                                                      ? RichText(
+                                                          text: TextSpan(
+                                                            text: element.callStatusHistory?[index].status ?? '',
+                                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                                color: ColorConstants.buttonTextColor,
+                                                                fontFamily: FontWeightEnum.w400.toInter,
+                                                                fontSize: 12),
+                                                            children: [
+                                                              WidgetSpan(child: 4.0.spaceX),
+                                                              TextSpan(
+                                                                  text: element.callStatusHistory?[index].firstCreated
+                                                                          ?.toDisplayDateWithMonth()
+                                                                          ?.toUpperCase() ??
+                                                                      '',
+                                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                                      color: ColorConstants.buttonTextColor,
+                                                                      fontFamily: FontWeightEnum.w400.toInter,
+                                                                      fontSize: 12)),
+                                                            ],
+                                                          ),
+                                                          textAlign: TextAlign.start,
+                                                        )
+                                                      : BodySmallText(
+                                                          title: element.callStatusHistory?[index].status ?? '',
+                                                          fontFamily: FontWeightEnum.w400.toInter,
+                                                          maxLine: 6,
+                                                          titleColor: ColorConstants.buttonTextColor,
+                                                        ),
+                                                )
+                                              ],
                                         ).addPaddingBottom(10);
                                           }),
                                     ),

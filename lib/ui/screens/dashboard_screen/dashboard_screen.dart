@@ -1,16 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
-import 'package:mirl/infrastructure/commons/utils/value_notifier_utils.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
-import 'package:mirl/infrastructure/services/socket_service.dart';
-import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
+import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+  import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen/notification_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/user_seeting_screen.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   final int index;
@@ -27,6 +24,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    FirebaseMessaging.instance.onTokenRefresh.listen((String token) async {
+      //FlutterToast().showToast(msg: 'Refresh Token: $token', gravity: ToastGravity.TOP);
+      log('Refresh Token:===== $token');
+      await ref.read(loginScreenProvider).appStartUpAPI(fcmToken: token);
+    });
     pageController = PageController(initialPage: widget.index);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       instanceRequestTimerNotifier = ValueNotifier<int>(120);

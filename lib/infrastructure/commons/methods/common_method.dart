@@ -1,3 +1,5 @@
+import 'package:android_id/android_id.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -13,7 +15,19 @@ class CommonMethods {
     return await FlutterTimezone.getLocalTimezone();
   }
 
- static String numberToWord(int number) {
+  static Future<String> getDeviceIdentifier() async {
+    if (Platform.isAndroid) {
+      const _androidIdPlugin = AndroidId();
+      String? androidId = await _androidIdPlugin.getId();
+      return androidId ?? '';
+    } else {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.identifierForVendor ?? '';
+    }
+  }
+
+  static String numberToWord(int number) {
     if (number < 0 || number > 99) {
       return "Number out of range";
     }
@@ -87,11 +101,11 @@ class CommonMethods {
     if (index != -1) {
       favoriteListNotifier.value.removeWhere((element) => element.id == blockedUserId);
     }
-    if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
-      await FlutterToast().showToast(msg: "Sorry! You are blocked by this expert.");
-      await Future.delayed(const Duration(seconds: 1));
-      NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
-    }
+    // if (activeRoute.value == RoutesConstants.instantCallRequestDialogScreen) {
+    //   await FlutterToast().showToast(msg: "Sorry! You are blocked by this expert.");
+    //   await Future.delayed(const Duration(seconds: 1));
+    //   NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
+    // }
   }
 
   static void onTapNotification(String data, BuildContext context) {

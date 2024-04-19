@@ -5,6 +5,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/infrastructure/models/common/expert_data_model.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class ExpertDetailWidget extends StatelessWidget {
   final ExpertData? expertData;
@@ -29,7 +30,10 @@ class ExpertDetailWidget extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: InkWell(
         onTap: () {
-          context.toPushNamed(RoutesConstants.expertDetailScreen, args: expertData?.id.toString());
+          context.toPushNamed(
+            RoutesConstants.expertDetailScreen,
+            args: CallFeedBackArgs(expertId: expertData?.id.toString(), callType: ''),
+          );
         },
         child: Stack(
           children: [
@@ -94,7 +98,12 @@ class ExpertDetailWidget extends StatelessWidget {
                           expertData?.overAllRating != 0 && expertData?.overAllRating != null
                               ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: ColorConstants.bottomTextColor,
+                            shadows: [
+                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -112,7 +121,12 @@ class ExpertDetailWidget extends StatelessWidget {
                         AutoSizeText(
                           fee != null ? '\$${fee}' : LocaleKeys.proBono.tr(),
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: ColorConstants.bottomTextColor,
+                            shadows: [
+                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                            ],
+                          ),
                         )
                       ],
                     ),

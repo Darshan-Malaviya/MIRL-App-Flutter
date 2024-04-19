@@ -64,6 +64,7 @@ class UserData {
   String? activeAt;
   bool? isFavorite;
   int? onlineStatus;
+  bool? isAvailableForCall;
   int? overAllRating;
   List<CertificationData>? certification;
   List<WeeklyAvailableData>? expertAvailability;
@@ -100,6 +101,7 @@ class UserData {
       this.expertReviews,
       this.ratingCriteria,
       this.onlineStatus,
+      this.isAvailableForCall,
       this.overAllRating});
 
   UserData.fromJson(Map<String, dynamic> json) {
@@ -125,6 +127,7 @@ class UserData {
     lastModified = json['lastModified'];
     activeAt = json['activeAt'];
     onlineStatus = json['onlineStatus'];
+    isAvailableForCall = json['isAvailableForCall'];
     isFavorite = json['isFavorite'];
     overAllRating = json['overAllRating'];
     if (json['certification'] != null) {
@@ -184,6 +187,7 @@ class UserData {
     data['activeAt'] = this.activeAt;
     data['isFavorite'] = this.isFavorite;
     data['onlineStatus'] = this.onlineStatus;
+    data['isAvailableForCall'] = this.isAvailableForCall;
     data['overAllRating'] = this.overAllRating;
     if (this.certification != null) {
       data['certification'] = this.certification?.map((v) => v.toJson()).toList();

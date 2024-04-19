@@ -79,12 +79,13 @@ class _DetYourWeeklyAvailabilityScreenState extends ConsumerState<SetYourWeeklyA
                   onTap: (index) {
                     if (expertWatch.tabIndex != index) {
                       CommonAlertDialog.permissionAlert(
-                          context: context,bgColor: ColorConstants.scaffoldBg,
-                          barrierColor: ColorConstants.whiteColor,
+                          context: context,
+                          bgColor: ColorConstants.whiteColor,
+                         // barrierColor: ColorConstants.whiteColor,
                           child: WeekAvailabilityDialog(
                             //title: index == 0 ? 'Would you like to change?': '',
                               description: index == 0 ? LocaleKeys.sameScheduleRepeat.tr() : LocaleKeys.setManually.tr(),
-                              icon: index == 0 ? ImageConstants.recurring : ImageConstants.nonRecurring),
+                              icon: index == 0 ? ImageConstants.nonRecurring : ImageConstants.recurring),
                           acceptButtonTitle: StringConstants.yes,
                           discardButtonTitle: StringConstants.cancel,
                           onDiscardTap: () {

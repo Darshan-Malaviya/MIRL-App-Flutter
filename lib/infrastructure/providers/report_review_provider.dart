@@ -9,6 +9,7 @@ import 'package:mirl/infrastructure/models/response/rate_and_review_response_mod
 import 'package:mirl/infrastructure/models/response/report_call_title_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/repository/report_repo.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/componnet/call_feedback_model.dart';
 
 class ReportReviewProvider extends ChangeNotifier {
@@ -217,7 +218,7 @@ class ReportReviewProvider extends ChangeNotifier {
     }
   }
 
-  void rateExpertRequestCall({required int callHistoryId}) {
+  void rateExpertRequestCall({required int callHistoryId,required String expertId,required String callType}) {
     List<RatingCriteria> ratingCriteria = [];
 
     int index = 0;
@@ -233,10 +234,10 @@ class ReportReviewProvider extends ChangeNotifier {
       rating: selectedIndex,
       callHistoryId: callHistoryId,
     );
-    rateExpertApiCall(requestModel: rateExpertRequestModel.prepareRequest());
+    rateExpertApiCall(requestModel: rateExpertRequestModel.prepareRequest(),expertId: expertId,callType: callType);
   }
 
-  Future<void> rateExpertApiCall({required Object requestModel}) async {
+  Future<void> rateExpertApiCall({required Object requestModel,required String expertId,required String callType}) async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _reportRepository.rateExpertApi(requestModel: requestModel);
     CustomLoading.progressDialog(isLoading: false);
@@ -247,7 +248,7 @@ class ReportReviewProvider extends ChangeNotifier {
 
           Logger().d("Successfully user rate expert API");
           // FlutterToast().showToast(msg: responseModel.message ?? '');
-          NavigationService.context.toPushNamed(RoutesConstants.feedbackSubmittingScreen);
+          NavigationService.context.toPushNamed(RoutesConstants.feedbackSubmittingScreen,args: CallFeedBackArgs(expertId: expertId,callType: callType));
         }
         break;
       case APIStatus.failure:
@@ -279,7 +280,7 @@ class ReportReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> reportCallApiCall({required int callHistoryId}) async {
+  Future<void> reportCallApiCall({required int callHistoryId,required String expertId,required String callType}) async {
     ReportCallRequestModel reportCallRequestModel = ReportCallRequestModel(
         callHistoryId: callHistoryId, message: callIssueController.text.trim(), reportCallTitleId: selectedReportCall?.id);
     ApiHttpResult response = await _reportRepository.reportCallApi(requestModel: reportCallRequestModel.prepareRequest());
@@ -290,7 +291,7 @@ class ReportReviewProvider extends ChangeNotifier {
           UnBlockUserResponseModel responseModel = response.data;
           Logger().d("Successfully report call API");
           //FlutterToast().showToast(msg: responseModel.message ?? '');
-          NavigationService.context.toPushNamed(RoutesConstants.reportedSubmittingScreen);
+          NavigationService.context.toPushNamed(RoutesConstants.reportedSubmittingScreen,args: CallFeedBackArgs(expertId: expertId,callType: callType));
         }
         break;
       case APIStatus.failure:

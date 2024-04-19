@@ -9,6 +9,7 @@ import 'package:mirl/ui/screens/block_user/block_user_list_screen.dart';
 import 'package:mirl/ui/screens/block_user/block_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/report_user_screen.dart';
 import 'package:mirl/ui/screens/block_user/thanks_screen.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/call_feedback_screen.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/feedback_submiting_screen.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/report_problem_with_your_call_screen.dart';
@@ -61,18 +62,19 @@ import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/suggestion/suggest_new_experties_screen.dart';
 import 'package:mirl/ui/screens/suggestion/thanks_giving_screen.dart';
 import 'package:mirl/ui/screens/upcoming_appointment_screen/upcoming_appointment_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/edit_your_email_id_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/edit_your_name_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/edit_your_phone_number_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/help_and_terms_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/mirl_connect_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/notification_and_preferences_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/payment_details_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/report_an_issue_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/screens/seekar_call_history_screen.dart';
-import 'package:mirl/ui/screens/user_setting_screen%20/user_seeting_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/screens/edit_your_name_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/screens/edit_your_phone_number_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/screens/help_and_terms_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/screens/mirl_connect_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/screens/notification_and_preferences_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/screens/payment_details_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/screens/report_an_issue_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/screens/seekar_call_history_screen.dart';
+import 'package:mirl/ui/screens/user_setting_screen/user_seeting_screen.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
+
+import '../../../ui/screens/user_setting_screen/screens/edit_your_email_id_screen.dart';
 
 ///use this service for provide global context to widgets
 class NavigationService {
@@ -136,7 +138,7 @@ class RouterConstant {
       case RoutesConstants.searchScreen:
         return MaterialPageRoute(builder: (_) => const SearchScreen());
       case RoutesConstants.expertDetailScreen:
-        return MaterialPageRoute(builder: (_) => ExpertDetailScreen(expertId: settings.arguments as String));
+        return MaterialPageRoute(builder: (_) => ExpertDetailScreen(args: settings.arguments as CallFeedBackArgs));
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.exploreExpertScreen:
@@ -210,13 +212,13 @@ class RouterConstant {
       case RoutesConstants.expertCallHistoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCallHistoryScreen());
       case RoutesConstants.callFeedbackScreen:
-        return MaterialPageRoute(builder: (_) => CallFeedbackScreen(callHistoryId: settings.arguments as int));
+        return MaterialPageRoute(builder: (_) => CallFeedbackScreen(args: settings.arguments as CallFeedBackArgs));
       case RoutesConstants.feedbackSubmittingScreen:
-        return MaterialPageRoute(builder: (_) => const FeedbackSubmittingScreen());
+        return MaterialPageRoute(builder: (_) => FeedbackSubmittingScreen(args: settings.arguments as CallFeedBackArgs));
       case RoutesConstants.reportProblemWithYourCallScreen:
-        return MaterialPageRoute(builder: (_) => ReportProblemWithYourCallScreen(callHistoryId: settings.arguments as int));
+        return MaterialPageRoute(builder: (_) => ReportProblemWithYourCallScreen(args: settings.arguments as CallFeedBackArgs));
       case RoutesConstants.reportedSubmittingScreen:
-        return MaterialPageRoute(builder: (_) => const ReportedSubmittingScreen());
+        return MaterialPageRoute(builder: (_) =>  ReportedSubmittingScreen(args: settings.arguments as CallFeedBackArgs));
       case RoutesConstants.canceledNotificationScreen:
         return MaterialPageRoute(builder: (_) => CanceledNotificationScreen(args: settings.arguments as CancelArgs));
       default:

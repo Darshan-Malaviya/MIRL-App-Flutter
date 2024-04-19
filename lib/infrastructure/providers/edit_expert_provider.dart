@@ -228,7 +228,6 @@ class EditExpertProvider extends ChangeNotifier {
 
   void setSelectedCountry({required CountryModel value}) {
     countryNameController.text = value.country ?? '';
-
     cityNameController.clear();
     notifyListeners();
   }

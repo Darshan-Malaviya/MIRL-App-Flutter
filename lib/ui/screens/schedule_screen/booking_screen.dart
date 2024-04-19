@@ -118,7 +118,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
                 children: [
                   BodySmallText(
                     title:
-                        '${scheduleWatch.appointmentData?.startTime?.to12HourTimeFormat().toLowerCase() ?? ''} - ${scheduleWatch.appointmentData?.endTime?.to12HourTimeFormat().toLowerCase() ?? ''}',
+                        '${scheduleWatch.appointmentData?.startTime?.to24HourTimeFormatLocal().toLowerCase() ?? ''} - ${scheduleWatch.appointmentData?.endTime?.to24HourTimeFormatLocal().toLowerCase() ?? ''}',
                     fontSize: 13,
                     titleColor: ColorConstants.buttonTextColor,
                   ),

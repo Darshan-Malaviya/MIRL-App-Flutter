@@ -37,6 +37,8 @@ class MultiConnectProvider extends ChangeNotifier {
   int get categoryPageNo => _categoryPageNo;
   int _categoryPageNo = 1;
 
+  int? approveExpertLength;
+
   bool get reachedCategoryLastPage => _reachedCategoryLastPage;
   bool _reachedCategoryLastPage = false;
 

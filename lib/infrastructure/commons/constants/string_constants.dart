@@ -96,7 +96,7 @@ class StringConstants {
   static const String accountNumber = "ACCOUNT NUMBER";
   static const String welcomeExpertProfile = "Welcome! :-) This is your Expert profile page!";
   static const String soWhatNext =
-      "So what next? It’s time to tag your expertise,set your fees, update your availability,and sit back. You’ll start receiving notifications in no time from other seekers who want to learn from your expertise! ";
+      "So what next? It’s time to tag your expertise, set your fees, update your availability, and sit back. You’ll start receiving notifications in no time from other seekers who want to learn from your expertise! ";
   static const String clickEditProfile =
       "Click on the “Edit Profile” button just above this section, and follow the steps to complete and activate your Expert Profile!";
   static const String goodLuck = "Good luck, and we hope you enjoy sharing your expertise with other seekers on MIRL!";
@@ -161,4 +161,5 @@ class StringConstants {
   static const String sortReviews = 'SORT REVIEWS BY:';
   static const String callsPaused = 'ZEN MODE: CALLS PAUSED';
   static const String aboutMe = 'ABOUT ME';
+  static const String pickTopic = 'Pick a topic';
 }

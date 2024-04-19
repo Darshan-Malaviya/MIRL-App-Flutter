@@ -133,6 +133,17 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                                 currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus,
                                 nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
                           },
+                          validator: (urlValue) {
+                            return urlValue?.toUrlValidation(urlValue);
+                          }
+                          //   RegExp regex =
+                          //   RegExp(r'^https?:\/\/(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?$');
+                          //   var value = urlValue ?? "";
+                          //  if (!regex.hasMatch(value)) {
+                          //     return ("Please enter a valid URL");
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         20.0.spaceY,
                         Stack(

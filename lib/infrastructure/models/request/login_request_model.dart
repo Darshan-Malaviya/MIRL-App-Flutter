@@ -8,8 +8,9 @@ class LoginRequestModel {
   String? deviceToken;
   String? timezone;
   String? voIpToken;
+  String? deviceId;
 
-  LoginRequestModel({this.email, this.loginType, this.deviceType, this.socialId, this.deviceToken, this.timezone,this.voIpToken});
+  LoginRequestModel({this.email, this.loginType, this.deviceType, this.socialId, this.deviceToken, this.timezone,this.voIpToken,this.deviceId});
 
   LoginRequestModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -19,6 +20,7 @@ class LoginRequestModel {
     deviceToken = json['deviceToken'];
     timezone = json['timezone'];
     voIpToken = json['voIpToken'];
+    voIpToken = json['deviceId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +32,7 @@ class LoginRequestModel {
     data['deviceToken'] = this.deviceToken;
     data['timezone'] = this.timezone;
     data['voIpToken'] = this.voIpToken;
+    data['deviceId'] = this.deviceId;
     return data;
   }
 
@@ -41,6 +44,7 @@ class LoginRequestModel {
     data['deviceToken'] = this.deviceToken;
     data['timezone'] = this.timezone;
     data['voIpToken'] = this.voIpToken;
+    data['deviceId'] = this.deviceId;
     return data;
   }
 

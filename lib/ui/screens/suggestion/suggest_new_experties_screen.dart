@@ -225,13 +225,10 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                           controller: suggestNewExpertiseRead.newTopicController,
                           textInputType: TextInputType.multiline,
                           textInputAction: TextInputAction.newline,
+                          enabledBorderColor: ColorConstants.dropDownBorderColor,
                           contentPadding: EdgeInsets.only(left: 16, right: 16, top: 14, bottom: 30),
                           borderRadius: 25,
-                          borderWidth: 0,
-                          enabledBorderColor: ColorConstants.transparentColor,
-                          fillColor: ColorConstants.transparentColor,
-                          enableShadow: true,
-                          focusedBorderColor: ColorConstants.transparentColor,
+                          borderWidth: 1,
                           onFieldSubmitted: (value) {
                             context.unFocusKeyboard();
                           },
@@ -265,7 +262,10 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                     ),
                     20.0.spaceY,
                   ],
-                ).addPaddingXY(paddingX: 30, paddingY: 10))));
+          ).addPaddingXY(paddingX: 30, paddingY: 10),
+        ),
+      ),
+    );
   }
 
   TextFormFieldWidget buildTextFormFieldWidget(
