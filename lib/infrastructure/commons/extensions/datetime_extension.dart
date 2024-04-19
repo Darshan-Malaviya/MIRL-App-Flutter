@@ -31,7 +31,7 @@ extension DateTimeFormatter on String {
   ///11:00 am
   String to24HourTimeFormatLocal() {
     try {
-      DateTime timeStamp = DateFormat('hh:mm:ss').parse(this).toLocal();
+      DateTime timeStamp = DateFormat.Hms().parseUTC(this).toLocal();
       var output = DateFormat('hh:mma').format(timeStamp);
       return output;
     } catch (e) {
@@ -98,11 +98,11 @@ extension DateTimeFormatter on String {
       DateTime now = DateTime.now();
       DateTime endLocalTime = DateTime.parse(this).toLocal();
       DateTime startLocalTime = DateTime.parse(startTime).toLocal();
-      String value1 = DateFormat('h:mm a').format(DateTime.parse(this));
+      String value1 = DateFormat('h:mm a').format(endLocalTime);
       String value2 = DateFormat('h:mm a').format(startLocalTime);
       final lastTimeOfDay = DateFormat('h:mm a').format(DateTime(now.year, now.month, now.day, 0, 0).toUtc());
       if (value2 == value1) {
-        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute);
+        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute - 1);
         return setTimeOfDay;
       } else {
         DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, endLocalTime.hour, endLocalTime.minute);

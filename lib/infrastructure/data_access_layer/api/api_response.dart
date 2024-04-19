@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:mirl/infrastructure/models/common/common_model.dart';
 
 enum APIStatus { success, failure }

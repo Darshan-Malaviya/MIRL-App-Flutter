@@ -73,7 +73,7 @@ class NotificationListDetails {
 
 class NotificationDetails {
   int? id;
-  String? isRead;
+  bool? isRead;
   NotificationListData? notification;
 
   NotificationDetails({this.id, this.isRead, this.notification});

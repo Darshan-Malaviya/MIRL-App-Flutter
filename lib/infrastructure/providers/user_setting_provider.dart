@@ -36,6 +36,7 @@ class UserSettingProvider extends ChangeNotifier {
 
     if (image != null && image.isNotEmpty) {
       _pickedImage = image;
+      updateProfileApi();
       notifyListeners();
     }
   }
@@ -45,6 +46,7 @@ class UserSettingProvider extends ChangeNotifier {
 
     if (image != null && image.isNotEmpty) {
       _pickedImage = image;
+      updateProfileApi();
       notifyListeners();
     }
   }

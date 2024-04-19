@@ -81,4 +81,5 @@ class ApiConstants {
   static const String callHistory = '/history';
   static const String reportCallTitles = '/reportCallTitles';
   static const String reportCall = '/reportCall';
+  static const String appStartUp = '/appStartUp';
 }

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,7 +36,12 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
         trailingIcon: InkWell(
           onTap: () {
             feesFocusNode.unfocus();
-            expertRead.updateFeesApi();
+            if(double.parse(expertWatch.countController.text) >= 501){
+             FlutterToast().showToast(
+            msg: LocaleKeys.maximumFee.tr());
+            }else{
+              expertRead.updateFeesApi();
+            }
           },
           child: TitleMediumText(
             title: StringConstants.done,
@@ -78,7 +85,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
               ).addAllPadding(16),
               FeesActionButtonWidget(
                   icons: ImageConstants.plus,
-                  isDisable: expertWatch.countController.text.isNotEmpty ? double.parse(expertWatch.countController.text) >= 500 : false,
+                  //isDisable: expertWatch.countController.text.isNotEmpty ? double.parse(expertWatch.countController.text) >= 500 : false,
                   onTap: () {
                     expertRead.increaseFees();
                   }),

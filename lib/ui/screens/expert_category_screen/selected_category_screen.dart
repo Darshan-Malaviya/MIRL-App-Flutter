@@ -151,26 +151,23 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                               List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                             final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
                             int topicIndex = filterProviderWatch.allTopic.indexWhere((element) => element.id == data?.id);
-                            return OnScaleTap(
-                              onPress: () {},
-                              child: ShadowContainer(
-                                shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0)
-                                    ? ColorConstants.primaryColor :
-                                    (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
-                                        ? ColorConstants.primaryColor
-                                        : ColorConstants.blackColor.withOpacity(0.1),
-                                backgroundColor: ColorConstants.whiteColor,
-                                isShadow: true,
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                margin: EdgeInsets.only(bottom: 10, right: 10),
-                                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                // offset: Offset(0, 3),
-                                child: BodyMediumText(
-                                  title: data?.name ?? '',
-                                  fontFamily: FontWeightEnum.w500.toInter,
-                                  maxLine: 5,
-                                ),
+                            return ShadowContainer(
+                              shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0)
+                                  ? ColorConstants.primaryColor :
+                                  (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
+                                      ? ColorConstants.primaryColor
+                                      : ColorConstants.blackColor.withOpacity(0.1),
+                              backgroundColor: ColorConstants.whiteColor,
+                              isShadow: true,
+                              spreadRadius: 1,
+                              blurRadius: 2,
+                              margin: EdgeInsets.only(bottom: 10, right: 10),
+                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              // offset: Offset(0, 3),
+                              child: BodyMediumText(
+                                title: data?.name ?? '',
+                                fontFamily: FontWeightEnum.w500.toInter,
+                                maxLine: 5,
                               ),
                             );
                           }),

@@ -84,10 +84,9 @@ class _ReportAnIssueScreenState extends ConsumerState<ReportAnIssueScreen> {
                     textInputAction: TextInputAction.newline,
                     contentPadding: EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 30),
                     borderRadius: 25,
-                    enabledBorderColor: ColorConstants.transparentColor,
-                    fillColor: ColorConstants.transparentColor,focusedBorderColor: ColorConstants.transparentColor,
-                    enableShadow: true,
-                    border: InputBorder.none,
+                   // enabledBorderColor: ColorConstants.transparentColor,
+                    //fillColor: ColorConstants.transparentColor,focusedBorderColor: ColorConstants.transparentColor,
+                    //border: InputBorder.none,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8, right: 12),

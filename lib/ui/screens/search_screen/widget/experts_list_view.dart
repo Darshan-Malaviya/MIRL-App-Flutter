@@ -4,6 +4,7 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class ExpertsListView extends ConsumerStatefulWidget {
   const ExpertsListView({super.key});
@@ -35,7 +36,7 @@ class _ExpertsListViewState extends ConsumerState<ExpertsListView> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    context.toPushNamed(RoutesConstants.expertDetailScreen, args: homeProviderWatch.homeSearchData?.users?[index].id.toString());
+                    context.toPushNamed(RoutesConstants.expertDetailScreen, args: CallFeedBackArgs(expertId: homeProviderWatch.homeSearchData?.users?[index].id.toString(),callType: ''));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

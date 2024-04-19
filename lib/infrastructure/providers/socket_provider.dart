@@ -15,6 +15,7 @@ import 'package:mirl/infrastructure/commons/enums/call_timer_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
 import 'package:mirl/infrastructure/models/common/instance_call_emits_response_model.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
@@ -320,6 +321,13 @@ class SocketProvider extends ChangeNotifier {
   void connectCallEmit({required String expertId, String? callRequestId}) {
     try {
       Logger().d('connectCallEmit ==== Success');
+      Logger().d('multiConnectStatusEmit ==== Request');
+      Logger().d(
+          '${AppConstants.expertId} : $expertId,'
+              '${AppConstants.userId} : ${SharedPrefHelper.getUserId.toString()},'
+              '${AppConstants.uuid} : ${const Uuid().v4().toString()},'
+              '${AppConstants.isVideo} :"true" ,'
+              '${AppConstants.callRequestId} : ${callRequestId ?? SharedPrefHelper.getCallRequestId.toString()},');
       String userId = SharedPrefHelper.getUserId.toString();
       socket?.emit(AppConstants.connectCall, {
         AppConstants.expertId: expertId,
@@ -417,7 +425,7 @@ class SocketProvider extends ChangeNotifier {
                  if(model.data?.userId.toString() == SharedPrefHelper.getUserId.toString()) {
                    if(activeRoute.value == RoutesConstants.videoCallScreen){
                      NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
-                         args: int.parse(extraResponseModel?.callHistoryId ?? ''));
+                         args: CallFeedBackArgs(callHistoryId: int.parse(extraResponseModel?.callHistoryId ?? ''),expertId:extraResponseModel?.expertId ?? '',callType: extraResponseModel?.requestType ?? '' ));
                    }
                  } else {
                    await FlutterCallkitIncoming.endAllCalls();
@@ -489,7 +497,10 @@ class SocketProvider extends ChangeNotifier {
                   await FlutterCallkitIncoming.endAllCalls();
                 } else {
                   NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.callFeedbackScreen,
-                      args: int.parse(extraResponseModel?.callHistoryId ?? ''));
+                      // args: int.parse(extraResponseModel?.callHistoryId ?? '')
+                      args: CallFeedBackArgs(
+                          callHistoryId: int.parse(extraResponseModel?.callHistoryId ?? ''),
+                          expertId: extraResponseModel?.expertId ?? '',callType:extraResponseModel?.requestType ?? '' ));
                 }
               }
               instanceRequestTimerNotifier = ValueNotifier<int>(120);
@@ -657,7 +668,14 @@ class SocketProvider extends ChangeNotifier {
   void multiConnectStatusEmit({required String? expertId,required String userId,
     required CallRequestStatusEnum callStatusEnum, required CallRoleEnum callRoleEnum, required String callRequestId}) {
     try {
-      Logger().d('multiConnectStatusEmit ==== Success');
+      Logger().d('multiConnectStatusEmit ==== Request');
+      Logger().d(
+          '${AppConstants.expertId} : $expertId,'
+              '${AppConstants.userId} : $userId,'
+              '${AppConstants.role} : ${callRoleEnum.roleToNumber},'
+              '${AppConstants.callStatus} : ${callStatusEnum.callRequestStatusToNumber},'
+              '${AppConstants.callRequestId} : ${callRequestId},'
+              '${AppConstants.time} : ${DateTime.now().toUtc().toString()},');
       socket?.emit(AppConstants.multiConnectUpdateStatus, {
         AppConstants.expertId: expertId,
         AppConstants.userId: userId,
@@ -712,7 +730,7 @@ class SocketProvider extends ChangeNotifier {
           if (data['statusCode'].toString() == '200') {
             InstanceCallEmitsResponseModel model = InstanceCallEmitsResponseModel.fromJson(data);
             if(model.data?.status.toString() == '5' || model.data?.status.toString() == '4'){
-              if(activeRoute.value == RoutesConstants.multiConnectCallDialogScreen){
+              if(activeRoute.value == RoutesConstants.multiConnectCallDialogScreen && multiConnectCallEnumNotifier.value != CallRequestTypeEnum.multiCallRequest){
                 NavigationService.context.toPop();
               }
             }

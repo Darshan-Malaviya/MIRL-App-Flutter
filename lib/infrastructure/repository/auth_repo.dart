@@ -76,4 +76,14 @@ class AuthRepository extends ApiResponseHandler {
 
     return responseHandler(result: result, json: CMSResponseModel.parseInfo);
   }
+  /// App Start Up API call
+  Future<ApiHttpResult> appStartUpAPICall({required Object requestModel}) async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.appStartUp);
+
+    APIResponse result =
+    await _apiResponseProvider.requestAPI(uri, headers: ApiConstants.headerWithToken(), body: requestModel);
+
+    return responseHandler(result: result, json: LoginResponseModel.parseInfo);
+  }
+
 }

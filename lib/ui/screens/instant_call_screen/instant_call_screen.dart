@@ -122,7 +122,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                       titleTextAlign: TextAlign.center,
                       titleColor: ColorConstants.primaryColor,
                     ),
-                    32.0.spaceY,
+                    23.0.spaceY,
                   ],
                   16.0.spaceY,
                   Container(
@@ -243,15 +243,19 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                   Visibility(
                     visible: instanceCallEnumNotifier.value == CallRequestTypeEnum.requestDeclined ||
                         instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout ||
-                        instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested,
+                        instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested ||
+                        instanceCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting,
                     replacement: SizedBox.shrink(),
                     child: TitleSmallText(
                       title: instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested
                           ? LocaleKeys.instantCallReceiver.tr()
+                          : multiConnectCallEnumNotifier.value == CallRequestTypeEnum.requestWaiting
+                          ? LocaleKeys.pleaseDoNotLeaveThisScreen.tr().toUpperCase()
                           : LocaleKeys.viewOtherExpert.tr(),
                       fontFamily: FontWeightEnum.w400.toInter,
                       titleTextAlign: TextAlign.center,
                       titleColor: ColorConstants.textColor,
+                      maxLine: 4,
                     ),
                   ),
                   20.0.spaceY,

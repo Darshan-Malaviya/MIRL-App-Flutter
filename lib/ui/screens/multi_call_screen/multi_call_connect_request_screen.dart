@@ -96,6 +96,13 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
         body: ValueListenableBuilder(
             valueListenable: multiConnectCallEnumNotifier,
             builder: (BuildContext context, CallRequestTypeEnum value, Widget? child) {
+              int? approveExpertLength;
+              if(multiProviderWatch.selectedExpertDetails.isNotEmpty){
+                approveExpertLength = multiProviderWatch.selectedExpertDetails.map((element) =>
+                (element.status.toString() == '2' ||
+                    element.status.toString() == '6') ? 1 : 0).reduce((value,
+                    element) => value + element);
+              }
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -128,7 +135,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                       titleTextAlign: TextAlign.center,
                       titleColor: ColorConstants.primaryColor,
                     ),
-                    32.0.spaceY,
+                    23.0.spaceY,
                   ],
                   16.0.spaceY,
                   Stack(
@@ -153,16 +160,13 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                           12.0.spaceY,
                           BodySmallText(
                             title: CallRequestTypeEnum.multiRequestApproved == multiConnectCallEnumNotifier.value
-                                ? multiProviderWatch.selectedExpertDetails.length > 1
-                                ? "YAY! YOU HAVE ${(CommonMethods.numberToWord(multiProviderWatch.selectedExpertDetails.length)).toString().toUpperCase()} EXPERTS\nWAITING TO TALK TO YOU RIGHT NOW!"
-                                : "YAY! YOU HAVE ${(CommonMethods.numberToWord(multiProviderWatch.selectedExpertDetails.length)).toString().toUpperCase()} EXPERT\nWAITING TO TALK TO YOU RIGHT NOW!"
+                                ? "YAY! YOU HAVE ${approveExpertLength.toString()} EXPERT(S)\nWAITING TO TALK TO YOU RIGHT NOW!"
                                 : multiConnectCallEnumNotifier.value.descriptionName,
                             titleColor: ColorConstants.textColor,
                             titleTextAlign: TextAlign.center,
                             fontFamily: FontWeightEnum.w600.toInter,
                             maxLine: 10,
                           ),
-
                           if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested) ...[
                             ShadowContainer(
                               shadowColor: ColorConstants.blackColor.withOpacity(0.5),
@@ -198,7 +202,6 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                               ).addPaddingXY(paddingX: 16, paddingY: 16),
                             ),
                           ] else ...[
-
                             if (multiProviderWatch.selectedExpertDetails.isNotEmpty) ...[
                               10.0.spaceY,
                               SizedBox(
@@ -258,6 +261,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                 // multiConnectCallEnumNotifier.value = CallTypeEnum.multiRequestApproved;
                                                // CustomLoading.progressDialog(isLoading: true);
                                                 chooseMultiConnectExpert.value = true;
+                                                print("expertId==========${multiProviderWatch.selectedExpertForCall?.id.toString() ?? ''}");
                                                 ref.read(socketProvider).multiConnectStatusEmit(callStatusEnum: CallRequestStatusEnum.choose,
                                                     expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '',
                                                     userId: SharedPrefHelper.getUserId,
@@ -321,7 +325,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                   ),
                                                   2.0.spaceY,
                                                   ( (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString().isNotEmpty)
-                                                      && (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString() != "null")) ?
+                                                      && (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString() != "0")) ?
                                                   LabelSmallText(
                                                     title:
                                                     '${LocaleKeys.rating.tr()} ${multiProviderWatch.selectedExpertDetails[index].overAllRating.toString()}',
@@ -435,15 +439,19 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                   Visibility(
                     visible: multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestDeclined ||
                         multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestTimeout ||
-                        multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested,
+                        multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested ||
+                        multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting,
                     replacement: SizedBox.shrink(),
                     child: TitleSmallText(
                       title: multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested
                           ? LocaleKeys.multiConnectReceiver.tr()
-                          : LocaleKeys.viewOtherExpert.tr(),
+                          : multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestWaiting
+                          ? LocaleKeys.pleaseDoNotLeaveThisScreen.tr().toUpperCase()
+                          : LocaleKeys.viewOtherExpertOnMultiConnect.tr(),
                       fontFamily: FontWeightEnum.w400.toInter,
                       titleTextAlign: TextAlign.center,
                       titleColor: ColorConstants.textColor,
+                      maxLine: 4,
                     ),
                   ),
                   20.0.spaceY,

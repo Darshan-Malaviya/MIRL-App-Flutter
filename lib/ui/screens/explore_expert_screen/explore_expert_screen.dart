@@ -13,7 +13,7 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   final bool isFromHomePage;
 
-  const ExploreExpertScreen({super.key, required this.isFromHomePage});
+  const ExploreExpertScreen({super.key, required this.  isFromHomePage});
 
   @override
   ConsumerState<ExploreExpertScreen> createState() => _ExploreExpertScreenState();
@@ -46,12 +46,15 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
   Widget build(BuildContext context) {
     final filterProviderWatch = ref.watch(filterProvider);
     final filterProviderRead = ref.read(filterProvider);
-
     return PopScope(
       canPop: widget.isFromHomePage ? false : true,
       onPopInvoked: (value) {
         filterProviderRead.clearAllFilter();
       },
+      // color: ColorConstants.primaryColor,
+      // onRefresh: () async {
+      //   ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isPaginating: true);
+      // },
       child: Scaffold(
           backgroundColor: ColorConstants.greyLightColor,
           appBar: AppBarWidget(

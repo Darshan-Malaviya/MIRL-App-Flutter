@@ -19,6 +19,16 @@ extension ValidationExtension on String {
     return null;
   }
 
+  String? toUrlValidation(urlValue) {
+    RegExp regex =
+    RegExp(r'^https?:\/\/(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?$');
+    var value = urlValue ?? "";
+    if (!regex.hasMatch(value)) {
+      return ("Please enter a valid URL");
+    }
+    return null;
+  }
+
   String? toMirlIdValidation(String? msg, String? validatedMsg) {
     if (trim().isEmpty) {
       return msg;

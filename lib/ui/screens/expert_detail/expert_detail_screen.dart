@@ -11,6 +11,7 @@ import 'package:mirl/infrastructure/providers/expert_detail_provider.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 import 'package:mirl/ui/screens/block_user/arguments/block_user_arguments.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/area_of_expertise_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/rating_widget.dart';
 import 'package:mirl/ui/screens/expert_detail/widget/request_call_button_widget.dart';
@@ -23,9 +24,9 @@ import 'package:parsed_readmore/parsed_readmore.dart';
 ValueNotifier<bool> isFavorite = ValueNotifier(false);
 
 class ExpertDetailScreen extends ConsumerStatefulWidget {
-  final String expertId;
+  final CallFeedBackArgs args;
 
-  const ExpertDetailScreen({super.key, required this.expertId});
+  const ExpertDetailScreen({super.key, required this.args});
 
   @override
   ConsumerState<ExpertDetailScreen> createState() => _ExpertDetailScreenState();
@@ -37,7 +38,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
+      ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.args.expertId ?? '');
     });
     super.initState();
   }
@@ -49,14 +50,20 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
     return RefreshIndicator(
       color: ColorConstants.primaryColor,
       onRefresh: () async {
-        ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.expertId);
+        ref.read(expertDetailProvider).getExpertDetailApiCall(userId: widget.args.expertId ?? '');
       },
       child: Scaffold(
         appBar: AppBarWidget(
           preferSize: 40,
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
-            onTap: () => context.toPop(),
+            onTap: () {
+              if(widget.args.callType == '1'){
+                context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
+              }else {
+                context.toPop();
+              }
+              } ,
           ),
           trailingIcon: InkWell(
                   onTap: () {
@@ -68,7 +75,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                     //         expertId: widget.expertId,
                     //         imageURL: expertDetailWatch.userData?.expertProfile ?? ''));
                     context.toPushNamed(RoutesConstants.reportExpertScreen,
-                        args: BlockUserArgs(reportName: 'REPORT THIS EXPERT', userRole: 1, expertId: widget.expertId, imageURL: expertDetailWatch.userData?.expertProfile ?? ''));
+                        args: BlockUserArgs(reportName: 'REPORT THIS EXPERT', userRole: 1, expertId: widget.args.expertId, imageURL: expertDetailWatch.userData?.expertProfile ?? ''));
                   },
                   child: Icon(Icons.more_horiz))
               .addPaddingRight(14),
@@ -116,6 +123,10 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
   Widget bottomSheetView({required ScrollController controller}) {
     final expertDetailWatch = ref.watch(expertDetailProvider);
     final expertDetailRead= ref.read(expertDetailProvider);
+    bool userOnline = false;
+    if(expertDetailWatch.userData != null){
+      userOnline = (expertDetailWatch.userData?.isAvailableForCall ?? false) && (expertDetailWatch.userData?.instantCallAvailable ?? false);
+    }
 
     String? fee;
     if (expertDetailWatch.userData?.fee != null) {
@@ -162,7 +173,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       softWrap: true,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,
-                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.2))],
+                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                       ),
                     )
                   ],
@@ -183,7 +194,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       maxLines: 2,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: ColorConstants.overallRatingColor,
-                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.2))],
+                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                       ),
                     )
                   ],
@@ -213,12 +224,13 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               //       fontSize: 16,
               //     )),
               ParsedReadMore(
-                style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter,color: ColorConstants.bottomTextColor),
+                style: TextStyle(fontSize: 16, fontFamily: FontWeightEnum.w400.toInter,color: ColorConstants.blackColor),
                 expertDetailWatch.userData?.about ?? '',
                 trimLines: 15,
-                //trimMode: TrimMode.Line,
-                trimCollapsedText: LocaleKeys.readMore.tr(),
-                trimExpandedText: ' ${LocaleKeys.readLess.tr()}',
+                urlTextStyle: TextStyle(color: Colors.blue, fontSize: 16, decoration: TextDecoration.none),
+                // trimMode: TrimMode.Line,
+                // trimCollapsedText: LocaleKeys.readMore.tr(),
+                // trimExpandedText: ' ${LocaleKeys.readLess.tr()}',
                 moreStyle: TextStyle(fontSize: 16, color: ColorConstants.bottomTextColor.withOpacity(0.7)),
                 lessStyle: TextStyle(fontSize: 16, color: ColorConstants.bottomTextColor.withOpacity(0.7)),
               ),
@@ -226,19 +238,19 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
             ],
             AreaOfExpertiseWidget(),
             ExpertDetailsButtonWidget(
-              titleColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.buttonTextColor : ColorConstants.overAllRatingColor,
-              title: expertDetailWatch.userData?.onlineStatus == 1 ? StringConstants.requestCallNow : LocaleKeys.callPaused.tr(),
-              suffixTitle: expertDetailWatch.userData?.onlineStatus == 1 ? LocaleKeys.expertOnline.tr() : LocaleKeys.expertOffline.tr(),
-              buttonColor: expertDetailWatch.userData?.onlineStatus == 1 ? ColorConstants.requestCallNowColor : ColorConstants.redLightColor,
+              titleColor: userOnline? expertDetailWatch.userData?.onlineStatus != 3 ? ColorConstants.buttonTextColor : ColorConstants.overAllRatingColor :ColorConstants.overAllRatingColor,
+              title: userOnline ? expertDetailWatch.userData?.onlineStatus != 3 ?StringConstants.requestCallNow : LocaleKeys.callPaused.tr():LocaleKeys.callPaused.tr(),
+              suffixTitle: userOnline ? expertDetailWatch.userData?.onlineStatus != 3 ?LocaleKeys.expertOnline.tr() : LocaleKeys.expertOffline.tr():LocaleKeys.expertOffline.tr(),
+              buttonColor: userOnline ? expertDetailWatch.userData?.onlineStatus != 3 ?ColorConstants.requestCallNowColor : ColorConstants.redLightColor:ColorConstants.redLightColor,
               onTap: () {
-                if(expertDetailWatch.userData?.onlineStatus == 1) {
+                if(userOnline) {
                   CommonBottomSheet.bottomSheet(
                       context: context,
                       height: MediaQuery.of(context).size.height * 0.5,
                       child: CallDurationBottomSheetView(expertName: expertDetailWatch.userData?.expertName ?? '', onPressed: () {
                         context.toPop();
                         allCallDurationNotifier.value = expertDetailWatch.callDuration * 60;
-                        if ((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+                        if (/*(expertDetailWatch.userData?.instantCallAvailable ?? false) && userOnline*/userOnline) {
                           instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
                           /// THis is call sender (User) side
                           context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
@@ -247,9 +259,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                                 onFirstBtnTap: () {
                                   if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout) {
                                     instanceRequestTimerNotifier.dispose();
-                                   manageTimeOutStatus(userData: expertDetailWatch.userData, expertId: widget.expertId, context: context, expertDetailWatch : expertDetailWatch);
+                                   manageTimeOutStatus(userData: expertDetailWatch.userData, expertId: widget.args.expertId ?? '', context: context, expertDetailWatch : expertDetailWatch,userOnline: userOnline);
                                   } else {
-                                    ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId, requestedDuration: (expertDetailWatch.callDuration * 60));
+                                    ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.args.expertId ?? '', requestedDuration: (expertDetailWatch.callDuration * 60));
                                   }
                                 },
                                 onSecondBtnTap: () {
@@ -261,14 +273,14 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                                         context: context,
                                         child: CallPaymentBottomSheetView(onPressed: () {
                                           context.toPop();
-                                          ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
+                                          ref.read(socketProvider).connectCallEmit(expertId: widget.args.expertId ?? '');
                                         }),
                                         isDismissible: true);
                                     ///context.toPop();
                                   } else {
                                     ref.read(socketProvider).updateRequestStatusEmit(
                                         callStatusEnum: CallRequestStatusEnum.cancel,
-                                        expertId: widget.expertId,
+                                        expertId: widget.args.expertId ?? '',
                                         callRoleEnum: CallRoleEnum.user,
                                         userId: SharedPrefHelper.getUserId.toString());
                                     context.toPop();
@@ -364,7 +376,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       ),
                     ),
                     TextSpan(
-                      text: expertDetailWatch.userGender(),
+                      text: expertDetailRead.userGender(),
                       style: TextStyle(
                         color: ColorConstants.blueColor,
                         fontSize: 16,
@@ -518,7 +530,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
     ).addAllPadding(28);
   }*/
 
-  void manageTimeOutStatus({required UserData? userData, required BuildContext context , required String expertId, required ExpertDetailProvider expertDetailWatch}) {
+  void manageTimeOutStatus({required UserData? userData, required BuildContext context , required String expertId, required ExpertDetailProvider expertDetailWatch,required bool userOnline}) {
     context.toPop();
     instanceRequestTimerNotifier = ValueNotifier<int>(120);
     instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
@@ -530,7 +542,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
         child: CallDurationBottomSheetView(expertName: expertDetailWatch.userData?.expertName ?? '', onPressed: () {
           context.toPop();
           allCallDurationNotifier.value = expertDetailWatch.callDuration;
-          if ((expertDetailWatch.userData?.instantCallAvailable ?? false) && (expertDetailWatch.userData?.onlineStatus.toString() == '1')) {
+          if (/*(expertDetailWatch.userData?.instantCallAvailable ?? false) && userOnline*/userOnline) {
             instanceCallEnumNotifier.value = CallRequestTypeEnum.callRequest;
             /// THis is call sender (User) side
             context.toPushNamed(RoutesConstants.instantCallRequestDialogScreen,
@@ -539,9 +551,9 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   onFirstBtnTap: () {
                     if (instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout) {
                       instanceRequestTimerNotifier.dispose();
-                      manageTimeOutStatus(userData: expertDetailWatch.userData, expertId: widget.expertId, context: context, expertDetailWatch: expertDetailWatch);
+                      manageTimeOutStatus(userData: expertDetailWatch.userData, expertId: widget.args.expertId ?? '', context: context, expertDetailWatch: expertDetailWatch,userOnline: userOnline);
                     } else {
-                      ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.expertId, requestedDuration: (expertDetailWatch.callDuration * 60) );
+                      ref.read(socketProvider).instanceCallRequestEmit(expertId: widget.args.expertId ?? '', requestedDuration: (expertDetailWatch.callDuration * 60) );
                     }
                   },
                   onSecondBtnTap: () {
@@ -553,14 +565,14 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                           context: context,
                           child: CallPaymentBottomSheetView(onPressed: () {
                             context.toPop();
-                            ref.read(socketProvider).connectCallEmit(expertId: widget.expertId);
+                            ref.read(socketProvider).connectCallEmit(expertId:widget.args.expertId ?? '');
                           }),
                           isDismissible: true);
                       ///context.toPop();
                     } else {
                       ref.read(socketProvider).updateRequestStatusEmit(
                           callStatusEnum: CallRequestStatusEnum.cancel,
-                          expertId: widget.expertId,
+                          expertId: widget.args.expertId ?? '',
                           callRoleEnum: CallRoleEnum.user,
                           userId: SharedPrefHelper.getUserId.toString());
                       context.toPop();
@@ -691,8 +703,9 @@ class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSh
                   softWrap: true,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstants.overallRatingColor,
-                    shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
-                  ),
+                    shadows: [
+                      Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                    ],                  ),
                 )
               ],
             ),
@@ -712,8 +725,9 @@ class _CallPaymentBottomSheetViewState extends ConsumerState<CallPaymentBottomSh
                   softWrap: true,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstants.overallRatingColor,
-                    shadows: [Shadow(offset: Offset(0, 3), blurRadius: 4, color: ColorConstants.blackColor.withOpacity(0.3))],
-                  ),
+                    shadows: [
+                      Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                    ],                  ),
                 )
               ],
             ),

@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/report_call_title_response_model.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class ReportProblemWithYourCallScreen extends ConsumerStatefulWidget {
-  final int callHistoryId;
+  final CallFeedBackArgs args;
 
-  const ReportProblemWithYourCallScreen({super.key, required this.callHistoryId});
+  const ReportProblemWithYourCallScreen({super.key, required this.args});
 
   @override
   ConsumerState<ReportProblemWithYourCallScreen> createState() => _ReportProblemWithYourCallScreenState();
@@ -182,12 +183,13 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                   // await ref.read(reportReviewProvider).getReportCallTitleApiCall();
                   FocusManager.instance.primaryFocus?.unfocus();
                   if (_formKey.currentState!.validate() && feedBackWatch.callIssueController.text.isNotEmpty) {
-                    feedBackRead.reportCallApiCall(callHistoryId: widget.callHistoryId);
+                    feedBackRead.reportCallApiCall(callHistoryId: widget.args.callHistoryId ?? 0,expertId: widget.args.expertId ?? '',callType: widget.args.callType ?? '');
                   } else {
                     FlutterToast().showToast(msg: LocaleKeys.selectThisIssue.tr());
                   }
                 },
               ),
+              10.0.spaceY
             ],
           ).addAllPadding(20),
         ),

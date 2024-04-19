@@ -5,6 +5,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class FavoriteExpertsView extends ConsumerWidget {
   const FavoriteExpertsView({super.key});
@@ -32,7 +33,7 @@ class FavoriteExpertsView extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          context.toPushNamed(RoutesConstants.expertDetailScreen, args: favoriteListNotifier.value[index].id.toString());
+                          context.toPushNamed(RoutesConstants.expertDetailScreen, args: CallFeedBackArgs(expertId: favoriteListNotifier.value[index].id.toString(),callType: ''));
                         },
                         child: ShadowContainer(
                           padding: EdgeInsets.only(bottom: 8, top: 1, left: 8, right: 8),

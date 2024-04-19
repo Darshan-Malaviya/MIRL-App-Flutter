@@ -28,12 +28,12 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
 
     return Scaffold(
         appBar: AppBarWidget(
-          trailingIcon: InkWell(
-            onTap: () => userSettingWatch.pickedImage.isNotEmpty ? userSettingRead.updateProfileApi() : null,
-            child: TitleMediumText(
-              title: StringConstants.done,
-            ).addPaddingRight(14),
-          ),
+          // trailingIcon: InkWell(
+          //   onTap: () => userSettingWatch.pickedImage.isNotEmpty ? userSettingRead.updateProfileApi() : null,
+          //   child: TitleMediumText(
+          //     title: StringConstants.done,
+          //   ).addPaddingRight(14),
+          // ),
         ),
         body: SingleChildScrollView(
           child: Column(
