@@ -18,7 +18,7 @@ class FavoriteExpertsView extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BodySmallText(
+            BodyLargeText(
               title: LocaleKeys.yourFavoriteExperts.tr(),
             ),
 
@@ -36,7 +36,7 @@ class FavoriteExpertsView extends ConsumerWidget {
                           context.toPushNamed(RoutesConstants.expertDetailScreen, args: CallFeedBackArgs(expertId: favoriteListNotifier.value[index].id.toString(),callType: ''));
                         },
                         child: ShadowContainer(
-                          padding: EdgeInsets.only(bottom: 8, top: 1, left: 8, right: 8),
+                          padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
                           shadowColor: ColorConstants.blackColor.withOpacity(0.1),
                           width: 96,
                           height: 120,
@@ -79,11 +79,16 @@ class FavoriteExpertsView extends ConsumerWidget {
                     }),
               ),
               20.0.spaceY,
-              Center(
-                child: LabelSmallText(
-                  fontSize: 10,
-                  titleTextAlign: TextAlign.center,
-                  title: LocaleKeys.seeAllFavoriteExperts.tr().toUpperCase(),
+              InkWell(
+                onTap: (){
+                  context.toPushNamed(RoutesConstants.seeAllFavoriteExpertsListViewScreen);
+                },
+                child: Center(
+                  child: LabelSmallText(
+                    fontSize: 10,
+                    titleTextAlign: TextAlign.center,
+                    title: LocaleKeys.seeAllFavoriteExperts.tr().toUpperCase(),
+                  ),
                 ),
               ),
             ] else ...[

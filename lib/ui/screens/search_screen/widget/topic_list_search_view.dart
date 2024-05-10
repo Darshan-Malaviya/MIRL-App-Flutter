@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
+import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 
 class TopicSearchView extends ConsumerStatefulWidget {
   const TopicSearchView({super.key});
@@ -30,28 +31,35 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(homeProviderWatch.homeSearchData?.topics?.length ?? 0, (index) {
-              return Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                decoration: ShapeDecoration(
-                  color: ColorConstants.whiteColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              return InkWell(
+                onTap: () {
+                  context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
+                      args: SelectedCategoryArgument(categoryId:homeProviderWatch.homeSearchData?.topics?[index].categoryId.toString() ?? '' ,isFromExploreExpert: false,
+                          categoryName: homeProviderWatch.homeSearchData?.topics?[index].name.toString() ?? ''));
+                },
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  decoration: ShapeDecoration(
+                    color: ColorConstants.whiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    shadows: [
+                      BoxShadow(
+                        color: Color(0x19000000),
+                        blurRadius: 2,
+                        offset: Offset(0, 2),
+                        spreadRadius: 0,
+                      )
+                    ],
                   ),
-                  shadows: [
-                    BoxShadow(
-                      color: Color(0x19000000),
-                      blurRadius: 2,
-                      offset: Offset(0, 2),
-                      spreadRadius: 0,
-                    )
-                  ],
-                ),
-                child: TitleMediumText(
-                  maxLine: 2,
-                  softWrap: true,
-                  title: homeProviderWatch.homeSearchData?.topics?[index].name?.toLowerCase().toCapitalizeAllWord() ?? '',
-                  fontFamily: FontWeightEnum.w500.toInter,
+                  child: TitleMediumText(
+                    maxLine: 2,
+                    softWrap: true,
+                    title: homeProviderWatch.homeSearchData?.topics?[index].name?.toLowerCase().toCapitalizeAllWord() ?? '',
+                    fontFamily: FontWeightEnum.w500.toInter,
+                  ),
                 ),
               );
             }),

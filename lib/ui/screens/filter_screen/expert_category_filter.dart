@@ -46,7 +46,10 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
+          onTap: () {
+            filterRead.clearAllFilter();
+            context.toPop();
+          },
         ),
       ),
       body: SingleChildScrollView(

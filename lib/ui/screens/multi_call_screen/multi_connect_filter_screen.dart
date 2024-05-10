@@ -66,7 +66,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
               // } else {
               //   FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCategoryFirst.tr());
               // }
-            }, StringConstants.pickTopic.toUpperCase(),hintText: StringConstants.pickTopic),
+            }, StringConstants.pickTopic.toUpperCase(),hintText: StringConstants.pickTopic.toUpperCase()),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.ratingController, context, () {
               CommonBottomSheet.bottomSheet(

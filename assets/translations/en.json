@@ -25,7 +25,7 @@
   "browseExpertsFields": "Browse experts in all fields",
   "inviteMultipleExpertsAndSelectOne": "Invite multiple experts and select one",
   "seeAllExpertCategoryAndTopics": "SEE ALL EXPERT CATEGORIES AND TOPICS",
-  "seeAllFavoriteExperts": "SEE ALL FAVORITE EXPERTS",
+  "seeAllFavoriteExperts": "SEE ALL YOUR FAVORITE EXPERTS",
   "seeAllPastConversations": "SEE ALL PAST CONVERSATIONS",
   "yourFavoriteExperts": "YOUR FAVORITE EXPERTS",
   "darnNoFavoriteExperts": "Darn, no favorite experts or buddies? Maybe it’s time to look around and pick a few!",
@@ -201,7 +201,7 @@
   "weekly": "WEEKLY",
   "weeklyEarning": "WEEKLY EARNINGS",
   "earning": "EARNINGS",
-  "noUpcomingAppointment": "No upcoming appointment",
+  "noUpcomingAppointment": "No appointments today, but don't worry, they'll come!",
   "clickToSelect": "Click to select",
   "selected": "selected!",
   "userTemporarilyBlocked": "User Temporarily Blocked!",
@@ -361,7 +361,7 @@
   "shareProfile": "SHARE\nPROFILE",
   "learnMore": "Learn more",
   "pay": "PAY",
-  "proBono": "PRO\nBONO",
+  "proBono": "FREE\nPRO BONO",
   "shareFeedBack": "SHARE FEEDBACK",
   "instantCallActive": "Yes, Keep Instant Calls Active",
   "InstantCallOff": "No, Display Me as Offline for Instant Calls",
@@ -370,7 +370,7 @@
   "backToNotification": "BACK TO NOTIFICATIONS",
   "permanent": "PERMANENT",
   "temporary": "TEMPORARY",
-  "selectedAllTopics": "Selected all topics.",
+  "selectedAllTopics": "Skip the 'topic' filter to view all topics",
   "overAllRatingText": "Overall Rating",
   "feeRange": "Fee Range",
   "sortBy": "Sort By",
@@ -382,5 +382,6 @@
   "theExpertHasDeclinedYourCall": "The expert has declined your call. Maybe they're busy?",
   "startingYourCall": "Starting Your MIRL!",
   "emojiRateExpert": "Please pick one emoji to rate the Expert!",
-  "maximumFee": "The maximum expert fee is capped to $500 for now."
+  "maximumFee": "The maximum expert fee is capped to $500 for now.",
+  "networkOfExpertise": "Find all your best experts in one place. Favorite the experts you like and create your own network of expertise!"
 }

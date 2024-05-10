@@ -45,9 +45,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             //   (size.width * 0.4).spaceY,
             // },
             Image.asset(
-              ImageConstants.backgroundLogo,
-            ).addMarginTop(100),
-            50.0.spaceY,
+              ImageConstants.mirlLoginIcon,
+            ),
             // if (Platform.isIOS) ...{
             //   (size.width * 0.1).spaceY,
             // } else ...{

@@ -266,9 +266,7 @@ class ReportReviewProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is ReportCallTitleResponseModel) {
           ReportCallTitleResponseModel responseModel = response.data;
-
           _reportCallTitleList = responseModel.data ?? [];
-
           //_reportCallTitleList.addAll(responseModel.data ?? []);
         }
         break;

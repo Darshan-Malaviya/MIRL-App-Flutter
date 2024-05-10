@@ -145,6 +145,13 @@ class SocketProvider extends ChangeNotifier {
   }
 
   void instanceCallRequestEmit({required String expertId, required int requestedDuration}) {
+    Logger().d('instanceCallRequestEmit ==== Request');
+    Logger().d(
+        '${AppConstants.expertId} : $expertId,'
+            '${AppConstants.userId} : ${SharedPrefHelper.getUserId.toString()},'
+            '${AppConstants.requestType} : ${1},'
+            '${AppConstants.time} :${DateTime.now().toUtc().toString()},'
+            '${AppConstants.requestedDuration} : ${requestedDuration},');
     try {
       String userId = SharedPrefHelper.getUserId.toString();
       socket?.emit(AppConstants.requestCallEmit, {
@@ -229,6 +236,12 @@ class SocketProvider extends ChangeNotifier {
       Logger().d('updateRequestStatusEmit==== Success');
       String callRequestId = SharedPrefHelper.getCallRequestId.toString();
       Logger().d("callRequestId on from pref $callRequestId");
+      Logger().d('${AppConstants.expertId} : $expertId,'
+          '${AppConstants.userId} : $userId,'
+          '${AppConstants.role} : ${callRoleEnum.roleToNumber},'
+          '${AppConstants.time} :${DateTime.now().toUtc().toString()},'
+          '${AppConstants.callStatus} : ${callStatusEnum.callRequestStatusToNumber},'
+          '${AppConstants.callRequestId} : ${callRequestId},');
       socket?.emit(AppConstants.updateRequestStatus, {
         AppConstants.expertId: expertId,
         AppConstants.userId: userId,
@@ -372,6 +385,10 @@ class SocketProvider extends ChangeNotifier {
   Future<void> updateCallStatusEmit({required CallStatusEnum status, required CallRoleEnum callRoleEnum, required String callHistoryId}) async {
     try {
       Logger().d('updateCallStatusEmit ==== Success');
+      Logger().d(
+          '${AppConstants.callStatus} : ${status.callRequestStatusToNumber},'
+              '${AppConstants.role} : ${callRoleEnum.roleToNumber},'
+              '${AppConstants.callHistoryId} : ${callHistoryId},');
       socket?.emit(AppConstants.updateConnectCallStatus, {
         AppConstants.callStatus: status.callRequestStatusToNumber,
         AppConstants.role: callRoleEnum.roleToNumber,
@@ -584,6 +601,12 @@ class SocketProvider extends ChangeNotifier {
     try {
       Logger().d('multiConnectRequestEmit ==== Success');
       String userId = SharedPrefHelper.getUserId.toString();
+      Logger().d(
+          '${AppConstants.expertIds} : ${expertIdsList},'
+              '${AppConstants.userId} : ${userId},'
+              '${AppConstants.time} : ${DateTime.now().toUtc().toString()},'
+              '${AppConstants.requestedDuration} : ${requestedDuration},'
+      );
       socket?.emit(AppConstants.multiConnectRequest, {
         AppConstants.expertIds: expertIdsList,
         AppConstants.userId: userId,
