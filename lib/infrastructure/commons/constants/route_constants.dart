@@ -63,4 +63,7 @@ class RoutesConstants {
   static const String reportProblemWithYourCallScreen = '/reportProblemWithYourCallScreen';
   static const String reportedSubmittingScreen = '/reportedSubmittingScreen';
   static const String canceledNotificationScreen = '/canceledNotificationScreen';
+  static const String seeAllFavoriteExpertsListViewScreen = '/seeAllFavoriteExpertsListViewScreen';
+  static const String seeAllLastConversationListViewScreen = '/seeAllLastConversationListViewScreen';
+  static const String selectedTopicScreen = '/selectedTopicScreen';
 }

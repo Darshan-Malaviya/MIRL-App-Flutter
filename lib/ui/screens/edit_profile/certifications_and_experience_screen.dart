@@ -18,6 +18,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
       ref.read(editExpertProvider).generateExperienceList(fromInit: true);
     });
   }

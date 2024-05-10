@@ -42,6 +42,8 @@ import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
+import 'package:mirl/ui/screens/home_screen/widget/see_all_favorite_experts_list_view.dart';
+import 'package:mirl/ui/screens/home_screen/widget/see_all_last_conversation_list_view.dart';
 import 'package:mirl/ui/screens/instant_call_screen/arguments/instance_call_dialog_arguments.dart';
 import 'package:mirl/ui/screens/instant_call_screen/instant_call_screen.dart';
 import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
@@ -58,6 +60,8 @@ import 'package:mirl/ui/screens/schedule_screen/canceled_notification_screen.dar
 import 'package:mirl/ui/screens/schedule_screen/schedule_appointment_screen.dart';
 import 'package:mirl/ui/screens/schedule_screen/schedule_call_screen.dart';
 import 'package:mirl/ui/screens/search_screen/search_screen.dart';
+import 'package:mirl/ui/screens/selected_topic_screen/arguments/selected_topic_arguments.dart';
+import 'package:mirl/ui/screens/selected_topic_screen/selected_topic_screen.dart';
 import 'package:mirl/ui/screens/splash_screen/splash_screen.dart';
 import 'package:mirl/ui/screens/suggestion/suggest_new_experties_screen.dart';
 import 'package:mirl/ui/screens/suggestion/thanks_giving_screen.dart';
@@ -100,7 +104,7 @@ class RouterConstant {
       case RoutesConstants.otpScreen:
         return MaterialPageRoute(builder: (_) => const OTPScreen());
       case RoutesConstants.homeScreen:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) => HomeScreen(context: settings.arguments as BuildContext,));
       case RoutesConstants.dashBoardScreen:
         return MaterialPageRoute(builder: (_) => DashboardScreen(index: settings.arguments as int));
       case RoutesConstants.expertProfileScreen:
@@ -221,6 +225,12 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) =>  ReportedSubmittingScreen(args: settings.arguments as CallFeedBackArgs));
       case RoutesConstants.canceledNotificationScreen:
         return MaterialPageRoute(builder: (_) => CanceledNotificationScreen(args: settings.arguments as CancelArgs));
+        case RoutesConstants.seeAllFavoriteExpertsListViewScreen:
+        return MaterialPageRoute(builder: (_) => SeeAllFavoriteExpertsListViewScreen());
+        case RoutesConstants.seeAllLastConversationListViewScreen:
+        return MaterialPageRoute(builder: (_) => SeeAllLastConversationListViewScreen());
+        case RoutesConstants.selectedTopicScreen:
+        return MaterialPageRoute(builder: (_) => SelectedTopicScreen(args: settings.arguments as SelectedTopicArgs));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

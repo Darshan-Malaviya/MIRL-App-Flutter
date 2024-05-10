@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class PastConversationsView extends ConsumerWidget {
   const PastConversationsView({super.key});
@@ -10,29 +11,26 @@ class PastConversationsView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final homeProviderWatch = ref.watch(homeProvider);
     final homeProviderRead = ref.read(homeProvider);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BodySmallText(
+        BodyLargeText(
           title: LocaleKeys.yourPastConversations.tr(),
         ),
-        10.0.spaceY,
-        BodySmallText(
-          titleColor: ColorConstants.emptyTextColor,
-          fontFamily: FontWeightEnum.w400.toInter,
-          maxLine: 2,
-          title: LocaleKeys.cricketsTalkToSomeone.tr(),
-        ),
-        /*  SizedBox(
-          height: 120,
+          if(homeProviderWatch.homeData?.lastConversionList?.isNotEmpty ?? false)...[
+            20.0.spaceY,
+            SizedBox(
+          height: 130,
           child: ListView.builder(
-              itemCount: 10,
+              itemCount: homeProviderWatch.homeData?.lastConversionList?.length ?? 0,
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, builder) {
+              itemBuilder: (context, index) {
                 return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    context.toPushNamed(RoutesConstants.expertDetailScreen,
+                        args: CallFeedBackArgs(expertId: homeProviderWatch.homeData?.lastConversionList?[index].id.toString(), callType: ''));
+                  },
                   child: ShadowContainer(
                     padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
                     shadowColor: ColorConstants.blackColor.withOpacity(0.1),
@@ -44,12 +42,12 @@ class PastConversationsView extends ConsumerWidget {
                         CircleAvatar(
                           radius: 37.5,
                           backgroundImage: NetworkImage(
-                              "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
+                              homeProviderWatch.homeData?.lastConversionList?[index].expertProfile ?? ''),
                         ),
                         10.0.spaceY,
                         LabelSmallText(
                           fontSize: 9,
-                          title: 'Experts',
+                          title:  homeProviderWatch.homeData?.lastConversionList?[index].expertName ?? '',
                           maxLine: 2,
                           titleColor: ColorConstants.blackColor,
                           fontFamily: FontWeightEnum.w700.toInter,
@@ -65,14 +63,28 @@ class PastConversationsView extends ConsumerWidget {
               }),
         ),
         10.0.spaceY,
-        Center(
-          child: TitleMediumText(
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
-            titleTextAlign: TextAlign.center,
-            title: LocaleKeys.seeAllPastConversations.tr().toUpperCase(),
+        InkWell(
+          onTap: (){
+            context.toPushNamed(RoutesConstants.seeAllLastConversationListViewScreen);
+          },
+          child: Center(
+            child: TitleMediumText(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+              titleTextAlign: TextAlign.center,
+              title: LocaleKeys.seeAllPastConversations.tr().toUpperCase(),
+            ),
           ),
-        ),*/
+        ),
+        ] else ...[
+            10.0.spaceY,
+            BodySmallText(
+              titleColor: ColorConstants.emptyTextColor,
+              fontFamily: FontWeightEnum.w400.toInter,
+              maxLine: 2,
+              title: LocaleKeys.cricketsTalkToSomeone.tr(),
+            ),
+          ]
       ],
     );
   }

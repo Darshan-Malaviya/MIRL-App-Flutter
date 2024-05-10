@@ -56,7 +56,7 @@ class ExpertDetailWidget extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        BodyLargeText(title: expertData?.expertName?.toUpperCase() ?? ''),
+                        Flexible(child: BodyLargeText(title: expertData?.expertName?.toUpperCase() ?? '',maxLine: 2,titleTextAlign: TextAlign.center,)),
                         8.0.spaceY,
                         if (expertData?.expertCategory?.isNotEmpty ?? false) ...[
                           Wrap(
@@ -65,7 +65,6 @@ class ExpertDetailWidget extends StatelessWidget {
                             children: List.generate(((expertData?.expertCategory?.length ?? 0) > 7) ? 6 : expertData?.expertCategory?.length ?? 0, (i) {
                               String color = expertData?.expertCategory?[i].colorCode?.substring(1) ?? "D97CF0";
                               int colorConcat = int.parse('0xff$color');
-
                               return Container(
                                 color: Color(colorConcat),
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -119,9 +118,10 @@ class ExpertDetailWidget extends StatelessWidget {
                         ),
                         10.0.spaceX,
                         AutoSizeText(
-                          fee != null ? '\$${fee}' : LocaleKeys.proBono.tr(),
+                          //fee != null || expertData?.fee != 0? '\$${fee}' : LocaleKeys.proBono.tr(),
+                         expertData?.fee != 0 ?'\$${fee}' :LocaleKeys.proBono.tr(),
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            textAlign: TextAlign.center,style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: ColorConstants.bottomTextColor,
                             shadows: [
                               Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))

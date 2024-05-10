@@ -44,6 +44,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 8.0.spaceX,
                 Flexible(
                   child: TextFormFieldWidget(
+                    autofocus: true,
                     textAlign: TextAlign.start,
                     suffixIcon: homeProviderRead.homeSearchController.text.isNotEmpty
                         ? InkWell(

@@ -1,11 +1,16 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class DashboardProvider extends ChangeNotifier {
+  // ChangeNotifierProviderRef<DashboardProvider> ref;
+  // DashboardProvider(this.ref);
   int get selectedIndex => _selectedIndex;
   int _selectedIndex = 0;
 
   void pageChanged(int index) {
     _selectedIndex = index;
+    // if(_selectedIndex == 3){
+    //   ref.read(expertDetailProvider).getExpertDetailApiCall(userId: SharedPrefHelper.getUserId);
+    // }
     notifyListeners();
   }
 

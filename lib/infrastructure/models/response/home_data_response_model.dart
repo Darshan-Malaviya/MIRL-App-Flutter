@@ -36,8 +36,9 @@ class HomeDataResponseModel {
 class HomeData {
   List<Categories>? categories;
   List<UserFavorites>? userFavorites;
+  List<LastConversionList>? lastConversionList;
 
-  HomeData({this.categories, this.userFavorites});
+  HomeData({this.categories, this.userFavorites,this.lastConversionList});
 
   HomeData.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
@@ -50,6 +51,12 @@ class HomeData {
       userFavorites = <UserFavorites>[];
       json['userFavorites'].forEach((v) {
         userFavorites!.add(UserFavorites.fromJson(v));
+      });
+    }
+    if (json['lastConversionList'] != null) {
+      lastConversionList = <LastConversionList>[];
+      json['userFavorites'].forEach((v) {
+        lastConversionList!.add(LastConversionList.fromJson(v));
       });
     }
   }
@@ -104,6 +111,27 @@ class UserFavorites {
     expertName = json['expertName'];
     expertProfile = json['expertProfile'];
     isFavorite = json['isFavorite'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['expertName'] = this.expertName;
+    data['expertProfile'] = this.expertProfile;
+    return data;
+  }
+}
+class LastConversionList {
+  int? id;
+  String? expertName;
+  String? expertProfile;
+
+  LastConversionList({this.id, this.expertName, this.expertProfile});
+
+  LastConversionList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    expertName = json['expertName'];
+    expertProfile = json['expertProfile'];
   }
 
   Map<String, dynamic> toJson() {

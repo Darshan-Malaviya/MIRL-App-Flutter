@@ -76,7 +76,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
                               fontFamily: FontWeightEnum.w400.toInter,
                             )),
                         TextSpan(
-                            text: reportReviewWatch.reviewAndRatingData?.expertReviews?[index].userName ?? '',
+                            text: reportReviewWatch.reviewAndRatingData?.expertReviews?[index].userName ?? 'Mystery MIRL',
                             style: TextStyle(
                               color: ColorConstants.buttonTextColor,
                               fontFamily: FontWeightEnum.w700.toInter,

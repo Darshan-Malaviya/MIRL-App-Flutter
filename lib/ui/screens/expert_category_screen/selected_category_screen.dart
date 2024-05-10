@@ -10,6 +10,7 @@ import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
+import 'package:mirl/ui/screens/selected_topic_screen/arguments/selected_topic_arguments.dart';
 
 class SelectedCategoryScreen extends ConsumerStatefulWidget {
   final SelectedCategoryArgument args;
@@ -37,7 +38,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
         ref.read(filterProvider).clearTopicPaginationData();
         ref.read(filterProvider).topicListByCategory(
               isFullScreenLoader: false,
-              categoryId: widget.args.categoryId, categoryName: widget.args.categoryName,
+              categoryId: widget.args.categoryId,
+              categoryName: widget.args.categoryName,
             );
       }
     });
@@ -117,9 +119,9 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                     ).addPaddingX(20),
                     10.0.spaceY,
                     LabelSmallText(
-                      title: StringConstants.needAMentor,
+                      title: filterProviderWatch.singleCategoryData?.categoryData?.description ?? '',
                       fontFamily: FontWeightEnum.w400.toInter,
-                      maxLine: 2,
+                      maxLine: 6,
                       titleTextAlign: TextAlign.center,
                     ).addPaddingX(20),
                     20.0.spaceY,
@@ -151,23 +153,31 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                               List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                             final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
                             int topicIndex = filterProviderWatch.allTopic.indexWhere((element) => element.id == data?.id);
-                            return ShadowContainer(
-                              shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0)
-                                  ? ColorConstants.primaryColor :
-                                  (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
-                                      ? ColorConstants.primaryColor
-                                      : ColorConstants.blackColor.withOpacity(0.1),
-                              backgroundColor: ColorConstants.whiteColor,
-                              isShadow: true,
-                              spreadRadius: 1,
-                              blurRadius: 2,
-                              margin: EdgeInsets.only(bottom: 10, right: 10),
-                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                              // offset: Offset(0, 3),
-                              child: BodyMediumText(
-                                title: data?.name ?? '',
-                                fontFamily: FontWeightEnum.w500.toInter,
-                                maxLine: 5,
+                            return InkWell(
+                              onTap: () {
+                                context.toPushNamed(RoutesConstants.selectedTopicScreen,
+                                    args: SelectedTopicArgs(
+                                        topicName: filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ?? '',
+                                        topicId: filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0));
+                              },
+                              child: ShadowContainer(
+                                shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0)
+                                    ? ColorConstants.primaryColor
+                                    : (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
+                                        ? ColorConstants.primaryColor
+                                        : ColorConstants.blackColor.withOpacity(0.1),
+                                backgroundColor: ColorConstants.whiteColor,
+                                isShadow: true,
+                                spreadRadius: 1,
+                                blurRadius: 2,
+                                margin: EdgeInsets.only(bottom: 10, right: 10),
+                                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                // offset: Offset(0, 3),
+                                child: BodyMediumText(
+                                  title: data?.name ?? '',
+                                  fontFamily: FontWeightEnum.w500.toInter,
+                                  maxLine: 5,
+                                ),
                               ),
                             );
                           }),
@@ -182,10 +192,21 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       if (filterProviderWatch.selectedTopicList?.isNotEmpty ?? false) ...[
                         Wrap(
                           children: List.generate(filterProviderWatch.selectedTopicList?.length ?? 0, (index) {
-                            return BodyMediumText(
-                              title: filterProviderWatch.selectedTopicList?[index].name.toString() ?? '',
-                              maxLine: 3,
-                            ).addPaddingX(4);
+                            return Column(
+                              children: [
+                            BodyMediumText(
+                             title:filterProviderWatch.selectedTopicList?.join(", ") ?? '',
+                            // title: filterProviderWatch.selectedTopicList?[index].name.toString() ?? '',
+                            maxLine: 3,
+                            ).addPaddingX(4),
+                                // BodyMediumText(
+                                //   title: StringConstants.descriptionText,
+                                //   fontFamily: FontWeightEnum.w400.toInter,
+                                //   maxLine: 5,
+                                //   titleTextAlign: TextAlign.center,
+                                // ).addPaddingX(20),
+                              ],
+                            );
                           }),
                         ),
                         10.0.spaceY,
@@ -234,7 +255,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                   child: BodySmallText(
                                     title: LocaleKeys.clearAll.tr(),
                                   )),
-                           /*   if (widget.args.isFromExploreExpert == true &&
+                              /*   if (widget.args.isFromExploreExpert == true &&
                                   filterProviderWatch.commonSelectionModel.first.value == widget.args.categoryId) ...[
                                 InkWell(
                                     onTap: () {

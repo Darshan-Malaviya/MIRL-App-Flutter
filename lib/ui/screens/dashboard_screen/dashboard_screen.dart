@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-  import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
+import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen/notification_screen.dart';
@@ -62,8 +62,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         child: BottomNavigationBar(
           currentIndex: dashboardProviderWatch.selectedIndex,
           onTap: (index) {
+            print("index=========$index");
             dashboardProviderRead.pageChanged(index);
             pageController?.jumpToPage(index);
+            if (index == 1) {
+              ref.read(filterProvider).scrollController.animateTo(0.0, duration: Duration(seconds: 3), curve: Curves.ease);
+            }
           },
           useLegacyColorScheme: false,
           backgroundColor: ColorConstants.transparentColor,
@@ -98,7 +102,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         // pageChanged(index);
       },
       children: <Widget>[
-        HomeScreen(),
+        HomeScreen(context: context),
         ExploreExpertScreen(isFromHomePage: true),
         NotificationScreen(),
         ExpertProfileScreen(),
