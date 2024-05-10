@@ -37,7 +37,7 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
       changeLoading(true);
     }
 
-    ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo);
+    ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo,orderByPriority: "false");
 
     if (isLoaderVisible) {
       changeLoading(false);

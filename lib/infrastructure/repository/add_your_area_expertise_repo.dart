@@ -9,9 +9,9 @@ import 'package:mirl/infrastructure/models/response/expert_category_response_mod
 class AddYourAreaExpertiseRepository extends ApiResponseHandler {
   final ApiResponseProvider _apiResponseProvider = ApiResponseProvider();
 
-  Future<ApiHttpResult> areaExpertiseApiCall({required int page, required int limit}) async {
+  Future<ApiHttpResult> areaExpertiseApiCall({required int page, required int limit,required String orderByPriority}) async {
     final uri = ApiConstants.endpointUri(
-        path: ApiConstants.expertCategory, queryParameters: {"page": page.toString(), "limit": limit.toString()});
+        path: ApiConstants.expertCategory, queryParameters: {"page": page.toString(), "limit": limit.toString(),"orderByPriority":orderByPriority});
 
     APIResponse result = await _apiResponseProvider.requestAPI(
       uri,
