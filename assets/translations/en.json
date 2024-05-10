@@ -383,5 +383,8 @@
   "startingYourCall": "Starting Your MIRL!",
   "emojiRateExpert": "Please pick one emoji to rate the Expert!",
   "maximumFee": "The maximum expert fee is capped to $500 for now.",
+  "selectTopicFromFilter": "SELECT A TOPIC USING THE FILTER BELOW",
+  "selectTopic": "Select Topic",
+  "selectCategory": "Select Category",
   "networkOfExpertise": "Find all your best experts in one place. Favorite the experts you like and create your own network of expertise!"
 }

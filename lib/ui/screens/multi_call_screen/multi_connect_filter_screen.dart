@@ -58,7 +58,7 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
               //if (filterWatch.categoryController.text.isNotEmpty) {
                 CommonBottomSheet.bottomSheet(
                     context: context,
-                    isDismissible: false,
+                    isDismissible: true,
                     child: TopicListByCategoryBottomView(
                       isFromExploreExpert: true,
                       category: filterWatch.selectedCategory ?? CategoryIdNameCommonModel(),
@@ -191,6 +191,8 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
               double startFeeRange = filterWatch.start ?? 0;
 
               filterRead.clearSingleCategoryData();
+
+              filterRead.setSelectedFilterForMultiConnect();
 
               await multiProviderRead.getSingleCategoryApiCall(
                   categoryId: filterWatch.selectedCategory?.id.toString() ?? '',

@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/category_id_name_common_model.dart';
 import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
@@ -81,10 +83,10 @@ class _TopicListByCategoryBottomViewState extends ConsumerState<TopicListByCateg
               spreadRadius: 1,
             ),
             14.0.spaceY,
-            Center(child: TitleMediumText(title: "Select Topic".toUpperCase(), titleColor: ColorConstants.sheetTitleColor)),
+            Center(child: TitleMediumText(title: LocaleKeys.selectTopic.tr().toUpperCase(), titleColor: ColorConstants.sheetTitleColor)),
             TextFormFieldWidget(
               isReadOnly: false,
-              hintText: "Search here",
+              hintText: LocaleKeys.searchHere.tr(),
               suffixIcon: filterProviderWatch.searchTopicController.text.isNotEmpty
                   ? InkWell(
                       onTap: () {

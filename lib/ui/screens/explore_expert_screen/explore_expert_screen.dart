@@ -158,7 +158,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                               prefixIconPadding: 10,
                               padding: EdgeInsets.symmetric(horizontal: 100),
                             ),
-                            if (filterProviderWatch.commonSelectionModel.isNotEmpty) ...[
+                            if (filterProviderWatch.finalCommonSelectionModel.isNotEmpty) ...[
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -185,8 +185,8 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
-                                    children: List.generate(filterProviderWatch.commonSelectionModel.length, (index) {
-                                      final data = filterProviderWatch.commonSelectionModel[index];
+                                    children: List.generate(filterProviderWatch.finalCommonSelectionModel.length, (index) {
+                                      final data = filterProviderWatch.finalCommonSelectionModel[index];
                                       return Row(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
