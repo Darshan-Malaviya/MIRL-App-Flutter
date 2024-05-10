@@ -23,6 +23,9 @@ class FilterProvider extends ChangeNotifier {
   final _expertCategoryRepo = ExpertCategoryRepo();
   final _commonRepository = CommonRepository();
 
+  ScrollController scrollController = ScrollController();
+
+
   TextEditingController instantCallAvailabilityController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController countryNameController = TextEditingController();
@@ -191,8 +194,8 @@ class FilterProvider extends ChangeNotifier {
                 ? null
                 : sortBySelectedItem == 'PRICE'
                     ? sortBySelectedOrder == 'HIGH TO LOW'
-                        ? 'ASC'
-                        : 'DESC'
+                        ? 'DESC'
+                        : 'ASC'
                     : null,
         // experienceOder: requestModel?.experienceOder,
         // feeOrder: requestModel?.feeOrder,

@@ -187,12 +187,26 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                       ),
                     )
                   } else ...{
-                    Flexible(
-                      child: BodySmallText(
+                    // Flexible(
+                    //   child: BodySmallText(
+                    //     title: Duration(seconds: loginScreenProviderWatch.secondsRemaining).toTimeString(),
+                    //     fontSize: 10,
+                    //   ),
+                    // ),
+                  Row(
+                    children: [
+                      BodySmallText(titleColor: ColorConstants.primaryColor,
                         title: Duration(seconds: loginScreenProviderWatch.secondsRemaining).toTimeString(),
-                        fontSize: 10,
+                        fontSize: 12,
                       ),
-                    ),
+                      4.0.spaceX,
+                      BodySmallText(
+                        title: LocaleKeys.minutes.tr(),
+                        fontFamily: FontWeightEnum.w600.toInter,
+                        maxLine: 2,
+                        fontSize: 12,),
+                    ],
+                  )
                   }
                 ],
               ),

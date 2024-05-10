@@ -16,6 +16,7 @@ import 'package:mirl/infrastructure/providers/report_review_provider.dart';
 import 'package:mirl/infrastructure/providers/notification_provider.dart';
 import 'package:mirl/infrastructure/providers/report_user_provider.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
+import 'package:mirl/infrastructure/providers/selected_topic_provider.dart';
 import 'package:mirl/infrastructure/providers/suggest_new_experties_provider.dart';
 import 'package:mirl/infrastructure/providers/socket_provider.dart';
 import 'package:mirl/infrastructure/providers/upcoming_appointment_provider.dart';
@@ -43,4 +44,5 @@ final notificationProvider = ChangeNotifierProvider.autoDispose((_) => Notificat
 final userSettingProvider = ChangeNotifierProvider.autoDispose((_) => UserSettingProvider());
 final suggestNewExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => SuggestNewExpertiseProvider());
 final callHistoryProvider = ChangeNotifierProvider.autoDispose((_) => CallHistoryProvider());
+final selectedTopicProvider = ChangeNotifierProvider.autoDispose((_) => SelectedTopicProvider());
 

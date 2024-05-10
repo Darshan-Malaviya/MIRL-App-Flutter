@@ -1,7 +1,9 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/expert_data_model.dart';
 import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 import 'package:mirl/infrastructure/models/response/home_search_response_model.dart';
+import 'package:mirl/infrastructure/models/response/see_all_favorite_experts_list_response_model.dart';
 import 'package:mirl/infrastructure/repository/home_repo.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -13,11 +15,23 @@ class HomeProvider extends ChangeNotifier {
   HomeSearchData? get homeSearchData => _homeSearchData;
   HomeSearchData? _homeSearchData;
 
+  List<ExpertData>? get expertsFavoriteList => _expertsFavoriteList;
+  List<ExpertData>? _expertsFavoriteList;
+
   bool get isHomeSearchLoading => _isHomeSearchLoading;
   bool _isHomeSearchLoading = false;
 
   bool get isHomeLoading => _isHomeLoading;
   bool _isHomeLoading = false;
+
+  int get favoritePageNo => _favoritePageNo;
+  int _favoritePageNo = 1;
+
+  bool get reachedCategoryLastPage => _reachedCategoryLastPage;
+  bool _reachedCategoryLastPage = false;
+
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
 
   TextEditingController homeSearchController = TextEditingController();
 
@@ -116,4 +130,79 @@ class HomeProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> favoriteExpertsListApiCall({bool isFullScreenLoader = false}) async {
+    if (isFullScreenLoader) {
+      _isLoading = true;
+      notifyListeners();
+    }
+
+    ApiHttpResult response = await _homeRepo.favoriteExpertsList(limit: 30, page: _favoritePageNo);
+    if (isFullScreenLoader) {
+      _isLoading = false;
+      notifyListeners();
+    }
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is SeeAllFavoriteExpertsListResponseModel) {
+          SeeAllFavoriteExpertsListResponseModel responseModel = response.data;
+          if (_favoritePageNo == 1) {
+            _expertsFavoriteList = responseModel.data;
+          } else {
+            _expertsFavoriteList?.addAll(responseModel.data ?? []);
+          }
+          //_expertsFavoriteList.addAll(responseModel.data?.expertData ?? []);
+          if (_favoritePageNo == responseModel.pagination?.pageCount) {
+            _reachedCategoryLastPage = true;
+          } else {
+            _favoritePageNo = _favoritePageNo + 1;
+            _reachedCategoryLastPage = false;
+          }
+          notifyListeners();
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on Category on call Api ${response.data}");
+        break;
+    }
+  }
+
+  Future<void> lastConversationListListApiCall({bool isFullScreenLoader = false}) async {
+    if (isFullScreenLoader) {
+      _isLoading = true;
+      notifyListeners();
+    }
+
+    ApiHttpResult response = await _homeRepo.lastConversationList(limit: 30, page: _favoritePageNo);
+    if (isFullScreenLoader) {
+      _isLoading = false;
+      notifyListeners();
+    }
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is SeeAllFavoriteExpertsListResponseModel) {
+          SeeAllFavoriteExpertsListResponseModel responseModel = response.data;
+          if (_favoritePageNo == 1) {
+            _expertsFavoriteList = responseModel.data;
+          } else {
+            _expertsFavoriteList?.addAll(responseModel.data ?? []);
+          }
+          //_expertsFavoriteList.addAll(responseModel.data?.expertData ?? []);
+          if (_favoritePageNo == responseModel.pagination?.pageCount) {
+            _reachedCategoryLastPage = true;
+          } else {
+            _favoritePageNo = _favoritePageNo + 1;
+            _reachedCategoryLastPage = false;
+          }
+          notifyListeners();
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on Category on call Api ${response.data}");
+        break;
+    }
+  }
+
 }

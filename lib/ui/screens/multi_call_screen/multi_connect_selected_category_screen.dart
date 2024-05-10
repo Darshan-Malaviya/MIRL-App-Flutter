@@ -15,6 +15,7 @@ import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
 import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
+import 'package:mirl/ui/screens/selected_topic_screen/arguments/selected_topic_arguments.dart';
 
 class MultiConnectSelectedCategoryScreen extends ConsumerStatefulWidget {
   final FilterArgs args;
@@ -79,7 +80,9 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
           filterRead.clearFinalSelectedModel();
           await ref.read(multiConnectProvider).getSingleCategoryApiCall(
               categoryId: widget.args.categoryId ?? '', context: context, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
-          ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+          ref
+              .read(filterProvider)
+              .setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
         },
         child: Scaffold(
           backgroundColor: ColorConstants.greyLightColor,
@@ -88,9 +91,10 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
             onPressed: () async {
               await multiProviderRead.setExpertList();
               FlutterToast().showToast(
-                msg:'Nice, you have chosen ${multiProviderWatch.selectedExperts.length} expert(s) for a Multiple Connect Request!'
-                 // msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.'
-              );
+                  msg:
+                      'Nice, you have chosen ${multiProviderWatch.selectedExperts.length} expert(s) for a Multiple Connect Request!'
+                  // msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.'
+                  );
               multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiCallRequest;
               multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
 
@@ -118,15 +122,16 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                           },
                           onSecondBtnTap: () async {
                             /// cancel
-                            if (multiConnectCallEnumNotifier.value.secondButtonName ==
-                                LocaleKeys.goBack.tr().toUpperCase()) {
+                            if (multiConnectCallEnumNotifier.value.secondButtonName == LocaleKeys.goBack.tr().toUpperCase()) {
                               context.toPop();
                               ref.read(multiConnectProvider).getLoggedUserData();
                               await ref.read(multiConnectProvider).getSingleCategoryApiCall(
                                   categoryId: widget.args.categoryId ?? '',
                                   context: context,
-                                  requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
-                              ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+                                  requestModel:
+                                      ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+                              ref.read(filterProvider).setCategoryWhenFromMultiConnect(
+                                  ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
                             } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
                               if (multiProviderWatch.selectedExpertForCall != null &&
                                   multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
@@ -156,27 +161,34 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                               await ref.read(multiConnectProvider).getSingleCategoryApiCall(
                                   categoryId: widget.args.categoryId ?? '',
                                   context: context,
-                                  requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
-                              ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+                                  requestModel:
+                                      ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+                              ref.read(filterProvider).setCategoryWhenFromMultiConnect(
+                                  ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
                             }
                           },
                         ));
                   }),
                   isDismissible: true);
             },
-            child: Icon(Icons.check,size: 30,color: ColorConstants.buttonTextColor,),
+            child: Icon(
+              Icons.check,
+              size: 30,
+              color: ColorConstants.buttonTextColor,
+            ),
           ).addVisibility(multiProviderWatch.selectedExperts.isNotEmpty),
           appBar: AppBarWidget(
-              appBarColor: ColorConstants.greyLightColor,
-              preferSize: 40,
-              leading: InkWell(
-                child: Image.asset(ImageConstants.backIcon),
-                onTap: () {
-                  multiProviderRead.clearExpertIds();
-                  filterRead.clearAllFilter();
-                  context.toPop();
-                },
-              ),),
+            appBarColor: ColorConstants.greyLightColor,
+            preferSize: 40,
+            leading: InkWell(
+              child: Image.asset(ImageConstants.backIcon),
+              onTap: () {
+                multiProviderRead.clearExpertIds();
+                filterRead.clearAllFilter();
+                context.toPop();
+              },
+            ),
+          ),
           body: multiProviderWatch.isLoading
               ? Center(
                   child: CupertinoActivityIndicator(
@@ -197,13 +209,21 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                       ),
                       20.0.spaceY,
                       if (multiProviderWatch.singleCategoryData?.categoryData != null) ...[
+                        LabelSmallText(
+                          title: multiProviderWatch.singleCategoryData?.categoryData?.description ?? '',
+                          fontFamily: FontWeightEnum.w400.toInter,
+                          maxLine: 10,
+                          titleTextAlign: TextAlign.center,
+                        ),
+                        10.0.spaceY,
                         CategoryCommonView(
                           categoryName: multiProviderWatch.singleCategoryData?.categoryData?.name ?? '',
                           imageUrl: multiProviderWatch.singleCategoryData?.categoryData?.image ?? '',
                           spreadRadius: 1,
-                          blurRadius: 8,offset: Offset(0,0),
+                          blurRadius: 8,
+                          offset: Offset(0, 0),
                           isSelectedShadow: true,
-                        )
+                        ),
                       ],
                       20.0.spaceY,
                       if (multiProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
@@ -233,10 +253,19 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                     List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                                   final data = multiProviderWatch.singleCategoryData?.categoryData?.topic?[index];
                                   int topicIndex = filterWatch.allTopic.indexWhere((element) => element.id == data?.id);
-                                  return ShadowContainer(
+                                  return InkWell(
+                                onTap: () {
+                                  context.toPushNamed(
+                                    RoutesConstants.selectedTopicScreen,
+                                    args: SelectedTopicArgs(
+                                        topicName: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ?? '',
+                                        topicId: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0),
+                                  );
+                                },
+                                child:ShadowContainer(
                                     shadowColor: ((filterWatch.allTopic.isEmpty) && index == 0)
-                                        ? ColorConstants.primaryColor :
-                                         (topicIndex != -1 && (filterWatch.allTopic[topicIndex].isCategorySelected ?? false))
+                                        ? ColorConstants.primaryColor
+                                         :(topicIndex != -1 && (filterWatch.allTopic[topicIndex].isCategorySelected ?? false))
                                         ? ColorConstants.primaryColor
                                         : ColorConstants.blackColor.withOpacity(0.1),
                                     backgroundColor: ColorConstants.whiteColor,
@@ -250,8 +279,8 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                       fontFamily: FontWeightEnum.w500.toInter,
                                       maxLine: 5,
                                     ),
-                                  );
-                                }),
+                                  ),
+                                );}),
                               ),
                             ],
                           ),
@@ -281,22 +310,22 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                 BodySmallText(
                                   title: LocaleKeys.appliedFilters.tr(),
                                 ),
-                                  InkWell(
-                                      onTap: () async {
-                                        multiProviderRead.clearExpertIds();
-                                        filterRead.clearAllFilter(selectedCategoryClearAll: true);
-                                        await multiProviderRead.getSingleCategoryApiCall(
-                                          context: context,
-                                          categoryId: widget.args.categoryId ?? '',
-                                          requestModel: ExpertDataRequestModel(
-                                            userId: SharedPrefHelper.getUserId,
-                                            multiConnectRequest: 'true',
-                                          ),
-                                        );
-                                      },
-                                      child: BodySmallText(
-                                        title: LocaleKeys.clearAll.tr(),
-                                      )),
+                                InkWell(
+                                    onTap: () async {
+                                      multiProviderRead.clearExpertIds();
+                                      filterRead.clearAllFilter(selectedCategoryClearAll: true);
+                                      await multiProviderRead.getSingleCategoryApiCall(
+                                        context: context,
+                                        categoryId: widget.args.categoryId ?? '',
+                                        requestModel: ExpertDataRequestModel(
+                                          userId: SharedPrefHelper.getUserId,
+                                          multiConnectRequest: 'true',
+                                        ),
+                                      );
+                                    },
+                                    child: BodySmallText(
+                                      title: LocaleKeys.clearAll.tr(),
+                                    )),
                               ],
                             ),
                             10.0.spaceY,
@@ -309,28 +338,28 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                 return Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                  //  if (data.title != null) ...[
-                                      OnScaleTap(
-                                        onPress: () {
-                                          filterRead.removeFilter(
-                                              index: index,
-                                              context: context,
-                                              isFromMultiConnect: true,
-                                              singleCategoryId: widget.args.categoryId,
-                                              multiConnectRequest: 'true');
-                                        },
-                                        child: ShadowContainer(
-                                          border: 20,
-                                          height: 30,
-                                          width: 30,
-                                          shadowColor: ColorConstants.borderColor,
-                                          backgroundColor: ColorConstants.yellowButtonColor,
-                                          offset: Offset(0, 3),
-                                          child: Center(child: Image.asset(ImageConstants.cancel)),
-                                        ),
+                                    //  if (data.title != null) ...[
+                                    OnScaleTap(
+                                      onPress: () {
+                                        filterRead.removeFilter(
+                                            index: index,
+                                            context: context,
+                                            isFromMultiConnect: true,
+                                            singleCategoryId: widget.args.categoryId,
+                                            multiConnectRequest: 'true');
+                                      },
+                                      child: ShadowContainer(
+                                        border: 20,
+                                        height: 30,
+                                        width: 30,
+                                        shadowColor: ColorConstants.borderColor,
+                                        backgroundColor: ColorConstants.yellowButtonColor,
+                                        offset: Offset(0, 3),
+                                        child: Center(child: Image.asset(ImageConstants.cancel)),
                                       ),
-                                      20.0.spaceX,
-                                  //  ],
+                                    ),
+                                    20.0.spaceX,
+                                    //  ],
                                     Flexible(
                                       child: ShadowContainer(
                                         border: 10,
@@ -373,8 +402,8 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           separatorBuilder: (context, index) => 30.0.spaceY,
-                          itemCount:
-                              (multiProviderWatch.expertData?.length ?? 0) + (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
+                          itemCount: (multiProviderWatch.expertData?.length ?? 0) +
+                              (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                           itemBuilder: (context, i) {
                             if (i == (multiProviderWatch.expertData?.length ?? 0) &&
@@ -437,6 +466,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
 
 class MultiCallDurationBottomSheetView extends ConsumerStatefulWidget {
   final void Function() onPressed;
+
   const MultiCallDurationBottomSheetView({required this.onPressed, super.key});
 
   @override
@@ -444,7 +474,6 @@ class MultiCallDurationBottomSheetView extends ConsumerStatefulWidget {
 }
 
 class _MultiCallDurationBottomSheetViewState extends ConsumerState<MultiCallDurationBottomSheetView> {
-
   @override
   Widget build(BuildContext context) {
     final multiConnectProviderWatch = ref.watch(multiConnectProvider);
@@ -483,7 +512,8 @@ class _MultiCallDurationBottomSheetViewState extends ConsumerState<MultiCallDura
           ],
         ),
         20.0.spaceY,
-        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
+        BodySmallText(
+            title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
         20.0.spaceY,
         PrimaryButton(
           height: 55,
@@ -497,9 +527,9 @@ class _MultiCallDurationBottomSheetViewState extends ConsumerState<MultiCallDura
   }
 }
 
-
 class MultiCallPaymentBottomSheetView extends ConsumerStatefulWidget {
   final void Function() onPressed;
+
   const MultiCallPaymentBottomSheetView({required this.onPressed, super.key});
 
   @override
@@ -507,7 +537,6 @@ class MultiCallPaymentBottomSheetView extends ConsumerStatefulWidget {
 }
 
 class _MultiCallPaymentBottomSheetViewState extends ConsumerState<MultiCallPaymentBottomSheetView> {
-
   @override
   Widget build(BuildContext context) {
     final multiConnectProviderWatch = ref.watch(multiConnectProvider);
@@ -536,15 +565,16 @@ class _MultiCallPaymentBottomSheetViewState extends ConsumerState<MultiCallPayme
                 ),
                 10.0.spaceX,
                 AutoSizeText(
-                  multiConnectProviderWatch.selectedExpertForCall?.overAllRating != 0 && multiConnectProviderWatch.selectedExpertForCall?.overAllRating != null
-                      ? multiConnectProviderWatch.selectedExpertForCall?.overAllRating.toString() ?? '0' : LocaleKeys.newText.tr(),
+                  multiConnectProviderWatch.selectedExpertForCall?.overAllRating != 0 &&
+                          multiConnectProviderWatch.selectedExpertForCall?.overAllRating != null
+                      ? multiConnectProviderWatch.selectedExpertForCall?.overAllRating.toString() ?? '0'
+                      : LocaleKeys.newText.tr(),
                   maxLines: 1,
                   softWrap: true,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: ColorConstants.overallRatingColor,
-                    shadows: [
-                      Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
-                    ],                  ),
+                    shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                  ),
                 )
               ],
             ),
@@ -600,7 +630,8 @@ class _MultiCallPaymentBottomSheetViewState extends ConsumerState<MultiCallPayme
         ),
         22.0.spaceY,
         BodyMediumText(
-          title: '${LocaleKeys.scheduleDescription.tr()} ${multiConnectProviderWatch.selectedExpertForCall?.expertName?.toUpperCase() ?? LocaleKeys.anonymous.tr().toUpperCase()}',
+          title:
+              '${LocaleKeys.scheduleDescription.tr()} ${multiConnectProviderWatch.selectedExpertForCall?.expertName?.toUpperCase() ?? LocaleKeys.anonymous.tr().toUpperCase()}',
           fontFamily: FontWeightEnum.w500.toInter,
           titleColor: ColorConstants.buttonTextColor,
           titleTextAlign: TextAlign.center,
