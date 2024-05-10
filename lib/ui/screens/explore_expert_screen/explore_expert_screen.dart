@@ -60,12 +60,6 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
           appBar: AppBarWidget(
             preferSize: 30,
             appBarColor: ColorConstants.greyLightColor,
-            trailingIcon: IconButton(
-              icon: Icon(Icons.abc),
-              onPressed: () {
-                ref.read(filterProvider).scrollController.animateTo(0.0, duration: Duration(seconds: 3), curve: Curves.ease);
-              },
-            ),
           ),
           body: Column(
             mainAxisSize: MainAxisSize.min,

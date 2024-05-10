@@ -207,7 +207,7 @@
   "userTemporarilyBlocked": "User Temporarily Blocked!",
   "theUserHasBeenSuccessfullyBlockedFromContacting": "The user has been successfully blocked from contacting you, as per your request.",
   "ok": "OK",
-  "soFarYouHaveNotBlockedAnyUsers": "You haven't blocked any users so far.",
+  "soFarYouHaveNotBlockedAnyUsers": "Yay, you have no blocked\nusers in your list!",
   "userWith": "USER:",
   "expertWith": "EXPERT:",
   "blockedOn": "BLOCKED ON:",
