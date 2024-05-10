@@ -83,7 +83,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               if (filterWatch.categoryController.text.isNotEmpty) {
                 CommonBottomSheet.bottomSheet(
                     context: context,
-                    isDismissible: false,
+                    isDismissible: true,
                     child: TopicListByCategoryBottomView(
                       isFromExploreExpert: widget.args.fromExploreExpert ?? false,
                       category: filterWatch.selectedCategory ?? CategoryIdNameCommonModel(),

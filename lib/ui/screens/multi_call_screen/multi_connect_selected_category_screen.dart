@@ -75,12 +75,12 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
       child: RefreshIndicator(
         color: ColorConstants.primaryColor,
         onRefresh: () async {
-          ref.read(multiConnectProvider).getLoggedUserData();
+          multiProviderRead.getLoggedUserData();
+          filterRead.clearFinalSelectedModel();
           await ref.read(multiConnectProvider).getSingleCategoryApiCall(
-              categoryId: widget.args.categoryId ?? '',
-              context: context,
-              requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
-          ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);        },
+              categoryId: widget.args.categoryId ?? '', context: context, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+          ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+        },
         child: Scaffold(
           backgroundColor: ColorConstants.greyLightColor,
           floatingActionButton: FloatingActionButton(
@@ -209,7 +209,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                       if (multiProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
                         Container(
                           width: double.infinity,
-                          padding: EdgeInsets.all(20),
+                          padding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
                           decoration: BoxDecoration(
                             color: ColorConstants.scaffoldBg,
                             boxShadow: [
@@ -221,30 +221,39 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                               ),
                             ],
                           ),
-                          child: Wrap(
-                            children:
-                                List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
-                              final data = multiProviderWatch.singleCategoryData?.categoryData?.topic?[index];
-                              int topicIndex = filterWatch.allTopic.indexWhere((element) => element.id == data?.id);
-                              return ShadowContainer(
-                                shadowColor: ((filterWatch.allTopic.isEmpty) && index == 0)
-                                    ? ColorConstants.primaryColor :
-                                     (topicIndex != -1 && (filterWatch.allTopic[topicIndex].isCategorySelected ?? false))
-                                    ? ColorConstants.primaryColor
-                                    : ColorConstants.blackColor.withOpacity(0.1),
-                                backgroundColor: ColorConstants.whiteColor,
-                                isShadow: true,
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                margin: EdgeInsets.only(bottom: 10, right: 10),
-                                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                child: BodyMediumText(
-                                  title: data?.name ?? '',
-                                  fontFamily: FontWeightEnum.w500.toInter,
-                                  maxLine: 5,
-                                ),
-                              );
-                            }),
+                          child: Column(
+                            children: [
+                              BodyMediumText(
+                                title: LocaleKeys.selectTopicFromFilter.tr(),
+                                fontFamily: FontWeightEnum.w500.toInter,
+                              ),
+                              20.0.spaceY,
+                              Wrap(
+                                children:
+                                    List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                                  final data = multiProviderWatch.singleCategoryData?.categoryData?.topic?[index];
+                                  int topicIndex = filterWatch.allTopic.indexWhere((element) => element.id == data?.id);
+                                  return ShadowContainer(
+                                    shadowColor: ((filterWatch.allTopic.isEmpty) && index == 0)
+                                        ? ColorConstants.primaryColor :
+                                         (topicIndex != -1 && (filterWatch.allTopic[topicIndex].isCategorySelected ?? false))
+                                        ? ColorConstants.primaryColor
+                                        : ColorConstants.blackColor.withOpacity(0.1),
+                                    backgroundColor: ColorConstants.whiteColor,
+                                    isShadow: true,
+                                    spreadRadius: 1,
+                                    blurRadius: 2,
+                                    margin: EdgeInsets.only(bottom: 10, right: 10),
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                    child: BodyMediumText(
+                                      title: data?.name ?? '',
+                                      fontFamily: FontWeightEnum.w500.toInter,
+                                      maxLine: 5,
+                                    ),
+                                  );
+                                }),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -260,7 +269,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                         padding: EdgeInsets.symmetric(horizontal: 50),
                       ),
                       20.0.spaceY,
-                      if (filterWatch.commonSelectionModel.isNotEmpty) ...[
+                      if (filterWatch.finalCommonSelectionModel.isNotEmpty) ...[
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -295,8 +304,8 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
-                              children: List.generate(filterWatch.commonSelectionModel.length, (index) {
-                                final data = filterWatch.commonSelectionModel[index];
+                              children: List.generate(filterWatch.finalCommonSelectionModel.length, (index) {
+                                final data = filterWatch.finalCommonSelectionModel[index];
                                 return Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [

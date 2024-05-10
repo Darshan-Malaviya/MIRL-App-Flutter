@@ -382,5 +382,8 @@
   "theExpertHasDeclinedYourCall": "The expert has declined your call. Maybe they're busy?",
   "startingYourCall": "Starting Your MIRL!",
   "emojiRateExpert": "Please pick one emoji to rate the Expert!",
-  "maximumFee": "The maximum expert fee is capped to $500 for now."
+  "maximumFee": "The maximum expert fee is capped to $500 for now.",
+  "selectTopicFromFilter": "SELECT A TOPIC USING THE FILTER BELOW",
+  "selectTopic": "Select Topic",
+  "selectCategory": "Select Category"
 }

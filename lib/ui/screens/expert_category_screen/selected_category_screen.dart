@@ -134,7 +134,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                     if (filterProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
                       Container(
                         width: double.infinity,
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
                         decoration: BoxDecoration(
                           color: ColorConstants.scaffoldBg,
                           boxShadow: [
@@ -146,31 +146,40 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                             ),
                           ],
                         ),
-                        child: Wrap(
-                          children:
-                              List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
-                            final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
-                            int topicIndex = filterProviderWatch.allTopic.indexWhere((element) => element.id == data?.id);
-                            return ShadowContainer(
-                              shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0)
-                                  ? ColorConstants.primaryColor :
-                                  (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
-                                      ? ColorConstants.primaryColor
-                                      : ColorConstants.blackColor.withOpacity(0.1),
-                              backgroundColor: ColorConstants.whiteColor,
-                              isShadow: true,
-                              spreadRadius: 1,
-                              blurRadius: 2,
-                              margin: EdgeInsets.only(bottom: 10, right: 10),
-                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                              // offset: Offset(0, 3),
-                              child: BodyMediumText(
-                                title: data?.name ?? '',
-                                fontFamily: FontWeightEnum.w500.toInter,
-                                maxLine: 5,
-                              ),
-                            );
-                          }),
+                        child: Column(
+                          children: [
+                            BodyMediumText(
+                              title: LocaleKeys.selectTopicFromFilter.tr(),
+                              fontFamily: FontWeightEnum.w500.toInter,
+                            ),
+                            20.0.spaceY,
+                            Wrap(
+                              children:
+                                  List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                                final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
+                                int topicIndex = filterProviderWatch.allTopic.indexWhere((element) => element.id == data?.id);
+                                return ShadowContainer(
+                                  shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0)
+                                      ? ColorConstants.primaryColor :
+                                      (topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
+                                          ? ColorConstants.primaryColor
+                                          : ColorConstants.blackColor.withOpacity(0.1),
+                                  backgroundColor: ColorConstants.whiteColor,
+                                  isShadow: true,
+                                  spreadRadius: 1,
+                                  blurRadius: 2,
+                                  margin: EdgeInsets.only(bottom: 10, right: 10),
+                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                  // offset: Offset(0, 3),
+                                  child: BodyMediumText(
+                                    title: data?.name ?? '',
+                                    fontFamily: FontWeightEnum.w500.toInter,
+                                    maxLine: 5,
+                                  ),
+                                );
+                              }),
+                            ),
+                          ],
                         ),
                       ),
                       20.0.spaceY,
@@ -211,7 +220,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       buttonTextFontFamily: FontWeightEnum.w400.toInter,
                       padding: EdgeInsets.symmetric(horizontal: 30),
                     ),
-                    if (filterProviderWatch.commonSelectionModel.isNotEmpty) ...[
+                    if (filterProviderWatch.finalCommonSelectionModel.isNotEmpty) ...[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -272,8 +281,8 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
-                            children: List.generate(filterProviderWatch.commonSelectionModel.length, (index) {
-                              final data = filterProviderWatch.commonSelectionModel[index];
+                            children: List.generate(filterProviderWatch.finalCommonSelectionModel.length, (index) {
+                              final data = filterProviderWatch.finalCommonSelectionModel[index];
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [

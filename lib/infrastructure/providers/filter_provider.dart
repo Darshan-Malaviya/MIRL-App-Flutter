@@ -129,6 +129,8 @@ class FilterProvider extends ChangeNotifier {
 
   List<CommonSelectionModel> commonSelectionModel = [];
 
+  List<CommonSelectionModel> finalCommonSelectionModel = [];
+
   SingleCategoryData? get singleCategoryData => _singleCategoryData;
   SingleCategoryData? _singleCategoryData;
 
@@ -209,8 +211,8 @@ class FilterProvider extends ChangeNotifier {
                         ? 'DESC'
                         : 'ASC'
                     : null,
-        maxFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : end?.toStringAsFixed(2),
-        minFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : start?.toStringAsFixed(2),
+        maxFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : ((end ?? 0) * 100).toInt().toString(),
+        minFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : ((start ?? 0) * 100).toInt().toString(),
         topicIds: selectedTopicId,
         categoryId: isFromExploreExpert
             ? (commonSelectionModel[index].title == FilterType.Category.name)
@@ -250,6 +252,7 @@ class FilterProvider extends ChangeNotifier {
       _selectedRating = null;
     }
     commonSelectionModel.removeAt(index);
+    finalCommonSelectionModel.removeAt(index);
     if (isFromExploreExpert) {
       clearExploreExpertSearchData();
       clearExploreController();
@@ -281,8 +284,10 @@ class FilterProvider extends ChangeNotifier {
         element.title != FilterType.Category.name ? model.add(element) : null;
       });
       commonSelectionModel.removeWhere((element) => model.contains(element));
+      finalCommonSelectionModel.removeWhere((element) => model.contains(element));
     } else {
       commonSelectionModel = [];
+      finalCommonSelectionModel = [];
       categoryController.clear();
       _categorySelectionIndex = -1;
       selectedCategory = null;
@@ -327,6 +332,12 @@ class FilterProvider extends ChangeNotifier {
       CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
       CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 3),
     ];
+    notifyListeners();
+  }
+
+  void setSelectedFilterForMultiConnect(){
+    finalCommonSelectionModel.clear();
+    finalCommonSelectionModel.addAll(commonSelectionModel);
     notifyListeners();
   }
 
@@ -601,6 +612,12 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearFinalSelectedModel(){
+    finalCommonSelectionModel.clear();
+    commonSelectionModel.clear();
+    notifyListeners();
+  }
+
   Future<void> allCategoryListApi({bool isFullScreenLoader = false, String? searchName}) async {
     if (isFullScreenLoader) {
       CustomLoading.progressDialog(isLoading: true);
@@ -734,10 +751,14 @@ class FilterProvider extends ChangeNotifier {
           if (_oneCategoryScreenPageNo == responseModel.pagination?.pageCount) {
             _reachedOneCategoryScreenLastPage = true;
           } else {
-            _oneCategoryScreenPageNo = _oneCategoryScreenPageNo + 1;
-            _reachedOneCategoryScreenLastPage = false;
+            if(_singleCategoryData?.expertData?.isNotEmpty ?? false) {
+              _oneCategoryScreenPageNo = _oneCategoryScreenPageNo + 1;
+              _reachedOneCategoryScreenLastPage = false;
+            }
           }
           if (isFromFilter) {
+            finalCommonSelectionModel.clear();
+            finalCommonSelectionModel.addAll(commonSelectionModel);
             Navigator.pop(context);
           }
           notifyListeners();
@@ -745,7 +766,7 @@ class FilterProvider extends ChangeNotifier {
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail get category call Api ${response.data}");
+        Logger().d("API fail get single category call Api ${response.data}");
         break;
     }
   }
@@ -758,6 +779,7 @@ class FilterProvider extends ChangeNotifier {
       bool clearFilter = false}) async {
     if (clearFilter) {
       commonSelectionModel.clear();
+      finalCommonSelectionModel.clear();
     }
     if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: true);
@@ -810,10 +832,14 @@ class FilterProvider extends ChangeNotifier {
           if (_exploreExpertPageNo == responseModel.pagination?.pageCount) {
             _reachedExploreExpertLastPage = true;
           } else {
-            _exploreExpertPageNo = _exploreExpertPageNo + 1;
-            _reachedExploreExpertLastPage = false;
+            if(_categoryList?.expertData?.isNotEmpty ?? false){
+              _exploreExpertPageNo = _exploreExpertPageNo + 1;
+              _reachedExploreExpertLastPage = false;
+            }
           }
           if (isFromFilter) {
+            finalCommonSelectionModel.clear();
+            finalCommonSelectionModel.addAll(commonSelectionModel);
             Navigator.pop(context);
           }
           notifyListeners();
