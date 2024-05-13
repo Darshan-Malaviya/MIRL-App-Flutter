@@ -59,7 +59,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                   SliverAppBar(
                       backgroundColor: ColorConstants.transparentColor,
                       //floating: false,
-                      pinned: false,
+                      pinned: true,
                       centerTitle: true,
                       expandedHeight: 366.0,
                       bottom: PreferredSize(
