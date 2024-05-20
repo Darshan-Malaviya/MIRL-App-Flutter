@@ -55,6 +55,7 @@ class ImageConstants {
   static const shareProfile = '${imagePath}share_profile.png';
   static const copyLink = '${imagePath}copy_link.png';
   static const mirlLoginIcon = '${imagePath}mirl_login_icon.png';
+  static const blockedUser = '${imagePath}blocked_user.png';
 
   /// gif image
   static const splashImages = '${gifPath}splash_image.gif';

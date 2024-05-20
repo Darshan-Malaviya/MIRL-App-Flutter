@@ -107,7 +107,7 @@ class MultiConnectProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo);
+    ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo,orderByPriority: "true");
 
     if (isLoaderVisible) {
       _isLoading = false;
