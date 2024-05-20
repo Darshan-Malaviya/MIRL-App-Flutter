@@ -69,7 +69,7 @@ class PushNotificationService {
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage? message) async {
         try {
-          log('Message: ========${message?.notification?.title}, body: ${message?.notification?.body}, data: ${message?.data}');
+          log('Message: ========key: ${message?.data['key']}, title,${message?.notification?.title}, body: ${message?.notification?.body}, data: ${message?.data}');
 
           RemoteNotification? notification = message?.notification;
           AndroidNotification? android = message?.notification?.android;
