@@ -43,19 +43,19 @@ class HomeData {
     if (json['categories'] != null) {
       categories = <Categories>[];
       json['categories'].forEach((v) {
-        categories!.add(new Categories.fromJson(v));
+        categories?.add(new Categories.fromJson(v));
       });
     }
     if (json['userFavorites'] != null) {
       userFavorites = <UserFavorites>[];
       json['userFavorites'].forEach((v) {
-        userFavorites!.add(new UserFavorites.fromJson(v));
+        userFavorites?.add(new UserFavorites.fromJson(v));
       });
     }
     if (json['lastConversionList'] != null) {
       lastConversionList = <LastConversionList>[];
       json['lastConversionList'].forEach((v) {
-        lastConversionList!.add(new LastConversionList.fromJson(v));
+        lastConversionList?.add(new LastConversionList.fromJson(v));
       });
     }
   }
@@ -63,7 +63,7 @@ class HomeData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.categories != null) {
-      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
+      data['categories'] = this.categories?.map((v) => v.toJson()).toList();
     }
     if (this.userFavorites != null) {
       data['userFavorites'] =

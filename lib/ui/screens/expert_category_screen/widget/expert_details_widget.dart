@@ -134,7 +134,8 @@ class ExpertDetailWidget extends StatelessWidget {
                               //fee != null || expertData?.fee != 0? '\$${fee}' : LocaleKeys.proBono.tr(),
                              expertData?.fee != 0 ? '' :LocaleKeys.bono.tr(),
                               maxLines: 2,
-                                textAlign: TextAlign.center,style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12,
+                                presetFontSizes: [18],
+                            textAlign: TextAlign.center,style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12,
                                 color: ColorConstants.bottomTextColor,
                                 shadows: [
                                   Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))

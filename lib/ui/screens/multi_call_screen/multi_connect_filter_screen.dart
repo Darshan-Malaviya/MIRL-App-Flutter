@@ -214,8 +214,8 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                         ? null
                         : filterWatch.sortBySelectedItem == 'PRICE'
                             ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                ? 'ASC'
-                                : 'DESC'
+                                ? 'DESC'
+                                : 'ASC'
                             : null,
                     overAllRating: filterWatch.selectedRating != null ? filterWatch.selectedRating.toString() : null,
                     ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
