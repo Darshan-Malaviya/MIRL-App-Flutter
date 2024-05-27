@@ -45,7 +45,7 @@ class ReportUserProvider extends ChangeNotifier {
   void thanks(BuildContext context) {
     _currentView = 0;
     context.toPop();
-    context.toPop();
+    // context.toPop();
     notifyListeners();
   }
 

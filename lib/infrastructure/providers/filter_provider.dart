@@ -23,7 +23,7 @@ class FilterProvider extends ChangeNotifier {
   final _expertCategoryRepo = ExpertCategoryRepo();
   final _commonRepository = CommonRepository();
 
-  ScrollController scrollController = ScrollController();
+  // ScrollController scrollController = ScrollController();
 
 
   TextEditingController instantCallAvailabilityController = TextEditingController();

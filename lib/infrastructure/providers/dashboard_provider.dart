@@ -13,6 +13,10 @@ class DashboardProvider extends ChangeNotifier {
     // }
     notifyListeners();
   }
+  void changeSelectedIndex(int index) {
+    _selectedIndex = index;
+    notifyListeners();
+  }
 
   String getText(int index) {
     if (index == 1) {

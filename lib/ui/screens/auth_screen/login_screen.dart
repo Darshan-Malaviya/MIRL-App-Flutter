@@ -39,20 +39,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            // if (Platform.isIOS) ...{
-            //   (size.width * 0.1).spaceY,
-            // } else ...{
-            //   (size.width * 0.4).spaceY,
-            // },
+            (size.width * 0.2).spaceY,
             Image.asset(
-              ImageConstants.mirlLoginIcon,
+              ImageConstants.mirlLoginIconNew,
+              height: 170,
+              width: 170,
             ),
-            // if (Platform.isIOS) ...{
-            //   (size.width * 0.1).spaceY,
-            // } else ...{
-            //   (size.width * 0.16).spaceY,
-            // },
-            //(size.width * 0.16).spaceY,
+          (size.width * 0.1).spaceY,
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
@@ -71,7 +64,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                    (size.width * 0.1).spaceY,
                   //  25.0.spaceY,
-
                     TitleLargeText(
                       title: StringConstants.letsMirl,
                       fontFamily: FontWeightEnum.w800.toInter,
@@ -204,7 +196,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   args: CmsArgs(title: AppConstants.privacyPolicy, name: "privacyPolicy"));
                             },
                         ),
-                      ]),
+                      ],
+                      ),
                     ).addPaddingX(16),
                    // 30.0.spaceY,
                   ],

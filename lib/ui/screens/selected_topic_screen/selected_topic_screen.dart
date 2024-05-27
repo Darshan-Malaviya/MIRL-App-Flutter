@@ -89,15 +89,14 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                         itemCount: (selectedTopicWatch.categoryList?.expertData?.length ?? 0) +
                             (selectedTopicWatch.reachedCategoryLastPage ? 0 : 1))
                   ] else ...[
+                    100.0.spaceY,
                     Center(
                       child: BodySmallText(
                         title: LocaleKeys.noResultFound.tr(),
                         fontFamily: FontWeightEnum.w600.toInter,
-                        titleTextAlign: TextAlign.center,
+                        //titleTextAlign: TextAlign.center,
                       ),
                     ),
-                    20.0.spaceY,
-                    40.0.spaceY,
                   ]
                 ],
               ),

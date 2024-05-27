@@ -8,7 +8,7 @@ class StringConstants {
   static const String typeYourEmailAddress = "Type your email address";
   static const String checkYourEmail = "Check your email!";
   static const String secretCode = "We've sent you a secret code.";
-  static const String enterHereLogin = "Enter it here to log in";
+  static const String enterHereLogin = "Enter it here to log in.";
   static const String verifyOtp = "Verify";
   static const String resendOtp = "Resend OTP in ";
   static const String termsAndCondition = "Terms and Conditions";

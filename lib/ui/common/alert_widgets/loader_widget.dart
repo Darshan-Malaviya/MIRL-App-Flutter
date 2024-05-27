@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -22,10 +23,12 @@ class CustomLoading {
                 sigmaY: 10.0,
               ),
               child: Center(
-                  child: CupertinoActivityIndicator(
-                animating: true,
-                color: ColorConstants.primaryColor,
-                radius: 16,
+                  child: SpinKitChasingDots(
+                    color: ColorConstants.primaryColor,
+                    size: 50.0,
+                // animating: true,
+                // color: ColorConstants.primaryColor,
+                // radius: 16,
               )),
             ),
           );

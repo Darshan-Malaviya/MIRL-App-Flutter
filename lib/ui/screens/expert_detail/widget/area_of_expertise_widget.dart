@@ -6,12 +6,13 @@ import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/padding_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
+import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/ui/common/container_widgets/category_common_view.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
 class AreaOfExpertiseWidget extends ConsumerStatefulWidget {
-  const AreaOfExpertiseWidget({super.key});
+  final List<AreasOfExpertise> areaOfExpertise;
+  const AreaOfExpertiseWidget({super.key,required this.areaOfExpertise});
 
   @override
   ConsumerState<AreaOfExpertiseWidget> createState() => _AreaOfExpertiseWidgetState();
@@ -20,10 +21,10 @@ class AreaOfExpertiseWidget extends ConsumerStatefulWidget {
 class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
   @override
   Widget build(BuildContext context) {
-    final expertDetailWatch = ref.watch(expertDetailProvider);
+    //final expertDetailWatch = ref.watch(expertDetailProvider);
     return Column(
       children: [
-        expertDetailWatch.userData?.areaOfExpertise?.isNotEmpty ?? false
+        widget.areaOfExpertise.isNotEmpty ?? false
             ? Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: TitleMediumText(
@@ -34,26 +35,26 @@ class _AreaOfExpertiseWidgetState extends ConsumerState<AreaOfExpertiseWidget> {
               )
             : SizedBox.shrink(),
         Column(
-          children: List.generate(expertDetailWatch.userData?.areaOfExpertise?.length ?? 0, (index) {
+          children: List.generate(widget.areaOfExpertise.length ?? 0, (index) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CategoryCommonView(
                   onTap: () {},
-                  categoryName: expertDetailWatch.userData?.areaOfExpertise?[index].name ?? '',
-                  imageUrl: expertDetailWatch.userData?.areaOfExpertise?[index].image ?? '',
+                  categoryName: widget.areaOfExpertise[index].name ?? '',
+                  imageUrl: widget.areaOfExpertise[index].image ?? '',
                 ).addPaddingLeft(4),
                 15.0.spaceX,
                 Expanded(
                   child: Wrap(
-                      children: List.generate(expertDetailWatch.userData?.areaOfExpertise?[index].topic?.length ?? 0, (i) {
+                      children: List.generate(widget.areaOfExpertise[index].topic?.length ?? 0, (i) {
                     return Container(
                       margin: EdgeInsets.only(bottom: 14, right: 4),
                       padding: EdgeInsets.symmetric(horizontal: 11, vertical: 5),
                       child: BodyMediumText(
                         maxLine: 3,
-                        title: expertDetailWatch.userData?.areaOfExpertise?[index].topic?[i].name ?? '',
+                        title: widget.areaOfExpertise[index].topic?[i].name ?? '',
                         fontFamily: FontWeightEnum.w500.toInter,
                         titleTextAlign: TextAlign.start,
                       ),

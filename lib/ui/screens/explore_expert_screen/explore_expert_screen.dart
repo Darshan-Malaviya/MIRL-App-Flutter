@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
@@ -12,14 +13,17 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   final bool isFromHomePage;
+  /*final ScrollController scrollController;*/
 
-  const ExploreExpertScreen({super.key, required this.isFromHomePage});
+  const ExploreExpertScreen({super.key, required this.isFromHomePage/*,required this.scrollController*/});
 
   @override
   ConsumerState<ExploreExpertScreen> createState() => _ExploreExpertScreenState();
 }
 
 class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
+  ScrollController scrollController = ScrollController();
+
 
   @override
   void initState() {
@@ -29,8 +33,8 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
       ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
     });
 
-    ref.read(filterProvider).scrollController.addListener(() async {
-      if (ref.read(filterProvider).scrollController.position.pixels == ref.read(filterProvider).scrollController.position.maxScrollExtent) {
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(filterProvider).reachedExploreExpertLastPage;
         if (!isLoading) {
           await ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isPaginating: true);
@@ -110,11 +114,16 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
               ).addMarginXY(marginX: 20, marginY: 10),
               if (filterProviderWatch.isLoading) ...[
                 Center(
-                    child: CupertinoActivityIndicator(
-                  animating: true,
-                  color: ColorConstants.primaryColor,
-                  radius: 16,
-                ).addPaddingY(20)),
+                  child: SpinKitChasingDots(
+                    color: ColorConstants.primaryColor,
+                    size: 50.0,
+                  ),
+                )
+                //     child: CupertinoActivityIndicator(
+                //   animating: true,
+                //   color: ColorConstants.primaryColor,
+                //   radius: 16,
+                // ).addPaddingY(20)),
               ] else ...[
                 Expanded(
                   child: GestureDetector(
@@ -129,7 +138,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                         ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
                       },
                       child: SingleChildScrollView(
-                        controller: ref.read(filterProvider).scrollController,
+                        controller: scrollController,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -144,7 +153,13 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                               margin: EdgeInsets.symmetric(horizontal: 20),
                               onPressed: () {
                                 context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
-                                    args: FilterArgs(fromExploreExpert: true));
+                                     args: FilterArgs(fromExploreExpert: true));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             ExpertCategoryFilterScreen(args: FilterArgs(fromExploreExpert: true)),
+                                //         allowSnapshotting: false));
                               },
                               prefixIcon: ImageConstants.filter,
                               titleColor: ColorConstants.blackColor,

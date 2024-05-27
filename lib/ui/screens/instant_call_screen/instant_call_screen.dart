@@ -241,6 +241,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                   ).addPaddingX(16),
                   30.0.spaceY,
                   Visibility(
+
                     visible: instanceCallEnumNotifier.value == CallRequestTypeEnum.requestDeclined ||
                         instanceCallEnumNotifier.value == CallRequestTypeEnum.requestTimeout ||
                         instanceCallEnumNotifier.value == CallRequestTypeEnum.receiverRequested ||

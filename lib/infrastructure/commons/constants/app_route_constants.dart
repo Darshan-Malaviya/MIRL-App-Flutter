@@ -104,17 +104,17 @@ class RouterConstant {
       case RoutesConstants.otpScreen:
         return MaterialPageRoute(builder: (_) => const OTPScreen());
       case RoutesConstants.homeScreen:
-        return MaterialPageRoute(builder: (_) => HomeScreen(context: settings.arguments as BuildContext,));
+        return MaterialPageRoute(builder: (_) => HomeScreen(context: settings.arguments as BuildContext,/*scrollController: settings.arguments as ScrollController*/));
       case RoutesConstants.dashBoardScreen:
         return MaterialPageRoute(builder: (_) => DashboardScreen(index: settings.arguments as int));
       case RoutesConstants.expertProfileScreen:
-        return MaterialPageRoute(builder: (_) => const ExpertProfileScreen());
+        return MaterialPageRoute(builder: (_) => ExpertProfileScreen(/*scrollController: settings.arguments as ScrollController,*/));
       case RoutesConstants.exploreScreen:
         return MaterialPageRoute(builder: (_) => const ExploreScreen());
       case RoutesConstants.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
       case RoutesConstants.userSettingScreen:
-        return MaterialPageRoute(builder: (_) => const UserSettingScreen());
+        return MaterialPageRoute(builder: (_) => UserSettingScreen(/*scrollController: settings.arguments as ScrollController*/));
       case RoutesConstants.editYourExpertProfileScreen:
         return MaterialPageRoute(builder: (_) => const EditYourExpertProfileScreen());
       case RoutesConstants.setYourFreeScreen:
@@ -146,7 +146,7 @@ class RouterConstant {
       case RoutesConstants.expertCategoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCategoryScreen());
       case RoutesConstants.exploreExpertScreen:
-        return MaterialPageRoute(builder: (_) => ExploreExpertScreen(isFromHomePage: settings.arguments as bool));
+        return MaterialPageRoute(builder: (_) => ExploreExpertScreen(/*scrollController: settings.arguments as ScrollController,*/isFromHomePage: settings.arguments as bool));
       case RoutesConstants.selectedExpertCategoryScreen:
         return MaterialPageRoute(builder: (_) => SelectedCategoryScreen(args: settings.arguments as SelectedCategoryArgument));
       case RoutesConstants.expertCategoryFilterScreen:

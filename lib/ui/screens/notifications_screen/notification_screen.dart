@@ -8,7 +8,7 @@ import 'package:mirl/ui/screens/notifications_screen/widget/general_notification
 import 'package:mirl/ui/screens/notifications_screen/widget/user_notification_widget.dart';
 
 class NotificationScreen extends ConsumerStatefulWidget {
-  const NotificationScreen({super.key});
+  const   NotificationScreen({super.key});
 
   @override
   ConsumerState<NotificationScreen> createState() => _NotificationScreenState();

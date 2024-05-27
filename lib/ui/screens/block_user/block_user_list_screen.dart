@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
@@ -61,7 +61,13 @@ class _BlockUserListScreenState extends ConsumerState<BlockUserListScreen> {
         Expanded(
           child: blockUserWatch.isLoading
               ? Center(
-            child: CupertinoActivityIndicator(radius: 16, color: ColorConstants.primaryColor),
+            child: Center(
+              child: SpinKitChasingDots(
+                color: ColorConstants.primaryColor,
+                size: 50.0,
+              ),
+            )
+            // CupertinoActivityIndicator(radius: 16, color: ColorConstants.primaryColor),
           )
               : blockUserWatch.blockUserDetails.isNotEmpty
               ? ListView.builder(

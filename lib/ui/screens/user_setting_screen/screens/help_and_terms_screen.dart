@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpAndTermsScreen extends ConsumerStatefulWidget {
   const HelpAndTermsScreen({super.key});
@@ -48,8 +49,12 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                     title: LocaleKeys.useMirl.tr(),
                     titleColor: ColorConstants.buttonTextColor,
                     fontSize: 12,
-                    onPressed: () {},
-                    // onPressed: () => context.toPushNamed(RoutesConstants.earningReportScreen),
+                    onPressed: () async {
+                      final Uri _url = Uri.parse(AppConstants.useMirlUrl);
+                      if (!await launchUrl(_url)) {
+                      throw Exception('Could not launch $_url');
+                      }
+                    },
                   ),
                   50.0.spaceY,
                   PrimaryButton(
@@ -58,7 +63,12 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                     title: LocaleKeys.mustKnows.tr(),
                     titleColor: ColorConstants.buttonTextColor,
                     fontSize: 12,
-                    onPressed: () {},
+                    onPressed: () async {
+                      final Uri _url = Uri.parse(AppConstants.faqUrl);
+                      if (!await launchUrl(_url)) {
+                        throw Exception('Could not launch $_url');
+                      }
+                    },
                     // onPressed: () => context.toPushNamed(RoutesConstants.earningReportScreen),
                   ),
                   50.0.spaceY,
