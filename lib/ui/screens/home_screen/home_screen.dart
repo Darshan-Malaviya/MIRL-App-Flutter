@@ -9,7 +9,8 @@ import 'package:mirl/ui/screens/home_screen/widget/favorite_experts_view.dart';
 import 'package:mirl/ui/screens/home_screen/widget/past_conversation_view.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key,required this.context});
+ //final ScrollController scrollController;
+   HomeScreen({super.key, required this.context, /*required this.scrollController*/});
   final BuildContext context;
 
   @override
@@ -17,9 +18,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
       ref.read(homeProvider).homePageApi();
       instanceRequestTimerNotifier = ValueNotifier<int>(120);
       instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
@@ -45,12 +49,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             appBarColor: ColorConstants.greyLightColor,
             preferSize: 0,
           ),
-          body: SingleChildScrollView(
+          body: SingleChildScrollView(controller: scrollController,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                  onTap: () => context.toPushNamed(RoutesConstants.searchScreen),
+                   onTap: () => context.toPushNamed(RoutesConstants.searchScreen),
+                  // onTap: (){
+                  //   Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(),allowSnapshotting: false));
+                  //
+                  // },
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -92,7 +100,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Flexible(
                       child: GestureDetector(
                         onTap: () {
-                          widget.context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => ExploreExpertScreen(isFromHomePage: false,),allowSnapshotting: false));
+                           context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
+                          // Navigator.pushNamed(context,RoutesConstants.exploreExpertScreen, arguments: false);
+
                         },
                         child: Container(
                             height: 178,
@@ -133,7 +144,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     40.0.spaceX,
                     Flexible(
                       child: GestureDetector(
-                        onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
+                         onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
+                        // onTap: (){
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(builder: (context) => MultiConnectScreen(), allowSnapshotting: false),
+                        //   );
+                        // },
                         child: Container(
                             height: 178,
                             decoration: BoxDecoration(

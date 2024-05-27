@@ -6,11 +6,13 @@ import 'package:mirl/infrastructure/commons/constants/string_constants.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/size_extension.dart';
-import 'package:mirl/infrastructure/providers/provider_registration.dart';
+import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
 class CertificationAndExperienceWidget extends ConsumerStatefulWidget {
-  const CertificationAndExperienceWidget({super.key});
+  final   List<CertificationData> certification;
+
+  const CertificationAndExperienceWidget({super.key,required this.certification});
 
   @override
   ConsumerState<CertificationAndExperienceWidget> createState() => _CertificationAndExperienceWidgetState();
@@ -19,10 +21,10 @@ class CertificationAndExperienceWidget extends ConsumerStatefulWidget {
 class _CertificationAndExperienceWidgetState extends ConsumerState<CertificationAndExperienceWidget> {
   @override
   Widget build(BuildContext context) {
-    final expertDetailWatch = ref.watch(expertDetailProvider);
+    //final expertDetailWatch = ref.watch(expertDetailProvider);
     return Column(
       children: [
-        expertDetailWatch.userData?.certification?.isNotEmpty ?? false
+        widget.certification.isNotEmpty ?? false
             ? Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: TitleMediumText(
@@ -33,7 +35,7 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
               )
             : SizedBox.shrink(),
         Column(
-          children: List.generate(expertDetailWatch.userData?.certification?.length ?? 0, (index) {
+          children: List.generate(widget.certification.length ?? 0, (index) {
             return Column(
               children: [
                 30.0.spaceY,
@@ -59,13 +61,13 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       TitleMediumText(
-                        title: expertDetailWatch.userData?.certification?[index].title ?? '',
+                        title: widget.certification[index].title ?? '',
                         fontFamily: FontWeightEnum.w600.toInter,
                         titleTextAlign: TextAlign.start,
                         titleColor: ColorConstants.blackColor,maxLine: 3,
                       ),
                       8.0.spaceY,
-                      LinkWell(expertDetailWatch.userData?.certification?[index].url ?? '',
+                      LinkWell(widget.certification[index].url ?? '',
                           maxLines: 100,
                           style: TextStyle(
                             color: ColorConstants.blackColor,
@@ -86,7 +88,7 @@ class _CertificationAndExperienceWidgetState extends ConsumerState<Certification
                       8.0.spaceY,
                       TitleSmallText(
                         maxLine: 10,
-                        title: expertDetailWatch.userData?.certification?[index].description ?? '',
+                        title: widget.certification[index].description ?? '',
                         fontFamily: FontWeightEnum.w400.toInter,
                         titleTextAlign: TextAlign.start,
                         titleColor: ColorConstants.blueColor,

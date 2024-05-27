@@ -65,7 +65,6 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
   Widget build(BuildContext context) {
     final filterProviderWatch = ref.watch(filterProvider);
     final filterProviderRead = ref.read(filterProvider);
-
     return GestureDetector(
       onVerticalDragDown: (tap) {
         Future.delayed(Duration(milliseconds: 200)).then((value) => HapticFeedback.heavyImpact());
@@ -109,24 +108,25 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                   ),
                 )
               : RefreshIndicator(
-            color: ColorConstants.primaryColor,
-            onRefresh: () async {
-              ref.read(filterProvider).clearSingleCategoryData();
-              await ref.read(filterProvider).getSingleCategoryApiCall(
-                  categoryId: widget.args.categoryId,
-                  requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId),
-                  context: context);
-              ref.read(filterProvider).getSelectedCategory();
-              if (ref.watch(filterProvider).allTopic.isEmpty) {
-                ref.read(filterProvider).clearSearchTopicController();
-                ref.read(filterProvider).clearTopicPaginationData();
-                ref.read(filterProvider).topicListByCategory(
-                  isFullScreenLoader: false,
-                  categoryId: widget.args.categoryId,
-                  categoryName: widget.args.categoryName,
-                );
-              }          },
-                child: SingleChildScrollView(
+                  color: ColorConstants.primaryColor,
+                  onRefresh: () async {
+                    ref.read(filterProvider).clearSingleCategoryData();
+                    await ref.read(filterProvider).getSingleCategoryApiCall(
+                        categoryId: widget.args.categoryId,
+                        requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId),
+                        context: context);
+                    ref.read(filterProvider).getSelectedCategory();
+                    if (ref.watch(filterProvider).allTopic.isEmpty) {
+                      ref.read(filterProvider).clearSearchTopicController();
+                      ref.read(filterProvider).clearTopicPaginationData();
+                      ref.read(filterProvider).topicListByCategory(
+                            isFullScreenLoader: false,
+                            categoryId: widget.args.categoryId,
+                            categoryName: widget.args.categoryName,
+                          );
+                    }
+                  },
+                  child: SingleChildScrollView(
                     controller: scrollController,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -179,36 +179,44 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                 20.0.spaceY,
                                 Wrap(
                                   children:
-                                      List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                                  List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                                     final data = filterProviderWatch.singleCategoryData?.categoryData?.topic?[index];
                                     int topicIndex = filterProviderWatch.allTopic.indexWhere((element) => element.id == data?.id);
+                                    // if(widget.args.topicId?.isNotEmpty ?? false){
+                                    //   topicIndex = -1;
+                                    // }
                                     return InkWell(
-                                  onTap: () {
-                                    context.toPushNamed(RoutesConstants.selectedTopicScreen,
-                                        args: SelectedTopicArgs(
-                                            topicName: filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ?? '',
-                                            topicId: filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0));
-                                  },
-                                  child:ShadowContainer(
-                                      shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0)
-                                          ? ColorConstants.primaryColor
-                                          :(topicIndex != -1 && (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
-                                              ? ColorConstants.primaryColor
-                                              : ColorConstants.blackColor.withOpacity(0.1),
-                                      backgroundColor: ColorConstants.whiteColor,
-                                      isShadow: true,
-                                      spreadRadius: 1,
-                                      blurRadius: 2,
-                                      margin: EdgeInsets.only(bottom: 10, right: 10),
-                                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                      // offset: Offset(0, 3),
-                                      child: BodyMediumText(
-                                        title: data?.name ?? '',
-                                        fontFamily: FontWeightEnum.w500.toInter,
-                                        maxLine: 5,
+                                      onTap: () {
+                                        context.toPushNamed(RoutesConstants.selectedTopicScreen,
+                                            args: SelectedTopicArgs(
+                                                topicName:
+                                                    filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ??
+                                                        '',
+                                                topicId:
+                                                    filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0));
+                                      },
+                                      child: ShadowContainer(
+                                        shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0) || (data?.id.toString() == widget.args.topicId)
+                                            ? ColorConstants.primaryColor
+                                            : (topicIndex != -1 &&
+                                                    (filterProviderWatch.allTopic[topicIndex].isCategorySelected ?? false))
+                                                ? ColorConstants.primaryColor
+                                                : ColorConstants.blackColor.withOpacity(0.1),
+                                        backgroundColor: ColorConstants.whiteColor,
+                                        isShadow: true,
+                                        spreadRadius: 1,
+                                        blurRadius: 2,
+                                        margin: EdgeInsets.only(bottom: 10, right: 10),
+                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                        // offset: Offset(0, 3),
+                                        child: BodyMediumText(
+                                          title: data?.name ?? '',
+                                          fontFamily: FontWeightEnum.w500.toInter,
+                                          maxLine: 5,
+                                        ),
                                       ),
-                                    ),
-                                  );}),
+                                    );
+                                  }),
                                 ),
                               ],
                             ),
@@ -407,7 +415,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                       ],
                     ),
                   ),
-              ),
+                ),
         ),
       ),
     );

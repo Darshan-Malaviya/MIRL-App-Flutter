@@ -33,9 +33,10 @@ class _ReportAnIssueScreenState extends ConsumerState<ReportAnIssueScreen> {
             children: [
               30.0.spaceY,
               TitleLargeText(
-                title: LocaleKeys.reportAndIssue.tr(),
+                title: LocaleKeys.reportIssueAndShare.tr(),
                 titleColor: ColorConstants.bottomTextColor,
                 titleTextAlign: TextAlign.center,
+                maxLine: 2,
               ),
               20.0.spaceY,
               BodyMediumText(
@@ -77,7 +78,7 @@ class _ReportAnIssueScreenState extends ConsumerState<ReportAnIssueScreen> {
                     onChanged: userSettingWatch.changeAboutCounterValue,
                     hintTextColor: ColorConstants.buttonTextColor,
                     maxLines: 10,
-                    maxLength: 500,
+                    maxLength: 1000,
                     minLines: 8,
                     controller: userSettingWatch.reasonController,
                     textInputType: TextInputType.multiline,
@@ -91,7 +92,7 @@ class _ReportAnIssueScreenState extends ConsumerState<ReportAnIssueScreen> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8, right: 12),
                     child: BodySmallText(
-                      title: '${userSettingWatch.enteredText}/500 ${LocaleKeys.characters.tr()}',
+                      title: '${userSettingWatch.enteredText}/1000 ${LocaleKeys.characters.tr()}',
                       fontFamily: FontWeightEnum.w400.toInter,
                       titleColor: ColorConstants.buttonTextColor,
                     ),
