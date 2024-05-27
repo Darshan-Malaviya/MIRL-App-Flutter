@@ -151,7 +151,6 @@ class CanceledNotificationScreen extends StatelessWidget {
               PrimaryButton(
                 title: LocaleKeys.backToNotification.tr(),
                 onPressed: () => context.toPop(),
-                //onPressed: () => context.toPushNamed(RoutesConstants.notificationScreen),
                 fontSize: 15,
               ),
               30.0.spaceY,

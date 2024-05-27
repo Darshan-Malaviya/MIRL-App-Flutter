@@ -1,23 +1,46 @@
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/time_extension.dart';
+import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 
-class NotificationWidget extends StatelessWidget {
-  final int remainingSecond;
-  final String title, message, time;
+class NotificationWidget extends ConsumerStatefulWidget {
+  final String title, message, time,notificationKey;
   final VoidCallback onTap;
+  final bool newNotification;
 
-  const NotificationWidget({super.key, required this.remainingSecond, required this.title, required this.message, required this.time, required this.onTap});
+  const NotificationWidget({super.key,required this.title, required this.message, required this.time, required this.onTap,required this.notificationKey,required this.newNotification});
 
+  @override
+  ConsumerState<NotificationWidget> createState() => _NotificationWidgetState();
+}
+
+class _NotificationWidgetState extends ConsumerState<NotificationWidget> {
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+    if(widget.notificationKey == NotificationTypeEnum.multiConnectRequestUser.name || widget.notificationKey == NotificationTypeEnum.multipleConnect.name){
+      if(widget.newNotification) {
+        ref.read(notificationProvider).startTimer(widget.time);
+      }
+    }
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
         decoration: BoxDecoration(
-          color: Colors.amber,
+          color: widget.newNotification ? Colors.amber : ColorConstants.whiteColor,
           border: Border.all(color: ColorConstants.dropDownBorderColor),
           boxShadow: [
             BoxShadow(offset: Offset(0, 0), color: ColorConstants.whiteColor.withOpacity(0.25), spreadRadius: 1, blurRadius: 1),
@@ -32,12 +55,12 @@ class NotificationWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BodySmallText(
-              title: title,
+              title: widget.title,
               titleColor: ColorConstants.blackColor,
               titleTextAlign: TextAlign.center,
             ),
             Html(
-              data: message,
+              data: widget.message,
               shrinkWrap: true,
               style: {
                 'html': Style(
@@ -63,63 +86,16 @@ class NotificationWidget extends StatelessWidget {
                     Image.asset(ImageConstants.timer),
                     6.0.spaceX,
                     BodyMediumText(
-                      title: Duration(seconds: remainingSecond).toTimeString(),
+                      title: Duration(seconds: ref.watch(notificationProvider).secondsRemaining).toTimeString(),
                       titleColor: ColorConstants.notificationTimerColor,
                     ),
                   ],
-                ),
-                InkWell(
-                  onTap: () {
-                    CommonAlertDialog.dialog(
-                        context: context,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            BodyLargeText(
-                              title: 'Notification Timed Out!',
-                              fontFamily: FontWeightEnum.w600.toInter,
-                              titleColor: ColorConstants.bottomTextColor,
-                              fontSize: 17,
-                              titleTextAlign: TextAlign.center,
-                            ),
-                            20.0.spaceY,
-                            BodyLargeText(
-                              title: 'Boo!\nThis notification is now a ghost.\nSpooky how time flies!',
-                              maxLine: 4,
-                              fontFamily: FontWeightEnum.w400.toInter,
-                              titleColor: ColorConstants.blackColor,
-                              titleTextAlign: TextAlign.center,
-                            ),
-                            30.0.spaceY,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                BodyMediumText(
-                                  title: 'Learn more',
-                                  fontFamily: FontWeightEnum.w500.toInter,
-                                  titleColor: ColorConstants.bottomTextColor,
-                                  titleTextAlign: TextAlign.center,
-                                ),
-                                InkWell(
-                                  onTap: () => context.toPop(),
-                                  child: BodyMediumText(
-                                    title: 'Back',
-                                    fontFamily: FontWeightEnum.w500.toInter,
-                                    titleColor: ColorConstants.bottomTextColor,
-                                    titleTextAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ],
-                            ).addPaddingX(10)
-                          ],
-                        ));
-                  },
-                  child: BodySmallText(
-                    title: time.timeAgo(),
-                    titleColor: ColorConstants.notificationTimeColor,
-                    titleTextAlign: TextAlign.center,
-                    fontFamily: FontWeightEnum.w400.toInter,
-                  ),
+                ).addVisibility(ref.watch(notificationProvider).timer?.isActive ?? false),
+                BodySmallText(
+                  title: widget.time.timeAgo(),
+                  titleColor: ColorConstants.notificationTimeColor,
+                  titleTextAlign: TextAlign.center,
+                  fontFamily: FontWeightEnum.w400.toInter,
                 ),
               ],
             )

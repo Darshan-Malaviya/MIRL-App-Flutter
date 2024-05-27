@@ -13,7 +13,6 @@ class ScheduleAppointmentScreen extends ConsumerStatefulWidget {
 }
 
 class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentScreen> {
-
   @override
   Widget build(BuildContext context) {
     final scheduleWatch = ref.watch(scheduleCallProvider);
@@ -76,7 +75,9 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                   ),
                   10.0.spaceX,
                   AutoSizeText(
-                    scheduleWatch.expertData?.overAllRating != 0 ? scheduleWatch.expertData?.overAllRating.toString() ?? '0' : LocaleKeys.newText.tr(),
+                    scheduleWatch.expertData?.overAllRating != 0
+                        ? scheduleWatch.expertData?.overAllRating.toString() ?? '0'
+                        : LocaleKeys.newText.tr(),
                     maxLines: 1,
                     softWrap: true,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -95,10 +96,12 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                   ),
                   10.0.spaceX,
                   AutoSizeText(
-                    '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}',
-                    maxLines: 1,
+                    scheduleWatch.expertData?.fee != 0
+                        ? '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}'
+                        : LocaleKeys.proBono.tr(),
+                    maxLines: 2,
                     softWrap: true,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: ColorConstants.overallRatingColor,
                       shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                     ),
@@ -124,7 +127,8 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
           20.0.spaceY,
           PrimaryButton(
             height: 45,
-            title: '${scheduleWatch.selectedSlotData?.startTimeUTC?.to12HourTimeFormat().toLowerCase() ?? ''}, ${scheduleWatch.selectedSlotData?.startTimeUTC?.toDisplayDateWithMonth()}',
+            title:
+                '${scheduleWatch.selectedSlotData?.startTimeUTC?.to12HourTimeFormat().toLowerCase() ?? ''}, ${scheduleWatch.selectedSlotData?.startTimeUTC?.toDisplayDateWithMonth()}',
             margin: EdgeInsets.symmetric(horizontal: 40),
             onPressed: () {},
             buttonColor: ColorConstants.buttonColor,

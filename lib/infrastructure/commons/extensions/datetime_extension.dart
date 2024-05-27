@@ -223,9 +223,9 @@ extension DateTimeFormatter on String {
     if (this.isNotEmpty) {
       if (convertedDate == today) {
         finalDate = LocaleKeys.newNotifications.tr();
-      } else if (convertedDate == yesterday) {
+      }/* else if (convertedDate == yesterday) {
         finalDate = LocaleKeys.oldNotifications.tr();
-      } else {
+      }*/ else {
         finalDate = LocaleKeys.oldNotifications.tr();
       }
     }
@@ -259,6 +259,18 @@ extension DateTimeFormatter on String {
     } else {
       return output.toUpperCase();
     }
+  }
+
+  int? getRemainingTime(){
+    try {
+      final date2 = DateTime.now();
+      DateTime date1 = DateTime.parse(this).toLocal();
+      final difference = date2.difference(date1).inSeconds;
+      return difference;
+    } catch (e) {
+      Logger().d("Exception on getRemainingTime : $e");
+    }
+    return null;
   }
 }
 

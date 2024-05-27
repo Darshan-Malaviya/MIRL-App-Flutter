@@ -1,13 +1,17 @@
 import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:mirl/infrastructure/commons/enums/call_request_status_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/instance_call_emits_response_model.dart';
 import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
 import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/providers/auth_provider.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
+import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 
 class CommonMethods {
   /// get current time zone
@@ -128,6 +132,46 @@ class CommonMethods {
               reason: notificationData.reason,
             ),
           ));
+    } else if (notificationData.key == NotificationTypeEnum.multipleConnect.name) {
+      NotificationData notificationData = NotificationData.fromJsonMultiConnect(jsonDecode(data));
+
+     /* NavigationService.context.toPushNamed(RoutesConstants.multiConnectCallDialogScreen,
+          args: MultiConnectDialogArguments(
+            //expertList: model.data?.expertList,
+            userDetail: UserDetails(id: int.parse(notificationData.id ?? ''),userName: notificationData.,userProfile: ),
+            onFirstBtnTap: () {
+              /// expert accept
+              socket?.emit(AppConstants.multiConnectUpdateStatus, {
+                AppConstants.expertId: SharedPrefHelper.getUserId,
+                AppConstants.userId: userId,
+                AppConstants.role: CallRoleEnum.expert,
+                AppConstants.callStatus: CallRequestStatusEnum.accept,
+                AppConstants.callRequestId: notificationData.callRequestId,
+                AppConstants.time: DateTime.now().toUtc().toString()
+              });
+              NavigationService.context.toPop();
+            },
+            onSecondBtnTap: () {
+              /// expert decline
+              socket?.emit(AppConstants.multiConnectUpdateStatus, {
+                AppConstants.expertId: SharedPrefHelper.getUserId,
+                AppConstants.userId: userId,
+                AppConstants.role: CallRoleEnum.expert,
+                AppConstants.callStatus: CallRequestStatusEnum.decline,
+                AppConstants.callRequestId: notificationData.callRequestId,
+                AppConstants.time: DateTime.now().toUtc().toString()
+              });
+              NavigationService.context.toPop();
+            },
+          ));*/
+    } else if (notificationData.key == NotificationTypeEnum.multiConnectRequestUser.name){
+
+    } else if (notificationData.key == NotificationTypeEnum.appointmentIn1min.name){
+      context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
+    } else if (notificationData.key == NotificationTypeEnum.appointmentIn30min.name){
+      context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
+    } else if (notificationData.key == NotificationTypeEnum.appointmentRemainder.name){
+      context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
     }
   }
 }
