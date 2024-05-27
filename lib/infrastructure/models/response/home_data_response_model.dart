@@ -67,11 +67,11 @@ class HomeData {
     }
     if (this.userFavorites != null) {
       data['userFavorites'] =
-          this.userFavorites!.map((v) => v.toJson()).toList();
+          this.userFavorites?.map((v) => v.toJson()).toList();
     }
     if (this.lastConversionList != null) {
       data['lastConversionList'] =
-          this.lastConversionList!.map((v) => v.toJson()).toList();
+          this.lastConversionList?.map((v) => v.toJson()).toList();
     }
     return data;
   }
