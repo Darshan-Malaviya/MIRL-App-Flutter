@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
@@ -48,31 +49,31 @@ class _SeeAllFavoriteExpertsListViewScreenState extends ConsumerState<SeeAllFavo
               onTap: () {
                 context.toPop();
               }),
-          appTitle: TitleLargeText(
-            title: LocaleKeys.yourFavoriteExperts.tr(),
-            maxLine: 2,
-            titleTextAlign: TextAlign.center,
-          ),
           //appBarColor: ColorConstants.greyLightColor,
         ),
         body: favoriteExpertsWatch.isLoading
             ? Center(
-          child: CupertinoActivityIndicator(
-            animating: true,
+          child: SpinKitChasingDots(
             color: ColorConstants.primaryColor,
-            radius: 16,
+            size: 50.0,
           ),
         )
             : SingleChildScrollView(
           controller: scrollController,
               child: Column(
                 children: [
+                  TitleLargeText(
+                    title: LocaleKeys.yourFavoriteExperts.tr(),
+                    maxLine: 2,
+                    titleTextAlign: TextAlign.center,
+                  ),
+                  20.0.spaceY,
                   if (favoriteExpertsWatch.expertsFavoriteList?.isNotEmpty ?? false) ...[
-                  LabelSmallText(
+                    TitleSmallText(
                     title: LocaleKeys.networkOfExpertise.tr(),
                     titleTextAlign: TextAlign.center,
                     fontFamily: FontWeightEnum.w400.toInter,
-                    maxLine: 2,
+                    maxLine: 4,
                   ),
                   20.0.spaceY,
                     ListView.separated(
@@ -107,7 +108,7 @@ class _SeeAllFavoriteExpertsListViewScreenState extends ConsumerState<SeeAllFavo
                   )
                   ]
                 ],
-              ).addAllPadding(20),
+              ).addMarginX(20),
             )
       ),
     );

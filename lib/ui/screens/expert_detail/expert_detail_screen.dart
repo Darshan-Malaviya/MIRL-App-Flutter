@@ -205,16 +205,31 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       titleTextAlign: TextAlign.center,
                     ),
                     10.0.spaceX,
-                    AutoSizeText(
-                      //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
-                      expertDetailWatch.userData?.fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
-                      maxLines: 2,textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: ColorConstants.overallRatingColor,
-                        shadows: [
-                          Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
-                        ],
-                      ),
+                    Column(
+                      children: [
+                        AutoSizeText(
+                          //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
+                          expertDetailWatch.userData?.fee != 0 ? '\$${fee}' : LocaleKeys.free.tr(),
+                          maxLines: 2,textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20,
+                            color: ColorConstants.overallRatingColor,
+                            shadows: [
+                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                            ],
+                          ),
+                        ),
+                        AutoSizeText(
+                          //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
+                          expertDetailWatch.userData?.fee != 0 ? '' : LocaleKeys.bono.tr(),
+                          maxLines: 2,textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12,
+                            color: ColorConstants.overallRatingColor,
+                            shadows: [
+                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                            ],
+                          ),
+                        ),
+                      ],
                     )
                   ],
                 ),
@@ -255,7 +270,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               ),
               36.0.spaceY,
             ],
-            AreaOfExpertiseWidget(),
+            AreaOfExpertiseWidget(areaOfExpertise: expertDetailWatch.userData?.areaOfExpertise ?? []),
             ExpertDetailsButtonWidget(
               titleColor: userOnline
                   ? expertDetailWatch.userData?.onlineStatus != 3
@@ -357,7 +372,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
               titleColor: ColorConstants.buttonTextColor,
             ),
             40.0.spaceY,
-            CertificationAndExperienceWidget(),
+            CertificationAndExperienceWidget(certification:expertDetailWatch.userData?.certification ?? []),
             if (expertDetailWatch.userData?.isLocationVisible == true) ...[
               40.0.spaceY,
               RichText(

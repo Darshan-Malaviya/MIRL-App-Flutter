@@ -6,13 +6,16 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
 
 class UserSettingScreen extends ConsumerStatefulWidget {
-  const UserSettingScreen({super.key});
+  // final ScrollController scrollController;
+  const UserSettingScreen({super.key/*,required this.scrollController*/});
 
   @override
   ConsumerState<UserSettingScreen> createState() => _UserSettingScreenState();
 }
 
 class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -36,6 +39,7 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
           // ),
         ),
         body: SingleChildScrollView(
+          controller:scrollController,
           child: Column(
             children: [
               TitleLargeText(
@@ -208,7 +212,7 @@ class _UserSettingScreenState extends ConsumerState<UserSettingScreen> {
                       context.toPushNamed(RoutesConstants.editYourNameScreen);
                     },
                     height: 30,
-                    labelText: LocaleKeys.yourName.tr(),
+                    labelText: LocaleKeys.seekerName.tr(),
                     alignment: Alignment.centerLeft,
                     labelTextSpace: 0.0,
                     controller: userSettingWatch.userNameController,

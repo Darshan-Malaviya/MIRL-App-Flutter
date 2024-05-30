@@ -8,6 +8,7 @@ import 'package:mirl/infrastructure/models/request/update_expert_Profile_request
 import 'package:mirl/infrastructure/models/response/certificate_response_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
+import 'package:mirl/infrastructure/models/response/expert_detail_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 import 'package:mirl/infrastructure/repository/update_expert_profile_repo.dart';
@@ -40,6 +41,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   List<CertificateAndExperienceModel> get certiAndExpModel => _certiAndExpModel;
 
+  UserData? get userData =>_userData;
   UserData? _userData;
 
   String? _selectedGender;
@@ -63,6 +65,9 @@ class EditExpertProvider extends ChangeNotifier {
   String _pickedImage = '';
 
   String get pickedImage => _pickedImage;
+
+  bool get isLoadedExport => _isLoadedExport;
+  bool _isLoadedExport = true;
 
   String _setInstantCall = '';
 
@@ -121,6 +126,18 @@ class EditExpertProvider extends ChangeNotifier {
   String overAllRating = '';
   String userFees = '';
   String calculateFees = '';
+
+  String? userGender() {
+    if (_userData?.gender == 1) {
+      return 'Male';
+    } else if (userData?.gender == 2) {
+      return 'Female';
+    } else if (userData?.gender == 3) {
+      return 'Non-Binary';
+    }
+    return null;
+  }
+
 
   void generateExperienceList({required bool fromInit}) {
     if (fromInit && (_userData?.certification?.isNotEmpty ?? false)) {
@@ -251,6 +268,34 @@ class EditExpertProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeExportValue(bool value) {
+    _isLoadedExport = value;
+    notifyListeners();
+  }
+
+   Future<void> getExpertDetailApiCall({required String userId}) async {
+    CustomLoading.progressDialog(isLoading: true);
+    changeExportValue(true);
+    ApiHttpResult response = await _expertProfileRepo.expertDetailApi(userId: userId);
+    changeExportValue(false);
+
+    CustomLoading.progressDialog(isLoading: false);
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is ExpertDetailResponseModel) {
+          ExpertDetailResponseModel expertDetailResponseModel = response.data;
+          _userData = expertDetailResponseModel.data;
+          notifyListeners();
+          Logger().d("Successfully expert detail");
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on expert detail call Api ${response.data}");
+        break;
+    }
+  }
   void getUserData() {
     String value = SharedPrefHelper.getUserData;
     if (value.isNotEmpty) {
@@ -438,6 +483,14 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void displayActualTest(int value) {
+    double convertFees = (value / 100).toDouble();
+    calculateFees = convertFees.toStringAsFixed(2);
+    userFees = convertFees.toStringAsFixed(2);
+    double originalValue = convertFees / (1 + (20 / 100));
+    countController.text = originalValue.toStringAsFixed(2);
+    notifyListeners();
+  }
+  void displayFees(int value) {
     double convertFees = (value / 100).toDouble();
     calculateFees = convertFees.toStringAsFixed(2);
     userFees = convertFees.toStringAsFixed(2);

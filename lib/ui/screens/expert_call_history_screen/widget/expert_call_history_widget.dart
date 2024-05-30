@@ -256,6 +256,7 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                                        WidgetSpan(child: 2.0.spaceX),
                                                        TextSpan(
                                                            text: 'INR ${element.userDetails?.fee ?? ''}',
+                                                         //text:"INR ${(double.parse(element.userDetails?.fee ?? '') / 100)}",
                                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                                                color: ColorConstants.buttonTextColor,
                                                                fontFamily: FontWeightEnum.w700.toInter,

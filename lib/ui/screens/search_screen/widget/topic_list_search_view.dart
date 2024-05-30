@@ -34,7 +34,10 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
               return InkWell(
                 onTap: () {
                   context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                      args: SelectedCategoryArgument(categoryId:homeProviderWatch.homeSearchData?.topics?[index].categoryId.toString() ?? '' ,isFromExploreExpert: false,
+                      args: SelectedCategoryArgument(
+                          topicId: homeProviderWatch.homeSearchData?.topics?[index].id.toString() ?? '',
+                          categoryId: homeProviderWatch.homeSearchData?.topics?[index].categoryId.toString() ?? '',
+                          isFromExploreExpert: false,
                           categoryName: homeProviderWatch.homeSearchData?.topics?[index].name.toString() ?? ''));
                 },
                 child: Container(
