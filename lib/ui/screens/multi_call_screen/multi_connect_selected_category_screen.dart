@@ -247,11 +247,11 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                             ),
                             child: Column(
                               children: [
-                                BodyMediumText(
-                                  title: LocaleKeys.selectTopicFromFilter.tr(),
-                                  fontFamily: FontWeightEnum.w500.toInter,
-                                ),
-                                20.0.spaceY,
+                                // BodyMediumText(
+                                //   title: LocaleKeys.selectTopicFromFilter.tr(),
+                                //   fontFamily: FontWeightEnum.w500.toInter,
+                                // ),
+                                10.0.spaceY,
                                 Wrap(
                                   children:
                                       List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {

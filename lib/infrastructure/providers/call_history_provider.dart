@@ -15,6 +15,8 @@ class CallHistoryProvider extends ChangeNotifier {
   List<CallHistoryData> get callHistoryData => _callHistoryData;
   List<CallHistoryData> _callHistoryData = [];
 
+
+
   bool? get isLoading => _isLoading;
   bool? _isLoading = false;
 
@@ -25,6 +27,16 @@ class CallHistoryProvider extends ChangeNotifier {
     _pageNo = 1;
     _reachedLastPage = false;
     _callHistoryData.clear();
+  }
+  UserDetails? userDetails;
+  String calculateFees = '';
+
+
+  void displayActualTest(int value) {
+    double convertFees = (value / 100).toDouble();
+    calculateFees = convertFees.toStringAsFixed(2);
+    //userFees = convertFees.toStringAsFixed(2);
+    notifyListeners();
   }
 
   Future<void> callHistoryApiCall({required int role, required bool showLoader, bool isFromPagination = false}) async {

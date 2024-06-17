@@ -490,15 +490,6 @@ class EditExpertProvider extends ChangeNotifier {
     countController.text = originalValue.toStringAsFixed(2);
     notifyListeners();
   }
-  void displayFees(int value) {
-    double convertFees = (value / 100).toDouble();
-    calculateFees = convertFees.toStringAsFixed(2);
-    userFees = convertFees.toStringAsFixed(2);
-    double originalValue = convertFees / (1 + (20 / 100));
-    countController.text = originalValue.toStringAsFixed(2);
-    notifyListeners();
-  }
-
   void setValueOfCall(String value) {
     _isCallSelect = (value == LocaleKeys.instantCallActive.tr()) ? true : false;
     notifyListeners();

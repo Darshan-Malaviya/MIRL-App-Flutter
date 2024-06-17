@@ -172,11 +172,11 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                             ),
                             child: Column(
                               children: [
-                                BodyMediumText(
-                                  title: LocaleKeys.selectTopicFromFilter.tr(),
-                                  fontFamily: FontWeightEnum.w500.toInter,
-                                ),
-                                20.0.spaceY,
+                                // BodyMediumText(
+                                //   title: LocaleKeys.selectTopicFromFilter.tr(),
+                                //   fontFamily: FontWeightEnum.w500.toInter,
+                                // ),
+                                10.0.spaceY,
                                 Wrap(
                                   children:
                                   List.generate(filterProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {

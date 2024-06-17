@@ -225,7 +225,8 @@ class CallProvider extends ChangeNotifier {
             log(state.index.toString());
             notifyListeners();
          //   changeVideoCallView.value = !changeVideoCallView.value;
-          });
+          }
+          );
   }
 
 }
