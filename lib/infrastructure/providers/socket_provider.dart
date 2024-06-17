@@ -735,7 +735,8 @@ class SocketProvider extends ChangeNotifier {
             }
           } else {
             InstanceCallErrorModel model = InstanceCallErrorModel.fromJson(data);
-            FlutterToast().showToast(msg: model.message?.first.toString());
+            FlutterToast().showToast(msg: model.message?.
+            first.toString());
           }
         }
       });

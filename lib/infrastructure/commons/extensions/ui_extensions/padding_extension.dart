@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 extension CustomPadding on Widget {
-  addAllPadding(double padding) => Padding(padding: EdgeInsets.all(padding), child: this);
+   addAllPadding(double padding) => Padding(padding: EdgeInsets.all(padding), child: this);
 
   addPaddingX(double paddingX) => Padding(padding: EdgeInsets.symmetric(horizontal: paddingX), child: this);
 

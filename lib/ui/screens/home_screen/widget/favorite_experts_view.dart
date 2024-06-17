@@ -18,8 +18,9 @@ class FavoriteExpertsView extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BodyLargeText(
+            TitleLargeText(
               title: LocaleKeys.yourFavoriteExperts.tr(),
+              fontSize: 18,
             ),
 
             if ((favoriteListNotifier.value.isNotEmpty)) ...[

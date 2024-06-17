@@ -46,6 +46,7 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
   @override
   Widget build(BuildContext context) {
     final callHistoryWatch = ref.watch(callHistoryProvider);
+    final callHistoryRead = ref.read(callHistoryProvider);
     return callHistoryWatch.isLoading ?? false
         ? Center(
             child: CupertinoActivityIndicator(radius: 16, color: ColorConstants.primaryColor),
@@ -98,6 +99,7 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                             ).addMarginX(20);
                           },
                           itemBuilder: (context, element) {
+                            int fees = (element.userDetails?.fee ?? 0 / 100).toInt();
                             double durationInMinute = 0;
                             if(element.duration != null){
                                durationInMinute = (element.duration ?? 0) / 60;
@@ -255,7 +257,7 @@ class _ExpertCallHistoryWidgetState extends ConsumerState<ExpertCallHistoryWidge
                                                      children: [
                                                        WidgetSpan(child: 2.0.spaceX),
                                                        TextSpan(
-                                                           text: 'INR ${element.userDetails?.fee ?? ''}',
+                                                           text: 'INR \$${fees}',
                                                          //text:"INR ${(double.parse(element.userDetails?.fee ?? '') / 100)}",
                                                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                                                color: ColorConstants.buttonTextColor,

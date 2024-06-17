@@ -17,7 +17,9 @@ class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BodyLargeText(
+        TitleLargeText(
+          fontSize: 18,
+
           title: LocaleKeys.yourPastConversations.tr(),
         ),
         if(homeProviderWatch.homeData?.lastConversionList?.isNotEmpty ?? false)...[
