@@ -2,12 +2,19 @@ import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
+import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
+import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
+import 'package:mirl/infrastructure/services/push_notification_services.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen/notification_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen/user_seeting_screen.dart';
+
+import '../multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   final int index;
@@ -45,7 +52,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ref.read(socketProvider).listenAllMethods(context);
         }
       });
+      /// TODO For handling notification when the app is in terminated state
+      FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) async {
+        log('TS Message title: ${message?.notification?.title}, body: ${message?.notification?.body}, data: ${message?.data}');
+        if(message?.data != null) {
+          onTapNotification(jsonEncode(message?.data));
+        }
+      });
     });
+
   }
 
   void controller(int index){
@@ -60,6 +75,43 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       userScrollController.animateTo(0.0, duration: Duration(seconds: 3), curve: Curves.ease);
     }else{
       homeScrollController.animateTo(0.0, duration: Duration(seconds: 3), curve: Curves.ease);
+    }
+  }
+
+  void onTapNotification(String data) {
+    NotificationData notificationData = NotificationData.fromJson(jsonDecode(data));
+    if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
+      NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment,
+          args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
+    }
+     if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
+      NotificationData notificationData = NotificationData.fromJsonCanceled(jsonDecode(data));
+      NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
+          args: CancelArgs(
+            role: int.parse(notificationData.role.toString()),
+            cancelDate: notificationData.date,
+            cancelData: CancelAppointmentData(
+              startTime: notificationData.startTime,
+              endTime: notificationData.endTime,
+              duration: int.parse(notificationData.duration ?? '0'),
+              name: notificationData.name,
+              profileImage: notificationData.profile,
+              reason: notificationData.reason,
+            ),
+          ));
+    }
+     if (notificationData.key == NotificationTypeEnum.multipleConnectRequestExpert.name) {
+      ref.read(dashboardProvider).pageChanged(2);
+      pageController?.jumpToPage(2);
+    }  if (notificationData.key == NotificationTypeEnum.multiConnectRequestUser.name){
+      ref.read(dashboardProvider).pageChanged(2);
+      pageController?.jumpToPage(2);
+    }  if (notificationData.key == NotificationTypeEnum.appointmentIn1min.name){
+      NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
+    }  if (notificationData.key == NotificationTypeEnum.appointmentIn30min.name){
+      NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
+    }  if (notificationData.key == NotificationTypeEnum.appointmentRemainder.name){
+      NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment, args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
     }
   }
 

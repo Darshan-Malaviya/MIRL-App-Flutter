@@ -92,7 +92,7 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
                                           DateTime.now().day.toString(),
                                   onTap: () {
                                     CommonMethods.onTapNotification(
-                                        notificationProviderWatch.notificationList[index].notification?.data ?? '', context);
+                                        notificationProviderWatch.notificationList[index].notification?.data ?? '',fromNotificationList: true);
                                   },
                                 )
                               : UserOlderNotificationWidget(
@@ -101,8 +101,8 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
                                   time: notificationProviderWatch.notificationList[index].notification?.firstCreated ?? '',
                                   titleBgColor: notificationProviderWatch.notificationList[index].notification?.key?.statusToColor,
                                   onTap: () {
-                                    CommonMethods.onTapNotification(
-                                        notificationProviderWatch.notificationList[index].notification?.data ?? '', context);
+                                   /* CommonMethods.onTapNotification(
+                                        notificationProviderWatch.notificationList[index].notification?.data ?? '',fromNotificationList: true);*/
                                   },
                                 );
                         },

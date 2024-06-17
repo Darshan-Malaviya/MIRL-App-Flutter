@@ -18,6 +18,7 @@ class NotificationData {
   String? callRequestId;
   String? time;
   String? requestedDuration;
+  String? userName;
   List<ExpertDetails>? experts;
 
   NotificationData(
@@ -38,7 +39,8 @@ class NotificationData {
       this.callRequestId,
       this.time,
       this.requestedDuration,
-      this.experts});
+      this.experts,
+      this.userName});
 
   NotificationData.fromJson(Map<String, dynamic> json) {
     key = json['key'];
@@ -50,14 +52,17 @@ class NotificationData {
     userId = json['userId'];
   }
 
-  NotificationData.fromJsonMultiConnect(Map<String, dynamic> json) {
+  NotificationData.fromJsonCall(Map<String, dynamic> json) {
     key = json['key'];
     date = json['date'];
     sendTo = json['sendTo'];
     role = json['role'];
     callRequestId = json['callRequestId'];
     time = json['time'];
+    userId = json['userId'];
+    expertId = json['expertId'];
     requestedDuration = json['requestedDuration'];
+    userName = json['userName'];
     if (json['experts'] != null) {
       experts = <ExpertDetails>[];
       json['experts'].forEach((v) {

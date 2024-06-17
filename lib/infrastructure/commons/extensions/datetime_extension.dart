@@ -233,14 +233,14 @@ extension DateTimeFormatter on String {
   }
 
   String timeAgo({bool numericDates = true}) {
-    final date2 = DateTime.now();
+    final date2 = DateTime.now().toLocal();
     DateTime date1 = DateTime.parse(this).toLocal();
     final difference = date2.difference(date1);
 
     var output = DateFormat('hh:mm a').format(date1);
 
     final years = difference.inDays ~/ 365;
-    print((difference.inDays - (years * 365)) ~/ 30);
+    // print((difference.inDays - (years * 365)) ~/ 30);
 
     if ((difference.inDays / 7).floor() >= 5) {
       return '5w';

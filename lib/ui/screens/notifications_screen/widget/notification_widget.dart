@@ -24,7 +24,7 @@ class _NotificationWidgetState extends ConsumerState<NotificationWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
 
-    if(widget.notificationKey == NotificationTypeEnum.multiConnectRequestUser.name || widget.notificationKey == NotificationTypeEnum.multipleConnect.name){
+    if(widget.notificationKey == NotificationTypeEnum.multiConnectRequestUser.name || widget.notificationKey == NotificationTypeEnum.multipleConnectRequestExpert.name){
       if(widget.newNotification) {
         ref.read(notificationProvider).startTimer(widget.time);
       }

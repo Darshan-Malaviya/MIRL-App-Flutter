@@ -81,7 +81,7 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
                             notificationKey: notificationProviderWatch.notificationList[index].notification?.key ?? '',
                             newNotification:notificationProviderWatch.notificationList[index].notification?.firstCreated.toString().toDisplayDay() == DateTime.now().day.toString(),
                             onTap: () {
-                              CommonMethods.onTapNotification(notificationProviderWatch.notificationList[index].notification?.data ?? '', context);
+                              CommonMethods.onTapNotification(notificationProviderWatch.notificationList[index].notification?.data ?? '',fromNotificationList: true);
                             },
                           );
                         },
