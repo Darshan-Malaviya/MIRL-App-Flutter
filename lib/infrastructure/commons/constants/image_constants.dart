@@ -59,7 +59,7 @@ class ImageConstants {
   static const blockedUser = '${imagePath}blocked_user.png';
 
   /// gif image
-  static const splashImages = '${gifPath}splash_image.gif';
+  static const splashImages = '${gifPath}spalsh.gif';
 
   /// icon
   // static const recurringIcon = '${iconPath}recurring.png';
