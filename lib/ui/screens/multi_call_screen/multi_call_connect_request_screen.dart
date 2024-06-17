@@ -181,10 +181,12 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: NetworkImageWidget(
+                                      emptyImageWidget: Image.asset(ImageConstants.myMirlImage, fit: BoxFit.fitWidth, width: double.infinity),
                                       imageURL: widget.args.userDetail?.userProfile ?? '',
                                       height: 90,
                                       width: 90,
                                       boxFit: BoxFit.cover,
+
                                     ),
                                   ),
                                   if ((widget.args.userDetail?.userName?.isNotEmpty ?? false) &&
@@ -304,6 +306,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                     child: ClipRRect(
                                                       borderRadius: BorderRadius.circular(50),
                                                       child: NetworkImageWidget(
+                                                        emptyImageWidget: Image.asset(ImageConstants.mirlConnect, fit: BoxFit.fitWidth, width: double.infinity),
                                                         imageURL: multiProviderWatch.selectedExpertDetails[index].expertProfile ?? '',
                                                         boxFit: BoxFit.cover,
                                                         height: 90,
