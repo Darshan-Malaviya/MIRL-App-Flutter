@@ -38,7 +38,7 @@ class LocalNotification {
   onSelectNotification(NotificationResponse response) {
     /// TODO Push screen code or open dialog when tap on foreground and background notification
     if (response.payload != null) {
-      CommonMethods.onTapNotification(response.payload ?? '', NavigationService.context);
+      CommonMethods.onTapNotification(response.payload ?? '');
 
 /*      Map<String, dynamic> payloadData = jsonDecode(response.payload ?? '');
 

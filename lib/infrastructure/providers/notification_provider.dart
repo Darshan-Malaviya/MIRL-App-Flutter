@@ -91,9 +91,24 @@ class NotificationProvider extends ChangeNotifier {
 
           if (_pageNo == 1) {
             _notificationList.clear();
+            _notificationList.add(NotificationDetails(id: -1));
           }
 
-          _notificationList.addAll(responseModel.data?.notification ?? []);
+          List<NotificationDetails> newNotificationList = [];
+          List<NotificationDetails> oldNotificationList = [];
+          responseModel.data?.notification?.forEach((element) {
+            if(element.notification?.firstCreated.toString().toDisplayDay() == DateTime.now().day.toString()){
+              newNotificationList.add(element);
+            } else{
+              oldNotificationList.add(element);
+            }
+          });
+
+          _notificationList.addAll(newNotificationList);
+          if(_pageNo == 1){
+            _notificationList.add(NotificationDetails(id: 0));
+          }
+          _notificationList.addAll(oldNotificationList);
 
           if (_pageNo == responseModel.pagination?.pageCount) {
             _reachedLastPage = true;
@@ -111,15 +126,66 @@ class NotificationProvider extends ChangeNotifier {
     }
   }
 
-  startTimer() {
-    _secondsRemaining = 120;
+  void startTimer(String time) {
+    // _secondsRemaining = 120;
+    // multiConnectTimer = ValueNotifier(120);
+     _secondsRemaining = time.getRemainingTime() ?? 120;
     timer?.cancel();
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (secondsRemaining != 0) {
-        _secondsRemaining--;
-        notifyListeners();
-      }
-    });
+    if(_secondsRemaining <= 120) {
+      timer = Timer.periodic(const Duration(seconds: 1), (_) {
+        if (_secondsRemaining != 0) {
+          _secondsRemaining--;
+          multiConnectTimer.value = multiConnectTimer.value - 1;
+          // notifyListeners();
+        } else if (_secondsRemaining == 0) {
+          timer?.cancel();
+          CommonAlertDialog.dialog(
+              context: NavigationService.context,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BodyLargeText(
+                    title: 'Notification Timed Out!',
+                    fontFamily: FontWeightEnum.w600.toInter,
+                    titleColor: ColorConstants.bottomTextColor,
+                    fontSize: 17,
+                    titleTextAlign: TextAlign.center,
+                  ),
+                  20.0.spaceY,
+                  BodyLargeText(
+                    title:
+                    'Boo!\nThis notification is now a ghost.\nSpooky how time flies!',
+                    maxLine: 4,
+                    fontFamily: FontWeightEnum.w400.toInter,
+                    titleColor: ColorConstants.blackColor,
+                    titleTextAlign: TextAlign.center,
+                  ),
+                  30.0.spaceY,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      BodyMediumText(
+                        title: 'Learn more',
+                        fontFamily: FontWeightEnum.w500.toInter,
+                        titleColor: ColorConstants.bottomTextColor,
+                        titleTextAlign: TextAlign.center,
+                      ),
+                      InkWell(
+                        onTap: () => NavigationService.context.toPop(),
+                        child: BodyMediumText(
+                          title: 'Back',
+                          fontFamily: FontWeightEnum.w500.toInter,
+                          titleColor: ColorConstants.bottomTextColor,
+                          titleTextAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ).addPaddingX(10)
+                ],
+              ));
+        }
+      });
+    }
   }
 
   void notifyState() {

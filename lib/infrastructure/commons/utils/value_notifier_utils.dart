@@ -23,3 +23,4 @@ ValueNotifier<int> mirlConnectView = ValueNotifier<int>(0);
 ValueNotifier<int> reportView = ValueNotifier<int>(0);
 ValueNotifier<String> activeRoute = ValueNotifier<String>("/");
 ValueNotifier<CallHistoryEnum> callHistoryEnumNotifier = ValueNotifier<CallHistoryEnum>(CallHistoryEnum.instantCall);
+ValueNotifier<int> multiConnectTimer = ValueNotifier<int>(120);

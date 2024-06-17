@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     //   }
     // });
 
-    Future.delayed(const Duration(seconds: 5)).then((value) {
+    Future.delayed(const Duration(milliseconds: 6300)).then((value) {
       var isLoginIn = SharedPrefHelper.getUserData;
       if (isLoginIn.isNotEmpty) {
         context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
@@ -48,38 +48,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     // );
     return Scaffold(
       backgroundColor: ColorConstants.whiteColor,
-      body: Center(
-        child: Lottie.asset(
-          ImageConstants.mirlSplashScreenJson,
-          repeat: true,
-          reverse: true,
-          animate: true,
-        ),
+      body: Image.asset(
+        ImageConstants.splashImages,
+        fit: BoxFit.cover,
+        height: double.infinity,
+        width: double.infinity,
       ),
-      // body: Container(
-      //   constraints: const BoxConstraints.expand(),
-      //   child: Center(
-      //     //     child: Image.asset(
-      //     //   ImageConstants.splashImages,
-      //     // ),
-      //     child: Lottie.asset(
-      //       ImageConstants.mirlSplashScreenJson,
-      //       decoder: LottieComposition.decodeGZip,
-      //       frameBuilder: (context, child, composition) => Transform.scale(
-      //         scale: 1,
-      //         child: child,
-      //       ),
-      //     ),
-      //     // child: Lottie.asset(
-      //     //   ImageConstants.splashScreen,
-      //     //   width: double.infinity,
-      //     //   frameBuilder: (context, child, composition) => Transform.scale(
-      //     //     scale: 1.5,
-      //     //     child: child,
-      //     //   ),
-      //     // ),
-      //   ),
-      // ),
     );
   }
 

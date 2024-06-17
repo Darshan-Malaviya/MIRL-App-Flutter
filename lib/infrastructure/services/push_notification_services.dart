@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
@@ -60,11 +61,11 @@ class PushNotificationService {
       sound: true,
     );
 
-    /// TODO For handling notification when the app is in terminated state
+/*    /// TODO For handling notification when the app is in terminated state
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) async {
       log('TS Message title: ${message?.notification?.title}, body: ${message?.notification?.body}, data: ${message?.data}');
       onMessageOpened(message);
-    });
+    });*/
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage? message) async {
@@ -117,7 +118,7 @@ class PushNotificationService {
 
   void onMessageOpened(RemoteMessage? message) {
     if (message?.data != null) {
-      CommonMethods.onTapNotification(jsonEncode(message?.data), NavigationService.context);
+      CommonMethods.onTapNotification(jsonEncode(message?.data));
     }
   }
 }

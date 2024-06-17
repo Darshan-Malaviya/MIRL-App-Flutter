@@ -223,9 +223,9 @@ extension DateTimeFormatter on String {
     if (this.isNotEmpty) {
       if (convertedDate == today) {
         finalDate = LocaleKeys.newNotifications.tr();
-      } else if (convertedDate == yesterday) {
+      }/* else if (convertedDate == yesterday) {
         finalDate = LocaleKeys.oldNotifications.tr();
-      } else {
+      }*/ else {
         finalDate = LocaleKeys.oldNotifications.tr();
       }
     }
@@ -233,14 +233,14 @@ extension DateTimeFormatter on String {
   }
 
   String timeAgo({bool numericDates = true}) {
-    final date2 = DateTime.now();
+    final date2 = DateTime.now().toLocal();
     DateTime date1 = DateTime.parse(this).toLocal();
     final difference = date2.difference(date1);
 
     var output = DateFormat('hh:mm a').format(date1);
 
     final years = difference.inDays ~/ 365;
-    print((difference.inDays - (years * 365)) ~/ 30);
+    // print((difference.inDays - (years * 365)) ~/ 30);
 
     if ((difference.inDays / 7).floor() >= 5) {
       return '5w';
@@ -259,6 +259,18 @@ extension DateTimeFormatter on String {
     } else {
       return output.toUpperCase();
     }
+  }
+
+  int? getRemainingTime(){
+    try {
+      final date2 = DateTime.now();
+      DateTime date1 = DateTime.parse(this).toLocal();
+      final difference = date2.difference(date1).inSeconds;
+      return difference;
+    } catch (e) {
+      Logger().d("Exception on getRemainingTime : $e");
+    }
+    return null;
   }
 }
 

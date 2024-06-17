@@ -62,44 +62,51 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
             children: [
               Expanded(
                 child: notificationProviderWatch.notificationList.isNotEmpty
-                    ? GroupedListView<NotificationDetails, dynamic>(
+                    ? ListView.separated(
+                        itemCount: notificationProviderWatch.notificationList.length,
                         controller: scrollController,
-                        reverse: false,
-                        separator: 30.0.spaceY,
-                        padding: EdgeInsets.zero,
-                        elements: notificationProviderWatch.notificationList,
-                        groupBy: (element) {
-                          return DateTime(DateTime.parse(element.notification?.firstCreated ?? '').year, DateTime.parse(element.notification?.firstCreated ?? '').month,
-                                  DateTime.parse(element.notification?.firstCreated ?? '').day)
-                              .toString();
-                        },
-                        groupComparator: (value1, value2) => value2.compareTo(value1),
                         shrinkWrap: true,
-                        sort: false,
-                        groupSeparatorBuilder: (value) {
-                          return messageSeparator(value);
-                        },
-                        itemBuilder: (_, element) {
-                          return DateTime.parse(element.notification?.firstCreated ?? '').day == DateTime.now().day
+                        itemBuilder: (context, index) {
+                          if (notificationProviderWatch.notificationList[index].id == -1) {
+                            return TitleMediumText(
+                              title: LocaleKeys.newNotifications.tr(),
+                              titleColor: ColorConstants.notificationTextColor,
+                              titleTextAlign: TextAlign.center,
+                            ).addMarginTop(20);
+                          } else if (notificationProviderWatch.notificationList[index].id == 0) {
+                            return TitleMediumText(
+                              title: LocaleKeys.oldNotifications.tr(),
+                              titleColor: ColorConstants.notificationTextColor,
+                              titleTextAlign: TextAlign.center,
+                            );
+                          }
+                          return notificationProviderWatch.notificationList[index].notification?.firstCreated.toString().toDisplayDay() ==
+                              DateTime.now().day.toString()
                               ? NotificationWidget(
-                                  remainingSecond: notificationProviderWatch.secondsRemaining,
-                                  message: element.notification?.message ?? '',
-                                  title: element.notification?.title ?? '',
-                                  time: element.notification?.firstCreated ?? '',
+                                  message: notificationProviderWatch.notificationList[index].notification?.message ?? '',
+                                  title: notificationProviderWatch.notificationList[index].notification?.title ?? '',
+                                  time: notificationProviderWatch.notificationList[index].notification?.firstCreated ?? '',
+                                  notificationKey: notificationProviderWatch.notificationList[index].notification?.key ?? '',
+                                  newNotification:
+                                      notificationProviderWatch.notificationList[index].notification?.firstCreated.toString().toDisplayDay() ==
+                                          DateTime.now().day.toString(),
                                   onTap: () {
-                                    CommonMethods.onTapNotification(element.notification?.data ?? '', context);
+                                    CommonMethods.onTapNotification(
+                                        notificationProviderWatch.notificationList[index].notification?.data ?? '',fromNotificationList: true);
                                   },
                                 )
                               : UserOlderNotificationWidget(
-                                  message: element.notification?.message ?? '',
-                                  title: element.notification?.title ?? '',
-                                  time: element.notification?.firstCreated ?? '',
-                                  titleBgColor: element.notification?.key?.statusToColor,
+                                  message: notificationProviderWatch.notificationList[index].notification?.message ?? '',
+                                  title: notificationProviderWatch.notificationList[index].notification?.title ?? '',
+                                  time: notificationProviderWatch.notificationList[index].notification?.firstCreated ?? '',
+                                  titleBgColor: notificationProviderWatch.notificationList[index].notification?.key?.statusToColor,
                                   onTap: () {
-                                    CommonMethods.onTapNotification(element.notification?.data ?? '', context);
+                                   /* CommonMethods.onTapNotification(
+                                        notificationProviderWatch.notificationList[index].notification?.data ?? '',fromNotificationList: true);*/
                                   },
                                 );
                         },
+                        separatorBuilder: (BuildContext context, int index) => 20.0.spaceY,
                       )
                     : Center(
                         child: TitleMediumText(
@@ -110,7 +117,7 @@ class _UserNotificationWidgetState extends ConsumerState<UserNotificationWidget>
                         ),
                       ),
               ),
-              notificationProviderWatch.isPageLoading?  20.0.spaceY : 0.0.spaceY,
+              notificationProviderWatch.isPageLoading ? 20.0.spaceY : 0.0.spaceY,
               Visibility(visible: notificationProviderWatch.isPageLoading, child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
             ],
           ).addMarginX(20);

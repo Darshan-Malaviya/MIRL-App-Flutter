@@ -33,11 +33,11 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
     ExtraResponseModel? model = ref.read(socketProvider).extraResponseModel;
     if (instanceCallDurationNotifier.value <= (ref.read(callProvider).callDuration ?? 0)) {
       instanceCallDurationNotifier.value =  instanceCallDurationNotifier.value + 1;
-      if (model?.callRoleEnum == CallRoleEnum.user) {
+      if (model?.callRoleEnum == CallRoleEnum.expert) {
         ref.read(socketProvider).timerEmit(
               userId: int.parse((model?.userId.toString() ?? '')),
               expertIdList: [int.parse((model?.expertId.toString() ?? ''))],
-              callRoleEnum: CallRoleEnum.user,
+              callRoleEnum: CallRoleEnum.expert,
               timer: instanceCallDurationNotifier.value,
               timerType: CallTimerEnum.call, requestType: widget.arguments.callType ?? 0,
             );
@@ -62,14 +62,14 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       ref.read(callProvider).getCallDuration();
       ref.read(callProvider).initVideoCallAgora(channelId: widget.arguments.agoraChannelId, token: widget.arguments.agoraToken);
       bool isLocalUserJoin = ref.watch(callProvider).localUserJoined;
-      bool isUser = (ref.watch(socketProvider).extraResponseModel?.callRoleEnum == CallRoleEnum.user);
+      bool isExpert = (ref.watch(socketProvider).extraResponseModel?.callRoleEnum == CallRoleEnum.expert);
       instanceCallDurationNotifier.addListener(() {
-        if(ref.read(callProvider).localUserJoined){
-          if(isUser){
+        // if(ref.watch(callProvider).remoteUid != null){
+          if(isExpert){
             if(instanceCallDurationNotifier.value == 0) {
               instanceCallTimerFunction();
             }
-          }
+          // }
         }
       });
     });

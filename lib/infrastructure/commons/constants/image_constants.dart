@@ -60,7 +60,7 @@ class ImageConstants {
   static const myMirlImage = '${imagePath}my_stery_mirl_image.png';
 
   /// gif image
-  static const splashImages = '${gifPath}splash_image.gif';
+  static const splashImages = '${gifPath}spalsh.gif';
 
   /// icon
   // static const recurringIcon = '${iconPath}recurring.png';
