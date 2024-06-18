@@ -16,7 +16,9 @@ enum NotificationTypeEnum {
   appointmentIn1min,
   appointmentIn30min,
   appointmentRemainder,
-  multipleConnectRequestExpert
+  multipleConnectRequestExpert,
+  noList,
+  expertDeclineRequestCall
 }
 
 extension NotificationTypeExtension on String {
@@ -37,6 +39,8 @@ extension NotificationTypeExtension on String {
       /// instant call
       case NotificationTypeEnum.instantCall:
         return ColorConstants.requestCallNowColor;
+      case NotificationTypeEnum.expertDeclineRequestCall:
+        return ColorConstants.requestCallNowColor;
 
       /// Multi call
       case NotificationTypeEnum.multipleConnect:
@@ -51,8 +55,11 @@ extension NotificationTypeExtension on String {
         return ColorConstants.callRequestColor;
       case NotificationTypeEnum.multiConnectExpertBusyUser:
         return ColorConstants.callRequestColor;
-        case NotificationTypeEnum.multipleConnectRequestExpert:
+      case NotificationTypeEnum.multipleConnectRequestExpert:
         return ColorConstants.callRequestColor;
+
+      case NotificationTypeEnum.noList:
+        return ColorConstants.transparentColor;
       default:
         return ColorConstants.lemonYellowColor;
     }

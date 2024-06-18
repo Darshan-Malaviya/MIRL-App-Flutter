@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:logger/logger.dart';
+import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
 import 'package:mirl/infrastructure/models/response/notification_list_response_model.dart';
 import 'package:mirl/infrastructure/repository/notification_repo.dart';
 
@@ -106,7 +108,7 @@ class NotificationProvider extends ChangeNotifier {
 
           _notificationList.addAll(newNotificationList);
           if(_pageNo == 1){
-            _notificationList.add(NotificationDetails(id: 0));
+            _notificationList.add(NotificationDetails(id: 0,notification: NotificationListData(key: NotificationTypeEnum.noList.name)));
           }
           _notificationList.addAll(oldNotificationList);
 

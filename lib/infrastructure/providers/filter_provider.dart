@@ -113,6 +113,8 @@ class FilterProvider extends ChangeNotifier {
 
   List<CategoryIdNameCommonModel>? get selectedTopicList => _selectedTopicList;
 
+  ExpertDataRequestModel? expertDataRequestModel;
+
   //String? selectedTopic;
 
   double? start;
@@ -214,8 +216,8 @@ class FilterProvider extends ChangeNotifier {
                         ? 'DESC'
                         : 'ASC'
                     : null,
-        maxFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : ((end ?? 0) * 100).toInt().toString(),
-        minFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : ((start ?? 0) * 100).toInt().toString(),
+        maxFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : end != null ? ((end ?? 0) * 100).toInt().toString() : null,
+        minFee: commonSelectionModel[index].title == FilterType.FeeRange.name ? null : start != null ? ((start ?? 0) * 100).toInt().toString() : null,
         topicIds: selectedTopicId,
         categoryId: isFromExploreExpert
             ? (commonSelectionModel[index].title == FilterType.Category.name)
@@ -335,6 +337,7 @@ class FilterProvider extends ChangeNotifier {
       CommonSelectionModel(title: 'Male', isSelected: false, selectType: 1),
       CommonSelectionModel(title: 'Non-Binary', isSelected: false, selectType: 3),
     ];
+    expertDataRequestModel = null;
     notifyListeners();
   }
 
@@ -786,10 +789,13 @@ class FilterProvider extends ChangeNotifier {
     }
     if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: true);
+      expertDataRequestModel = requestModel;
     } else {
       if (!isPaginating) {
         _isLoading = true;
         notifyListeners();
+      } else {
+        requestModel = expertDataRequestModel;
       }
     }
     ExpertDataRequestModel data = ExpertDataRequestModel(
