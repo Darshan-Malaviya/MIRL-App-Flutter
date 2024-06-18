@@ -108,8 +108,8 @@ class ExpertDetailWidget extends StatelessWidget {
                     ),
                     20.0.spaceX,
                     Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         BodySmallText(
                           title: LocaleKeys.feesPerMinute.tr(),
@@ -120,10 +120,10 @@ class ExpertDetailWidget extends StatelessWidget {
                         Column(
                           children: [
                             AutoSizeText(
-                              //fee != null || expertData?.fee != 0? '\$${fee}' : LocaleKeys.proBono.tr(),
-                             expertData?.fee != 0 ?'\$${fee}' :LocaleKeys.free.tr(),
-                              maxLines: 2,
-                                textAlign: TextAlign.center,style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20,
+                              //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
+                              expertData?.fee != 0 ?'\$${fee}' :LocaleKeys.free.tr(),
+                              maxLines: 2,textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20,
                                 color: ColorConstants.bottomTextColor,
                                 shadows: [
                                   Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
@@ -131,11 +131,10 @@ class ExpertDetailWidget extends StatelessWidget {
                               ),
                             ),
                             AutoSizeText(
-                              //fee != null || expertData?.fee != 0? '\$${fee}' : LocaleKeys.proBono.tr(),
-                             expertData?.fee != 0 ? '' :LocaleKeys.bono.tr(),
-                              maxLines: 2,
-                                presetFontSizes: [18],
-                            textAlign: TextAlign.center,style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12,
+                              //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
+                              expertData?.fee != 0 ? '' :LocaleKeys.bono.tr(),
+                              maxLines: 2,textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12,
                                 color: ColorConstants.bottomTextColor,
                                 shadows: [
                                   Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
