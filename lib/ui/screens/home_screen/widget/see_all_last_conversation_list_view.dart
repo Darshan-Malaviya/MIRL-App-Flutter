@@ -117,7 +117,7 @@ class _SeeAllLastConversationListViewScreenState extends ConsumerState<SeeAllLas
                         )
                       ]
                     ],
-                  ).addAllPadding(20),
+                  ).addMarginX(20),
                 )),
     );
   }
