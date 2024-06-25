@@ -98,7 +98,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                                     : LocaleKeys.newText.tr(),
                                 maxLines: 1,
                                 softWrap: true,
-                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                   color: ColorConstants.overallRatingColor,
                                   shadows: [
                                     Shadow(
@@ -116,20 +116,44 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                                 titleTextAlign: TextAlign.center,
                               ),
                               10.0.spaceX,
-                              AutoSizeText(
-                                scheduleWatch.expertData?.fee != 0
-                                    ? '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}'
-                                    : LocaleKeys.proBono.tr(),
-                                maxLines: 2,
-                                softWrap: true,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: ColorConstants.overallRatingColor,
-                                  shadows: [
-                                    Shadow(
-                                        offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
-                                  ],
-                                ),
-                              )
+                              scheduleWatch.expertData?.fee != 0
+                                  ? AutoSizeText(
+                                      '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}',
+                                      maxLines: 2,
+                                      softWrap: true,
+                                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                        color: ColorConstants.overallRatingColor,
+                                        shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                                      ),
+                                    )
+                                  : Column(
+                                      children: [
+                                        AutoSizeText(
+                                          LocaleKeys.free.tr(),
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                            fontSize: 20,
+                                            color: ColorConstants.overallRatingColor,
+                                            shadows: [
+                                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                                            ],
+                                          ),
+                                        ),
+                                        AutoSizeText(
+                                          LocaleKeys.bono.tr(),
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                            fontSize: 12,
+                                            color: ColorConstants.overallRatingColor,
+                                            shadows: [
+                                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
                             ],
                           ),
                         ],
@@ -212,7 +236,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           HeadlineMediumText(
-            title: scheduleWatch.expertData?.expertName?.toUpperCase() ?? '',
+            title: scheduleWatch.expertData?.expertName ?? '',
             fontSize: 30,
             titleColor: ColorConstants.bottomTextColor,
           ),
@@ -234,7 +258,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                         : LocaleKeys.newText.tr(),
                     maxLines: 1,
                     softWrap: true,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       color: ColorConstants.overallRatingColor,
                       shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                     ),
@@ -249,17 +273,40 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                     titleTextAlign: TextAlign.center,
                   ),
                   10.0.spaceX,
-                  AutoSizeText(
-                    scheduleWatch.expertData?.fee != 0
-                        ? '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}'
-                        : LocaleKeys.proBono.tr(),
-                    maxLines: 2,
-                    softWrap: true,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ColorConstants.overallRatingColor,
-                      shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
-                    ),
-                  )
+                  scheduleWatch.expertData?.fee != 0
+                      ? AutoSizeText(
+                          '\$${((scheduleWatch.expertData?.fee ?? 0) / 100).toStringAsFixed(2).toString()}',
+                          maxLines: 2,
+                          softWrap: true,
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: ColorConstants.overallRatingColor,
+                            shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            AutoSizeText(
+                              LocaleKeys.free.tr(),
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontSize: 20,
+                                color: ColorConstants.overallRatingColor,
+                                shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                              ),
+                            ),
+                            AutoSizeText(
+                              LocaleKeys.bono.tr(),
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontSize: 12,
+                                color: ColorConstants.overallRatingColor,
+                                shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                              ),
+                            ),
+                          ],
+                        )
                 ],
               ),
             ],

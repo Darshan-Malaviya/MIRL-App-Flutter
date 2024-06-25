@@ -83,10 +83,10 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
             multiProviderRead.getLoggedUserData();
             filterRead.clearFinalSelectedModel();
             await ref.read(multiConnectProvider).getSingleCategoryApiCall(
-                categoryId: widget.args.categoryId ?? '', context: context, requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
-            ref
-                .read(filterProvider)
-                .setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+                categoryId: widget.args.categoryId ?? '',
+                context: context,
+                requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+            ref.read(filterProvider).setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
           },
           child: Scaffold(
             backgroundColor: ColorConstants.greyLightColor,
@@ -94,11 +94,10 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
               backgroundColor: ColorConstants.primaryColor,
               onPressed: () async {
                 await multiProviderRead.setExpertList();
-                FlutterToast().showToast(
-                    msg:
-                        'Nice, you have chosen ${multiProviderWatch.selectedExperts.length} expert(s) for a Multiple Connect Request!'
-                    // msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.'
-                    );
+                FlutterToast()
+                    .showToast(msg: 'Nice, you have chosen ${multiProviderWatch.selectedExperts.length} expert(s) for a Multiple Connect Request!'
+                        // msg: 'You have chosen ${multiProviderWatch.selectedExperts.length} experts for multi connect.'
+                        );
                 multiConnectCallEnumNotifier.value = CallRequestTypeEnum.multiCallRequest;
                 multiConnectRequestStatusNotifier.value = CallRequestStatusEnum.waiting;
 
@@ -120,8 +119,9 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                               } else {
                                 List<int> data = multiProviderWatch.selectedExpertDetails.map((e) => e.id ?? 0).toList();
                                 CustomLoading.progressDialog(isLoading: true);
-                                ref.read(socketProvider).multiConnectRequestEmit(
-                                    expertIdsList: data, requestedDuration: multiProviderWatch.multiCallDuration * 60);
+                                ref
+                                    .read(socketProvider)
+                                    .multiConnectRequestEmit(expertIdsList: data, requestedDuration: multiProviderWatch.multiCallDuration * 60);
                               }
                             },
                             onSecondBtnTap: () async {
@@ -132,10 +132,10 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                 await ref.read(multiConnectProvider).getSingleCategoryApiCall(
                                     categoryId: widget.args.categoryId ?? '',
                                     context: context,
-                                    requestModel:
-                                        ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
-                                ref.read(filterProvider).setCategoryWhenFromMultiConnect(
-                                    ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+                                    requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+                                ref
+                                    .read(filterProvider)
+                                    .setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
                               } else if (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
                                 if (multiProviderWatch.selectedExpertForCall != null &&
                                     multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiRequestApproved) {
@@ -144,8 +144,9 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                       context: context,
                                       child: MultiCallPaymentBottomSheetView(onPressed: () {
                                         context.toPop();
-                                        ref.read(socketProvider).connectCallEmit(
-                                            expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
+                                        ref
+                                            .read(socketProvider)
+                                            .connectCallEmit(expertId: multiProviderWatch.selectedExpertForCall?.id.toString() ?? '');
                                       }),
                                       isDismissible: true);
                                 } else {
@@ -165,10 +166,10 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                 await ref.read(multiConnectProvider).getSingleCategoryApiCall(
                                     categoryId: widget.args.categoryId ?? '',
                                     context: context,
-                                    requestModel:
-                                        ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
-                                ref.read(filterProvider).setCategoryWhenFromMultiConnect(
-                                    ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
+                                    requestModel: ExpertDataRequestModel(userId: SharedPrefHelper.getUserId, multiConnectRequest: 'true'));
+                                ref
+                                    .read(filterProvider)
+                                    .setCategoryWhenFromMultiConnect(ref.watch(multiConnectProvider).singleCategoryData?.categoryData);
                               }
                             },
                           ));
@@ -218,7 +219,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                             fontFamily: FontWeightEnum.w400.toInter,
                             maxLine: 10,
                             titleTextAlign: TextAlign.center,
-                          ),
+                          ).addMarginX(10),
                           10.0.spaceY,
                           CategoryCommonView(
                             categoryName: multiProviderWatch.singleCategoryData?.categoryData?.name ?? '',
@@ -233,7 +234,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                         if (multiProviderWatch.singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) ...[
                           Container(
                             width: double.infinity,
-                            padding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+                            padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                             decoration: BoxDecoration(
                               color: ColorConstants.scaffoldBg,
                               boxShadow: [
@@ -253,38 +254,50 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                 // ),
                                 10.0.spaceY,
                                 Wrap(
-                                  children:
-                                      List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
+                                  children: List.generate(multiProviderWatch.singleCategoryData?.categoryData?.topic?.length ?? 0, (index) {
                                     final data = multiProviderWatch.singleCategoryData?.categoryData?.topic?[index];
                                     int topicIndex = filterWatch.allTopic.indexWhere((element) => element.id == data?.id);
                                     return InkWell(
-                                  onTap: () {
-                                    context.toPushNamed(
-                                      RoutesConstants.selectedTopicScreen,
-                                      args: SelectedTopicArgs(
-                                          topicName: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ?? '',
-                                          topicId: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0),
-                                    );
-                                  },
-                                  child:ShadowContainer(
-                                      shadowColor: ((filterWatch.allTopic.isEmpty) && index == 0)
-                                          ? ColorConstants.primaryColor
-                                           :(topicIndex != -1 && (filterWatch.allTopic[topicIndex].isCategorySelected ?? false))
-                                          ? ColorConstants.primaryColor
-                                          : ColorConstants.blackColor.withOpacity(0.1),
-                                      backgroundColor: ColorConstants.whiteColor,
-                                      isShadow: true,
-                                      spreadRadius: 1,
-                                      blurRadius: 2,
-                                      margin: EdgeInsets.only(bottom: 10, right: 10),
-                                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                      child: BodyMediumText(
-                                        title: data?.name ?? '',
-                                        fontFamily: FontWeightEnum.w500.toInter,
-                                        maxLine: 5,
+                                      onTap: () {
+                                        if (index != 0) {
+                                          context.toPushNamed(
+                                            RoutesConstants.selectedTopicScreen,
+                                            args: SelectedTopicArgs(
+                                                topicName: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ?? '',
+                                                topicId: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0,
+                                                categoryId: multiProviderWatch.singleCategoryData?.categoryData?.id,
+                                                fromMultiConnect: true),
+                                          );
+                                        } else {
+                                          context.toPushNamed(
+                                            RoutesConstants.selectedTopicScreen,
+                                            args: SelectedTopicArgs(
+                                                categoryName: multiProviderWatch.singleCategoryData?.categoryData?.name,
+                                                categoryId: multiProviderWatch.singleCategoryData?.categoryData?.id,
+                                                fromMultiConnect: true),
+                                          );
+                                        }
+                                      },
+                                      child: ShadowContainer(
+                                        shadowColor: ((filterWatch.allTopic.isEmpty) && index == 0)
+                                            ? ColorConstants.primaryColor
+                                            : (topicIndex != -1 && (filterWatch.allTopic[topicIndex].isCategorySelected ?? false))
+                                                ? ColorConstants.primaryColor
+                                                : ColorConstants.blackColor.withOpacity(0.1),
+                                        backgroundColor: ColorConstants.whiteColor,
+                                        isShadow: true,
+                                        spreadRadius: 1,
+                                        blurRadius: 2,
+                                        margin: EdgeInsets.only(bottom: 10, right: 10),
+                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                        child: BodyMediumText(
+                                          title: data?.name ?? '',
+                                          fontFamily: FontWeightEnum.w500.toInter,
+                                          maxLine: 5,
+                                        ),
                                       ),
-                                    ),
-                                  );}),
+                                    );
+                                  }),
                                 ),
                               ],
                             ),
@@ -406,12 +419,10 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             separatorBuilder: (context, index) => 30.0.spaceY,
-                            itemCount: (multiProviderWatch.expertData?.length ?? 0) +
-                                (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
+                            itemCount: (multiProviderWatch.expertData?.length ?? 0) + (multiProviderWatch.reachedAllExpertLastPage ? 0 : 1),
                             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                             itemBuilder: (context, i) {
-                              if (i == (multiProviderWatch.expertData?.length ?? 0) &&
-                                  (multiProviderWatch.expertData?.isNotEmpty ?? false)) {
+                              if (i == (multiProviderWatch.expertData?.length ?? 0) && (multiProviderWatch.expertData?.isNotEmpty ?? false)) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 12),
                                   child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
@@ -517,8 +528,7 @@ class _MultiCallDurationBottomSheetViewState extends ConsumerState<MultiCallDura
           ],
         ),
         20.0.spaceY,
-        BodySmallText(
-            title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
+        BodySmallText(title: '${LocaleKeys.maxCallDuration.tr()} 30 ${LocaleKeys.minutes.tr()}', fontFamily: FontWeightEnum.w500.toInter),
         20.0.spaceY,
         PrimaryButton(
           height: 55,

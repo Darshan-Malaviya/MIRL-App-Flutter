@@ -218,8 +218,11 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                                         onPressed: () {
                                           DateTime startTimeValue = DateTime.parse(upcomingWatch.upcomingAppointment[index].startTime ?? '').toLocal();
                                           DateTime endTimeValue = DateTime.parse(upcomingWatch.upcomingAppointment[index].endTime ?? '').toLocal();
-                                          DateTime now = DateTime.now();
-                                          if (startTimeValue.isBefore(now) && endTimeValue.isAfter(now)) {
+                                          DateTime now = DateTime.now().toLocal();
+                                          bool startTime = startTimeValue.difference(now).inHours == 0 && startTimeValue.difference(now).inMinutes <= 0;
+                                          bool endTime = endTimeValue.difference(now).inHours == 0 && endTimeValue.difference(now).inMinutes >= 0;
+                                          // startTimeValue.isBefore(now) && endTimeValue.isAfter(now)
+                                          if (startTime && endTime) {
                                             ref.read(socketProvider).connectCallEmit(
                                                 expertId: upcomingWatch.upcomingAppointment[index].expertId.toString(),
                                                 callRequestId:

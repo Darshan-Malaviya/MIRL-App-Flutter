@@ -185,7 +185,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                 values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
                 activeColor: ColorConstants.yellowButtonColor,
                 inactiveColor: ColorConstants.lineColor,
-                divisions: 4,
+                divisions: 100,
                 onChanged: filterRead.setRange,
                 min: 0,
                 max: 100,

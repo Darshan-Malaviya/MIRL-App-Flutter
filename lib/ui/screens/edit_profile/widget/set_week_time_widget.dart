@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/range_slider/range_slider_widget.dart';
 
-import '../../../common/range_slider/thumb_shape.dart';
 
 class SetWeekTimeWidget extends ConsumerStatefulWidget {
   const SetWeekTimeWidget({super.key});

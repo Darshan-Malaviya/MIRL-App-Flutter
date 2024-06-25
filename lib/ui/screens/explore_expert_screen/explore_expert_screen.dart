@@ -61,8 +61,8 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
       child: Scaffold(
           backgroundColor: ColorConstants.greyLightColor,
           appBar: AppBarWidget(
-            preferSize: 30,
             appBarColor: ColorConstants.greyLightColor,
+            preferSize: 0,
           ),
           body: Column(
             mainAxisSize: MainAxisSize.min,
@@ -134,6 +134,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                       onRefresh: () async {
                         ref.read(filterProvider).clearExploreExpertSearchData();
                         ref.read(filterProvider).clearExploreController();
+                        ref.read(filterProvider).clearAllFilter();
                         ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
                       },
                       child: SingleChildScrollView(

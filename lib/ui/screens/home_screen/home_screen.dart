@@ -55,10 +55,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 InkWell(
                    onTap: () => context.toPushNamed(RoutesConstants.searchScreen),
-                  // onTap: (){
-                  //   Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(),allowSnapshotting: false));
-                  //
-                  // },
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -75,24 +71,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                // 30.0.spaceY,
-                // Text(
-                //   'Hello, world!',
-                //   style: TextStyle(
-                //     shadows: <Shadow>[
-                //       Shadow(
-                //         offset: Offset(10.0, 10.0),
-                //         blurRadius: 3.0,
-                //         color: Color.fromARGB(255, 0, 0, 0),
-                //       ),
-                //       Shadow(
-                //         offset: Offset(10.0, 10.0),
-                //         blurRadius: 8.0,
-                //         color: Color.fromARGB(125, 0, 0, 255),
-                //       ),
-                //     ],
-                //   ),
-                // ),
                 30.0.spaceY,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

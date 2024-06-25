@@ -1,6 +1,5 @@
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
-import '../../../ui/common/range_slider/thumb_shape.dart';
 
 class AppTheme {
   static ThemeData setTheme(BuildContext context) {

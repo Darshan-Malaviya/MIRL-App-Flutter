@@ -27,7 +27,7 @@ class SelectedTopicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> selectedTopicApiCall({bool isFullScreenLoader = false,int topicId = 0}) async {
+  Future<void> selectedTopicApiCall({bool isFullScreenLoader = false,int? topicId,int? categoryId, bool? fromMultiConnect}) async {
     if (isFullScreenLoader) {
       _isLoading = true;
       notifyListeners();
@@ -35,7 +35,10 @@ class SelectedTopicProvider extends ChangeNotifier {
     ExpertDataRequestModel data = ExpertDataRequestModel(
       page: _selectedTopicPageNo.toString(),
       limit: '10',
-      topicIds: topicId.toString(),
+      topicIds: topicId != null ? topicId.toString() : null,
+      userId: SharedPrefHelper.getUserId,
+      categoryId: categoryId!= null ?  categoryId.toString() : null,
+      multiConnectRequest: fromMultiConnect != null ? fromMultiConnect.toString() : null
     );
 
     ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: data.toNullFreeJson());

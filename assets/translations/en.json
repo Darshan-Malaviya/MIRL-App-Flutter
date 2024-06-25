@@ -170,7 +170,7 @@
   "blockedUsers": "VIEW YOUR BLOCKED USERS LIST HERE",
   "blockedUserList": "BLOCKED USERS LIST",
   "reportThisUser": "REPORT THIS USER",
-  "appropriate": "Would you like to report this Expert? Please select the appropriate response from the list below.",
+  "appropriate": "Would you like to report this User? Please select the appropriate response from the list below.",
   "thanks": "Thanks for letting us know!",
   "bringing": "Thank you for bringing this to our attention.",
   "maintaining": "We are committed to maintaining a high standard of service on our platform. To ensure this, we will carefully review the reported user’s activity on the app, consider feedback from other Experts, and make an informed decision regarding the user’s future on our platform shortly.",
@@ -196,7 +196,7 @@
   "cancelAppointment": "CANCEL APPOINTMENT",
   "noCategoryFound": "No category found",
   "multiConnectFilter": "MULTIPLE CONNECT FILTER",
-  "reviewAndRatingScreen": "YOUR REVIEWS AND RATINGS",
+  "reviewAndRatingScreen": "REVIEWS AND RATINGS",
   "shortByReview": "SORT REVIEWS BY:",
   "shortByExpert": "SORT EXPERTS BY",
   "earningReport": "EARNING REPORT",
@@ -393,5 +393,11 @@
   "networkOfExpertise": "Find all your best experts in one place. Favorite the experts you like and create your own network of expertise!",
   "findPastConversations": "Want to connect with an expert you’ve spoken to already? Find all your past conversations right here, and reconnect in a tap!",
   "seekerName": "SEEKER NAME",
-  "backProfile": "BACK TO PROFILE"
+  "backProfile": "BACK TO PROFILE",
+  "completeExpertProfile" : "PLEASE COMPLETE ALL EXPERT DETAILS TO BE VISIBLE TO SEEKERS",
+  "sourceLinkHint": "SOURCE URL/LINK",
+  "pleaseEnterValidUrl": "Please enter a valid URL",
+  "userNameOverLoaded": "Username overload! Trim to 15, pretty please?",
+  "pickUpTheDate": "Please pick a date to start!"
+
 }

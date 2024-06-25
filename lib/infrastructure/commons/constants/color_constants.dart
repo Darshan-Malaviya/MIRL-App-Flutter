@@ -23,6 +23,7 @@ class ColorConstants {
 
   static Color primaryColor = const Color(0xffD97CF0);
   static Color secondaryColor = const Color(0xffED1C22);
+  static Color darkPinkColor = const Color(0xffBD49D9);
   static Color scaffoldColor = const Color(0xFFF6F9FF);
   static Color buttonTextColor = const Color(0xFF424D5C);
   static Color bottomTextColor = const Color(0xFF6F50EA);

@@ -188,13 +188,20 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                     // }
                                     return InkWell(
                                       onTap: () {
-                                        context.toPushNamed(RoutesConstants.selectedTopicScreen,
-                                            args: SelectedTopicArgs(
-                                                topicName:
-                                                    filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ??
-                                                        '',
-                                                topicId:
-                                                    filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0));
+                                        if(index != 0) {
+                                          context.toPushNamed(RoutesConstants.selectedTopicScreen,
+                                              args: SelectedTopicArgs(
+                                                  topicName:
+                                                  filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ??
+                                                      '',
+                                                  topicId:
+                                                  filterProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0));
+                                        } else {
+                                          context.toPushNamed(RoutesConstants.selectedTopicScreen,
+                                              args: SelectedTopicArgs(
+                                                  categoryId: filterProviderWatch.singleCategoryData?.categoryData?.id,
+                                                  categoryName: filterProviderWatch.singleCategoryData?.categoryData?.name));
+                                        }
                                       },
                                       child: ShadowContainer(
                                         shadowColor: ((filterProviderWatch.allTopic.isEmpty) && index == 0) || (data?.id.toString() == widget.args.topicId)

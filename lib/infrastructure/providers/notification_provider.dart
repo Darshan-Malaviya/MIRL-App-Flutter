@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
 import 'package:mirl/infrastructure/models/response/notification_list_response_model.dart';
 import 'package:mirl/infrastructure/repository/notification_repo.dart';
 

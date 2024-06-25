@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class CategoryCommonView extends StatefulWidget {

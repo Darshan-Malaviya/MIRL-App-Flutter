@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mirl/infrastructure/commons/constants/color_constants.dart';
-import 'package:mirl/infrastructure/commons/extensions/ui_extensions/font_family_extension.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/margin_extension.dart';
 import 'package:mirl/ui/common/text_widgets/base/text_widgets.dart';
 
