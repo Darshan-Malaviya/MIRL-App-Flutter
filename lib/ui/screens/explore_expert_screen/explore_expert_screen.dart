@@ -110,7 +110,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                     ),
                   ),
                 ],
-              ).addMarginXY(marginX: 20, marginY: 10),
+              ).addMarginX(20)/*addMarginXY(marginX: 20, marginY: 10)*/,
               if (filterProviderWatch.isLoading) ...[
                 Center(
                   child: SpinKitChasingDots(
