@@ -37,7 +37,8 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                       final data = scheduleProviderWatch.weekAvailability[index];
                       return weekAvailabilityWidget(
                               dayText: data.dayOfWeek?.toUpperCase() ?? '',
-                              dayTimeText: '${data.startTime?.to12HourTimeFormat().toLowerCase() ?? ''} - ${data.endTime?.to12HourTimeFormat().toLowerCase() ?? ''}')
+                              dayTimeText:
+                                  '${data.startTime?.to12HourTimeFormat().toLowerCase() ?? ''} - ${data.endTime?.to12HourTimeFormat().toLowerCase() ?? ''}')
                           .addPaddingY(12);
                     }),
                   ).addPaddingX(20),
@@ -244,12 +245,19 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                       },
                       separatorBuilder: (BuildContext context, int index) => 20.0.spaceX,
                     )
-                  : Center(
-                      child: BodyMediumText(
-                        title: LocaleKeys.noSlotAvailable.tr(),
-                        titleColor: ColorConstants.primaryColor,
-                      ),
-                    ),
+                  : scheduleCallWatch.selectedDate != null
+                      ? Center(
+                          child: BodyMediumText(
+                            title: LocaleKeys.noSlotAvailable.tr(),
+                            titleColor: ColorConstants.primaryColor,
+                          ),
+                        )
+                      : Center(
+                          child: BodyMediumText(
+                            title: LocaleKeys.pickUpTheDate.tr(),
+                            titleColor: ColorConstants.primaryColor,
+                          ),
+                        ),
         )
       ],
     );

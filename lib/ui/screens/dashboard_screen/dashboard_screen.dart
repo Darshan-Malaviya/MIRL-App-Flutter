@@ -6,7 +6,6 @@ import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
 import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
-import 'package:mirl/infrastructure/services/push_notification_services.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
@@ -14,7 +13,6 @@ import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen/notification_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen/user_seeting_screen.dart';
 
-import '../multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   final int index;

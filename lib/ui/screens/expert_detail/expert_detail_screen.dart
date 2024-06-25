@@ -215,19 +215,15 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                                   ),
                                   10.0.spaceX,
                                   AutoSizeText(
-                                    expertDetailWatch.userData?.overAllRating != 0 &&
-                                            expertDetailWatch.userData?.overAllRating != null
+                                    expertDetailWatch.userData?.overAllRating != 0 && expertDetailWatch.userData?.overAllRating != null
                                         ? expertDetailWatch.userData?.overAllRating.toString() ?? ''
                                         : LocaleKeys.newText.tr(),
                                     maxLines: 1,
                                     softWrap: true,
-                                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                       color: ColorConstants.overallRatingColor,
                                       shadows: [
-                                        Shadow(
-                                            offset: Offset(0, 1),
-                                            blurRadius: 3,
-                                            color: ColorConstants.blackColor.withOpacity(0.25))
+                                        Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
                                       ],
                                     ),
                                   )
@@ -244,36 +240,37 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                                     titleTextAlign: TextAlign.center,
                                   ),
                                   10.0.spaceX,
-                                  Column(
+                                  expertDetailWatch.userData?.fee != 0
+                                      ? AutoSizeText(
+                                    '\$${fee}',
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                      fontSize: 20,
+                                      color: ColorConstants.overallRatingColor,
+                                      shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                                    ),
+                                  )
+                                      : Column(
                                     children: [
                                       AutoSizeText(
-                                        //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
-                                        expertDetailWatch.userData?.fee != 0 ? '\$${fee}' : LocaleKeys.free.tr(),
-                                        maxLines: 2, textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        LocaleKeys.free.tr(),
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                           fontSize: 20,
                                           color: ColorConstants.overallRatingColor,
-                                          shadows: [
-                                            Shadow(
-                                                offset: Offset(0, 1),
-                                                blurRadius: 3,
-                                                color: ColorConstants.blackColor.withOpacity(0.25))
-                                          ],
+                                          shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                                         ),
                                       ),
                                       AutoSizeText(
-                                        //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
-                                        expertDetailWatch.userData?.fee != 0 ? '' : LocaleKeys.bono.tr(),
-                                        maxLines: 2, textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        LocaleKeys.bono.tr(),
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                           fontSize: 12,
                                           color: ColorConstants.overallRatingColor,
-                                          shadows: [
-                                            Shadow(
-                                                offset: Offset(0, 1),
-                                                blurRadius: 3,
-                                                color: ColorConstants.blackColor.withOpacity(0.25))
-                                          ],
+                                          shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
                                         ),
                                       ),
                                     ],
@@ -350,7 +347,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                                     : ColorConstants.redLightColor
                                 : ColorConstants.redLightColor,
                             onTap: () {
-                              if (userOnline) {
+                              if (userOnline && expertDetailWatch.userData?.onlineStatus == 1) {
                                 CommonBottomSheet.bottomSheet(
                                     context: context,
                                     height: MediaQuery.of(context).size.height * 0.5,

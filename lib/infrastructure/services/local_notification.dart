@@ -1,13 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
-import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/mirl_app.dart';
-import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class LocalNotification {
   static final LocalNotification singleton = LocalNotification._internal();

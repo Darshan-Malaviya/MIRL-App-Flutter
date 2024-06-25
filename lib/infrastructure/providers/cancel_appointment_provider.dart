@@ -1,7 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
-import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
