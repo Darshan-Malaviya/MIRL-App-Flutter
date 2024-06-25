@@ -328,7 +328,8 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                                   ),
                                                   2.0.spaceY,
                                                   ( (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString().isNotEmpty)
-                                                      && (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString() != "0")) ?
+                                                      && (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString() != "0")
+                                                      && (multiProviderWatch.selectedExpertDetails[index].overAllRating.toString() != 'null')) ?
                                                   LabelSmallText(
                                                     title:
                                                     '${LocaleKeys.rating.tr()} ${multiProviderWatch.selectedExpertDetails[index].overAllRating.toString()}',

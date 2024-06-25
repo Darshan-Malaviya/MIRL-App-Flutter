@@ -185,7 +185,7 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                           : LocaleKeys.newText.tr(),
                       maxLines: 1,
                       softWrap: true,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: ColorConstants.overallRatingColor,
                         shadows: [
                           Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
@@ -205,32 +205,41 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                       titleTextAlign: TextAlign.center,
                     ),
                     10.0.spaceX,
-                    Column(
-                      children: [
-                        AutoSizeText(
-                          //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
-                          expertDetailWatch.userData?.fee != 0 ? '\$${fee}' : LocaleKeys.free.tr(),
-                          maxLines: 2,textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20,
-                            color: ColorConstants.overallRatingColor,
-                            shadows: [
-                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                    expertDetailWatch.userData?.fee != 0
+                        ? AutoSizeText(
+                            '\$${fee}',
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              fontSize: 20,
+                              color: ColorConstants.overallRatingColor,
+                              shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              AutoSizeText(
+                                LocaleKeys.free.tr(),
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontSize: 20,
+                                  color: ColorConstants.overallRatingColor,
+                                  shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                                ),
+                              ),
+                              AutoSizeText(
+                                LocaleKeys.bono.tr(),
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontSize: 12,
+                                  color: ColorConstants.overallRatingColor,
+                                  shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                                ),
+                              ),
                             ],
-                          ),
-                        ),
-                        AutoSizeText(
-                          //fee != 0 ? '\$${fee}' : LocaleKeys.proBono.tr(),
-                          expertDetailWatch.userData?.fee != 0 ? '' : LocaleKeys.bono.tr(),
-                          maxLines: 2,textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12,
-                            color: ColorConstants.overallRatingColor,
-                            shadows: [
-                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
+                          )
                   ],
                 ),
               ],

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/image_picker_option.dart';
@@ -167,6 +169,13 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   controller: TextEditingController(text: expertWatch.about),
                 ),
                 50.0.spaceY,
+                BodySmallText(
+                  title: LocaleKeys.completeExpertProfile.tr(),
+                  titleColor: ColorConstants.darkPinkColor,
+                  titleTextAlign: TextAlign.center,
+                  maxLine: 3,
+                ).addMarginX(6),
+                20.0.spaceY,
                 Column(
                   children: List.generate(expertWatch.editButtonList.length, (index) {
                     final data = expertWatch.editButtonList[index];

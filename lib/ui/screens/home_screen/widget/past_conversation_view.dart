@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class PastConversationsView extends ConsumerStatefulWidget {
@@ -19,7 +20,6 @@ class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
       children: [
         TitleLargeText(
           fontSize: 18,
-
           title: LocaleKeys.yourPastConversations.tr(),
         ),
         if(homeProviderWatch.homeData?.lastConversionList?.isNotEmpty ?? false)...[
@@ -40,30 +40,44 @@ class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
                     child: ShadowContainer(
                       padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
                       shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                      width: 96,
+                      height: 120,
+                      isShadow: true,
+                      offset: Offset(0,2),
+                      spreadRadius: 0,
+                      blurRadius: 3,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            radius: 37.5,
-                            backgroundImage: NetworkImage(
-                                homeProviderWatch.homeData?.lastConversionList?[index].expertProfile ?? ''),
+                          Container(
+                            height: 80,
+                            width: 75,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                    top: 2,
+                                    child: CircleAvatar(
+                                      radius: 37.5,
+                                      backgroundColor: ColorConstants.blackColor.withOpacity(0.2),
+                                    )),
+                                CircleNetworkImageWidget(
+                                    imageURL: homeProviderWatch.homeData?.lastConversionList?[index].expertProfile ?? ''),
+                              ],
+                            ),
                           ),
-                          10.0.spaceY,
-                          LabelSmallText(
-                            fontSize: 9,
-                            title: homeProviderWatch.homeData?.lastConversionList?[index].expertName ?? '',
-                            maxLine: 2,
-                            titleColor: ColorConstants.blackColor,
-                            fontFamily: FontWeightEnum.w700.toInter,
-                            titleTextAlign: TextAlign.center,
+                          6.0.spaceY,
+                          Flexible(
+                            child: LabelSmallText(
+                              fontSize: 12,
+                              title: homeProviderWatch.homeData?.lastConversionList?[index].expertName ?? '',
+                              maxLine: 5,
+                              titleTextAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),
-                      width: 96,
-                      height: 116,
-                      isShadow: true,
                     ).addPaddingLeft(10),
                   );
                 }),

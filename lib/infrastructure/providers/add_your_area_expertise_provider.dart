@@ -141,10 +141,13 @@ class AddYourAreaExpertiseProvider extends ChangeNotifier {
             /// if parent id same then add only child ids in local childIdLis
             if (index != -1) {
               if (_child.isSelected ?? false) {
-                _childCategoryIds[index].childIds?.add(_child.id ?? 0);
+                if(!(_childCategoryIds[index].childIds?.contains(_child.id) ?? false)) {
+                  _childCategoryIds[index].childIds?.add(_child.id ?? 0);
+                }
               } else {
                 /// after select child user dis-select it then remove child ids from parent.
                 _childCategoryIds[index].childIds?.remove(_child.id ?? 0);
+                print('childCategory=====${_childCategoryIds[index].childIds?.toList()}');
               }
             } else {
               /// if parent not available then add new full object in childIdLis

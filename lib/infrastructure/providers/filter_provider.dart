@@ -258,6 +258,7 @@ class FilterProvider extends ChangeNotifier {
     }
     commonSelectionModel.removeAt(index);
     finalCommonSelectionModel.removeAt(index);
+    expertDataRequestModel = data;
     if (isFromExploreExpert) {
       clearExploreExpertSearchData();
       clearExploreController();
@@ -719,10 +720,13 @@ class FilterProvider extends ChangeNotifier {
       required BuildContext context}) async {
     if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: true);
+      expertDataRequestModel = requestModel;
     } else {
       if (!isPaginating) {
         _isLoading = true;
         notifyListeners();
+      } else {
+        requestModel = expertDataRequestModel;
       }
     }
 

@@ -202,7 +202,7 @@ class ReportReviewProvider extends ChangeNotifier {
           } else {
             _reviewAndRatingData?.expertReviews?.addAll(responseModel.data?.expertReviews ?? []);
           }
-          if (_pageNo == responseModel.pagination?.itemCount) {
+          if (_pageNo == responseModel.pagination?.pageCount) {
             _reachedLastPage = true;
           } else {
             _pageNo = _pageNo + 1;

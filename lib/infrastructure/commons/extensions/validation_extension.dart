@@ -12,9 +12,9 @@ extension ValidationExtension on String {
 
   String? toEmailValidation() {
     if (trim().isEmpty) {
-      return StringConstants.requiredEmail;
+      return LocaleKeys.requiredEmail.tr();
     } else if (!EmailValidator.validate(this)) {
-      return StringConstants.emailIsNotInProperFormat;
+      return LocaleKeys.emailIsNotInProperFormat.tr();
     }
     return null;
   }
@@ -24,7 +24,7 @@ extension ValidationExtension on String {
     RegExp(r'^https?:\/\/(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?$');
     var value = urlValue ?? "";
     if (!regex.hasMatch(value)) {
-      return ("Please enter a valid URL");
+      return LocaleKeys.pleaseEnterValidUrl.tr();
     }
     return null;
   }
@@ -35,7 +35,7 @@ extension ValidationExtension on String {
     } else if (this.length < 5) {
       return LocaleKeys.charactersLong.tr();
     } else if(this.length > 15) {
-      return 'Username overload! Trim to 15, pretty please?';
+      return LocaleKeys.userNameOverLoaded.tr();
     }
     /*else if (!RegExp(RegexConstants.onlyCharacter).hasMatch(this)) {
       return validatedMsg;

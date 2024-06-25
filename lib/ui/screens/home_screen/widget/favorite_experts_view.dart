@@ -37,46 +37,48 @@ class FavoriteExpertsView extends ConsumerWidget {
                           context.toPushNamed(RoutesConstants.expertDetailScreen, args: CallFeedBackArgs(expertId: favoriteListNotifier.value[index].id.toString(),callType: ''));
                         },
                         child: ShadowContainer(
-                          padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
-                          shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                          width: 96,
-                          height: 120,
-                          isShadow: true,
-                          offset: Offset(0,2),
-                          spreadRadius: 0,
-                          blurRadius: 3,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 80,
-                                width: 75,
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                        top: 2,
-                                        child: CircleAvatar(radius: 37.5,backgroundColor: ColorConstants.blackColor.withOpacity(0.1),)),
-                                    CircleNetworkImageWidget(imageURL: favoriteListNotifier.value[index].expertProfile ?? '', isNetworkImage: true, key: UniqueKey()),
-
-                                  ],
+                            padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
+                            shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                            width: 96,
+                            height: 120,
+                            isShadow: true,
+                            offset: Offset(0, 2),
+                            spreadRadius: 0,
+                            blurRadius: 3,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 80,
+                                  width: 75,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                          top: 2,
+                                          child: CircleAvatar(
+                                            radius: 37.5,
+                                            backgroundColor: ColorConstants.blackColor.withOpacity(0.2),
+                                          )),
+                                      CircleNetworkImageWidget(
+                                          imageURL: favoriteListNotifier.value[index].expertProfile ?? '', isNetworkImage: true, key: UniqueKey()),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              6.0.spaceY,
-                              Flexible(
-                                child: LabelSmallText(
-                                  fontSize: 9,
-                                  title: (favoriteListNotifier.value[index].expertName?.toCapitalizeAllWord() ?? '').toString(),
-                                  maxLine: 10,
-                                  titleTextAlign: TextAlign.center,
+                                6.0.spaceY,
+                                Flexible(
+                                  child: LabelSmallText(
+                                    fontSize: 12,
+                                    title: (favoriteListNotifier.value[index].expertName?.toCapitalizeAllWord() ?? '').toString(),
+                                    maxLine: 5,
+                                    titleTextAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-
-                        ).addPaddingLeft(10),
-                      );
+                              ],
+                            ),
+                          ).addPaddingLeft(10),
+                        );
                     }),
               ),
               20.0.spaceY,
