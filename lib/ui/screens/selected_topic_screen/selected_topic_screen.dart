@@ -60,11 +60,11 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
       child: Scaffold(
         backgroundColor: ColorConstants.scaffoldBg,
         appBar: AppBarWidget(
-          appTitle: TitleLargeText(
-            title: widget.args.topicName != null ? widget.args.topicName ?? '' : widget.args.categoryName ?? '',
-            fontSize: 20,
-            maxLine: 2,
-          ),
+          // appTitle: TitleLargeText(
+          //   title: widget.args.topicName != null ? widget.args.topicName ?? '' : widget.args.categoryName ?? '',
+          //   fontSize: 20,
+          //   maxLine: 2,
+          // ),
           appBarColor: ColorConstants.scaffoldBg,
           leading: InkWell(
             child: Image.asset(ImageConstants.backIcon),
@@ -175,6 +175,11 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    TitleLargeText(
+                      title: widget.args.topicName != null ? widget.args.topicName ?? '' : widget.args.categoryName ?? '',
+                      titleTextAlign: TextAlign.center,
+                      maxLine: 5,
+                    ).addMarginX(20),
                     if (selectedTopicWatch.categoryList?.expertData?.isNotEmpty ?? false) ...[
                       ListView.separated(
                           shrinkWrap: true,

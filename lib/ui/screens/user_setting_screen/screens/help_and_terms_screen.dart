@@ -85,7 +85,7 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                   PrimaryButton(
                     height: 40,
                     buttonColor: ColorConstants.buttonColor,
-                    title: LocaleKeys.accountHelp.tr(),
+                    title: LocaleKeys.accountHelp.tr().toUpperCase(),
                     titleColor: ColorConstants.buttonTextColor,
                     fontSize: 12,
                     onPressed: () {},
