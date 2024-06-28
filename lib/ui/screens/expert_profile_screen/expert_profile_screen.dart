@@ -313,42 +313,43 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               textAlign: TextAlign.start,
                             ),
                             40.0.spaceY,
+                            Center(child: Image.asset(ImageConstants.line)),
                           ],
-                          Center(child: Image.asset(ImageConstants.line)),
-                          40.0.spaceY,
-                          26.0.spaceY,
-                          ReviewsAndRatingWidget(
-                            title: StringConstants.overallRating,
-                            buttonColor: ColorConstants.yellowButtonColor,
-                            child: Align(
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: expertWatch.userData?.overAllRating?.toString() ?? '0',
-                                      style: TextStyle(
-                                        color: ColorConstants.overAllRatingColor,
-                                        fontSize: 30,
-                                        height: 0.05,
-                                        letterSpacing: -0.33,
+                          60.0.spaceY,
+                          if (expertWatch.overAllRating != '0') ...[
+                            ReviewsAndRatingWidget(
+                              title: StringConstants.overallRating,
+                              buttonColor: ColorConstants.yellowButtonColor,
+                              child: Align(
+                                alignment: AlignmentDirectional.centerEnd,
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: expertWatch.userData?.overAllRating?.toString() ?? '0',
+                                        style: TextStyle(
+                                          color: ColorConstants.overAllRatingColor,
+                                          fontSize: 30,
+                                          height: 0.05,
+                                          letterSpacing: -0.33,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: '/10',
-                                      style: TextStyle(
-                                        color: ColorConstants.overAllRatingColor,
-                                        fontSize: 18,
-                                        height: 0.08,
-                                        letterSpacing: -0.20,
+                                      TextSpan(
+                                        text: '/10',
+                                        style: TextStyle(
+                                          color: ColorConstants.overAllRatingColor,
+                                          fontSize: 18,
+                                          height: 0.08,
+                                          letterSpacing: -0.20,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
-                          ),
+                          ],
                           26.0.spaceY,
                           if (expertWatch.userData?.ratingCriteria?.isNotEmpty ?? false) ...[
                             OverallRatingWidget(
