@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
-import 'package:mirl/ui/screens/expert_category_screen/arguments/selected_category_arguments.dart';
+import 'package:mirl/ui/screens/selected_topic_screen/arguments/selected_topic_arguments.dart';
 
 class TopicSearchView extends ConsumerStatefulWidget {
   const TopicSearchView({super.key});
@@ -33,12 +33,19 @@ class _ExpertCategorySearchViewState extends ConsumerState<TopicSearchView> {
             children: List.generate(homeProviderWatch.homeSearchData?.topics?.length ?? 0, (index) {
               return InkWell(
                 onTap: () {
-                  context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                      args: SelectedCategoryArgument(
-                          topicId: homeProviderWatch.homeSearchData?.topics?[index].id.toString() ?? '',
-                          categoryId: homeProviderWatch.homeSearchData?.topics?[index].categoryId.toString() ?? '',
-                          isFromExploreExpert: false,
-                          categoryName: homeProviderWatch.homeSearchData?.topics?[index].name.toString() ?? ''));
+                  context.toPushNamed(RoutesConstants.selectedTopicScreen,
+                      args: SelectedTopicArgs(
+                          topicName:
+                          homeProviderWatch.homeSearchData?.topics?[index].name ??
+                              '',
+                          topicId:
+                          homeProviderWatch.homeSearchData?.topics?[index].id ?? 0));
+                  // context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
+                  //     args: SelectedCategoryArgument(
+                  //         topicId: homeProviderWatch.homeSearchData?.topics?[index].id.toString() ?? '',
+                  //         categoryId: homeProviderWatch.homeSearchData?.topics?[index].categoryId.toString() ?? '',
+                  //         isFromExploreExpert: false,
+                  //         categoryName: homeProviderWatch.homeSearchData?.topics?[index].name.toString() ?? ''));
                 },
                 child: Container(
                   margin: EdgeInsets.all(10),

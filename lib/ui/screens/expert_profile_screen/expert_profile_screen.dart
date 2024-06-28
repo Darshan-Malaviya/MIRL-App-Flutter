@@ -316,6 +316,21 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                           ],
                           Center(child: Image.asset(ImageConstants.line)),
                           40.0.spaceY,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TitleMediumText(
+                                title: StringConstants.reviewsAndRatting,
+                                titleTextAlign: TextAlign.start,
+                                titleColor: ColorConstants.blueColor,
+                              ),
+                              OnScaleTap(
+                                onPress: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen,
+                                    args: expertWatch.userData?.id),
+                                child: TitleSmallText(title: LocaleKeys.seeAll.tr(), titleColor: ColorConstants.greyColor),
+                              )
+                            ],
+                          ),
                           26.0.spaceY,
                           ReviewsAndRatingWidget(
                             title: StringConstants.overallRating,
