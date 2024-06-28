@@ -308,7 +308,7 @@ class EditExpertProvider extends ChangeNotifier {
       aboutMeController.text = _userData?.about ?? '';
       about = _userData?.about ?? '';
       _enteredText = _userData?.about?.length.toString() ?? '0';
-      _enteredCertificateText = _userData?.certification?.last.description?.length.toString() ?? '0';
+      _enteredCertificateText =  _userData?.certification != null && (_userData?.certification?.isNotEmpty ?? false) ?  _userData?.certification?.last.description?.length.toString() ?? '0' : '0';
       countryNameController.text = _userData?.country ?? '';
       cityNameController.text = _userData?.city ?? '';
       overAllRating = _userData?.overAllRating != null ? _userData?.overAllRating.toString() ?? '' : LocaleKeys.newText.tr();

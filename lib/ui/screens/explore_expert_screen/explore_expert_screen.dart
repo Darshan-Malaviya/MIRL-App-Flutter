@@ -67,6 +67,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
           body: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              16.0.spaceY,
               Row(
                 children: [
                   if (!widget.isFromHomePage) ...[
