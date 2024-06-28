@@ -313,43 +313,57 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               textAlign: TextAlign.start,
                             ),
                             40.0.spaceY,
-                            Center(child: Image.asset(ImageConstants.line)),
                           ],
-                          60.0.spaceY,
-                          if (expertWatch.overAllRating != '0') ...[
-                            ReviewsAndRatingWidget(
-                              title: StringConstants.overallRating,
-                              buttonColor: ColorConstants.yellowButtonColor,
-                              child: Align(
-                                alignment: AlignmentDirectional.centerEnd,
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: expertWatch.userData?.overAllRating?.toString() ?? '0',
-                                        style: TextStyle(
-                                          color: ColorConstants.overAllRatingColor,
-                                          fontSize: 30,
-                                          height: 0.05,
-                                          letterSpacing: -0.33,
-                                        ),
+                          Center(child: Image.asset(ImageConstants.line)),
+                          40.0.spaceY,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TitleMediumText(
+                                title: StringConstants.reviewsAndRatting,
+                                titleTextAlign: TextAlign.start,
+                                titleColor: ColorConstants.blueColor,
+                              ),
+                              OnScaleTap(
+                                onPress: () => context.toPushNamed(RoutesConstants.ratingAndReviewScreen,
+                                    args: expertWatch.userData?.id),
+                                child: TitleSmallText(title: LocaleKeys.seeAll.tr(), titleColor: ColorConstants.greyColor),
+                              )
+                            ],
+                          ),
+                          26.0.spaceY,
+                          ReviewsAndRatingWidget(
+                            title: StringConstants.overallRating,
+                            buttonColor: ColorConstants.yellowButtonColor,
+                            child: Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: expertWatch.userData?.overAllRating?.toString() ?? '0',
+                                      style: TextStyle(
+                                        color: ColorConstants.overAllRatingColor,
+                                        fontSize: 30,
+                                        height: 0.05,
+                                        letterSpacing: -0.33,
                                       ),
-                                      TextSpan(
-                                        text: '/10',
-                                        style: TextStyle(
-                                          color: ColorConstants.overAllRatingColor,
-                                          fontSize: 18,
-                                          height: 0.08,
-                                          letterSpacing: -0.20,
-                                        ),
+                                    ),
+                                    TextSpan(
+                                      text: '/10',
+                                      style: TextStyle(
+                                        color: ColorConstants.overAllRatingColor,
+                                        fontSize: 18,
+                                        height: 0.08,
+                                        letterSpacing: -0.20,
                                       ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
-                          ],
+                          ),
                           26.0.spaceY,
                           if (expertWatch.userData?.ratingCriteria?.isNotEmpty ?? false) ...[
                             OverallRatingWidget(
