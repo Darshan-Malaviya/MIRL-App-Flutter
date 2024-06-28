@@ -26,6 +26,40 @@ class UserSettingProvider extends ChangeNotifier {
 
   UserData? _userData;
 
+  Country? _country;
+  Country? get country => _country;
+
+  // String get code => _code;
+  // String _code = '+91';
+  //
+  // String get countryName => _countryName;
+  // String _countryName = 'IN';
+  //
+  // void setCountryCode(String value) {
+  //   _code = value;
+  // }
+  //
+  // void setCountryName(String value) {
+  //   _countryName = value;
+  // }
+
+  Future<void> getCountryData(BuildContext context, TickerProvider tickerProvider) async {
+    final country = await showCountryPickerSheet(
+      context,
+      focusSearchBox: true,
+      vsync: tickerProvider,
+    );
+    if (country != null) {
+      _country = country;
+    }
+    notifyListeners();
+  }
+  Future<void> getDefaultCountryCode(context) async {
+    final country = await getDefaultCountry(context);
+    _country = country;
+    notifyListeners();
+  }
+
   void changeAboutCounterValue(String value) {
     _enteredText = value.length.toString();
     notifyListeners();
@@ -36,6 +70,7 @@ class UserSettingProvider extends ChangeNotifier {
 
     if (image != null && image.isNotEmpty) {
       _pickedImage = image;
+      updateProfileApi();
       notifyListeners();
     }
   }
@@ -45,6 +80,7 @@ class UserSettingProvider extends ChangeNotifier {
 
     if (image != null && image.isNotEmpty) {
       _pickedImage = image;
+      updateProfileApi();
       notifyListeners();
     }
   }
@@ -70,7 +106,8 @@ class UserSettingProvider extends ChangeNotifier {
 
   void updatePhoneNumberApi() {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      phone: phoneNumberController.text.trim(),
+      // phone: phoneNumberController.text.trim(),
+      phone: '${_country?.callingCode.toString()}${phoneNumberController.text.toString().trim()}',
     );
     UpdateUserSettingApiCall(requestModel: updateExpertProfileRequestModel.toJsonPhoneNumber());
   }
@@ -109,6 +146,27 @@ class UserSettingProvider extends ChangeNotifier {
         break;
     }
     notifyListeners();
+  }
+
+  Future<void> UserLogoutApiCall({required BuildContext context}) async {
+    CustomLoading.progressDialog(isLoading: true);
+
+    ApiHttpResult response = await _updateUserDetailsRepository.userLogout();
+
+    CustomLoading.progressDialog(isLoading: false);
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is LoginResponseModel) {
+          await SharedPrefHelper.clearPrefs();
+          context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on user log out call Api ${response.data}");
+        break;
+    }
   }
 
   void resetVariable() {

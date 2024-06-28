@@ -24,7 +24,9 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
               ? 100
               : ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 6)
                   ? 265
-                  : 365,
+                  : ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 9)
+                      ? 365
+                      : 490,
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             itemCount: homeProviderWatch.homeData?.categories?.length ?? 0,
@@ -33,7 +35,8 @@ class _CategoryAndTopicListViewState extends ConsumerState<CategoryAndTopicListV
               return CategoryCommonView(
                 onTap: () {
                   context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                      args: SelectedCategoryArgument(categoryId: homeProviderWatch.homeData?.categories?[index].id.toString() ?? '', isFromExploreExpert: false));
+                      args: SelectedCategoryArgument(categoryId: homeProviderWatch.homeData?.categories?[index].id.toString() ?? '', isFromExploreExpert: false,
+                          categoryName: homeProviderWatch.homeData?.categories?[index].name.toString() ?? ''));
                 },
                 categoryName: homeProviderWatch.homeData?.categories?[index].name?.toUpperCase() ?? '',
                 imageUrl: homeProviderWatch.homeData?.categories?[index].image ?? '',

@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
 class AllCategoryListBottomView extends ConsumerStatefulWidget {
@@ -45,11 +47,11 @@ class _AllCategoryListBottomViewState extends ConsumerState<AllCategoryListBotto
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
-            TitleMediumText(title: "Select Category", titleColor: ColorConstants.sheetTitleColor),
+            TitleMediumText(title: LocaleKeys.selectCategory.tr().toUpperCase(), titleColor: ColorConstants.sheetTitleColor),
             16.0.spaceY,
             TextFormFieldWidget(
               isReadOnly: false,
-              hintText: "Search here",
+              hintText: LocaleKeys.searchHere.tr(),
               suffixIcon: filterProviderWatch.searchCategoryController.text.isNotEmpty
                   ? InkWell(
                       onTap: () {

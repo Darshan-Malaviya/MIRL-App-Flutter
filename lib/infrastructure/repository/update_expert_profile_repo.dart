@@ -33,12 +33,9 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
   }) async {
     final uri;
     if (searchName == null) {
-      uri = ApiConstants.endpointUri(
-          path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString(), "order": "ASC"});
+      uri = ApiConstants.endpointUri(path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString(), "order": "ASC"});
     } else {
-      uri = ApiConstants.endpointUri(
-          path: ApiConstants.country,
-          queryParameters: {"page": page.toString(), "limit": limit.toString(), "search": searchName, "order": "ASC"});
+      uri = ApiConstants.endpointUri(path: ApiConstants.country, queryParameters: {"page": page.toString(), "limit": limit.toString(), "search": searchName, "order": "ASC"});
     }
 
     APIResponse result = await _apiResponseProvider.requestAPI(
@@ -52,8 +49,7 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
 
   /// city API
 
-  Future<ApiHttpResult> cityApiCall(
-      {Map<String, dynamic>? requestModel}) async {
+  Future<ApiHttpResult> cityApiCall({Map<String, dynamic>? requestModel}) async {
     final uri = ApiConstants.endpointUri(path: ApiConstants.city, queryParameters: requestModel);
 
     APIResponse result = await _apiResponseProvider.requestAPI(
@@ -63,5 +59,17 @@ class UpdateUserDetailsRepository extends ApiResponseHandler {
     );
 
     return responseHandler(result: result, json: CityResponseModel.parseInfo);
+  }
+
+  /// logout api
+  Future<ApiHttpResult> userLogout() async {
+    final uri = ApiConstants.endpointUri(path: ApiConstants.logout);
+
+    APIResponse result = await _apiResponseProvider.requestAPI(
+      uri,
+      headers: ApiConstants.headerWithToken(),
+    );
+
+    return responseHandler(result: result, json: LoginResponseModel.parseInfo);
   }
 }

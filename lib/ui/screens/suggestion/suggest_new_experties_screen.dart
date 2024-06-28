@@ -201,6 +201,20 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                     Stack(
                       alignment: Alignment.bottomRight,
                       children: [
+                        // TextFormFieldWidget(
+                        //   onChanged: suggestNewExpertiseRead.newTopicCounterValue,
+                        //   maxLines: 500,
+                        //   maxLength: 500,
+                        //   minLines: 8,
+                        //   controller: suggestNewExpertiseRead.newTopicController,
+                        //   textInputType: TextInputType.multiline,
+                        //   textInputAction: TextInputAction.newline,
+                        //   contentPadding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 30),
+                        //   borderRadius: 25,
+                        //   validator: (value) {
+                        //     return value?.toEmptyStringValidation(msg: 'Share your new topic suggestion in the text box!');
+                        //   },
+                        // ),
                         TextFormFieldWidget(
                           onChanged: suggestNewExpertiseRead.newTopicCounterValue,
                           hintText: LocaleKeys.suggestNewExpertCategoryNote.tr(),
@@ -211,13 +225,10 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                           controller: suggestNewExpertiseRead.newTopicController,
                           textInputType: TextInputType.multiline,
                           textInputAction: TextInputAction.newline,
+                          enabledBorderColor: ColorConstants.dropDownBorderColor,
                           contentPadding: EdgeInsets.only(left: 16, right: 16, top: 14, bottom: 30),
                           borderRadius: 25,
-                          borderWidth: 0,
-                          enabledBorderColor: ColorConstants.transparentColor,
-                          fillColor: ColorConstants.transparentColor,
-                          enableShadow: true,
-                          focusedBorderColor: ColorConstants.transparentColor,
+                          borderWidth: 1,
                           onFieldSubmitted: (value) {
                             context.unFocusKeyboard();
                           },
@@ -238,17 +249,23 @@ class _SuggestNewExpertiseScreenState extends ConsumerState<SuggestNewExpertiseS
                       onPressed: () {
                         //context.unFocusKeyboard();
                         FocusManager.instance.primaryFocus?.unfocus();
-
-                        if (suggestNewExpertiseRead.newTopicController.text.isNotEmpty) {
+                        if (suggestNewExpertiseWatch.categoryController.text.isNotEmpty ||
+                            suggestNewExpertiseWatch.expertCategoryController.text.isNotEmpty) {
                           suggestNewExpertiseRead.suggestedCategoryApiCall(categoryId: filterWatch.selectedCategory?.id ?? null);
                         } else {
-                          FlutterToast().showToast(msg: LocaleKeys.enterTopic.tr(), gravity: ToastGravity.TOP);
+                          suggestNewExpertiseWatch.newTopicController.text.isNotEmpty
+                              ? FlutterToast().showToast(
+                                  msg: 'Please suggest a new category or pick an existing one!', gravity: ToastGravity.TOP)
+                              : FlutterToast().showToast(msg: LocaleKeys.enterTopic.tr(), gravity: ToastGravity.TOP);
                         }
                       },
                     ),
                     20.0.spaceY,
                   ],
-                ).addPaddingXY(paddingX: 30, paddingY: 10))));
+          ).addPaddingXY(paddingX: 30, paddingY: 10),
+        ),
+      ),
+    );
   }
 
   TextFormFieldWidget buildTextFormFieldWidget(

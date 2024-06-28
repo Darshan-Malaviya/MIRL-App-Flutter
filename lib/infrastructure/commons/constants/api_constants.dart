@@ -49,6 +49,7 @@ class ApiConstants {
   }
 
   static const String login = '/user/login';
+  static const String logout = '/user/logout';
   static const String otpVerify = '/user/verify-otp';
   static String updateUser = '/user/${SharedPrefHelper.getUserId}';
   static String getUserDetail = '/user/';
@@ -80,4 +81,7 @@ class ApiConstants {
   static const String callHistory = '/history';
   static const String reportCallTitles = '/reportCallTitles';
   static const String reportCall = '/reportCall';
+  static const String appStartUp = '/appStartUp';
+  static const String favorite = '/homePage/favorite/';
+  static const String lastConversation = '/homePage/lastConversation/';
 }

@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 
@@ -41,12 +40,12 @@ class AllNotificationTypeNameWidget extends StatelessWidget {
         Align(
           alignment: AlignmentDirectional.topEnd,
           child: CircleAvatar(
-            child: TitleMediumText(
+            child: TitleSmallText(
               title: count,
               fontFamily: FontWeightEnum.w600.toInter,
               titleColor: ColorConstants.blackColor,
             ),
-            radius: 14,
+            radius: 12,
             backgroundColor: ColorConstants.primaryColor,
           ),
         ).addVisibility(count != '0')

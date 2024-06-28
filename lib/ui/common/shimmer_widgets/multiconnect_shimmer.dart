@@ -22,8 +22,8 @@ class MultiConnectShimmerWidget extends StatelessWidget {
                 baseColor: ColorConstants.whiteColor,
                 highlightColor: ColorConstants.greyLightColor,
                 child: ShadowContainer(
-                  height: 90,
-                  width: 50,
+                  height: 70,
+                  width: 60,
                   isShadow: false,
                   border: 30,
                   child: Container(),

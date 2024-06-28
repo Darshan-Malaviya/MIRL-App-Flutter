@@ -28,11 +28,11 @@ extension DateTimeFormatter on String {
     return '';
   }
 
-  ///14:00
-  String to24HourTimeFormat() {
+  ///11:00 am
+  String to24HourTimeFormatLocal() {
     try {
-      DateTime timeStamp = DateTime.parse(this);
-      var output = DateFormat('HH:mm').format(timeStamp);
+      DateTime timeStamp = DateFormat.Hms().parseUTC(this).toLocal();
+      var output = DateFormat('hh:mma').format(timeStamp);
       return output;
     } catch (e) {
       Logger().d("Exception occurred on to24HourTimeFormat : $e");
@@ -44,7 +44,7 @@ extension DateTimeFormatter on String {
   String to12HourTimeFormat() {
     try {
       DateTime timeStamp = DateTime.parse(this).toLocal();
-      var output = DateFormat('hh:mm a').format(timeStamp);
+      var output = DateFormat('hh:mma').format(timeStamp);
       return output;
     } catch (e) {
       Logger().d("Exception occurred on to12HourTimeFormat : $e");
@@ -98,11 +98,11 @@ extension DateTimeFormatter on String {
       DateTime now = DateTime.now();
       DateTime endLocalTime = DateTime.parse(this).toLocal();
       DateTime startLocalTime = DateTime.parse(startTime).toLocal();
-      String value1 = DateFormat('h:mm a').format(DateTime.parse(this));
+      String value1 = DateFormat('h:mm a').format(endLocalTime);
       String value2 = DateFormat('h:mm a').format(startLocalTime);
       final lastTimeOfDay = DateFormat('h:mm a').format(DateTime(now.year, now.month, now.day, 0, 0).toUtc());
       if (value2 == value1) {
-        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute);
+        DateTime setTimeOfDay = DateTime(now.year, now.month, now.day + 1, endLocalTime.hour, endLocalTime.minute - 1);
         return setTimeOfDay;
       } else {
         DateTime setTimeOfDay = DateTime(now.year, now.month, now.day, endLocalTime.hour, endLocalTime.minute);
@@ -156,7 +156,7 @@ extension DateTimeFormatter on String {
   String? toLocalFullDateWithoutSuffix() {
     try {
       DateTime localTime = DateTime.parse(this).toLocal();
-      String formattedDate = DateFormat('dd MMMM yyyy').format(localTime);
+      String formattedDate = DateFormat('dd MMMM, yyyy').format(localTime);
       return formattedDate;
     } catch (e) {
       Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");
@@ -207,7 +207,7 @@ extension DateTimeFormatter on String {
       String formattedDate = DateFormat('d').format(localTime);
       return formattedDate;
     } catch (e) {
-      Logger().d("Exception on toLocalFullDateWithoutSuffix : $e");
+      Logger().d("Exception on toDisplayDay : $e");
     }
     return null;
   }
@@ -223,9 +223,9 @@ extension DateTimeFormatter on String {
     if (this.isNotEmpty) {
       if (convertedDate == today) {
         finalDate = LocaleKeys.newNotifications.tr();
-      } else if (convertedDate == yesterday) {
+      }/* else if (convertedDate == yesterday) {
         finalDate = LocaleKeys.oldNotifications.tr();
-      } else {
+      }*/ else {
         finalDate = LocaleKeys.oldNotifications.tr();
       }
     }
@@ -233,14 +233,14 @@ extension DateTimeFormatter on String {
   }
 
   String timeAgo({bool numericDates = true}) {
-    final date2 = DateTime.now();
+    final date2 = DateTime.now().toLocal();
     DateTime date1 = DateTime.parse(this).toLocal();
     final difference = date2.difference(date1);
 
     var output = DateFormat('hh:mm a').format(date1);
 
     final years = difference.inDays ~/ 365;
-    print((difference.inDays - (years * 365)) ~/ 30);
+    // print((difference.inDays - (years * 365)) ~/ 30);
 
     if ((difference.inDays / 7).floor() >= 5) {
       return '5w';
@@ -260,8 +260,19 @@ extension DateTimeFormatter on String {
       return output.toUpperCase();
     }
   }
+
+  int? getRemainingTime(){
+    try {
+      final date2 = DateTime.now();
+      DateTime date1 = DateTime.parse(this).toLocal();
+      final difference = date2.difference(date1).inSeconds;
+      return difference;
+    } catch (e) {
+      Logger().d("Exception on getRemainingTime : $e");
+    }
+    return null;
+  }
 }
-//DateTime.now().subtract(Duration(days:1)),
 
 String getDaySuffix(int day) {
   if (day >= 11 && day <= 13) {

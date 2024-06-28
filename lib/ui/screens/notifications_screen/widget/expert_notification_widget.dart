@@ -56,34 +56,36 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
             children: [
               Expanded(
                 child: notificationProviderWatch.notificationList.isNotEmpty
-                    ? GroupedListView<NotificationDetails, dynamic>(
+                    ? ListView.separated(
+                        itemCount: notificationProviderWatch.notificationList.length,
                         controller: scrollController,
-                        reverse: false,
-                        separator: 30.0.spaceY,
-                        padding: EdgeInsets.zero,
-                        elements: notificationProviderWatch.notificationList,
-                        groupBy: (element) {
-                          return DateTime(DateTime.parse(element.notification?.firstCreated ?? '').year, DateTime.parse(element.notification?.firstCreated ?? '').month,
-                                  DateTime.parse(element.notification?.firstCreated ?? '').day)
-                              .toString();
-                        },
-                        groupComparator: (value1, value2) => value2.compareTo(value1),
                         shrinkWrap: true,
-                        sort: false,
-                        groupSeparatorBuilder: (value) {
-                          return messageSeparator(value);
-                        },
-                        itemBuilder: (_, element) {
+                        itemBuilder: (context, index) {
+                          if (notificationProviderWatch.notificationList[index].id == -1) {
+                            return TitleMediumText(
+                              title: LocaleKeys.newNotifications.tr(),
+                              titleColor: ColorConstants.notificationTextColor,
+                              titleTextAlign: TextAlign.center,
+                            ).addMarginTop(20);
+                          } else if (notificationProviderWatch.notificationList[index].id == 0) {
+                            return TitleMediumText(
+                              title: LocaleKeys.oldNotifications.tr(),
+                              titleColor: ColorConstants.notificationTextColor,
+                              titleTextAlign: TextAlign.center,
+                            );
+                          }
                           return NotificationWidget(
-                            remainingSecond: notificationProviderWatch.secondsRemaining,
-                            message: element.notification?.message ?? '',
-                            title: element.notification?.title ?? '',
-                            time: element.notification?.firstCreated ?? '',
+                            message: notificationProviderWatch.notificationList[index].notification?.message ?? '',
+                            title: notificationProviderWatch.notificationList[index].notification?.title ?? '',
+                            time: notificationProviderWatch.notificationList[index].notification?.firstCreated ?? '',
+                            notificationKey: notificationProviderWatch.notificationList[index].notification?.key ?? '',
+                            newNotification:notificationProviderWatch.notificationList[index].notification?.firstCreated.toString().toDisplayDay() == DateTime.now().day.toString(),
                             onTap: () {
-                              onTapNotification(element.notification?.data ?? '', context);
+                              CommonMethods.onTapNotification(notificationProviderWatch.notificationList[index].notification?.data ?? '',fromNotificationList: true);
                             },
                           );
                         },
+                        separatorBuilder: (BuildContext context, int index) => 20.0.spaceY,
                       )
                     : Center(
                         child: TitleMediumText(
@@ -94,7 +96,7 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
                         ),
                       ),
               ),
-              20.0.spaceY,
+              notificationProviderWatch.isPageLoading ? 20.0.spaceY : 0.0.spaceY,
               Visibility(visible: notificationProviderWatch.isPageLoading, child: CupertinoActivityIndicator(color: ColorConstants.primaryColor)),
             ],
           ).addMarginX(20);
@@ -106,7 +108,7 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
         Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Image.asset(ImageConstants.purpleLine),
-        ).addVisibility(value.getHeaderTitle() == LocaleKeys.oldNotifications.tr()),
+        ) /*.addVisibility(value.getHeaderTitle() == LocaleKeys.oldNotifications.tr())*/,
         TitleMediumText(
           title: value.getHeaderTitle(),
           titleColor: ColorConstants.notificationTextColor,
@@ -114,27 +116,5 @@ class _ExpertNotificationWidgetState extends ConsumerState<ExpertNotificationWid
         ).addMarginY(20),
       ],
     );
-  }
-
-  void onTapNotification(String data, BuildContext context) {
-    NotificationData notificationData = NotificationData.fromJson(jsonDecode(data));
-    print(notificationData.toJson());
-    if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
-      context.toPushNamed(RoutesConstants.viewCalendarAppointment,
-          args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
-    } else if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
-      NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
-          args: CancelArgs(
-            role: int.parse(notificationData.role.toString()),
-            cancelDate: notificationData.date,
-            cancelData: CancelAppointmentData(
-              startTime: notificationData.startTime,
-              endTime: notificationData.endTime,
-              duration: int.parse(notificationData.duration ?? '0'),
-              name: notificationData.name,
-              profileImage: notificationData.profile,
-            ),
-          ));
-    }
   }
 }

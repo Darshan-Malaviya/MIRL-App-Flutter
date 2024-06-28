@@ -9,8 +9,8 @@ ValueNotifier<bool> socketListen = ValueNotifier(false);
 ValueNotifier<List<UserFavorites>> favoriteListNotifier = ValueNotifier<List<UserFavorites>>([]);
 ValueNotifier<int> instanceCallDurationNotifier = ValueNotifier<int>(-1);
 ValueNotifier<int> allCallDurationNotifier = ValueNotifier<int>(0);
-ValueNotifier<int> instanceRequestTimerNotifier = ValueNotifier<int>(-1);
-ValueNotifier<int> multiRequestTimerNotifier = ValueNotifier<int>(-1);
+ValueNotifier<int> instanceRequestTimerNotifier = ValueNotifier<int>(120);
+ValueNotifier<int> multiRequestTimerNotifier = ValueNotifier<int>(60);
 ValueNotifier<CallRequestTypeEnum> instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
 ValueNotifier<CallRequestTypeEnum> multiConnectCallEnumNotifier =
     ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
@@ -18,7 +18,9 @@ ValueNotifier<CallRequestStatusEnum> multiConnectRequestStatusNotifier =
     ValueNotifier<CallRequestStatusEnum>(CallRequestStatusEnum.waiting);
 ValueNotifier<CallConnectStatusEnum> callConnectNotifier = ValueNotifier<CallConnectStatusEnum>(CallConnectStatusEnum.ringing);
 ValueNotifier<bool> changeVideoCallView = ValueNotifier<bool>(true);
+ValueNotifier<bool> chooseMultiConnectExpert = ValueNotifier<bool>(false);
 ValueNotifier<int> mirlConnectView = ValueNotifier<int>(0);
 ValueNotifier<int> reportView = ValueNotifier<int>(0);
 ValueNotifier<String> activeRoute = ValueNotifier<String>("/");
 ValueNotifier<CallHistoryEnum> callHistoryEnumNotifier = ValueNotifier<CallHistoryEnum>(CallHistoryEnum.instantCall);
+ValueNotifier<int> multiConnectTimer = ValueNotifier<int>(120);

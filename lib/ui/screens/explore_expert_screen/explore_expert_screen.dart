@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
@@ -12,8 +12,9 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   final bool isFromHomePage;
+  /*final ScrollController scrollController;*/
 
-  const ExploreExpertScreen({super.key, required this.isFromHomePage});
+  const ExploreExpertScreen({super.key, required this.isFromHomePage/*,required this.scrollController*/});
 
   @override
   ConsumerState<ExploreExpertScreen> createState() => _ExploreExpertScreenState();
@@ -22,6 +23,7 @@ class ExploreExpertScreen extends ConsumerStatefulWidget {
 class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
   ScrollController scrollController = ScrollController();
 
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -29,6 +31,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
       ref.read(filterProvider).clearExploreController();
       ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
     });
+
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(filterProvider).reachedExploreExpertLastPage;
@@ -46,21 +49,25 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
   Widget build(BuildContext context) {
     final filterProviderWatch = ref.watch(filterProvider);
     final filterProviderRead = ref.read(filterProvider);
-
     return PopScope(
       canPop: widget.isFromHomePage ? false : true,
       onPopInvoked: (value) {
         filterProviderRead.clearAllFilter();
       },
+      // color: ColorConstants.primaryColor,
+      // onRefresh: () async {
+      //   ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isPaginating: true);
+      // },
       child: Scaffold(
           backgroundColor: ColorConstants.greyLightColor,
           appBar: AppBarWidget(
-            preferSize: 0,
             appBarColor: ColorConstants.greyLightColor,
+            preferSize: 0,
           ),
           body: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              16.0.spaceY,
               Row(
                 children: [
                   if (!widget.isFromHomePage) ...[
@@ -104,144 +111,172 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                     ),
                   ),
                 ],
-              ).addMarginXY(marginX: 20, marginY: 10),
+              ).addMarginX(20)/*addMarginXY(marginX: 20, marginY: 10)*/,
               if (filterProviderWatch.isLoading) ...[
                 Center(
-                    child: CupertinoActivityIndicator(
-                  animating: true,
-                  color: ColorConstants.primaryColor,
-                  radius: 16,
-                ).addPaddingY(20)),
+                  child: SpinKitChasingDots(
+                    color: ColorConstants.primaryColor,
+                    size: 50.0,
+                  ),
+                )
+                //     child: CupertinoActivityIndicator(
+                //   animating: true,
+                //   color: ColorConstants.primaryColor,
+                //   radius: 16,
+                // ).addPaddingY(20)),
               ] else ...[
                 Expanded(
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        5.0.spaceY,
-                        if (filterProviderWatch.isLoading) ...[
-                          CategoryListShimmerWidget()
-                        ] else ...[
-                          CategoryNameAndImageListView(),
-                        ],
-                        PrimaryButton(
-                          title: LocaleKeys.filterExperts.tr(),
-                          margin: EdgeInsets.symmetric(horizontal: 20),
-                          onPressed: () {
-                            context.toPushNamed(RoutesConstants.expertCategoryFilterScreen, args: FilterArgs(fromExploreExpert: true));
-                          },
-                          prefixIcon: ImageConstants.filter,
-                          titleColor: ColorConstants.blackColor,
-                          buttonTextFontFamily: FontWeightEnum.w400.toInter,
-                          prefixIconPadding: 10,
-                          padding: EdgeInsets.symmetric(horizontal: 100),
-                        ),
-                        if (filterProviderWatch.commonSelectionModel.isNotEmpty) ...[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              10.0.spaceY,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  BodySmallText(
-                                    title: LocaleKeys.appliedFilters.tr(),
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        filterProviderRead.clearAllFilter();
-                                        filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
-                                      },
-                                      child: BodySmallText(
-                                        title: LocaleKeys.clearAll.tr(),
-                                      ).addAllPadding(5)),
-                                ],
-                              ),
-                              5.0.spaceY,
+                  child: GestureDetector(
+                    onVerticalDragDown: (tap) {
+                      Future.delayed(Duration(milliseconds: 200)).then((value) => HapticFeedback.heavyImpact());
+                    },
+                    child: RefreshIndicator(
+                      color: ColorConstants.primaryColor,
+                      onRefresh: () async {
+                        ref.read(filterProvider).clearExploreExpertSearchData();
+                        ref.read(filterProvider).clearExploreController();
+                        ref.read(filterProvider).clearAllFilter();
+                        ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
+                      },
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            5.0.spaceY,
+                            if (filterProviderWatch.isLoading) ...[
+                              CategoryListShimmerWidget()
+                            ] else ...[
+                              CategoryNameAndImageListView(),
+                            ],
+                            PrimaryButton(
+                              title: LocaleKeys.filterExperts.tr(),
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              onPressed: () {
+                                context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
+                                     args: FilterArgs(fromExploreExpert: true));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             ExpertCategoryFilterScreen(args: FilterArgs(fromExploreExpert: true)),
+                                //         allowSnapshotting: false));
+                              },
+                              prefixIcon: ImageConstants.filter,
+                              titleColor: ColorConstants.blackColor,
+                              buttonTextFontFamily: FontWeightEnum.w400.toInter,
+                              prefixIconPadding: 10,
+                              padding: EdgeInsets.symmetric(horizontal: 100),
+                            ),
+                            if (filterProviderWatch.finalCommonSelectionModel.isNotEmpty) ...[
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: List.generate(filterProviderWatch.commonSelectionModel.length, (index) {
-                                  final data = filterProviderWatch.commonSelectionModel[index];
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  10.0.spaceY,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      OnScaleTap(
-                                        onPress: () {
-                                          filterProviderRead.removeFilter(
-                                            index: index,
-                                            context: context,
-                                            isFromExploreExpert: true,
-                                          );
-                                        },
-                                        child: ShadowContainer(
-                                          border: 20,
-                                          height: 30,
-                                          width: 30,
-                                          shadowColor: ColorConstants.borderColor,
-                                          backgroundColor: ColorConstants.yellowButtonColor,
-                                          offset: Offset(0, 3),
-                                          child: Center(child: Image.asset(ImageConstants.cancel)),
-                                        ),
+                                      BodySmallText(
+                                        title: LocaleKeys.appliedFilters.tr(),
                                       ),
-                                      20.0.spaceX,
-                                      Flexible(
-                                        child: ShadowContainer(
-                                          border: 10,
-                                          child: BodyMediumText(
-                                            maxLine: 10,
-                                            title: '${data.title}: ${data.value}',
-                                            fontFamily: FontWeightEnum.w400.toInter,
-                                          ),
-                                        ),
-                                      )
+                                      InkWell(
+                                          onTap: () {
+                                            filterProviderRead.clearAllFilter();
+                                            filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
+                                          },
+                                          child: BodySmallText(
+                                            title: LocaleKeys.clearAll.tr(),
+                                          ).addAllPadding(5)),
                                     ],
-                                  ).addPaddingY(10);
-                                }),
-                              ),
+                                  ),
+                                  5.0.spaceY,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.generate(filterProviderWatch.finalCommonSelectionModel.length, (index) {
+                                      final data = filterProviderWatch.finalCommonSelectionModel[index];
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          OnScaleTap(
+                                            onPress: () {
+                                              filterProviderRead.removeFilter(
+                                                index: index,
+                                                context: context,
+                                                isFromExploreExpert: true,
+                                              );
+                                            },
+                                            child: ShadowContainer(
+                                              border: 20,
+                                              height: 30,
+                                              width: 30,
+                                              shadowColor: ColorConstants.borderColor,
+                                              backgroundColor: ColorConstants.yellowButtonColor,
+                                              offset: Offset(0, 3),
+                                              child: Center(child: Image.asset(ImageConstants.cancel)),
+                                            ),
+                                          ),
+                                          20.0.spaceX,
+                                          Flexible(
+                                            child: ShadowContainer(
+                                              border: 10,
+                                              child: BodyMediumText(
+                                                maxLine: 10,
+                                                title: '${data.displayText}: ${data.value}',
+                                                fontFamily: FontWeightEnum.w400.toInter,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ).addPaddingY(10);
+                                    }),
+                                  ),
+                                ],
+                              ).addPaddingXY(paddingX: 16, paddingY: 10)
                             ],
-                          ).addPaddingXY(paddingX: 16, paddingY: 10)
-                        ],
-                        20.0.spaceY,
-                        if (filterProviderWatch.categoryList?.expertData?.isNotEmpty ?? false) ...[
-                          ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.all(20),
-                              itemBuilder: (context, i) {
-                                if (i == (filterProviderWatch.categoryList?.expertData?.length ?? 0) && (filterProviderWatch.categoryList?.expertData?.isNotEmpty ?? false)) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 12),
-                                    child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
-                                  );
-                                }
-                                return ExpertDetailWidget(
-                                  expertData: filterProviderWatch.categoryList?.expertData?[i],
-                                );
-                              },
-                              separatorBuilder: (context, index) => 30.0.spaceY,
-                              itemCount: (filterProviderWatch.categoryList?.expertData?.length ?? 0) + (filterProviderWatch.reachedExploreExpertLastPage ? 0 : 1)),
-                        ] else ...[
-                          Column(
-                            children: [
-                              BodySmallText(
-                                title: LocaleKeys.noResultFound.tr(),
-                                fontFamily: FontWeightEnum.w600.toInter,
-                              ),
-                              20.0.spaceY,
-                              BodySmallText(
-                                title: LocaleKeys.tryWideningYourSearch.tr(),
-                                fontFamily: FontWeightEnum.w400.toInter,
-                                titleTextAlign: TextAlign.center,
-                                maxLine: 5,
-                              ),
-                            ],
-                          ).addMarginX(40),
-                        ]
-                      ],
+                            20.0.spaceY,
+                            if (filterProviderWatch.categoryList?.expertData?.isNotEmpty ?? false) ...[
+                              ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  padding: EdgeInsets.all(20),
+                                  itemBuilder: (context, i) {
+                                    if (i == (filterProviderWatch.categoryList?.expertData?.length ?? 0) &&
+                                        (filterProviderWatch.categoryList?.expertData?.isNotEmpty ?? false)) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 12),
+                                        child: Center(child: CircularProgressIndicator(color: ColorConstants.bottomTextColor)),
+                                      );
+                                    }
+                                    return ExpertDetailWidget(
+                                      expertData: filterProviderWatch.categoryList?.expertData?[i],
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) => 30.0.spaceY,
+                                  itemCount: (filterProviderWatch.categoryList?.expertData?.length ?? 0) +
+                                      (filterProviderWatch.reachedExploreExpertLastPage ? 0 : 1)),
+                            ] else ...[
+                              Column(
+                                children: [
+                                  BodySmallText(
+                                    title: LocaleKeys.noResultFound.tr(),
+                                    fontFamily: FontWeightEnum.w600.toInter,
+                                  ),
+                                  20.0.spaceY,
+                                  BodySmallText(
+                                    title: LocaleKeys.tryWideningYourSearch.tr(),
+                                    fontFamily: FontWeightEnum.w400.toInter,
+                                    titleTextAlign: TextAlign.center,
+                                    maxLine: 5,
+                                  ),
+                                ],
+                              ).addMarginX(40),
+                            ]
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),

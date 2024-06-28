@@ -17,8 +17,8 @@ abstract class LoginType {
 
 ///define notification type
 abstract class NotificationType {
-  static const expert = 1;
-  static const user = 2;
+  static const expert = 2;
+  static const user = 1;
   static const general = 3;
 }
 

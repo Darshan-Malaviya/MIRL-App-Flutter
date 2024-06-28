@@ -7,8 +7,8 @@ class StringConstants {
   static const String continueWithFacebook = "CONTINUE WITH FACEBOOK";
   static const String typeYourEmailAddress = "Type your email address";
   static const String checkYourEmail = "Check your email!";
-  static const String secretCode = "We've just sent you secret code.";
-  static const String enterHereLogin = "Enter it here to log in";
+  static const String secretCode = "We've sent you a secret code.";
+  static const String enterHereLogin = "Enter it here to log in.";
   static const String verifyOtp = "Verify";
   static const String resendOtp = "Resend OTP in ";
   static const String termsAndCondition = "Terms and Conditions";
@@ -58,7 +58,7 @@ class StringConstants {
   static const String instantCallsAvailability = "INSTANT CALLS AVAILABILITY";
   static const String availabilitySchedule = "ALLOW USERS TO REQUEST CALLS WITHIN YOUR WEEKLY AVAILABILITY SCHEDULE?";
   static const String theDropDown = "SELECT YES OR NO FROM THE DROPDOWN";
-  static const String theGenderDropDown = "SELECT YOUR GENDER FROM THE DROPDOWN ";
+  static const String theGenderDropDown = "SELECT YOUR GENDER";
   static const String visibleOnYourProfile = "DO YOU WANT YOUR LOCATION \nTO BE VISIBLE ON YOUR PROFILE?";
   static const String certificationsAndExperience = "CERTIFICATIONS AND EXPERIENCE";
   static const String nearestLandmark = "SELECT ";
@@ -66,7 +66,7 @@ class StringConstants {
       "Instant calls are direct call requests by users only within the weekly availability schedule set by you.";
   static const String declineAnyCall =
       "If this is turned on, users can reach out to you, and you still have a choice to accept or decline any call.";
-  static const String highlyRecommend = "(we highly recommend keeping this active)";
+  static const String highlyRecommend = "we highly recommend keeping this active";
   static const String filterExperts =
       "Your exact location will NEVER be displayed to anyone. It will only be used internally by our algorithms to filter experts.";
   static const String specificCityOrCountry =
@@ -83,7 +83,7 @@ class StringConstants {
   static const String mediaAccount =
       " This could include links to your professional website or accounts, your social media accounts, any certifications, etc.";
   static const String writeYourTitle = "WRITE YOUR TITLE HERE (role, designation, etc.)";
-  static const String sourceUrl = "PASTE A SOURCE URL/LINK (optional, but preferable!)";
+  static const String sourceUrl = "SOURCE URL/LINK (optional, but preferable)";
   static const String description = "DESCRIPTION (optional)";
   static const String addMoreCredentials = "ADD MORE CREDENTIALS ";
   static const String shareBankAccountDetails =
@@ -96,7 +96,7 @@ class StringConstants {
   static const String accountNumber = "ACCOUNT NUMBER";
   static const String welcomeExpertProfile = "Welcome! :-) This is your Expert profile page!";
   static const String soWhatNext =
-      "So what next? It’s time to tag your expertise,set your fees, update your availability,and sit back. You’ll start receiving notifications in no time from other seekers who want to learn from your expertise! ";
+      "So what next? It’s time to tag your expertise, set your fees, update your availability, and sit back. You’ll start receiving notifications in no time from other seekers who want to learn from your expertise! ";
   static const String clickEditProfile =
       "Click on the “Edit Profile” button just above this section, and follow the steps to complete and activate your Expert Profile!";
   static const String goodLuck = "Good luck, and we hope you enjoy sharing your expertise with other seekers on MIRL!";
@@ -161,4 +161,5 @@ class StringConstants {
   static const String sortReviews = 'SORT REVIEWS BY:';
   static const String callsPaused = 'ZEN MODE: CALLS PAUSED';
   static const String aboutMe = 'ABOUT ME';
+  static const String pickTopic = 'Pick a topic';
 }

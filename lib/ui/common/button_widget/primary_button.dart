@@ -16,6 +16,9 @@ class PrimaryButton extends StatelessWidget {
   final String? buttonTextFontFamily;
   final double? fontSize;
   final bool? isLoading;
+  final double? blurRadius;
+  final double? spreadRadius;
+  final Offset? offset;
 
   const PrimaryButton(
       {Key? key,
@@ -32,7 +35,10 @@ class PrimaryButton extends StatelessWidget {
       this.buttonColor,
       this.buttonTextFontFamily,
       this.fontSize,
-      this.isLoading})
+      this.isLoading,
+      this.blurRadius,
+      this.spreadRadius,
+      this.offset})
       : super(key: key);
 
   @override
@@ -41,9 +47,9 @@ class PrimaryButton extends StatelessWidget {
         decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)), shadows: [
           BoxShadow(
             color: Color(0x33000000),
-            blurRadius: 2,
-            offset: Offset(0, 2),
-            spreadRadius: 0,
+            blurRadius: blurRadius ?? 2,
+            offset: offset ?? Offset(0, 2),
+            spreadRadius: spreadRadius ?? 0,
           )
         ]),
         width: width ?? MediaQuery.of(context).size.width,
@@ -72,10 +78,12 @@ class PrimaryButton extends StatelessWidget {
                 )
               : Row(
                   children: [
-                    if ((prefixIcon?.isNotEmpty ?? false) && prefixIcon != null) Image.asset(prefixIcon ?? '').addMarginRight(prefixIconPadding ?? 20),
+                    if ((prefixIcon?.isNotEmpty ?? false) && prefixIcon != null)
+                      Image.asset(prefixIcon ?? '').addMarginRight(prefixIconPadding ?? 20),
                     Expanded(
                       child: Align(
-                        alignment: (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null ? Alignment.centerLeft : Alignment.center,
+                        alignment:
+                            (prefixIcon?.isNotEmpty ?? false) && prefixIcon != null ? Alignment.centerLeft : Alignment.center,
                         child: BodyMediumText(
                           title: title,
                           fontFamily: buttonTextFontFamily ?? FontWeightEnum.w700.toInter,

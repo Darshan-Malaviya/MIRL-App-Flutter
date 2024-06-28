@@ -8,6 +8,7 @@ import 'package:mirl/infrastructure/models/request/update_expert_Profile_request
 import 'package:mirl/infrastructure/models/response/certificate_response_model.dart';
 import 'package:mirl/infrastructure/models/response/city_response_model.dart';
 import 'package:mirl/infrastructure/models/response/country_response_model.dart';
+import 'package:mirl/infrastructure/models/response/expert_detail_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 import 'package:mirl/infrastructure/repository/update_expert_profile_repo.dart';
@@ -40,6 +41,7 @@ class EditExpertProvider extends ChangeNotifier {
 
   List<CertificateAndExperienceModel> get certiAndExpModel => _certiAndExpModel;
 
+  UserData? get userData =>_userData;
   UserData? _userData;
 
   String? _selectedGender;
@@ -52,21 +54,28 @@ class EditExpertProvider extends ChangeNotifier {
 
   int? isSelectGender = 1;
 
-  List<String> _locations = ["Yes", "No"];
+  List<String> _locations = [LocaleKeys.yes.tr(), LocaleKeys.no.tr()];
 
   List<String> get locations => _locations;
+
+  List<String> _instantCall = [LocaleKeys.instantCallActive.tr(), LocaleKeys.InstantCallOff.tr()];
+
+  List<String> get instantCall => _instantCall;
 
   String _pickedImage = '';
 
   String get pickedImage => _pickedImage;
+
+  bool get isLoadedExport => _isLoadedExport;
+  bool _isLoadedExport = true;
 
   String _setInstantCall = '';
 
   String get setInstantCall => _setInstantCall;
 
   List<CommonSelectionModel> _genderList = [
-    CommonSelectionModel(title: "Male", isSelected: false, selectType: 1),
     CommonSelectionModel(title: "Female", isSelected: false, selectType: 2),
+    CommonSelectionModel(title: "Male", isSelected: false, selectType: 1),
     CommonSelectionModel(title: "Non-Binary", isSelected: false, selectType: 3)
   ];
 
@@ -107,11 +116,28 @@ class EditExpertProvider extends ChangeNotifier {
   String _enteredText = '0';
 
   String get enteredText => _enteredText;
+  String _enteredCertificateText = '0';
+
+  String get enteredCertificateText => _enteredCertificateText;
 
   String expertName = '';
   String mirlId = '';
   String about = '';
   String overAllRating = '';
+  String userFees = '';
+  String calculateFees = '';
+
+  String? userGender() {
+    if (_userData?.gender == 1) {
+      return 'Male';
+    } else if (userData?.gender == 2) {
+      return 'Female';
+    } else if (userData?.gender == 3) {
+      return 'Non-Binary';
+    }
+    return null;
+  }
+
 
   void generateExperienceList({required bool fromInit}) {
     if (fromInit && (_userData?.certification?.isNotEmpty ?? false)) {
@@ -145,7 +171,7 @@ class EditExpertProvider extends ChangeNotifier {
     _weekScheduleModel.clear();
     var _time = DateTime.now();
     hourOnly = DateTime(_time.year, _time.month, _time.day, 0, 0, 0);
-    plusDay = hourOnly.add(Duration(days: 1));
+    plusDay = hourOnly.add(Duration(days: 1, hours: 0, minutes: -1));
     DateTime lowerValue = hourOnly.add(Duration(hours: 10));
     DateTime upperValue = lowerValue.add(Duration(hours: 7));
 
@@ -219,7 +245,6 @@ class EditExpertProvider extends ChangeNotifier {
 
   void setSelectedCountry({required CountryModel value}) {
     countryNameController.text = value.country ?? '';
-
     cityNameController.clear();
     notifyListeners();
   }
@@ -238,12 +263,43 @@ class EditExpertProvider extends ChangeNotifier {
     _enteredText = value.length.toString();
     notifyListeners();
   }
+  void changeCertificationsValue(String value) {
+    _enteredCertificateText = value.length.toString();
+    notifyListeners();
+  }
 
+  void changeExportValue(bool value) {
+    _isLoadedExport = value;
+    notifyListeners();
+  }
+
+   Future<void> getExpertDetailApiCall({required String userId}) async {
+    CustomLoading.progressDialog(isLoading: true);
+    changeExportValue(true);
+    ApiHttpResult response = await _expertProfileRepo.expertDetailApi(userId: userId);
+    changeExportValue(false);
+
+    CustomLoading.progressDialog(isLoading: false);
+
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is ExpertDetailResponseModel) {
+          ExpertDetailResponseModel expertDetailResponseModel = response.data;
+          _userData = expertDetailResponseModel.data;
+          notifyListeners();
+          Logger().d("Successfully expert detail");
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on expert detail call Api ${response.data}");
+        break;
+    }
+  }
   void getUserData() {
     String value = SharedPrefHelper.getUserData;
     if (value.isNotEmpty) {
       _userData = UserData.fromJson(jsonDecode(value));
-
       expertNameController.text = _userData?.expertName ?? '';
       expertName = _userData?.expertName ?? '';
       _pickedImage = _userData?.expertProfile ?? '';
@@ -252,23 +308,27 @@ class EditExpertProvider extends ChangeNotifier {
       aboutMeController.text = _userData?.about ?? '';
       about = _userData?.about ?? '';
       _enteredText = _userData?.about?.length.toString() ?? '0';
+      _enteredCertificateText =  _userData?.certification != null && (_userData?.certification?.isNotEmpty ?? false) ?  _userData?.certification?.last.description?.length.toString() ?? '0' : '0';
       countryNameController.text = _userData?.country ?? '';
       cityNameController.text = _userData?.city ?? '';
-      overAllRating = _userData?.overAllRating != null ? _userData?.overAllRating.toString() ?? '' : '0';
+      overAllRating = _userData?.overAllRating != null ? _userData?.overAllRating.toString() ?? '' : LocaleKeys.newText.tr();
       if (_userData?.fee != null) {
-        countController.text = ((_userData?.fee ?? 0) / 100).toString();
+        displayActualTest(_userData?.fee ?? 0);
+        /*      countController.text = ((_userData?.fee ?? 0) / 100).toString();
+        userFees = ((_userData?.fee ?? 0) / 100).toString();*/
         _editButtonList[0].isSelected = true;
       } else {
         _editButtonList[0].isSelected = false;
       }
       if (_userData?.instantCallAvailable != null) {
-        instantCallAvailabilityController.text = _locations.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? 'Yes' : 'No'));
+        instantCallAvailabilityController.text =
+            _instantCall.firstWhere((element) => element == (_userData?.instantCallAvailable == true ? LocaleKeys.instantCallActive.tr() : LocaleKeys.InstantCallOff.tr()));
         _editButtonList[3].isSelected = true;
       } else {
         _editButtonList[3].isSelected = false;
       }
       if (_userData?.isLocationVisible != null) {
-        locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? 'Yes' : 'No'));
+        locationController.text = _locations.firstWhere((element) => element == (_userData?.isLocationVisible == true ? LocaleKeys.yes.tr() : LocaleKeys.no.tr()));
         _editButtonList[4].isSelected = true;
       } else {
         _editButtonList[4].isSelected = false;
@@ -396,27 +456,47 @@ class EditExpertProvider extends ChangeNotifier {
   void increaseFees() {
     double plusValue = double.parse(countController.text.trim());
     countController.text = (plusValue + 1).toStringAsFixed(2);
+    changeFeesValue(countController.text);
     notifyListeners();
   }
 
   void decreaseFees() {
     double minusValue = double.parse(countController.text.trim());
     countController.text = (minusValue - 1).toStringAsFixed(2);
+    changeFeesValue(countController.text);
     notifyListeners();
   }
 
   void changeFeesValue(String value) {
-    countController.text = value;
+    if (value.isNotEmpty) {
+      countController.text = value;
+      // Calculate the percentage amount
+      double percentageAmount = (double.parse(countController.text) * 20) / 100;
+
+      // Add the percentage amount to the original amount
+      double totalAmount = double.parse(countController.text) + percentageAmount;
+      calculateFees = totalAmount.toStringAsFixed(2);
+    } else {
+      calculateFees = '';
+    }
     notifyListeners();
   }
 
+  void displayActualTest(int value) {
+    double convertFees = (value / 100).toDouble();
+    calculateFees = convertFees.toStringAsFixed(2);
+    userFees = convertFees.toStringAsFixed(2);
+    double originalValue = convertFees / (1 + (20 / 100));
+    countController.text = originalValue.toStringAsFixed(2);
+    notifyListeners();
+  }
   void setValueOfCall(String value) {
-    _isCallSelect = (value == 'Yes') ? true : false;
+    _isCallSelect = (value == LocaleKeys.instantCallActive.tr()) ? true : false;
     notifyListeners();
   }
 
   void locationSelect(String value) {
-    _isLocationSelect = (value == 'Yes') ? true : false;
+    _isLocationSelect = (value == LocaleKeys.yes.tr()) ? true : false;
     notifyListeners();
   }
 
@@ -432,6 +512,7 @@ class EditExpertProvider extends ChangeNotifier {
     if (image != null && image.isNotEmpty) {
       _pickedImage = image;
       notifyListeners();
+      updateProfileApi();
     }
   }
 
@@ -441,6 +522,7 @@ class EditExpertProvider extends ChangeNotifier {
     if (image != null && image.isNotEmpty) {
       _pickedImage = image;
       notifyListeners();
+      updateProfileApi();
     }
   }
 
@@ -450,17 +532,13 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateFeesApi() {
-    int feesValue = (double.parse(countController.text) * 100).toInt();
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      fee: feesValue.toString(),
-    );
+    int feesValue = (double.parse(calculateFees) * 100).toInt();
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(fee: feesValue.toString());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonFees());
   }
 
   void updateAboutApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      about: aboutMeController.text.trim(),
-    );
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(about: aboutMeController.text.trim());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonAbout());
   }
 
@@ -474,16 +552,12 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateMirlIdApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      mirlId: mirlIdController.text.trim(),
-    );
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(mirlId: mirlIdController.text.trim());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonMirlId());
   }
 
   void updateExpertNameApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      expertName: expertNameController.text.trim(),
-    );
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(expertName: expertNameController.text.trim());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonName());
   }
 
@@ -518,9 +592,10 @@ class EditExpertProvider extends ChangeNotifier {
         if (response.data != null && response.data is LoginResponseModel) {
           LoginResponseModel loginResponseModel = response.data;
           SharedPrefHelper.saveUserData(jsonEncode(loginResponseModel.data));
-          SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false)? true : false);
+          SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false) ? true : false);
           Logger().d("user data=====${loginResponseModel.toJson()}");
-          FlutterToast().showToast(msg:  LocaleKeys.profileUpdatedSuccessfully.tr());
+          // FlutterToast().showToast(msg:  LocaleKeys.profileUpdatedSuccessfully.tr());
+          FlutterToast().showToast(msg: loginResponseModel.message);
           resetVariable();
           getUserData();
           if (!fromImageUpload) {
@@ -549,9 +624,13 @@ class EditExpertProvider extends ChangeNotifier {
   void resetVariable() {
     countController.text = '0';
     _enteredText = '0';
+    _enteredCertificateText = '0';
     expertName = '';
     mirlId = '';
     about = '';
+    calculateFees = '';
+    overAllRating = '';
+    userFees = '';
     expertNameController.clear();
     mirlIdController.clear();
     aboutMeController.clear();

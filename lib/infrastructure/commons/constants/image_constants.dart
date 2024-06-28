@@ -51,16 +51,27 @@ class ImageConstants {
   static const userNotifications = '${imagePath}user_notifications.png';
   static const generalNotifications = '${imagePath}general_notifications.png';
   static const reported = '${imagePath}reported.png';
+  static const mirlIcon = '${imagePath}mirl_icon.png';
+  static const shareProfile = '${imagePath}share_profile.png';
+  static const copyLink = '${imagePath}copy_link.png';
+  static const mirlLoginIcon = '${imagePath}mirl_login_icon.png';
+  static const mirlLoginIconNew = '${imagePath}mirl_logo_icon_new.png';
+  static const blockedUser = '${imagePath}blocked_user.png';
+  static const myMirlImage = '${imagePath}my_stery_mirl_image.png';
 
   /// gif image
-  static const splashImages = '${gifPath}splash_image.gif';
+  static const splashImages = '${gifPath}spalsh.gif';
 
   /// icon
-  static const recurringIcon = '${iconPath}recurring.png';
-  static const nonRecurringIcon = '${iconPath}non_recurring.png';
+  // static const recurringIcon = '${iconPath}recurring.png';
+  // static const nonRecurringIcon = '${iconPath}non_recurring.png';
   static const emailVerification = '${iconPath}email_verification.png';
+  static const recurring = '${iconPath}recurring_to_non-recurring.png';
+  static const nonRecurring = '${iconPath}non-recurring_to_recurring.png';
+  static const MySteryMirlProfile = '${iconPath}my_stery_mirl_profile.png';
 
   /// json
   // static const splashScreen = '${rawPath}splash_screen.json';
   static const mirlJson = '${rawPath}mirl_json.json';
+  static const mirlSplashScreenJson = '${rawPath}mirl_splash_screen.json';
 }

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 
@@ -16,6 +18,7 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(editExpertProvider).getUserData();
       ref.read(editExpertProvider).generateExperienceList(fromInit: true);
     });
   }
@@ -104,10 +107,12 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                           ],
                         ),
                         20.0.spaceY,
-                        TextFormFieldWidget(
+                        TextFormFieldWidget(textStyle: TextStyle(fontFamily: FontWeightEnum.w700.toInter),
                           controller: expertWatch.certiAndExpModel[index].titleController,
                           focusNode: expertWatch.certiAndExpModel[index].titleFocus,
                           hintText: StringConstants.writeYourTitle,
+                          fontFamily: FontWeightEnum.w700.toInter,
+                          maxLines: 2,
                           textInputType: TextInputType.text,
                           onFieldSubmitted: (value) {
                             expertWatch.certiAndExpModel[index].titleFocus.toChangeFocus(
@@ -123,26 +128,48 @@ class _CertificationsAndExperienceScreenState extends ConsumerState<Certificatio
                         TextFormFieldWidget(
                           controller: expertWatch.certiAndExpModel[index].urlController,
                           focusNode: expertWatch.certiAndExpModel[index].urlFocus,
-                          hintText: StringConstants.sourceUrl,
+                          hintText: LocaleKeys.sourceLinkHint.tr(),
                           onFieldSubmitted: (value) {
                             expertWatch.certiAndExpModel[index].urlFocus.toChangeFocus(
                                 currentFocusNode: expertWatch.certiAndExpModel[index].urlFocus,
                                 nexFocusNode: expertWatch.certiAndExpModel[index].descriptionFocus);
                           },
+                          validator: (urlValue) {
+                            return urlValue?.toUrlValidation(urlValue);
+                          }
+                          //   RegExp regex =
+                          //   RegExp(r'^https?:\/\/(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?$');
+                          //   var value = urlValue ?? "";
+                          //  if (!regex.hasMatch(value)) {
+                          //     return ("Please enter a valid URL");
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         20.0.spaceY,
-                        TextFormFieldWidget(
-                          controller: expertWatch.certiAndExpModel[index].descriptionController,
-                          focusNode: expertWatch.certiAndExpModel[index].descriptionFocus,
-                          maxLines: 5,
-                          minLines: 5,
-                          hintText: StringConstants.description,
-                          textInputAction: TextInputAction.done,
-                          onFieldSubmitted: (value) {
-                            expertWatch.certiAndExpModel[index].descriptionFocus.unfocus();
-                          },
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(255),
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            TextFormFieldWidget(
+                              onChanged: expertRead.changeCertificationsValue,
+                              controller: expertWatch.certiAndExpModel[index].descriptionController,
+                              focusNode: expertWatch.certiAndExpModel[index].descriptionFocus,
+                              maxLines: 5,
+                              minLines: 5,
+                              hintText: StringConstants.description,
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (value) {
+                                expertWatch.certiAndExpModel[index].descriptionFocus.unfocus();
+                              },
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8, right: 12),
+                              child: BodySmallText(
+                                title: '${expertWatch.enteredCertificateText}/200 ${LocaleKeys.characters.tr()}',
+                                fontFamily: FontWeightEnum.w400.toInter,
+                                titleColor: ColorConstants.buttonTextColor,
+                              ),
+                            ),
                           ],
                         ),
                       ],

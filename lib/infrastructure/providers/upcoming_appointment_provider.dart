@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
-import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/upcoming_appointment_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
@@ -38,16 +37,6 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void callNowBtnVisibility(String startTime) {
-    DateTime startTimeValue = DateTime.parse(startTime);
-    DateTime now = DateTime.now();
-    if (startTimeValue.isAtSameMomentAs(now)) {
-      // TODO start the call
-    } else {
-      FlutterToast().showToast(msg: LocaleKeys.startCallToast.tr());
-    }
-  }
-
   Future<void> upcomingAppointmentApiCall({required bool showLoader, required bool showListLoader, required int role, bool? fromNotification = false, String date = ''}) async {
 
     if (showLoader) {
@@ -71,7 +60,7 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
 
     ApiHttpResult response = await _scheduleCallRepository.viewUpcomingAppointment(
         queryParameters: _selectedDate != null
-            ? {'page': _pageNo.toString(), 'limit': '10', 'role': role.toString(), 'userId': SharedPrefHelper.getUserId, 'date': _selectedDate?.toUtc().toString().split(' ').first}
+            ? {'page': _pageNo.toString(), 'limit': '10', 'role': role.toString(), 'userId': SharedPrefHelper.getUserId, 'date': (fromNotification ?? false) ? _selectedDate.toString().split(' ').first :_selectedDate?.toUtc().toString().split(' ').first}
             : {'page': _pageNo.toString(), 'limit': '10', 'role': role.toString(), 'userId': SharedPrefHelper.getUserId});
 
     if (showLoader) {
@@ -89,9 +78,10 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
         if (response.data != null && response.data is UpcomingAppointmentResponseModel) {
           UpcomingAppointmentResponseModel responseModel = response.data;
           if (_pageNo == 1) {
-            _upcomingAppointment.clear();
+            _upcomingAppointment = responseModel.data?.getUpcomingAppointment ?? [];
+          } else {
+            _upcomingAppointment.addAll(responseModel.data?.getUpcomingAppointment ?? []);
           }
-          _upcomingAppointment.addAll(responseModel.data?.getUpcomingAppointment ?? []);
           if (responseModel.data?.dateLists?.isNotEmpty ?? false) {
             _dateList.clear();
             responseModel.data?.dateLists?.forEach((element) {
@@ -105,13 +95,19 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
             _pageNo = _pageNo + 1;
             _reachedLastPage = false;
           }
-          notifyListeners();
+        //  notifyListeners();
         }
         break;
       case APIStatus.failure:
-        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        //FlutterToast().showToast(msg: response.failure?.message ?? '');
+        _reachedLastPage = false;
+        if(_pageNo == 1){
+          _upcomingAppointment = [];
+          _dateList = [];
+        }
         Logger().d("API fail on upcomingAppointmentApiCall Api ${response.data}");
         break;
     }
+    notifyListeners();
   }
 }

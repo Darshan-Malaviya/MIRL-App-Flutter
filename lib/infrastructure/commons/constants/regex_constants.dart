@@ -23,4 +23,6 @@ class RegexConstants {
 
   static const String link = r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+';
 
+  static const String blankSpace = r"^\s*";
+
 }

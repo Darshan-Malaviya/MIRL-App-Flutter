@@ -1,13 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
-import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/mirl_app.dart';
-import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class LocalNotification {
   static final LocalNotification singleton = LocalNotification._internal();
@@ -38,13 +33,16 @@ class LocalNotification {
   onSelectNotification(NotificationResponse response) {
     /// TODO Push screen code or open dialog when tap on foreground and background notification
     if (response.payload != null) {
-      Map<String, dynamic> payloadData = jsonDecode(response.payload ?? '');
+      CommonMethods.onTapNotification(response.payload ?? '');
+
+/*      Map<String, dynamic> payloadData = jsonDecode(response.payload ?? '');
 
       NotificationData notificationData = NotificationData.fromJson(payloadData);
       if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
         NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment,
             args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
       } else if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
+        NotificationData notificationData = NotificationData.fromJsonCanceled(payloadData);
         NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
             args: CancelArgs(
               role: int.parse(notificationData.role.toString()),
@@ -55,9 +53,11 @@ class LocalNotification {
                 duration: int.parse(notificationData.duration ?? '0'),
                 name: notificationData.name,
                 profileImage: notificationData.profile,
+                reason: notificationData.reason,
               ),
             ));
       }
+    }*/
     }
   }
 }

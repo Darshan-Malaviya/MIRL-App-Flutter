@@ -46,7 +46,10 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
       appBar: AppBarWidget(
         leading: InkWell(
           child: Image.asset(ImageConstants.backIcon),
-          onTap: () => context.toPop(),
+          onTap: () {
+            filterRead.clearAllFilter();
+            context.toPop();
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -83,7 +86,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               if (filterWatch.categoryController.text.isNotEmpty) {
                 CommonBottomSheet.bottomSheet(
                     context: context,
-                    isDismissible: false,
+                    isDismissible: true,
                     child: TopicListByCategoryBottomView(
                       isFromExploreExpert: widget.args.fromExploreExpert ?? false,
                       category: filterWatch.selectedCategory ?? CategoryIdNameCommonModel(),
@@ -182,7 +185,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                 values: RangeValues(filterRead.start ?? 0, filterWatch.end ?? 0),
                 activeColor: ColorConstants.yellowButtonColor,
                 inactiveColor: ColorConstants.lineColor,
-                divisions: 4,
+                divisions: 100,
                 onChanged: filterRead.setRange,
                 min: 0,
                 max: 100,
@@ -193,7 +196,7 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 LabelSmallText(
-                  title: 'PRO\nBONO',
+                  title: LocaleKeys.proBono.tr(),
                   fontFamily: FontWeightEnum.w400.toInter,
                 ).addMarginLeft(10),
                 LabelSmallText(
@@ -221,7 +224,11 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
           if (filterWatch.commonSelectionModel.isNotEmpty) {
             String? selectedTopicId;
             if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
-              selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+              if (filterWatch.selectedTopicList?.any((element) => (element.id == 0)) ?? false) {
+                selectedTopicId = null;
+              } else {
+                selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+              }
             }
             double endFeeRange = filterWatch.end ?? 0;
             double startFeeRange = filterWatch.start ?? 0;
@@ -252,8 +259,8 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                           ? null
                           : filterWatch.sortBySelectedItem == 'PRICE'
                               ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                  ? 'ASC'
-                                  : 'DESC'
+                                  ? 'DESC'
+                                  : 'ASC'
                               : null,
                       overAllRating: filterWatch.selectedRating != null ? filterWatch.selectedRating.toString() : null,
                       ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'
@@ -288,8 +295,8 @@ class _ExpertCategoryFilterScreenState extends ConsumerState<ExpertCategoryFilte
                           ? null
                           : filterWatch.sortBySelectedItem == 'PRICE'
                               ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                  ? 'ASC'
-                                  : 'DESC'
+                                  ? 'DESC'
+                                  : 'ASC'
                               : null,
                       overAllRating: filterWatch.selectedRating != null ? filterWatch.selectedRating.toString() : null,
                       ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'

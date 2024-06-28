@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/mirl_app.dart';
 
 class ApiResponseProvider {
   late Dio _dio;
@@ -10,7 +11,11 @@ class ApiResponseProvider {
   ApiResponseProvider({Map<String, dynamic>? header}) {
     Map<String, dynamic> authHeader = ApiConstants.headerWithOutToken();
 
-    _dio = Dio(BaseOptions(baseUrl: '${ApiConstants.scheme}://${ApiConstants.host}', headers: header ?? authHeader));
+    _dio = Dio(BaseOptions(
+        baseUrl: flavorConfig?.appTitle == AppConstants.localFlavorName
+            ? 'http://192.168.1.107:3000'
+            : '${ApiConstants.scheme}://${ApiConstants.host}',
+        headers: header ?? authHeader));
 
     _dio.interceptors.add(
       DioCacheInterceptor(

@@ -8,7 +8,7 @@ import 'package:mirl/ui/screens/notifications_screen/widget/general_notification
 import 'package:mirl/ui/screens/notifications_screen/widget/user_notification_widget.dart';
 
 class NotificationScreen extends ConsumerStatefulWidget {
-  const NotificationScreen({super.key});
+  const   NotificationScreen({super.key});
 
   @override
   ConsumerState<NotificationScreen> createState() => _NotificationScreenState();
@@ -20,7 +20,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this);
-    // tabController?.addListener(_handleTabSelection);
+    tabController?.addListener(_handleTabSelection);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(notificationProvider).getNotificationListApiCall(isFullScreenLoader: true, type: NotificationType.expert, pageLoading: false);
@@ -29,13 +29,19 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> with Si
     super.initState();
   }
 
+  void _handleTabSelection() {
+    ref.read(notificationProvider).notifyState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final notificationProviderWatch = ref.watch(notificationProvider);
     final notificationProviderRead = ref.read(notificationProvider);
 
     return Scaffold(
+      backgroundColor: ColorConstants.greyLightColor,
       appBar: AppBarWidget(
+        appBarColor: ColorConstants.greyLightColor,
         preferSize: 0,
       ),
       body: Column(

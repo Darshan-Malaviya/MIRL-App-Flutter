@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/models/request/app_start_up_request_model.dart';
 import 'package:mirl/infrastructure/models/request/login_request_model.dart';
 import 'package:mirl/infrastructure/models/request/otp_verify_request_model.dart';
 import 'package:mirl/infrastructure/models/response/cms_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
+import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/repository/auth_repo.dart';
 import 'package:mirl/infrastructure/services/agora_service.dart';
 import 'package:mirl/mirl_app.dart';
@@ -71,7 +72,9 @@ class AuthProvider with ChangeNotifier {
         deviceToken: SharedPrefHelper.getFirebaseToken,
         timezone: await CommonMethods.getCurrentTimeZone(),
         loginType: loginType,
-        voIpToken: await AgoraService.singleton.getVoipToken());
+        voIpToken: await AgoraService.singleton.getVoipToken(),
+        deviceId: await CommonMethods.getDeviceIdentifier(),
+    );
     loginApiCall(
       context: context,
       requestModel: email.isNotEmpty ? loginRequestModel.prepareRequest() : loginRequestModel.prepareRequestForAppleWhenEmailEmpty(),
@@ -81,11 +84,20 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> loginApiCall({BuildContext? context, required Object requestModel, required int loginType, bool? fromResend = false}) async {
-    changeIsLoading(true);
+
+    if (loginType == 0) {
+      changeIsLoading(true);
+    } else {
+      CustomLoading.progressDialog(isLoading: true);
+    }
 
     ApiHttpResult response = await _authRepository.loginCallApi(requestModel: requestModel);
 
-    changeIsLoading(false);
+    if (loginType == 0) {
+      changeIsLoading(false);
+    } else {
+      CustomLoading.progressDialog(isLoading: false);
+    }
 
     switch (response.status) {
       case APIStatus.success:
@@ -238,6 +250,26 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  ///App Start Up API call
+
+  Future<void> appStartUpAPI({required String fcmToken}) async {
+    appStartUpRequestModel requestModel = appStartUpRequestModel(
+        userId: int.parse(SharedPrefHelper.getUserId), deviceId: await CommonMethods.getDeviceIdentifier(), fcm: fcmToken);
+    ApiHttpResult response = await _authRepository.appStartUpAPICall(requestModel: requestModel.prepareRequest());
+    switch (response.status) {
+      case APIStatus.success:
+        if (response.data != null && response.data is UnBlockUserResponseModel) {
+          UnBlockUserResponseModel appStartUpResponseModel = response.data;
+          SharedPrefHelper.saveFirebaseToken(fcmToken);
+          FlutterToast().showToast(msg: appStartUpResponseModel.message ?? '');
+        }
+        break;
+      case APIStatus.failure:
+        FlutterToast().showToast(msg: response.failure?.message ?? '');
+        Logger().d("API fail on App Start Up API call Api ${response.data}");
+        break;
+    }
+  }
 // Future<void> getAboutUsHtmlContent(String url) async {
 //   _aboutUs = await _authRepository.getHtmlContent(url);
 //   changeIsLoading(false);

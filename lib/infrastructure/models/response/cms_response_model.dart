@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-import 'package:mirl/infrastructure/models/common/pagination_model.dart';
 
 class CMSResponseModel {
   int? status;

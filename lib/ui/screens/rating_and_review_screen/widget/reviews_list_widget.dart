@@ -25,7 +25,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
     final reportReviewWatch = ref.watch(reportReviewProvider);
 
     return ListView.separated(
-      itemCount: reportReviewWatch.reviewAndRatingData?.expertReviews?.length ?? 0 + (reportReviewWatch.reachedLastPage ? 0 : 1),
+      itemCount: (reportReviewWatch.reviewAndRatingData?.expertReviews?.length ?? 0) + (reportReviewWatch.reachedLastPage ? 0 : 1),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 14),
@@ -76,7 +76,7 @@ class _ReviewsWidgetState extends ConsumerState<ReviewListWidget> {
                               fontFamily: FontWeightEnum.w400.toInter,
                             )),
                         TextSpan(
-                            text: reportReviewWatch.reviewAndRatingData?.expertReviews?[index].userName ?? '',
+                            text: reportReviewWatch.reviewAndRatingData?.expertReviews?[index].userName ?? 'Mystery MIRL',
                             style: TextStyle(
                               color: ColorConstants.buttonTextColor,
                               fontFamily: FontWeightEnum.w700.toInter,

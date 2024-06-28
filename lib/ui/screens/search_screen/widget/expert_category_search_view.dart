@@ -16,8 +16,8 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
   @override
   Widget build(BuildContext context) {
     final homeProviderWatch = ref.watch(homeProvider);
-
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         20.0.spaceY,
@@ -27,22 +27,26 @@ class _ExpertCategorySearchViewState extends ConsumerState<ExpertCategorySearchV
         ),
         if (homeProviderWatch.homeSearchData?.categories?.isNotEmpty ?? false) ...[
           20.0.spaceY,
-          SizedBox(
-            height: ((homeProviderWatch.homeData?.categories?.length ?? 0) <= 3) ? 100 : 265,
-            child: GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: homeProviderWatch.homeSearchData?.categories?.length ?? 0,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10,),
-              itemBuilder: (BuildContext context, int index) {
-                return  CategoryCommonView(
-                    onTap: () {
-                      context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
-                          args: SelectedCategoryArgument(categoryId: homeProviderWatch.homeSearchData?.categories?[index].id.toString() ?? '', isFromExploreExpert: false));
-                    },
-                    categoryName: homeProviderWatch.homeSearchData?.categories?[index].name ?? '',
-                    imageUrl: homeProviderWatch.homeSearchData?.categories?[index].image ?? '');
-              },
+          GridView(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            children: List.generate(
+              homeProviderWatch.homeSearchData?.categories?.length ?? 0,
+              (index) => CategoryCommonView(
+                  onTap: () {
+                    context.toPushNamed(RoutesConstants.selectedExpertCategoryScreen,
+                        args: SelectedCategoryArgument(
+                            categoryId: homeProviderWatch.homeSearchData?.categories?[index].id.toString() ?? '',
+                            isFromExploreExpert: false,
+                            categoryName: homeProviderWatch.homeSearchData?.categories?[index].name.toString() ?? ''));
+                  },
+                  categoryName: homeProviderWatch.homeSearchData?.categories?[index].name ?? '',
+                  imageUrl: homeProviderWatch.homeSearchData?.categories?[index].image ?? ''),
             ),
           ),
         ] else ...[

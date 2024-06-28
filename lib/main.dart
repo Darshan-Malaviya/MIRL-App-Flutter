@@ -3,12 +3,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
+import 'package:mirl/infrastructure/data_access_layer/proxy/custom_proxy.dart';
 import 'package:mirl/mirl_app.dart';
-
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);
-
+/*  if (flavorConfig.appTitle == AppConstants.localFlavorName) {
+    _checkProxySettings();
+  }*/
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((value) => runApp(
@@ -46,10 +48,15 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             onGenerateRoute: RouterConstant.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
-           // home: CallFeedbackScreen(callHistoryId: 45),
+            // home: CallFeedbackScreen(callHistoryId: 45),
           );
         },
       ),
     );
   }
+}
+
+_checkProxySettings() {
+  final proxy = CustomProxy(ipAddress: '192.168.1.137', port: 3000, allowBadCertificates: true);
+  proxy.enable();
 }

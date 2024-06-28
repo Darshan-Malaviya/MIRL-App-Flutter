@@ -9,7 +9,6 @@ import 'package:mirl/ui/common/range_slider/range_slider_widget.dart';
 import 'package:mirl/ui/common/range_slider/thumb_shape.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/city_list_bottom_view.dart';
 import 'package:mirl/ui/screens/edit_profile/widget/coutry_list_bottom_view.dart';
-import 'package:mirl/ui/screens/filter_screen/widget/all_category_list_bottom_view.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/filter_bottomsheet_widget.dart';
 import 'package:mirl/ui/screens/filter_screen/widget/topic_list_by_category_bottom_view.dart';
 
@@ -50,24 +49,24 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
               maxLine: 2,
               titleTextAlign: TextAlign.center,
             ),
-            20.0.spaceY,
-            buildTextFormFieldWidget(filterWatch.categoryController, context, () {
-              CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: AllCategoryListBottomView());
-            }, StringConstants.pickCategory),
+            // 20.0.spaceY,
+            // buildTextFormFieldWidget(filterWatch.categoryController, context, () {
+            //   CommonBottomSheet.bottomSheet(context: context, isDismissible: true, child: AllCategoryListBottomView());
+            // }, StringConstants.pickCategory),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.topicController, context, () {
-              if (filterWatch.categoryController.text.isNotEmpty) {
+              //if (filterWatch.categoryController.text.isNotEmpty) {
                 CommonBottomSheet.bottomSheet(
                     context: context,
-                    isDismissible: false,
+                    isDismissible: true,
                     child: TopicListByCategoryBottomView(
                       isFromExploreExpert: true,
                       category: filterWatch.selectedCategory ?? CategoryIdNameCommonModel(),
                     ));
-              } else {
-                FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCategoryFirst.tr());
-              }
-            }, StringConstants.pickTopicFromTheAbove,hintText: LocaleKeys.pickCategoryTopic.tr()),
+              // } else {
+              //   FlutterToast().showToast(msg: LocaleKeys.pleaseSelectCategoryFirst.tr());
+              // }
+            }, StringConstants.pickTopic.toUpperCase(),hintText: StringConstants.pickTopic.toUpperCase()),
             30.0.spaceY,
             buildTextFormFieldWidget(filterWatch.ratingController, context, () {
               CommonBottomSheet.bottomSheet(
@@ -182,12 +181,18 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
             if (filterWatch.commonSelectionModel.isNotEmpty) {
               String? selectedTopicId;
               if (filterWatch.selectedTopicList?.isNotEmpty ?? false) {
-                selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+                if (filterWatch.selectedTopicList?.any((element) => (element.id == 0)) ?? false) {
+                  selectedTopicId = null;
+                } else {
+                  selectedTopicId = filterWatch.selectedTopicList?.map((e) => e.id).join(",");
+                }
               }
               double endFeeRange = filterWatch.end ?? 0;
               double startFeeRange = filterWatch.start ?? 0;
 
               filterRead.clearSingleCategoryData();
+
+              filterRead.setSelectedFilterForMultiConnect();
 
               await multiProviderRead.getSingleCategoryApiCall(
                   categoryId: filterWatch.selectedCategory?.id.toString() ?? '',
@@ -209,8 +214,8 @@ class _MultiConnectFilterScreenState extends ConsumerState<MultiConnectFilterScr
                         ? null
                         : filterWatch.sortBySelectedItem == 'PRICE'
                             ? filterWatch.sortBySelectedOrder == 'HIGH TO LOW'
-                                ? 'ASC'
-                                : 'DESC'
+                                ? 'DESC'
+                                : 'ASC'
                             : null,
                     overAllRating: filterWatch.selectedRating != null ? filterWatch.selectedRating.toString() : null,
                     ratingOrder: filterWatch.sortBySelectedItem == 'SORT BY'

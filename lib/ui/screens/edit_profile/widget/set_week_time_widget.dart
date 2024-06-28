@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/range_slider/range_slider_widget.dart';
 
-import '../../../common/range_slider/thumb_shape.dart';
 
 class SetWeekTimeWidget extends ConsumerStatefulWidget {
   const SetWeekTimeWidget({super.key});
@@ -34,9 +33,10 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
               children: [
                 LabelSmallText(
                     title: (weekData.isAvailable)
-                        ? "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.startTime.toInt()))} - "
-                            "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.endTime.toInt()))}"
+                        ? "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.startTime.toInt())).toLowerCase()} - "
+                            "${usHour.format(DateTime.fromMillisecondsSinceEpoch(weekData.endTime.toInt())).toLowerCase()}"
                         : StringConstants.noTimeSchedule),
+                5.0.spaceY,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -84,7 +84,7 @@ class _SetWeekTimeWidgetState extends ConsumerState<SetWeekTimeWidget> {
                                 fontFamily: FontWeightEnum.w400.toInter,
                               ),
                               LabelSmallText(
-                                title: '12:00am',
+                                title: '11:59pm',
                                 fontFamily: FontWeightEnum.w400.toInter,
                               ),
                             ],

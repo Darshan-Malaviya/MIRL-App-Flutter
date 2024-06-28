@@ -77,10 +77,12 @@ class CommonAlertDialog {
     required VoidCallback onAcceptTap,
     VoidCallback? onDiscardTap,
     Color? bgColor,
+    Color? barrierColor,
   }) {
     return showDialog(
         context: context,
-        barrierColor: ColorConstants.blackColor.withOpacity(0.2),
+        barrierColor: barrierColor ??ColorConstants.blackColor.withOpacity(0.2),
+        //barrierColor: ColorConstants.blackColor.withOpacity(0.2),
         barrierDismissible: barrierDismissible ?? false,
         builder: (BuildContext context) {
           final maxWidth = MediaQuery.of(context).size.width;
@@ -110,12 +112,22 @@ class CommonAlertDialog {
                             child: PrimaryButton(
                               title: discardButtonTitle,
                               onPressed: onDiscardTap ?? () => Navigator.pop(context),
-                              buttonColor: ColorConstants.scaffoldColor,
-                              titleColor: ColorConstants.primaryColor,
+                              buttonColor: ColorConstants.primaryColor,
+                              titleColor: ColorConstants.buttonTextColor,
+                              blurRadius: 5,
+                              offset: Offset(0,1),
                             ),
                           ),
                           16.0.spaceX,
-                          Expanded(child: PrimaryButton(title: acceptButtonTitle, onPressed: onAcceptTap)),
+                          Expanded(
+                              child: PrimaryButton(
+                            title: acceptButtonTitle,
+                            onPressed: onAcceptTap,
+                            buttonColor: ColorConstants.whiteColor,
+                            titleColor: ColorConstants.primaryColor,
+                                blurRadius: 5,
+                                offset: Offset(0,1),
+                          )),
                         ],
                       ),
                     ],

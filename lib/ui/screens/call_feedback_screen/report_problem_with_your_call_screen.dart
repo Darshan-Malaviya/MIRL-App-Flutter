@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/response/report_call_title_response_model.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class ReportProblemWithYourCallScreen extends ConsumerStatefulWidget {
-  final int callHistoryId;
+  final CallFeedBackArgs args;
 
-  const ReportProblemWithYourCallScreen({super.key, required this.callHistoryId});
+  const ReportProblemWithYourCallScreen({super.key, required this.args});
 
   @override
   ConsumerState<ReportProblemWithYourCallScreen> createState() => _ReportProblemWithYourCallScreenState();
@@ -64,8 +65,17 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                 titleColor: ColorConstants.bottomTextColor,
                 maxLine: 4,
               ),
-              20.0.spaceY,
-              //if(feedBackWatch.reportCallTitleList.)
+              // 20.0.spaceY,
+              // DropdownMenuWidget(
+              //   hintText: StringConstants.theDropDown,
+              //   dropdownList: feedBackWatch.reportCallTitleList
+              //       .map((value) => dropdownMenuEntry(context: context, label: value.title ?? '', value: value.description ?? ''))
+              //       .toList(),
+              //   onSelect: (newValue) {
+              //     feedBackRead.setReportCallTitle(feedBackWatch.selectedReportCall);
+              //   },
+              // ),
+              30.0.spaceY,
               DropdownButtonFormField<ReportCallTitleList>(
                 isDense: false,
                 borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -81,11 +91,11 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                   title: LocaleKeys.appropriateIssue.tr(),
                   titleColor: ColorConstants.buttonTextColor,
                   fontFamily: FontWeightEnum.w400.toInter,
-                ).addMarginX(10),
-                itemHeight: 66,
+                ),
+                itemHeight: 70,
                 value: feedBackWatch.selectedReportCall,
                 isExpanded: true,
-                padding: EdgeInsets.only(right: 6, left: 6, top: 10),
+//                padding: EdgeInsets.only(right: 6, left: 6, top: 10),
                 items: feedBackWatch.reportCallTitleList.map((value) {
                   return DropdownMenuItem(
                     value: value,
@@ -104,14 +114,14 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                           maxLine: 4,
                         ),
                       ],
-                    ),
+                    ).addMarginY(8),
                   );
                 }).toList(),
                 onChanged: (newValue) {
                   feedBackRead.setReportCallTitle(newValue ?? null);
                 },
                 validator: (value) => value == null ? LocaleKeys.filedRequired.tr() : null,
-              ).addMarginX(10),
+              ),
               // ),
               // DropdownMenuWidget(
               //   hintText: LocaleKeys.appropriateIssue.tr(),
@@ -146,11 +156,11 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                     textInputAction: TextInputAction.newline,
                     contentPadding: EdgeInsets.only(left: 16, right: 16, top: 14, bottom: 30),
                     borderRadius: 25,
-                    borderWidth: 0,
-                    enabledBorderColor: ColorConstants.transparentColor,
-                    fillColor: ColorConstants.transparentColor,
-                    enableShadow: true,
-                    focusedBorderColor: ColorConstants.transparentColor,
+                    // borderWidth: 0,
+                    // enabledBorderColor: ColorConstants.transparentColor,
+                    // fillColor: ColorConstants.transparentColor,
+                    //enableShadow: true,
+                    // focusedBorderColor: ColorConstants.transparentColor,
                     onFieldSubmitted: (value) {
                       context.unFocusKeyboard();
                     },
@@ -173,12 +183,13 @@ class _ReportProblemWithYourCallScreenState extends ConsumerState<ReportProblemW
                   // await ref.read(reportReviewProvider).getReportCallTitleApiCall();
                   FocusManager.instance.primaryFocus?.unfocus();
                   if (_formKey.currentState!.validate() && feedBackWatch.callIssueController.text.isNotEmpty) {
-                    feedBackRead.reportCallApiCall(callHistoryId: widget.callHistoryId);
+                    feedBackRead.reportCallApiCall(callHistoryId: widget.args.callHistoryId ?? 0,expertId: widget.args.expertId ?? '',callType: widget.args.callType ?? '');
                   } else {
                     FlutterToast().showToast(msg: LocaleKeys.selectThisIssue.tr());
                   }
                 },
-              )
+              ),
+              10.0.spaceY
             ],
           ).addAllPadding(20),
         ),

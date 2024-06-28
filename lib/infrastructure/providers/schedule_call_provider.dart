@@ -1,11 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/request/cancel_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/schedule_appointment_request_model.dart';
 import 'package:mirl/infrastructure/models/request/slots_request_model.dart';
 import 'package:mirl/infrastructure/models/response/appointment_response_model.dart';
-import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_slots_response_model.dart';
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
@@ -98,7 +95,9 @@ class ScheduleCallProvider extends ChangeNotifier {
   void getTimeZone() async {
     final Duration timeDuration = DateTime.now().timeZoneOffset;
     final String timeZone = DateTime.now().timeZoneName;
-    userLocalTimeZone = '$timeZone (UTC ${timeDuration.inHours}:${timeDuration.inMinutes})';
+    userLocalTimeZone =
+        '$timeZone (UTC ${(!timeDuration.inHours.isNegative) ? '+' : ''}${timeDuration.inHours}:${timeDuration.inMinutes.remainder(60)})';
+    // userLocalTimeZone = '$timeZone (UTC $timeDuration)';
     notifyListeners();
   }
 
@@ -191,7 +190,7 @@ class ScheduleCallProvider extends ChangeNotifier {
       expertId: expertData?.id,
       endTime: selectedSlotData?.endTimeUTC ?? '',
       startTime: selectedSlotData?.startTimeUTC ?? '',
-      status: '0',
+      status: '3',
       amount: ((totalPayAmount ?? 0) * 100).toInt(),
     );
 
@@ -204,6 +203,7 @@ class ScheduleCallProvider extends ChangeNotifier {
         if (response.data != null && response.data is AppointmentResponseModel) {
           AppointmentResponseModel responseModel = response.data;
           _appointmentData = responseModel.data;
+          print("expert Time Zone===========${_appointmentData?.expertTimezone}");
           context.toPushNamed(RoutesConstants.bookingConfirmScreen);
           notifyListeners();
         }

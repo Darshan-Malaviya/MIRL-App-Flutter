@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/enums/call_connect_status_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/enums/call_status_enum.dart';
@@ -24,34 +26,34 @@ final VideoCallArguments arguments;
 }
 
 class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
-
-
   Future<void> instanceCallTimerFunction() async {
     await Future.delayed(const Duration(seconds: 1));
-    ExtraResponseModel? model = ref.read(socketProvider).extraResponseModel;
-    if (instanceCallDurationNotifier.value <= (ref.read(callProvider).callDuration ?? 0)) {
-      instanceCallDurationNotifier.value =  instanceCallDurationNotifier.value + 1;
-      if (model?.callRoleEnum == CallRoleEnum.user) {
-        ref.read(socketProvider).timerEmit(
-              userId: int.parse((model?.userId.toString() ?? '')),
-              expertIdList: [int.parse((model?.expertId.toString() ?? ''))],
-              callRoleEnum: CallRoleEnum.user,
-              timer: instanceCallDurationNotifier.value,
-              timerType: CallTimerEnum.call, requestType: widget.arguments.callType ?? 0,
-            );
-      }
-      instanceCallTimerFunction();
-    } else {
-      if(callConnectNotifier.value != CallConnectStatusEnum.completed){
-        if(instanceCallDurationNotifier.value >= (ref.read(callProvider).callDuration ?? 0)) {
-          callConnectNotifier.value = CallConnectStatusEnum.completed;
-          ref.read(socketProvider).updateCallStatusEmit(status: CallStatusEnum.completedCall,
-              callRoleEnum: CallRoleEnum.user, callHistoryId: model?.callHistoryId ?? '');
+    if (mounted) {
+      ExtraResponseModel? model = ref.read(socketProvider).extraResponseModel;
+      if (instanceCallDurationNotifier.value <= (ref.read(callProvider).callDuration ?? 0)) {
+        instanceCallDurationNotifier.value = instanceCallDurationNotifier.value + 1;
+        if (model?.callRoleEnum == CallRoleEnum.expert) {
+          ref.read(socketProvider).timerEmit(
+                userId: int.parse((model?.userId.toString() ?? '')),
+                expertIdList: [int.parse((model?.expertId.toString() ?? ''))],
+                callRoleEnum: CallRoleEnum.expert,
+                timer: instanceCallDurationNotifier.value,
+                timerType: CallTimerEnum.call,
+                requestType: widget.arguments.callType ?? 0,
+              );
+        }
+        instanceCallTimerFunction();
+      } else {
+        if (callConnectNotifier.value != CallConnectStatusEnum.completed) {
+          if (instanceCallDurationNotifier.value >= (ref.read(callProvider).callDuration ?? 0)) {
+            callConnectNotifier.value = CallConnectStatusEnum.completed;
+            ref.read(socketProvider).updateCallStatusEmit(
+                status: CallStatusEnum.completedCall, callRoleEnum: CallRoleEnum.user, callHistoryId: model?.callHistoryId ?? '');
+          }
         }
       }
     }
   }
-
 
   void initState() {
     super.initState();
@@ -60,14 +62,14 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
       ref.read(callProvider).getCallDuration();
       ref.read(callProvider).initVideoCallAgora(channelId: widget.arguments.agoraChannelId, token: widget.arguments.agoraToken);
       bool isLocalUserJoin = ref.watch(callProvider).localUserJoined;
-      bool isUser = (ref.watch(socketProvider).extraResponseModel?.callRoleEnum == CallRoleEnum.user);
+      bool isExpert = (ref.watch(socketProvider).extraResponseModel?.callRoleEnum == CallRoleEnum.expert);
       instanceCallDurationNotifier.addListener(() {
-        if(ref.read(callProvider).localUserJoined){
-          if(isUser){
+        // if(ref.watch(callProvider).remoteUid != null){
+          if(isExpert){
             if(instanceCallDurationNotifier.value == 0) {
               instanceCallTimerFunction();
             }
-          }
+          // }
         }
       });
     });
@@ -114,7 +116,7 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
                         if (value == CallConnectStatusEnum.ringing) ...[
                           Center(
                               child: _waitingView(
-                                  title: 'Ringing..',
+                                  title: LocaleKeys.startingYourCall.tr(),
                                   color: ColorConstants.yellowButtonColor.withOpacity(0.2),
                                   textColor: ColorConstants.yellowButtonColor))
                         ] else ...[

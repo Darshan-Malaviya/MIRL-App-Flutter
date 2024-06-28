@@ -38,7 +38,8 @@ class CallProvider extends ChangeNotifier {
   bool get isSwipeUser => _isSwipeUser;
   bool _isSwipeUser = false;
 
-  int? remoteUid;
+  int? get remoteUid => _remoteUid;
+  int? _remoteUid;
 
   bool get localUserJoined => _localUserJoined;
   bool _localUserJoined = false;
@@ -49,7 +50,8 @@ class CallProvider extends ChangeNotifier {
   int? get callDuration => _callDuration;
 
   void setRemoteId({required int? remoteId}) {
-    remoteUid = remoteId;
+    _remoteUid = remoteId;
+    instanceCallDurationNotifier.value = 0;
     notifyListeners();
   }
 
@@ -97,7 +99,7 @@ class CallProvider extends ChangeNotifier {
 
   void getCallDuration() {
     /// Change when duration of instance call is changed , right now it's 10 min = 600 sec.
-    _callDuration = int.parse(ref.watch(socketProvider).extraResponseModel?.instantCallSeconds ?? '600');
+    _callDuration = int.parse(ref.watch(socketProvider).extraResponseModel?.requestedDuration ?? '600');
     notifyListeners();
   }
 
@@ -126,7 +128,7 @@ class CallProvider extends ChangeNotifier {
     _isFrontCameraOn = true;
     _visible = false;
     _isSwipeUser = false;
-    remoteUid = null;
+    _remoteUid = null;
     _localUserJoined = false;
     _callDuration = null;
     notifyListeners();
@@ -153,7 +155,7 @@ class CallProvider extends ChangeNotifier {
           },
           onUserOffline: (RtcConnection connection, int offlineRemoteUid, UserOfflineReasonType reason) async {
           if (callConnectNotifier.value != CallConnectStatusEnum.completed) {
-            if (remoteUid == offlineRemoteUid &&
+            if (_remoteUid == offlineRemoteUid &&
                 (ref.read(socketProvider).extraResponseModel?.userId.toString() ==
                     SharedPrefHelper.getUserId.toString())) {
               /// expert kill app so completed call emit trigger from user side
@@ -161,7 +163,7 @@ class CallProvider extends ChangeNotifier {
                   callRoleEnum: CallRoleEnum.user,
                   callHistoryId: ref.read(socketProvider).extraResponseModel?.callHistoryId.toString() ?? '');
             } else {
-              if ((remoteUid == offlineRemoteUid &&
+              if ((_remoteUid == offlineRemoteUid &&
                   (ref.read(socketProvider).extraResponseModel?.expertId.toString() ==
                       SharedPrefHelper.getUserId.toString()))) {
                 /// user kill app so completed call emit trigger from expert side
@@ -225,7 +227,8 @@ class CallProvider extends ChangeNotifier {
             log(state.index.toString());
             notifyListeners();
          //   changeVideoCallView.value = !changeVideoCallView.value;
-          });
+          }
+          );
   }
 
 }

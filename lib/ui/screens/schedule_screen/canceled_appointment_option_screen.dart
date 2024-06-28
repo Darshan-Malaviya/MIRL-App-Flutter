@@ -70,7 +70,7 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
                 children: [
                   TextFormFieldWidget(
                     onChanged: cancelRead.setReasonLength,
-                    maxLines: 10,
+                    maxLines: 500,
                     maxLength: 500,
                     minLines: 8,
                     controller: cancelWatch.reasonController,
@@ -110,6 +110,7 @@ class _CanceledAppointmentOptionScreenState extends ConsumerState<CanceledAppoin
                 },
                 fontSize: 15,
               ),
+              30.0.spaceY,
             ],
           ).addPaddingX(20),
         ),

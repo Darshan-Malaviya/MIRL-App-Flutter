@@ -4,10 +4,12 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/request/rate_expert_request_model.dart';
 import 'package:mirl/infrastructure/models/request/report_call_request_model.dart';
+import 'package:mirl/infrastructure/models/request/sort_by_reviews_request_model.dart';
 import 'package:mirl/infrastructure/models/response/rate_and_review_response_model.dart';
 import 'package:mirl/infrastructure/models/response/report_call_title_response_model.dart';
 import 'package:mirl/infrastructure/models/response/un_block_user_response_model.dart';
 import 'package:mirl/infrastructure/repository/report_repo.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/componnet/call_feedback_model.dart';
 
 class ReportReviewProvider extends ChangeNotifier {
@@ -83,11 +85,10 @@ class ReportReviewProvider extends ChangeNotifier {
   ];
 
   void changeCriteriaSelectedIndex({required int index, required int position}) {
-    RenderBox box =
-        callFeedbackList[index].callFeedbackDataList[position].formKey.currentContext?.findRenderObject() as RenderBox;
+    RenderBox box = callFeedbackList[index].callFeedbackDataList[position].formKey.currentContext?.findRenderObject() as RenderBox;
     Offset positionOffset = box.localToGlobal(Offset.zero);
     callFeedbackList[index].localPosition = positionOffset.dx - 20;
-    selectedIndex = position;
+    // selectedIndex = position;
     notifyListeners();
   }
 
@@ -105,7 +106,7 @@ class ReportReviewProvider extends ChangeNotifier {
     for (var element in callFeedbackList[index].callFeedbackDataList) {
       RenderBox box = element.formKey.currentContext?.findRenderObject() as RenderBox;
       Offset position = box.localToGlobal(Offset.zero);
-      element.currentDxPosition = position.dx - 30;
+      element.currentDxPosition = position.dx - 40;
     }
     isLoaded = true;
     notifyListeners();
@@ -166,21 +167,21 @@ class ReportReviewProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    ApiHttpResult response = await _reportRepository.reviewAndRateListApi(
-      paras: {
-        "firstCreatedOrder": sortByReview == sortByReviewItem[2]
+    SortByReviewRequestModel sortByReviewRequestModel = SortByReviewRequestModel(
+        firstCreatedOrder: sortByReview == sortByReviewItem[2]
             ? 'DESC'
             : sortByReview == sortByReviewItem[3]
                 ? 'ASC'
-                : 'DESC',
-        "ratingOrder": sortByReview == sortByReviewItem[0]
+                : null,
+        ratingOrder: sortByReview == sortByReviewItem[0]
             ? 'DESC'
             : sortByReview == sortByReviewItem[1]
                 ? 'ASC'
-                : 'DESC',
-        'page': _pageNo.toString(),
-        "limit": '10'
-      },
+                : null,
+        page: _pageNo.toString(),
+        limit: "10");
+    ApiHttpResult response = await _reportRepository.reviewAndRateListApi(
+      paras: sortByReviewRequestModel.toNullFreeJson(),
       id: id,
     );
 
@@ -204,7 +205,7 @@ class ReportReviewProvider extends ChangeNotifier {
           } else {
             _reviewAndRatingData?.expertReviews?.addAll(responseModel.data?.expertReviews ?? []);
           }
-          if (_pageNo == responseModel.pagination?.itemCount) {
+          if (_pageNo == responseModel.pagination?.pageCount) {
             _reachedLastPage = true;
           } else {
             _pageNo = _pageNo + 1;
@@ -220,13 +221,14 @@ class ReportReviewProvider extends ChangeNotifier {
     }
   }
 
-  void rateExpertRequestCall({required int callHistoryId}) {
+  void rateExpertRequestCall({required int callHistoryId, required String expertId, required String callType}) {
     List<RatingCriteria> ratingCriteria = [];
 
     int index = 0;
     for (var element in _criteriaList) {
-      ratingCriteria
-          .add(RatingCriteria(rating: callFeedbackList[index].criteriaSelectedIndex, ratingCategory: element.ratingCategory));
+      ratingCriteria.add(RatingCriteria(
+          rating: callFeedbackList[index].criteriaSelectedIndex == 0 ? null : callFeedbackList[index].criteriaSelectedIndex,
+          ratingCategory: element.ratingCategory));
       index++;
     }
     RateExpertRequestModel rateExpertRequestModel = RateExpertRequestModel(
@@ -235,10 +237,10 @@ class ReportReviewProvider extends ChangeNotifier {
       rating: selectedIndex,
       callHistoryId: callHistoryId,
     );
-    rateExpertApiCall(requestModel: rateExpertRequestModel.prepareRequest());
+    rateExpertApiCall(requestModel: rateExpertRequestModel.prepareRequest(), expertId: expertId, callType: callType);
   }
 
-  Future<void> rateExpertApiCall({required Object requestModel}) async {
+  Future<void> rateExpertApiCall({required Object requestModel, required String expertId, required String callType}) async {
     CustomLoading.progressDialog(isLoading: true);
     ApiHttpResult response = await _reportRepository.rateExpertApi(requestModel: requestModel);
     CustomLoading.progressDialog(isLoading: false);
@@ -249,7 +251,8 @@ class ReportReviewProvider extends ChangeNotifier {
 
           Logger().d("Successfully user rate expert API");
           // FlutterToast().showToast(msg: responseModel.message ?? '');
-          NavigationService.context.toPushNamed(RoutesConstants.feedbackSubmittingScreen);
+          NavigationService.context
+              .toPushNamed(RoutesConstants.feedbackSubmittingScreen, args: CallFeedBackArgs(expertId: expertId, callType: callType));
         }
         break;
       case APIStatus.failure:
@@ -267,9 +270,7 @@ class ReportReviewProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is ReportCallTitleResponseModel) {
           ReportCallTitleResponseModel responseModel = response.data;
-
           _reportCallTitleList = responseModel.data ?? [];
-
           //_reportCallTitleList.addAll(responseModel.data ?? []);
         }
         break;
@@ -281,9 +282,9 @@ class ReportReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> reportCallApiCall({required int callHistoryId}) async {
-    ReportCallRequestModel reportCallRequestModel = ReportCallRequestModel(
-        callHistoryId: callHistoryId, message: callIssueController.text.trim(), reportCallTitleId: selectedReportCall?.id);
+  Future<void> reportCallApiCall({required int callHistoryId, required String expertId, required String callType}) async {
+    ReportCallRequestModel reportCallRequestModel =
+        ReportCallRequestModel(callHistoryId: callHistoryId, message: callIssueController.text.trim(), reportCallTitleId: selectedReportCall?.id);
     ApiHttpResult response = await _reportRepository.reportCallApi(requestModel: reportCallRequestModel.prepareRequest());
 
     switch (response.status) {
@@ -292,7 +293,8 @@ class ReportReviewProvider extends ChangeNotifier {
           UnBlockUserResponseModel responseModel = response.data;
           Logger().d("Successfully report call API");
           //FlutterToast().showToast(msg: responseModel.message ?? '');
-          NavigationService.context.toPushNamed(RoutesConstants.reportedSubmittingScreen);
+          NavigationService.context
+              .toPushNamed(RoutesConstants.reportedSubmittingScreen, args: CallFeedBackArgs(expertId: expertId, callType: callType));
         }
         break;
       case APIStatus.failure:

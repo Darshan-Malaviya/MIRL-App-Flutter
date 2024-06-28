@@ -5,11 +5,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mirl/infrastructure/commons/enums/notification_color_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/models/common/extra_service_model.dart';
-import 'package:mirl/infrastructure/models/common/notification_data_model.dart';
-import 'package:mirl/infrastructure/models/response/cancel_appointment_response_model.dart';
 import 'package:mirl/infrastructure/services/call_kit_service.dart';
 import 'package:mirl/mirl_app.dart';
-import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:uuid/uuid.dart';
 
 class PushNotificationService {
@@ -42,8 +39,6 @@ class PushNotificationService {
       badge: true,
       sound: true,
     );
-
-    await getFirebaseToken();
   }
 
   Future initialise() async {
@@ -65,16 +60,16 @@ class PushNotificationService {
       sound: true,
     );
 
-    /// TODO For handling notification when the app is in terminated state
+/*    /// TODO For handling notification when the app is in terminated state
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) async {
       log('TS Message title: ${message?.notification?.title}, body: ${message?.notification?.body}, data: ${message?.data}');
       onMessageOpened(message);
-    });
+    });*/
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage? message) async {
         try {
-          log('Message: ========${message?.notification?.title}, body: ${message?.notification?.body}, data: ${message?.data}');
+          log('Message: ========key: ${message?.data['key']}, title,${message?.notification?.title}, body: ${message?.notification?.body}, data: ${message?.data}');
 
           RemoteNotification? notification = message?.notification;
           AndroidNotification? android = message?.notification?.android;
@@ -122,29 +117,7 @@ class PushNotificationService {
 
   void onMessageOpened(RemoteMessage? message) {
     if (message?.data != null) {
-      NotificationData notificationData = NotificationData.fromJson(message?.data ?? {});
-      if (notificationData.key == NotificationTypeEnum.appointmentConfirmed.name) {
-        NavigationService.context.toPushNamed(RoutesConstants.viewCalendarAppointment,
-            args: AppointmentArgs(role: int.parse(notificationData.role.toString()), fromNotification: true, selectedDate: notificationData.date));
-      } else if (notificationData.key == NotificationTypeEnum.appointmentCancelled.name) {
-        NavigationService.context.toPushNamed(RoutesConstants.canceledNotificationScreen,
-            args: CancelArgs(
-              role: int.parse(notificationData.role.toString()),
-              cancelDate: notificationData.date,
-              cancelData: CancelAppointmentData(
-                startTime: notificationData.startTime,
-                endTime: notificationData.endTime,
-                duration: int.parse(notificationData.duration ?? '0'),
-                name: notificationData.name,
-                profileImage: notificationData.profile,
-              ),
-            ));
-      }
+      CommonMethods.onTapNotification(jsonEncode(message?.data));
     }
-  }
-
-  Future getFirebaseToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    SharedPrefHelper.saveFirebaseToken(token);
   }
 }

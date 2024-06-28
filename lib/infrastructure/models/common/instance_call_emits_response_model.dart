@@ -34,7 +34,7 @@ class InstanceCallEmitsData {
   String? timerType;
   int? callHistoryId;
   int? requestType;
-  int? instantCallSeconds;
+  int? requestedDuration;
   List<ExpertDetails>? expertList;
 
   InstanceCallEmitsData(
@@ -49,7 +49,7 @@ class InstanceCallEmitsData {
       this.timerType,
       this.callHistoryId,
       this.requestType,
-        this.instantCallSeconds,this.expertList});
+        this.requestedDuration,this.expertList});
 
   InstanceCallEmitsData.fromJson(Map<String, dynamic> json) {
     userDetails = json['userDetails'] != null ? UserDetails.fromJson(json['userDetails']) : null;
@@ -118,11 +118,11 @@ class InstanceCallEmitsData {
           requestType = json['requestType'];
         }
       }
-      if(json['instantCallSeconds'] != null){
-        if (json['instantCallSeconds'] is String) {
-          instantCallSeconds = int.parse(json['instantCallSeconds']);
+      if(json['requestedDuration'] != null){
+        if (json['requestedDuration'] is String) {
+          requestedDuration = int.parse(json['requestedDuration']);
         } else {
-          instantCallSeconds = json['instantCallSeconds'];
+          requestedDuration = json['requestedDuration'];
         }
       }
       if(json['experts'] != null){
@@ -169,8 +169,8 @@ class InstanceCallEmitsData {
     if (data['requestType'] != null) {
       data['requestType'] = this.requestType;
     }
-    if(data['instantCallSeconds'] != null){
-      data['instantCallSeconds'] = this.instantCallSeconds;
+    if(data['requestedDuration'] != null){
+      data['requestedDuration'] = this.requestedDuration;
     }
     if(this.expertList != null){
       data['experts'] = this.expertList!.map((v) => v.toJson()).toList();

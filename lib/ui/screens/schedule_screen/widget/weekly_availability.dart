@@ -7,7 +7,6 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/providers/schedule_call_provider.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
 import 'package:mirl/ui/screens/schedule_screen/widget/no_weekly_availability.dart';
-import 'package:pinput/pinput.dart';
 
 import '../../../common/shimmer_widgets/slots_shimmer_widget.dart';
 
@@ -36,9 +35,10 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                   Column(
                     children: List.generate(scheduleProviderWatch.weekAvailability.length, (index) {
                       final data = scheduleProviderWatch.weekAvailability[index];
-                      return slotWidget(
+                      return weekAvailabilityWidget(
                               dayText: data.dayOfWeek?.toUpperCase() ?? '',
-                              dayTimeText: '${data.startTime?.to12HourTimeFormat() ?? ''} - ${data.endTime?.to12HourTimeFormat() ?? ''}')
+                              dayTimeText:
+                                  '${data.startTime?.to12HourTimeFormat().toLowerCase() ?? ''} - ${data.endTime?.to12HourTimeFormat().toLowerCase() ?? ''}')
                           .addPaddingY(12);
                     }),
                   ).addPaddingX(20),
@@ -89,12 +89,13 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                     fontSize: 15,
                     titleColor: ColorConstants.blueColor,
                   ).addPaddingXY(paddingX: 29, paddingY: 12),
+                  20.0.spaceY,
                 ],
               )
             : NoWeeklyAvailability();
   }
 
-  Widget slotWidget({required String dayText, required String dayTimeText}) {
+  Widget weekAvailabilityWidget({required String dayText, required String dayTimeText}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -244,12 +245,19 @@ class _WeeklyAvailabilityState extends ConsumerState<WeeklyAvailability> {
                       },
                       separatorBuilder: (BuildContext context, int index) => 20.0.spaceX,
                     )
-                  : Center(
-                      child: BodyMediumText(
-                        title: LocaleKeys.noSlotAvailable.tr(),
-                        titleColor: ColorConstants.primaryColor,
-                      ),
-                    ),
+                  : scheduleCallWatch.selectedDate != null
+                      ? Center(
+                          child: BodyMediumText(
+                            title: LocaleKeys.noSlotAvailable.tr(),
+                            titleColor: ColorConstants.primaryColor,
+                          ),
+                        )
+                      : Center(
+                          child: BodyMediumText(
+                            title: LocaleKeys.pickUpTheDate.tr(),
+                            titleColor: ColorConstants.primaryColor,
+                          ),
+                        ),
         )
       ],
     );

@@ -2,8 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/infrastructure/models/common/expert_data_model.dart';
 import 'package:mirl/ui/common/read_more/readmore.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class ExpertDetailWidget extends StatelessWidget {
   final ExpertData? expertData;
@@ -28,7 +30,10 @@ class ExpertDetailWidget extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: InkWell(
         onTap: () {
-          context.toPushNamed(RoutesConstants.expertDetailScreen, args: expertData?.id.toString());
+          context.toPushNamed(
+            RoutesConstants.expertDetailScreen,
+            args: CallFeedBackArgs(expertId: expertData?.id.toString(), callType: ''),
+          );
         },
         child: Stack(
           children: [
@@ -51,7 +56,7 @@ class ExpertDetailWidget extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        BodyLargeText(title: expertData?.expertName?.toUpperCase() ?? ''),
+                        Flexible(child: BodyLargeText(title: expertData?.expertName?.toUpperCase() ?? '',maxLine: 2,titleTextAlign: TextAlign.center,)),
                         8.0.spaceY,
                         if (expertData?.expertCategory?.isNotEmpty ?? false) ...[
                           Wrap(
@@ -60,13 +65,12 @@ class ExpertDetailWidget extends StatelessWidget {
                             children: List.generate(((expertData?.expertCategory?.length ?? 0) > 7) ? 6 : expertData?.expertCategory?.length ?? 0, (i) {
                               String color = expertData?.expertCategory?[i].colorCode?.substring(1) ?? "D97CF0";
                               int colorConcat = int.parse('0xff$color');
-
                               return Container(
                                 color: Color(colorConcat),
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                                child: BodySmallText(
-                                  title: expertData?.expertCategory?[i].name ?? '',
+                                child: BodyMediumText(
+                                  title: expertData?.expertCategory?[i].name.toString().toLowerCase().toCapitalizeAllWord() ?? '',
                                   fontFamily: FontWeightEnum.w500.toInter,
                                 ),
                               );
@@ -90,9 +94,15 @@ class ExpertDetailWidget extends StatelessWidget {
                         ),
                         10.0.spaceX,
                         AutoSizeText(
-                          expertData?.overAllRating != 0 ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
+                          expertData?.overAllRating != 0 && expertData?.overAllRating != null
+                              ? expertData?.overAllRating?.toString() ?? '' : LocaleKeys.newText.tr(),
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorConstants.bottomTextColor),
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: ColorConstants.bottomTextColor,
+                            shadows: [
+                              Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -107,11 +117,41 @@ class ExpertDetailWidget extends StatelessWidget {
                           titleTextAlign: TextAlign.center,
                         ),
                         10.0.spaceX,
-                        AutoSizeText(
-                          fee != null ? '\$${fee}' : "",
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorConstants.bottomTextColor),
-                        )
+                        expertData?.fee != 0
+                            ? AutoSizeText(
+                                '\$${fee}',
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontSize: 20,
+                                  color: ColorConstants.bottomTextColor,
+                                  shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  AutoSizeText(
+                                    LocaleKeys.free.tr(),
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                      fontSize: 20,
+                                      color: ColorConstants.bottomTextColor,
+                                      shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                                    ),
+                                  ),
+                                  AutoSizeText(
+                                    LocaleKeys.bono.tr(),
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                      fontSize: 12,
+                                      color: ColorConstants.bottomTextColor,
+                                      shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3, color: ColorConstants.blackColor.withOpacity(0.25))],
+                                    ),
+                                  ),
+                                ],
+                              )
                       ],
                     ),
                   ],
@@ -120,7 +160,7 @@ class ExpertDetailWidget extends StatelessWidget {
                 Align(alignment: Alignment.centerLeft, child: BodySmallText(title: StringConstants.aboutMe)),
                 5.0.spaceY,
                 ReadMoreText(
-                  style: TextStyle(fontSize: 12, fontFamily: FontWeightEnum.w400.toInter),
+                  style: TextStyle(fontSize: 14, fontFamily: FontWeightEnum.w400.toInter),
                   expertData?.about ?? '',
                   trimLines: 5,
                   trimMode: TrimMode.Line,

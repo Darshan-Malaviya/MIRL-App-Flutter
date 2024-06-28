@@ -1,7 +1,13 @@
 class AppConstants {
+  static const localFlavorName = 'Mirl Local';
   static const devFlavorName = 'Mirl Dev';
   static const prodFlavorName = 'Mirl Prod';
   static const fontFamily = 'Inter';
+
+  /// url
+  static const feesUrl = 'https://mirl.com/mirl-app-fees';
+  static const useMirlUrl = 'https://mirl.com/use-mirl';
+  static const faqUrl = 'https://mirl.com/faq';
 
   /// socket request variables
   static const userId = 'userId';
@@ -9,6 +15,7 @@ class AppConstants {
   static const expertIds = 'expertIds';
   static const requestType = 'requestType';
   static const time = 'time';
+  static const requestedDuration = 'requestedDuration';
   static const callRequestId = 'callRequestId';
   static const callStatus = 'status';
   static const role = 'role';

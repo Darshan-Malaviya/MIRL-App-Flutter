@@ -5,6 +5,7 @@ import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/infrastructure/models/response/home_data_response_model.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
+import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
 class FavoriteExpertsView extends ConsumerWidget {
   const FavoriteExpertsView({super.key});
@@ -17,8 +18,9 @@ class FavoriteExpertsView extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BodySmallText(
+            TitleLargeText(
               title: LocaleKeys.yourFavoriteExperts.tr(),
+              fontSize: 18,
             ),
 
             if ((favoriteListNotifier.value.isNotEmpty)) ...[
@@ -32,57 +34,64 @@ class FavoriteExpertsView extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          context.toPushNamed(RoutesConstants.expertDetailScreen, args: favoriteListNotifier.value[index].id.toString());
+                          context.toPushNamed(RoutesConstants.expertDetailScreen, args: CallFeedBackArgs(expertId: favoriteListNotifier.value[index].id.toString(),callType: ''));
                         },
                         child: ShadowContainer(
-                          padding: EdgeInsets.only(bottom: 8, top: 1, left: 8, right: 8),
-                          shadowColor: ColorConstants.blackColor.withOpacity(0.1),
-                          width: 96,
-                          height: 120,
-                          isShadow: true,
-                          offset: Offset(0,2),
-                          spreadRadius: 0,
-                          blurRadius: 3,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 80,
-                                width: 75,
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                        top: 2,
-                                        child: CircleAvatar(radius: 37.5,backgroundColor: ColorConstants.blackColor.withOpacity(0.1),)),
-                                    CircleNetworkImageWidget(imageURL: favoriteListNotifier.value[index].expertProfile ?? '', isNetworkImage: true, key: UniqueKey()),
-
-                                  ],
+                            padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
+                            shadowColor: ColorConstants.blackColor.withOpacity(0.1),
+                            width: 96,
+                            height: 120,
+                            isShadow: true,
+                            offset: Offset(0, 2),
+                            spreadRadius: 0,
+                            blurRadius: 3,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 80,
+                                  width: 75,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                          top: 2,
+                                          child: CircleAvatar(
+                                            radius: 37.5,
+                                            backgroundColor: ColorConstants.blackColor.withOpacity(0.2),
+                                          )),
+                                      CircleNetworkImageWidget(
+                                          imageURL: favoriteListNotifier.value[index].expertProfile ?? '', isNetworkImage: true, key: UniqueKey()),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              6.0.spaceY,
-                              Flexible(
-                                child: LabelSmallText(
-                                  fontSize: 9,
-                                  title: (favoriteListNotifier.value[index].expertName?.toCapitalizeAllWord() ?? '').toString(),
-                                  maxLine: 10,
-                                  titleTextAlign: TextAlign.center,
+                                6.0.spaceY,
+                                Flexible(
+                                  child: LabelSmallText(
+                                    fontSize: 12,
+                                    title: (favoriteListNotifier.value[index].expertName?.toCapitalizeAllWord() ?? '').toString(),
+                                    maxLine: 5,
+                                    titleTextAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-
-                        ).addPaddingLeft(10),
-                      );
+                              ],
+                            ),
+                          ).addPaddingLeft(10),
+                        );
                     }),
               ),
               20.0.spaceY,
-              Center(
-                child: LabelSmallText(
-                  fontSize: 10,
-                  titleTextAlign: TextAlign.center,
-                  title: LocaleKeys.seeAllFavoriteExperts.tr().toUpperCase(),
+              InkWell(
+                onTap: (){
+                  context.toPushNamed(RoutesConstants.seeAllFavoriteExpertsListViewScreen);
+                },
+                child: Center(
+                  child: LabelSmallText(
+                    fontSize: 10,
+                    titleTextAlign: TextAlign.center,
+                    title: LocaleKeys.seeAllFavoriteExperts.tr().toUpperCase(),
+                  ),
                 ),
               ),
             ] else ...[

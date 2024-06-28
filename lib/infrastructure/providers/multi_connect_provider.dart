@@ -37,6 +37,8 @@ class MultiConnectProvider extends ChangeNotifier {
   int get categoryPageNo => _categoryPageNo;
   int _categoryPageNo = 1;
 
+  int? approveExpertLength;
+
   bool get reachedCategoryLastPage => _reachedCategoryLastPage;
   bool _reachedCategoryLastPage = false;
 
@@ -62,6 +64,26 @@ class MultiConnectProvider extends ChangeNotifier {
 
   ExpertDetails? selectedExpertForCall;
 
+  int _multiCallDuration = 10;
+  int get multiCallDuration => _multiCallDuration;
+
+  double? totalPayAmountMultiConnect;
+
+  void getPayValue({required int fee}) {
+    totalPayAmountMultiConnect = (fee / 100 * (_multiCallDuration == 20 ? 2 : _multiCallDuration == 30 ? 3 : 1));
+    notifyListeners();
+  }
+
+  void incrementMultiCallDuration() {
+    _multiCallDuration += 10;
+    notifyListeners();
+  }
+
+  void decrementMultiCallDuration() {
+    _multiCallDuration -= 10;
+    notifyListeners();
+  }
+
 
   void getLoggedUserData() {
     if (SharedPrefHelper.getUserData.isNotEmpty) {
@@ -85,7 +107,7 @@ class MultiConnectProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo);
+    ApiHttpResult response = await _addYourAreaExpertiseRepository.areaExpertiseApiCall(limit: 30, page: _categoryPageNo,orderByPriority: "true");
 
     if (isLoaderVisible) {
       _isLoading = false;
@@ -142,28 +164,34 @@ class MultiConnectProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is GetSingleCategoryResponseModel) {
           GetSingleCategoryResponseModel responseModel = response.data;
-          if (_allExpertPageNo == 1) {
-            _singleCategoryData = responseModel.data;
-            _expertData.clear();
-            _expertData.addAll(responseModel.data?.expertData ?? []);
-          } else {
-            _expertData.addAll(responseModel.data?.expertData ?? []);
-          }
-          if (_allExpertPageNo == responseModel.pagination?.pageCount) {
-            _reachedAllExpertLastPage = true;
-          } else {
-            _allExpertPageNo = _allExpertPageNo + 1;
-            _reachedAllExpertLastPage = false;
-          }
-          if (isFromFilter) {
-            Navigator.pop(context);
-          }
-          notifyListeners();
+            if (_allExpertPageNo == 1) {
+              _singleCategoryData = responseModel.data;
+              if (_singleCategoryData?.categoryData?.topic?.isNotEmpty ?? false) {
+                _singleCategoryData?.categoryData?.topic?.insert(0, Topic(id: 0, name: '${_singleCategoryData?.categoryData?.name ?? ''} - All',
+                    categoryId: _singleCategoryData?.categoryData?.id, isSelected: false));
+              }
+              _expertData.clear();
+              _expertData.addAll(responseModel.data?.expertData ?? []);
+            } else {
+              _expertData.addAll(responseModel.data?.expertData ?? []);
+            }
+            if (_allExpertPageNo == responseModel.pagination?.pageCount) {
+              _reachedAllExpertLastPage = true;
+            } else {
+              if(responseModel.data?.expertData?.isNotEmpty == true) {
+                _allExpertPageNo = _allExpertPageNo + 1;
+                _reachedAllExpertLastPage = false;
+              }
+            }
+            if (isFromFilter) {
+              Navigator.pop(context);
+            }
+            notifyListeners();
         }
         break;
       case APIStatus.failure:
         FlutterToast().showToast(msg: response.failure?.message ?? '');
-        Logger().d("API fail get category call Api ${response.data}");
+        Logger().d("API fail get on multi connect filter  Api ${response.data}");
         break;
     }
   }

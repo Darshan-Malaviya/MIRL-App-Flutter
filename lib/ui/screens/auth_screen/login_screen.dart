@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/screens/cms_screen/arguments/cms_arguments.dart';
@@ -14,22 +15,39 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   FocusNode loginFocusNode = FocusNode();
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await getFirebaseToken();
+    });
+    super.initState();
+  }
+
+  Future getFirebaseToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    SharedPrefHelper.saveFirebaseToken(token);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final loginScreenProviderWatch = ref.watch(loginScreenProvider);
     final loginScreenProviderRead = ref.read(loginScreenProvider);
-
+    final size = MediaQuery.sizeOf(context);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Form(
-          key: _loginPassKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                ImageConstants.backgroundLogo,
-              ).addPaddingTop(100),
-              50.0.spaceY,
-              Container(
+      resizeToAvoidBottomInset: false,
+      body: Form(
+        key: _loginPassKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            (size.width * 0.2).spaceY,
+            Image.asset(
+              ImageConstants.mirlLoginIconNew,
+              height: 170,
+              width: 170,
+            ),
+          (size.width * 0.1).spaceY,
+            Expanded(
+              child: Container(
                 decoration: const BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -42,8 +60,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     color: ColorConstants.whiteColor,
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    25.0.spaceY,
+                   (size.width * 0.1).spaceY,
+                  //  25.0.spaceY,
                     TitleLargeText(
                       title: StringConstants.letsMirl,
                       fontFamily: FontWeightEnum.w800.toInter,
@@ -55,9 +75,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       fontFamily: FontWeightEnum.w600.toInter,
                       titleColor: ColorConstants.blackColor,
                     ),
-                    40.0.spaceY,
+                    // if (Platform.isIOS) ...{
+                    //   (size.width * 0.04).spaceY,
+                    // } else ...{
+                    //   (size.width * 0.1).spaceY,
+                    // },
+                    (size.width * 0.1).spaceY,
+                   // 40.0.spaceY,
                     TextFormFieldWidget(
-                      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                      contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                       fontFamily: FontWeightEnum.w400.toInter,
                       hintText: StringConstants.typeYourEmailAddress,
                       textAlign: TextAlign.start,
@@ -73,7 +99,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         loginFocusNode.unfocus();
                       },
                     ).addPaddingX(42),
-                    14.0.spaceY,
+                    // if (Platform.isIOS) ...{
+                    //   (size.width * 0.04).spaceY,
+                    // } else ...{
+                    //   (size.width * 0.1).spaceY,
+                    // },
+                    (size.width * 0.1).spaceY,
+                    //14.0.spaceY,
+
                     PrimaryButton(
                         title: StringConstants.selectLoginCode,
                         titleColor: ColorConstants.textColor,
@@ -88,13 +121,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 email: loginScreenProviderWatch.emailController.text.trim());
                           }
                         }),
-                    40.0.spaceY,
+                    //40.0.spaceY,
+
+                     (size.width * 0.06).spaceY,
                     Image.asset(ImageConstants.line),
-                    10.0.spaceY,
+                    (size.width * 0.05).spaceY,
+                    //10.0.spaceY,
                     PrimaryButton(
                       title: StringConstants.continueWithGoogle,
                       titleColor: ColorConstants.textColor,
-                      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
                       onPressed: () {
                         loginFocusNode.unfocus();
                         loginScreenProviderRead.signInGoogle();
@@ -110,7 +145,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         prefixIcon: ImageConstants.apple,
                         titleColor: ColorConstants.textColor,
                         width: 280,
-                        margin: EdgeInsets.only(left: 50, right: 50),
+                        margin: EdgeInsets.only(left: 50, right: 50, top:size.width * 0.06),
                         onPressed: () {
                           loginFocusNode.unfocus();
                           loginScreenProviderRead.signInApple();
@@ -127,7 +162,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         loginScreenProviderRead.fbLogin();
                       },
                     ),*/
-                    30.0.spaceY,
+                    (size.width * 0.06).spaceY,
+                   // 30.0.spaceY,
                     RichText(
                       softWrap: true,
                       textAlign: TextAlign.center,
@@ -160,14 +196,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   args: CmsArgs(title: AppConstants.privacyPolicy, name: "privacyPolicy"));
                             },
                         ),
-                      ]),
+                      ],
+                      ),
                     ).addPaddingX(16),
-                    30.0.spaceY,
+                   // 30.0.spaceY,
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

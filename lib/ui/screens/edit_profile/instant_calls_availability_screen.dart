@@ -58,7 +58,7 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             DropdownMenuWidget(
               hintText: StringConstants.theDropDown,
               controller: expertWatch.instantCallAvailabilityController,
-              dropdownList: expertWatch.locations
+              dropdownList: expertWatch.instantCall
                   .map((String item) => dropdownMenuEntry(context: context, value: item, label: item))
                   .toList(),
               onSelect: (value) {
@@ -80,7 +80,8 @@ class _InstantCallsAvailabilityScreenState extends ConsumerState<InstantCallsAva
             20.0.spaceY,
             TitleSmallText(
               fontFamily: FontWeightEnum.w400.toInter,
-              title: StringConstants.highlyRecommend,
+              title: StringConstants.highlyRecommend.toUpperCase(),
+              maxLine: 4,
             )
           ],
         ).addAllPadding(20),

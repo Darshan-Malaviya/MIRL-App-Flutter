@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/button_widget/fees_action_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SetYourFreeScreen extends ConsumerStatefulWidget {
   const SetYourFreeScreen({super.key});
@@ -33,7 +36,12 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
         trailingIcon: InkWell(
           onTap: () {
             feesFocusNode.unfocus();
-            expertRead.updateFeesApi();
+            if(double.parse(expertWatch.countController.text) >= 501){
+             FlutterToast().showToast(
+            msg: LocaleKeys.maximumFee.tr());
+            }else{
+              expertRead.updateFeesApi();
+            }
           },
           child: TitleMediumText(
             title: StringConstants.done,
@@ -77,6 +85,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
               ).addAllPadding(16),
               FeesActionButtonWidget(
                   icons: ImageConstants.plus,
+                  //isDisable: expertWatch.countController.text.isNotEmpty ? double.parse(expertWatch.countController.text) >= 500 : false,
                   onTap: () {
                     expertRead.increaseFees();
                   }),
@@ -92,10 +101,18 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
             title: StringConstants.appFees,
           ),
           4.0.spaceY,
-          TitleSmallText(
-            title: StringConstants.ourAppFees,
-            titleColor: ColorConstants.bottomTextColor,
-            fontFamily: FontWeightEnum.w400.toInter,
+          OnScaleTap(
+            onPress: () async {
+              final Uri _url = Uri.parse(AppConstants.feesUrl);
+              if (!await launchUrl(_url)) {
+                  throw Exception('Could not launch $_url');
+                }
+            },
+            child: TitleSmallText(
+              title: StringConstants.ourAppFees,
+              titleColor: ColorConstants.bottomTextColor,
+              fontFamily: FontWeightEnum.w400.toInter,
+            ),
           ),
           50.0.spaceY,
           Container(
@@ -110,7 +127,7 @@ class _SetYourFreeScreenState extends ConsumerState<SetYourFreeScreen> {
                   titleColor: ColorConstants.buttonTextColor,
                 ),
                 BodyMediumText(
-                  title: expertWatch.countController.text.isNotEmpty ? '\$${(double.parse(expertWatch.countController.text) * 0.20).toStringAsFixed(2)}' : '0.0',
+                  title: expertWatch.countController.text.isNotEmpty ? '\$${expertWatch.calculateFees}' : '0.0',
                   titleColor: ColorConstants.buttonTextColor,
                 )
               ],

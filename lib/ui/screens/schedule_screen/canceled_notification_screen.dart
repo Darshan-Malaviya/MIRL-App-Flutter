@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
+import 'package:mirl/ui/common/read_more/readmore.dart';
 
 class CanceledNotificationScreen extends StatelessWidget {
   final CancelArgs args;
@@ -12,7 +13,10 @@ class CanceledNotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget(
-          preferSize: 40,
+          leading: InkWell(
+            child: Image.asset(ImageConstants.backIcon),
+            onTap: () => context.toPop(),
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -44,63 +48,71 @@ class CanceledNotificationScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${args.role == 1 ? LocaleKeys.expert.tr() : LocaleKeys.user.tr().toUpperCase()}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextSpan(text: args.cancelData?.name ?? 'Anonymous', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                              BodySmallText(
+                                  title: '${args.role == 1 ? LocaleKeys.expert.tr() : LocaleKeys.user.tr().toUpperCase()}: ',
+                                  titleColor: ColorConstants.buttonTextColor,
+                                  fontFamily: FontWeightEnum.w400.toInter),
+                              Expanded(
+                                child: BodySmallText(
+                                  title: args.cancelData?.name ?? 'Mystery MIRL',
+                                  titleColor: ColorConstants.buttonTextColor,
+                                  maxLine: 3,
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                        5.0.spaceY,
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${LocaleKeys.time.tr()}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
-                            children: [
-                              TextSpan(
-                                  text: '${args.cancelData?.startTime?.to12HourTimeFormat() ?? ''} - ${args.cancelData?.endTime?.to12HourTimeFormat() ?? ''}',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
-                            ],
+                          5.0.spaceY,
+                          RichText(
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: '${LocaleKeys.time.tr()}: ',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              children: [
+                                TextSpan(
+                                    text:
+                                        '${args.cancelData?.startTime?.to24HourTimeFormatLocal().toLowerCase() ?? ''} - ${args.cancelData?.endTime?.to24HourTimeFormatLocal().toLowerCase() ?? ''}',
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                              ],
+                            ),
                           ),
-                        ),
-                        5.0.spaceY,
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${LocaleKeys.date.tr()}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
-                            children: [
-                              TextSpan(
-                                  text: '${args.cancelDate?.toLocalFullDateWithoutSuffix() ?? ''}',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
-                            ],
+                          5.0.spaceY,
+                          RichText(
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: '${LocaleKeys.date.tr()}: ',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              children: [
+                                TextSpan(
+                                    text: '${args.cancelDate?.toLocalFullDateWithoutSuffix() ?? ''}',
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                              ],
+                            ),
                           ),
-                        ),
-                        5.0.spaceY,
-                        RichText(
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
-                            children: [
-                              TextSpan(
-                                  text: '${args.cancelData?.duration.toString()} ${LocaleKeys.minutes.tr()}',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
-                            ],
+                          5.0.spaceY,
+                          RichText(
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: '${LocaleKeys.duration.tr().toUpperCase()}: ',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w400.toInter),
+                              children: [
+                                TextSpan(
+                                    text: '${(args.cancelData?.duration ?? 0) ~/ 60} ${LocaleKeys.minutes.tr()}',
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorConstants.buttonTextColor)),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Container(
                       decoration: BoxDecoration(boxShadow: [
@@ -125,19 +137,23 @@ class CanceledNotificationScreen extends StatelessWidget {
                 titleColor: ColorConstants.buttonTextColor,
               ),
               10.0.spaceY,
-              BodyMediumText(
-                title: args.cancelData?.reason ?? '',
-                fontFamily: FontWeightEnum.w400.toInter,
-                fontStyle: FontStyle.italic,
-                maxLine: 10,
-                titleColor: ColorConstants.buttonTextColor,
+              ReadMoreText(
+                args.cancelData?.reason ?? '',
+                style: TextStyle(fontSize: 14, fontFamily: FontWeightEnum.w400.toInter),
+                trimLines: 50,
+                trimMode: TrimMode.Line,
+                trimCollapsedText: LocaleKeys.readMore.tr(),
+                trimExpandedText: ' ${LocaleKeys.readLess.tr()}',
+                moreStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor.withOpacity(0.7)),
+                lessStyle: TextStyle(fontSize: 14, color: ColorConstants.bottomTextColor.withOpacity(0.7)),
               ),
               20.0.spaceY,
               PrimaryButton(
-                title: LocaleKeys.goTONotification.tr(),
+                title: LocaleKeys.backToNotification.tr(),
                 onPressed: () => context.toPop(),
                 fontSize: 15,
-              )
+              ),
+              30.0.spaceY,
             ],
           ).addPaddingX(20),
         ));
