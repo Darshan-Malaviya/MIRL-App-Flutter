@@ -1,5 +1,5 @@
-import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:mirl/infrastructure/commons/constants/agora_constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -17,24 +17,34 @@ class AgoraService {
   // An internal private constructor to access it for only once for static instance of class.
   AgoraService._internal();
 
-  Future<void> initAgora({
-    required String channelId,
-    required String token,
-    required bool isFromAudio,
-    required Function(RtcConnection connection, int elapsed) onJoinChannelSuccess,
-    Function(RtcConnection connection, RtcStats stats)? onLeaveChannel,
-    required Function(RtcConnection connection, int rUid, int elapsed) onUserJoined,
-    required Function(RtcConnection connection, int rUid, UserOfflineReasonType reason) onUserOffline,
-    required Function(ErrorCodeType err, String msg)? onError,
-    required Function() audioVideoCallFunction,
-    Function(RtcConnection connection, LocalAudioStreamState state,
-        LocalAudioStreamError error)? onLocalAudioStateChanged,
-    Function(RtcConnection connection, int remoteUid, RemoteVideoState state, RemoteVideoStateReason reason, int elapsed)? onRemoteVideoStateChanged,
-    Function(RtcConnection connection, String token)? onTokenPrivilegeWillExpire,
-    Function(RtcConnection, int, RemoteAudioState, RemoteAudioStateReason, int)? onRemoteAudioStateChanged,
-    Function(VideoSourceType source, LocalVideoStreamState state,
-        LocalVideoStreamError error)? onLocalVideoStateChanged
-  }) async {
+  Future<void> initAgora(
+      {required String channelId,
+      required String token,
+      required bool isFromAudio,
+      required Function(RtcConnection connection, int elapsed)
+          onJoinChannelSuccess,
+      Function(RtcConnection connection, RtcStats stats)? onLeaveChannel,
+      required Function(RtcConnection connection, int rUid, int elapsed)
+          onUserJoined,
+      required Function(
+              RtcConnection connection, int rUid, UserOfflineReasonType reason)
+          onUserOffline,
+      required Function(ErrorCodeType err, String msg)? onError,
+      required Function() audioVideoCallFunction,
+      Function(RtcConnection connection, LocalAudioStreamState state,
+              LocalAudioStreamReason error)?
+          onLocalAudioStateChanged,
+      Function(RtcConnection connection, int remoteUid, RemoteVideoState state,
+              RemoteVideoStateReason reason, int elapsed)?
+          onRemoteVideoStateChanged,
+      Function(RtcConnection connection, String token)?
+          onTokenPrivilegeWillExpire,
+      Function(RtcConnection, int, RemoteAudioState, RemoteAudioStateReason,
+              int)?
+          onRemoteAudioStateChanged,
+      Function(VideoSourceType source, LocalVideoStreamState state,
+              LocalVideoStreamReason error)?
+          onLocalVideoStateChanged}) async {
     if (isFromAudio) {
       await [Permission.microphone].request();
     } else {
@@ -55,11 +65,9 @@ class AgoraService {
         onUserOffline: onUserOffline,
         onTokenPrivilegeWillExpire: onTokenPrivilegeWillExpire,
         onLocalAudioStateChanged: onLocalAudioStateChanged,
-        onRemoteVideoStateChanged:onRemoteVideoStateChanged,
-        onRemoteAudioStateChanged:onRemoteAudioStateChanged ,
-        onLocalVideoStateChanged: onLocalVideoStateChanged
-
-    ));
+        onRemoteVideoStateChanged: onRemoteVideoStateChanged,
+        onRemoteAudioStateChanged: onRemoteAudioStateChanged,
+        onLocalVideoStateChanged: onLocalVideoStateChanged));
 
     audioVideoCallFunction();
 
@@ -75,7 +83,6 @@ class AgoraService {
       uid: 0,
     );
   }
-
 
   Future<String> getVoipToken() async {
     return await FlutterCallkitIncoming.getDevicePushTokenVoIP();
