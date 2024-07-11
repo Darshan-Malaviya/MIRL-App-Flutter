@@ -79,9 +79,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: GestureDetector(
                         onTap: () {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => ExploreExpertScreen(isFromHomePage: false,),allowSnapshotting: false));
-                           context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
+                          //  context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
                           // Navigator.pushNamed(context,RoutesConstants.exploreExpertScreen, arguments: false);
-
+                           NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 1);
                         },
                         child: Container(
                             height: 178,

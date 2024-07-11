@@ -39,8 +39,9 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
         ),
       ),
       body: SingleChildScrollView(
+        physics: MediaQuery.of(context).viewInsets.bottom > 0.0?BouncingScrollPhysics():NeverScrollableScrollPhysics(),
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          height:MediaQuery.of(context).viewInsets.bottom > 0.0? MediaQuery.of(context).size.height/1.3:MediaQuery.of(context).size.height,
           margin: EdgeInsets.only(top: 80),
           decoration: const BoxDecoration(
             boxShadow: [

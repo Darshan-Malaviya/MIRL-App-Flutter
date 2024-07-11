@@ -16,6 +16,9 @@ class ApiConstants {
     }
   }
 
+  static const String mirlBasePath ='https://mirl.com';
+  static const String termsConditions = '$mirlBasePath/terms';
+  static const String privacyPolicy = '$mirlBasePath/privacy';
   static const String scheme = 'https';
   static const String devHost = 'dev-api.mirl.com';
   static const String prodHost = 'api.mirl.com';

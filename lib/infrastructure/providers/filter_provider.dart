@@ -403,14 +403,14 @@ class FilterProvider extends ChangeNotifier {
     _allTopic.forEach((element) {
       if (element.isCategorySelected ?? false) {
         _selectedTopicList?.add(CategoryIdNameCommonModel(
-            isCategorySelected: true, name: element.name ?? '', id: element.id ?? 0, image: element.image));
+            isCategorySelected: true, name: element.name ?? '', id: element.id ?? 0, image: element.image,description: element.description));
       }
     });
     int? index = commonSelectionModel.indexWhere((element) => element.title == FilterType.Topic.name);
     String selectedTopicName = _selectedTopicList?.map((e) => e.name).join(", ") ?? '';
     topicController.text = selectedTopicName;
     if (index == -1) {
-      commonSelectionModel.add(CommonSelectionModel(title: FilterType.Topic.name, value: selectedTopicName,displayText: FilterType.Topic.name),);
+        commonSelectionModel.add(CommonSelectionModel(title: FilterType.Topic.name, value: selectedTopicName,displayText: FilterType.Topic.name),);
     } else {
       if (selectedTopicName.isNotEmpty) {
         commonSelectionModel[index].value = selectedTopicName;
@@ -449,7 +449,9 @@ class FilterProvider extends ChangeNotifier {
         name: _singleCategoryData?.categoryData?.name.toString() ?? '',
         isCategorySelected: true,
         id: _singleCategoryData?.categoryData?.id,
-        image: _singleCategoryData?.categoryData?.image);
+        image: _singleCategoryData?.categoryData?.image,
+      description: _singleCategoryData?.categoryData?.description
+    );
     categoryController.text = selectedCategory?.name ?? '';
    /* if (index == -1) {
       commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: selectedCategory?.name ?? ''));
@@ -804,7 +806,7 @@ class FilterProvider extends ChangeNotifier {
     }
     ExpertDataRequestModel data = ExpertDataRequestModel(
       page: _exploreExpertPageNo.toString(),
-      limit: '10',
+      limit: '20',
       search: exploreExpertController.text.isNotEmpty ? exploreExpertController.text : null,
       city: requestModel?.city,
       country: requestModel?.country,

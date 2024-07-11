@@ -73,5 +73,6 @@ class ImageConstants {
   /// json
   // static const splashScreen = '${rawPath}splash_screen.json';
   static const mirlJson = '${rawPath}mirl_json.json';
+  static const splashScreen = '${rawPath}splash.json';
   static const mirlSplashScreenJson = '${rawPath}mirl_splash_screen.json';
 }
