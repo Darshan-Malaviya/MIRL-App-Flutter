@@ -104,6 +104,8 @@ dependencies:
   flutter_callkit_incoming: ^2.0.1+2
   socket_io_client: ^2.0.3+1
 
+  app_links: ^6.1.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
