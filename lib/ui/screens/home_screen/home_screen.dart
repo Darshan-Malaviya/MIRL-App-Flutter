@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   ScrollController scrollController = ScrollController();
+  AppLinks _applinks = AppLinks();
 
   @override
   void initState() {
@@ -29,6 +31,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
     });
     super.initState();
+  }
+
+  Future<void> initiateAppLinks() async {
+    _applinks.uriLinkStream.listen((uri){
+      String path = uri.path;
+      Map<String, String> queryParameters = uri.queryParameters;
+      if(path == "/share" && queryParameters['referralCode'] != null && queryParameters['referralCode']!.isNotEmpty){
+        // navigate to referral programme screen
+        String referralCode = queryParameters['referralCode']!;
+      }
+    });
   }
 
   @override
