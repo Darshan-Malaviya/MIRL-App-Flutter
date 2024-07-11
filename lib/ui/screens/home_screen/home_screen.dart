@@ -10,8 +10,12 @@ import 'package:mirl/ui/screens/home_screen/widget/favorite_experts_view.dart';
 import 'package:mirl/ui/screens/home_screen/widget/past_conversation_view.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
- //final ScrollController scrollController;
-   HomeScreen({super.key, required this.context, /*required this.scrollController*/});
+  //final ScrollController scrollController;
+  HomeScreen({
+    super.key,
+    required this.context,
+    /*required this.scrollController*/
+  });
   final BuildContext context;
 
   @override
@@ -31,16 +35,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       instanceRequestTimerNotifier = ValueNotifier<int>(120);
       instanceCallEnumNotifier = ValueNotifier<CallRequestTypeEnum>(CallRequestTypeEnum.callRequest);
     });
+    // Future.delayed(Duration(seconds: 2)).then((value) {
+    //   context.toPushNamed(RoutesConstants.mirlConnectScreen, args: "hello");
+    // });
     super.initState();
   }
 
   Future<void> initiateAppLinks() async {
-    _applinks.uriLinkStream.listen((uri){
+    _applinks.uriLinkStream.listen((uri) {
       String path = uri.path;
       Map<String, String> queryParameters = uri.queryParameters;
-      if(path == "/share" && queryParameters['referralCode'] != null && queryParameters['referralCode']!.isNotEmpty){
+      if (path == "/share" && queryParameters['referralCode'] != null && queryParameters['referralCode']!.isNotEmpty) {
         // navigate to referral programme screen
         String referralCode = queryParameters['referralCode']!;
+        Future.delayed(Duration(seconds: 2)).then((value) {
+          context.toPushNamed(RoutesConstants.mirlConnectScreen, args: referralCode);
+        });
       }
     });
   }
@@ -63,12 +73,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             appBarColor: ColorConstants.greyLightColor,
             preferSize: 0,
           ),
-          body: SingleChildScrollView(controller: scrollController,
+          body: SingleChildScrollView(
+            controller: scrollController,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                   onTap: () => context.toPushNamed(RoutesConstants.searchScreen),
+                  onTap: () => context.toPushNamed(RoutesConstants.searchScreen),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -95,7 +106,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => ExploreExpertScreen(isFromHomePage: false,),allowSnapshotting: false));
                           //  context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
                           // Navigator.pushNamed(context,RoutesConstants.exploreExpertScreen, arguments: false);
-                           NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 1);
+                          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 1);
                         },
                         child: Container(
                             height: 178,
@@ -136,7 +147,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     40.0.spaceX,
                     Flexible(
                       child: GestureDetector(
-                         onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
+                        onTap: () => context.toPushNamed(RoutesConstants.multiConnectScreen),
                         // onTap: (){
                         //   Navigator.push(
                         //     context,

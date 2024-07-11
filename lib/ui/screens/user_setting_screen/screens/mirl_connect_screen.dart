@@ -9,7 +9,9 @@ import '../widget/get_your_own_mirl_connect_code_widget.dart';
 import '../widget/your_mirl_connect_code_widget.dart';
 
 class MirlConnectScreen extends ConsumerStatefulWidget {
-  const MirlConnectScreen({super.key});
+  final String? args;
+
+  const MirlConnectScreen({super.key, this.args});
 
   @override
   ConsumerState<MirlConnectScreen> createState() => _MirlConnectScreenState();
@@ -24,11 +26,20 @@ class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
     mirlConnectView.value = 0;
     // bool isReferralDone =
     //     SharedPrefHelper.getBool(StorageConstants.isReferralDone);
-    String isAvailableReferralCode= SharedPrefHelper.getString(StorageConstants.myReferralCode);
-    if (isAvailableReferralCode!="") {
+    String isAvailableReferralCode = SharedPrefHelper.getString(StorageConstants.myReferralCode);
+    if (isAvailableReferralCode != "") {
       mirlConnectView.value = 2;
     } else {
-      mirlConnectView.value = 0;
+      if (widget.args != null) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          final mirlConnectWatch = ref.watch(mirlConnectProvider);
+          mirlConnectWatch.friendReferralCodeController.clear();
+          mirlConnectWatch.friendReferralCodeController.text = widget.args!;
+          mirlConnectView.value = 1;
+        });
+      } else {
+        mirlConnectView.value = 0;
+      }
     }
   }
 
@@ -51,8 +62,7 @@ class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
                   Align(
                     alignment: AlignmentDirectional.topStart,
                     child: InkWell(
-                      child: Image.asset(ImageConstants.backIcon,
-                          color: Colors.white),
+                      child: Image.asset(ImageConstants.backIcon, color: Colors.white),
                       onTap: () => context.toPop(),
                     ),
                   ).addMarginXY(marginX: 20, marginY: 40),
@@ -63,9 +73,7 @@ class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: ColorConstants.whiteColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
@@ -81,8 +89,7 @@ class _MirlConnectScreenState extends ConsumerState<MirlConnectScreen> {
                               Shadow(
                                 offset: Offset(0, 1),
                                 blurRadius: 4,
-                                color: ColorConstants.mirlConnectShadowColor
-                                    .withOpacity(0.50),
+                                color: ColorConstants.mirlConnectShadowColor.withOpacity(0.50),
                               ),
                             ],
                           ),

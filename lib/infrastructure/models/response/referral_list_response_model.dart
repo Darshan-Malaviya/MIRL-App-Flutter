@@ -78,25 +78,69 @@ class Data {
 
 class Reflist {
   int? refAmount;
-  String? vilidity;
+  String? validity;
   User? user;
+  double? monthlyReferralEarnings;
+  double? lifetimeReferralEarnings;
 
   Reflist({
     this.refAmount,
-    this.vilidity,
+    this.validity,
     this.user,
+    this.monthlyReferralEarnings,
+    this.lifetimeReferralEarnings,
   });
+
+  factory Reflist.fromRawJson(String str) => Reflist.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory Reflist.fromJson(Map<String, dynamic> json) => Reflist(
         refAmount: json["ref_amount"],
-        vilidity: json["vilidity"],
+        validity: json["validity"],
         user: json["user"] == null ? null : User.fromJson(json["user"]),
+        monthlyReferralEarnings: json["monthly_referral_earnings"]?.toDouble(),
+        lifetimeReferralEarnings: json["lifetime_referral_earnings"]?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
         "ref_amount": refAmount,
-        "vilidity": vilidity,
+        "validity": validity,
         "user": user?.toJson(),
+        "monthly_referral_earnings": monthlyReferralEarnings,
+        "lifetime_referral_earnings": lifetimeReferralEarnings,
+      };
+}
+
+class User {
+  String? mirlId;
+  String? email;
+  String? userName;
+  DateTime? referralDateAt;
+
+  User({
+    this.mirlId,
+    this.email,
+    this.userName,
+    this.referralDateAt,
+  });
+
+  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        mirlId: json["mirlId"],
+        email: json["email"],
+        userName: json["userName"],
+        referralDateAt: json["referral_date_at"] == null ? null : DateTime.parse(json["referral_date_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "mirlId": mirlId,
+        "email": email,
+        "userName": userName,
+        "referral_date_at": referralDateAt?.toIso8601String(),
       };
 }
 
@@ -137,34 +181,6 @@ class Pagination {
         "pageCount": pageCount,
         "previousPage": previousPage,
         "nextPage": nextPage,
-      };
-}
-
-class User {
-  String? mirlId;
-  String? email;
-  dynamic userName;
-  DateTime? referralDateAt;
-
-  User({
-    this.mirlId,
-    this.email,
-    this.userName,
-    this.referralDateAt,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        mirlId: json["mirlId"],
-        email: json["email"],
-        userName: json["userName"],
-        referralDateAt: json["referral_date_at"] == null ? null : DateTime.parse(json["referral_date_at"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "mirlId": mirlId,
-        "email": email,
-        "userName": userName,
-        "referral_date_at": referralDateAt?.toIso8601String(),
       };
 }
 
