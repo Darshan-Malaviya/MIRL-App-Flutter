@@ -398,6 +398,21 @@
   "sourceLinkHint": "SOURCE URL/LINK",
   "pleaseEnterValidUrl": "Please enter a valid URL",
   "userNameOverLoaded": "Username overload! Trim to 15, pretty please?",
-  "pickUpTheDate": "Please pick a date to start!"
-
+  "pickUpTheDate": "Please pick a date to start!",
+  "inviteWhatsapp": "INVITE VIA WHATSAPP",
+  "shareInviteLink": "SHARE YOUR INVITE LINK",
+  "myReferralDashboard": "MY REFERRAL DASHBOARD",
+  "referralDashboard": "REFERRAL DASHBOARD",
+  "yourReferralEarning": "YOUR REFERRAL EARNINGS",
+  "youHaveNoAnyReferral": "YOU HAVEN'T MADE ANY REFERRALS YET.",
+  "monthlyReferralEarning": "MONTHLY REFERRAL EARNINGS",
+  "yearlyReferralEarning": "YEARLY REFERRAL EARNINGS",
+  "unlockAdvancedDashboard": "UNLOCK ADVANCED DASHBOARD",
+  "yourReferrals": "YOUR REFERRALS",
+  "inviteMoreFriends": "Invite 10 or more friends to activate your dashboard with full referral details and earnings!",
+  "okay": "OKAY",
+  "advancedDashboardAccess": "Advanced Dashboard Access",
+  "codeGenerated": "Referral code request sent",
+  "awesomeYouAreIn": "Awesome, you’re in! Your unique referral code will be sent to your email ID within 24 hours",
+  "pleaseEnterReferralCode": "Please enter referral code"
 }

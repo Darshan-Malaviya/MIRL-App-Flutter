@@ -476,7 +476,7 @@ class TitleLargeText extends StatelessWidget {
       this.fontHeight,
       this.lineHeight,
       this.fontFamily,
-      this.isUnderline = false})
+      this.isUnderline = false,this.shadow,})
       : super(key: key);
 
   final String title;
@@ -492,6 +492,7 @@ class TitleLargeText extends StatelessWidget {
   final bool? isUnderline;
   final String? fontFamily;
   final double? lineHeight;
+  final List<Shadow>? shadow;
 
   @override
   Widget build(BuildContext context) {
@@ -506,6 +507,7 @@ class TitleLargeText extends StatelessWidget {
             letterSpacing: -0.1,
             fontFamily: fontFamily,
             fontSize: fontSize,
+          shadows: shadow
           ),
       textAlign: titleTextAlign,
       maxLines: maxLine,
