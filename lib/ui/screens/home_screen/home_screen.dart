@@ -24,6 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   void initState() {
+    initiateAppLinks();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
       ref.read(homeProvider).homePageApi();
