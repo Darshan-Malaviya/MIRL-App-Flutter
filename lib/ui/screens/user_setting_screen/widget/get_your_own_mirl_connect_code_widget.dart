@@ -13,6 +13,9 @@ class GetYourOwnMirlConnectCodeWidget extends ConsumerStatefulWidget {
 class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirlConnectCodeWidget> {
   @override
   Widget build(BuildContext context) {
+    final mirlConnectRead = ref.read(mirlConnectProvider);
+    final mirlConnectWatch = ref.watch(mirlConnectProvider);
+
     return Column(
       children: [
         40.0.spaceY,
@@ -25,6 +28,7 @@ class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirl
         ),
         20.0.spaceY,
         TextFormFieldWidget(
+          controller: mirlConnectRead.friendReferralCodeController,
           labelTextSpace: 0.0,
           borderWidth: 1,
           onTap: () {},
@@ -41,7 +45,14 @@ class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirl
           buttonColor: ColorConstants.primaryColor,
           title: LocaleKeys.mirlConnectCode.tr(),
           titleColor: ColorConstants.textColor,
-          onPressed: () => mirlConnectView.value = 2,
+          isLoading: mirlConnectWatch.isSubmitLoading,
+          onPressed:  () {
+            if(mirlConnectRead.friendReferralCodeController.text.isNotEmpty){
+              mirlConnectRead.submitReferralCodeApiCall(context: context,friendReferralCode:mirlConnectRead.friendReferralCodeController.text);
+            }else{
+              FlutterToast().showToast(msg: LocaleKeys.pleaseEnterReferralCode.tr(),);
+            }
+          },
         ),
         40.0.spaceY,
         LabelSmallText(
@@ -52,34 +63,63 @@ class _GetYourOwnMirlConnectCodeWidgetState extends ConsumerState<GetYourOwnMirl
           fontSize: 10,
         ),
         60.0.spaceY,
-        // TitleSmallText(
-        //   fontFamily: FontWeightEnum.w500.toInter,
-        //   title: LocaleKeys.referralCode.tr(),
-        //   titleColor: ColorConstants.blackColor,
-        //   titleTextAlign: TextAlign.center,
-        //   maxLine: 10,
-        // ),
         RichText(
-          softWrap: true,
-          textAlign: TextAlign.center,
           text: TextSpan(
-            text: LocaleKeys.referralCode.tr(),
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: ColorConstants.blackColor, fontFamily: FontWeightEnum.w500.toInter),
-            children: [
-              WidgetSpan(child: 2.0.spaceX),
+            text: LocaleKeys.referralCode.tr().split("Click")[0],
+            style: TextStyle(fontFamily: FontWeightEnum.w500.toInter, color: ColorConstants.blackColor),
+            children: <TextSpan>[
               TextSpan(
-                text: LocaleKeys.referral.tr(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: ColorConstants.bottomTextColor, fontFamily: FontWeightEnum.w500.toInter),
+                text: LocaleKeys.referralCode.tr().split("?")[1],
+                style: TextStyle(color: ColorConstants.bottomTextColor,),
+                recognizer: TapGestureRecognizer()..onTap = () {
+                  mirlConnectRead.getOwnReferralCodeApiCall(context: context).then((value) {
+                    if(value==true){
+                      // MIRL-REF-00051
+                      CommonAlertDialog.dialog(
+                          context: context,
+                          width: 300,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              BodyLargeText(
+                                title: LocaleKeys.codeGenerated.tr(),
+                                fontFamily: FontWeightEnum.w600.toInter,
+                                titleColor: ColorConstants.bottomTextColor,
+                                fontSize: 17,
+                                titleTextAlign: TextAlign.center,
+                              ),
+                              20.0.spaceY,
+                              BodyLargeText(
+                                title: LocaleKeys.awesomeYouAreIn.tr(),
+                                maxLine: 5,
+                                fontFamily: FontWeightEnum.w400.toInter,
+                                titleColor: ColorConstants.blackColor,
+                                titleTextAlign: TextAlign.center,
+                              ),
+                              30.0.spaceY,
+                              InkWell(
+                                onTap: () async {
+                                  await context.toPop();
+                                },
+                                child: Center(
+                                    child: BodyLargeText(
+                                      title: LocaleKeys.ok.tr(),
+                                      fontFamily: FontWeightEnum.w500.toInter,
+                                      titleColor: ColorConstants.bottomTextColor,
+                                      fontSize: 17,
+                                      titleTextAlign: TextAlign.center,
+                                    )).addMarginTop(20),
+                              )
+                            ],
+                          ));
+                    }
+                  },);
+                },
               ),
             ],
           ),
         ),
+        40.0.spaceY,
       ],
     );
   }

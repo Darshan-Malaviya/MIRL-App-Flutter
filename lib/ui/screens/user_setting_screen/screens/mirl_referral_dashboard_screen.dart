@@ -25,10 +25,9 @@ class _MirlReferralDashboardScreenState
   void initState() {
     // TODO: implement initState
     super.initState();
-    final mirlConnectRead = ref.read(mirlConnectProvider);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await mirlConnectRead.referralListApiCall(context: context);
+      await ref.read(mirlConnectProvider).referralListApiCall(context: context);
     });
     _scrollController.addListener(_onScroll);
   }
@@ -51,7 +50,7 @@ class _MirlReferralDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
-    final mirlConnectRead = ref.read(mirlConnectProvider);
+    final mirlConnectWatch = ref.watch(mirlConnectProvider);
 
     return Scaffold(
       backgroundColor: ColorConstants.purpleDarkColor,
@@ -81,7 +80,7 @@ class _MirlReferralDashboardScreenState
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20)),
               ),
-              child: mirlConnectRead.isListLoading == true
+              child: mirlConnectWatch.isListLoading == true
                   ? SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.7,
                       width: double.infinity,
@@ -124,8 +123,8 @@ class _MirlReferralDashboardScreenState
                           ),
                         ),
                         20.0.spaceY,
-                        mirlConnectRead.isListLoading == false &&
-                                mirlConnectRead
+                        mirlConnectWatch.isListLoading == false &&
+                                mirlConnectWatch
                                         .responseModel.data?.reflist?.length ==
                                     0
                             ? SizedBox(
@@ -163,24 +162,24 @@ class _MirlReferralDashboardScreenState
                                   ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: mirlConnectRead.responseModel
+                                    itemCount: mirlConnectWatch.responseModel
                                             .data?.totalAllTime?.length ??
                                         0,
                                     itemBuilder: (context, index) {
                                       return ReferralEarningsWidget(
-                                        title: mirlConnectRead
+                                        title: mirlConnectWatch
                                                 .responseModel
                                                 .data
                                                 ?.totalAllTime?[index]
                                                 .title ??
                                             "",
                                         earnings:
-                                            "\$${mirlConnectRead.responseModel.data?.totalAllTime?[index].value ?? 0.0}",
+                                            "\$${mirlConnectWatch.responseModel.data?.totalAllTime?[index].value ?? 0.0}",
                                       );
                                     },
                                   ),
                                   Visibility(
-                                    visible: !(mirlConnectRead.responseModel
+                                    visible: !(mirlConnectWatch.responseModel
                                             .data?.isAdvanceStatus ==
                                         true),
                                     child: PrimaryButton(
@@ -191,7 +190,7 @@ class _MirlReferralDashboardScreenState
                                           .tr(),
                                       titleColor: ColorConstants.textColor,
                                       onPressed: () {
-                                        if (mirlConnectRead.responseModel.data
+                                        if (mirlConnectWatch.responseModel.data
                                                 ?.isAdvanceStatus ==
                                             false) {
                                           //show Advanced Dashboard Access dialog
@@ -266,22 +265,22 @@ class _MirlReferralDashboardScreenState
                                   ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: mirlConnectRead.responseModel
+                                    itemCount: mirlConnectWatch.responseModel
                                                 .data?.isAdvanceStatus ==
                                             true
-                                        ? mirlConnectRead.responseModel.data
+                                        ? mirlConnectWatch.responseModel.data
                                                 ?.reflist?.length ??
                                             0
-                                        : (mirlConnectRead.responseModel.data
+                                        : (mirlConnectWatch.responseModel.data
                                                         ?.reflist?.length ??
                                                     0) <
                                                 10
-                                            ? mirlConnectRead.responseModel.data
+                                            ? mirlConnectWatch.responseModel.data
                                                     ?.reflist?.length ??
                                                 0
                                             : 10,
                                     itemBuilder: (context, index) {
-                                      final refData = mirlConnectRead
+                                      final refData = mirlConnectWatch
                                           .responseModel.data?.reflist?[index];
                                       print(refData?.user?.referralDateAt);
                                       return Container(
@@ -387,7 +386,7 @@ class _MirlReferralDashboardScreenState
                                               ],
                                             ),
                                             Visibility(
-                                              visible: mirlConnectRead
+                                              visible: mirlConnectWatch
                                                       .responseModel
                                                       .data
                                                       ?.isAdvanceStatus ??
@@ -433,7 +432,7 @@ class _MirlReferralDashboardScreenState
                                       );
                                     },
                                   ),
-                                  if (mirlConnectRead.isListLoading==true)
+                                  if (mirlConnectWatch.isListLoading==true)
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Center(

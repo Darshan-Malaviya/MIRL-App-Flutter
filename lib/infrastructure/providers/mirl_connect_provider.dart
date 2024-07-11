@@ -1,9 +1,9 @@
 import 'package:logger/logger.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:mirl/infrastructure/models/response/referral_list_response_model.dart';
 import 'package:mirl/infrastructure/models/response/get_your_own_referral_code_model.dart';
 
 import '../commons/constants/storage_constants.dart';
+import '../models/response/referral_list_response_model.dart';
 import '../models/response/submit_referral_code_response_model.dart';
 import '../repository/mirl_connect_repo.dart';
 

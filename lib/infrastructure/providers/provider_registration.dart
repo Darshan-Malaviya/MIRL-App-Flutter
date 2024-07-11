@@ -48,4 +48,3 @@ final suggestNewExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => Su
 final callHistoryProvider = ChangeNotifierProvider.autoDispose((_) => CallHistoryProvider());
 final selectedTopicProvider = ChangeNotifierProvider.autoDispose((_) => SelectedTopicProvider());
 final mirlConnectProvider = ChangeNotifierProvider.autoDispose((_) => MIRLConnectProvider());
-

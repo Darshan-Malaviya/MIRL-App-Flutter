@@ -231,7 +231,6 @@
   "turnConnections": "MIRL Connect is your chance to turn connections into cash! Invite friends to MIRL and receive a 5% commission from their earnings for five full years. And your friends don’t lose a cent! This is on us - it’s our way of saying thank you!",
   "friendReferralCode": "Enter your friend’s referral code",
   "mirlConnectCode": "GET YOUR OWN MIRL CONNECT CODE",
-  "referralCode": "No one referred you here?",
   "referral": "Click here to get your very own referral code within 24 hours!",
   "mirlMagic": "Share the MIRL Magic!",
   "yourMirlConnectCode": "YOUR MIRL CONNECT CODE",
@@ -414,5 +413,6 @@
   "advancedDashboardAccess": "Advanced Dashboard Access",
   "codeGenerated": "Referral code request sent",
   "awesomeYouAreIn": "Awesome, you’re in! Your unique referral code will be sent to your email ID within 24 hours",
-  "pleaseEnterReferralCode": "Please enter referral code"
+  "pleaseEnterReferralCode": "Please enter referral code",
+  "referralCode": "No one referred you here? Click here to get your very own referral code within 24 hours!"
 }
