@@ -38,7 +38,6 @@ import 'package:mirl/ui/screens/expert_detail/expert_detail_screen.dart';
 import 'package:mirl/ui/screens/expert_detail/report_expert_screen.dart';
 import 'package:mirl/ui/screens/expert_profile_screen/expert_profile_screen.dart';
 import 'package:mirl/ui/screens/explore_expert_screen/explore_expert_screen.dart';
-import 'package:mirl/ui/screens/explore_screen%20/explore_screen.dart';
 import 'package:mirl/ui/screens/filter_screen/expert_category_filter.dart';
 import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/home_screen/home_screen.dart';
@@ -78,6 +77,7 @@ import 'package:mirl/ui/screens/user_setting_screen/user_seeting_screen.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
+import '../../../ui/screens/explore_screen/explore_screen.dart';
 import '../../../ui/screens/user_setting_screen/screens/edit_your_email_id_screen.dart';
 
 ///use this service for provide global context to widgets
