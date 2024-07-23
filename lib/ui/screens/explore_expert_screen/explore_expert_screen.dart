@@ -14,28 +14,31 @@ class ExploreExpertScreen extends ConsumerStatefulWidget {
   final bool isFromHomePage;
   /*final ScrollController scrollController;*/
 
-  const ExploreExpertScreen({super.key, required this.isFromHomePage/*,required this.scrollController*/});
+  const ExploreExpertScreen(
+      {super.key,
+      required this.isFromHomePage /*,required this.scrollController*/});
 
   @override
-  ConsumerState<ExploreExpertScreen> createState() => _ExploreExpertScreenState();
+  ConsumerState<ExploreExpertScreen> createState() =>
+      _ExploreExpertScreenState();
 }
 
 class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
   ScrollController scrollController = ScrollController();
 
-
   @override
   void initState() {
-
     print("ON INIT CALLED");
 
     super.initState();
     onInit();
     scrollController.addListener(() async {
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(filterProvider).reachedExploreExpertLastPage;
         if (!isLoading) {
-          await ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isPaginating: true);
+          await ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(
+              context: context, isPaginating: true);
         } else {
           log('reach last page on explore export data list api');
         }
@@ -47,7 +50,8 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(filterProvider).clearExploreExpertSearchData();
       ref.read(filterProvider).clearExploreController();
-      ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
+      ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(
+          context: context, clearFilter: true);
     });
   }
 
@@ -71,7 +75,6 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
             preferSize: 0,
           ),
           body: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               16.0.spaceY,
               Row(

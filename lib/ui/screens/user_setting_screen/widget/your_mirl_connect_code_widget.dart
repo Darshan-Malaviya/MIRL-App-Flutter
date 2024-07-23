@@ -77,12 +77,22 @@ class _YourMirlConnectCodeWidgetState extends ConsumerState<YourMirlConnectCodeW
           maxLine: 10,
         ),
         20.0.spaceY,
-        LabelSmallText(
-          title: LocaleKeys.inaugural.tr(),
-          titleColor: ColorConstants.primaryColor,
-          titleTextAlign: TextAlign.center,
-          maxLine: 2,
-          fontSize: 10,
+        GestureDetector(
+          onTap: () async {
+            if (!await launchUrl(
+              Uri.parse(ApiConstants.connect),
+              mode: LaunchMode.inAppBrowserView,
+              browserConfiguration: const BrowserConfiguration(showTitle: true),
+            )
+            );
+          },
+          child: LabelSmallText(
+            title: LocaleKeys.inaugural.tr(),
+            titleColor: ColorConstants.primaryColor,
+            titleTextAlign: TextAlign.center,
+            maxLine: 2,
+            fontSize: 10,
+          ),
         ),
         20.0.spaceY,
         PrimaryButton(

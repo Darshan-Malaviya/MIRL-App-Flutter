@@ -195,7 +195,8 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   //       ),
                   //     ),
                   //   ),
-                  // ),        // SliverAppBar(
+                  // ),
+                  // SliverAppBar(
                   //   actions:  [
                   //     Align(
                   //       alignment: AlignmentDirectional.topEnd,
@@ -261,12 +262,33 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                   // ),
 
                   SliverAppBar(
-                    stretch: true,
+                    stretch: false,
                     backgroundColor: ColorConstants.whiteColor,
                     pinned: true,
                     surfaceTintColor: ColorConstants.whiteColor,
                     expandedHeight: 400.0,
                       leading: SizedBox.shrink(),
+                    actions:  [
+                      Align(
+                        alignment: AlignmentDirectional.topEnd,
+                        child: InkWell(
+                          onTap: () async {
+                            await expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
+                            ref.read(homeProvider).manageFavoriteUserList(
+                              expertId: expertDetailWatch.userData?.id ?? 0,
+                              expertName: expertDetailWatch.userData?.expertName ?? '',
+                              expertProfile: expertDetailWatch.userData?.expertProfile ?? '',
+                              isFavorite: expertDetailWatch.userData?.isFavorite ?? false,
+                            );
+                          },
+                          child: Image.asset(
+                            expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
+                            height: 40,
+                            width: 40,
+                          ),
+                        ),
+                      ).addAllPadding(12),
+                    ],
                     bottom: PreferredSize(
                       preferredSize: const Size.fromHeight(100.0),
                       child: Container(padding: EdgeInsets.all(20),

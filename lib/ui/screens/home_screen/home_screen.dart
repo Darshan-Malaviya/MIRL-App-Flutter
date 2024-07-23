@@ -104,9 +104,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: GestureDetector(
                         onTap: () {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => ExploreExpertScreen(isFromHomePage: false,),allowSnapshotting: false));
-                          //  context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
+                           context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
                           // Navigator.pushNamed(context,RoutesConstants.exploreExpertScreen, arguments: false);
-                          NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 1);
+                          // NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 1);
                         },
                         child: Container(
                             height: 178,
@@ -171,7 +171,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               children: [
                                 BodySmallText(
                                   title: LocaleKeys.multipleConnect.tr().toUpperCase(),
-                                  maxLine: 2,
+                                  maxLine: 1,
                                   titleTextAlign: TextAlign.center,
                                 ),
                                 10.0.spaceY,

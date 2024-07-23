@@ -56,12 +56,12 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
             children: [
               CustomScrollView(
                 controller: scrollController,
-                 physics: const AlwaysScrollableScrollPhysics(),
+                 physics: const BouncingScrollPhysics(),
                 slivers: [
                   SliverAppBar(
-                    stretch: true,
+                    pinned: true,
+                    stretch: false,
                     backgroundColor: ColorConstants.whiteColor,
-                     pinned: true,
                     surfaceTintColor: ColorConstants.whiteColor,
                     expandedHeight: 400.0,
                     bottom: PreferredSize(

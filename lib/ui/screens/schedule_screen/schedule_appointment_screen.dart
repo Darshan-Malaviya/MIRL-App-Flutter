@@ -32,7 +32,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
         children: [
           CustomScrollView(
             controller: scrollController,
-            physics: const BouncingScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverAppBar(
                 stretch: true,
@@ -56,7 +56,7 @@ class _ScheduleAppointmentScreenState extends ConsumerState<ScheduleAppointmentS
                       ),
                     ),
                     child: HeadlineMediumText(
-                      title: scheduleWatch.expertData?.expertName?.toUpperCase() ?? '',
+                      title: scheduleWatch.expertData?.expertName ?? '',
                       fontSize: 30,
                       titleColor: ColorConstants.bottomTextColor,
                       titleTextAlign: TextAlign.center,
