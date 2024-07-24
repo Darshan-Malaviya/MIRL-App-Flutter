@@ -14,35 +14,45 @@ class ExploreExpertScreen extends ConsumerStatefulWidget {
   final bool isFromHomePage;
   /*final ScrollController scrollController;*/
 
-  const ExploreExpertScreen({super.key, required this.isFromHomePage/*,required this.scrollController*/});
+  const ExploreExpertScreen(
+      {super.key,
+      required this.isFromHomePage /*,required this.scrollController*/});
 
   @override
-  ConsumerState<ExploreExpertScreen> createState() => _ExploreExpertScreenState();
+  ConsumerState<ExploreExpertScreen> createState() =>
+      _ExploreExpertScreenState();
 }
 
 class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
   ScrollController scrollController = ScrollController();
 
-
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(filterProvider).clearExploreExpertSearchData();
-      ref.read(filterProvider).clearExploreController();
-      ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
-    });
+    print("ON INIT CALLED");
 
+    super.initState();
+    onInit();
     scrollController.addListener(() async {
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(filterProvider).reachedExploreExpertLastPage;
         if (!isLoading) {
-          await ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, isPaginating: true);
+          await ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(
+              context: context, isPaginating: true);
         } else {
           log('reach last page on explore export data list api');
         }
       }
     });
-    super.initState();
+  }
+
+  void onInit() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(filterProvider).clearExploreExpertSearchData();
+      ref.read(filterProvider).clearExploreController();
+      ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(
+          context: context, clearFilter: true);
+    });
   }
 
   @override
@@ -65,7 +75,6 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
             preferSize: 0,
           ),
           body: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               16.0.spaceY,
               Row(
@@ -113,10 +122,12 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                 ],
               ).addMarginX(20)/*addMarginXY(marginX: 20, marginY: 10)*/,
               if (filterProviderWatch.isLoading) ...[
-                Center(
-                  child: SpinKitChasingDots(
-                    color: ColorConstants.primaryColor,
-                    size: 50.0,
+                Expanded(
+                  child: Center(
+                    child: SpinKitChasingDots(
+                      color: ColorConstants.primaryColor,
+                      size: 50.0,
+                    ),
                   ),
                 )
                 //     child: CupertinoActivityIndicator(

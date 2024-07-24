@@ -58,6 +58,7 @@ class ImageConstants {
   static const mirlLoginIconNew = '${imagePath}mirl_logo_icon_new.png';
   static const blockedUser = '${imagePath}blocked_user.png';
   static const myMirlImage = '${imagePath}my_stery_mirl_image.png';
+  static const mysteryImage = 'https://i.postimg.cc/bvsTZvq7/Mystery-MIRL-Image.png';
 
   /// gif image
   static const splashImages = '${gifPath}spalsh.gif';
@@ -73,5 +74,6 @@ class ImageConstants {
   /// json
   // static const splashScreen = '${rawPath}splash_screen.json';
   static const mirlJson = '${rawPath}mirl_json.json';
+  static const splashScreen = '${rawPath}splash.json';
   static const mirlSplashScreenJson = '${rawPath}mirl_splash_screen.json';
 }

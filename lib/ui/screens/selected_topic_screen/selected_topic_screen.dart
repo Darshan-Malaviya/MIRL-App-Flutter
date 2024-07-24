@@ -178,6 +178,7 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                     TitleLargeText(
                       title: widget.args.topicName != null ? widget.args.topicName ?? '' : widget.args.categoryName ?? '',
                       titleTextAlign: TextAlign.center,
+                      fontFamily: FontWeightEnum.w700.toInter,
                       maxLine: 5,
                     ).addMarginX(20),
                     if (selectedTopicWatch.categoryList?.expertData?.isNotEmpty ?? false) ...[

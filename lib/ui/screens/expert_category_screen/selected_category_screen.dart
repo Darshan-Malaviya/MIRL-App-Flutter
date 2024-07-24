@@ -236,44 +236,40 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                           ),
                           5.0.spaceY,
                           if (filterProviderWatch.selectedTopicList?.isNotEmpty ?? false) ...[
-                            Wrap(
+                            Column(
                               children: List.generate(filterProviderWatch.selectedTopicList?.length ?? 0, (index) {
-                                return ListTile(
-                                    dense:true,
-                                    contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-                                    visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                                    title:
-                                      Center(
-                                        child:   BodyMediumText(
-                                          title: '${filterProviderWatch.selectedTopicList?[index].name.toString()},',
-                                          maxLine: 10,
-                                        ).addPaddingX(4),
-                                      )
-                                );                              //   Column(
-                                //   children: [
-                                //     BodyMediumText(
-                                //       title: '${filterProviderWatch.selectedTopicList?[index].name.toString()},',
-                                //       maxLine: 10,
-                                //     ).addPaddingX(4),
-                                //     // BodyMediumText(
-                                //     //   title: StringConstants.descriptionText,
-                                //     //   fontFamily: FontWeightEnum.w400.toInter,
-                                //     //   maxLine: 5,
-                                //     //   titleTextAlign: TextAlign.center,
-                                //     // ).addPaddingX(20),
-                                //   ],
-                                // );
+                                return
+                                  Column(
+                                  children: [
+                                    BodyMediumText(
+                                      title: '${filterProviderWatch.selectedTopicList?[index].name.toString()},',
+                                      maxLine: 10,
+                                    ).addPaddingX(4),
+                                    BodyMediumText(
+                                      title:filterProviderWatch.selectedTopicList?[index].description?? StringConstants.descriptionText,
+                                      fontFamily: FontWeightEnum.w400.toInter,
+                                      maxLine: 5,
+                                      titleTextAlign: TextAlign.center,
+                                    ).addPaddingX(20),
+                                  ],
+                                );
                               }),
                             ),
                             10.0.spaceY,
-                          ]
+                          ]else
+                            BodyMediumText(
+                              title:StringConstants.descriptionText,
+                              fontFamily: FontWeightEnum.w400.toInter,
+                              maxLine: 5,
+                              titleTextAlign: TextAlign.center,
+                            ).addPaddingX(20),
                         ],
-                        BodyMediumText(
-                          title: StringConstants.descriptionText,
-                          fontFamily: FontWeightEnum.w400.toInter,
-                          maxLine: 5,
-                          titleTextAlign: TextAlign.center,
-                        ).addPaddingX(20),
+                        // BodyMediumText(
+                        //   title: StringConstants.descriptionText,
+                        //   fontFamily: FontWeightEnum.w400.toInter,
+                        //   maxLine: 5,
+                        //   titleTextAlign: TextAlign.center,
+                        // ).addPaddingX(20),
                         20.0.spaceY,
                         PrimaryButton(
                           title: StringConstants.filterExpertCategory,

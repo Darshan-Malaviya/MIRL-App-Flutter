@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ActivateYourMirlConnectCodeWidget extends ConsumerStatefulWidget {
   const ActivateYourMirlConnectCodeWidget({super.key});
@@ -46,12 +47,22 @@ class _ActivateYourMirlConnectCodeWidgetState extends ConsumerState<ActivateYour
           maxLine: 10,
         ),
         40.0.spaceY,
-        LabelSmallText(
-          title: LocaleKeys.inaugural.tr(),
-          titleColor: ColorConstants.primaryColor,
-          titleTextAlign: TextAlign.center,
-          maxLine: 2,
-          fontSize: 10,
+        GestureDetector(
+          onTap: () async {
+            if (!await launchUrl(
+              Uri.parse(ApiConstants.connect),
+              mode: LaunchMode.inAppBrowserView,
+              browserConfiguration: const BrowserConfiguration(showTitle: true),
+            )
+            );
+          },
+          child: LabelSmallText(
+            title: LocaleKeys.inaugural.tr(),
+            titleColor: ColorConstants.primaryColor,
+            titleTextAlign: TextAlign.center,
+            maxLine: 2,
+            fontSize: 10,
+          ),
         ),
       ],
     );

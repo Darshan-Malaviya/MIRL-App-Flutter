@@ -26,7 +26,7 @@ class FavoriteExpertsView extends ConsumerWidget {
             if ((favoriteListNotifier.value.isNotEmpty)) ...[
               20.0.spaceY,
               SizedBox(
-                height: 130,
+                height: 135,
                 child: ListView.builder(
                     itemCount: favoriteListNotifier.value.length,
                     padding: EdgeInsets.zero,
@@ -37,10 +37,10 @@ class FavoriteExpertsView extends ConsumerWidget {
                           context.toPushNamed(RoutesConstants.expertDetailScreen, args: CallFeedBackArgs(expertId: favoriteListNotifier.value[index].id.toString(),callType: ''));
                         },
                         child: ShadowContainer(
-                            padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
+                            padding: EdgeInsets.only(bottom: 5, top: 4, left: 8, right: 8),
                             shadowColor: ColorConstants.blackColor.withOpacity(0.1),
                             width: 96,
-                            height: 120,
+                            height: 130,
                             isShadow: true,
                             offset: Offset(0, 2),
                             spreadRadius: 0,
@@ -51,7 +51,7 @@ class FavoriteExpertsView extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  height: 80,
+                                  height: 75,
                                   width: 75,
                                   child: Stack(
                                     children: [
@@ -66,13 +66,18 @@ class FavoriteExpertsView extends ConsumerWidget {
                                     ],
                                   ),
                                 ),
-                                6.0.spaceY,
-                                Flexible(
-                                  child: LabelSmallText(
-                                    fontSize: 12,
-                                    title: (favoriteListNotifier.value[index].expertName?.toCapitalizeAllWord() ?? '').toString(),
-                                    maxLine: 5,
-                                    titleTextAlign: TextAlign.center,
+                                5.0.spaceY,
+                                Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                      child: LabelSmallText(
+                                        fontSize: 13,
+                                        title: (favoriteListNotifier.value[index].expertName?.toCapitalizeAllWord() ?? '').toString(),
+                                        maxLine: 5,
+                                        titleTextAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],

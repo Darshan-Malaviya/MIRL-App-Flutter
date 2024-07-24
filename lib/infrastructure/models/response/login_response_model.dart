@@ -71,38 +71,47 @@ class UserData {
   List<AreasOfExpertise>? areaOfExpertise;
   List<RatingCriteria>? ratingCriteria;
   List<ExpertReviews>? expertReviews;
+  String? refCode;
+  DateTime? refActivateDate;
+  dynamic referralBy;
+  DateTime? referralDateAt;
 
   UserData(
       {this.id,
-      this.userName,
-      this.expertName,
-      this.mirlId,
-      this.email,
-      this.phone,
-      this.city,
-      this.about,
-      this.gender,
-      this.loginType,
-      this.country,
-      this.userProfile,
-      this.expertProfile,
-      this.fee,
-      this.instantCallAvailable,
-      this.isLocationVisible,
-      this.timezone,
-      this.isDeleted,
-      this.firstCreated,
-      this.lastModified,
-      this.activeAt,
-      this.certification,
-      this.isFavorite,
-      this.expertAvailability,
-      this.areaOfExpertise,
-      this.expertReviews,
-      this.ratingCriteria,
-      this.onlineStatus,
-      this.isAvailableForCall,
-      this.overAllRating});
+        this.userName,
+        this.expertName,
+        this.mirlId,
+        this.email,
+        this.phone,
+        this.city,
+        this.about,
+        this.gender,
+        this.loginType,
+        this.country,
+        this.userProfile,
+        this.expertProfile,
+        this.fee,
+        this.instantCallAvailable,
+        this.isLocationVisible,
+        this.timezone,
+        this.isDeleted,
+        this.firstCreated,
+        this.lastModified,
+        this.activeAt,
+        this.certification,
+        this.isFavorite,
+        this.expertAvailability,
+        this.areaOfExpertise,
+        this.expertReviews,
+        this.ratingCriteria,
+        this.onlineStatus,
+        this.overAllRating,
+        this.refCode,
+        this.refActivateDate,
+        this.referralBy,
+        this.referralDateAt,
+        this.isAvailableForCall,
+      });
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -130,6 +139,10 @@ class UserData {
     isAvailableForCall = json['isAvailableForCall'];
     isFavorite = json['isFavorite'];
     overAllRating = json['overAllRating'];
+    refCode= json["ref_code"];
+    refActivateDate= json["ref_activate_date"] == null ? null : DateTime.parse(json["ref_activate_date"]);
+    referralBy= json["referral_by"];
+    referralDateAt= json["referral_date_at"] == null ? null : DateTime.parse(json["referral_date_at"]);
     if (json['certification'] != null) {
       certification = <CertificationData>[];
       json['certification'].forEach((v) {
@@ -189,6 +202,10 @@ class UserData {
     data['onlineStatus'] = this.onlineStatus;
     data['isAvailableForCall'] = this.isAvailableForCall;
     data['overAllRating'] = this.overAllRating;
+    data['ref_code'] = this.refCode;
+    data['ref_activate_date'] = this.refActivateDate?.toIso8601String();
+    data['referral_by'] = this.referralBy;
+    data['referral_date_at'] = this.referralDateAt?.toIso8601String();
     if (this.certification != null) {
       data['certification'] = this.certification?.map((v) => v.toJson()).toList();
     }

@@ -70,4 +70,12 @@ class SharedPrefHelper {
   static String get getUserId {
     return _prefsInstance?.getString(StorageConstants.userId) ?? '';
   }
+
+  static  Future<void> saveString(String key, String value) async {
+    await _prefsInstance?.setString(key, value);
+  }
+
+  static String getString(String key) {
+    return _prefsInstance?.getString(key) ?? "";
+  }
 }

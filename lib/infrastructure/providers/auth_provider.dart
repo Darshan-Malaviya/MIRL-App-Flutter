@@ -15,6 +15,8 @@ import 'package:mirl/infrastructure/services/agora_service.dart';
 import 'package:mirl/mirl_app.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../commons/constants/storage_constants.dart';
+
 GoogleSignIn? googleSignIn = GoogleSignIn(
   clientId: Platform.isIOS ? flavorConfig?.iosClientId : "",
   // scopes: <String>['email', 'profile'],
@@ -115,6 +117,8 @@ class AuthProvider with ChangeNotifier {
             SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false) ? true : false);
             SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
             SharedPrefHelper.saveAuthToken(loginResponseModel.token);
+            await SharedPrefHelper.saveString(
+                StorageConstants.myReferralCode, loginResponseModel.data?.refCode??"");
             FlutterToast().showToast(msg: loginResponseModel.message ?? '');
             NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
           }
@@ -213,6 +217,8 @@ class AuthProvider with ChangeNotifier {
           SharedPrefHelper.saveAreaOfExpertise((loginResponseModel.data?.areaOfExpertise?.isNotEmpty ?? false) ? true : false);
           SharedPrefHelper.saveUserId(jsonEncode(loginResponseModel.data?.id));
           SharedPrefHelper.saveAuthToken(loginResponseModel.token);
+          await SharedPrefHelper.saveString(
+              StorageConstants.myReferralCode, loginResponseModel.data?.refCode??"");
           NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
           FlutterToast().showToast(msg: loginResponseModel.message ?? '');
         }

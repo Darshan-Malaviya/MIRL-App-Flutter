@@ -59,49 +59,40 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                  physics: const BouncingScrollPhysics(),
                 slivers: [
                   SliverAppBar(
-                    stretch: true,
-                    backgroundColor: ColorConstants.whiteColor,
                     pinned: true,
+                    stretch: false,
+                    backgroundColor: ColorConstants.whiteColor,
                     surfaceTintColor: ColorConstants.whiteColor,
                     expandedHeight: 400.0,
-                    flexibleSpace: FlexibleSpaceBar(
-                      stretchModes: [
-                      StretchMode.zoomBackground
-                    ],
-                      expandedTitleScale: 1.5,collapseMode: CollapseMode.pin,
-                      title: Container(padding: EdgeInsets.only(top: 14,bottom: 10),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: ColorConstants.whiteColor,
+                    bottom: PreferredSize(
+                      preferredSize: const Size.fromHeight(100.0),
+                      child: Container(padding: EdgeInsets.all(20),
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40),
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50),
                           ),
+                          color: ColorConstants.whiteColor,
                         ),
-                        child: HeadlineSmallText(
-                          title: expertWatch.isLoadedExport
-                              ? ''
-                              : expertWatch.expertName.isNotEmpty
-                                  ? expertWatch.expertName
-                                  : LocaleKeys.yourExpertName.tr(),
-                          titleColor: ColorConstants.bottomTextColor,
-                          maxLine: 2,
-                          titleTextAlign: TextAlign.center,
-                        ),
-                      ),
-                      titlePadding: EdgeInsets.zero,
-                      background: Padding(
-                        padding: EdgeInsets.only(bottom: 20),
-                        child: NetworkImageWidget(
-                          imageURL: expertWatch.pickedImage,
-                          isNetworkImage: expertWatch.pickedImage.isNotEmpty,
-                          emptyImageWidget: expertWatch.isLoadedExport
-                              ? SizedBox.shrink()
-                              : Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
-                          boxFit: BoxFit.cover,
+                        child: Center(
+                          child: HeadlineMediumText(
+                            title: expertWatch.expertName.isNotEmpty ? expertWatch.expertName : LocaleKeys.yourExpertName.tr(),
+                            fontSize: 30,
+                            titleColor: ColorConstants.bottomTextColor,
+                            maxLine: 2,
+                            titleTextAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
+                    flexibleSpace: NetworkImageWidget(
+                        imageURL: expertWatch.pickedImage,
+                        isNetworkImage: expertWatch.pickedImage.isNotEmpty,
+                        emptyImageWidget: expertWatch.isLoadedExport
+                            ? SizedBox.shrink()
+                            : Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
+                        boxFit: BoxFit.cover,
+                      ),
                   ),
                   SliverToBoxAdapter(
                     child: SingleChildScrollView(
@@ -121,7 +112,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                                   ),
                                   10.0.spaceX,
                                   AutoSizeText(
-                                    expertWatch.overAllRating != '0' ? expertWatch.overAllRating ?? '' : LocaleKeys.newText.tr(),
+                                    expertWatch.overAllRating != '0' ? expertWatch.overAllRating : LocaleKeys.newText.tr(),
                                     maxLines: 1,
                                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                       color: ColorConstants.overallRatingColor,

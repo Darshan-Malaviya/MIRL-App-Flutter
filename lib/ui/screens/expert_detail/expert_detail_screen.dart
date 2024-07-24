@@ -132,7 +132,142 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                 controller: scrollController,
                 physics: const BouncingScrollPhysics(),
                 slivers: [
+                  // SliverAppBar(
+                  //   actions:  [
+                  //     Align(
+                  //       alignment: AlignmentDirectional.topEnd,
+                  //       child: InkWell(
+                  //         onTap: () async {
+                  //           await expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
+                  //           ref.read(homeProvider).manageFavoriteUserList(
+                  //                 expertId: expertDetailWatch.userData?.id ?? 0,
+                  //                 expertName: expertDetailWatch.userData?.expertName ?? '',
+                  //                 expertProfile: expertDetailWatch.userData?.expertProfile ?? '',
+                  //                 isFavorite: expertDetailWatch.userData?.isFavorite ?? false,
+                  //               );
+                  //         },
+                  //         child: Image.asset(
+                  //           expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
+                  //           height: 40,
+                  //           width: 40,
+                  //         ),
+                  //       ),
+                  //     ).addAllPadding(12),
+                  //   ],
+                  //   leading: SizedBox.shrink(),
+                  //   stretch: true,
+                  //   backgroundColor: ColorConstants.whiteColor,
+                  //   pinned: true,
+                  //   surfaceTintColor: ColorConstants.whiteColor,
+                  //   expandedHeight: 400.0,
+                  //   flexibleSpace: FlexibleSpaceBar(
+                  //     stretchModes: [StretchMode.zoomBackground],
+                  //     expandedTitleScale: 1.3,
+                  //     collapseMode: CollapseMode.pin,
+                  //     title: Container(
+                  //       padding: EdgeInsets.only(top: 14, bottom: 10),
+                  //       width: double.infinity,
+                  //       decoration: BoxDecoration(
+                  //         color: ColorConstants.whiteColor,
+                  //         borderRadius: BorderRadius.only(
+                  //           topLeft: Radius.circular(40),
+                  //           topRight: Radius.circular(40),
+                  //         ),
+                  //       ),
+                  //       child: HeadlineMediumText(
+                  //         title: expertDetailWatch.userData?.expertName ?? '',
+                  //         fontSize: 28,
+                  //         maxLine: 2,
+                  //         titleTextAlign: TextAlign.center,
+                  //         titleColor: ColorConstants.bottomTextColor,
+                  //       ),
+                  //     ),
+                  //     titlePadding: EdgeInsets.zero,
+                  //     background: Padding(
+                  //       padding: EdgeInsets.only(bottom: 20),
+                  //       child: NetworkImageWidget(
+                  //         imageURL: expertDetailWatch.userData?.expertProfile ?? '',
+                  //         isNetworkImage: true,
+                  //         // emptyImageWidget: expertWatch.isLoadedExport
+                  //         //     ? SizedBox.shrink()
+                  //         //     : Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
+                  //         boxFit: BoxFit.cover,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // SliverAppBar(
+                  //   actions:  [
+                  //     Align(
+                  //       alignment: AlignmentDirectional.topEnd,
+                  //       child: InkWell(
+                  //         onTap: () async {
+                  //           await expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
+                  //           ref.read(homeProvider).manageFavoriteUserList(
+                  //                 expertId: expertDetailWatch.userData?.id ?? 0,
+                  //                 expertName: expertDetailWatch.userData?.expertName ?? '',
+                  //                 expertProfile: expertDetailWatch.userData?.expertProfile ?? '',
+                  //                 isFavorite: expertDetailWatch.userData?.isFavorite ?? false,
+                  //               );
+                  //         },
+                  //         child: Image.asset(
+                  //           expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
+                  //           height: 40,
+                  //           width: 40,
+                  //         ),
+                  //       ),
+                  //     ).addAllPadding(12),
+                  //   ],
+                  //   leading: SizedBox.shrink(),
+                  //   stretch: true,
+                  //   backgroundColor: ColorConstants.whiteColor,
+                  //   pinned: true,
+                  //   surfaceTintColor: ColorConstants.whiteColor,
+                  //   expandedHeight: 400.0,
+                  //   flexibleSpace: FlexibleSpaceBar(
+                  //     stretchModes: [StretchMode.zoomBackground],
+                  //     expandedTitleScale: 1.3,
+                  //     collapseMode: CollapseMode.pin,
+                  //     title: Container(
+                  //       padding: EdgeInsets.only(top: 14, bottom: 10),
+                  //       width: double.infinity,
+                  //       decoration: BoxDecoration(
+                  //         color: ColorConstants.whiteColor,
+                  //         borderRadius: BorderRadius.only(
+                  //           topLeft: Radius.circular(40),
+                  //           topRight: Radius.circular(40),
+                  //         ),
+                  //       ),
+                  //       child: HeadlineMediumText(
+                  //         title: expertDetailWatch.userData?.expertName ?? '',
+                  //         fontSize: 28,
+                  //         maxLine: 2,
+                  //         titleTextAlign: TextAlign.center,
+                  //         titleColor: ColorConstants.bottomTextColor,
+                  //       ),
+                  //     ),
+                  //     titlePadding: EdgeInsets.zero,
+                  //     background: Padding(
+                  //       padding: EdgeInsets.only(bottom: 20),
+                  //       child: NetworkImageWidget(
+                  //         imageURL: expertDetailWatch.userData?.expertProfile ?? '',
+                  //         isNetworkImage: true,
+                  //         // emptyImageWidget: expertWatch.isLoadedExport
+                  //         //     ? SizedBox.shrink()
+                  //         //     : Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
+                  //         boxFit: BoxFit.cover,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+
                   SliverAppBar(
+                    stretch: false,
+                    backgroundColor: ColorConstants.whiteColor,
+                    pinned: true,
+                    surfaceTintColor: ColorConstants.whiteColor,
+                    expandedHeight: 400.0,
+                      leading: SizedBox.shrink(),
                     actions:  [
                       Align(
                         alignment: AlignmentDirectional.topEnd,
@@ -140,11 +275,11 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                           onTap: () async {
                             await expertDetailRead.favoriteRequestCall(expertDetailWatch.userData?.id ?? 0);
                             ref.read(homeProvider).manageFavoriteUserList(
-                                  expertId: expertDetailWatch.userData?.id ?? 0,
-                                  expertName: expertDetailWatch.userData?.expertName ?? '',
-                                  expertProfile: expertDetailWatch.userData?.expertProfile ?? '',
-                                  isFavorite: expertDetailWatch.userData?.isFavorite ?? false,
-                                );
+                              expertId: expertDetailWatch.userData?.id ?? 0,
+                              expertName: expertDetailWatch.userData?.expertName ?? '',
+                              expertProfile: expertDetailWatch.userData?.expertProfile ?? '',
+                              isFavorite: expertDetailWatch.userData?.isFavorite ?? false,
+                            );
                           },
                           child: Image.asset(
                             expertDetailWatch.userData?.isFavorite ?? false ? ImageConstants.like : ImageConstants.dislike,
@@ -154,48 +289,43 @@ class _ExpertDetailScreenState extends ConsumerState<ExpertDetailScreen> {
                         ),
                       ).addAllPadding(12),
                     ],
-                    leading: SizedBox.shrink(),
-                    stretch: true,
-                    backgroundColor: ColorConstants.whiteColor,
-                    pinned: true,
-                    surfaceTintColor: ColorConstants.whiteColor,
-                    expandedHeight: 400.0,
-                    flexibleSpace: FlexibleSpaceBar(
-                      stretchModes: [StretchMode.zoomBackground],
-                      expandedTitleScale: 1.3,
-                      collapseMode: CollapseMode.pin,
-                      title: Container(
-                        padding: EdgeInsets.only(top: 14, bottom: 10),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: ColorConstants.whiteColor,
+                    bottom: PreferredSize(
+                      preferredSize: const Size.fromHeight(100.0),
+                      child: Container(padding: EdgeInsets.all(20),
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40),
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50),
                           ),
+                          color: ColorConstants.whiteColor,
                         ),
-                        child: HeadlineMediumText(
-                          title: expertDetailWatch.userData?.expertName ?? '',
-                          fontSize: 28,
-                          maxLine: 2,
-                          titleTextAlign: TextAlign.center,
-                          titleColor: ColorConstants.bottomTextColor,
-                        ),
-                      ),
-                      titlePadding: EdgeInsets.zero,
-                      background: Padding(
-                        padding: EdgeInsets.only(bottom: 20),
-                        child: NetworkImageWidget(
-                          imageURL: expertDetailWatch.userData?.expertProfile ?? '',
-                          isNetworkImage: true,
-                          // emptyImageWidget: expertWatch.isLoadedExport
-                          //     ? SizedBox.shrink()
-                          //     : Image.asset(ImageConstants.exploreImage, fit: BoxFit.fitWidth, width: double.infinity),
-                          boxFit: BoxFit.cover,
+                        child: Container(
+                          padding: EdgeInsets.only(top: 14, bottom: 10),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: ColorConstants.whiteColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40),
+                            ),
+                          ),
+                          child: HeadlineMediumText(
+                            title: expertDetailWatch.userData?.expertName ?? '',
+                            fontSize: 28,
+                            maxLine: 2,
+                            titleTextAlign: TextAlign.center,
+                            titleColor: ColorConstants.bottomTextColor,
+                          ),
                         ),
                       ),
                     ),
+                    flexibleSpace: NetworkImageWidget(
+                      imageURL: expertDetailWatch.userData?.expertProfile ?? '',
+                      isNetworkImage: true,
+                      boxFit: BoxFit.cover,
+                    ),
                   ),
+
                   SliverToBoxAdapter(
                     child: SingleChildScrollView(
                       controller: scrollController,

@@ -48,7 +48,7 @@ class NetworkImageWidget extends StatelessWidget {
           width: width,
           height: height,
           fit: boxFit,
-          cache: false,
+          cache: true,
           loadStateChanged: (ExtendedImageState state) {
             return switch (state.extendedImageLoadState) {
               LoadState.loading => SizedBox(

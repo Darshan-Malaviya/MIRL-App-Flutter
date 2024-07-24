@@ -16,6 +16,10 @@ class ApiConstants {
     }
   }
 
+  static const String mirlBasePath ='https://mirl.com';
+  static const String termsConditions = '$mirlBasePath/terms';
+  static const String privacyPolicy = '$mirlBasePath/privacy';
+  static const String connect = '$mirlBasePath/mirl-connect';
   static const String scheme = 'https';
   static const String devHost = 'dev-api.mirl.com';
   static const String prodHost = 'api.mirl.com';
@@ -84,4 +88,7 @@ class ApiConstants {
   static const String appStartUp = '/appStartUp';
   static const String favorite = '/homePage/favorite/';
   static const String lastConversation = '/homePage/lastConversation/';
+  static const String getOwnReferralCode = '/user-referral/referral-link';
+  static const String getReferralList = '/user-referral/get-ref-list';
+  static const String submitReferralCode = '/user-referral/verify';
 }

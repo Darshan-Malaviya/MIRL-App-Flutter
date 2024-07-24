@@ -52,7 +52,7 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                     onPressed: () async {
                       final Uri _url = Uri.parse(AppConstants.useMirlUrl);
                       if (!await launchUrl(_url)) {
-                      throw Exception('Could not launch $_url');
+                        throw Exception('Could not launch $_url');
                       }
                     },
                   ),
@@ -95,7 +95,7 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                   PrimaryButton(
                     height: 40,
                     buttonColor: ColorConstants.buttonColor,
-                    title: LocaleKeys.callsAndPayments.tr(),
+                    title: LocaleKeys.seekerHelpCenter.tr(),
                     titleColor: ColorConstants.buttonTextColor,
                     onPressed: () {},
                     fontSize: 12,
@@ -104,12 +104,18 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                   50.0.spaceY,
                   PrimaryButton(
                     height: 40,
-                    buttonColor: ColorConstants.buttonColor,
+                    buttonColor: ColorConstants.yellowButtonColor,
                     title: LocaleKeys.privacyAndTerms.tr(),
                     titleColor: ColorConstants.buttonTextColor,
                     fontSize: 12,
-                    onPressed: () {},
-                    // onPressed: () => context.toPushNamed(RoutesConstants.earningReportScreen),
+                    onPressed: () async {
+                      if (!await launchUrl(
+                        Uri.parse(ApiConstants.privacyPolicy),
+                        mode: LaunchMode.inAppBrowserView,
+                        browserConfiguration:
+                            const BrowserConfiguration(showTitle: true),
+                      )) ;
+                    },
                   ),
                   50.0.spaceY,
                   PrimaryButton(

@@ -37,6 +37,12 @@ class _EditYourNameScreenState extends ConsumerState<EditYourNameScreen> {
                 title: LocaleKeys.yourName.tr(),
                 titleColor: ColorConstants.bottomTextColor,
               ),
+              TitleSmallText(
+                title: LocaleKeys.pleaseUseNameText.tr(),
+                fontFamily: FontWeightEnum.w400.toInter,
+                titleTextAlign: TextAlign.center,
+                maxLine: 5,
+              ),
               30.0.spaceY,
               TextFormFieldWidget(
                 height: 36,

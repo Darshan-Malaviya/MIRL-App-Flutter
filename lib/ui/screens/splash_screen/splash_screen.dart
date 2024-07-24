@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     //   }
     // });
 
-    Future.delayed(const Duration(milliseconds: 6300)).then((value) {
+    Future.delayed(const Duration(milliseconds: 6200)).then((value) {
       var isLoginIn = SharedPrefHelper.getUserData;
       if (isLoginIn.isNotEmpty) {
         context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
@@ -51,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       body: Image.asset(
         ImageConstants.splashImages,
         fit: BoxFit.cover,
+        repeat: ImageRepeat.noRepeat,
         height: double.infinity,
         width: double.infinity,
       ),

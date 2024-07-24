@@ -135,7 +135,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             print("index=========$index");
             dashboardProviderRead.pageChanged(index);
             pageController?.jumpToPage(index);
-            //controller(index);
+            // controller(index);
           },
           useLegacyColorScheme: false,
           backgroundColor: ColorConstants.transparentColor,

@@ -206,8 +206,8 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
           child: Center(
             child: CircleNetworkImageWidget(
               imageURL: CallRoleEnum.user ==  extraResponseModel?.callRoleEnum
-                  ? (extraResponseModel?.userProfile ?? '')
-                  : (extraResponseModel?.expertProfile ?? ''),
+                  ? (extraResponseModel?.userProfile !=""?extraResponseModel!.userProfile!:ImageConstants.mysteryImage)
+                  : (extraResponseModel?.expertProfile!=""?extraResponseModel!.expertProfile!:ImageConstants.mysteryImage),
               radius: callProvider.isSwipeUser ? 30 : 40,
             ),
           ),
