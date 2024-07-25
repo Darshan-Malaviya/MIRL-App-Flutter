@@ -1,3 +1,4 @@
+import 'package:gif_view/gif_view.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 
@@ -13,9 +14,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   late final Future<LottieComposition> _composition;
 
   // SharedPrefHelper get _sharePref => _services.sharedPreferenceService;
+ late GifController gifController;
 
   @override
   void initState() {
+
+
     // Future.delayed(const Duration(seconds: 2), () async {
     //   context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
     //   if (_sharePref.getUserLogout) {
@@ -25,14 +29,30 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     //   }
     // });
 
-    Future.delayed(const Duration(milliseconds: 6200)).then((value) {
+
+/*    Future.delayed(const Duration(milliseconds: 6300)).then((value) {
       var isLoginIn = SharedPrefHelper.getUserData;
       if (isLoginIn.isNotEmpty) {
+        controller.pause();
         context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
+
       } else {
         context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
       }
-    });
+    });*/
+
+    gifController = GifController(
+      autoPlay: true, loop: false,
+      onFinish: () {
+        var isLoginIn = SharedPrefHelper.getUserData;
+        if (isLoginIn.isNotEmpty) {
+          context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
+
+        } else {
+          context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+        }
+      },
+    );
     super.initState();
 
     //_composition = AssetLottie(ImageConstants.mirlJson).load();
@@ -48,12 +68,14 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     // );
     return Scaffold(
       backgroundColor: ColorConstants.whiteColor,
-      body: Image.asset(
-        ImageConstants.splashImages,
-        fit: BoxFit.cover,
-        repeat: ImageRepeat.noRepeat,
-        height: double.infinity,
-        width: double.infinity,
+      body: Center(
+        child: GifView.asset(
+          controller: gifController,
+          ImageConstants.splashImages,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
       ),
     );
   }

@@ -162,4 +162,24 @@ class StringConstants {
   static const String callsPaused = 'ZEN MODE: CALLS PAUSED';
   static const String aboutMe = 'ABOUT ME';
   static const String pickTopic = 'Pick a topic';
+  static const String deleteAccount = 'Delete account?';
+  static const String deleteDesc = 'If you choose to delete your account, please be aware that \n this action is irreversible. ';
+  static const String deleteDesc1 = 'All your data, including reviews, call history, and account \n details, will be permanently removed from MIRL\'s database.';
+  static const String deleteDesc2 = 'Additionally, any MIRL Connect Code associated with your \n account will be deactivated. You will also forfeit any referrals, \n referral earnings, and pending payments related to \n your account.';
+  static const String expertSetup = 'EXPERT SETUP ASSISTANCE';
+  static const String referrals_help = 'MIRL CONNECT REFERRALS HELP';
+  static const String seekerHelp = 'SEEKER HELP CENTER';
+  static const String seekerDesc = 'Unable to connect with an Expert? Did your \n payment fail? Billed for a call you couldn’t complete? \n Please read this guide to get all the answers.';
+  static const String seekerDesc1 = "Whether you're puzzled about a charge, seeking a refund, or just have a question, don’t worry - we’re here to help. Just message us, and we’ll handle it swiftly to ensure your peace of mind.";
+
+  static const String expertSetupDesc = 'Looking for tips and guidelines to set up your Expert \n profile? Want to learn how to tag your areas of \n expertise? Please read this guide!';
+  static const String expertSetupDesc1 = 'If the guide we’ve shared doesn’t answer your \n question, or if you have something more specific \n you need help with, just type your message below,\n and we’ll get back to you via your registered email \n ID within 24 hours. ';
+
+  static const String setupAcc = 'HOW TO SET UP YOUR EXPERT ACCOUNT';
+  static const String seekerFaq = 'HOW TO USE MIRL AS A SEEKER AND FAQS';
+  static const String MirlGuid = 'MIRL CONNECT CODE GUIDE';
+  static const String msgReceived = 'Message received!';
+  static const String thankYouMessage = 'Thank you for getting in touch with MIRL. We’ll get \n back to you as soon as possible via the email ID \n you’ve shared in your seeker profile.  ';
+
+
 }
