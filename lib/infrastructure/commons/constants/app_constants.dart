@@ -6,7 +6,8 @@ class AppConstants {
 
   /// url
   static const feesUrl = 'https://mirl.com/mirl-app-fees';
-  static const useMirlUrl = 'https://mirl.com/use-mirl';
+  static const useMirlUrl = 'https://mirl.com/mirl-connect';
+  static const expertSetupUrl = 'https://mirl.com/expert-guide';
   static const faqUrl = 'https://mirl.com/faq';
 
   /// socket request variables

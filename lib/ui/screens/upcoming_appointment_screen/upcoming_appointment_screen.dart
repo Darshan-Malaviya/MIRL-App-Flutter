@@ -100,9 +100,9 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                     alignment: Alignment.centerLeft,
                     child: BodySmallText(
                       title: upcomingWatch.selectedDate != null
-                          ? upcomingWatch.selectedDate.toString().toLocalFullDateWithSuffix() ?? ''
+                          ? upcomingWatch.selectedDate.toString().toLocalFullDateWithoutSuffix() ?? ''
                           : upcomingWatch.dateList.isNotEmpty
-                              ? upcomingWatch.dateList.first.toLocalFullDateWithSuffix() ?? ''
+                              ? upcomingWatch.dateList.first.toLocalFullDateWithoutSuffix() ?? ''
                               : '',
                       titleColor: ColorConstants.buttonTextColor,
                     ),
