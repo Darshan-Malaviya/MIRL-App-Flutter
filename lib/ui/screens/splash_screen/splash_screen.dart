@@ -1,5 +1,5 @@
-import 'package:lottie/lottie.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:video_player/video_player.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -8,60 +8,59 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
-  //late AnimationController _controller;
-  late final Future<LottieComposition> _composition;
+class _SplashScreenState extends State<SplashScreen> {
+  late VideoPlayerController _controller;
 
-  // SharedPrefHelper get _sharePref => _services.sharedPreferenceService;
-
+  var isLoginIn;
   @override
   void initState() {
-    // Future.delayed(const Duration(seconds: 2), () async {
-    //   context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-    //   if (_sharePref.getUserLogout) {
-    //     context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
-    //   } else {
-    //     context.toPushNamedAndRemoveUntil(RoutesConstants.homeScreen);
-    //   }
-    // });
+    super.initState();
+    getLoginStatus();
+    _controller = VideoPlayerController.asset('assets/gif/splash.mp4')
+      ..initialize().then((_) {
+        setState(() {}); // Ensure the first frame is shown after the video is initialized.
+        _controller.play();
+      })
+      ..setLooping(false);
 
-    Future.delayed(const Duration(milliseconds: 6200)).then((value) {
-      var isLoginIn = SharedPrefHelper.getUserData;
-      if (isLoginIn.isNotEmpty) {
-        context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
-      } else {
-        context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+    _controller.addListener(() {
+      if (_controller.value.position == _controller.value.duration) {
+        _onVideoCompleted();
       }
     });
-    super.initState();
+  }
 
-    //_composition = AssetLottie(ImageConstants.mirlJson).load();
+  Future<void> getLoginStatus() async {
+    isLoginIn = await SharedPrefHelper.getUserData;
+  }
+
+  Future<void> _onVideoCompleted() async {
+    if (isLoginIn.isNotEmpty) {
+      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
+    } else {
+      context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return CustomTooltip(text: '10',position: Offset(200,200));
-    // return Scaffold(
-    //   body: ReviewSlider(
-    //     onChange: (int index) {},
-    //   ),
-    // );
     return Scaffold(
       backgroundColor: ColorConstants.whiteColor,
-      body: Image.asset(
-        ImageConstants.splashImages,
-        fit: BoxFit.cover,
-        repeat: ImageRepeat.noRepeat,
-        height: double.infinity,
-        width: double.infinity,
+      body: Center(
+        child: _controller.value.isInitialized
+            ? AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              )
+            : SizedBox.shrink(),
       ),
     );
-  }
-
-  Future<LottieComposition?> customDecoder(List<int> bytes) {
-    return LottieComposition.decodeZip(bytes, filePicker: (files) {
-      return files.firstWhere((f) => f.name.startsWith('animations/') && f.name.endsWith('.json'));
-    });
   }
 }
 
@@ -76,15 +75,14 @@ class CustomTooltip extends StatelessWidget {
   });
 
   @override
-
-    Widget build(BuildContext context) {
-      return Center(
-        child: CustomPaint(
-          painter: CustomShapePainter(color: Colors.blue),
-          size: Size(200, 200), // Adjust the size as needed
-        ),
-      );
-    }
+  Widget build(BuildContext context) {
+    return Center(
+      child: CustomPaint(
+        painter: CustomShapePainter(color: Colors.blue),
+        size: Size(200, 200), // Adjust the size as needed
+      ),
+    );
+  }
 }
 
 class CustomShapePainter extends CustomPainter {
@@ -100,7 +98,7 @@ class CustomShapePainter extends CustomPainter {
 
     final path = Path();
 
-    // **Replace the following with code specific to your shape:**
+    // *Replace the following with code specific to your shape:*
 
     // Example lines and curves:
     path.moveTo(size.width * 0.2, size.height * 0.2); // Top left corner
@@ -108,7 +106,7 @@ class CustomShapePainter extends CustomPainter {
     path.quadraticBezierTo(size.width * 0.5, size.height, size.width * 0.2, size.height * 0.8); // Bottom curve
     path.close();
 
-    // **Add or modify path segments as needed based on your shape's components.**
+    // *Add or modify path segments as needed based on your shape's components.*
 
     canvas.drawPath(path, paint);
   }
@@ -116,4 +114,3 @@ class CustomShapePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
-
