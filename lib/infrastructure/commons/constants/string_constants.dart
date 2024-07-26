@@ -181,5 +181,8 @@ class StringConstants {
   static const String msgReceived = 'Message received!';
   static const String thankYouMessage = 'Thank you for getting in touch with MIRL. We’ll get \n back to you as soon as possible via the email ID \n you’ve shared in your seeker profile.  ';
 
+  static const String userPolicies = 'USER AGREEMENTS AND POLICIES';
+  static const String PoliciesWelcomeMsg = "Welcome to your go-to resource for understanding \n your rights and  responsibilities as a MIRL user. Below \n you'll find all the key documents that govern our \n services and your use of them. We encourage you to \n review these carefully to stay informed about our \n mutual commitments.";
+
 
 }

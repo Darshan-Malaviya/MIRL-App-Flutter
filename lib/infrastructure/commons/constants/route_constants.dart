@@ -66,4 +66,6 @@ class RoutesConstants {
   static const String seeAllFavoriteExpertsListViewScreen = '/seeAllFavoriteExpertsListViewScreen';
   static const String seeAllLastConversationListViewScreen = '/seeAllLastConversationListViewScreen';
   static const String selectedTopicScreen = '/selectedTopicScreen';
+  static const String userPolicies = '/userPolicies';
+
 }
