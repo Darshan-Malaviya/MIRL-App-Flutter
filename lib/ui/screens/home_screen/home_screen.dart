@@ -128,10 +128,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   maxLine: 2,
                                 ),
                                 10.0.spaceY,
-                                Image.asset(
-                                  ImageConstants.expert,
-                                  height: 80,
-                                  width: 80,
+                                Expanded(
+                                  child: Image.asset(
+                                    ImageConstants.expert,
+                                    height: 80,
+                                    width: 80,
+                                  ),
                                 ),
                                 10.0.spaceY,
                                 BodySmallText(
@@ -175,10 +177,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   titleTextAlign: TextAlign.center,
                                 ),
                                 10.0.spaceY,
-                                Image.asset(
-                                  ImageConstants.multipleConnect,
-                                  height: 70,
-                                  width: 80,
+                                Expanded(
+                                  child: Image.asset(
+                                    ImageConstants.multipleConnect,
+                                    height: 70,
+                                    width: 80,
+                                  ),
                                 ),
                                 10.0.spaceY,
                                 BodySmallText(

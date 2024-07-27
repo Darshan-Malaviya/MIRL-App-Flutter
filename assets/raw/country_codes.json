@@ -1,5 +1,11 @@
 [
   {
+    "country_code": "US",
+    "name": "United States of America",
+    "calling_code": "+1",
+    "flag": "usa.png"
+  },
+  {
     "country_code": "AF",
     "name": "Afghanistan",
     "calling_code": "+93",
@@ -1433,12 +1439,7 @@
     "calling_code": "+44",
     "flag": "gbr.png"
   },
-  {
-    "country_code": "US",
-    "name": "United States of America",
-    "calling_code": "+1",
-    "flag": "usa.png"
-  },
+
   {
     "country_code": "UY",
     "name": "Uruguay",

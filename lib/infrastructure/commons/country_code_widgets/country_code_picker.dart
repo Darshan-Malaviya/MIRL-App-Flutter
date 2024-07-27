@@ -5,7 +5,7 @@ import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 
 const TextStyle _defaultItemTextStyle = TextStyle(fontSize: 16);
 const TextStyle _defaultSearchInputStyle = TextStyle(fontSize: 16);
-const String _kDefaultSearchHintText = 'Search country name, code';
+const String _kDefaultSearchHintText = 'Search by Country Name or Country Code';
 const String countryCodePackageName = 'assets/flags/';
 
 class CountryPickerWidget extends StatefulWidget {
