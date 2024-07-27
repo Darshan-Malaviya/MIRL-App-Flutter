@@ -93,82 +93,84 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                         child: StatefulBuilder(
                           builder: (BuildContext context,
                                   StateSetter setState) =>
-                              Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 20),
-                                  child: Column(
-                                    children: [
-                                      BodyMediumText(
-                                        title: StringConstants.referrals_help,
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      BodyMediumText(
-                                        title: StringConstants.expertSetupDesc,
-                                        titleTextAlign: TextAlign.center,
-                                        titleColor:
-                                            ColorConstants.textGreyLightColor,
-                                      ),
-                                      10.0.spaceY,
-                                      GestureDetector(
-                                        onTap: () async {
-                                          final Uri _url = Uri.parse(
-                                              AppConstants.useMirlUrl);
-                                          if (!await launchUrl(_url)) {
-                                            throw Exception(
-                                                'Could not launch $_url');
-                                          }
-                                        },
-                                        child: BodyLargeText(
-                                          title: StringConstants.MirlGuid,
+                              SingleChildScrollView(
+                                child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 20),
+                                    child: Column(
+                                      children: [
+                                        BodyMediumText(
+                                          title: StringConstants.referrals_help,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        BodyMediumText(
+                                          title: StringConstants.expertSetupDesc,
                                           titleTextAlign: TextAlign.center,
                                           titleColor:
-                                              ColorConstants.bottomTextColor,
+                                              ColorConstants.textGreyLightColor,
                                         ),
-                                      ),
-                                      50.0.spaceY,
-                                      BodyMediumText(
-                                        title: StringConstants.expertSetupDesc1,
-                                        titleTextAlign: TextAlign.center,
-                                        titleColor:
-                                            ColorConstants.textGreyLightColor,
-                                      ),
-                                      10.0.spaceY,
-                                      Container(
-                                        height: 200,
-                                        child: TextFormField(
-                                          decoration: InputDecoration(
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
+                                        10.0.spaceY,
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final Uri _url = Uri.parse(
+                                                AppConstants.useMirlUrl);
+                                            if (!await launchUrl(_url)) {
+                                              throw Exception(
+                                                  'Could not launch $_url');
+                                            }
+                                          },
+                                          child: BodyLargeText(
+                                            title: StringConstants.MirlGuid,
+                                            titleTextAlign: TextAlign.center,
+                                            titleColor:
+                                                ColorConstants.bottomTextColor,
                                           ),
-                                          maxLines: 1000,
-                                          maxLength: 1000,
                                         ),
-                                      ),
-                                      10.0.spaceY,
-                                      PrimaryButton(
-                                        height: 50,
-                                        buttonColor:
-                                            ColorConstants.mirlConnectColor,
-                                        title: "SEND MESSAGE",
-                                        titleColor:
-                                            ColorConstants.buttonTextColor,
-                                        fontSize: 12,
-                                        onPressed: () {
-                                          setState(() {
-                                            _messageSent = true;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  )),
+                                        50.0.spaceY,
+                                        BodyMediumText(
+                                          title: StringConstants.expertSetupDesc1,
+                                          titleTextAlign: TextAlign.center,
+                                          titleColor:
+                                              ColorConstants.textGreyLightColor,
+                                        ),
+                                        10.0.spaceY,
+                                        Container(
+                                          height: 200,
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                            ),
+                                            maxLines: 1000,
+                                            maxLength: 1000,
+                                          ),
+                                        ),
+                                        10.0.spaceY,
+                                        PrimaryButton(
+                                          height: 50,
+                                          buttonColor:
+                                              ColorConstants.mirlConnectColor,
+                                          title: "SEND MESSAGE",
+                                          titleColor:
+                                              ColorConstants.buttonTextColor,
+                                          fontSize: 12,
+                                          onPressed: () {
+                                            setState(() {
+                                              _messageSent = true;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    )),
+                              ),
                         ),
                       );
                     },
@@ -184,7 +186,6 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                     onPressed: () {
                       CommonBottomSheet.bottomSheet(
                         isShadowContainer: false,
-                        height: MediaQuery.of(context).size.height * 0.8,
                         constraints: BoxConstraints(
                             maxHeight:
                                 MediaQuery.of(context).size.height * 0.9),
@@ -325,82 +326,11 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                     title: LocaleKeys.seekerHelpCenter.tr(),
                     titleColor: ColorConstants.buttonTextColor,
                     onPressed: () {
-                      // showModalBottomSheet(
-                      //     context: context,
-                      //   builder: (context){
-                      //     return SingleChildScrollView(
-                      //       child: Container(
-                      //           padding: const EdgeInsets.symmetric(
-                      //               horizontal: 10, vertical: 20),
-                      //           child: Column(
-                      //             children: [
-                      //               BodyMediumText(
-                      //                 title: StringConstants.seekerHelp,
-                      //               ),
-                      //               SizedBox(
-                      //                 height: 10,
-                      //               ),
-                      //               BodyMediumText(
-                      //                 title: StringConstants.seekerDesc,
-                      //                 titleTextAlign: TextAlign.center,
-                      //                 titleColor:
-                      //                 ColorConstants.textGreyLightColor,
-                      //               ),
-                      //               10.0.spaceY,
-                      //               GestureDetector(
-                      //                 onTap: () {},
-                      //                 child: BodyLargeText(
-                      //                   title: StringConstants.seekerFaq,
-                      //                   titleTextAlign: TextAlign.center,
-                      //                   titleColor:
-                      //                   ColorConstants.bottomTextColor,
-                      //                 ),
-                      //               ),
-                      //               50.0.spaceY,
-                      //               BodyMediumText(
-                      //                 title: StringConstants.seekerDesc1,
-                      //                 titleTextAlign: TextAlign.center,
-                      //                 titleColor:
-                      //                 ColorConstants.textGreyLightColor,
-                      //               ),
-                      //               10.0.spaceY,
-                      //               Container(
-                      //                 height: 200,
-                      //                 child: TextFormField(
-                      //                   decoration: InputDecoration(
-                      //                     enabledBorder: OutlineInputBorder(
-                      //                       borderRadius:
-                      //                       BorderRadius.circular(20.0),
-                      //                     ),
-                      //                     focusedBorder: OutlineInputBorder(
-                      //                       borderRadius:
-                      //                       BorderRadius.circular(20.0),
-                      //                     ),
-                      //                   ),
-                      //                   maxLines: 1000,
-                      //                   maxLength: 1000,
-                      //                 ),
-                      //               ),
-                      //               10.0.spaceY,
-                      //               PrimaryButton(
-                      //                 height: 50,
-                      //                 buttonColor:
-                      //                 ColorConstants.mirlConnectColor,
-                      //                 title: "SEND MESSAGE",
-                      //                 titleColor:
-                      //                 ColorConstants.buttonTextColor,
-                      //                 fontSize: 12,
-                      //                 onPressed: () {
-                      //                   setState(() {});
-                      //                 },
-                      //               ),
-                      //             ],
-                      //           )),
-                      //     );
-                      //   }
-                      // );
                       CommonBottomSheet.bottomSheet(
                         isShadowContainer: false,
+                        constraints: BoxConstraints(
+                            maxHeight:
+                            MediaQuery.of(context).size.height * 0.9),
                         context: context,
                         isDismissible: true,
                         child: StatefulBuilder(
@@ -567,7 +497,7 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                                     height: 40,
                                     buttonColor:
                                         ColorConstants.mirlConnectColor,
-                                    title: LocaleKeys.yes.tr(),
+                                    title: LocaleKeys.yesDelete.tr(),
                                     titleColor: ColorConstants.buttonTextColor,
                                     fontSize: 12,
                                     onPressed: () async {},

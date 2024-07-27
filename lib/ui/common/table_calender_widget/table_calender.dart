@@ -4,8 +4,8 @@ import 'package:mirl/ui/common/table_calender_widget/table_border.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
+final kFirstDay = DateTime(kToday.year, kToday.month, 1);
+final kLastDay = DateTime(kToday.year, kToday.month + 2, 0); // End of the next month
 
 class TableCalenderRangeWidget extends StatefulWidget {
   final Function(DateTime selectedDay, DateTime focusedDay) onDateSelected;
@@ -13,7 +13,13 @@ class TableCalenderRangeWidget extends StatefulWidget {
   final List<String>? scheduleDateList;
   final bool fromUpcomingAppointment;
 
-  TableCalenderRangeWidget({super.key, required this.onDateSelected, required this.selectedDay, this.scheduleDateList, required this.fromUpcomingAppointment});
+  TableCalenderRangeWidget({
+    super.key,
+    required this.onDateSelected,
+    required this.selectedDay,
+    this.scheduleDateList,
+    required this.fromUpcomingAppointment,
+  });
 
   @override
   _TableCalenderRangeWidgetState createState() => _TableCalenderRangeWidgetState();
@@ -21,20 +27,26 @@ class TableCalenderRangeWidget extends StatefulWidget {
 
 class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   DateTime _focusedDay = DateTime.now();
-
-  // DateTime? _selectedDay;
+  DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
   PageController _pageController = PageController(initialPage: 0);
 
   @override
+  void initState() {
+    super.initState();
+    _selectedDay = widget.selectedDay;
+    _focusedDay = widget.selectedDay ?? DateTime.now();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TableCalendar(
       firstDay: kFirstDay,
-      lastDay: kToday.add(Duration(days: 29)),
+      lastDay: kLastDay,
       focusedDay: _focusedDay,
       selectedDayPredicate: (day) {
         if (widget.fromUpcomingAppointment) {
@@ -44,7 +56,7 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
             }
           }
         } else {
-          return isSameDay(widget.selectedDay, day);
+          return isSameDay(_selectedDay, day);
         }
         return false;
       },
@@ -58,14 +70,34 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         outsideDecoration: BoxDecoration(
           borderRadius: BorderRadius.only(topRight: Radius.circular(25), topLeft: Radius.circular(25)),
         ),
-        defaultTextStyle: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 12, color: ColorConstants.buttonTextColor),
-        disabledTextStyle: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 12, color: ColorConstants.disableColor),
-        weekendTextStyle: TextStyle(fontFamily: FontWeightEnum.w400.toInter, fontSize: 12, color: ColorConstants.buttonTextColor),
+        defaultTextStyle: TextStyle(
+          fontFamily: FontWeightEnum.w400.toInter,
+          fontSize: 12,
+          color: ColorConstants.buttonTextColor,
+        ),
+        disabledTextStyle: TextStyle(
+          fontFamily: FontWeightEnum.w400.toInter,
+          fontSize: 12,
+          color: ColorConstants.disableColor,
+        ),
+        weekendTextStyle: TextStyle(
+          fontFamily: FontWeightEnum.w400.toInter,
+          fontSize: 12,
+          color: ColorConstants.buttonTextColor,
+        ),
+        outsideTextStyle: TextStyle(
+          color: Color(0xFFBFBFBF),
+        ),
       ),
       onCalendarCreated: (pageController) {
         _pageController = pageController;
       },
-      headerStyle: HeaderStyle(rightChevronVisible: false, leftChevronVisible: false, formatButtonVisible: false, titleCentered: true),
+      headerStyle: HeaderStyle(
+        rightChevronVisible: false,
+        leftChevronVisible: false,
+        formatButtonVisible: false,
+        titleCentered: true,
+      ),
       calendarBuilders: CalendarBuilders(
         defaultBuilder: (context, day, focusedDay) {
           if (widget.fromUpcomingAppointment) {
@@ -82,19 +114,10 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
           return null;
         },
         outsideBuilder: (context, day, focusedDay) {
-          if (widget.fromUpcomingAppointment) {
-            return Center(
-              child: BodySmallText(
-                title: day.day.toString(),
-                titleColor: Color(0xFFBFBFBF),
-                fontFamily: FontWeightEnum.w400.toInter,
-              ),
-            );
-          }
           return Center(
             child: BodySmallText(
               title: day.day.toString(),
-              titleColor: ColorConstants.buttonTextColor,
+              titleColor: Color(0xFFBFBFBF),
               fontFamily: FontWeightEnum.w400.toInter,
             ),
           );
@@ -106,7 +129,10 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () => _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+                  onTap: () => _pageController.previousPage(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                  ),
                   child: Container(
                     height: 45,
                     decoration: BoxDecoration(
@@ -116,7 +142,9 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                     ),
                     child: Center(
                       child: BodySmallText(
-                        title: DateFormat.MMMM().format(DateTime(day.year, day.month - 1, day.day)).toUpperCase(),
+                        title: DateFormat.MMMM()
+                            .format(DateTime(day.year, day.month - 1, 1))
+                            .toUpperCase(),
                         titleColor: ColorConstants.buttonTextColor,
                       ),
                     ),
@@ -142,7 +170,10 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
               5.0.spaceX,
               Expanded(
                 child: InkWell(
-                  onTap: () => _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+                  onTap: () => _pageController.nextPage(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                  ),
                   child: Container(
                     height: 45,
                     decoration: BoxDecoration(
@@ -152,7 +183,9 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                     ),
                     child: Center(
                       child: BodySmallText(
-                        title: DateFormat.MMMM().format(DateTime(day.year, day.month + 1, day.day)).toUpperCase(),
+                        title: DateFormat.MMMM()
+                            .format(DateTime(day.year, day.month + 1, 1))
+                            .toUpperCase(),
                         titleColor: ColorConstants.buttonTextColor,
                       ),
                     ),
@@ -171,7 +204,13 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
                 decoration: BoxDecoration(
                   color: ColorConstants.primaryColor.withOpacity(0.3),
                   shape: BoxShape.circle,
-                  boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
+                  boxShadow: [
+                    BoxShadow(
+                      color: ColorConstants.disableColor,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    )
+                  ],
                 ),
                 child: Center(
                   child: BodySmallText(
@@ -190,7 +229,13 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
               decoration: BoxDecoration(
                 color: ColorConstants.yellowButtonColor,
                 shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorConstants.disableColor,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  )
+                ],
               ),
               child: Center(
                 child: BodySmallText(
@@ -221,7 +266,13 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
               decoration: BoxDecoration(
                 color: ColorConstants.primaryColor.withOpacity(0.5),
                 shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: ColorConstants.disableColor, blurRadius: 5, offset: Offset(0, 3))],
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorConstants.disableColor,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  )
+                ],
               ),
               child: Center(
                 child: BodySmallText(
@@ -247,48 +298,52 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         rangeEndBuilder: (context, day, focusedDay) {
           return rangeTextContainer(
             day: day,
-            borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(12),
+              bottomRight: Radius.circular(12),
+            ),
           );
         },
         rangeStartBuilder: (context, day, focusedDay) {
           return rangeTextContainer(
             day: day,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12),
+              bottomLeft: Radius.circular(12),
+            ),
           );
         },
       ),
       calendarFormat: _calendarFormat,
-      // rangeSelectionMode: _rangeSelectionMode,
       daysOfWeekHeight: 50,
       startingDayOfWeek: StartingDayOfWeek.monday,
       daysOfWeekStyle: DaysOfWeekStyle(
-        weekdayStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 12),
-        weekendStyle: TextStyle(color: ColorConstants.buttonTextColor, fontFamily: FontWeightEnum.w700.toInter, fontSize: 12),
+        weekdayStyle: TextStyle(
+          color: ColorConstants.buttonTextColor,
+          fontFamily: FontWeightEnum.w700.toInter,
+          fontSize: 12,
+        ),
+        weekendStyle: TextStyle(
+          color: ColorConstants.buttonTextColor,
+          fontFamily: FontWeightEnum.w700.toInter,
+          fontSize: 12,
+        ),
         dowTextFormatter: (date, locale) {
           return DateFormat.E(locale).format(date).toUpperCase();
         },
       ),
-      onDaySelected: widget.onDateSelected,
-      /*(selectedDay, focusedDay) {
+      onDaySelected: (selectedDay, focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {
           setState(() {
             _selectedDay = selectedDay;
             _focusedDay = focusedDay;
-            _rangeStart = null; // Important to clean those
+            _rangeStart = null;
             _rangeEnd = null;
             _rangeSelectionMode = RangeSelectionMode.toggledOff;
           });
         }
-      }*/
-/*      onRangeSelected: (start, end, focusedDay) {
-        setState(() {
-          // widget.selectedDay = null;
-          _focusedDay = focusedDay;
-          _rangeStart = start;
-          _rangeEnd = end;
-          _rangeSelectionMode = RangeSelectionMode.toggledOn;
-        });
-      },*/
+        widget.onDateSelected(selectedDay, focusedDay);
+      },
       onFormatChanged: (format) {
         if (_calendarFormat != format) {
           setState(() {
@@ -310,11 +365,12 @@ class _TableCalenderRangeWidgetState extends State<TableCalenderRangeWidget> {
         color: ColorConstants.primaryColor.withOpacity(0.5),
       ),
       child: Center(
-          child: BodySmallText(
-        title: day.day.toString(),
-        titleColor: ColorConstants.buttonTextColor,
-        fontFamily: FontWeightEnum.w400.toInter,
-      )),
+        child: BodySmallText(
+          title: day.day.toString(),
+          titleColor: ColorConstants.buttonTextColor,
+          fontFamily: FontWeightEnum.w400.toInter,
+        ),
+      ),
     );
   }
 }

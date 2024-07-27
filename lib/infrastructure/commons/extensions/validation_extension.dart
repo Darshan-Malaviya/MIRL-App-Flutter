@@ -43,9 +43,9 @@ extension ValidationExtension on String {
     return null;
   }
   String? mobileNumberValidation({String? value}) {
-    if (value?.isEmpty ?? false) {
-      return LocaleKeys.requiredPhoneNumber.tr();
-    }
+    // if (value?.isEmpty ?? false) {
+    //   return LocaleKeys.requiredPhoneNumber.tr();
+    // }
     if ((value?.length ?? 0) < 7) {
       return LocaleKeys.phonePhoneIsNotValid.tr();
     }
