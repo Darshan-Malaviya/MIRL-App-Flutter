@@ -47,6 +47,8 @@ class ColorConstants {
   static Color notificationTimeColor = const Color(0xFF535353);
   static Color notificationTimerColor = const Color(0xFFFF2305);
   static Color notificationBgColor = const Color(0xffF4BEFF);
+  static Color textGreyLightColor = const Color(0xff424D5C);
+
 
   //static Color greenColor = const Color(0xFFABDF75);
   static Color textGreenColor = const Color(0xFF65C106);

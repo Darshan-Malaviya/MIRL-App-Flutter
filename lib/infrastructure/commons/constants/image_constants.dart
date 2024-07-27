@@ -4,6 +4,8 @@ class ImageConstants {
   static const iconPath = 'assets/icons/';
   static const rawPath = 'assets/raw/';
 
+  static const deleteAccount = '${imagePath}delete_account.png';
+  static const help_message_sent = '${imagePath}help_Message_Sent.png';
   static const backgroundLines = '${imagePath}background_line.png';
   static const mirlImage = '${imagePath}mirl_image.png';
   static const backgroundLogo = '${imagePath}background_logo.png';

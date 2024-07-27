@@ -177,7 +177,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 10.0.spaceY,
                                 Image.asset(
                                   ImageConstants.multipleConnect,
-                                  height: 80,
+                                  height: 70,
                                   width: 80,
                                 ),
                                 10.0.spaceY,

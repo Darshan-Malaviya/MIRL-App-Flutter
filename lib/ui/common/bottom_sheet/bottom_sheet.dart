@@ -8,8 +8,10 @@ class CommonBottomSheet {
       TickerProvider? vsync,
       double? height,
       double? width,
+        bool? isShadowContainer,
         Color? backgroundColor,
       VoidCallback? onTap,
+        BoxConstraints? constraints,
       Widget? suffixIcon,
       isDismissible = false}) async {
     showModalBottomSheet(
@@ -30,7 +32,7 @@ class CommonBottomSheet {
               sigmaY: 10.0,
             ),
             child: Container(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
+              constraints: constraints ?? BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
               decoration: BoxDecoration(
                 color: backgroundColor ?? ColorConstants.scaffoldColor,
                 borderRadius: const BorderRadius.only(
@@ -43,6 +45,7 @@ class CommonBottomSheet {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if(isShadowContainer?? true)
                   ShadowContainer(
                     margin: const EdgeInsets.all(16),
                     isShadow: false,
