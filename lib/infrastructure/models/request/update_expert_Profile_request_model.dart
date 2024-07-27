@@ -143,7 +143,7 @@ class UpdateExpertProfileRequestModel {
 
   FormData toJsonUserName() {
     FormData formData = FormData.fromMap({
-      'userName': userName,
+      'userName': userName?.replaceAll(" ", ""),
     });
     return formData;
   }

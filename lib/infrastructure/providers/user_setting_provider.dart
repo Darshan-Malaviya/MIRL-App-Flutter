@@ -89,7 +89,7 @@ class UserSettingProvider extends ChangeNotifier {
     String value = SharedPrefHelper.getUserData;
     if (value.isNotEmpty) {
       _userData = UserData.fromJson(jsonDecode(value));
-      userNameController.text = _userData?.userName ?? '';
+      userNameController.text = _userData?.userName?.toLowerCase().trim() ?? '';
       emailIdController.text = _userData?.email ?? '';
       phoneNumberController.text = _userData?.phone ?? '';
       _pickedImage = _userData?.userProfile ?? '';
@@ -99,7 +99,7 @@ class UserSettingProvider extends ChangeNotifier {
 
   void updateUserNameApi() {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
-      userName: userNameController.text.trim(),
+      userName: userNameController.text.trim().toLowerCase(),
     );
     UpdateUserSettingApiCall(requestModel: updateExpertProfileRequestModel.toJsonUserName());
   }

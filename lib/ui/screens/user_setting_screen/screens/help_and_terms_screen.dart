@@ -559,7 +559,9 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                                     title: LocaleKeys.back.tr(),
                                     titleColor: ColorConstants.buttonTextColor,
                                     fontSize: 12,
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                    context.toPop();
+                                    },
                                   ),
                                   PrimaryButton(
                                     width: 150,
