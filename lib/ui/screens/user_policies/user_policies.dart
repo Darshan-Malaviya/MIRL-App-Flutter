@@ -9,9 +9,43 @@ class userPolicies extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<userPolicies> createState() => _HelpAndTermsScreenState();
+
 }
-
-
+// Map of All button title and link
+final Map<int,Map<String,String>> buttonData = {
+  0:{
+    "title":LocaleKeys.privacyTerms.tr(),
+    "link": ApiConstants.privacyPolicy
+  },
+  1:{
+    "title":LocaleKeys.termsAndConditions.tr(),
+    "link": ApiConstants.termsConditions
+  },
+  2:{
+    "title":LocaleKeys.endUserEula.tr(),
+    "link": ApiConstants.endUserEula
+  },
+  3:{
+    "title":LocaleKeys.cookiePolicy.tr(),
+    "link": ApiConstants.cookiePolicy
+  },
+  4:{
+    "title":LocaleKeys.disclaimer.tr(),
+    "link": ApiConstants.disclaimer
+  },
+  5:{
+    "title":LocaleKeys.acceptableUsePolicy.tr(),
+    "link": ApiConstants.acceptableUsePolicy
+  },
+  6:{
+    "title":LocaleKeys.userGeneratedContent.tr(),
+    "link": ApiConstants.userGeneratedContent
+  },
+  7:{
+    "title":LocaleKeys.refundPolicy.tr(),
+    "link": ApiConstants.refundPolicy
+  }
+};
 
 class _HelpAndTermsScreenState extends ConsumerState<userPolicies> {
   @override
@@ -34,6 +68,8 @@ class _HelpAndTermsScreenState extends ConsumerState<userPolicies> {
               fontSize: 20,
               title: StringConstants.userPolicies,
               titleColor: ColorConstants.bottomTextColor,
+              maxLine: 2,
+              titleTextAlign: TextAlign.center,
             ),
             10.0.spaceY,
             BodySmallText(
@@ -42,85 +78,27 @@ class _HelpAndTermsScreenState extends ConsumerState<userPolicies> {
               titleColor: ColorConstants.textGreyLightColor,
             ),
             40.0.spaceY,
-            PrimaryButton(
-              height: 40,
-              buttonColor:
-              ColorConstants.yellowButtonColor,
-              title: LocaleKeys.privacyTerms.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              fontSize: 12,
-              onPressed: () async {},
-            ),
-            40.0.spaceY,
-            PrimaryButton(
-              height: 40,
-              buttonColor:
-              ColorConstants.yellowButtonColor,
-              title: LocaleKeys.back.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              fontSize: 12,
-              onPressed: () async {},
-            ),
-            40.0.spaceY,
-            PrimaryButton(
-              height: 40,
-              buttonColor:
-              ColorConstants.yellowButtonColor,
-              title: LocaleKeys.back.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              fontSize: 12,
-              onPressed: () async {},
-            ),
-            40.0.spaceY,
-            PrimaryButton(
-              height: 40,
-              buttonColor:
-              ColorConstants.yellowButtonColor,
-              title: LocaleKeys.back.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              fontSize: 12,
-              onPressed: () async {},
-            ),
-            40.0.spaceY,
-            PrimaryButton(
-              height: 40,
-              buttonColor:
-              ColorConstants.yellowButtonColor,
-              title: LocaleKeys.back.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              fontSize: 12,
-              onPressed: () async {},
-            ),
-            40.0.spaceY,
-            PrimaryButton(
-              height: 40,
-              buttonColor:
-              ColorConstants.yellowButtonColor,
-              title: LocaleKeys.back.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              fontSize: 12,
-              onPressed: () async {},
-            ),
-            40.0.spaceY,
-            PrimaryButton(
-              height: 40,
-              buttonColor:
-              ColorConstants.yellowButtonColor,
-              title: LocaleKeys.back.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              fontSize: 12,
-              onPressed: () async {},
-            ),
-            40.0.spaceY,
-            PrimaryButton(
-              height: 40,
-              buttonColor:
-              ColorConstants.yellowButtonColor,
-              title: LocaleKeys.back.tr(),
-              titleColor: ColorConstants.buttonTextColor,
-              fontSize: 12,
-              onPressed: () async {},
-            ),
+            ...List.generate(buttonData.length, (index){
+              return Column(
+                children: [
+                  PrimaryButton(
+                    height: 40,
+                    buttonColor:
+                    ColorConstants.yellowButtonColor,
+                    title: buttonData[index]!['title'].toString(),
+                    titleColor: ColorConstants.buttonTextColor,
+                    fontSize: 12,
+                    onPressed: () async {
+                      final Uri _url = Uri.parse(buttonData[index]!['link'].toString());
+                      if (!await launchUrl(_url)) {
+                        throw Exception('Could not launch $_url');
+                      }
+                    },
+                  ),
+                  40.0.spaceY,
+                ],
+              );
+            }),
           ],
         ).addAllPadding(20),
       ),

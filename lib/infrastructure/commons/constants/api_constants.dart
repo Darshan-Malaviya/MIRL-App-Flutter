@@ -24,6 +24,17 @@ class ApiConstants {
   static const String devHost = 'dev-api.mirl.com';
   static const String prodHost = 'api.mirl.com';
 
+  static const String endUserEula = '$mirlBasePath/eula';
+  static const String cookiePolicy = '$mirlBasePath/cookie';
+  static const String disclaimer = '$mirlBasePath/disclaimer';
+  static const String acceptableUsePolicy = '$mirlBasePath/acceptable-use';
+  static const String userGeneratedContent = '$mirlBasePath/user-generated-content';
+  static const String refundPolicy = '$mirlBasePath/refund';
+
+
+
+
+
   ///development url
 
   static Uri endpointUri({String? path, Map<String, dynamic>? queryParameters}) => Uri(

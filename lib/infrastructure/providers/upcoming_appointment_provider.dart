@@ -33,7 +33,7 @@ class UpcomingAppointmentProvider extends ChangeNotifier {
 
   void getSelectedDate(DateTime dateTime, int role) {
     _selectedDate = dateTime;
-    upcomingAppointmentApiCall(showLoader: false, showListLoader: true, role: role);
+      upcomingAppointmentApiCall(showLoader: false, showListLoader: true, role: role);
     notifyListeners();
   }
 

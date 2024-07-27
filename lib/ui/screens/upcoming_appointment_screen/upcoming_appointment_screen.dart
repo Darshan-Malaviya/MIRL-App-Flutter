@@ -86,7 +86,7 @@ class _UpcomingAppointmentScreenState extends ConsumerState<UpcomingAppointmentS
                     },
                     selectedDay: upcomingWatch.selectedDate,
                     scheduleDateList: upcomingWatch.dateList,
-                    fromUpcomingAppointment: true,
+                    fromUpcomingAppointment: false,
                   ),
                   30.0.spaceY,
                   PrimaryButton(
