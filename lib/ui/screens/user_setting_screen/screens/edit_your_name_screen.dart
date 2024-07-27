@@ -49,6 +49,7 @@ class _EditYourNameScreenState extends ConsumerState<EditYourNameScreen> {
                 //hintText: StringConstants.officialNameHere,
                 controller: userSettingWatch.userNameController,
                 inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_.-]')),
                   LengthLimitingTextInputFormatter(50),
                 ],
                 onFieldSubmitted: (value) {

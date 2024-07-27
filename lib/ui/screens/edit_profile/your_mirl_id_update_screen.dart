@@ -51,8 +51,8 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
                   controller: expertWatch.mirlIdController,
                   focusNode: mirlIdFocusNode,
                   inputFormatters: [
-                    //LengthLimitingTextInputFormatter(15),
-
+                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_.-]')),
+                    LengthLimitingTextInputFormatter(50),
                   ],
                   validator: (value) {
                     return value?.toMirlIdValidation(LocaleKeys.pleaseEnterMirlID.tr(), LocaleKeys.idContainsOnlyCharacter.tr());

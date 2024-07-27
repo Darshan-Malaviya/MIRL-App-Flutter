@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -490,7 +489,9 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                                     title: LocaleKeys.back.tr(),
                                     titleColor: ColorConstants.buttonTextColor,
                                     fontSize: 12,
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                    context.toPop();
+                                    },
                                   ),
                                   PrimaryButton(
                                     width: 150,
