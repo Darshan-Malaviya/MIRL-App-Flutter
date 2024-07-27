@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
@@ -197,117 +196,121 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 20),
                             child: !_messageSent
-                                ? Column(
-                                    children: [
-                                      BodyMediumText(
-                                        title: StringConstants.expertSetup,
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      BodyMediumText(
-                                        title: StringConstants.expertSetupDesc,
-                                        titleTextAlign: TextAlign.center,
-                                        titleColor:
-                                            ColorConstants.textGreyLightColor,
-                                      ),
-                                      10.0.spaceY,
-                                      GestureDetector(
-                                        onTap: () async {
-                                          final Uri _url = Uri.parse(
-                                              AppConstants.expertSetupUrl);
-                                          if (!await launchUrl(_url)) {
-                                            throw Exception(
-                                                'Could not launch $_url');
-                                          }
-                                        },
-                                        child: BodyLargeText(
-                                          title: StringConstants.setupAcc,
+                                ? SingleChildScrollView(
+                                  child: Column(
+                                      children: [
+                                        BodyMediumText(
+                                          title: StringConstants.expertSetup,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        BodyMediumText(
+                                          title: StringConstants.expertSetupDesc,
                                           titleTextAlign: TextAlign.center,
+                                          titleColor:
+                                              ColorConstants.textGreyLightColor,
+                                        ),
+                                        10.0.spaceY,
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final Uri _url = Uri.parse(
+                                                AppConstants.expertSetupUrl);
+                                            if (!await launchUrl(_url)) {
+                                              throw Exception(
+                                                  'Could not launch $_url');
+                                            }
+                                          },
+                                          child: BodyLargeText(
+                                            title: StringConstants.setupAcc,
+                                            titleTextAlign: TextAlign.center,
+                                            titleColor:
+                                                ColorConstants.bottomTextColor,
+                                          ),
+                                        ),
+                                        50.0.spaceY,
+                                        BodyMediumText(
+                                          title: StringConstants.expertSetupDesc1,
+                                          titleTextAlign: TextAlign.center,
+                                          titleColor:
+                                              ColorConstants.textGreyLightColor,
+                                        ),
+                                        10.0.spaceY,
+                                        Container(
+                                          height: 200,
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                            ),
+                                            maxLines: 1000,
+                                            maxLength: 1000,
+                                          ),
+                                        ),
+                                        10.0.spaceY,
+                                        PrimaryButton(
+                                          height: 50,
+                                          buttonColor:
+                                              ColorConstants.mirlConnectColor,
+                                          title: "SEND MESSAGE",
+                                          titleColor:
+                                              ColorConstants.buttonTextColor,
+                                          fontSize: 12,
+                                          onPressed: () {
+                                            setState(() {
+                                              _messageSent = true;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                )
+                                : SingleChildScrollView(
+                                  child: Column(
+                                      children: [
+                                        TitleLargeText(
+                                          title: StringConstants.msgReceived,
                                           titleColor:
                                               ColorConstants.bottomTextColor,
                                         ),
-                                      ),
-                                      50.0.spaceY,
-                                      BodyMediumText(
-                                        title: StringConstants.expertSetupDesc1,
-                                        titleTextAlign: TextAlign.center,
-                                        titleColor:
-                                            ColorConstants.textGreyLightColor,
-                                      ),
-                                      10.0.spaceY,
-                                      Container(
-                                        height: 200,
-                                        child: TextFormField(
-                                          decoration: InputDecoration(
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
-                                          ),
-                                          maxLines: 1000,
-                                          maxLength: 1000,
+                                        SizedBox(
+                                          height: 10,
                                         ),
-                                      ),
-                                      10.0.spaceY,
-                                      PrimaryButton(
-                                        height: 50,
-                                        buttonColor:
-                                            ColorConstants.mirlConnectColor,
-                                        title: "SEND MESSAGE",
-                                        titleColor:
-                                            ColorConstants.buttonTextColor,
-                                        fontSize: 12,
-                                        onPressed: () {
-                                          setState(() {
-                                            _messageSent = true;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                : Column(
-                                    children: [
-                                      TitleLargeText(
-                                        title: StringConstants.msgReceived,
-                                        titleColor:
-                                            ColorConstants.bottomTextColor,
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      BodyMediumText(
-                                        title: StringConstants.thankYouMessage,
-                                        titleTextAlign: TextAlign.center,
-                                        titleColor:
-                                            ColorConstants.textGreyLightColor,
-                                      ),
-                                      50.0.spaceY,
-                                      Image.asset(
-                                        ImageConstants.help_message_sent,
-                                        scale: 4,
-                                      ),
-                                      50.0.spaceY,
-                                      PrimaryButton(
-                                        height: 50,
-                                        buttonColor:
-                                            ColorConstants.mirlConnectColor,
-                                        title: "BACK TO MY USER PROFILE",
-                                        titleColor:
-                                            ColorConstants.buttonTextColor,
-                                        fontSize: 12,
-                                        onPressed: () {
-                                          setState(() {
-                                            _messageSent = false;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                        BodyMediumText(
+                                          title: StringConstants.thankYouMessage,
+                                          titleTextAlign: TextAlign.center,
+                                          titleColor:
+                                              ColorConstants.textGreyLightColor,
+                                        ),
+                                        50.0.spaceY,
+                                        Image.asset(
+                                          ImageConstants.help_message_sent,
+                                          scale: 4,
+                                        ),
+                                        50.0.spaceY,
+                                        PrimaryButton(
+                                          height: 50,
+                                          buttonColor:
+                                              ColorConstants.mirlConnectColor,
+                                          title: "BACK TO MY USER PROFILE",
+                                          titleColor:
+                                              ColorConstants.buttonTextColor,
+                                          fontSize: 12,
+                                          onPressed: () {
+                                            setState(() {
+                                              _messageSent = false;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                ),
                           ),
                         ),
                       );
@@ -321,84 +324,155 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                     title: LocaleKeys.seekerHelpCenter.tr(),
                     titleColor: ColorConstants.buttonTextColor,
                     onPressed: () {
+                      // showModalBottomSheet(
+                      //     context: context,
+                      //   builder: (context){
+                      //     return SingleChildScrollView(
+                      //       child: Container(
+                      //           padding: const EdgeInsets.symmetric(
+                      //               horizontal: 10, vertical: 20),
+                      //           child: Column(
+                      //             children: [
+                      //               BodyMediumText(
+                      //                 title: StringConstants.seekerHelp,
+                      //               ),
+                      //               SizedBox(
+                      //                 height: 10,
+                      //               ),
+                      //               BodyMediumText(
+                      //                 title: StringConstants.seekerDesc,
+                      //                 titleTextAlign: TextAlign.center,
+                      //                 titleColor:
+                      //                 ColorConstants.textGreyLightColor,
+                      //               ),
+                      //               10.0.spaceY,
+                      //               GestureDetector(
+                      //                 onTap: () {},
+                      //                 child: BodyLargeText(
+                      //                   title: StringConstants.seekerFaq,
+                      //                   titleTextAlign: TextAlign.center,
+                      //                   titleColor:
+                      //                   ColorConstants.bottomTextColor,
+                      //                 ),
+                      //               ),
+                      //               50.0.spaceY,
+                      //               BodyMediumText(
+                      //                 title: StringConstants.seekerDesc1,
+                      //                 titleTextAlign: TextAlign.center,
+                      //                 titleColor:
+                      //                 ColorConstants.textGreyLightColor,
+                      //               ),
+                      //               10.0.spaceY,
+                      //               Container(
+                      //                 height: 200,
+                      //                 child: TextFormField(
+                      //                   decoration: InputDecoration(
+                      //                     enabledBorder: OutlineInputBorder(
+                      //                       borderRadius:
+                      //                       BorderRadius.circular(20.0),
+                      //                     ),
+                      //                     focusedBorder: OutlineInputBorder(
+                      //                       borderRadius:
+                      //                       BorderRadius.circular(20.0),
+                      //                     ),
+                      //                   ),
+                      //                   maxLines: 1000,
+                      //                   maxLength: 1000,
+                      //                 ),
+                      //               ),
+                      //               10.0.spaceY,
+                      //               PrimaryButton(
+                      //                 height: 50,
+                      //                 buttonColor:
+                      //                 ColorConstants.mirlConnectColor,
+                      //                 title: "SEND MESSAGE",
+                      //                 titleColor:
+                      //                 ColorConstants.buttonTextColor,
+                      //                 fontSize: 12,
+                      //                 onPressed: () {
+                      //                   setState(() {});
+                      //                 },
+                      //               ),
+                      //             ],
+                      //           )),
+                      //     );
+                      //   }
+                      // );
                       CommonBottomSheet.bottomSheet(
                         isShadowContainer: false,
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        constraints: BoxConstraints(
-                            maxHeight:
-                                MediaQuery.of(context).size.height * 0.9),
                         context: context,
                         isDismissible: true,
                         child: StatefulBuilder(
                           builder: (BuildContext context,
                                   StateSetter setState) =>
-                              Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 20),
-                                  child: Column(
-                                    children: [
-                                      BodyMediumText(
-                                        title: StringConstants.seekerHelp,
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      BodyMediumText(
-                                        title: StringConstants.seekerDesc,
-                                        titleTextAlign: TextAlign.center,
-                                        titleColor:
-                                            ColorConstants.textGreyLightColor,
-                                      ),
-                                      10.0.spaceY,
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: BodyLargeText(
-                                          title: StringConstants.seekerFaq,
+                              SingleChildScrollView(
+                                child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 20),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        BodyMediumText(
+                                          title: StringConstants.seekerHelp,
+                                        ),
+                                        10.0.spaceY,
+                                        BodyMediumText(
+                                          title: StringConstants.seekerDesc,
                                           titleTextAlign: TextAlign.center,
                                           titleColor:
-                                              ColorConstants.bottomTextColor,
+                                              ColorConstants.textGreyLightColor,
                                         ),
-                                      ),
-                                      50.0.spaceY,
-                                      BodyMediumText(
-                                        title: StringConstants.seekerDesc1,
-                                        titleTextAlign: TextAlign.center,
-                                        titleColor:
-                                            ColorConstants.textGreyLightColor,
-                                      ),
-                                      10.0.spaceY,
-                                      Container(
-                                        height: 200,
-                                        child: TextFormField(
-                                          decoration: InputDecoration(
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
+                                        10.0.spaceY,
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: BodyLargeText(
+                                            title: StringConstants.seekerFaq,
+                                            titleTextAlign: TextAlign.center,
+                                            titleColor:
+                                                ColorConstants.bottomTextColor,
                                           ),
-                                          maxLines: 1000,
-                                          maxLength: 1000,
                                         ),
-                                      ),
-                                      10.0.spaceY,
-                                      PrimaryButton(
-                                        height: 50,
-                                        buttonColor:
-                                            ColorConstants.mirlConnectColor,
-                                        title: "SEND MESSAGE",
-                                        titleColor:
-                                            ColorConstants.buttonTextColor,
-                                        fontSize: 12,
-                                        onPressed: () {
-                                          setState(() {});
-                                        },
-                                      ),
-                                    ],
-                                  )),
+                                        50.0.spaceY,
+                                        BodyMediumText(
+                                          title: StringConstants.seekerDesc1,
+                                          titleTextAlign: TextAlign.center,
+                                          titleColor:
+                                              ColorConstants.textGreyLightColor,
+                                        ),
+                                        10.0.spaceY,
+                                        Container(
+                                          height: 200,
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                            ),
+                                            maxLines: 1000,
+                                            maxLength: 1000,
+                                          ),
+                                        ),
+                                        10.0.spaceY,
+                                        PrimaryButton(
+                                          height: 50,
+                                          buttonColor:
+                                              ColorConstants.mirlConnectColor,
+                                          title: "SEND MESSAGE",
+                                          titleColor:
+                                              ColorConstants.buttonTextColor,
+                                          fontSize: 12,
+                                          onPressed: () {
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ],
+                                    )),
+                              ),
                         ),
                       );
                     },
@@ -413,12 +487,13 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                     titleColor: ColorConstants.buttonTextColor,
                     fontSize: 12,
                     onPressed: () async {
-                      if (!await launchUrl(
-                        Uri.parse(ApiConstants.privacyPolicy),
-                        mode: LaunchMode.inAppBrowserView,
-                        browserConfiguration:
-                            const BrowserConfiguration(showTitle: true),
-                      )) ;
+                      context.toPushNamed(RoutesConstants.userPolicies);
+                      // if (!await launchUrl(
+                      //   Uri.parse(ApiConstants.privacyPolicy),
+                      //   mode: LaunchMode.inAppBrowserView,
+                      //   browserConfiguration:
+                      //       const BrowserConfiguration(showTitle: true),
+                      // )) ;
                     },
                   ),
                   50.0.spaceY,
@@ -484,14 +559,16 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                                     title: LocaleKeys.back.tr(),
                                     titleColor: ColorConstants.buttonTextColor,
                                     fontSize: 12,
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                    context.toPop();
+                                    },
                                   ),
                                   PrimaryButton(
                                     width: 150,
                                     height: 40,
                                     buttonColor:
                                         ColorConstants.mirlConnectColor,
-                                    title: LocaleKeys.yesDelete.tr(),
+                                    title: LocaleKeys.yes.tr(),
                                     titleColor: ColorConstants.buttonTextColor,
                                     fontSize: 12,
                                     onPressed: () async {},

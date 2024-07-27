@@ -78,6 +78,7 @@ import 'package:mirl/ui/screens/user_setting_screen/user_seeting_screen.dart';
 import 'package:mirl/ui/screens/video_call_screen/arguments/video_call_arguments.dart';
 import 'package:mirl/ui/screens/video_call_screen/video_call_screen.dart';
 
+import '../../../ui/screens/user_policies/user_policies.dart';
 import '../../../ui/screens/user_setting_screen/screens/edit_your_email_id_screen.dart';
 
 ///use this service for provide global context to widgets
@@ -215,6 +216,8 @@ class RouterConstant {
         return MaterialPageRoute(builder: (_) => const EditYourPhoneNumberScreen());
       case RoutesConstants.expertCallHistoryScreen:
         return MaterialPageRoute(builder: (_) => const ExpertCallHistoryScreen());
+      case RoutesConstants.userPolicies:
+        return MaterialPageRoute(builder: (_) => const userPolicies());
       case RoutesConstants.callFeedbackScreen:
         return MaterialPageRoute(builder: (_) => CallFeedbackScreen(args: settings.arguments as CallFeedBackArgs));
       case RoutesConstants.feedbackSubmittingScreen:

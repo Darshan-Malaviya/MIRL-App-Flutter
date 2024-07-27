@@ -108,6 +108,7 @@ dependencies:
   socket_io_client: ^2.0.3+1
 
   app_links: ^6.1.4
+  video_player:
 
 dev_dependencies:
   flutter_test:

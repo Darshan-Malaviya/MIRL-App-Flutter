@@ -205,9 +205,13 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
           color: ColorConstants.yellowButtonColor.withOpacity(0.3),
           child: Center(
             child: CircleNetworkImageWidget(
-              imageURL: CallRoleEnum.user ==  extraResponseModel?.callRoleEnum
-                  ? (extraResponseModel?.userProfile !=""?extraResponseModel!.userProfile!:ImageConstants.mysteryImage)
-                  : (extraResponseModel?.expertProfile!=""?extraResponseModel!.expertProfile!:ImageConstants.mysteryImage),
+              imageURL: CallRoleEnum.user == extraResponseModel?.callRoleEnum
+                  ? (extraResponseModel?.userProfile != "" && extraResponseModel?.userProfile != null
+                      ? extraResponseModel!.userProfile!
+                      : ImageConstants.mysteryImage)
+                  : (extraResponseModel?.expertProfile != "" && extraResponseModel?.expertProfile != null
+                      ? extraResponseModel!.expertProfile!
+                      : ImageConstants.mysteryImage),
               radius: callProvider.isSwipeUser ? 30 : 40,
             ),
           ),
@@ -255,11 +259,14 @@ class _VideoCallScreenState extends ConsumerState<VideoCallScreen> {
           color: ColorConstants.primaryColor.withOpacity(0.3),
           child: Center(
             child: CircleNetworkImageWidget(
-              imageURL: CallRoleEnum.user ==  extraResponseModel?.callRoleEnum
-                  ? (extraResponseModel?.expertProfile ?? '')
-                  : (extraResponseModel?.userProfile ?? ''),
+              imageURL: CallRoleEnum.user == extraResponseModel?.callRoleEnum
+                  ? (extraResponseModel?.expertProfile != "" && extraResponseModel?.expertProfile != null
+                      ? extraResponseModel!.userProfile!
+                      : ImageConstants.mysteryImage)
+                  : (extraResponseModel?.userProfile != "" && extraResponseModel?.userProfile != null
+                      ? extraResponseModel!.expertProfile!
+                      : ImageConstants.mysteryImage),
               radius: callProvider.isSwipeUser ? 60 : 30,
-
             ),
           ),
         );
