@@ -52,7 +52,7 @@ class _YourMirlIdScreenState extends ConsumerState<YourMirlIdScreen> {
                   focusNode: mirlIdFocusNode,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_.-]')),
-                    LengthLimitingTextInputFormatter(50),
+                    LengthLimitingTextInputFormatter(15),
                   ],
                   validator: (value) {
                     return value?.toMirlIdValidation(LocaleKeys.pleaseEnterMirlID.tr(), LocaleKeys.idContainsOnlyCharacter.tr());

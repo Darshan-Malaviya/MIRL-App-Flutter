@@ -166,7 +166,7 @@ class _CountryPickerWidgetState extends State<CountryPickerWidget> {
                         ),
                         shadow: buildBoxShadow(),
                       ),
-                      contentPadding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                      contentPadding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 8),
                       hintText: widget.searchHintText,
                       hintStyle:
                           const TextStyle(fontFamily: 'Poppins', color: ColorConstants.blackColor, fontSize: 14, fontWeight: FontWeight.w400)),

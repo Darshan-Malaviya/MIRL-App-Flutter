@@ -176,9 +176,8 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     TitleLargeText(
-                      title: widget.args.topicName != null ? widget.args.topicName ?? '' : widget.args.categoryName ?? '',
+                      title: widget.args.topicName != null ? widget.args.topicName?.toUpperCase() ?? '' : widget.args.categoryName?.toUpperCase() ?? '',
                       titleTextAlign: TextAlign.center,
-                      fontFamily: FontWeightEnum.w700.toInter,
                       maxLine: 5,
                     ).addMarginX(20),
                     if (selectedTopicWatch.categoryList?.expertData?.isNotEmpty ?? false) ...[
