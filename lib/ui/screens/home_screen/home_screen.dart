@@ -90,7 +90,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       border: Border.all(color: ColorConstants.dropDownBorderColor),
                       color: ColorConstants.whiteColor,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                     child: BodySmallText(
                       maxLine: 1,
                       fontFamily: FontWeightEnum.w400.toInter,

@@ -303,7 +303,7 @@ class EditExpertProvider extends ChangeNotifier {
       expertNameController.text = _userData?.expertName ?? '';
       expertName = _userData?.expertName ?? '';
       _pickedImage = _userData?.expertProfile ?? '';
-      mirlIdController.text = _userData?.mirlId ?? '';
+      mirlIdController.text = _userData?.mirlId?.toLowerCase() ?? '';
       mirlId = _userData?.mirlId ?? '';
       aboutMeController.text = _userData?.about ?? '';
       about = _userData?.about ?? '';
@@ -552,7 +552,7 @@ class EditExpertProvider extends ChangeNotifier {
   }
 
   void updateMirlIdApi() {
-    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(mirlId: mirlIdController.text.trim());
+    UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(mirlId: mirlIdController.text.trim().toLowerCase());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonMirlId());
   }
 
