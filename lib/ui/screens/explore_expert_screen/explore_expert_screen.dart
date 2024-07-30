@@ -12,11 +12,11 @@ import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 
 class ExploreExpertScreen extends ConsumerStatefulWidget {
   final bool isFromHomePage;
-  /*final ScrollController scrollController;*/
+  final ScrollController scrollController;
 
   const ExploreExpertScreen(
       {super.key,
-      required this.isFromHomePage /*,required this.scrollController*/});
+      required this.isFromHomePage ,required this.scrollController});
 
   @override
   ConsumerState<ExploreExpertScreen> createState() =>
@@ -24,7 +24,7 @@ class ExploreExpertScreen extends ConsumerStatefulWidget {
 }
 
 class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
-  ScrollController scrollController = ScrollController();
+  // ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -32,9 +32,9 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
 
     super.initState();
     onInit();
-    scrollController.addListener(() async {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    widget.scrollController.addListener(() async {
+      if (widget.scrollController.position.pixels ==
+          widget.scrollController.position.maxScrollExtent) {
         bool isLoading = ref.watch(filterProvider).reachedExploreExpertLastPage;
         if (!isLoading) {
           await ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(
@@ -150,7 +150,7 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                         ref.read(filterProvider).exploreExpertUserAndCategoryApiCall(context: context, clearFilter: true);
                       },
                       child: SingleChildScrollView(
-                        controller: scrollController,
+                        controller: widget.scrollController,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [

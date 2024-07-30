@@ -129,7 +129,7 @@ class _ExpertProfileScreenState extends ConsumerState<ExpertProfileScreen> {
                               Row(
                                 children: [
                                   BodySmallText(
-                                    title: LocaleKeys.feesPerMinute.tr(),
+                                    title: LocaleKeys.feesPerMinute.tr  (),
                                     fontFamily: FontWeightEnum.w400.toInter,
                                     titleTextAlign: TextAlign.center,
                                   ),

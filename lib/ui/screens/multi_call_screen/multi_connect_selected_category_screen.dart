@@ -263,6 +263,7 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                           context.toPushNamed(
                                             RoutesConstants.selectedTopicScreen,
                                             args: SelectedTopicArgs(
+                                                // description :  multiProviderWatch.singleCategoryData?.categoryData?.topic?[index]. ?? "",
                                                 topicName: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ?? '',
                                                 topicId: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0,
                                                 categoryId: multiProviderWatch.singleCategoryData?.categoryData?.id,

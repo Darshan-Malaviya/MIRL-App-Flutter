@@ -13,6 +13,11 @@ import 'package:mirl/ui/screens/home_screen/home_screen.dart';
 import 'package:mirl/ui/screens/notifications_screen/notification_screen.dart';
 import 'package:mirl/ui/screens/user_setting_screen/user_seeting_screen.dart';
 
+ScrollController homeScrollController = ScrollController();
+ScrollController exploreScrollController = ScrollController();
+ScrollController notificationScrollController = ScrollController();
+ScrollController expertScrollController = ScrollController();
+ScrollController userScrollController = ScrollController();
 
 class DashboardScreen extends ConsumerStatefulWidget {
   final int index;
@@ -25,11 +30,7 @@ class DashboardScreen extends ConsumerStatefulWidget {
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   PageController? pageController;
-  ScrollController homeScrollController = ScrollController();
-  ScrollController exploreScrollController = ScrollController();
-  ScrollController notificationScrollController = ScrollController();
-  ScrollController expertScrollController = ScrollController();
-  ScrollController userScrollController = ScrollController();
+
 
   @override
   void initState() {
@@ -136,6 +137,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             dashboardProviderRead.pageChanged(index);
             pageController?.jumpToPage(index);
             // controller(index);
+            if (index == 1) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (exploreScrollController.hasClients) {
+                  exploreScrollController.animateTo(
+                    0.0,
+                    duration: Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                  );
+                }
+              });
+            }
           },
           useLegacyColorScheme: false,
           backgroundColor: ColorConstants.transparentColor,
@@ -180,7 +192,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       },
       children: <Widget>[
         HomeScreen(context: context,/*scrollController:homeScrollController*/),
-        ExploreExpertScreen(/*scrollController: exploreScrollController*/isFromHomePage: true),
+        ExploreExpertScreen(scrollController: exploreScrollController,isFromHomePage: true),
         NotificationScreen(),
         ExpertProfileScreen(/*scrollController:expertScrollController*/),
         UserSettingScreen(/*scrollController:userScrollController*/),

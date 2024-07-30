@@ -181,6 +181,13 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                       fontFamily: FontWeightEnum.w700.toInter,
                       maxLine: 5,
                     ).addMarginX(20),
+                    TitleSmallText(
+                      title: widget.args.description ?? "",
+                      titleTextAlign: TextAlign.center,
+                      fontFamily: FontWeightEnum.w700.toInter,
+                      fontWeight: FontWeight.w100,
+                      maxLine: 5,
+                    ).addMarginX(10),
                     if (selectedTopicWatch.categoryList?.expertData?.isNotEmpty ?? false) ...[
                       ListView.separated(
                           shrinkWrap: true,
