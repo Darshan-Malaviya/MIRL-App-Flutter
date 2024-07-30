@@ -37,6 +37,7 @@ class _EditYourNameScreenState extends ConsumerState<EditYourNameScreen> {
                 title: LocaleKeys.yourName.tr(),
                 titleColor: ColorConstants.bottomTextColor,
               ),
+              10.0.spaceY,
               TitleSmallText(
                 title: LocaleKeys.pleaseUseNameText.tr(),
                 fontFamily: FontWeightEnum.w400.toInter,
@@ -48,10 +49,10 @@ class _EditYourNameScreenState extends ConsumerState<EditYourNameScreen> {
                 height: 36,
                 //hintText: StringConstants.officialNameHere,
                 controller: userSettingWatch.userNameController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_.-]')),
-                  LengthLimitingTextInputFormatter(50),
-                ],
+                // inputFormatters: [
+                //   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_.-]')),
+                //   LengthLimitingTextInputFormatter(50),
+                // ],
                 onFieldSubmitted: (value) {
                   context.unFocusKeyboard();
                 },

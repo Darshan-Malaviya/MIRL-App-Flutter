@@ -164,7 +164,7 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                                   height: 122,
                                   width: 95,
                                   boxFit: BoxFit.cover,
-                                  emptyImageWidget: Image.asset(ImageConstants.mirlConnect, fit: BoxFit.fitWidth, width: double.infinity),
+                                  emptyImageWidget: Image.network(ImageConstants.mysteryImage, fit: BoxFit.fitWidth, width: double.infinity),
                                 ),
                               ),
                               if ((widget.args.name?.isNotEmpty ?? false) && (widget.args.name != 'null')) ...[

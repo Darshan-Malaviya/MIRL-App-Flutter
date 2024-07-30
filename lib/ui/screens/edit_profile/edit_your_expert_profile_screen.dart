@@ -151,7 +151,7 @@ class _EditYourExpertProfileScreenState extends ConsumerState<EditYourExpertProf
                   height: 40,
                   labelText: StringConstants.yourMirlId,
                   alignment: Alignment.centerLeft,
-                  controller: TextEditingController(text: expertWatch.mirlId),
+                  controller: TextEditingController(text: expertWatch.mirlId.toLowerCase()),
                 ),
                 8.0.spaceY,
                 TextFormFieldWidget(
