@@ -91,7 +91,6 @@ class ScheduleCallProvider extends ChangeNotifier {
     getSlotsApi();
     notifyListeners();
   }
-
   void getTimeZone() async {
     final Duration timeDuration = DateTime.now().timeZoneOffset;
     final String timeZone = DateTime.now().timeZoneName;
