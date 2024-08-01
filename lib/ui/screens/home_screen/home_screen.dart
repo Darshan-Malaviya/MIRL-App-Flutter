@@ -5,9 +5,12 @@ import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/enums/call_request_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/ui/common/shimmer_widgets/home_page_shimmer.dart';
+import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:mirl/ui/screens/home_screen/widget/category_and_topic_list_view.dart';
 import 'package:mirl/ui/screens/home_screen/widget/favorite_experts_view.dart';
 import 'package:mirl/ui/screens/home_screen/widget/past_conversation_view.dart';
+
+import '../explore_expert_screen/explore_expert_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   //final ScrollController scrollController;
@@ -103,8 +106,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Flexible(
                       child: GestureDetector(
                         onTap: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => ExploreExpertScreen(isFromHomePage: false,),allowSnapshotting: false));
-                           context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ExploreExpertScreen(isFromHomePage: false,scrollController: expertScrollController,)));
+                           // context.toPushNamed(RoutesConstants.exploreExpertScreen, args: false,);
                           // Navigator.pushNamed(context,RoutesConstants.exploreExpertScreen, arguments: false);
                           // NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 1);
                         },

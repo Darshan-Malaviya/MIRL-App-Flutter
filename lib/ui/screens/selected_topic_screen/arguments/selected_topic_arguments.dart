@@ -4,6 +4,7 @@ class SelectedTopicArgs {
   final String? topicName;
   final String? categoryName;
   final bool? fromMultiConnect;
+  final String? descriptionName;
 
   SelectedTopicArgs({
     this.topicId,
@@ -11,5 +12,6 @@ class SelectedTopicArgs {
     this.topicName,
     this.categoryName,
     this.fromMultiConnect,
+    this.descriptionName
   });
 }

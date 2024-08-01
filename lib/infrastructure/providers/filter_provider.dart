@@ -825,7 +825,6 @@ class FilterProvider extends ChangeNotifier {
     );
 
     ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: data.toNullFreeJson());
-
     if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: false);
     } else {

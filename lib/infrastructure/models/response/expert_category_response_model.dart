@@ -91,14 +91,18 @@ class Topic {
   String? name;
   int? categoryId;
   bool? isSelected;
+  String? descriptionName;
 
-  Topic({this.id, this.name, this.categoryId, this.isSelected});
+
+  Topic({this.id, this.name, this.categoryId, this.isSelected,this.descriptionName});
 
   Topic.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     categoryId = json['categoryId'];
     isSelected = json['isSelected'];
+    descriptionName = json['descriptionName'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -107,6 +111,8 @@ class Topic {
     data['name'] = this.name;
     data['categoryId'] = this.categoryId;
     data['isSelected'] = this.isSelected;
+    data['descriptionName'] = this.descriptionName;
+
     return data;
   }
 }

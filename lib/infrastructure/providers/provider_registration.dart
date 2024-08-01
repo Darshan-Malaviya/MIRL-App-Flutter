@@ -22,6 +22,7 @@ import 'package:mirl/infrastructure/providers/socket_provider.dart';
 import 'package:mirl/infrastructure/providers/upcoming_appointment_provider.dart';
 import 'package:mirl/infrastructure/providers/user_setting_provider.dart';
 
+import 'help_and_terms_provider.dart';
 import 'mirl_connect_provider.dart';
 
 // final authProvider = ChangeNotifierProvider.autoDispose((ref) => AuthProvider());
@@ -48,3 +49,4 @@ final suggestNewExpertiseProvider = ChangeNotifierProvider.autoDispose((_) => Su
 final callHistoryProvider = ChangeNotifierProvider.autoDispose((_) => CallHistoryProvider());
 final selectedTopicProvider = ChangeNotifierProvider.autoDispose((_) => SelectedTopicProvider());
 final mirlConnectProvider = ChangeNotifierProvider.autoDispose((_) => MIRLConnectProvider());
+final helpAndTermsProvider = ChangeNotifierProvider.autoDispose((_) => HelpAndTermsProvider());

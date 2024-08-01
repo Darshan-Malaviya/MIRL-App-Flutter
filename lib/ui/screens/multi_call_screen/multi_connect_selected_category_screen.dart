@@ -259,10 +259,13 @@ class _MultiConnectSelectedCategoryScreenState extends ConsumerState<MultiConnec
                                     int topicIndex = filterWatch.allTopic.indexWhere((element) => element.id == data?.id);
                                     return InkWell(
                                       onTap: () {
+                                        print("Topic Description :::::::::::::::::${multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].descriptionName}");
+                                        print("Topic Name :::::::::::::::::${multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].name}");
                                         if (index != 0) {
                                           context.toPushNamed(
                                             RoutesConstants.selectedTopicScreen,
                                             args: SelectedTopicArgs(
+                                                descriptionName :  multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].descriptionName ?? "",
                                                 topicName: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].name ?? '',
                                                 topicId: multiProviderWatch.singleCategoryData?.categoryData?.topic?[index].id ?? 0,
                                                 categoryId: multiProviderWatch.singleCategoryData?.categoryData?.id,
