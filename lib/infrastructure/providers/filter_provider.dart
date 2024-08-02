@@ -437,7 +437,7 @@ class FilterProvider extends ChangeNotifier {
 
   void setCategoryWhenFromMultiConnect(CategoryData? categoryData) {
     selectedCategory = CategoryIdNameCommonModel(
-        name: categoryData?.name ?? '', isCategorySelected: true, id: categoryData?.id, image: categoryData?.image);
+        name: categoryData?.name ?? '', isCategorySelected: true, id: categoryData?.id, image: categoryData?.image,description: categoryData?.description);
     // commonSelectionModel.add(CommonSelectionModel(title: FilterType.Category.name, value: categoryData?.name ?? ''));
     categoryController.text = selectedCategory?.name ?? '';
     notifyListeners();
@@ -825,6 +825,7 @@ class FilterProvider extends ChangeNotifier {
     );
 
     ApiHttpResult response = await _expertCategoryRepo.exploreExpertUserAndCategoryApi(request: data.toNullFreeJson());
+
     if (isFromFilter) {
       CustomLoading.progressDialog(isLoading: false);
     } else {
