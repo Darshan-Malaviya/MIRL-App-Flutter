@@ -246,7 +246,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                       maxLine: 10,
                                     ).addPaddingX(4),
                                     BodyMediumText(
-                                      title:filterProviderWatch.selectedTopicList?[index].description?? StringConstants.descriptionText,
+                                      title:filterProviderWatch.selectedTopicList?[index].description??"",
                                       fontFamily: FontWeightEnum.w400.toInter,
                                       maxLine: 5,
                                       titleTextAlign: TextAlign.center,
@@ -258,7 +258,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                             10.0.spaceY,
                           ]else
                             BodyMediumText(
-                              title:StringConstants.descriptionText,
+                              title:filterProviderWatch.singleCategoryData?.categoryData?.description??StringConstants.descriptionText,
                               fontFamily: FontWeightEnum.w400.toInter,
                               maxLine: 5,
                               titleTextAlign: TextAlign.center,

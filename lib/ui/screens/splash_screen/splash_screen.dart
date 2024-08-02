@@ -54,10 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: ColorConstants.whiteColor,
       body: Center(
         child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
+            ? VideoPlayer(_controller)
             : SizedBox.shrink(),
       ),
     );
