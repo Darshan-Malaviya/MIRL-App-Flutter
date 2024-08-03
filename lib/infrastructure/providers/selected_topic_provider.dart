@@ -51,7 +51,7 @@ class SelectedTopicProvider extends ChangeNotifier {
       case APIStatus.success:
         if (response.data != null && response.data is ExploreExpertCategoryAndUserResponseModel) {
           ExploreExpertCategoryAndUserResponseModel responseModel = response.data;
-          Logger().d("selected topic API call successfully${response.data}");
+          Logger().d("selected topic API call successfully :: :: :: ::${responseModel.data?.expertData?.length}");
           if (_selectedTopicPageNo == 1) {
             _categoryList = responseModel.data;
           } else {

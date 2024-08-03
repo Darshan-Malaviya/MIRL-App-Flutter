@@ -15,6 +15,8 @@ import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_r
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
 import 'package:mirl/ui/screens/selected_topic_screen/arguments/selected_topic_arguments.dart';
 
+import '../../common/arguments/screen_arguments.dart';
+
 class SelectedTopicScreen extends ConsumerStatefulWidget {
   final SelectedTopicArgs args;
 
@@ -193,8 +195,8 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                       title: LocaleKeys.filterExperts.tr(),
                       margin: EdgeInsets.symmetric(horizontal: 20),
                       onPressed: () {
-                        // context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
-                        //     args: FilterArgs(fromExploreExpert: true));
+                        context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
+                            args: FilterArgs(fromExploreExpert: true,));
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
