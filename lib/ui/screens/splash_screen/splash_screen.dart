@@ -1,5 +1,8 @@
-import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
-import 'package:video_player/video_player.dart';
+import 'package:flutter/material.dart';
+import 'package:gif_view/gif_view.dart';
+import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
+import 'package:mirl/infrastructure/commons/constants/route_constants.dart';
+import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -8,106 +11,63 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-  late VideoPlayerController _controller;
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  bool isLoginIn = false;
 
-  var isLoginIn;
+  late GifController gifController;
+
   @override
   void initState() {
     super.initState();
+    gifController = GifController(
+      loop: false,
+      autoPlay: true,
+      onFinish: () {
+        _onGifCompleted();
+      },
+    );
     getLoginStatus();
-    _controller = VideoPlayerController.asset('assets/gif/splash.mp4')
-      ..initialize().then((_) {
-        setState(() {}); // Ensure the first frame is shown after the video is initialized.
-        _controller.play();
-      })
-      ..setLooping(false);
-
-    _controller.addListener(() {
-      if (_controller.value.position == _controller.value.duration) {
-        _onVideoCompleted();
-      }
-    });
   }
 
   Future<void> getLoginStatus() async {
-    isLoginIn = await SharedPrefHelper.getUserData;
+    // Assuming SharedPrefHelper.getUserData returns a bool or a non-nullable value indicating login status.
+    final loginStatus = await SharedPrefHelper.getUserData;
+    isLoginIn = loginStatus.isNotEmpty;
   }
 
-  Future<void> _onVideoCompleted() async {
-    if (isLoginIn.isNotEmpty) {
-      context.toPushNamedAndRemoveUntil(RoutesConstants.dashBoardScreen, args: 0);
+  Future<void> _onGifCompleted() async {
+    if (isLoginIn) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, RoutesConstants.dashBoardScreen, (route) => false,
+          arguments: 0);
     } else {
-      context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+      Navigator.pushNamedAndRemoveUntil(
+          context, RoutesConstants.loginScreen, (route) => false);
     }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstants.whiteColor,
-      body: Center(
-        child: _controller.value.isInitialized
-            ? VideoPlayer(_controller)
-            : SizedBox.shrink(),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: Center(
+              child: GifView.asset(
+                controller: gifController,
+                ImageConstants.splashImagesGif,
+                repeat: ImageRepeat.noRepeat,
+                width: double.infinity,
+                onError: (error) {
+                  return Text('ERROR ----$error');
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-}
-
-class CustomTooltip extends StatelessWidget {
-  final String text;
-  final Offset position;
-
-  const CustomTooltip({
-    super.key,
-    required this.text,
-    required this.position,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: CustomPaint(
-        painter: CustomShapePainter(color: Colors.blue),
-        size: Size(200, 200), // Adjust the size as needed
-      ),
-    );
-  }
-}
-
-class CustomShapePainter extends CustomPainter {
-  final Color color; // Optional property for customization
-
-  const CustomShapePainter({this.color = Colors.blue}); // Default color
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color // Use the provided color or default
-      ..style = PaintingStyle.fill; // Fill the shape
-
-    final path = Path();
-
-    // *Replace the following with code specific to your shape:*
-
-    // Example lines and curves:
-    path.moveTo(size.width * 0.2, size.height * 0.2); // Top left corner
-    path.lineTo(size.width * 0.8, size.height * 0.8); // Right side line
-    path.quadraticBezierTo(size.width * 0.5, size.height, size.width * 0.2, size.height * 0.8); // Bottom curve
-    path.close();
-
-    // *Add or modify path segments as needed based on your shape's components.*
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

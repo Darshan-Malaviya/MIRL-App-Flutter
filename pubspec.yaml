@@ -109,6 +109,7 @@ dependencies:
 
   app_links: ^6.1.4
   video_player:
+  gif_view:
 
 dev_dependencies:
   flutter_test:

@@ -242,13 +242,13 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                   Column(
                                   children: [
                                     BodyMediumText(
-                                      title: '${filterProviderWatch.selectedTopicList?[index].name.toString()},',
+                                      title: '${filterProviderWatch.selectedTopicList?[index].name.toString()}',
                                       maxLine: 10,
                                     ).addPaddingX(4),
                                     BodyMediumText(
-                                      title:filterProviderWatch.selectedTopicList?[index].description??"",
+                                      title:filterProviderWatch.selectedTopicList?[index].description??StringConstants.descriptionText,
                                       fontFamily: FontWeightEnum.w400.toInter,
-                                      maxLine: 5,
+                                      maxLine: 10,
                                       titleTextAlign: TextAlign.center,
                                     ).addPaddingX(20),
                                   ],

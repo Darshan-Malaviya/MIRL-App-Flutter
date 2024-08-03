@@ -63,7 +63,7 @@ class ImageConstants {
   static const mysteryImage = 'https://i.postimg.cc/bvsTZvq7/Mystery-MIRL-Image.png';
 
   /// gif image
-  static const splashImages = '${gifPath}spalsh.gif';
+  static const splashImagesGif = '${gifPath}splash.gif';
 
   /// icon
   // static const recurringIcon = '${iconPath}recurring.png';
