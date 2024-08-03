@@ -10,6 +10,7 @@ import 'package:mirl/infrastructure/commons/enums/call_role_enum.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
 import 'package:mirl/infrastructure/commons/extensions/ui_extensions/visibiliity_extension.dart';
 import 'package:mirl/infrastructure/models/request/expert_data_request_model.dart';
+import 'package:mirl/ui/common/arguments/screen_arguments.dart';
 import 'package:mirl/ui/screens/expert_category_screen/widget/expert_details_widget.dart';
 import 'package:mirl/ui/screens/multi_call_screen/arguments/multi_call_connect_request_arguments.dart';
 import 'package:mirl/ui/screens/multi_call_screen/multi_connect_selected_category_screen.dart';
@@ -193,8 +194,8 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                       title: LocaleKeys.filterExperts.tr(),
                       margin: EdgeInsets.symmetric(horizontal: 20),
                       onPressed: () {
-                        // context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
-                        //     args: FilterArgs(fromExploreExpert: true,));
+                        context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
+                            args: FilterArgs(fromExploreExpert: true,));
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
