@@ -21,6 +21,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(scheduleCallProvider).getTimeZone();
+      // ref.read(scheduleCallProvider).convertCurrentToUtc("Asia/Kolkata");
     });
   }
 
@@ -158,7 +159,7 @@ class _BookingConfirmScreenState extends ConsumerState<BookingConfirmScreen> {
                         10.0.spaceY,
                         LabelSmallText(
                           //title: '${LocaleKeys.expertTimeZone.tr()}: CENTRAL TIME (UTC -6:00)',
-                          title: '${LocaleKeys.expertTimeZone.tr()}: ${scheduleWatch.appointmentData?.expertTimezone ?? ''}',
+                          title: '${LocaleKeys.expertTimeZone.tr()}: ${scheduleWatch.expertUtcDateTime ?? ''}',
                           titleColor: ColorConstants.blueColor,
                           fontFamily: FontWeightEnum.w400.toInter,
                         ),

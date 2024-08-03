@@ -30,6 +30,7 @@ class ApiConstants {
   static const String acceptableUsePolicy = '$mirlBasePath/acceptable-use';
   static const String userGeneratedContent = '$mirlBasePath/user-generated-content';
   static const String refundPolicy = '$mirlBasePath/refund';
+  static const String helpAndSupport = '$mirlBasePath/support';
 
 
 

@@ -354,7 +354,14 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                                         ),
                                         10.0.spaceY,
                                         GestureDetector(
-                                          onTap: () {},
+                                          onTap: () async{
+                                            final Uri _url = Uri.parse(
+                                                ApiConstants.helpAndSupport);
+                                            if (!await launchUrl(_url)) {
+                                            throw Exception(
+                                            'Could not launch $_url');
+                                            }
+                                          },
                                           child: BodyLargeText(
                                             title: StringConstants.seekerFaq,
                                             titleTextAlign: TextAlign.center,

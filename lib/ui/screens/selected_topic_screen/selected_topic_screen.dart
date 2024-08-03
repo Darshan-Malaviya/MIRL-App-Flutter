@@ -180,13 +180,35 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                       titleTextAlign: TextAlign.center,
                       maxLine: 5,
                     ).addMarginX(20),
-                    TitleSmallText(
-                      title: widget.args.descriptionName ?? "",
+                    12.0.spaceY,
+                    LabelSmallText(
+                      title: widget.args.descriptionName?.toUpperCase() ?? "",
                       titleTextAlign: TextAlign.center,
-                      fontFamily: FontWeightEnum.w700.toInter,
-                      fontWeight: FontWeight.w100,
+                      fontFamily: FontWeightEnum.w400.toInter,
+                      fontSize: 12,
                       maxLine: 5,
                     ).addMarginX(10),
+                    12.0.spaceY,
+                    PrimaryButton(
+                      title: LocaleKeys.filterExperts.tr(),
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      onPressed: () {
+                        // context.toPushNamed(RoutesConstants.expertCategoryFilterScreen,
+                        //     args: FilterArgs(fromExploreExpert: true,));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             ExpertCategoryFilterScreen(args: FilterArgs(fromExploreExpert: true)),
+                        //         allowSnapshotting: false));
+                      },
+                      prefixIcon: ImageConstants.filter,
+                      titleColor: ColorConstants.blackColor,
+                      buttonTextFontFamily: FontWeightEnum.w400.toInter,
+                      prefixIconPadding: 10,
+                      padding: EdgeInsets.symmetric(horizontal: 100),
+                    ),
+                    10.0.spaceY,
                     if (selectedTopicWatch.categoryList?.expertData?.isNotEmpty ?? false) ...[
                       ListView.separated(
                           shrinkWrap: true,

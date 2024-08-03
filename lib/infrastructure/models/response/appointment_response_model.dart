@@ -80,6 +80,7 @@ class ExpertDetail {
   String? userName;
   String? expertName;
   String? expertProfile;
+  String? timezone;
 
   ExpertDetail({this.id, this.userName, this.expertName,this.expertProfile});
 
@@ -88,6 +89,7 @@ class ExpertDetail {
     userName = json['userName'];
     expertName = json['expertName'];
     expertProfile = json['expertProfile'];
+    timezone = json['timezone'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,6 +98,7 @@ class ExpertDetail {
     data['userName'] = this.userName;
     data['expertName'] = this.expertName;
     data['expertProfile'] = this.expertProfile;
+    data['timezone'] = this.timezone;
     return data;
   }
 }

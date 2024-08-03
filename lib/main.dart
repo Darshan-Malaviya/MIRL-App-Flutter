@@ -5,9 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/infrastructure/commons/utils/app_theme.dart';
 import 'package:mirl/infrastructure/data_access_layer/proxy/custom_proxy.dart';
 import 'package:mirl/mirl_app.dart';
+import 'package:timezone/data/latest.dart';
+
 
 Future<void> mainCommon(FlavorConfig flavorConfig) async {
   await MirlApp.initializeApp(flavorConfig);
+  initializeTimeZones();
+
 /*  if (flavorConfig.appTitle == AppConstants.localFlavorName) {
     _checkProxySettings();
   }*/

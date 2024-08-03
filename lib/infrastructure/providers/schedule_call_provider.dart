@@ -7,6 +7,8 @@ import 'package:mirl/infrastructure/models/response/get_slots_response_model.dar
 import 'package:mirl/infrastructure/models/response/login_response_model.dart';
 import 'package:mirl/infrastructure/models/response/week_availability_response_model.dart';
 import 'package:mirl/infrastructure/repository/schedule_call_repository.dart';
+import 'package:timezone/timezone.dart' as tz;
+
 
 class ScheduleCallProvider extends ChangeNotifier {
   final _scheduleCallRepository = ScheduleCallRepository();
@@ -27,6 +29,7 @@ class ScheduleCallProvider extends ChangeNotifier {
   late DateTime selectedDateEndTime;
 
   String _selectedUTCDate = '';
+  String? expertUtcDateTime;
 
   String userLocalTimeZone = '';
 
@@ -99,6 +102,21 @@ class ScheduleCallProvider extends ChangeNotifier {
     // userLocalTimeZone = '$timeZone (UTC $timeDuration)';
     notifyListeners();
   }
+
+  String getTimeZoneOffset(String timeZone) {
+    final location = tz.getLocation(timeZone);
+    final now = tz.TZDateTime.now(location);
+    final utcOffset = now.timeZoneOffset;
+    // final timeZoneName = timeZone.split('/').last.reportListaceAll('_', ' ');
+
+    final offsetHours = utcOffset.inHours;
+    final offsetMinutes = (utcOffset.inMinutes % 60).abs();
+    final sign = offsetHours < 0 ? '-' : '+';
+
+    return '(UTC $sign${offsetHours.abs().toString().padLeft(2, '0')}:${offsetMinutes.toString().padLeft(2, '0')})';
+  }
+
+
 
   void getSelectedSlotData(SlotsData value, int index) {
     if (oldIndex == index) {
@@ -203,6 +221,8 @@ class ScheduleCallProvider extends ChangeNotifier {
           AppointmentResponseModel responseModel = response.data;
           _appointmentData = responseModel.data;
           print("expert Time Zone===========${_appointmentData?.expertTimezone}");
+          expertUtcDateTime = getTimeZoneOffset(_appointmentData?.expertDetail?.timezone ?? "");
+          print("Expert UTC Time Zone===========${expertUtcDateTime}");
           context.toPushNamed(RoutesConstants.bookingConfirmScreen);
           notifyListeners();
         }
