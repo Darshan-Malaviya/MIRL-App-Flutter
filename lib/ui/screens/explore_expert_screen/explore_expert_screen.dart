@@ -77,10 +77,22 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
           body: Column(
             children: [
               16.0.spaceY,
-              TextFormFieldWidget(
-                textAlign: TextAlign.start,
-                suffixIcon: filterProviderWatch.exploreExpertController.text.isNotEmpty
-                    ? InkWell(
+              Row(
+                children: [
+                  if (!widget.isFromHomePage) ...[
+                    InkWell(
+                        child: Image.asset(ImageConstants.backIcon),
+                        onTap: () {
+                          filterProviderRead.clearAllFilter();
+                          context.toPop();
+                        }),
+                    8.0.spaceX,
+                  ],
+                  Flexible(
+                    child: TextFormFieldWidget(
+                      textAlign: TextAlign.start,
+                      suffixIcon: filterProviderWatch.exploreExpertController.text.isNotEmpty
+                          ? InkWell(
                         onTap: () {
                           context.unFocusKeyboard();
                           filterProviderRead.clearExploreExpertSearchData();
@@ -89,23 +101,26 @@ class _ExploreExpertScreenState extends ConsumerState<ExploreExpertScreen> {
                         },
                         child: Icon(Icons.close),
                       )
-                    : SizedBox.shrink(),
-                hintText: LocaleKeys.typeAnyCategoryHint.tr(),
-                hintTextColor: ColorConstants.blackColor,
-                enabledBorderColor: ColorConstants.dropDownBorderColor,
-                focusedBorderColor: ColorConstants.dropDownBorderColor,
-                controller: filterProviderWatch.exploreExpertController,
-                onChanged: (value) {
-                  if (filterProviderWatch.exploreExpertController.text.isNotEmpty) {
-                    filterProviderRead.clearExploreExpertSearchData();
-                    filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
-                  }
-                },
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (value) {
-                  context.unFocusKeyboard();
-                },
-              ).addMarginX(16)/*addMarginXY(marginX: 20, marginY: 10)*/,
+                          : SizedBox.shrink(),
+                      hintText: LocaleKeys.typeAnyCategoryHint.tr(),
+                      hintTextColor: ColorConstants.blackColor,
+                      enabledBorderColor: ColorConstants.dropDownBorderColor,
+                      focusedBorderColor: ColorConstants.dropDownBorderColor,
+                      controller: filterProviderWatch.exploreExpertController,
+                      onChanged: (value) {
+                        if (filterProviderWatch.exploreExpertController.text.isNotEmpty) {
+                          filterProviderRead.clearExploreExpertSearchData();
+                          filterProviderRead.exploreExpertUserAndCategoryApiCall(context: context);
+                        }
+                      },
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (value) {
+                        context.unFocusKeyboard();
+                      },
+                    ),
+                  ),
+                ],
+              ).addMarginX(16),
               if (filterProviderWatch.isLoading) ...[
                 Expanded(
                   child: Center(

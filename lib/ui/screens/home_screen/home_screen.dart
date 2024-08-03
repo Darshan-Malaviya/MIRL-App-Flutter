@@ -48,7 +48,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _applinks.uriLinkStream.listen((uri) {
       String path = uri.path;
       Map<String, String> queryParameters = uri.queryParameters;
-      if (path == "/share" && queryParameters['referralCode'] != null && queryParameters['referralCode']!.isNotEmpty) {
+      if (path == "/invite" && queryParameters['referralCode'] != null && queryParameters['referralCode']!.isNotEmpty) {
         // navigate to referral programme screen
         String referralCode = queryParameters['referralCode']!;
         Future.delayed(Duration(seconds: 2)).then((value) {
