@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/error_type_extension.dart';
 import 'package:mirl/infrastructure/handler/media_picker_handler/media_picker.dart';
 import 'package:mirl/infrastructure/models/request/update_expert_Profile_request_model.dart';
 import 'package:mirl/infrastructure/models/response/certificate_response_model.dart';
@@ -19,6 +21,7 @@ import 'package:mirl/infrastructure/models/request/expert_availability_request_m
 import 'package:mirl/infrastructure/repository/expert_profile_repo.dart';
 
 class EditExpertProvider extends ChangeNotifier {
+
   final _updateUserDetailsRepository = UpdateUserDetailsRepository();
   TextEditingController expertNameController = TextEditingController();
   TextEditingController searchCityController = TextEditingController();
@@ -541,7 +544,6 @@ class EditExpertProvider extends ChangeNotifier {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(about: aboutMeController.text.trim());
     UpdateUserDetailsApiCall(requestModel: updateExpertProfileRequestModel.toJsonAbout());
   }
-
   void updateBankApi() {
     UpdateExpertProfileRequestModel updateExpertProfileRequestModel = UpdateExpertProfileRequestModel(
       bankName: bankNameController.text.trim(),
@@ -580,11 +582,10 @@ class EditExpertProvider extends ChangeNotifier {
     UpdateUserDetailsApiCall(requestModel: await updateExpertProfileRequestModel.toJsonProfile(), fromImageUpload: true);
   }
 
-  Future<void> UpdateUserDetailsApiCall({required FormData requestModel, bool fromImageUpload = false}) async {
+  Future<void> UpdateUserDetailsApiCall({required FormData requestModel, bool fromImageUpload = false , bool isDeleted = false}) async {
     CustomLoading.progressDialog(isLoading: true);
 
     ApiHttpResult response = await _updateUserDetailsRepository.updateUserDetails(requestModel);
-
     CustomLoading.progressDialog(isLoading: false);
 
     switch (response.status) {
@@ -598,6 +599,12 @@ class EditExpertProvider extends ChangeNotifier {
           FlutterToast().showToast(msg: loginResponseModel.message);
           resetVariable();
           getUserData();
+          if(isDeleted == true){
+            await SharedPrefHelper.clearPrefs();
+            NavigationService.context.toPushNamedAndRemoveUntil(RoutesConstants.loginScreen);
+            FlutterToast().showToast(msg: "User Deleted SuccessFully");
+            break;
+          }
           if (!fromImageUpload) {
             NavigationService.context.toPop();
           }
