@@ -19,6 +19,7 @@ class UpdateExpertProfileRequestModel {
   String? accountNumber;
   String? city;
   String? country;
+  bool? isDeleted;
 
   UpdateExpertProfileRequestModel(
       {this.userName,
@@ -37,7 +38,8 @@ class UpdateExpertProfileRequestModel {
       this.bankName,
       this.accountNumber,
       this.city,
-      this.country});
+      this.country,
+      this.isDeleted});
 
   UpdateExpertProfileRequestModel.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
@@ -57,7 +59,16 @@ class UpdateExpertProfileRequestModel {
     city = json['city'];
     accountNumber = json['accountNumber'];
     country = json['country'];
+    isDeleted = json['isDeleted'] ?? false;
   }
+
+  FormData toIsDeleted() {
+    FormData formData = FormData.fromMap({
+      'isDeleted': isDeleted,
+    });
+    return formData;
+  }
+
 
   FormData toJsonGender() {
     FormData formData = FormData.fromMap({

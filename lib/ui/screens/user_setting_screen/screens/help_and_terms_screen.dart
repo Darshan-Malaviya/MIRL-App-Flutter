@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/providers/help_and_terms_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpAndTermsScreen extends ConsumerStatefulWidget {
@@ -16,6 +17,8 @@ bool _messageSent = false;
 class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
   @override
   Widget build(BuildContext context) {
+    final helpAndTerms = ref.watch(helpAndTermsProvider);
+
     return Scaffold(
         appBar: AppBarWidget(
           preferSize: 40,
@@ -508,7 +511,9 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                                     title: LocaleKeys.yesDelete.tr(),
                                     titleColor: ColorConstants.buttonTextColor,
                                     fontSize: 12,
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                      helpAndTerms.deleteUserApi();
+                                    },
                                   ),
                                 ],
                               )
