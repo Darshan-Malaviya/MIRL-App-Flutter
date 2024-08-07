@@ -103,7 +103,8 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                     element.status.toString() == '6') ? 1 : 0).reduce((value,
                     element) => value + element);
               }
-              return Column(
+              return SingleChildScrollView(
+                child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,7 +187,6 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                       height: 90,
                                       width: 90,
                                       boxFit: BoxFit.cover,
-
                                     ),
                                   ),
                                   if ((widget.args.userDetail?.userName?.isNotEmpty ?? false) &&
@@ -215,53 +215,53 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                                   itemBuilder: (context, index) {
                                     return ValueListenableBuilder(
-                                      valueListenable: multiConnectRequestStatusNotifier,
+                                        valueListenable: multiConnectRequestStatusNotifier,
                                         builder: (BuildContext context, CallRequestStatusEnum callRequestStatusEnum, Widget? callRequestStatusEnumChild) {
-                                        if(chooseMultiConnectExpert.value){
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius : BorderRadius.only(
-                                                topLeft: Radius.circular(25),
-                                                topRight: Radius.circular(25),
-                                                bottomLeft: Radius.circular(25),
-                                                bottomRight: Radius.circular(25),
-                                              ),
-                                              boxShadow : [BoxShadow(
-                                                  color: ColorConstants.blackColor.withOpacity(0.25),
-                                                  offset: Offset(0,1),
-                                                  blurRadius: 8,
-                                                  spreadRadius: 1
-                                              )],
-                                              color : ColorConstants.borderLightColor,
-                                            ),
-                                            width: 150,
-                                            height: 238,
-                                            padding: EdgeInsets.zero,
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20.0),
-                                              child: Shimmer.fromColors(
-                                                baseColor: ColorConstants.borderLightColor,
-                                                highlightColor: ColorConstants.greyLightColor,
-                                                child: ShadowContainer(
-                                                  width: 150,
-                                                  height: 200,
-                                                  isShadow: false,
-                                                  border: 25,
-                                                  child: Container(),
+                                          if(chooseMultiConnectExpert.value){
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius : BorderRadius.only(
+                                                  topLeft: Radius.circular(25),
+                                                  topRight: Radius.circular(25),
+                                                  bottomLeft: Radius.circular(25),
+                                                  bottomRight: Radius.circular(25),
                                                 ),
+                                                boxShadow : [BoxShadow(
+                                                    color: ColorConstants.blackColor.withOpacity(0.25),
+                                                    offset: Offset(0,1),
+                                                    blurRadius: 8,
+                                                    spreadRadius: 1
+                                                )],
+                                                color : ColorConstants.borderLightColor,
                                               ),
-                                            ).addPaddingY(4),
-                                          );
-                                        }
+                                              width: 150,
+                                              height: 238,
+                                              padding: EdgeInsets.zero,
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20.0),
+                                                child: Shimmer.fromColors(
+                                                  baseColor: ColorConstants.borderLightColor,
+                                                  highlightColor: ColorConstants.greyLightColor,
+                                                  child: ShadowContainer(
+                                                    width: 150,
+                                                    height: 200,
+                                                    isShadow: false,
+                                                    border: 25,
+                                                    child: Container(),
+                                                  ),
+                                                ),
+                                              ).addPaddingY(4),
+                                            );
+                                          }
                                           return InkWell(
                                             onTap: (){
                                               /// is status is accept or not chosen then that expert can be able for connect call
                                               if(multiProviderWatch.selectedExpertDetails[index].status.toString() == "2"
-                                              || multiProviderWatch.selectedExpertDetails[index].status.toString() == "7"){
+                                                  || multiProviderWatch.selectedExpertDetails[index].status.toString() == "7"){
                                                 multiProviderRead.setSelectedExpertForCall(multiProviderWatch.selectedExpertDetails[index]);
                                                 multiProviderRead.setSelectedExpertForCall(multiProviderWatch.selectedExpertDetails[index]);
                                                 // multiConnectCallEnumNotifier.value = CallTypeEnum.multiRequestApproved;
-                                               // CustomLoading.progressDialog(isLoading: true);
+                                                // CustomLoading.progressDialog(isLoading: true);
                                                 chooseMultiConnectExpert.value = true;
                                                 print("expertId==========${multiProviderWatch.selectedExpertForCall?.id.toString() ?? ''}");
                                                 ref.read(socketProvider).multiConnectStatusEmit(callStatusEnum: CallRequestStatusEnum.choose,
@@ -273,21 +273,21 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
 
                                             },
                                             child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius : BorderRadius.only(
-                                                    topLeft: Radius.circular(25),
-                                                    topRight: Radius.circular(25),
-                                                    bottomLeft: Radius.circular(25),
-                                                    bottomRight: Radius.circular(25),
-                                                  ),
-                                                  boxShadow : [BoxShadow(
-                                                      color: ColorConstants.blackColor.withOpacity(0.25),
-                                                      offset: Offset(0,1),
-                                                      blurRadius: 8,
-                                                    spreadRadius: 1
-                                                  )],
-                                                    color :multiProviderWatch.selectedExpertDetails[index].status.toString().numberToCallRequestStatusBGColor(),
+                                              decoration: BoxDecoration(
+                                                borderRadius : BorderRadius.only(
+                                                  topLeft: Radius.circular(25),
+                                                  topRight: Radius.circular(25),
+                                                  bottomLeft: Radius.circular(25),
+                                                  bottomRight: Radius.circular(25),
                                                 ),
+                                                boxShadow : [BoxShadow(
+                                                    color: ColorConstants.blackColor.withOpacity(0.25),
+                                                    offset: Offset(0,1),
+                                                    blurRadius: 8,
+                                                    spreadRadius: 1
+                                                )],
+                                                color :multiProviderWatch.selectedExpertDetails[index].status.toString().numberToCallRequestStatusBGColor(),
+                                              ),
                                               width: 150,
                                               height: 238,
                                               padding: EdgeInsets.zero,
@@ -364,7 +364,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                                               ).addPaddingY(4),
                                             ),
                                           );
-                                      }
+                                        }
                                     );
                                   },
                                   separatorBuilder: (BuildContext context, int index) => 16.0.spaceX,
@@ -398,43 +398,43 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                           ),
                           10.0.spaceY,
                           (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiCallRequest ||
-                                  multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)
+                              multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)
                               ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: PrimaryButton(
-                                        title: multiConnectCallEnumNotifier.value.secondButtonName,
-                                        // width: 130,
-                                        onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                        buttonColor:
-                                            (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)
-                                                ? ColorConstants.yellowButtonColor
-                                                : ColorConstants.primaryColor,
-                                        titleColor: ColorConstants.textColor,
-                                      ),
-                                    ).addVisibility(multiConnectCallEnumNotifier.value.secondButtonName.isNotEmpty),
-                                    8.0.spaceX,
-                                    Flexible(
-                                      child: PrimaryButton(
-                                        //width: 130,
-                                        title: multiConnectCallEnumNotifier.value.firstButtonName,
-                                        onPressed: widget.args.onFirstBtnTap ?? () {},
-                                        buttonColor: ColorConstants.primaryColor,
-                                        titleColor: ColorConstants.textColor,
-                                      ),
-                                    ).addVisibility(multiConnectCallEnumNotifier.value.firstButtonName.isNotEmpty)
-                                  ],
-                                ).addPaddingX(40)
-                              : Center(
-                                  child: PrimaryButton(
-                                    title: multiConnectCallEnumNotifier.value.secondButtonName,
-                                    width: 160,
-                                    onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
-                                    buttonColor: ColorConstants.primaryColor,
-                                    titleColor: ColorConstants.textColor,
-                                  ),
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: PrimaryButton(
+                                  title: multiConnectCallEnumNotifier.value.secondButtonName,
+                                  // width: 130,
+                                  onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
+                                  buttonColor:
+                                  (multiConnectCallEnumNotifier.value == CallRequestTypeEnum.multiReceiverRequested)
+                                      ? ColorConstants.yellowButtonColor
+                                      : ColorConstants.primaryColor,
+                                  titleColor: ColorConstants.textColor,
                                 ),
+                              ).addVisibility(multiConnectCallEnumNotifier.value.secondButtonName.isNotEmpty),
+                              8.0.spaceX,
+                              Flexible(
+                                child: PrimaryButton(
+                                  //width: 130,
+                                  title: multiConnectCallEnumNotifier.value.firstButtonName,
+                                  onPressed: widget.args.onFirstBtnTap ?? () {},
+                                  buttonColor: ColorConstants.primaryColor,
+                                  titleColor: ColorConstants.textColor,
+                                ),
+                              ).addVisibility(multiConnectCallEnumNotifier.value.firstButtonName.isNotEmpty)
+                            ],
+                          ).addPaddingX(40)
+                              : Center(
+                            child: PrimaryButton(
+                              title: multiConnectCallEnumNotifier.value.secondButtonName,
+                              width: 160,
+                              onPressed: widget.args.onSecondBtnTap ?? () => Navigator.pop(context),
+                              buttonColor: ColorConstants.primaryColor,
+                              titleColor: ColorConstants.textColor,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -484,7 +484,7 @@ class _MultiConnectCallDialogScreenState extends ConsumerState<MultiConnectCallD
                     ),
                   ),
                 ],
-              ).addMarginXY(marginX: 20, marginY: 20);
+              ).addMarginXY(marginX: 20, marginY: 20),);
             }),
       ),
     );

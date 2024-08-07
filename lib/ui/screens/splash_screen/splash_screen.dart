@@ -3,6 +3,8 @@ import 'package:gif_view/gif_view.dart';
 import 'package:mirl/infrastructure/commons/constants/image_constants.dart';
 import 'package:mirl/infrastructure/commons/constants/route_constants.dart';
 import 'package:mirl/infrastructure/services/shared_pref_helper.dart';
+import 'package:mirl/ui/screens/auth_screen/login_screen.dart';
+import 'package:mirl/ui/screens/dashboard_screen/dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,13 +40,26 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _onGifCompleted() async {
     if (isLoginIn) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, RoutesConstants.dashBoardScreen, (route) => false,
-          arguments: 0);
+      Navigator.of(context).push(_createRoute(DashboardScreen(index: 0)));
     } else {
-      Navigator.pushNamedAndRemoveUntil(
-          context, RoutesConstants.loginScreen, (route) => false);
+      Navigator.of(context).push(_createRoute(LoginScreen()));
     }
+  }
+  Route _createRoute(Widget screen) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => screen,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return ScaleTransition(
+          scale: Tween(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            ),
+          ),
+          child: child,
+        );
+      },
+    );
   }
 
   @override
@@ -59,6 +74,8 @@ class _SplashScreenState extends State<SplashScreen>
                 controller: gifController,
                 ImageConstants.splashImagesGif,
                 repeat: ImageRepeat.noRepeat,
+                fit: BoxFit.cover,
+                height: double.infinity,
                 width: double.infinity,
                 onError: (error) {
                   return Text('ERROR ----$error');

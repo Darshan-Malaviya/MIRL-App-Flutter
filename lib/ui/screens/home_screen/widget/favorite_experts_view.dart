@@ -72,8 +72,8 @@ class FavoriteExpertsView extends ConsumerWidget {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
                                       child: LabelSmallText(
-                                        fontSize: 13,
                                         title: (favoriteListNotifier.value[index].expertName?.toCapitalizeAllWord() ?? '').toString(),
+                                        fontSize: 12,
                                         maxLine: 5,
                                         titleTextAlign: TextAlign.center,
                                       ),

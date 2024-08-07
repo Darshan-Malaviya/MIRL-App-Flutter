@@ -53,17 +53,26 @@ class AuthProvider with ChangeNotifier {
 
   GoogleSignInAccount? _currentUser;
 
-  startTimer() {
+  void startTimer() {
+    // Save the current time as the start time
+    SharedPrefHelper.saveString('timer', DateTime.now().toIso8601String());
+
     _secondsRemaining = 120;
     timer?.cancel();
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (secondsRemaining != 0) {
-        _secondsRemaining--;
-        notifyListeners();
+      // Calculate the difference between now and the saved start time
+      DateTime earlier = DateTime.parse(SharedPrefHelper.getString('timer'));
+      Duration difference = DateTime.now().difference(earlier);
+      _secondsRemaining = 120 - difference.inSeconds;
+
+      if (_secondsRemaining <= 0) {
+        timer?.cancel();
+        _secondsRemaining = 0;
       }
+
+      notifyListeners();
     });
   }
-
   Future<void> loginRequestCall({BuildContext? context, required int loginType, required String email, bool? fromResend = false}) async {
     debugPrint('Token=================${SharedPrefHelper.getFirebaseToken}');
     debugPrint('getVoipToken=================${await AgoraService.singleton.getVoipToken()}');
