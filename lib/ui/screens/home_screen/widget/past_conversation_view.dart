@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mirl/generated/locale_keys.g.dart';
 import 'package:mirl/infrastructure/commons/exports/common_exports.dart';
+import 'package:mirl/infrastructure/commons/extensions/string_extention.dart';
 import 'package:mirl/ui/common/network_image/circle_netwrok_image.dart';
 import 'package:mirl/ui/screens/call_feedback_screen/arguments/call_feddback_arguments.dart';
 
@@ -25,7 +26,7 @@ class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
         if(homeProviderWatch.homeData?.lastConversionList?.isNotEmpty ?? false)...[
           20.0.spaceY,
           SizedBox(
-            height: 130,
+            height: 135,
             child: ListView.builder(
                 itemCount: homeProviderWatch.homeData?.lastConversionList?.length ?? 0,
                 padding: EdgeInsets.zero,
@@ -41,7 +42,7 @@ class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
                       padding: EdgeInsets.only(bottom: 8, top: 4, left: 8, right: 8),
                       shadowColor: ColorConstants.blackColor.withOpacity(0.1),
                       width: 96,
-                      height: 120,
+                      height: 130,
                       isShadow: true,
                       offset: Offset(0,2),
                       spreadRadius: 0,
@@ -68,12 +69,17 @@ class _PastConversationsViewState extends ConsumerState<PastConversationsView> {
                             ),
                           ),
                           6.0.spaceY,
-                          Flexible(
-                            child: LabelSmallText(
-                              fontSize: 12,
-                              title: homeProviderWatch.homeData?.lastConversionList?[index].expertName ?? '',
-                              maxLine: 5,
-                              titleTextAlign: TextAlign.center,
+                          Expanded(
+                            child: Center(
+                              child: Padding(
+                                padding:   EdgeInsets.symmetric(horizontal: 5.0),
+                                child: LabelSmallText(
+                                  title: (homeProviderWatch.homeData?.lastConversionList![index].expertName?.toCapitalizeAllWord() ?? '').toString(),
+                                  fontSize: 12,
+                                  maxLine: 5,
+                                  titleTextAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
                           ),
                         ],

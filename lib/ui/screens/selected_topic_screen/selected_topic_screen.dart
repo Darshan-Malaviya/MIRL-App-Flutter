@@ -187,7 +187,7 @@ class _SelectedTopicScreenState extends ConsumerState<SelectedTopicScreen> {
                       titleTextAlign: TextAlign.center,
                       fontFamily: FontWeightEnum.w400.toInter,
                       fontSize: 12,
-                      maxLine: 5,
+                      maxLine: 10,
                     ).addMarginX(10),
                     12.0.spaceY,
                     PrimaryButton(

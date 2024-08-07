@@ -251,6 +251,7 @@ class _SelectedCategoryScreenState extends ConsumerState<SelectedCategoryScreen>
                                       maxLine: 10,
                                       titleTextAlign: TextAlign.center,
                                     ).addPaddingX(20),
+                                    12.0.spaceY,
                                   ],
                                 );
                               }),

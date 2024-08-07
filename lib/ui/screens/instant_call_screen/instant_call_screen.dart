@@ -157,14 +157,15 @@ class _InstantCallRequestDialog extends ConsumerState<InstantCallRequestDialog> 
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: NetworkImageWidget(
-                                  imageURL: widget.args.image ?? '',
-                                  height: 122,
-                                  width: 95,
-                                  boxFit: BoxFit.cover,
-                                  emptyImageWidget: Image.network(ImageConstants.mysteryImage, fit: BoxFit.fitWidth, width: double.infinity),
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: NetworkImageWidget(
+                                    imageURL: widget.args.image ?? '',
+                                    width: double.infinity,
+                                    boxFit: BoxFit.cover,
+                                    emptyImageWidget: Image.asset(ImageConstants.mirlConnect, fit: BoxFit.fitWidth, width: double.infinity),
+                                  ),
                                 ),
                               ),
                               if ((widget.args.name?.isNotEmpty ?? false) && (widget.args.name != 'null')) ...[

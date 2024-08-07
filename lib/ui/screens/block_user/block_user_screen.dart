@@ -138,8 +138,6 @@ class _BlockUserScreenState extends ConsumerState<BlockUserScreen> {
                               ref.read(homeProvider).manageFavoriteUserList(
                                 expertId: int.parse(widget.args.userId .toString()), expertName: widget.args.userName ?? '', expertProfile: widget.args.imageURL ?? '',
                                 isFavorite: false,);
-
-
                             },
                             child: Center(
                                 child: BodyLargeText(
