@@ -86,7 +86,6 @@ class _HelpAndTermsScreenState extends ConsumerState<HelpAndTermsScreen> {
                     onPressed: () {
                       CommonBottomSheet.bottomSheet(
                         isShadowContainer: false,
-                        height: MediaQuery.of(context).size.height * 0.8,
                         constraints: BoxConstraints(
                             maxHeight:
                                 MediaQuery.of(context).size.height * 0.9),

@@ -82,7 +82,7 @@ class MIRLConnectProvider extends ChangeNotifier {
               responseModel = response.data;
             } else {
               ReferralListResponseModel data = response.data;
-              responseModel.data?.reflist?.addAll(data.data?.reflist ?? []);
+              responseModel.data?.refUserlist?.addAll(data.data?.refUserlist ?? []);
             }
             currentPage++;
             totalPage = responseModel.pagination?.pageCount ?? 1;

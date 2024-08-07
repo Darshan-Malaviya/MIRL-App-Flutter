@@ -112,7 +112,7 @@ class _MirlReferralDashboardScreenState extends ConsumerState<MirlReferralDashbo
                         ),
                         20.0.spaceY,
                         mirlConnectWatch.isListLoading == false &&
-                                mirlConnectWatch.responseModel.data?.reflist?.length == 0
+                                mirlConnectWatch.responseModel.data?.refUserlist?.length == 0
                             ? SizedBox(
                                 height: MediaQuery.sizeOf(context).height * 0.5,
                                 child: Column(
@@ -146,24 +146,24 @@ class _MirlReferralDashboardScreenState extends ConsumerState<MirlReferralDashbo
                                   ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: mirlConnectWatch.responseModel.data?.totalAllTime?.length ?? 0,
+                                    itemCount: mirlConnectWatch.responseModel.data?.totalEarnings ?? 0,
                                     itemBuilder: (context, index) {
                                       return ReferralEarningsWidget(
-                                        title: mirlConnectWatch.responseModel.data?.totalAllTime?[index].title ?? "",
+                                        title: "",
                                         earnings:
-                                            "\$${mirlConnectWatch.responseModel.data?.totalAllTime?[index].value ?? 0.0}",
+                                            "\$${mirlConnectWatch.responseModel.data?.totalEarnings}",
                                       );
                                     },
                                   ),
                                   Visibility(
-                                    visible: !(mirlConnectWatch.responseModel.data?.isAdvanceStatus == true),
+                                    visible: !(mirlConnectWatch.responseModel.data?.isAdvanceList == true),
                                     child: PrimaryButton(
                                       width: MediaQuery.sizeOf(context).width * 0.7,
                                       buttonColor: ColorConstants.primaryColor,
                                       title: LocaleKeys.unlockAdvancedDashboard.tr(),
                                       titleColor: ColorConstants.textColor,
                                       onPressed: () {
-                                        if (mirlConnectWatch.responseModel.data?.isAdvanceStatus == false) {
+                                        if (mirlConnectWatch.responseModel.data?.isAdvanceList == false) {
                                           //show Advanced Dashboard Access dialog
                                           CommonAlertDialog.dialog(
                                               context: context,
@@ -223,14 +223,14 @@ class _MirlReferralDashboardScreenState extends ConsumerState<MirlReferralDashbo
                                   ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: mirlConnectWatch.responseModel.data?.isAdvanceStatus == true
-                                        ? mirlConnectWatch.responseModel.data?.reflist?.length ?? 0
-                                        : (mirlConnectWatch.responseModel.data?.reflist?.length ?? 0) < 10
-                                            ? mirlConnectWatch.responseModel.data?.reflist?.length ?? 0
+                                    itemCount: mirlConnectWatch.responseModel.data?.isAdvanceList == true
+                                        ? mirlConnectWatch.responseModel.data?.refUserlist?.length ?? 0
+                                        : (mirlConnectWatch.responseModel.data?.refUserlist?.length ?? 0) < 10
+                                            ? mirlConnectWatch.responseModel.data?.refUserlist?.length ?? 0
                                             : 10,
                                     itemBuilder: (context, index) {
-                                      final refData = mirlConnectWatch.responseModel.data?.reflist?[index];
-                                      print(refData?.user?.referralDateAt);
+                                      final refData = mirlConnectWatch.responseModel.data?.refUserlist?[index];
+                                      print("RefUser :::: ::: ::: :: :: :: :: :${refData?.referralDateAt}");
                                       return Container(
                                         margin: EdgeInsets.only(bottom: 20),
                                         width: double.infinity,
@@ -297,7 +297,7 @@ class _MirlReferralDashboardScreenState extends ConsumerState<MirlReferralDashbo
                                                       child: TitleSmallText(
                                                         fontFamily: FontWeightEnum.w600.toInter,
                                                         fontSize: 13,
-                                                        title: refData?.user?.userName ?? "User Name",
+                                                        title: refData?.expertName ?? "User Name",
                                                         titleColor: ColorConstants.blackColor,
                                                       ),
                                                     ),
@@ -306,9 +306,10 @@ class _MirlReferralDashboardScreenState extends ConsumerState<MirlReferralDashbo
                                                 10.0.spaceX,
                                               ],
                                             ),
-                                            Visibility(
-                                              visible: mirlConnectWatch.responseModel.data?.isAdvanceStatus ?? false,
-                                              child: Column(
+                                            // Visibility(
+                                            //   visible: mirlConnectWatch.responseModel.data?.isAdvanceList ?? false,
+                                            //   child:
+                                              Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
@@ -316,26 +317,26 @@ class _MirlReferralDashboardScreenState extends ConsumerState<MirlReferralDashbo
                                                   ReusableRichText(
                                                     labelText: "REFERRAL DATE: ",
                                                     valueText:
-                                                        formatDate(refData?.user?.referralDateAt ?? DateTime.now()),
+                                                        formatDate(refData?.referralDateAt ?? DateTime.now()),
                                                   ),
                                                   10.0.spaceY,
                                                   ReusableRichText(
                                                     labelText: 'VALIDITY: ',
-                                                    valueText: refData?.validity ?? "-",
+                                                    valueText: "5 year's",
                                                   ),
                                                   10.0.spaceY,
                                                   ReusableRichText(
                                                     labelText: 'MONTHLY REFERRAL EARNINGS: ',
-                                                    valueText: '\$${refData?.monthlyReferralEarnings ?? "\$0.0"}',
+                                                    valueText: '\$${refData?.monthlyEarnings ?? "0.0"}',
                                                   ),
                                                   10.0.spaceY,
                                                   ReusableRichText(
                                                     labelText: 'LIFETIME REFERRAL EARNINGS: ',
-                                                    valueText: '\$${refData?.lifetimeReferralEarnings ?? "\$0.0"}',
+                                                    valueText: '\$${refData?.totalEarnings ?? "0.0"}',
                                                   ),
                                                 ],
                                               ),
-                                            )
+                                            // )
                                           ],
                                         ),
                                       );

@@ -85,7 +85,7 @@ extension StringFormating on String {
   String  callRequestStatusToString() {
     switch (this) {
       case "1":
-        return LocaleKeys.noResponse.tr();
+        return LocaleKeys.waiting.tr();
       case "2":
         return LocaleKeys.callMe.tr();
       case "3":
@@ -99,7 +99,7 @@ extension StringFormating on String {
       case "7":
         return LocaleKeys.notChosen.tr();
       default:
-        return '';
+        return LocaleKeys.noResponse.tr();
     }
   }
 }

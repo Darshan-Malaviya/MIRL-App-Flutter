@@ -53,6 +53,7 @@ class MIRLConnectRepository extends ApiResponseHandler {
         //   'Content-Type': 'application/json',
         //   'mirlAppToken': 'Bearer 123123123'
         // },
+        apiType: APIType.get,
         headers: ApiConstants.headerWithToken(),
         body: {"page": currentPage, "limit": 10});
     print("result ----> ${result.response!["pagination"]}");
