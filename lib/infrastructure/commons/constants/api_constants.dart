@@ -101,6 +101,6 @@ class ApiConstants {
   static const String favorite = '/homePage/favorite/';
   static const String lastConversation = '/homePage/lastConversation/';
   static const String getOwnReferralCode = '/user-referral/referral-link';
-  static const String getReferralList = '/user-referral/get-ref-list';
+  static const String getReferralList = '/user-referral/referral-user';
   static const String submitReferralCode = '/user-referral/verify';
 }

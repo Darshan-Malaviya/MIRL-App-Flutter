@@ -103,17 +103,17 @@ class ScheduleCallProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getTimeZoneOffset(String timeZone) {
+  String getTimeZoneExpert(String timeZone) {
     final location = tz.getLocation(timeZone);
     final now = tz.TZDateTime.now(location);
     final utcOffset = now.timeZoneOffset;
-    // final timeZoneName = timeZone.split('/').last.reportListaceAll('_', ' ');
 
     final offsetHours = utcOffset.inHours;
     final offsetMinutes = (utcOffset.inMinutes % 60).abs();
     final sign = offsetHours < 0 ? '-' : '+';
+    final timeZoneName = now.timeZoneName;
 
-    return '(UTC $sign${offsetHours.abs().toString().padLeft(2, '0')}:${offsetMinutes.toString().padLeft(2, '0')})';
+    return '$timeZoneName (UTC $sign${offsetHours.abs().toString().padLeft(2, '0')}:${offsetMinutes.toString().padLeft(2, '0')})';
   }
 
 
@@ -221,7 +221,7 @@ class ScheduleCallProvider extends ChangeNotifier {
           AppointmentResponseModel responseModel = response.data;
           _appointmentData = responseModel.data;
           print("expert Time Zone===========${_appointmentData?.expertTimezone}");
-          expertUtcDateTime = getTimeZoneOffset(_appointmentData?.expertDetail?.timezone ?? "");
+          expertUtcDateTime = getTimeZoneExpert(_appointmentData?.expertDetail?.timezone ?? "");
           print("Expert UTC Time Zone===========${expertUtcDateTime}");
           context.toPushNamed(RoutesConstants.bookingConfirmScreen);
           notifyListeners();
